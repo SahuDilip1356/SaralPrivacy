@@ -38,6 +38,8 @@ async function createCollection(id, name, attributes) {
         await db.createBooleanAttribute(DATABASE_ID, id, attr.key, attr.required || false, attr.default || false);
       } else if (attr.type === "double") {
         await db.createFloatAttribute(DATABASE_ID, id, attr.key, attr.required || false, null, null, attr.default || null);
+      } else if (attr.type === "integer") {
+        await db.createIntegerAttribute(DATABASE_ID, id, attr.key, attr.required || false, null, null, attr.default || null);
       } else if (attr.type === "datetime") {
         await db.createDatetimeAttribute(DATABASE_ID, id, attr.key, attr.required || false, attr.default || null);
       }
@@ -105,6 +107,21 @@ async function main() {
     { key: "urgency_score",       type: "double",             required: false },
     { key: "overall_score",       type: "double",             required: false },
     { key: "created_at",          type: "datetime",           required: false },
+  ]);
+
+  await createCollection("briefings", "Daily Briefings", [
+    { key: "title",            type: "string",   size: 500,   required: true              },
+    { key: "slug",             type: "string",   size: 255,   required: true              },
+    { key: "summary",          type: "string",   size: 2000,  required: false             },
+    { key: "content",          type: "string",   size: 50000, required: false             },
+    { key: "why_it_matters",   type: "string",   size: 5000,  required: false             },
+    { key: "action_checklist", type: "string",   size: 5000,  required: false             },
+    { key: "status",           type: "string",   size: 50,    required: false, default: "draft" },
+    { key: "approval_token",   type: "string",   size: 100,   required: false             },
+    { key: "scheduled_for",    type: "datetime",              required: false             },
+    { key: "sent_at",          type: "datetime",              required: false             },
+    { key: "subscriber_count", type: "integer",               required: false             },
+    { key: "created_at",       type: "datetime",              required: false             },
   ]);
 
   console.log("\n✅ Setup complete. Collections are ready in Appwrite.");

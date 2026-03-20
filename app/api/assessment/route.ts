@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { databases, DB_ID, COLLECTIONS, ID } from "@/lib/appwrite";
+import { sendAssessmentAlert } from "@/lib/email";
 
 export async function POST(request: NextRequest) {
   try {
@@ -10,7 +11,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Required fields are missing." }, { status: 400 });
     }
 
-    await databases.createDocument(DB_ID, COLLECTIONS.ASSESSMENTS, ID.unique(), {
+    const assessmentData = {
       email,
       industry,
       risk_level:           riskLevel,
@@ -20,7 +21,14 @@ export async function POST(request: NextRequest) {
       urgency_score:        scores?.urgency || 0,
       overall_score:        scores?.overall || 0,
       created_at:           new Date().toISOString(),
-    });
+    };
+
+    await databases.createDocument(DB_ID, COLLECTIONS.ASSESSMENTS, ID.unique(), assessmentData);
+
+    // Fire-and-forget admin alert — do not block the response
+    sendAssessmentAlert(assessmentData).catch((err) =>
+      console.error("sendAssessmentAlert error:", err)
+    );
 
     return NextResponse.json({ success: true });
   } catch (error) {

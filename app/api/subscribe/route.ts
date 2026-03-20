@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PRIVACY_NOTICE_VERSION } from "@/lib/utils";
 import { databases, DB_ID, COLLECTIONS, ID } from "@/lib/appwrite";
+import { sendWelcomeEmail } from "@/lib/email";
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,7 +15,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Invalid email address." }, { status: 400 });
     }
 
-    await databases.createDocument(DB_ID, COLLECTIONS.SUBSCRIBERS, ID.unique(), {
+    const subscriberData = {
       name,
       email,
       industry:         industry || "",
@@ -22,7 +23,14 @@ export async function POST(request: NextRequest) {
       consent_version:  PRIVACY_NOTICE_VERSION,
       user_agent:       request.headers.get("user-agent") || "",
       created_at:       new Date().toISOString(),
-    });
+    };
+
+    await databases.createDocument(DB_ID, COLLECTIONS.SUBSCRIBERS, ID.unique(), subscriberData);
+
+    // Fire-and-forget welcome email — do not block the response
+    sendWelcomeEmail({ name, email }).catch((err) =>
+      console.error("sendWelcomeEmail error:", err)
+    );
 
     return NextResponse.json({
       success: true,

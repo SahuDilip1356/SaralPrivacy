@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PRIVACY_NOTICE_VERSION } from "@/lib/utils";
 import { databases, DB_ID, COLLECTIONS, ID } from "@/lib/appwrite";
+import { sendConsultationAlert } from "@/lib/email";
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,7 +12,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Required fields are missing." }, { status: 400 });
     }
 
-    await databases.createDocument(DB_ID, COLLECTIONS.LEADS, ID.unique(), {
+    const leadData = {
       name:              fullName,
       email:             workEmail,
       phone:             mobileNumber || "",
@@ -25,7 +26,14 @@ export async function POST(request: NextRequest) {
       consent_version:   PRIVACY_NOTICE_VERSION,
       risk_level:        "",
       created_at:        new Date().toISOString(),
-    });
+    };
+
+    await databases.createDocument(DB_ID, COLLECTIONS.LEADS, ID.unique(), leadData);
+
+    // Fire-and-forget admin alert — do not block the response
+    sendConsultationAlert(leadData).catch((err) =>
+      console.error("sendConsultationAlert error:", err)
+    );
 
     return NextResponse.json({
       success: true,

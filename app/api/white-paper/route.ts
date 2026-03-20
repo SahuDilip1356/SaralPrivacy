@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PRIVACY_NOTICE_VERSION } from "@/lib/utils";
 import { databases, DB_ID, COLLECTIONS, ID, getFileDownloadUrl } from "@/lib/appwrite";
+import { sendDownloadAlert } from "@/lib/email";
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,7 +12,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Required fields are missing." }, { status: 400 });
     }
 
-    await databases.createDocument(DB_ID, COLLECTIONS.DOWNLOADS, ID.unique(), {
+    const downloadData = {
       name:              fullName,
       email:             workEmail,
       company:           companyName,
@@ -22,7 +23,14 @@ export async function POST(request: NextRequest) {
       consent_webinars:  body.consentWebinars || false,
       privacy_version:   PRIVACY_NOTICE_VERSION,
       downloaded_at:     new Date().toISOString(),
-    });
+    };
+
+    await databases.createDocument(DB_ID, COLLECTIONS.DOWNLOADS, ID.unique(), downloadData);
+
+    // Fire-and-forget admin alert — do not block the response
+    sendDownloadAlert(downloadData).catch((err) =>
+      console.error("sendDownloadAlert error:", err)
+    );
 
     // Use Appwrite Storage URL when file has been uploaded, else fallback to public asset
     const fileId      = process.env.APPWRITE_WHITE_PAPER_FILE_ID;
