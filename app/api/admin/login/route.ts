@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const ALLOWED_EMAIL = (process.env.ADMIN_EMAIL    || "dilip.sahu@gmail.com").toLowerCase();
-const ADMIN_PASSWORD =  process.env.ADMIN_PASSWORD || "";
+const ALLOWED_EMAIL  = (process.env.ADMIN_EMAIL   || "dilip.sahu@gmail.com").trim().toLowerCase();
+const ADMIN_PASSWORD = (process.env.ADMIN_PASSWORD || "").trim();
 
 export async function POST(request: NextRequest) {
   try {
