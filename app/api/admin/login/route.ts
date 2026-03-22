@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const APPWRITE_ENDPOINT = process.env.APPWRITE_ENDPOINT || "https://sgp.cloud.appwrite.io/v1";
-const APPWRITE_PROJECT  = process.env.APPWRITE_PROJECT_ID!;
-const ALLOWED_EMAIL     = process.env.ADMIN_EMAIL || "dilip.sahu@gmail.com";
+const ALLOWED_EMAIL = (process.env.ADMIN_EMAIL    || "dilip.sahu@gmail.com").toLowerCase();
+const ADMIN_PASSWORD =  process.env.ADMIN_PASSWORD || "";
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,29 +11,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Email and password are required." }, { status: 400 });
     }
 
-    // Only allow the designated admin email
-    if (email.toLowerCase() !== ALLOWED_EMAIL.toLowerCase()) {
+    if (email.toLowerCase() !== ALLOWED_EMAIL) {
       return NextResponse.json({ error: "Access denied." }, { status: 403 });
     }
 
-    // Authenticate via Appwrite Sessions API
-    const appwriteRes = await fetch(`${APPWRITE_ENDPOINT}/account/sessions/email`, {
-      method:  "POST",
-      headers: {
-        "Content-Type":    "application/json",
-        "X-Appwrite-Project": APPWRITE_PROJECT,
-      },
-      body: JSON.stringify({ email, password }),
-    });
-
-    const appwriteData = await appwriteRes.json();
-
-    if (!appwriteRes.ok) {
-      const msg = appwriteData?.message || "Invalid credentials.";
-      return NextResponse.json({ error: msg }, { status: 401 });
+    if (!ADMIN_PASSWORD || password !== ADMIN_PASSWORD) {
+      return NextResponse.json({ error: "Invalid credentials." }, { status: 401 });
     }
 
-    // Appwrite session created — set our own httpOnly session cookie
     const response = NextResponse.json({ success: true });
     response.cookies.set("admin_session", "authenticated", {
       httpOnly: true,
