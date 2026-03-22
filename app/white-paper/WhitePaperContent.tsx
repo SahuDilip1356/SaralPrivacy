@@ -49,9 +49,11 @@ export default function WhitePaperContent() {
     consentPhone: false,
     consentWebinars: false,
   });
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [submitted, setSubmitted]     = useState(false);
+  const [downloadUrl, setDownloadUrl] = useState("");
+  const [loading, setLoading]         = useState(false);
+  const [errors, setErrors]           = useState<Record<string, string>>({});
+  const [serverError, setServerError] = useState("");
 
   const validate = () => {
     const e: Record<string, string> = {};
@@ -68,9 +70,25 @@ export default function WhitePaperContent() {
     const errs = validate();
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 1000));
-    setSubmitted(true);
-    setLoading(false);
+    setServerError("");
+    try {
+      const res = await fetch("/api/white-paper", {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body:    JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (res.ok && data.downloadUrl) {
+        setDownloadUrl(data.downloadUrl);
+        setSubmitted(true);
+      } else {
+        setServerError(data.error || "Something went wrong. Please try again.");
+      }
+    } catch {
+      setServerError("Network error. Please check your connection and try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const update = (field: string, value: string | boolean) => {
@@ -153,8 +171,9 @@ export default function WhitePaperContent() {
                   We&apos;ve sent a download link to your email. The white paper is also available below.
                 </p>
                 <a
-                  href="/assets/dpdpa-white-paper-2025.pdf"
-                  download
+                  href={downloadUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-green-700 text-white font-semibold rounded-lg text-sm hover:bg-green-800 transition-colors"
                 >
                   <Download size={16} />
@@ -280,6 +299,10 @@ export default function WhitePaperContent() {
                     <Lock size={12} className="shrink-0" />
                     Secure submission. Your data is not shared with third parties for marketing.
                   </div>
+
+                  {serverError && (
+                    <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">{serverError}</p>
+                  )}
 
                   <Button
                     type="submit"
