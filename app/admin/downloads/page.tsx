@@ -95,7 +95,7 @@ export default function DownloadsPage() {
                     <td className="px-4 py-3 whitespace-nowrap"><ConsentBadge value={d.consent_phone} /></td>
                     <td className="px-4 py-3 whitespace-nowrap"><ConsentBadge value={d.consent_webinars} /></td>
                     <td className="px-4 py-3 text-slate-500 whitespace-nowrap">
-                      {d.city || d.country ? `${d.city || ""}${d.city && d.country ? ", " : ""}${d.country || ""}` : "—"}
+                      {d.city || d.country ? `${decodeURIComponent(d.city || "")}${d.city && d.country ? ", " : ""}${d.country || ""}` : "—"}
                     </td>
                     <td className="px-4 py-3 text-slate-400 whitespace-nowrap">
                       {new Date(d.$createdAt).toLocaleDateString("en-IN")}

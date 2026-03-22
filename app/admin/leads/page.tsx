@@ -102,7 +102,7 @@ export default function LeadsPage() {
                     <td className="px-4 py-3 text-slate-500 whitespace-nowrap">{lead.preferred_contact || "—"}</td>
                     <td className="px-4 py-3 whitespace-nowrap"><RiskBadge level={lead.risk_level} /></td>
                     <td className="px-4 py-3 text-slate-500 whitespace-nowrap">
-                      {lead.city || lead.country ? `${lead.city || ""}${lead.city && lead.country ? ", " : ""}${lead.country || ""}` : "—"}
+                      {lead.city || lead.country ? `${decodeURIComponent(lead.city || "")}${lead.city && lead.country ? ", " : ""}${lead.country || ""}` : "—"}
                     </td>
                     <td className="px-4 py-3 text-slate-400 whitespace-nowrap">
                       {new Date(lead.$createdAt).toLocaleDateString("en-IN")}

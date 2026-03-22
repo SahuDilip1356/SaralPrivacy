@@ -137,7 +137,7 @@ export default function AssessmentsPage() {
                     <td className="px-4 py-3"><ScoreBar value={a.urgency_score} /></td>
                     <td className="px-4 py-3"><ScoreBar value={a.overall_score} /></td>
                     <td className="px-4 py-3 text-slate-500 whitespace-nowrap">
-                      {a.city || a.country ? `${a.city || ""}${a.city && a.country ? ", " : ""}${a.country || ""}` : "—"}
+                      {a.city || a.country ? `${decodeURIComponent(a.city || "")}${a.city && a.country ? ", " : ""}${a.country || ""}` : "—"}
                     </td>
                     <td className="px-4 py-3 text-slate-400 whitespace-nowrap">
                       {new Date(a.$createdAt).toLocaleDateString("en-IN")}

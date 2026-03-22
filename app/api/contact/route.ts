@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     }
 
     const ip      = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || request.headers.get("x-real-ip") || "";
-    const city    = request.headers.get("x-vercel-ip-city") || "";
+    const city    = decodeURIComponent(request.headers.get("x-vercel-ip-city") || "");
     const country = request.headers.get("x-vercel-ip-country") || "";
     const region  = request.headers.get("x-vercel-ip-country-region") || "";
     const userAgent = request.headers.get("user-agent") || "";

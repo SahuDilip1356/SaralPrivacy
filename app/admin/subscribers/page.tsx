@@ -131,7 +131,7 @@ export default function SubscribersPage() {
                     </td>
                     <td className="px-4 py-3 text-slate-500 whitespace-nowrap">{s.consent_version || "—"}</td>
                     <td className="px-4 py-3 text-slate-500 whitespace-nowrap">
-                      {s.city || s.country ? `${s.city || ""}${s.city && s.country ? ", " : ""}${s.country || ""}` : "—"}
+                      {s.city || s.country ? `${decodeURIComponent(s.city || "")}${s.city && s.country ? ", " : ""}${s.country || ""}` : "—"}
                     </td>
                     <td className="px-4 py-3 text-slate-400 whitespace-nowrap">
                       {new Date(s.$createdAt).toLocaleDateString("en-IN")}

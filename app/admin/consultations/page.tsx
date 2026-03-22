@@ -91,7 +91,7 @@ export default function ConsultationsPage() {
                     </td>
                     <td className="px-4 py-3 text-slate-500 whitespace-nowrap">{c.preferred_time || "—"}</td>
                     <td className="px-4 py-3 text-slate-500 whitespace-nowrap">
-                      {c.city || c.country ? `${c.city || ""}${c.city && c.country ? ", " : ""}${c.country || ""}` : "—"}
+                      {c.city || c.country ? `${decodeURIComponent(c.city || "")}${c.city && c.country ? ", " : ""}${c.country || ""}` : "—"}
                     </td>
                     <td className="px-4 py-3 text-slate-400 whitespace-nowrap">
                       {new Date(c.$createdAt).toLocaleDateString("en-IN")}

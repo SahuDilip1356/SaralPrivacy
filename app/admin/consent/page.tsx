@@ -225,7 +225,7 @@ export default function ConsentLogPage() {
                     <td className="px-4 py-3 whitespace-nowrap"><SourceBadge source={r.source} /></td>
                     <td className="px-4 py-3 text-slate-500 whitespace-nowrap">{r.privacy_version || "—"}</td>
                     <td className="px-4 py-3 text-slate-500 whitespace-nowrap">
-                      {r.city || r.country ? `${r.city || ""}${r.city && r.country ? ", " : ""}${r.country || ""}` : "—"}
+                      {r.city || r.country ? `${decodeURIComponent(r.city || "")}${r.city && r.country ? ", " : ""}${r.country || ""}` : "—"}
                     </td>
                     <td className="px-4 py-3 text-slate-400 font-mono text-xs whitespace-nowrap">{r.ip_address || "—"}</td>
                     <td className="px-4 py-3 text-slate-400 whitespace-nowrap text-xs">
