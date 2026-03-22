@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Clock, Users, Calculator, GraduationCap, ShoppingBag, CheckCircle } from "lucide-react";
+import { breadcrumbSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
-  title: "DPDPA Readiness Assessment — Free Industry-Specific Assessment",
+  title: "Free DPDPA Readiness Assessment",
   description:
     "Take our free 10-minute DPDPA readiness assessment tailored to your industry. Recruitment agencies, CA firms, training institutes, and D2C brands.",
+  alternates: { canonical: 'https://saralprivacy.com/assessment' },
 };
 
 const assessments = [
@@ -82,6 +84,11 @@ const whatYouGet = [
 
 export default function AssessmentHubPage() {
   return (
+    <>
+      {breadcrumbSchema([
+        { name: 'Home', url: 'https://saralprivacy.com' },
+        { name: 'DPDPA Readiness Assessment', url: 'https://saralprivacy.com/assessment' },
+      ])}
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
       <div className="bg-brand-700 py-16">
@@ -180,5 +187,6 @@ export default function AssessmentHubPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

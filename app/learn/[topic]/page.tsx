@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { notFound } from "next/navigation";
+import { articleSchema, breadcrumbSchema } from "@/lib/schema";
 
 const learnContent: Record<string, { title: string; description: string; content: string }> = {
   "what-is-dpdpa": {
@@ -41,7 +42,7 @@ The Act establishes the **Data Protection Board of India (DPBI)** as the regulat
 
 ## When Does It Come Into Effect?
 
-The DPDPA was enacted in August 2023 but comes into force only once the Rules under the Act are notified by the Central Government. Draft Rules were released for public consultation and are expected to be finalised in 2025.
+The DPDPA was enacted in August 2023 but comes into force only once the Rules under the Act are notified by the Central Government. Draft Rules were released for public consultation and are pending Government notification.
 
 **Businesses should not wait for the Rules to be notified to begin preparing.** The framework is clear enough to begin compliance work now, and early preparation significantly reduces the cost and disruption of compliance.
     `,
@@ -265,6 +266,481 @@ You do not need a large security team to be prepared. A basic incident response 
 Up to ₹200 crore for failing to notify the Data Protection Board of a breach. This is separate from penalties for inadequate security safeguards, which can reach ₹250 crore.
     `,
   },
+  "key-terms": {
+    title: "Key Terms in Simple Language",
+    description: "DPDPA vocabulary explained plainly — Data Fiduciary, Data Principal, Consent, and more.",
+    content: `
+Understanding DPDPA starts with knowing its vocabulary. These terms appear throughout the Act and in compliance guidance. Here is what each term means in practice.
+
+## Data Principal
+
+A Data Principal is the individual whose personal data is being collected or processed. Under DPDPA, Data Principals have rights — to access, correct, and erase their data, and to raise grievances. In plain terms: your customers, candidates, students, and employees are Data Principals when you collect their data.
+
+## Data Fiduciary
+
+A Data Fiduciary is any person (individual, company, or organisation) who alone or jointly determines the purpose and means of processing personal data. If you decide what data to collect, why to collect it, and how to use it, you are a Data Fiduciary.
+
+**Key obligation:** Data Fiduciaries carry the primary compliance burden under DPDPA — consent, notice, security, rights response, and breach notification.
+
+## Data Processor
+
+A Data Processor processes personal data on behalf of a Data Fiduciary — but does not determine the purpose or means of processing independently. Examples include cloud storage providers, payroll processors, ATS vendors, and email marketing platforms.
+
+**Key obligation:** Data Processors must act only on the instructions of the Data Fiduciary and must sign a Data Processing Agreement (DPA). They have limited but real obligations under DPDPA.
+
+## Significant Data Fiduciary (SDF)
+
+A business can be designated as a Significant Data Fiduciary by the Central Government based on volume of data processed, sensitivity of data, risk to individuals, or risk to national security. SDFs face additional obligations including appointing a Data Protection Officer, conducting Data Protection Impact Assessments, and algorithmic transparency requirements.
+
+## Personal Data
+
+Any data about an individual that can directly or indirectly identify them. This includes obvious data (name, PAN, Aadhaar, mobile number, email) and less obvious data (IP address, location data, device identifiers, behavioural data tied to an individual).
+
+## Sensitive Personal Data
+
+The Act and its rules may specify categories of data that attract heightened protection. This typically includes financial data, health data, biometric data, and data of children.
+
+## Consent
+
+Under DPDPA, consent must be free, specific, informed, unconditional, and unambiguous. It must be sought through a clear affirmative action — not pre-ticked boxes or silence.
+
+## Notice
+
+A notice is the disclosure provided to a Data Principal before or at the time of collecting their data. It must specify what data is being collected, for what purpose, and how they can exercise their rights.
+
+## Data Processing Agreement (DPA)
+
+A contractual agreement between a Data Fiduciary and a Data Processor setting out the terms on which personal data may be processed, including security standards, permitted sub-processors, and breach notification obligations.
+
+## Data Protection Board of India (DPBI)
+
+The regulatory authority established under DPDPA. It adjudicates complaints, conducts inquiries, and can impose penalties. It has not yet been formally constituted as the Rules are still pending.
+
+## Data Protection Impact Assessment (DPIA)
+
+A formal assessment of the risks to individuals arising from a particular data processing activity. Mandatory for Significant Data Fiduciaries; best practice for all businesses handling large volumes of sensitive data.
+
+## Legitimate Uses (Deemed Consent)
+
+Section 7 of DPDPA allows processing of personal data without explicit consent for certain legitimate purposes — including employment-related processing, medical emergencies, public health, and state functions. These are narrow exceptions, not a general opt-out from consent requirements.
+    `,
+  },
+  "duties": {
+    title: "Duties of Businesses (Data Fiduciaries)",
+    description: "What Data Fiduciaries must do under DPDPA — security, minimisation, processors, and more.",
+    content: `
+Being a Data Fiduciary under DPDPA comes with specific, enforceable duties. These go beyond obtaining consent — they cover how you store data, who you share it with, and how you respond when things go wrong.
+
+## 1. Implement Reasonable Security Safeguards
+
+Section 8(5) of DPDPA requires every Data Fiduciary to implement appropriate technical and organisational measures to protect personal data from breaches.
+
+**What this means in practice:**
+- Encrypt sensitive personal data at rest and in transit
+- Restrict access to personal data on a need-to-know basis
+- Use strong authentication for systems containing personal data
+- Conduct regular security reviews of your data storage practices
+- Maintain access logs for systems holding sensitive data
+
+**Penalty for failure:** Up to ₹250 crore per instance.
+
+## 2. Ensure Data Accuracy
+
+You must take reasonable steps to ensure the personal data you process is accurate and up to date, particularly where decisions affecting individuals are made based on that data.
+
+**Practical steps:**
+- Build mechanisms for customers to update their contact details
+- Periodically review and update employee records
+- Remove or flag data that is clearly stale or inaccurate
+
+## 3. Data Minimisation — Collect Only What You Need
+
+Under the Act's principles, you should collect only the personal data that is necessary for the stated purpose. Collecting data "just in case" or for undefined future uses is not compliant.
+
+**Practical steps:**
+- Review every form you use and remove unnecessary fields
+- Question whether each data element you collect has a defined, documented purpose
+- Avoid retaining complete datasets when only partial data is needed
+
+## 4. Purpose Limitation
+
+Personal data collected for one purpose must not be used for another purpose without fresh consent or a legitimate legal basis.
+
+**Common violations:**
+- Using email addresses collected for order confirmations to send marketing
+- Using CV data collected for one role to pitch the candidate for other roles without consent
+- Using student contact information collected for admissions to sell other courses
+
+## 5. Storage Limitation — Do Not Retain Data Longer Than Necessary
+
+Under Section 8(7), Data Fiduciaries must delete personal data once the purpose for which it was collected is fulfilled, unless retention is required by law.
+
+**Practical steps:**
+- Define retention periods for each category of data
+- Build or schedule deletion processes
+- Communicate retention periods to Data Principals in your Privacy Notice
+
+## 6. Engage Only Compliant Data Processors
+
+If you use third-party services (cloud storage, ATS, email platforms, analytics tools) that process personal data on your behalf, you must enter into Data Processing Agreements with those vendors.
+
+**Practical steps:**
+- List all tools and services that process personal data
+- Check whether they have signed DPAs available
+- Review their security practices and certifications
+
+## 7. Respond to Data Principal Rights Requests
+
+Businesses must be able to receive, verify, and respond to requests from individuals to access, correct, or erase their data. This requires:
+- A designated point of contact
+- A process for verifying the identity of the requester
+- SLAs for responding to requests
+- Documentation of outcomes
+
+## 8. Notify the Data Protection Board of Breaches
+
+In the event of a personal data breach, businesses must notify the Data Protection Board and affected individuals as prescribed. See the Data Breach topic for full details.
+
+## 9. Maintain Accountability Records
+
+While DPDPA does not prescribe a specific record-keeping format, good practice — and likely regulatory expectation — includes maintaining:
+- A record of processing activities
+- Records of consent given (timestamp, version of consent notice)
+- Records of rights requests and responses
+- Documentation of data processor agreements
+    `,
+  },
+  "notice": {
+    title: "Notice Requirements Under DPDPA",
+    description: "What a DPDPA-compliant notice must include and how to implement it for your forms.",
+    content: `
+Every time you collect personal data, you must provide a notice to the individual. Getting the notice right is one of the most practical and immediately implementable compliance tasks.
+
+## What Is a Notice Under DPDPA?
+
+Under Section 5 of DPDPA, before or at the time of collecting personal data, a Data Fiduciary must provide the Data Principal with a notice containing:
+
+1. **What personal data is being collected** — specifically, not vaguely
+2. **The purpose for which the data is being processed** — each distinct purpose should be listed
+3. **How the Data Principal can exercise their rights** — where to go, how to raise a request
+4. **How to withdraw consent** — should be as easy as giving it
+
+## Where Does the Notice Need to Appear?
+
+The notice must accompany or precede every consent request. This means it is needed at:
+- Website enquiry and contact forms
+- Checkout and account creation flows
+- Job application forms
+- Admission and enrollment forms
+- WhatsApp and SMS opt-in flows
+- Newsletter subscription forms
+
+## What Does a Good Notice Look Like?
+
+A DPDPA-compliant notice should be:
+- **Specific** — "Your name and email will be used to send you course updates" not "used to improve your experience"
+- **Plain language** — avoid legalese; write for a 12-year-old
+- **Visible** — placed immediately next to the consent action, not buried in T&Cs
+- **Itemised by purpose** — if you are collecting data for multiple purposes, list each purpose separately
+
+## What a Notice Must NOT Do
+
+- Use vague phrases like "for business purposes" or "to improve services"
+- Bundle multiple purposes into one statement
+- Be hidden in a 30-page Terms and Conditions document
+- Use language that implies the individual has no choice
+
+## Sample Notice Language (Illustrative)
+
+**For a job application form:**
+"We will use the information you provide in this form (name, contact details, work history, qualifications) to evaluate your application for the role of [X]. If your application is successful, we will retain your data for employment purposes. If unsuccessful, we will retain your CV for 12 months in case other suitable roles arise — you can opt out of this below. You may request access, correction, or deletion of your data by emailing privacy@yourcompany.com."
+
+## Notice vs Privacy Notice (Privacy Policy)
+
+A **consent notice** is a short, purpose-specific disclosure at the point of data collection. It is different from your full **Privacy Notice** (privacy policy), which is a comprehensive document covering all your data processing activities.
+
+Both are required. The consent notice is the just-in-time disclosure; the Privacy Notice is the full reference document. Your consent notice should link to your full Privacy Notice.
+
+## Practical Implementation Steps
+
+1. List every touchpoint where your business collects personal data
+2. For each touchpoint, draft a short, specific notice covering the four required elements
+3. Place the notice immediately above or next to the consent checkbox
+4. Ensure the notice links to your full Privacy Notice
+5. When you change how you use the data, update the notice and re-seek consent if necessary
+6. Record the version of the notice shown at the time of consent
+
+## Notice for Existing Data
+
+If you collected personal data before DPDPA enforcement and did not provide a compliant notice, you will need to remediate. Options include:
+- Running a re-consent campaign with a fresh, compliant notice
+- Sending a retroactive notice to existing contacts explaining how their data is used
+- Deleting data collected under non-compliant conditions if re-consent cannot be obtained
+    `,
+  },
+  "childrens-data": {
+    title: "Children's Data Under DPDPA",
+    description: "Special obligations for processing data of individuals under 18 years old.",
+    content: `
+DPDPA has specific provisions for the personal data of children — defined as individuals under 18 years of age. If your business collects data from or about minors, these provisions apply to you.
+
+## Who Is a "Child" Under DPDPA?
+
+The Act defines a child as a person under the age of 18. This is a broad definition — it includes teenagers using your e-commerce platform, students under 18 attending your training institute, and minors whose data is processed by a parent's employer.
+
+## The Core Obligation: Verifiable Parental Consent
+
+Section 9 of DPDPA requires that before processing the personal data of a child, a Data Fiduciary must:
+
+1. **Obtain verifiable consent from a parent or guardian**
+2. **Process only data that is in the best interest of the child**
+3. **Not undertake tracking or behavioural monitoring** of children
+4. **Not target advertising at children** based on their personal data
+
+## Who Does This Affect?
+
+- **Training institutes and coaching centres** with students under 18
+- **EdTech platforms** offering courses or content to minors
+- **D2C brands** whose customers may include teenagers
+- **Healthcare platforms** handling minor patient data
+- **Any employer** whose HR processes collect data of employees' minor dependants
+
+## What Is "Verifiable Parental Consent"?
+
+The Act requires that parental consent be verifiable — meaning you must take reasonable steps to confirm that the person giving consent is actually the parent or guardian. The DPDP Rules are expected to specify what verification mechanisms are acceptable.
+
+**Interim best practice:**
+- Ask for date of birth at registration; if under 18, require parental consent
+- Use a separate consent form addressed to the parent/guardian
+- Collect the parent's contact details separately from the minor's
+- Consider age-verification mechanisms where feasible
+
+## No Behavioural Targeting of Children
+
+If you use analytics tools, remarketing pixels, or personalisation engines that process personal data, you must ensure these are not applied to children. This means:
+- Excluding under-18 users from remarketing audiences
+- Not building behavioural profiles of children for advertising
+- Reviewing whether your tracking tools can distinguish minor users
+
+## Penalties for Non-Compliance
+
+Failure to observe special provisions for children's data can attract penalties of up to ₹200 crore under the DPDPA penalty framework.
+
+## Practical Steps for Businesses
+
+**Training institutes and EdTech:**
+1. Add a date of birth field to admissions/enrollment forms
+2. For students under 18, use a separate parental consent form
+3. Ensure your admissions marketing database distinguishes minors from adults
+4. Review whether placement data and testimonials involve any minors
+
+**D2C and E-commerce:**
+1. Include date of birth or age gate at account creation
+2. Configure your remarketing tools to exclude identified minors
+3. Review your WhatsApp and SMS marketing lists for known minor users
+
+**General:**
+1. Update your Privacy Notice to include a section on children's data
+2. Train customer-facing staff to identify and escalate when they are dealing with a minor
+3. Document your parental consent process and record parent/guardian details
+
+## Sensitive Use Cases
+
+**School management systems** processing data of hundreds of minors face elevated scrutiny. If you build or use such systems, verify that your Data Processing Agreements with schools reflect the DPDPA obligations around children's data.
+
+**Child health data** is a particularly sensitive category — it combines children's data protections with the sensitive nature of health information. Handle with extreme care and document your legal basis for processing.
+    `,
+  },
+  "retention": {
+    title: "Data Retention and Deletion Under DPDPA",
+    description: "How long can you keep personal data? What are the rules around deletion?",
+    content: `
+Data retention is one of the most practically urgent compliance areas for Indian businesses. Many organisations hold personal data indefinitely because they have never defined a deletion process. DPDPA requires that you stop.
+
+## The Storage Limitation Principle
+
+Section 8(7) of DPDPA states that a Data Fiduciary must delete personal data as soon as the purpose for which it was collected is no longer being served, unless retention is required or permitted by law.
+
+This creates a clear obligation: **if you no longer have a lawful reason to hold personal data, you must delete it.**
+
+## What Counts as a "Lawful Reason to Retain"?
+
+Legitimate reasons to retain personal data beyond the immediate purpose include:
+- **Active contractual relationship** — you are still providing a service to the individual
+- **Legal or regulatory obligation** — for example, the Income Tax Act requires certain financial records to be retained for specified periods
+- **Ongoing dispute or litigation** — where the data is relevant to a pending legal matter
+- **Explicit consent for future contact** — where the individual has given specific consent to be retained in your database for future opportunities
+
+## What Does NOT Justify Indefinite Retention?
+
+- "We might need it someday"
+- "It's easier to keep everything"
+- "Our system doesn't have a deletion function"
+- "We paid for the ATS and we want value from the data"
+
+None of these are lawful bases for holding personal data under DPDPA.
+
+## Defining Retention Periods by Data Category
+
+The first step is to define retention periods for each category of personal data you hold. Here are starting-point guidelines:
+
+**Recruitment agencies:**
+- Active candidates (in process): Retain during active engagement
+- Rejected candidates: 12 months from rejection, then delete unless consent given to retain
+- Placed candidates: Duration of placement + 12 months, then archive/delete
+
+**CA firms:**
+- ITR-related documents: 7 years from filing date (aligned with Income Tax Act)
+- Payroll records: 5 years from employee exit
+- General client correspondence: 3 years from end of engagement
+
+**Training institutes:**
+- Enrolled students: Duration of course + 3 years
+- Rejected applicants: 6 months from rejection decision
+- Placement records: 5 years, with student consent for marketing use
+
+**D2C brands:**
+- Active customers: Retain while relationship is active
+- Inactive customers (no purchase in 18+ months): Send re-engagement notice; delete if no response within 60 days
+- Marketing unsubscribers: Retain suppression list only (to ensure you do not re-add them)
+
+## Communicating Retention Periods
+
+Your Privacy Notice must state how long you retain personal data (or the criteria used to determine retention periods). This is not optional — individuals have a right to know how long their data will be held.
+
+## Building a Deletion Process
+
+1. **Map your data locations** — where is personal data stored? ATS, CRM, email, cloud drives, spreadsheets, backups?
+2. **Set deletion triggers** — what event triggers deletion? End of contract? Inactivity? Withdrawal of consent?
+3. **Automate where possible** — configure your CRM and ATS to flag records for review after the defined period
+4. **Don't forget backups** — deletion policies must apply to backup copies, not just live systems
+5. **Document destruction** — keep a record of when and what was deleted
+
+## What About Legal Holds?
+
+If data is subject to a legal hold (litigation, regulatory investigation, statutory obligation), it may be retained beyond your standard retention period. Document the legal hold and its scope. Remove the hold and delete when the legal matter is resolved.
+
+## Practical First Step
+
+Conduct a data mapping exercise: list every category of personal data you hold, where it is stored, how old the oldest records are, and whether you have a defined deletion process. This single exercise will reveal your largest retention risks and give you a clear prioritised action list.
+    `,
+  },
+  "cross-border": {
+    title: "Cross-Border Data Transfers Under DPDPA",
+    description: "Transferring personal data outside India? Understand the permitted destinations framework.",
+    content: `
+As Indian businesses increasingly use international cloud services, overseas vendors, and global enterprise platforms, cross-border data transfer has become a practical compliance question under DPDPA.
+
+## What Is a Cross-Border Data Transfer?
+
+A cross-border transfer occurs when personal data of Indian residents is transferred to, or accessed from, a location outside India. This includes:
+- Storing data on international cloud servers (AWS us-east-1, Google Cloud Europe, etc.)
+- Sharing customer data with an overseas parent company or affiliate
+- Using a SaaS platform that stores data in servers outside India
+- Sending candidate CVs to an overseas client
+- Accessing Indian employee records from an overseas office
+
+## The DPDPA Framework for Cross-Border Transfers
+
+Section 16 of DPDPA allows the Central Government to restrict the transfer of personal data to certain countries or territories. The mechanism works through a **permitted destinations** approach: the government will notify a list of countries to which transfers are permitted (or conversely, identify countries to which transfer is restricted).
+
+**Important: As of early 2026, the permitted destinations list has not yet been formally notified.** This means the cross-border transfer restrictions are not yet in force. However, businesses should prepare for them.
+
+## What to Do Now (Before the List Is Notified)
+
+1. **Map your international data flows** — identify every vendor, tool, or process that transfers personal data outside India
+2. **Review vendor agreements** — check where data is stored and whether vendors offer Indian data residency options
+3. **Check SaaS terms** — many major SaaS platforms specify their data residency regions in their terms of service or data processing addenda
+4. **Build awareness in procurement** — when onboarding new tools, make cross-border data storage a standard evaluation question
+
+## Categories of International Transfer Risk
+
+**High risk:**
+- Sharing Indian customer data with overseas marketing agencies
+- Using overseas analytics platforms that receive event-level personal data
+- Cross-border HR data sharing with parent companies without documented legal basis
+
+**Medium risk:**
+- Using US-hosted SaaS tools for CRM, email, or project management
+- Backing up databases to international cloud regions
+
+**Lower risk (but still worth mapping):**
+- International access by your own employees (e.g., logging in to your CRM from overseas while travelling)
+
+## Preparing Your Privacy Notice
+
+Your Privacy Notice should disclose whether you transfer personal data outside India, which countries or regions, and for what purposes. Even before the permitted destinations list is notified, being transparent in your Privacy Notice is good practice and likely to be expected under final Rules.
+
+## Data Localisation Considerations
+
+Some categories of data may be subject to stronger localisation requirements under Indian law even beyond DPDPA — for example, payment data under RBI regulations, or health data. Review the full regulatory landscape for your sector.
+
+## Questions to Ask Your Vendors
+
+1. Where is our data stored? In which country/region?
+2. Do you offer data residency options for India?
+3. Have you reviewed your obligations under DPDPA for India-origin data?
+4. What security standards apply to the India data you process?
+5. What is your breach notification process for India-origin data incidents?
+
+## Practical Next Steps
+
+1. Create a data flow map showing which tools receive personal data and where they store it
+2. Flag any tools storing data in jurisdictions with weaker privacy protections
+3. Begin evaluating India-region hosting options for critical personal data stores
+4. Update your Privacy Notice to disclose international data flows
+5. Monitor official notifications for the permitted destinations list when published
+    `,
+  },
+  "myths": {
+    title: "DPDPA Myth vs Fact",
+    description: "Common misconceptions about DPDPA — debunked with the correct understanding.",
+    content: `
+Misinformation about DPDPA is widespread — particularly among SMEs and non-legal professionals. Here are the most common myths, corrected.
+
+## Myth 1: "DPDPA only applies to big companies"
+
+**Fact:** The DPDPA does not include a small business exemption in its current text. It applies to any entity processing personal data of Indian residents digitally, regardless of company size. A 3-person recruitment agency storing candidate CVs in Google Drive is a Data Fiduciary with compliance obligations.
+
+The government *may* notify exemptions for specific categories of businesses through Rules — but until such exemptions are formally notified, all businesses collecting personal data should plan for compliance.
+
+## Myth 2: "We already have a Privacy Policy, so we are compliant"
+
+**Fact:** Having a Privacy Policy (Privacy Notice) is one element of DPDPA compliance — but it is far from sufficient. Compliance requires: valid consent flows, a notice at the point of data collection, security safeguards, a data rights request process, a breach response plan, data retention and deletion processes, and Data Processing Agreements with vendors. A Privacy Policy alone does not cover any of these.
+
+## Myth 3: "DPDPA is not in force yet, so we have time"
+
+**Fact:** While DPDPA enforcement awaits the notification of Rules, the compliance work required takes significant time — months, not days. Businesses that begin now will be far better positioned when enforcement begins. The cost of retrofitting compliance under regulatory pressure is substantially higher than building it proactively. The framework is clear enough to act on now.
+
+## Myth 4: "Our customers agreed to our Terms and Conditions, so we have consent"
+
+**Fact:** Bundled consent in Terms and Conditions is explicitly non-compliant under DPDPA. Consent must be specific, separate, and tied to a defined purpose. A generic "by using this site you agree to our T&Cs" does not constitute valid consent for any specific data processing activity. Pre-checked boxes are similarly invalid.
+
+## Myth 5: "We don't collect sensitive data, so the Act doesn't really apply to us"
+
+**Fact:** DPDPA applies to all personal data — not just sensitive categories. Even collecting a person's name, email address, and mobile number for a newsletter subscription makes you a Data Fiduciary with compliance obligations. Sensitivity affects the level of scrutiny required, but it does not determine whether the Act applies.
+
+## Myth 6: "We use a third-party CRM/ATS, so the vendor is responsible for compliance"
+
+**Fact:** If you decide what data to collect, why to collect it, and how to use it — you are the Data Fiduciary. Your CRM or ATS vendor is a Data Processor acting on your instructions. The primary compliance obligations remain with you. You must also ensure your vendor has signed a Data Processing Agreement and meets appropriate security standards.
+
+## Myth 7: "DPDPA only applies to customer data"
+
+**Fact:** DPDPA applies to all personal data of individuals — including employee data, candidate data, contractor data, and partner contact data. HR departments processing employee PAN, Aadhaar, bank accounts, performance records, and health data are processing personal data under DPDPA.
+
+## Myth 8: "We are a B2B company and don't deal with consumers, so DPDPA doesn't apply"
+
+**Fact:** DPDPA applies whenever you process personal data of individuals — regardless of whether your business model is B2B or B2C. If you collect data of your clients' employees (for payroll, HR, or professional services), you are processing personal data. If you hold contact data of individuals at your client organisations, that is personal data.
+
+## Myth 9: "Compliance with GDPR means we are automatically DPDPA-compliant"
+
+**Fact:** DPDPA and GDPR share principles but differ in structure, definitions, and specifics. GDPR compliance provides a useful foundation, but Indian DPDPA compliance requires separate, India-specific assessment. Key differences include: the consent framework, the rights regime, the cross-border transfer mechanism, and the enforcement structure.
+
+## Myth 10: "Penalties only apply if there is a data breach"
+
+**Fact:** Penalties under DPDPA can be imposed for various violations — not only breaches. Non-compliant consent flows, failure to respond to rights requests, failure to provide notice, and failure to sign Data Processing Agreements with processors are all potential compliance failures. The Data Protection Board can investigate and penalise any violation of the Act.
+    `,
+  },
 };
 
 interface Props {
@@ -276,8 +752,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const content = learnContent[topic];
   if (!content) return {};
   return {
-    title: content.title + " | DPDPA Guide",
+    title: content.title,
     description: content.description,
+    alternates: { canonical: `https://saralprivacy.com/learn/${topic}` },
   };
 }
 
@@ -377,6 +854,18 @@ export default async function LearnTopicPage({ params }: Props) {
   const next = currentIndex < topicNav.length - 1 ? topicNav[currentIndex + 1] : null;
 
   return (
+    <>
+      {articleSchema(
+        content.title,
+        content.description,
+        `https://saralprivacy.com/learn/${topic}`,
+        '2025-03-01'
+      )}
+      {breadcrumbSchema([
+        { name: 'Home', url: 'https://saralprivacy.com' },
+        { name: 'DPDPA Guide', url: 'https://saralprivacy.com/learn' },
+        { name: content.title, url: `https://saralprivacy.com/learn/${topic}` },
+      ])}
     <div className="min-h-screen bg-slate-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -458,5 +947,6 @@ export default async function LearnTopicPage({ params }: Props) {
         </div>
       </div>
     </div>
+    </>
   );
 }

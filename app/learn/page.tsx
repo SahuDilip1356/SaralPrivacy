@@ -3,9 +3,10 @@ import Link from "next/link";
 import { ArrowRight, BookOpen, FileText, Shield, Users, AlertTriangle, Database, Globe, HelpCircle } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "DPDPA Guide — Learn DPDPA in Plain English",
+  title: "DPDPA Learning Hub — Complete Guide",
   description:
     "Comprehensive DPDPA learning hub for Indian businesses. What is DPDPA, who it applies to, key terms, consent, rights, breach notification, and more.",
+  alternates: { canonical: 'https://saralprivacy.com/learn' },
 };
 
 const learnTopics = [

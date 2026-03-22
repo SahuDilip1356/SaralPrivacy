@@ -5,9 +5,10 @@ import Link from "next/link";
 import { ArrowLeft, GraduationCap } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Training Institute DPDPA Assessment — Free Readiness Check",
+  title: "Training Institute DPDPA Assessment",
   description:
     "Free DPDPA assessment for training institutes and coaching centres. Check student data practices, minor consent, marketing pixels, and placement data.",
+  alternates: { canonical: 'https://saralprivacy.com/assessment/training-institutes' },
 };
 
 export default function TrainingAssessmentPage() {

@@ -1,14 +1,22 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ShoppingBag } from "lucide-react";
+import { breadcrumbSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
-  title: "DPDPA for D2C Brands — Compliance Guide",
+  title: "DPDPA for D2C Brands — Marketing",
   description: "DPDPA compliance guide for D2C brands and e-commerce businesses in India.",
+  alternates: { canonical: 'https://saralprivacy.com/industries/d2c-brands' },
 };
 
 export default function D2CBrandsPage() {
   return (
+    <>
+      {breadcrumbSchema([
+        { name: 'Home', url: 'https://saralprivacy.com' },
+        { name: 'Industries', url: 'https://saralprivacy.com/industries' },
+        { name: 'D2C Brands', url: 'https://saralprivacy.com/industries/d2c-brands' },
+      ])}
     <div className="min-h-screen bg-slate-50">
       <div className="bg-brand-700 py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -50,6 +58,20 @@ export default function D2CBrandsPage() {
               <p className="text-rose-100 text-sm mb-4">8 questions. Check your D2C data practices.</p>
               <Link href="/assessment/d2c-brands" className="block text-center py-2.5 bg-white text-rose-800 font-bold rounded-lg text-sm">Start Assessment →</Link>
             </div>
+            <div className="bg-white border border-slate-200 rounded-xl p-5">
+              <h3 className="font-bold text-brand-700 text-sm mb-2">Free White Paper</h3>
+              <p className="text-slate-600 text-xs mb-3">45-page DPDPA compliance guide covering D2C and e-commerce.</p>
+              <Link href="/white-paper" className="block text-center py-2.5 bg-brand-700 text-white font-semibold rounded-lg text-sm hover:bg-brand-800 transition-colors">
+                Download White Paper →
+              </Link>
+            </div>
+            <div className="bg-white border border-slate-200 rounded-xl p-5">
+              <h3 className="font-bold text-brand-700 text-sm mb-3">Related Briefings</h3>
+              <div className="space-y-2 text-sm">
+                <Link href="/briefings/d2c-brands-whatsapp-marketing-consent-dpdpa" className="block text-saffron-600 hover:underline">→ WhatsApp Marketing Consent</Link>
+                <Link href="/briefings/dpdpa-consent-notice-requirements-2025" className="block text-saffron-600 hover:underline">→ Consent Notice Requirements</Link>
+              </div>
+            </div>
             <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
               <Link href="/contact" className="block text-center py-2.5 bg-brand-700 text-white font-semibold rounded-lg text-sm">Request Consultation →</Link>
             </div>
@@ -57,5 +79,6 @@ export default function D2CBrandsPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

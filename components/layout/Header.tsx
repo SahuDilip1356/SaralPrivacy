@@ -76,7 +76,7 @@ export function Header() {
     >
       {/* Top strip */}
       <div className="bg-brand-700 text-slate-300 text-xs py-1.5 px-4 text-center">
-        <span>India&apos;s DPDPA enforcement window is approaching. </span>
+        <span>DPDPA Rules are pending Government notification — prepare now. </span>
         <Link href="/assessment" className="text-amber-400 font-semibold hover:text-amber-300 underline underline-offset-2">
           Check your readiness — free
         </Link>
@@ -91,10 +91,10 @@ export function Header() {
             </div>
             <div>
               <div className="font-bold text-brand-700 text-base leading-none tracking-tight">
-                DPDPA<span className="text-saffron-600">India</span>
+                Saral<span className="text-saffron-600">Privacy</span>
               </div>
               <div className="text-[10px] text-slate-500 leading-none mt-0.5">
-                Compliance Intelligence
+                DPDPA Compliance Platform
               </div>
             </div>
           </Link>

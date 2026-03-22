@@ -5,9 +5,10 @@ import Link from "next/link";
 import { ArrowLeft, Calculator } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "CA Firm DPDPA Assessment — Free Readiness Check",
+  title: "CA Firm DPDPA Compliance Assessment",
   description:
     "Free DPDPA assessment for Chartered Accountant firms. Evaluate PAN/Aadhaar handling, payroll data, vendor access, and client data retention.",
+  alternates: { canonical: 'https://saralprivacy.com/assessment/ca-firms' },
 };
 
 export default function CAFirmsAssessmentPage() {

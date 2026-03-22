@@ -3,9 +3,10 @@ import Link from "next/link";
 import { ArrowRight, Users, Calculator, GraduationCap, ShoppingBag } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "DPDPA by Industry — Sector-Specific Compliance Guidance",
+  title: "DPDPA Compliance by Industry",
   description:
     "Industry-specific DPDPA guidance for recruitment agencies, CA firms, training institutes, and D2C brands in India.",
+  alternates: { canonical: 'https://saralprivacy.com/industries' },
 };
 
 const industries = [

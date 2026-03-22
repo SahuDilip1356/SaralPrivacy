@@ -5,9 +5,10 @@ import Link from "next/link";
 import { ArrowLeft, Users } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Recruitment Agency DPDPA Assessment — Free Readiness Check",
+  title: "Recruitment Agency DPDPA Assessment",
   description:
     "Free DPDPA readiness assessment for recruitment and staffing agencies. Check your candidate data, consent flows, and retention practices in 10 minutes.",
+  alternates: { canonical: 'https://saralprivacy.com/assessment/recruitment' },
 };
 
 export default function RecruitmentAssessmentPage() {

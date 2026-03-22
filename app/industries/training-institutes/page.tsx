@@ -1,14 +1,22 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { GraduationCap } from "lucide-react";
+import { breadcrumbSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
-  title: "DPDPA for Training Institutes — Compliance Guide",
+  title: "DPDPA for Training Institutes",
   description: "DPDPA guide for training institutes, coaching centres, and EdTech operations in India.",
+  alternates: { canonical: 'https://saralprivacy.com/industries/training-institutes' },
 };
 
 export default function TrainingInstitutesPage() {
   return (
+    <>
+      {breadcrumbSchema([
+        { name: 'Home', url: 'https://saralprivacy.com' },
+        { name: 'Industries', url: 'https://saralprivacy.com/industries' },
+        { name: 'Training Institutes', url: 'https://saralprivacy.com/industries/training-institutes' },
+      ])}
     <div className="min-h-screen bg-slate-50">
       <div className="bg-brand-700 py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -49,6 +57,20 @@ export default function TrainingInstitutesPage() {
               <p className="text-amber-100 text-sm mb-4">7 questions. Check your student data practices.</p>
               <Link href="/assessment/training-institutes" className="block text-center py-2.5 bg-white text-amber-800 font-bold rounded-lg text-sm">Start Assessment →</Link>
             </div>
+            <div className="bg-white border border-slate-200 rounded-xl p-5">
+              <h3 className="font-bold text-brand-700 text-sm mb-2">Free White Paper</h3>
+              <p className="text-slate-600 text-xs mb-3">45-page DPDPA guide including a section on training institutes.</p>
+              <Link href="/white-paper" className="block text-center py-2.5 bg-brand-700 text-white font-semibold rounded-lg text-sm hover:bg-brand-800 transition-colors">
+                Download White Paper →
+              </Link>
+            </div>
+            <div className="bg-white border border-slate-200 rounded-xl p-5">
+              <h3 className="font-bold text-brand-700 text-sm mb-3">Related Briefings</h3>
+              <div className="space-y-2 text-sm">
+                <Link href="/briefings/training-institutes-student-data-dpdpa" className="block text-saffron-600 hover:underline">→ Student Data and DPDPA</Link>
+                <Link href="/briefings/dpdpa-consent-notice-requirements-2025" className="block text-saffron-600 hover:underline">→ Consent Notice Requirements</Link>
+              </div>
+            </div>
             <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
               <Link href="/contact" className="block text-center py-2.5 bg-brand-700 text-white font-semibold rounded-lg text-sm">Request Consultation →</Link>
             </div>
@@ -56,5 +78,6 @@ export default function TrainingInstitutesPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

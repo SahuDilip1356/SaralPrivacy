@@ -8,16 +8,20 @@ import { WhitePaperSection } from "@/components/home/WhitePaperSection";
 import { FAQPreview } from "@/components/home/FAQPreview";
 import { NewsletterSection } from "@/components/home/NewsletterSection";
 import { ConsultationCTA } from "@/components/home/ConsultationCTA";
+import { organizationSchema, websiteSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
-  title: "DPDPAIndia — DPDPA Compliance Made Practical for Indian Businesses",
+  title: "SaralPrivacy — DPDPA Compliance Made Simple for Indian Businesses",
   description:
-    "India's leading DPDPA compliance intelligence platform. Daily briefings, free industry assessments, white paper, and expert consultation for recruitment agencies, CA firms, training institutes, and D2C brands.",
+    "India's practical DPDPA compliance platform. Free readiness assessments, daily briefings, industry guides, and expert consultation for recruitment agencies, CA firms, training institutes, and D2C brands.",
+  alternates: { canonical: 'https://saralprivacy.com' },
 };
 
 export default function HomePage() {
   return (
     <>
+      {organizationSchema()}
+      {websiteSchema()}
       <HeroSection />
       <TrustStrip />
       <AudienceCards />

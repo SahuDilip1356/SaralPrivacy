@@ -3,8 +3,9 @@ import Link from "next/link";
 import { Shield, Mail } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Privacy Notice | DPDPAIndia",
-  description: "DPDPAIndia's Privacy Notice — how we collect, use, and protect your personal data.",
+  title: "Privacy Notice",
+  description: "SaralPrivacy's Privacy Notice — how we collect, use, and protect your personal data.",
+  alternates: { canonical: 'https://saralprivacy.com/privacy' },
 };
 
 export default function PrivacyPage() {
@@ -14,10 +15,11 @@ export default function PrivacyPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <div className="flex items-center gap-3 mb-3">
             <Shield size={20} className="text-saffron-400" />
-            <span className="text-saffron-300 text-sm font-semibold">Privacy Notice v1.0 · Updated January 2025</span>
+            <span className="text-saffron-300 text-sm font-semibold">Privacy Notice v1.0</span>
           </div>
           <h1 className="text-3xl font-bold text-white">Privacy Notice</h1>
-          <p className="text-slate-300 mt-2">How DPDPAIndia collects, uses, and protects your personal data.</p>
+          <p className="text-slate-300 mt-2">How SaralPrivacy collects, uses, and protects your personal data.</p>
+          <p className="text-sm text-slate-500 mt-1">Last updated: March 2026 | Version 1.0</p>
         </div>
       </div>
 
@@ -34,11 +36,11 @@ export default function PrivacyPage() {
           {[
             {
               title: "1. Who We Are",
-              content: `DPDPAIndia is a compliance education and advisory platform focused on the Digital Personal Data Protection Act, 2023. We help Indian businesses understand and prepare for DPDPA compliance.
+              content: `SaralPrivacy (saralprivacy.com) is a compliance education and advisory platform focused on the Digital Personal Data Protection Act, 2023. We help Indian businesses understand and prepare for DPDPA compliance.
 
-For the purposes of this Privacy Notice, DPDPAIndia is the Data Fiduciary — we determine the purpose and means of processing your personal data.
+For the purposes of this Privacy Notice, SaralPrivacy is the Data Fiduciary — we determine the purpose and means of processing your personal data.
 
-Contact for privacy matters: privacy@dpdpaindia.in`,
+Contact for privacy matters: privacy@saralprivacy.com`,
             },
             {
               title: "2. What Personal Data We Collect",
@@ -130,7 +132,7 @@ All service providers are bound by Data Processing Agreements. We do not share y
 **Right to withdraw consent:** Withdraw any consent you have given, at any time.
 **Right to grievance redressal:** Raise a complaint with us if you believe your rights have been violated.
 
-To exercise any of these rights, email us at privacy@dpdpaindia.in. We will respond within 30 days.
+To exercise any of these rights, email us at privacy@saralprivacy.com. We will respond within 30 days.
 
 If you are not satisfied with our response, you will have the right to escalate to the Data Protection Board of India once it is constituted.`,
             },
@@ -138,8 +140,8 @@ If you are not satisfied with our response, you will have the right to escalate 
               title: "8. How to Withdraw Consent",
               content: `You can withdraw consent at any time by:
 - Clicking "Unsubscribe" in any email we send you
-- Emailing privacy@dpdpaindia.in
-- Using our Consent Preferences page at dpdpaindia.in/consent-preferences
+- Emailing privacy@saralprivacy.com
+- Using our Consent Preferences page at saralprivacy.com/consent-preferences
 
 Withdrawal of consent does not affect the lawfulness of processing carried out before withdrawal.`,
             },
@@ -151,7 +153,7 @@ Withdrawal of consent does not affect the lawfulness of processing carried out b
               title: "10. Contact",
               content: `For any privacy-related queries, requests, or complaints:
 
-Email: privacy@dpdpaindia.in
+Email: privacy@saralprivacy.com
 Subject: Data Privacy Request
 
 We are committed to responding within 30 days.`,
@@ -179,8 +181,8 @@ We are committed to responding within 30 days.`,
             <p className="font-semibold text-saffron-700 text-sm">Privacy Contact</p>
             <p className="text-saffron-600 text-sm">
               For access, correction, erasure, or any privacy question:{" "}
-              <a href="mailto:privacy@dpdpaindia.in" className="underline">
-                privacy@dpdpaindia.in
+              <a href="mailto:privacy@saralprivacy.com" className="underline">
+                privacy@saralprivacy.com
               </a>
             </p>
             <div className="flex gap-3 mt-2">

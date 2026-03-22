@@ -11,51 +11,30 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://saralprivacy.com'),
   title: {
-    default: "DPDPAIndia — DPDPA Compliance for Indian Businesses",
-    template: "%s | DPDPAIndia",
+    default: 'SaralPrivacy — DPDPA Compliance Made Simple for Indian Businesses',
+    template: '%s | SaralPrivacy',
   },
-  description:
-    "India's leading DPDPA compliance intelligence platform. Daily briefings, industry assessments, practical resources, and expert consultation for Indian businesses navigating the Digital Personal Data Protection Act.",
-  keywords: [
-    "DPDPA",
-    "Digital Personal Data Protection Act",
-    "India data protection",
-    "data privacy India",
-    "DPDPA compliance",
-    "data protection India",
-    "Indian privacy law",
-    "DPDPA for businesses",
-  ],
-  authors: [{ name: "DPDPAIndia Editorial Team" }],
+  description: "India's practical DPDPA compliance platform. Free readiness assessments, daily briefings, industry guides, and expert consultation for recruitment agencies, CA firms, training institutes, and D2C brands.",
+  keywords: ['DPDPA', 'Digital Personal Data Protection Act', 'India data protection', 'data privacy India', 'DPDPA compliance', 'data protection India', 'Indian privacy law', 'DPDPA for businesses', 'DPDPA assessment', 'SaralPrivacy'],
+  authors: [{ name: 'SaralPrivacy Editorial Team' }],
+  alternates: { canonical: 'https://saralprivacy.com' },
   openGraph: {
-    type: "website",
-    locale: "en_IN",
-    url: "https://dpdpaindia.in",
-    siteName: "DPDPAIndia",
-    title: "DPDPAIndia — DPDPA Compliance for Indian Businesses",
-    description:
-      "Daily briefings, industry assessments, and practical resources for DPDPA compliance in India.",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "DPDPAIndia",
-      },
-    ],
+    type: 'website',
+    locale: 'en_IN',
+    url: 'https://saralprivacy.com',
+    siteName: 'SaralPrivacy',
+    title: 'SaralPrivacy — DPDPA Compliance Made Simple for Indian Businesses',
+    description: 'Free DPDPA readiness assessments, daily briefings, and practical compliance guides for Indian businesses.',
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'SaralPrivacy — DPDPA Compliance' }],
   },
   twitter: {
-    card: "summary_large_image",
-    title: "DPDPAIndia — DPDPA Compliance for Indian Businesses",
-    description:
-      "Daily briefings, industry assessments, and practical resources for DPDPA compliance in India.",
+    card: 'summary_large_image',
+    title: 'SaralPrivacy — DPDPA Compliance Made Simple for Indian Businesses',
+    description: 'Free DPDPA readiness assessments, daily briefings, and practical compliance guides for Indian businesses.',
   },
-  robots: {
-    index: true,
-    follow: true,
-  },
-  metadataBase: new URL("https://dpdpaindia.in"),
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
 };
 
 export default function RootLayout({

@@ -55,7 +55,7 @@ export const faqs: FAQItem[] = [
     id: "f008",
     question: "Who is the Data Protection Board of India?",
     answer:
-      "The Data Protection Board of India (DPBI) is the regulatory authority established under the DPDPA. It is responsible for adjudicating complaints from Data Principals, conducting inquiries into data breaches and non-compliance, issuing orders and imposing penalties, and issuing directions to Data Fiduciaries. The Board is expected to operate as an independent body. Businesses can appeal Board decisions to the Appellate Tribunal and thereafter to the High Court. The Board has not yet been constituted as of early 2025, pending the notification of rules under the Act.",
+      "The Data Protection Board of India (DPBI) is the regulatory authority established under the DPDPA. It is responsible for adjudicating complaints from Data Principals, conducting inquiries into data breaches and non-compliance, issuing orders and imposing penalties, and issuing directions to Data Fiduciaries. The Board is expected to operate as an independent body. Businesses can appeal Board decisions to the Appellate Tribunal and thereafter to the High Court. The Board has not yet been constituted, pending the notification of rules under the Act.",
     category: "regulatory",
   },
   {

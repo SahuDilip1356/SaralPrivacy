@@ -5,6 +5,7 @@ import { ArrowLeft, Calendar, Clock, CheckCircle, ArrowRight, Share2, AlertTrian
 import { getBriefingBySlug, briefings } from "@/lib/data/briefings";
 import { formatDate, getCategoryLabel, getIndustryLabel } from "@/lib/utils";
 import { Badge } from "@/components/ui/Badge";
+import { articleSchema, breadcrumbSchema } from "@/lib/schema";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -32,6 +33,18 @@ export default async function BriefingDetailPage({ params }: Props) {
   const related = briefings.filter((b) => briefing.relatedIds.includes(b.id));
 
   return (
+    <>
+      {articleSchema(
+        briefing.title,
+        briefing.excerpt,
+        `https://saralprivacy.com/briefings/${briefing.slug}`,
+        briefing.date
+      )}
+      {breadcrumbSchema([
+        { name: 'Home', url: 'https://saralprivacy.com' },
+        { name: 'Daily Briefings', url: 'https://saralprivacy.com/briefings' },
+        { name: briefing.title, url: `https://saralprivacy.com/briefings/${briefing.slug}` },
+      ])}
     <div className="min-h-screen bg-slate-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -243,5 +256,6 @@ export default async function BriefingDetailPage({ params }: Props) {
         </div>
       </div>
     </div>
+    </>
   );
 }

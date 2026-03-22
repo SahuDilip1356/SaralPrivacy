@@ -37,7 +37,7 @@ export default function ConsentPreferencesPage() {
           </div>
           <h1 className="text-3xl font-bold text-white">Consent Preferences</h1>
           <p className="text-slate-300 mt-2">
-            View and manage how DPDPAIndia uses your personal data.
+            View and manage how SaralPrivacy uses your personal data.
           </p>
         </div>
       </div>
@@ -124,8 +124,8 @@ export default function ConsentPreferencesPage() {
 
             <p className="text-xs text-slate-400 mt-4 text-center">
               To request deletion of your data, email{" "}
-              <a href="mailto:privacy@dpdpaindia.in" className="text-saffron-500 underline">
-                privacy@dpdpaindia.in
+              <a href="mailto:privacy@saralprivacy.com" className="text-saffron-500 underline">
+                privacy@saralprivacy.com
               </a>
             </p>
           </form>

@@ -5,9 +5,10 @@ import Link from "next/link";
 import { ArrowLeft, ShoppingBag } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "D2C Brand DPDPA Assessment — Free Readiness Check",
+  title: "D2C Brand DPDPA Compliance Check",
   description:
     "Free DPDPA assessment for D2C brands and e-commerce businesses. Check marketing consent, analytics tools, customer data retention, and preference management.",
+  alternates: { canonical: 'https://saralprivacy.com/assessment/d2c-brands' },
 };
 
 export default function D2CAssessmentPage() {

@@ -6,9 +6,10 @@ import { getResourceTypeLabel, getIndustryLabel, formatDateShort } from "@/lib/u
 import { Badge } from "@/components/ui/Badge";
 
 export const metadata: Metadata = {
-  title: "DPDPA Resources — Templates, Guides, Checklists & White Papers",
+  title: "DPDPA Resources — Templates & Guides",
   description:
     "Free DPDPA resources for Indian businesses: compliance checklists, consent templates, white papers, sector guides, and rights request forms.",
+  alternates: { canonical: 'https://saralprivacy.com/resources' },
 };
 
 const resourceTypes = [

@@ -46,10 +46,10 @@ export function Footer() {
               </div>
               <div>
                 <div className="font-bold text-white text-base leading-none">
-                  DPDPA<span className="text-saffron-400">India</span>
+                  Saral<span className="text-saffron-400">Privacy</span>
                 </div>
                 <div className="text-[10px] text-slate-500 leading-none mt-0.5">
-                  Compliance Intelligence
+                  DPDPA Compliance Platform
                 </div>
               </div>
             </Link>
@@ -59,8 +59,8 @@ export function Footer() {
             </p>
             <div className="flex items-center gap-2 text-sm">
               <Mail size={14} className="text-saffron-400" />
-              <a href="mailto:hello@dpdpaindia.in" className="text-slate-400 hover:text-white transition-colors">
-                hello@dpdpaindia.in
+              <a href="mailto:hello@saralprivacy.com" className="text-slate-400 hover:text-white transition-colors">
+                hello@saralprivacy.com
               </a>
             </div>
             <div className="mt-5 p-3 rounded-lg bg-slate-800 border border-slate-700">
@@ -138,10 +138,10 @@ export function Footer() {
             <div className="mt-6 p-3 rounded-lg bg-saffron-700/30 border border-saffron-600">
               <p className="text-xs text-saffron-300 font-semibold mb-1">Data Rights Contact</p>
               <a
-                href="mailto:privacy@dpdpaindia.in"
+                href="mailto:privacy@saralprivacy.com"
                 className="text-xs text-saffron-400 hover:text-saffron-300"
               >
-                privacy@dpdpaindia.in
+                privacy@saralprivacy.com
               </a>
               <p className="text-xs text-slate-500 mt-1">
                 For access, correction, erasure, or complaints
@@ -155,10 +155,10 @@ export function Footer() {
       <div className="border-t border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs text-slate-500">
-            © {new Date().getFullYear()} DPDPAIndia. All rights reserved.
+            © {new Date().getFullYear()} SaralPrivacy. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
-            <span className="text-xs text-slate-600">Privacy Notice v1.0 · Updated Jan 2025</span>
+            <span className="text-xs text-slate-600">Privacy Notice v1.0 · Updated March 2026</span>
             <Link
               href="/privacy"
               className="text-xs text-slate-500 hover:text-slate-300 transition-colors"

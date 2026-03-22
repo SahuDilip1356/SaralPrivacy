@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Users, CheckCircle, AlertTriangle } from "lucide-react";
+import { breadcrumbSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
-  title: "DPDPA for Recruitment Agencies — Compliance Guide",
+  title: "DPDPA for Recruitment Agencies",
   description:
     "Sector-specific DPDPA compliance guide for recruitment and staffing agencies in India. CV databases, candidate consent, ATS, background checks, and data retention.",
+  alternates: { canonical: 'https://saralprivacy.com/industries/recruitment-agencies' },
 };
 
 const riskAreas = [
@@ -62,6 +64,12 @@ const checklistItems = [
 
 export default function RecruitmentIndustryPage() {
   return (
+    <>
+      {breadcrumbSchema([
+        { name: 'Home', url: 'https://saralprivacy.com' },
+        { name: 'Industries', url: 'https://saralprivacy.com/industries' },
+        { name: 'Recruitment Agencies', url: 'https://saralprivacy.com/industries/recruitment-agencies' },
+      ])}
     <div className="min-h-screen bg-slate-50">
       {/* Hero */}
       <div className="bg-brand-700 py-14">
@@ -151,18 +159,30 @@ export default function RecruitmentIndustryPage() {
               </Link>
             </div>
 
+            {/* White Paper */}
+            <div className="bg-white border border-slate-200 rounded-xl p-5">
+              <h3 className="font-bold text-brand-700 text-sm mb-2">Free White Paper</h3>
+              <p className="text-slate-600 text-xs mb-3">45-page visual guide to DPDPA compliance for Indian businesses.</p>
+              <Link
+                href="/white-paper"
+                className="block text-center py-2.5 px-4 bg-brand-700 text-white font-semibold rounded-lg text-sm hover:bg-brand-800 transition-colors"
+              >
+                Download DPDPA White Paper →
+              </Link>
+            </div>
+
             {/* Resources */}
             <div className="bg-white border border-slate-200 rounded-xl p-5">
-              <h3 className="font-bold text-brand-700 text-sm mb-3">Relevant Resources</h3>
+              <h3 className="font-bold text-brand-700 text-sm mb-3">Related Briefings</h3>
               <div className="space-y-2">
-                <Link href="/resources" className="block text-sm text-saffron-600 hover:underline">
-                  → Recruitment Agency DPDPA Guide (PDF)
+                <Link href="/briefings/recruitment-agencies-dpdpa-cv-database-risk" className="block text-sm text-saffron-600 hover:underline">
+                  → CV Database Risk for Recruitment Agencies
                 </Link>
-                <Link href="/resources" className="block text-sm text-saffron-600 hover:underline">
-                  → Candidate Consent Notice Template
+                <Link href="/briefings/dpdpa-consent-notice-requirements-2025" className="block text-sm text-saffron-600 hover:underline">
+                  → Consent Notice Requirements
                 </Link>
-                <Link href="/resources" className="block text-sm text-saffron-600 hover:underline">
-                  → Data Processing Agreement Template
+                <Link href="/briefings/rights-of-data-principals-dpdpa-explained" className="block text-sm text-saffron-600 hover:underline">
+                  → Rights of Data Principals
                 </Link>
               </div>
             </div>
@@ -184,5 +204,6 @@ export default function RecruitmentIndustryPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

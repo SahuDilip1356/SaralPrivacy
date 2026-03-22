@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Calculator } from "lucide-react";
+import { breadcrumbSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
-  title: "DPDPA for CA Firms — Compliance Guide",
+  title: "DPDPA for CA Firms — Client Data",
   description: "DPDPA compliance guide for Chartered Accountant firms and accounting practices in India.",
+  alternates: { canonical: 'https://saralprivacy.com/industries/ca-firms' },
 };
 
 const riskAreas = [
@@ -30,6 +32,12 @@ const checklistItems = [
 
 export default function CAFirmsIndustryPage() {
   return (
+    <>
+      {breadcrumbSchema([
+        { name: 'Home', url: 'https://saralprivacy.com' },
+        { name: 'Industries', url: 'https://saralprivacy.com/industries' },
+        { name: 'CA Firms', url: 'https://saralprivacy.com/industries/ca-firms' },
+      ])}
     <div className="min-h-screen bg-slate-50">
       <div className="bg-brand-700 py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -76,11 +84,18 @@ export default function CAFirmsIndustryPage() {
               <Link href="/assessment/ca-firms" className="block text-center py-2.5 bg-white text-indigo-800 font-bold rounded-lg text-sm hover:bg-indigo-50">Start Assessment →</Link>
             </div>
             <div className="bg-white border border-slate-200 rounded-xl p-5">
-              <h3 className="font-bold text-brand-700 text-sm mb-3">Resources for CA Firms</h3>
+              <h3 className="font-bold text-brand-700 text-sm mb-2">Free White Paper</h3>
+              <p className="text-slate-600 text-xs mb-3">45-page DPDPA compliance guide for Indian businesses.</p>
+              <Link href="/white-paper" className="block text-center py-2.5 bg-brand-700 text-white font-semibold rounded-lg text-sm hover:bg-brand-800 transition-colors">
+                Download White Paper →
+              </Link>
+            </div>
+            <div className="bg-white border border-slate-200 rounded-xl p-5">
+              <h3 className="font-bold text-brand-700 text-sm mb-3">Related Briefings</h3>
               <div className="space-y-2">
-                <Link href="/resources" className="block text-sm text-saffron-600 hover:underline">→ CA Firm DPDPA Compliance Guide</Link>
-                <Link href="/resources" className="block text-sm text-saffron-600 hover:underline">→ Data Processing Agreement Template</Link>
-                <Link href="/resources" className="block text-sm text-saffron-600 hover:underline">→ Client Engagement Letter Addendum</Link>
+                <Link href="/briefings/ca-firms-pan-aadhaar-obligations-dpdpa" className="block text-sm text-saffron-600 hover:underline">→ CA Firms: PAN, Aadhaar & DPDPA Obligations</Link>
+                <Link href="/briefings/dpdpa-consent-notice-requirements-2025" className="block text-sm text-saffron-600 hover:underline">→ Consent Notice Requirements</Link>
+                <Link href="/briefings/data-breach-notification-obligations-dpdpa" className="block text-sm text-saffron-600 hover:underline">→ Data Breach Notification</Link>
               </div>
             </div>
             <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
@@ -91,5 +106,6 @@ export default function CAFirmsIndustryPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

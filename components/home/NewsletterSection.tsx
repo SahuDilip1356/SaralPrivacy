@@ -101,7 +101,7 @@ export function NewsletterSection() {
                 <Checkbox
                   label={
                     <span>
-                      I consent to receive DPDPA briefings and compliance updates by email from DPDPAIndia.{" "}
+                      I consent to receive DPDPA briefings and compliance updates by email from SaralPrivacy.{" "}
                       <span className="text-slate-500">I understand I can unsubscribe at any time.</span>
                     </span>
                   }

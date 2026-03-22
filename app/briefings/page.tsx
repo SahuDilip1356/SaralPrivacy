@@ -7,9 +7,10 @@ import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 
 export const metadata: Metadata = {
-  title: "Daily Briefings — DPDPA Updates for Indian Businesses",
+  title: "Daily DPDPA Compliance Briefings",
   description:
     "Daily DPDPA briefings covering regulatory updates, consent requirements, enforcement signals, and sector-specific compliance guidance for Indian businesses.",
+  alternates: { canonical: 'https://saralprivacy.com/briefings' },
 };
 
 const categories = [
