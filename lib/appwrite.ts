@@ -17,6 +17,7 @@ export const COLLECTIONS = {
   DOWNLOADS:   "downloads",
   ASSESSMENTS: "assessments",
   BRIEFINGS:   "briefings",
+  CONSENT_LOG: "consent_log",
 } as const;
 
 /** Returns the public view URL for a file in Appwrite Storage */

@@ -15,17 +15,44 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Invalid email address." }, { status: 400 });
     }
 
+    const ip      = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || request.headers.get("x-real-ip") || "";
+    const city    = request.headers.get("x-vercel-ip-city") || "";
+    const country = request.headers.get("x-vercel-ip-country") || "";
+    const region  = request.headers.get("x-vercel-ip-country-region") || "";
+    const userAgent = request.headers.get("user-agent") || "";
+
     const subscriberData = {
       name,
       email,
       industry:         industry || "",
       frequency:        frequency || "weekly",
       consent_version:  PRIVACY_NOTICE_VERSION,
-      user_agent:       request.headers.get("user-agent") || "",
+      user_agent:       userAgent,
       created_at:       new Date().toISOString(),
+      ip_address:       ip,
+      city,
+      country,
+      region,
     };
 
     await databases.createDocument(DB_ID, COLLECTIONS.SUBSCRIBERS, ID.unique(), subscriberData);
+
+    // Write consent log entry
+    const timestamp = new Date().toISOString();
+    databases.createDocument(DB_ID, COLLECTIONS.CONSENT_LOG, ID.unique(), {
+      email,
+      name,
+      source:          "subscribe",
+      consent_type:    "email_marketing",
+      consent_value:   true,
+      privacy_version: PRIVACY_NOTICE_VERSION,
+      ip_address:      ip,
+      user_agent:      userAgent,
+      city,
+      country,
+      region,
+      timestamp,
+    }).catch((err) => console.error("consent_log write error:", err));
 
     // Fire-and-forget welcome email — do not block the response
     sendWelcomeEmail({ name, email }).catch((err) =>

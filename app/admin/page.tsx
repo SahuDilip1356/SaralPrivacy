@@ -1,11 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import {
-  FileText, Users, Download, Mail, BarChart2, Shield,
-  TrendingUp, CheckCircle, Clock, Eye, LogOut
-} from "lucide-react";
+import { Users, Download, Mail, CheckCircle } from "lucide-react";
 import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 
 export const metadata: Metadata = { title: "Admin Dashboard | DPDPAIndia" };
@@ -63,16 +57,6 @@ function timeAgo(iso: string) {
   return `${Math.floor(h / 24)}d ago`;
 }
 
-const adminNav = [
-  { label: "Dashboard",     href: "/admin",               icon: BarChart2,    active: true },
-  { label: "Leads",         href: "/admin/leads",         icon: Users         },
-  { label: "Subscribers",   href: "/admin/subscribers",   icon: Mail          },
-  { label: "Downloads",     href: "/admin/downloads",     icon: Download      },
-  { label: "Assessments",   href: "/admin/assessments",   icon: CheckCircle   },
-  { label: "Consent Log",   href: "/admin/consent",       icon: Shield        },
-  { label: "Consultations", href: "/admin/consultations", icon: Clock         },
-];
-
 export default async function AdminDashboard() {
   const [leadCount, subCount, dlCount, asCount, recentLeads, recentSubs, recentDls, riskDist] =
     await Promise.all([
@@ -94,42 +78,7 @@ export default async function AdminDashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-pearl-50 flex">
-      {/* Sidebar */}
-      <aside className="w-56 bg-brand-700 shrink-0 hidden lg:flex flex-col">
-        <div className="px-5 py-5 border-b border-brand-800">
-          <div className="font-bold text-white text-base">DPDPA<span className="text-saffron-400">India</span></div>
-          <div className="text-brand-300 text-xs mt-0.5">Admin Dashboard</div>
-        </div>
-        <nav className="flex-1 px-3 py-4 space-y-1">
-          {adminNav.map((item) => (
-            <Link
-              key={item.label}
-              href={item.href}
-              className={`flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                item.active
-                  ? "bg-saffron-500 text-white"
-                  : "text-brand-300 hover:bg-brand-800 hover:text-white"
-              }`}
-            >
-              <item.icon size={16} />
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-        <div className="px-5 py-4 border-t border-brand-800 space-y-2">
-          <Link href="/" className="text-xs text-brand-300 hover:text-white block">← View Site</Link>
-          <form action={async () => { "use server"; const { cookies: c } = await import("next/headers"); (await c()).delete("admin_session"); redirect("/admin/login"); }}>
-            <button type="submit" className="flex items-center gap-1.5 text-xs text-brand-300 hover:text-red-400 transition-colors">
-              <LogOut size={12} /> Sign Out
-            </button>
-          </form>
-        </div>
-      </aside>
-
-      {/* Main */}
-      <div className="flex-1 overflow-auto">
-        <div className="px-6 py-6">
+    <div className="px-6 py-6">
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
             <div>
@@ -256,8 +205,6 @@ export default async function AdminDashboard() {
             </div>
           </div>
 
-        </div>
-      </div>
     </div>
   );
 }

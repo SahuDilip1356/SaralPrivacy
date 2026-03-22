@@ -12,6 +12,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Required fields are missing." }, { status: 400 });
     }
 
+    const ip      = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || request.headers.get("x-real-ip") || "";
+    const city    = request.headers.get("x-vercel-ip-city") || "";
+    const country = request.headers.get("x-vercel-ip-country") || "";
+    const region  = request.headers.get("x-vercel-ip-country-region") || "";
+    const userAgent = request.headers.get("user-agent") || "";
+
     const leadData = {
       name:              fullName,
       email:             workEmail,
@@ -26,9 +32,30 @@ export async function POST(request: NextRequest) {
       consent_version:   PRIVACY_NOTICE_VERSION,
       risk_level:        "",
       created_at:        new Date().toISOString(),
+      ip_address:        ip,
+      city,
+      country,
+      region,
     };
 
     await databases.createDocument(DB_ID, COLLECTIONS.LEADS, ID.unique(), leadData);
+
+    // Write consent log entry
+    const timestamp = new Date().toISOString();
+    databases.createDocument(DB_ID, COLLECTIONS.CONSENT_LOG, ID.unique(), {
+      email:           workEmail,
+      name:            fullName,
+      source:          "contact",
+      consent_type:    "data_processing",
+      consent_value:   true,
+      privacy_version: PRIVACY_NOTICE_VERSION,
+      ip_address:      ip,
+      user_agent:      userAgent,
+      city,
+      country,
+      region,
+      timestamp,
+    }).catch((err) => console.error("consent_log write error:", err));
 
     // Fire-and-forget admin alert — do not block the response
     sendConsultationAlert(leadData).catch((err) =>
