@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
     );
 
     // Use Appwrite Storage URL when file has been uploaded, else fallback to public asset
-    const fileId      = process.env.APPWRITE_WHITE_PAPER_FILE_ID;
+    const fileId      = (process.env.APPWRITE_WHITE_PAPER_FILE_ID || "").trim();
     const downloadUrl = fileId
       ? getFileDownloadUrl(fileId)
       : "/assets/dpdpa-white-paper-2025.pdf";
