@@ -35,6 +35,9 @@ export const metadata: Metadata = {
     description: 'Free DPDPA readiness assessments, daily briefings, and practical compliance guides for Indian businesses.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
+  verification: {
+    google: 'bb55c3c7def99de4',
+  },
 };
 
 export default function RootLayout({
