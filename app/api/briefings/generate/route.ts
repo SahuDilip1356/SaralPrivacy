@@ -277,20 +277,24 @@ async function generateAndSave(request: NextRequest) {
 
 // ─── Routes ───────────────────────────────────────────────────────────────────
 
-/** GET — triggered by Vercel Cron at 3:30 UTC (9 AM IST) */
-export async function GET(request: NextRequest) {
-  try {
-    return await generateAndSave(request);
-  } catch (error) {
-    console.error("Briefing generate error:", error);
-    return NextResponse.json(
-      { error: "Failed to generate briefing.", detail: String(error) },
-      { status: 500 }
-    );
-  }
+/**
+ * GET — disabled. Content is now published exclusively via the n8n pipeline
+ * (90-day roadmap → publish_to_webapp.py → POST below).
+ * The Vercel cron has been removed from vercel.json.
+ * This endpoint is kept for backward-compat but returns 410 Gone.
+ */
+export async function GET(_request: NextRequest) {
+  return NextResponse.json(
+    { error: "Vercel cron disabled. Use n8n pipeline → POST /api/briefings/generate." },
+    { status: 410 }
+  );
 }
 
-/** POST — manual trigger or pre-written content submission */
+/**
+ * POST — called by n8n pipeline via publish_to_webapp.py at 9 AM IST daily.
+ * Saves briefing to Appwrite with status "approved" → immediately live on site.
+ * Email to subscribers is handled separately: admin approves via /api/briefings/approve.
+ */
 export async function POST(request: NextRequest) {
   const secret = (
     request.headers.get("x-cron-secret") ||
