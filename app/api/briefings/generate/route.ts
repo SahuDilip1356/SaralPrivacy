@@ -385,8 +385,8 @@ export async function POST(request: NextRequest) {
       DB_ID, COLLECTIONS.BRIEFINGS, ID.unique(), briefingData
     );
 
-    await sendBriefingApprovalEmail({ ...briefingData, id: doc.$id }, approvalToken)
-      .catch(console.error);
+    // Admin approval dropped — briefing is live on site immediately (status: approved).
+    // Email delivery to subscribers is handled by the n8n pipeline (send_email.py).
 
     return NextResponse.json({ success: true, briefingId: doc.$id, slug });
   } catch (error) {
