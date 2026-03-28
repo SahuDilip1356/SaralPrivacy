@@ -9,10 +9,58 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Trigger Vercel deployment and wait for READY
+        run: |
+          set -e
+          TEAM_ID="team_o1Ok9z4S6z5NfHzfK05CSbGY"
+          PROJECT_ID="prj_FndxzNcV6eEgy7L1BW2EmVN1PTaV"
+          REPO_ID="1185847335"
 
-      - name: Deploy to Vercel (production)
-        run: npx vercel --token=${{ secrets.VERCEL_TOKEN }} --prod --yes
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          echo "Triggering deployment for commit $GITHUB_SHA..."
+
+          DEPLOY=$(curl -s -X POST \
+            "https://api.vercel.com/v13/deployments?teamId=$TEAM_ID" \
+            -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"name\": \"saralprivacy\",
+              \"gitSource\": {
+                \"type\": \"github\",
+                \"repoId\": $REPO_ID,
+                \"ref\": \"main\",
+                \"sha\": \"$GITHUB_SHA\"
+              },
+              \"target\": \"production\"
+            }")
+
+          DEPLOY_ID=$(echo "$DEPLOY" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('id',''))")
+          DEPLOY_URL=$(echo "$DEPLOY" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('url',''))")
+          echo "Deployment ID: $DEPLOY_ID"
+          echo "Preview URL: https://$DEPLOY_URL"
+
+          if [ -z "$DEPLOY_ID" ]; then
+            echo "ERROR: No deployment ID returned"
+            echo "$DEPLOY"
+            exit 1
+          fi
+
+          # Poll until READY or ERROR
+          for i in $(seq 1 40); do
+            sleep 15
+            STATE=$(curl -s \
+              "https://api.vercel.com/v13/deployments/$DEPLOY_ID?teamId=$TEAM_ID" \
+              -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
+              | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('readyState','UNKNOWN'))")
+            echo "[$i] State: $STATE"
+            if [ "$STATE" = "READY" ]; then
+              echo "Deployment READY: https://saralprivacy.com"
+              exit 0
+            fi
+            if [ "$STATE" = "ERROR" ] || [ "$STATE" = "CANCELED" ]; then
+              echo "Deployment failed with state: $STATE"
+              exit 1
+            fi
+          done
+
+          echo "Timed out waiting for deployment"
+          exit 1
