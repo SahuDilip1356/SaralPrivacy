@@ -8,7 +8,8 @@ export const metadata: Metadata = {
   title: "D2C Brand DPDPA Compliance Check",
   description:
     "Free DPDPA assessment for D2C brands and e-commerce businesses. Check marketing consent, analytics tools, customer data retention, and preference management.",
-  alternates: { canonical: 'https://saralprivacy.com/assessment/d2c-brands' },
+  alternates: { canonical: 'https://saralprivacy.com/assessment' },
+  robots: { index: false, follow: false, googleBot: { index: false, follow: false } },
 };
 
 export default function D2CAssessmentPage() {

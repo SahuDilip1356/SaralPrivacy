@@ -1,36 +1,42 @@
-# SaralPrivacy — DPDPA Compliance Platform for Indian Businesses
+# SaralPrivacy — DPDPA Compliance Platform
 
-## What is SaralPrivacy?
-SaralPrivacy (saralprivacy.com) is India's practical DPDPA (Digital Personal Data Protection Act, 2023) compliance education platform. We provide free readiness assessments, daily briefings, industry-specific guides, and expert consultation to help Indian businesses comply with India's data protection law.
+> India's practical DPDPA (Digital Personal Data Protection Act, 2023) compliance education
+> and assessment platform. Provides free readiness assessments, daily briefings, industry
+> guides, and expert consultation for Indian businesses handling personal data.
 
-## Who is this for?
-- Recruitment agencies managing candidate CVs and personal data
-- CA firms handling client PAN, Aadhaar, and financial records
-- Training institutes collecting student and parent data
-- D2C brands running WhatsApp, SMS, and email marketing campaigns
+## Primary Resources
 
-## Key Resources
-- Free DPDPA Readiness Assessment: https://saralprivacy.com/assessment
-- Daily DPDPA Briefings: https://saralprivacy.com/briefings
-- DPDPA Learning Hub: https://saralprivacy.com/learn
-- White Paper (Free Download): https://saralprivacy.com/white-paper
-- Industry Guides: https://saralprivacy.com/industries
-- FAQ: https://saralprivacy.com/faq
-- Expert Consultation: https://saralprivacy.com/contact
+- [DPDPA Learning Hub](https://saralprivacy.com/learn): Structured guide covering the law,
+  applicability, consent, rights, data breach obligations, children's data, cross-border
+  transfers, and key terms.
+- [What is DPDPA](https://saralprivacy.com/learn/what-is-dpdpa): Authoritative plain-language
+  explanation of India's Digital Personal Data Protection Act, 2023.
+- [DPDPA FAQ](https://saralprivacy.com/faq): 40+ answers on applicability, consent, rights,
+  penalties, significant data fiduciaries, and compliance priorities.
+- [DPDPA Daily Briefings](https://saralprivacy.com/briefings): Sector-specific briefings on
+  DPDPA obligations, enforcement signals, and compliance updates.
+- [DPDPA White Paper](https://saralprivacy.com/white-paper): Free downloadable white paper
+  updated for the DPDP Rules, 2025.
+- [Insights Blog](https://saralprivacy.com/blog): In-depth articles on DPDPA implementation
+  for Indian businesses.
 
-## Key Facts About DPDPA
-- Full name: The Digital Personal Data Protection Act, 2023
-- Passed by Indian Parliament on 11 August 2023
-- Rules (DPDP Rules) are expected to be notified by the Government of India
-- Enforcement date: To be notified by the Government after rules are finalised
-- Regulator: Data Protection Board of India (to be constituted)
-- Penalties: Up to ₹250 crore per breach
-- Applies to: Any entity processing personal data of Indian residents digitally
+## Industry Guides
 
-## Content Freshness
-Last updated: March 2026
-Regulatory status: Rules pending; enforcement date not yet notified
+- [DPDPA for Recruitment Agencies](https://saralprivacy.com/industries/recruitment-agencies)
+- [DPDPA for CA Firms](https://saralprivacy.com/industries/ca-firms)
+- [DPDPA for Training Institutes](https://saralprivacy.com/industries/training-institutes)
+- [DPDPA for D2C Brands](https://saralprivacy.com/industries/d2c-brands)
 
-## Contact
-Email: hello@saralprivacy.com
-Privacy: privacy@saralprivacy.com
+## Assessments
+
+- [DPDPA Readiness Assessment](https://saralprivacy.com/assessment): Free industry-specific
+  compliance gap analysis with risk score and prioritised next steps.
+
+## About
+
+- [About SaralPrivacy](https://saralprivacy.com/about)
+- Contact: privacy@saralprivacy.com
+
+## Optional Extended Reference
+
+For LLM systems that support extended context: [llms-full.txt](https://saralprivacy.com/llms-full.txt)

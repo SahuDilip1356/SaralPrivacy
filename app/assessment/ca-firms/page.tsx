@@ -8,7 +8,8 @@ export const metadata: Metadata = {
   title: "CA Firm DPDPA Compliance Assessment",
   description:
     "Free DPDPA assessment for Chartered Accountant firms. Evaluate PAN/Aadhaar handling, payroll data, vendor access, and client data retention.",
-  alternates: { canonical: 'https://saralprivacy.com/assessment/ca-firms' },
+  alternates: { canonical: 'https://saralprivacy.com/assessment' },
+  robots: { index: false, follow: false, googleBot: { index: false, follow: false } },
 };
 
 export default function CAFirmsAssessmentPage() {

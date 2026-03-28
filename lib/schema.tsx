@@ -7,8 +7,14 @@ export function organizationSchema() {
     name: 'SaralPrivacy',
     url: 'https://saralprivacy.com',
     logo: 'https://saralprivacy.com/og-image.png',
-    description: "India's practical DPDPA compliance platform for businesses.",
-    email: 'hello@saralprivacy.com',
+    description: 'Practical DPDPA education, assessment, and advisory platform for Indian businesses.',
+    foundingDate: '2025',
+    areaServed: 'IN',
+    contactPoint: {
+      '@type': 'ContactPoint',
+      email: 'privacy@saralprivacy.com',
+      contactType: 'customer support',
+    },
     sameAs: [],
   }
   return (
@@ -26,14 +32,10 @@ export function websiteSchema() {
     name: 'SaralPrivacy',
     url: 'https://saralprivacy.com',
     description: 'DPDPA compliance education and assessment platform for Indian businesses.',
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: {
-        '@type': 'EntryPoint',
-        urlTemplate: 'https://saralprivacy.com/faq?q={search_term_string}',
-      },
-      'query-input': 'required name=search_term_string',
-    },
+    inLanguage: 'en-IN',
+    // Note: potentialAction / SearchAction removed — the FAQ search is client-side
+    // only and does not resolve via URL parameter server-side. A broken SearchAction
+    // is worse than none and can cause rich result errors in Search Console.
   }
   return (
     <script

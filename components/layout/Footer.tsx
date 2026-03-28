@@ -5,9 +5,9 @@ const footerLinks = {
   platform: [
     { label: "Daily Briefings", href: "/briefings" },
     { label: "DPDPA Guide", href: "/learn" },
-    { label: "Resources", href: "/resources" },
+    { label: "Insights", href: "/blog" },
     { label: "FAQ", href: "/faq" },
-    { label: "Webinars", href: "/webinars" },
+    { label: "About", href: "/about" },
   ],
   industries: [
     { label: "Recruitment Agencies", href: "/industries/recruitment-agencies" },
@@ -59,11 +59,11 @@ export function Footer() {
             </p>
             <div className="flex items-center gap-2 text-sm">
               <Mail size={14} className="text-saffron-400" />
-              <a href="mailto:hello@saralprivacy.com" className="text-slate-400 hover:text-white transition-colors">
-                hello@saralprivacy.com
+              <a href="mailto:privacy@saralprivacy.com" className="text-slate-400 hover:text-white transition-colors">
+                privacy@saralprivacy.com
               </a>
             </div>
-            <div className="mt-5 p-3 rounded-lg bg-slate-800 border border-slate-700">
+            <div data-nosnippet className="mt-5 p-3 rounded-lg bg-slate-800 border border-slate-700">
               <p className="text-xs text-slate-400">
                 <span className="text-amber-400 font-semibold">Disclaimer:</span> Information on
                 this platform is for educational purposes only and does not constitute formal legal
@@ -135,7 +135,7 @@ export function Footer() {
               ))}
             </ul>
 
-            <div className="mt-6 p-3 rounded-lg bg-saffron-700/30 border border-saffron-600">
+            <div data-nosnippet className="mt-6 p-3 rounded-lg bg-saffron-700/30 border border-saffron-600">
               <p className="text-xs text-saffron-300 font-semibold mb-1">Data Rights Contact</p>
               <a
                 href="mailto:privacy@saralprivacy.com"
@@ -152,7 +152,7 @@ export function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-slate-800">
+      <div data-nosnippet className="border-t border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs text-slate-500">
             © {new Date().getFullYear()} SaralPrivacy. All rights reserved.

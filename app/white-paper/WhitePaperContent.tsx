@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { FileText, CheckCircle, Download, Shield, Lock } from "lucide-react";
 import { Input, Select, Checkbox } from "@/components/ui/Input";
+import { trackEvent } from "@/lib/analytics";
 import { Button } from "@/components/ui/Button";
 import { PRIVACY_NOTICE_VERSION } from "@/lib/utils";
 
@@ -81,6 +82,7 @@ export default function WhitePaperContent() {
       if (res.ok && data.downloadUrl) {
         setDownloadUrl(data.downloadUrl);
         setSubmitted(true);
+        trackEvent.download({ industry: form.industry, company_size: form.companySize });
       } else {
         setServerError(data.error || "Something went wrong. Please try again.");
       }
@@ -106,6 +108,7 @@ export default function WhitePaperContent() {
               <FileText size={12} className="text-amber-400" />
               <span className="text-amber-400 text-xs font-semibold">45-page practitioner guide · Free</span>
             </div>
+            <p className="text-amber-300 text-xs font-semibold mb-2 uppercase tracking-wide">2026 Edition · Updated for the DPDP Rules, 2025</p>
             <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">
               DPDPA: The Complete Guide for Indian Businesses
             </h1>
@@ -113,6 +116,9 @@ export default function WhitePaperContent() {
               Everything your business needs to understand the Digital Personal Data Protection Act —
               from applicability to enforcement — in plain English, with sector-specific guidance.
             </p>
+            <div className="mt-4 bg-white/10 border border-white/20 rounded-xl px-5 py-4">
+              <p className="text-slate-200 text-sm leading-relaxed">Download a practical DPDPA white paper built for Indian businesses that need clarity, not commentary. This edition is updated for the DPDP Rules, 2025 and explains applicability, obligations, consent, notices, rights, breach response, sector risks, and implementation priorities.</p>
+            </div>
           </div>
         </div>
       </div>

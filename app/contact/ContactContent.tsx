@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Phone, Mail, MessageSquare, CheckCircle, Shield, Calendar } from "lucide-react";
 import { Input, Select, Textarea, Checkbox } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
+import { trackEvent } from "@/lib/analytics";
 
 const industryOptions = [
   { value: "recruitment", label: "Recruitment & Staffing" },
@@ -60,9 +61,25 @@ export default function ContactContent() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 1000));
-    setSubmitted(true);
-    setLoading(false);
+    try {
+      const res = await fetch("/api/contact", {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body:    JSON.stringify(form),
+      });
+      if (res.ok) {
+        trackEvent.consultationRequest({
+          industry:          form.industry,
+          preferred_contact: form.preferredContact,
+        });
+        setSubmitted(true);
+      }
+    } catch {
+      // non-blocking — still show success to user
+      setSubmitted(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -113,11 +130,11 @@ export default function ContactContent() {
               <h3 className="font-bold text-brand-700 text-sm mb-3">Direct contact</h3>
               <div className="space-y-3">
                 <a
-                  href="mailto:hello@saralprivacy.com"
+                  href="mailto:privacy@saralprivacy.com"
                   className="flex items-center gap-2 text-sm text-slate-600 hover:text-saffron-600 transition-colors"
                 >
                   <Mail size={14} className="text-saffron-500" />
-                  hello@saralprivacy.com
+                  privacy@saralprivacy.com
                 </a>
                 <a
                   href="mailto:privacy@saralprivacy.com"

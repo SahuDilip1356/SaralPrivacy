@@ -2,16 +2,13 @@ import { MetadataRoute } from 'next'
 
 const BASE = 'https://saralprivacy.com'
 
-const briefingSlugs = [
-  'dpdpa-consent-notice-requirements-2025',
-  'recruitment-agencies-dpdpa-cv-database-risk',
-  'ca-firms-pan-aadhaar-obligations-dpdpa',
-  'd2c-brands-whatsapp-marketing-consent-dpdpa',
-  'data-breach-notification-obligations-dpdpa',
-  'training-institutes-student-data-dpdpa',
-  'rights-of-data-principals-dpdpa-explained',
-  'significant-data-fiduciary-status-dpdpa',
-]
+// Update these dates when content materially changes
+const CORE_UPDATED     = new Date('2026-03-28')
+const LEARN_UPDATED    = new Date('2026-03-15')
+const INDUSTRY_UPDATED = new Date('2026-03-20')
+const FAQ_UPDATED      = new Date('2026-03-01')
+const BRIEFINGS_HUB    = new Date('2026-03-28')
+const BLOG_HUB         = new Date('2026-03-28')
 
 const learnTopics = [
   'what-is-dpdpa',
@@ -28,139 +25,94 @@ const learnTopics = [
   'myths',
 ]
 
+const industryPages = [
+  'recruitment-agencies',
+  'ca-firms',
+  'training-institutes',
+  'd2c-brands',
+]
+
+// Briefing slugs: add new slugs + real publish dates as briefings go live
+const briefingSlugs: Array<{ slug: string; updated: Date }> = [
+  { slug: 'dpdpa-consent-notice-requirements-2025',          updated: new Date('2026-02-10') },
+  { slug: 'recruitment-agencies-dpdpa-cv-database-risk',     updated: new Date('2026-02-14') },
+  { slug: 'ca-firms-pan-aadhaar-obligations-dpdpa',          updated: new Date('2026-02-18') },
+  { slug: 'd2c-brands-whatsapp-marketing-consent-dpdpa',     updated: new Date('2026-02-22') },
+  { slug: 'data-breach-notification-obligations-dpdpa',      updated: new Date('2026-02-26') },
+  { slug: 'training-institutes-student-data-dpdpa',          updated: new Date('2026-03-01') },
+  { slug: 'rights-of-data-principals-dpdpa-explained',       updated: new Date('2026-03-05') },
+  { slug: 'significant-data-fiduciary-status-dpdpa',         updated: new Date('2026-03-10') },
+]
+
+// Blog slugs: add as posts are published in Appwrite
+// TODO: replace with async Appwrite fetch + real $updatedAt when sitemap supports it
+const blogSlugs: Array<{ slug: string; updated: Date }> = []
+
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
-    {
-      url: BASE,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 1.0,
-    },
-    {
-      url: `${BASE}/assessment`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${BASE}/assessment/recruitment`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${BASE}/assessment/ca-firms`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${BASE}/assessment/training-institutes`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${BASE}/assessment/d2c-brands`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${BASE}/white-paper`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${BASE}/contact`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${BASE}/briefings`,
-      lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 0.8,
-    },
-    ...briefingSlugs.map((slug) => ({
-      url: `${BASE}/briefings/${slug}`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.7,
-    })),
-    {
-      url: `${BASE}/learn`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.7,
-    },
+    // ── Core ──
+    { url: BASE,                    lastModified: CORE_UPDATED,     changeFrequency: 'weekly',  priority: 1.0 },
+    { url: `${BASE}/about`,         lastModified: CORE_UPDATED,     changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${BASE}/contact`,       lastModified: CORE_UPDATED,     changeFrequency: 'monthly', priority: 0.5 },
+    { url: `${BASE}/white-paper`,   lastModified: CORE_UPDATED,     changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${BASE}/resources`,     lastModified: CORE_UPDATED,     changeFrequency: 'monthly', priority: 0.5 },
+
+    // ── Assessment hub (crawlable intro text) ──
+    { url: `${BASE}/assessment`,    lastModified: CORE_UPDATED,     changeFrequency: 'monthly', priority: 0.8 },
+    // Sub-routes are client-side JS wizards; noindex set in page metadata — exclude from sitemap
+    // /assessment/recruitment, /assessment/ca-firms, /assessment/training-institutes, /assessment/d2c-brands
+
+    // ── Learn ──
+    { url: `${BASE}/learn`,         lastModified: LEARN_UPDATED,    changeFrequency: 'monthly', priority: 0.8 },
     ...learnTopics.map((topic) => ({
       url: `${BASE}/learn/${topic}`,
-      lastModified: new Date(),
+      lastModified: LEARN_UPDATED,
       changeFrequency: 'monthly' as const,
       priority: 0.7,
     })),
-    {
-      url: `${BASE}/industries`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
+
+    // ── Industries ──
+    { url: `${BASE}/industries`,    lastModified: INDUSTRY_UPDATED, changeFrequency: 'monthly', priority: 0.8 },
+    ...industryPages.map((slug) => ({
+      url: `${BASE}/industries/${slug}`,
+      lastModified: INDUSTRY_UPDATED,
+      changeFrequency: 'monthly' as const,
       priority: 0.7,
-    },
-    {
-      url: `${BASE}/industries/recruitment-agencies`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
+    })),
+
+    // ── FAQ ──
+    { url: `${BASE}/faq`,           lastModified: FAQ_UPDATED,      changeFrequency: 'monthly', priority: 0.7 },
+
+    // ── Briefings ──
+    { url: `${BASE}/briefings`,     lastModified: BRIEFINGS_HUB,    changeFrequency: 'daily',   priority: 0.8 },
+    ...briefingSlugs.map(({ slug, updated }) => ({
+      url: `${BASE}/briefings/${slug}`,
+      lastModified: updated,
+      changeFrequency: 'monthly' as const,
       priority: 0.7,
-    },
-    {
-      url: `${BASE}/industries/ca-firms`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
+    })),
+
+    // ── Blog ──
+    { url: `${BASE}/blog`,          lastModified: BLOG_HUB,         changeFrequency: 'weekly',  priority: 0.7 },
+    ...blogSlugs.map(({ slug, updated }) => ({
+      url: `${BASE}/blog/${slug}`,
+      lastModified: updated,
+      changeFrequency: 'monthly' as const,
       priority: 0.7,
-    },
-    {
-      url: `${BASE}/industries/training-institutes`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${BASE}/industries/d2c-brands`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${BASE}/faq`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.6,
-    },
-    {
-      url: `${BASE}/resources`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.6,
-    },
-    {
-      url: `${BASE}/privacy`,
-      lastModified: new Date(),
-      changeFrequency: 'yearly',
-      priority: 0.3,
-    },
-    {
-      url: `${BASE}/terms`,
-      lastModified: new Date(),
-      changeFrequency: 'yearly',
-      priority: 0.3,
-    },
-    {
-      url: `${BASE}/consent-preferences`,
-      lastModified: new Date(),
-      changeFrequency: 'yearly',
-      priority: 0.3,
-    },
+    })),
+
+    // ── Legal (low priority) ──
+    { url: `${BASE}/privacy`,       lastModified: new Date('2026-03-01'), changeFrequency: 'yearly', priority: 0.2 },
+    { url: `${BASE}/terms`,         lastModified: new Date('2026-03-01'), changeFrequency: 'yearly', priority: 0.2 },
+
+    // EXCLUDED — intentional:
+    // /consent-preferences  → utility page, noindex
+    // /subscribe            → redirect to /#newsletter
+    // /unsubscribe          → redirect to /consent-preferences
+    // /rights/access        → 301 redirect to /privacy#data-rights
+    // /rights/erasure       → 301 redirect to /privacy#data-rights
+    // /admin/*              → gated, disallowed in robots
+    // /api/*                → internal endpoints
+    // /assessment/*         → client-side JS wizards, noindex
   ]
 }

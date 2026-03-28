@@ -36,7 +36,7 @@ export default function TermsPage() {
         <div className="mt-6 text-sm text-slate-500">
           Questions about these terms?{" "}
           <Link href="/contact" className="text-saffron-500 hover:underline">Contact us</Link> or email{" "}
-          <a href="mailto:hello@saralprivacy.com" className="text-saffron-500 hover:underline">hello@saralprivacy.com</a>
+          <a href="mailto:privacy@saralprivacy.com" className="text-saffron-500 hover:underline">privacy@saralprivacy.com</a>
         </div>
       </div>
     </div>

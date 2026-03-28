@@ -6,10 +6,10 @@ import { articleSchema, breadcrumbSchema } from "@/lib/schema";
 
 const learnContent: Record<string, { title: string; description: string; content: string }> = {
   "what-is-dpdpa": {
-    title: "What is DPDPA?",
-    description: "An overview of India's Digital Personal Data Protection Act, 2023.",
+    title: "What Is DPDPA? Practical India Guide",
+    description: "Understand what DPDPA covers, who it applies to, and what businesses should fix now under India's DPDP Act and the notified DPDP Rules, 2025.",
     content: `
-The Digital Personal Data Protection Act, 2023 (DPDPA) is India's comprehensive legislation governing how personal data of Indian citizens is collected, stored, processed, and used by businesses and organisations.
+The Digital Personal Data Protection Act, 2023 governs how digital personal data is collected, used, stored, shared, and deleted. The DPDP Rules, 2025 have been notified, with phased commencement, so businesses should treat this as implementation time, not theory time. This guide explains what the law covers, who it applies to, and what practical controls matter first.
 
 ## Why Was DPDPA Enacted?
 
@@ -38,13 +38,13 @@ The DPDPA is built on several core principles:
 
 ## Regulatory Authority
 
-The Act establishes the **Data Protection Board of India (DPBI)** as the regulatory authority. The Board is responsible for adjudicating complaints, conducting inquiries, and imposing penalties. The Board is yet to be formally constituted as rules under the Act are being finalised.
+The Act establishes the **Data Protection Board of India (DPBI)** as the regulatory authority. The Board is responsible for adjudicating complaints, conducting inquiries, and imposing penalties. The Data Protection Board of India is established under the Act.
 
 ## When Does It Come Into Effect?
 
-The DPDPA was enacted in August 2023 but comes into force only once the Rules under the Act are notified by the Central Government. Draft Rules were released for public consultation and are pending Government notification.
+The DPDP Rules, 2025 were notified on 14 November 2025. India is implementing the regime in phases — certain rules took effect immediately on notification, while others take effect 12 and 18 months later. Businesses should treat this period as operational rollout time, not wait-and-watch time.
 
-**Businesses should not wait for the Rules to be notified to begin preparing.** The framework is clear enough to begin compliance work now, and early preparation significantly reduces the cost and disruption of compliance.
+**The practical question is no longer whether to prepare — it is what to fix first and in what sequence.** Focus on notices, consent flows, rights-handling processes, retention policies, and vendor agreements.
     `,
   },
   "applicability": {
@@ -708,9 +708,9 @@ The government *may* notify exemptions for specific categories of businesses thr
 
 **Fact:** Having a Privacy Policy (Privacy Notice) is one element of DPDPA compliance — but it is far from sufficient. Compliance requires: valid consent flows, a notice at the point of data collection, security safeguards, a data rights request process, a breach response plan, data retention and deletion processes, and Data Processing Agreements with vendors. A Privacy Policy alone does not cover any of these.
 
-## Myth 3: "DPDPA is not in force yet, so we have time"
+## Myth 3: "We can wait for enforcement before doing anything"
 
-**Fact:** While DPDPA enforcement awaits the notification of Rules, the compliance work required takes significant time — months, not days. Businesses that begin now will be far better positioned when enforcement begins. The cost of retrofitting compliance under regulatory pressure is substantially higher than building it proactively. The framework is clear enough to act on now.
+**Fact:** The DPDP Rules, 2025 have been notified, with phased commencement underway. The compliance work required takes significant time — months, not days. Businesses that act during the transition window will be far better positioned than those that wait for enforcement pressure. The cost of retrofitting compliance under regulatory scrutiny is substantially higher than building it proactively now.
 
 ## Myth 4: "Our customers agreed to our Terms and Conditions, so we have consent"
 
@@ -751,10 +751,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { topic } = await params;
   const content = learnContent[topic];
   if (!content) return {};
+  const canonicalUrl = `https://saralprivacy.com/learn/${topic}`;
   return {
-    title: content.title,
+    title: topic === 'what-is-dpdpa'
+      ? "What Is DPDPA? Practical India Guide"
+      : content.title,
     description: content.description,
-    alternates: { canonical: `https://saralprivacy.com/learn/${topic}` },
+    alternates: { canonical: canonicalUrl },
+    openGraph: {
+      type: 'article',
+      url: canonicalUrl,
+      title: content.title,
+      description: content.description,
+    },
   };
 }
 
@@ -859,7 +868,8 @@ export default async function LearnTopicPage({ params }: Props) {
         content.title,
         content.description,
         `https://saralprivacy.com/learn/${topic}`,
-        '2025-03-01'
+        '2025-03-01',
+        '2026-03-15'
       )}
       {breadcrumbSchema([
         { name: 'Home', url: 'https://saralprivacy.com' },
@@ -906,8 +916,18 @@ export default async function LearnTopicPage({ params }: Props) {
             <div className="bg-white rounded-xl border border-slate-200 p-7 mb-5">
               <h1 className="text-2xl sm:text-3xl font-bold text-brand-700 mb-2">{content.title}</h1>
               <p className="text-slate-500 text-base">{content.description}</p>
+              {topic === 'what-is-dpdpa' && (
+                <div className="bg-slate-50 border-l-4 border-saffron-400 rounded-r-xl px-5 py-4 mt-4 mb-2">
+                  <p className="text-slate-700 text-sm leading-relaxed">The Digital Personal Data Protection Act, 2023 governs how digital personal data is collected, used, stored, shared, and deleted. The DPDP Rules, 2025 have been notified, with phased commencement, so businesses should treat this as implementation time, not theory time. This guide explains what the law covers, who it applies to, and what practical controls matter first.</p>
+                </div>
+              )}
               <div className="mt-5 pt-5 border-t border-slate-100">
                 {renderContent(content.content)}
+              </div>
+              <div className="mt-10 pt-6 border-t border-slate-200 text-xs text-slate-400 space-y-1">
+                <p><strong>Last reviewed:</strong> March 2026</p>
+                <p><strong>Legal baseline:</strong> DPDP Rules, 2025 notified on 14 November 2025, with phased commencement.</p>
+                <p>This page is for educational purposes and does not constitute legal advice.</p>
               </div>
             </div>
 

@@ -8,7 +8,8 @@ export const metadata: Metadata = {
   title: "Training Institute DPDPA Assessment",
   description:
     "Free DPDPA assessment for training institutes and coaching centres. Check student data practices, minor consent, marketing pixels, and placement data.",
-  alternates: { canonical: 'https://saralprivacy.com/assessment/training-institutes' },
+  alternates: { canonical: 'https://saralprivacy.com/assessment' },
+  robots: { index: false, follow: false, googleBot: { index: false, follow: false } },
 };
 
 export default function TrainingAssessmentPage() {

@@ -8,7 +8,11 @@ export const metadata: Metadata = {
   title: "Recruitment Agency DPDPA Assessment",
   description:
     "Free DPDPA readiness assessment for recruitment and staffing agencies. Check your candidate data, consent flows, and retention practices in 10 minutes.",
-  alternates: { canonical: 'https://saralprivacy.com/assessment/recruitment' },
+  // Canonical → hub page. Sub-route is a client-side JS wizard with minimal
+  // crawlable HTML; noindex prevents index pollution and keeps link equity
+  // consolidated on /assessment.
+  alternates: { canonical: 'https://saralprivacy.com/assessment' },
+  robots: { index: false, follow: false, googleBot: { index: false, follow: false } },
 };
 
 export default function RecruitmentAssessmentPage() {
