@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
   }
 
-  revalidateTag("briefings");
+  revalidateTag("briefings", "default");
 
   return NextResponse.json({ revalidated: true, tag: "briefings", at: new Date().toISOString() });
 }
