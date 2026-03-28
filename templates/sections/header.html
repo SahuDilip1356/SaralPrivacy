@@ -1,0 +1,46 @@
+<!-- ── HEADER ── -->
+<tr>
+  <td style="background-color:#1B3A5C;padding:24px 32px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        <td>
+          <div style="font-size:22px;font-weight:700;color:#FFFFFF;letter-spacing:-0.3px;">
+            DPDPA Daily Brief
+          </div>
+          <div style="font-size:11px;color:#F4941B;margin-top:4px;text-transform:uppercase;letter-spacing:0.8px;">
+            India's Privacy Law, One Day at a Time
+          </div>
+          <div style="font-size:12px;color:#8BAABB;margin-top:6px;">
+            Day {{ day_number }} of {{ total_days }} &nbsp;·&nbsp; {{ date_formatted }} &nbsp;·&nbsp; Week {{ week }}: {{ week_theme }}
+          </div>
+        </td>
+        <td align="right" valign="middle" style="padding-left:16px;white-space:nowrap;">
+          <div style="font-size:11px;color:#8BAABB;text-align:right;margin-bottom:4px;">Progress</div>
+          <div style="font-size:16px;font-weight:700;color:#F4941B;text-align:right;">
+            {{ progress_pct }}%
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" style="padding-top:14px;">
+          <!-- Progress bar -->
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+              <td style="background-color:#0D2035;border-radius:4px;height:6px;overflow:hidden;">
+                <!--[if !mso]><!-->
+                <div style="background-color:#F4941B;border-radius:4px;height:6px;width:{{ progress_pct }}%;"></div>
+                <!--<![endif]-->
+                <!--[if mso]>
+                <v:rect xmlns:v="urn:schemas-microsoft-com:vml" fillcolor="#F4941B"
+                  style="width:{{ progress_pct_int }}px;height:6px;" strokecolor="none">
+                  <v:fill type="solid" color="#F4941B"/>
+                </v:rect>
+                <![endif]-->
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </td>
+</tr>
