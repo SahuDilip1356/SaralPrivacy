@@ -179,20 +179,25 @@ async function generateAndSave(request: NextRequest) {
     return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
   }
 
-  // Pick today's topic by day-of-year
-  const startOfYear = new Date(new Date().getFullYear(), 0, 1).getTime();
-  const dayOfYear   = Math.floor((Date.now() - startOfYear) / 86_400_000);
+  // Optional ?forDate=YYYY-MM-DD override (admin backfill only)
+  const url = new URL(request.url);
+  const forDate = url.searchParams.get("forDate");
+  const refDate = forDate ? new Date(forDate + "T12:00:00Z") : new Date();
+
+  // Pick topic by day-of-year of refDate
+  const startOfYear = new Date(refDate.getFullYear(), 0, 1).getTime();
+  const dayOfYear   = Math.floor((refDate.getTime() - startOfYear) / 86_400_000);
   const { topic, category } = DPDPA_TOPICS[dayOfYear % DPDPA_TOPICS.length];
 
-  // Compute day-of-week theme
-  const dow = new Date().getDay(); // 0=Sun, 1=Mon, ..., 6=Sat
+  // Compute day-of-week theme from refDate
+  const dow = refDate.getDay(); // 0=Sun, 1=Mon, ..., 6=Sat
   const theme = DOW_THEMES[dow];
 
   // Generate content via Claude
   const briefingData_raw = await generateWithClaude(topic, category, theme);
 
-  // Build slug
-  const dateStr = new Date().toISOString().split("T")[0];
+  // Build slug using refDate
+  const dateStr = refDate.toISOString().split("T")[0];
   const generatedSlug = `${dateStr}-${(briefingData_raw.title as string)
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
