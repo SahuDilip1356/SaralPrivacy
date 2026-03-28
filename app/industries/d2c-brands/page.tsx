@@ -4,8 +4,8 @@ import { ShoppingBag } from "lucide-react";
 import { breadcrumbSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
-  title: "DPDPA for D2C Brands — Marketing",
-  description: "DPDPA compliance guide for D2C brands and e-commerce businesses in India.",
+  title: "DPDPA for D2C Brands",
+  description: "Practical DPDPA guidance for D2C brands on checkout consent, WhatsApp and SMS marketing, analytics tools, loyalty data, and retention.",
   alternates: { canonical: 'https://saralprivacy.com/industries/d2c-brands' },
 };
 
@@ -26,8 +26,12 @@ export default function D2CBrandsPage() {
             </div>
             <span className="text-rose-300 text-sm font-semibold">Industry Guide</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">DPDPA for D2C Brands & E-commerce</h1>
-          <p className="text-slate-300 text-lg max-w-2xl">D2C brands run marketing-heavy, data-intensive operations — WhatsApp campaigns, remarketing pixels, loyalty programmes, and personalisation engines. DPDPA touches every layer of your customer acquisition and retention stack.</p>
+          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">DPDPA for D2C Brands and E-commerce Businesses</h1>
+          <p className="text-slate-300 text-lg max-w-2xl mb-4">D2C brands run marketing-heavy, data-intensive operations — WhatsApp campaigns, remarketing pixels, loyalty programmes, and personalisation engines. DPDPA touches every layer of your customer acquisition and retention stack.</p>
+          <div className="bg-white/10 border border-white/20 rounded-xl px-5 py-4 max-w-2xl">
+            <p className="text-slate-200 text-sm leading-relaxed">D2C brands run on customer data: checkout details, remarketing audiences, WhatsApp lists, analytics tools, loyalty signals, and behavioural targeting. Under DPDPA, the biggest problems usually show up in bundled consent, undisclosed tracking, sloppy opt-ins, and indefinite retention. This guide shows D2C teams how to keep growth systems running without turning the customer funnel into a compliance minefield.</p>
+            <p className="text-rose-300 text-xs mt-2 font-medium">If checkout consent is doing three jobs at once, it is probably doing all three badly.</p>
+          </div>
         </div>
       </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
@@ -78,6 +82,11 @@ export default function D2CBrandsPage() {
           </div>
         </div>
       </div>
+        <div className="mt-10 pt-6 border-t border-slate-200 text-xs text-slate-400 space-y-1">
+          <p><strong>Last reviewed:</strong> March 2026</p>
+          <p><strong>Legal baseline:</strong> DPDP Rules, 2025 notified on 14 November 2025, with phased commencement.</p>
+          <p>This page is for educational purposes and does not constitute legal advice.</p>
+        </div>
     </div>
     </>
   );

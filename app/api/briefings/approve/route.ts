@@ -21,19 +21,14 @@ export async function GET(request: NextRequest) {
       return NextResponse.redirect(new URL("/admin?briefing=error&reason=invalid-token", request.url));
     }
 
-    // Only allow approving drafts
-    if (briefing.status !== "draft") {
-      return NextResponse.redirect(new URL(`/admin?briefing=already-${briefing.status}`, request.url));
+    // Block re-sending already-sent briefings
+    if (briefing.status === "sent") {
+      return NextResponse.redirect(new URL("/admin?briefing=already-sent", request.url));
     }
 
-    // Update status to "approved"
-    await databases.updateDocument(DB_ID, COLLECTIONS.BRIEFINGS, briefingId, {
-      status: "approved",
-    });
-
-    // Fetch all active subscribers
+    // Fetch active subscribers — cap at 300 per send (Gmail / Resend daily safe limit)
     const subscriberResult = await databases.listDocuments(DB_ID, COLLECTIONS.SUBSCRIBERS, [
-      Query.limit(1000),
+      Query.limit(300),
     ]);
     const subscribers = subscriberResult.documents.map((doc) => ({
       email: doc.email as string,

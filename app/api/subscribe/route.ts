@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
       name,
       email,
       industry:         industry || "",
-      frequency:        frequency || "weekly",
+      frequency:        frequency || "daily",
       consent_version:  PRIVACY_NOTICE_VERSION,
       user_agent:       userAgent,
       created_at:       new Date().toISOString(),

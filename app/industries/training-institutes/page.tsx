@@ -5,7 +5,7 @@ import { breadcrumbSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
   title: "DPDPA for Training Institutes",
-  description: "DPDPA guide for training institutes, coaching centres, and EdTech operations in India.",
+  description: "Understand DPDPA obligations for training institutes, including parental consent, admissions forms, tracking pixels, placement data, and rights handling.",
   alternates: { canonical: 'https://saralprivacy.com/industries/training-institutes' },
 };
 
@@ -26,8 +26,12 @@ export default function TrainingInstitutesPage() {
             </div>
             <span className="text-amber-300 text-sm font-semibold">Industry Guide</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">DPDPA for Training Institutes</h1>
-          <p className="text-slate-300 text-lg max-w-2xl">Training institutes collect student and parent data at scale — from lead forms and admissions to attendance, fees, and placements. DPDPA creates specific obligations at each stage of the student lifecycle.</p>
+          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">DPDPA for Training Institutes and Coaching Centres</h1>
+          <p className="text-slate-300 text-lg max-w-2xl mb-4">Training institutes collect student and parent data at scale — from lead forms and admissions to attendance, fees, and placements. DPDPA creates specific obligations at each stage of the student lifecycle.</p>
+          <div className="bg-white/10 border border-white/20 rounded-xl px-5 py-4 max-w-2xl">
+            <p className="text-slate-200 text-sm leading-relaxed">Training institutes collect personal data at every stage of the student lifecycle: enquiries, admissions, attendance, fees, placements, and marketing. If minors are involved, the compliance stakes rise fast because parental consent and careful data handling become central. This guide helps institutes fix the most common weak spots in forms, tracking, permissions, and student data workflows.</p>
+            <p className="text-amber-300 text-xs mt-2 font-medium">Most institutes think they run classes. They also run a quiet little data factory.</p>
+          </div>
         </div>
       </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
@@ -77,6 +81,11 @@ export default function TrainingInstitutesPage() {
           </div>
         </div>
       </div>
+        <div className="mt-10 pt-6 border-t border-slate-200 text-xs text-slate-400 space-y-1">
+          <p><strong>Last reviewed:</strong> March 2026</p>
+          <p><strong>Legal baseline:</strong> DPDP Rules, 2025 notified on 14 November 2025, with phased commencement.</p>
+          <p>This page is for educational purposes and does not constitute legal advice.</p>
+        </div>
     </div>
     </>
   );

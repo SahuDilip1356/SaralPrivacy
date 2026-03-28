@@ -39,8 +39,8 @@ const navigation = [
     badge: "Free",
   },
   {
-    label: "Resources",
-    href: "/resources",
+    label: "Insights",
+    href: "/blog",
   },
   {
     label: "FAQ",
@@ -76,7 +76,7 @@ export function Header() {
     >
       {/* Top strip */}
       <div className="bg-brand-700 text-slate-300 text-xs py-1.5 px-4 text-center">
-        <span>DPDPA Rules are pending Government notification — prepare now. </span>
+        <span>DPDP Rules, 2025 were notified on 14 November 2025. Use this phased rollout window to fix notices, consent, rights handling, retention, vendor controls, and breach response. </span>
         <Link href="/assessment" className="text-amber-400 font-semibold hover:text-amber-300 underline underline-offset-2">
           Check your readiness — free
         </Link>

@@ -1,16 +1,19 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
-import { BarChart2, Users, Mail, Download, CheckCircle, Shield, Clock, LogOut } from "lucide-react";
+import { BarChart2, Users, Mail, Download, CheckCircle, Shield, Clock, LogOut, FileText, ClipboardList, BookOpen } from "lucide-react";
 
 const adminNav = [
-  { label: "Dashboard",     href: "/admin",               icon: BarChart2  },
-  { label: "Leads",         href: "/admin/leads",         icon: Users      },
-  { label: "Subscribers",   href: "/admin/subscribers",   icon: Mail       },
-  { label: "Downloads",     href: "/admin/downloads",     icon: Download   },
-  { label: "Assessments",   href: "/admin/assessments",   icon: CheckCircle},
-  { label: "Consent Log",   href: "/admin/consent",       icon: Shield     },
-  { label: "Consultations", href: "/admin/consultations", icon: Clock      },
+  { label: "Dashboard",        href: "/admin",                  icon: BarChart2    },
+  { label: "Briefings",        href: "/admin/briefings",        icon: FileText     },
+  { label: "Blog Posts",       href: "/admin/blog",             icon: BookOpen     },
+  { label: "Leads",            href: "/admin/leads",            icon: Users        },
+  { label: "Subscribers",      href: "/admin/subscribers",      icon: Mail         },
+  { label: "Downloads",        href: "/admin/downloads",        icon: Download     },
+  { label: "Assessments",      href: "/admin/assessments",      icon: CheckCircle  },
+  { label: "Survey Responses", href: "/admin/survey-responses", icon: ClipboardList},
+  { label: "Consent Log",      href: "/admin/consent",          icon: Shield       },
+  { label: "Consultations",    href: "/admin/consultations",    icon: Clock        },
 ];
 
 // The middleware.ts already protects all /admin/* routes (except /admin/login).

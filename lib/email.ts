@@ -7,16 +7,26 @@ import {
   welcomeEmailTemplate,
   briefingApprovalTemplate,
   briefingEmailTemplate,
+  surveyResultEmailTemplate,
   type LeadData,
   type DownloadData,
   type AssessmentData,
   type BriefingData,
+  type SurveyResultData,
 } from './email-templates';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const FROM_BRIEFINGS = process.env.RESEND_FROM_BRIEFINGS || 'briefings@saralprivacy.com';
 const FROM_NOREPLY   = process.env.RESEND_FROM_NOREPLY   || 'noreply@saralprivacy.com';
 const ADMIN_EMAIL    = process.env.ADMIN_EMAIL            || 'dilip.sahu@gmail.com';
+
+// All 3 admins receive briefing approval emails; any one can approve
+const ADMIN_EMAILS: string[] = [
+  'dilip.sahu@gmail.com',
+  'sahudilip1356@gmail.com',
+  'saralprivacy@gmail.com',
+  ...(process.env.EXTRA_ADMIN_EMAILS ? process.env.EXTRA_ADMIN_EMAILS.split(',').map(e => e.trim()) : []),
+].filter(Boolean);
 
 export interface EmailResult {
   success: boolean;
@@ -114,16 +124,21 @@ export async function sendWelcomeEmail(subscriber: { name: string; email: string
 // ──────────────────────────────────────────────────────────────────────────────
 export async function sendBriefingApprovalEmail(briefing: BriefingData, approvalToken: string): Promise<EmailResult> {
   try {
-    const siteUrl    = process.env.NEXT_PUBLIC_SITE_URL || 'https://saralprivacy.com';
+    const siteUrl     = process.env.NEXT_PUBLIC_SITE_URL || 'https://saralprivacy.com';
     const approveLink = `${siteUrl}/api/briefings/approve?token=${approvalToken}&briefingId=${briefing.id}`;
     const { subject, html } = briefingApprovalTemplate(briefing, approveLink);
-    const { error } = await resend.emails.send({
-      from: FROM_NOREPLY,
-      to:   ADMIN_EMAIL,
-      subject,
-      html,
-    });
-    if (error) return { success: false, error: error.message };
+
+    // Send to all 3 admins — any one click approves for all
+    const results = await Promise.allSettled(
+      ADMIN_EMAILS.map(adminEmail =>
+        resend.emails.send({ from: FROM_NOREPLY, to: adminEmail, subject, html })
+      )
+    );
+
+    const failed = results.filter(r => r.status === 'rejected' || (r.status === 'fulfilled' && r.value.error));
+    if (failed.length === ADMIN_EMAILS.length) {
+      return { success: false, error: 'All admin approval emails failed to send' };
+    }
     return { success: true };
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
@@ -192,4 +207,25 @@ export async function sendSubscriberBriefing(
   }
 }
 
-export type { LeadData, DownloadData, AssessmentData, BriefingData };
+// ──────────────────────────────────────────────────────────────────────────────
+// 8. sendSurveyResultEmail — score-based follow-up after survey submission
+// ──────────────────────────────────────────────────────────────────────────────
+export async function sendSurveyResultEmail(data: SurveyResultData): Promise<EmailResult> {
+  try {
+    const { subject, html } = surveyResultEmailTemplate(data);
+    const { error } = await resend.emails.send({
+      from:    FROM_BRIEFINGS,
+      to:      data.email,
+      subject,
+      html,
+    });
+    if (error) return { success: false, error: error.message };
+    return { success: true };
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error('[email] sendSurveyResultEmail failed:', msg);
+    return { success: false, error: msg };
+  }
+}
+
+export type { LeadData, DownloadData, AssessmentData, BriefingData, SurveyResultData };

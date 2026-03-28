@@ -1,0 +1,9 @@
+{
+  "regions": ["sin1"],
+  "crons": [
+    {
+      "path": "/api/briefings/generate",
+      "schedule": "30 3 * * *"
+    }
+  ]
+}

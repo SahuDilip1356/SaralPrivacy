@@ -4,8 +4,8 @@ import { Calculator } from "lucide-react";
 import { breadcrumbSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
-  title: "DPDPA for CA Firms — Client Data",
-  description: "DPDPA compliance guide for Chartered Accountant firms and accounting practices in India.",
+  title: "DPDPA for CA Firms",
+  description: "See how DPDPA affects CA firms handling PAN, Aadhaar, payroll, cloud storage, contractors, retention, and client data governance.",
   alternates: { canonical: 'https://saralprivacy.com/industries/ca-firms' },
 };
 
@@ -47,8 +47,12 @@ export default function CAFirmsIndustryPage() {
             </div>
             <span className="text-indigo-300 text-sm font-semibold">Industry Guide</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">DPDPA for CA Firms & Accounting Practices</h1>
-          <p className="text-slate-300 text-lg max-w-2xl">CA firms process some of India's most sensitive personal data — PAN, Aadhaar, payroll, and financial records. DPDPA creates specific obligations that go beyond traditional professional confidentiality.</p>
+          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">DPDPA for CA Firms and Accounting Practices</h1>
+          <p className="text-slate-300 text-lg max-w-2xl mb-4">CA firms process some of India&apos;s most sensitive personal data — PAN, Aadhaar, payroll, and financial records. DPDPA creates specific obligations that go beyond traditional professional confidentiality.</p>
+          <div className="bg-white/10 border border-white/20 rounded-xl px-5 py-4 max-w-2xl">
+            <p className="text-slate-200 text-sm leading-relaxed">CA firms handle some of the most sensitive personal data in routine business operations: PAN, Aadhaar, payroll records, bank details, tax files, and employee documents. DPDPA adds practical obligations around access control, vendor governance, retention, rights handling, and internal accountability. This guide helps CA firms move from professional confidentiality to operational privacy discipline.</p>
+            <p className="text-indigo-300 text-xs mt-2 font-medium">If everyone in the office can open every client folder, that is not collaboration. It is exposure with good lighting.</p>
+          </div>
         </div>
       </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
@@ -105,6 +109,11 @@ export default function CAFirmsIndustryPage() {
           </div>
         </div>
       </div>
+        <div className="mt-10 pt-6 border-t border-slate-200 text-xs text-slate-400 space-y-1">
+          <p><strong>Last reviewed:</strong> March 2026</p>
+          <p><strong>Legal baseline:</strong> DPDP Rules, 2025 notified on 14 November 2025, with phased commencement.</p>
+          <p>This page is for educational purposes and does not constitute legal advice.</p>
+        </div>
     </div>
     </>
   );

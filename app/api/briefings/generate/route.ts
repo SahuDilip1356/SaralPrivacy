@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { databases, DB_ID, COLLECTIONS, ID } from "@/lib/appwrite";
+import { databases, DB_ID, COLLECTIONS, ID, Query } from "@/lib/appwrite";
 import { sendBriefingApprovalEmail } from "@/lib/email";
 
 // ─── Daily DPDPA topic rotation ───────────────────────────────────────────────
@@ -36,42 +36,77 @@ const DPDPA_TOPICS = [
   { category: "compliance-guidance", topic: "DPDPA vs GDPR — key differences for Indian businesses expanding globally" },
 ];
 
+// ─── Day-of-week theme system ─────────────────────────────────────────────────
+const DOW_THEMES = [
+  { type: "recap",   label: "Weekly Recap",    tone: "Summarise the key DPDPA lesson for the week in a story-style recap — what should readers take away from this week?" },
+  { type: "concept", label: "Big Idea",         tone: "Explain one core DPDPA concept in the simplest possible language for a shop owner, HR manager, or SME founder." },
+  { type: "example", label: "Business Example", tone: "Walk through a concrete real-world scenario showing exactly how this DPDPA rule plays out in an Indian MSME." },
+  { type: "mistake", label: "Common Mistake",   tone: "Reveal the single most common DPDPA mistake Indian MSMEs make on this topic and how to fix it immediately." },
+  { type: "audit",   label: "Mini Audit",       tone: "Give readers a quick 5-minute self-check they can do right now to assess their compliance on this topic." },
+  { type: "myth",    label: "Myth Buster",      tone: "Bust a common wrong assumption MSMEs have about this DPDPA rule and reveal the surprising truth." },
+  { type: "case",    label: "Case Story",       tone: "Tell a scenario story: 'Imagine this happened in your company...' Make it feel real and close to home for Indian MSMEs." },
+];
+
 // ─── Claude API call ──────────────────────────────────────────────────────────
-async function generateWithClaude(topic: string, category: string): Promise<any> {
+async function generateWithClaude(topic: string, category: string, theme: typeof DOW_THEMES[number]): Promise<any> {
   const apiKey = (process.env.ANTHROPIC_API_KEY || "").trim();
   if (!apiKey) throw new Error("ANTHROPIC_API_KEY not set");
 
-  const prompt = `You are the DPDPA Editorial Team at SaralPrivacy.com — India's leading DPDPA compliance platform for small and medium businesses.
+  const actionFormatValue = theme.type === "audit"
+    ? "audit"
+    : (theme.type === "case" || theme.type === "recap")
+      ? "team"
+      : (theme.type === "mistake" || theme.type === "example")
+        ? "mistake"
+        : "today";
 
-Generate a daily DPDPA compliance briefing on this topic:
-"${topic}"
+  const prompt = `You are the DPDPA Editorial Team at SaralPrivacy — India's plain-language DPDPA compliance platform for small and medium businesses.
 
-Return ONLY a valid JSON object (absolutely no markdown, no explanation, no extra text) with these exact fields:
+Today's theme: ${theme.label} — ${theme.tone}
+Topic: "${topic}"
+
+Write a 2-minute daily DPDPA briefing for Indian MSME owners, founders, HR managers, accountants, and operations leads. Write for an 8th-grade reading level. No legal jargon. No "notwithstanding". No "pursuant to". Never start a sentence with "Under Section" — start with pain, risk, or a real business situation.
+
+LEGAL TERM TRANSLATIONS (always use these):
+- Data Principal → the person whose data it is
+- Data Fiduciary → the business using the data
+- Personal data → information that can identify a person
+- Processing → collecting, storing, sharing, using, or deleting data
+- Consent → clear permission
+
+Return ONLY a valid JSON object (no markdown, no explanation, no extra text):
 
 {
-  "title": "Specific, compelling title (max 85 characters)",
-  "excerpt": "2-3 sentence card preview that makes business owners want to read more (max 220 characters)",
-  "why_it_matters": "2-3 paragraphs explaining the business risk and urgency for Indian SMEs. Reference specific DPDPA sections. (150-250 words)",
-  "summary": "Plain-English explanation of the DPDPA requirement. Avoid legalese. Written for a non-lawyer business owner. (200-300 words)",
-  "business_impact": "Specific, practical impact on day-to-day operations. Include examples relevant to Indian SMEs. (150-250 words)",
-  "who_is_affected": ["Type of business or scenario 1", "Type of business or scenario 2", "Type of business or scenario 3", "Type of business or scenario 4"],
-  "action_checklist": ["Step 1", "Step 2", "Step 3", "Step 4", "Step 5"],
+  "title": "A question-style title that a business owner would actually ask. Max 85 characters. Examples: 'Can You Keep Ex-Employee Records Forever?', 'What Happens If You Share Customer Data Without Permission?'",
+  "tag": "One topic label only — one of: Consent / Notice / Penalty / Data Breach / HR Records / Vendor Risk / Children's Data / Employee Data / Marketing / Customer Data / Data Storage / Access Control",
+  "hook_line1": "One sharp line with tension, risk, danger, or a surprising reality. Max 18 words. Must NOT start with 'Under Section'. Start with pain or confusion.",
+  "hook_line2": "One line stating the business impact in plain language. Max 20 words.",
+  "card_what": "Complete one-line plain English meaning of this rule. Max 20 words.",
+  "card_why": "Complete one-line risk or business consequence. Max 20 words.",
+  "card_action": "Complete one practical action the reader can take. Max 20 words.",
+  "card_owner": "Who in the company is responsible — list roles separated by + e.g. Founder + HR + IT",
+  "explainer_concept": "The concept explained in very plain language. Max 30 words. Write like you are explaining to a friend.",
+  "explainer_example": "A specific real MSME example — a recruitment agency, CA firm, D2C brand, training institute, or general business. Max 30 words.",
+  "explainer_mistake": "The most common mistake businesses make on this exact topic. Max 30 words. Start with the mistake, not with 'The mistake is'.",
+  "action_format": "${actionFormatValue}",
+  "action_items": ["Action or question 1 — max 18 words", "Action or question 2 — max 18 words", "Action or question 3 — max 18 words"],
+  "save_line": "One sharp, memorable, slightly punchy sentence. This is the one line readers will screenshot and share. Max 25 words.",
+  "participation": "One short question that makes readers think about their own business. Max 15 words. Example: 'Would your business pass this check today?'",
+  "excerpt": "2 sentences for the card preview on the briefings list page. Max 200 characters.",
   "category": "${category}",
   "tags": ["tag1", "tag2", "tag3"],
   "industries": ["one or more of: recruitment, ca-firms, training-institutes, d2c-brands, healthcare, fintech, general"],
-  "read_time": 5,
   "featured": false,
   "author": "DPDPA Editorial Team"
 }
 
-Rules:
-- Write for Indian SME owners, CXOs, and compliance managers — not lawyers
-- Be specific and actionable, not generic platitudes
-- Reference specific DPDPA sections (Section 6, Section 8, Section 13, etc.) where relevant
-- Use Indian business context (WhatsApp, UPI, CA firms, recruitment agencies, GST, etc.)
-- who_is_affected must have exactly 4-6 items
-- action_checklist must have exactly 5-7 concrete steps
-- Return ONLY the JSON object, no other text`;
+Critical rules:
+- action_format must be exactly one of: today / team / mistake / audit
+- action_items must have EXACTLY 3 items
+- All fields must be complete sentences or phrases — no trailing "..."
+- Keep every field SHORT — brevity is the whole point
+- Write for a person reading on their phone between meetings
+- Return ONLY the JSON object`;
 
   const res = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
@@ -149,12 +184,16 @@ async function generateAndSave(request: NextRequest) {
   const dayOfYear   = Math.floor((Date.now() - startOfYear) / 86_400_000);
   const { topic, category } = DPDPA_TOPICS[dayOfYear % DPDPA_TOPICS.length];
 
+  // Compute day-of-week theme
+  const dow = new Date().getDay(); // 0=Sun, 1=Mon, ..., 6=Sat
+  const theme = DOW_THEMES[dow];
+
   // Generate content via Claude
-  const generated = await generateWithClaude(topic, category);
+  const briefingData_raw = await generateWithClaude(topic, category, theme);
 
   // Build slug
   const dateStr = new Date().toISOString().split("T")[0];
-  const slug    = `${dateStr}-${(generated.title as string)
+  const generatedSlug = `${dateStr}-${(briefingData_raw.title as string)
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "")
@@ -167,28 +206,51 @@ async function generateAndSave(request: NextRequest) {
 
   const approvalToken = crypto.randomUUID();
 
-  // Pack business_impact + who_is_affected into why_it_matters as JSON envelope
-  // (avoids needing separate Appwrite attributes; backward-compatible with static briefings)
-  const whyRich = JSON.stringify({
-    why:      generated.why_it_matters  || "",
-    impact:   generated.business_impact || "",
-    affected: generated.who_is_affected || [],
+  // Pack new 6-block fields into why_it_matters JSON envelope (v2)
+  const whyEnvelope = JSON.stringify({
+    version: 2,
+    tag: briefingData_raw.tag || "",
+    hook_line1: briefingData_raw.hook_line1 || "",
+    hook_line2: briefingData_raw.hook_line2 || "",
+    card_what: briefingData_raw.card_what || "",
+    card_why: briefingData_raw.card_why || "",
+    card_action: briefingData_raw.card_action || "",
+    card_owner: briefingData_raw.card_owner || "",
+    explainer_concept: briefingData_raw.explainer_concept || "",
+    explainer_example: briefingData_raw.explainer_example || "",
+    explainer_mistake: briefingData_raw.explainer_mistake || "",
+    action_format: briefingData_raw.action_format || "today",
+    action_items: briefingData_raw.action_items || [],
+    save_line: briefingData_raw.save_line || "",
+    participation: briefingData_raw.participation || "",
+    theme_type: theme.type,
+    theme_label: theme.label,
   });
 
+  // word count for read_time (approximate for new short format)
+  const wordCount = [
+    briefingData_raw.hook_line1, briefingData_raw.hook_line2,
+    briefingData_raw.card_what, briefingData_raw.card_why, briefingData_raw.card_action,
+    briefingData_raw.explainer_concept, briefingData_raw.explainer_example, briefingData_raw.explainer_mistake,
+    ...(briefingData_raw.action_items || []),
+    briefingData_raw.save_line,
+  ].join(" ").split(/\s+/).length;
+  const readTime = Math.max(1, Math.ceil(wordCount / 200));
+
   const briefingData = {
-    title:            generated.title,
-    slug,
-    excerpt:          generated.excerpt          || "",
-    summary:          generated.summary          || "",
-    why_it_matters:   whyRich,
-    action_checklist: JSON.stringify(generated.action_checklist || []),
-    category:         generated.category         || category,
-    tags:             JSON.stringify(generated.tags             || []),
-    industries:       JSON.stringify(generated.industries       || ["general"]),
-    read_time:        generated.read_time         || 5,
-    featured:         false,
-    author:           "DPDPA Editorial Team",
-    status:           "draft",
+    title:            briefingData_raw.title,
+    slug:             generatedSlug,
+    excerpt:          briefingData_raw.excerpt || "",
+    summary:          briefingData_raw.save_line || "", // save_line in summary for email
+    why_it_matters:   whyEnvelope,
+    action_checklist: JSON.stringify(briefingData_raw.action_items || []),
+    category:         briefingData_raw.category || category,
+    tags:             JSON.stringify(briefingData_raw.tags || []),
+    industries:       JSON.stringify(briefingData_raw.industries || ["general"]),
+    featured:         briefingData_raw.featured ?? false,
+    author:           briefingData_raw.author || "DPDPA Editorial Team",
+    status:           "approved",   // live on website immediately — no manual approval gate
+    read_time:        readTime,
     approval_token:   approvalToken,
     scheduled_for:    tomorrow.toISOString(),
     created_at:       new Date().toISOString(),
@@ -199,13 +261,13 @@ async function generateAndSave(request: NextRequest) {
   );
 
   // Push to GitHub (non-blocking)
-  pushToGitHub(slug, { ...briefingData, id: doc.$id }).catch(console.error);
+  pushToGitHub(generatedSlug, { ...briefingData, id: doc.$id }).catch(console.error);
 
   // Email approval link to admin
   await sendBriefingApprovalEmail({ ...briefingData, id: doc.$id }, approvalToken)
     .catch(console.error);
 
-  return NextResponse.json({ success: true, briefingId: doc.$id, slug, topic });
+  return NextResponse.json({ success: true, briefingId: doc.$id, slug: generatedSlug, topic });
 }
 
 // ─── Routes ───────────────────────────────────────────────────────────────────
@@ -244,12 +306,31 @@ export async function POST(request: NextRequest) {
     }
 
     // Manual submission with pre-written content
-    const dateStr = new Date().toISOString().split("T")[0];
+    // Use date from payload if provided (Python pipeline sends its own date)
+    const dateStr = (body.date as string) || new Date().toISOString().split("T")[0];
     const slug = `${dateStr}-${(body.title as string)
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-|-$/g, "")
       .slice(0, 60)}`;
+
+    // Duplicate guard: if a draft with this slug already exists, delete it first
+    // (prevents duplicates if the pipeline retries a same-day submission)
+    try {
+      const existing = await databases.listDocuments(DB_ID, COLLECTIONS.BRIEFINGS, [
+        Query.equal("slug", slug),
+        Query.equal("status", "draft"),
+        Query.limit(5),
+      ]);
+      if (existing.documents.length > 0) {
+        await Promise.all(
+          existing.documents.map((d) =>
+            databases.deleteDocument(DB_ID, COLLECTIONS.BRIEFINGS, d.$id)
+          )
+        );
+        console.log(`[briefing] Deleted ${existing.documents.length} existing draft(s) for slug: ${slug}`);
+      }
+    } catch { /* non-blocking */ }
 
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
@@ -276,13 +357,23 @@ export async function POST(request: NextRequest) {
       category:         body.category         || "compliance-guidance",
       tags:             JSON.stringify(body.tags             || []),
       industries:       JSON.stringify(body.industries       || ["general"]),
-      read_time:        body.read_time         || 5,
+      read_time: (() => {
+        if (body.read_time) return body.read_time;
+        const txt = [body.title, body.excerpt, body.summary, body.why_it_matters, body.business_impact,
+          (body.who_is_affected || []).join(" "), (body.action_checklist || []).join(" ")].join(" ");
+        return Math.max(1, Math.round(txt.split(/\s+/).filter(Boolean).length / 200));
+      })(),
       featured:         false,
       author:           "DPDPA Editorial Team",
-      status:           "draft",
+      status:           "approved",   // live on website immediately
       approval_token:   approvalToken,
       scheduled_for:    tomorrow.toISOString(),
       created_at:       new Date().toISOString(),
+
+      // ── Infographic (stored in dedicated 1MB attribute) ────────────────────
+      infographic_base64:  body.infographic_base64  || "",
+      // Note: all Hook/Body/CTA rich fields are packed into why_it_matters JSON
+      // by publish_to_webapp.py. The briefing detail page unpacks them via parseWhyField().
     };
 
     const doc = await databases.createDocument(
@@ -292,7 +383,7 @@ export async function POST(request: NextRequest) {
     await sendBriefingApprovalEmail({ ...briefingData, id: doc.$id }, approvalToken)
       .catch(console.error);
 
-    return NextResponse.json({ success: true, briefingId: doc.$id });
+    return NextResponse.json({ success: true, briefingId: doc.$id, slug });
   } catch (error) {
     console.error("Briefing generate error:", error);
     return NextResponse.json({ error: "Failed to generate briefing." }, { status: 500 });

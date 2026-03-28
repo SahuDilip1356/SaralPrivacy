@@ -46,6 +46,11 @@ export default function FAQContent() {
       </div>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
+        {/* Answer box */}
+        <div className="bg-slate-50 border-l-4 border-saffron-400 rounded-r-xl px-5 py-4 mb-8">
+          <p className="text-slate-700 text-sm leading-relaxed">These are the questions Indian businesses ask when the law stops being abstract and starts touching forms, CRMs, websites, payroll files, WhatsApp campaigns, and vendor contracts. The DPDP Rules, 2025 have been notified, so the useful question is no longer &apos;Is this coming?&apos; but &apos;What do I need to fix first?&apos; Start here for clear answers without legal theatre.</p>
+        </div>
+
         {/* Category filters */}
         <div className="flex flex-wrap gap-2 mb-8">
           <button
@@ -129,6 +134,13 @@ export default function FAQContent() {
           >
             Contact Us
           </a>
+        </div>
+
+        {/* Last reviewed */}
+        <div className="mt-10 pt-6 border-t border-slate-200 text-xs text-slate-400 space-y-1">
+          <p><strong>Last reviewed:</strong> March 2026</p>
+          <p><strong>Legal baseline:</strong> DPDP Rules, 2025 notified on 14 November 2025, with phased commencement.</p>
+          <p>This page is for educational purposes and does not constitute legal advice.</p>
         </div>
       </div>
     </div>

@@ -5,22 +5,41 @@ import { Mail, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Checkbox } from "@/components/ui/Input";
+import { trackEvent } from "@/lib/analytics";
 
 export function NewsletterSection() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const [frequency, setFrequency] = useState<"daily" | "weekly">("weekly");
+  const [frequency, setFrequency] = useState<"daily" | "weekly">("daily");
   const [consentEmail, setConsentEmail] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!consentEmail) return;
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 800));
-    setSubmitted(true);
-    setLoading(false);
+    setError("");
+    try {
+      const res = await fetch("/api/subscribe", {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body:    JSON.stringify({ name, email, frequency, consentEmail }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        trackEvent.subscribe({ frequency });
+        setSubmitted(true);
+      } else {
+        setError(data.error || "Something went wrong. Please try again.");
+      }
+    } catch {
+      setError("Network error. Please check your connection and try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -78,7 +97,7 @@ export function NewsletterSection() {
                   How often?
                 </label>
                 <div className="flex gap-2">
-                  {(["weekly", "daily"] as const).map((freq) => (
+                  {(["daily", "weekly"] as const).map((freq) => (
                     <button
                       key={freq}
                       type="button"
@@ -115,6 +134,10 @@ export function NewsletterSection() {
                   We do not pre-check consent boxes. You must opt in actively.
                 </p>
               </div>
+
+              {error && (
+                <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2 mb-3">{error}</p>
+              )}
 
               <Button
                 type="submit"

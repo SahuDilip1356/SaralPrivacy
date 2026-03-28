@@ -277,7 +277,7 @@ export interface BriefingData {
 }
 
 export function briefingApprovalTemplate(briefing: BriefingData, approveLink: string): { subject: string; html: string } {
-  const subject = `Draft Ready: ${briefing.title} — Approve to Publish`;
+  const subject = `New Briefing LIVE: ${briefing.title} — Send to Subscribers`;
 
   let checklist = '';
   try {
@@ -288,7 +288,7 @@ export function briefingApprovalTemplate(briefing: BriefingData, approveLink: st
   }
 
   const html = baseLayout(`
-    <p style="margin:0 0 4px;font-size:13px;color:${MUTED};">BRIEFING APPROVAL REQUIRED</p>
+    <p style="margin:0 0 4px;font-size:13px;color:#2D9B6F;font-weight:600;">✓ BRIEFING IS LIVE ON SARALPRIVACY.COM</p>
     <h2 style="margin:0 0 20px;font-size:22px;font-weight:700;color:${NAV};">${briefing.title}</h2>
 
     ${briefing.summary ? `
@@ -313,14 +313,14 @@ export function briefingApprovalTemplate(briefing: BriefingData, approveLink: st
     <table role="presentation" cellpadding="0" cellspacing="0" border="0">
       <tr>
         <td style="background-color:#2D9B6F;border-radius:8px;padding:14px 28px;">
-          <a href="${approveLink}" style="color:#FFFFFF;font-size:15px;font-weight:700;text-decoration:none;">Approve &amp; Publish Briefing →</a>
+          <a href="${approveLink}" style="color:#FFFFFF;font-size:15px;font-weight:700;text-decoration:none;">Send to Subscribers →</a>
         </td>
       </tr>
     </table>
 
     <p style="margin:16px 0 0;font-size:12px;color:${MUTED};">
-      Clicking the button above will immediately send this briefing to all active subscribers.
-      This action cannot be undone.
+      This briefing is already live on saralprivacy.com. Click the button above when you are ready
+      to email it to all active subscribers. This action cannot be undone.
     </p>
   `);
 
@@ -328,7 +328,136 @@ export function briefingApprovalTemplate(briefing: BriefingData, approveLink: st
 }
 
 // ──────────────────────────────────────────────────────────────────────────────
-// 6. Briefing Email (Subscriber)
+// 6. Survey Result Email (Score-based follow-up to survey respondent)
+// ──────────────────────────────────────────────────────────────────────────────
+
+export interface SurveyResultData {
+  email: string;
+  name: string;
+  businessName: string;
+  score: number;
+  band: string;
+  summary: string;
+  recommendations: string[];
+  riskFlags: string[];
+}
+
+// Score-band follow-up content
+const BAND_RESOURCES: Record<string, { label: string; headline: string; body: string; resource: string; resourceLabel: string }> = {
+  "Just Starting": {
+    label: "Early Stage",
+    headline: "Your free 'What is DPDPA?' guide is here",
+    body: "You are at the beginning of your DPDPA journey. That is totally okay — most small businesses are. This one-page guide explains DPDPA in plain language. No legal words. Just what you need to know to start.",
+    resource: "https://saralprivacy.com/learn/what-is-dpdpa",
+    resourceLabel: "Read: What is DPDPA? (Plain English)",
+  },
+  "Exposed but Aware": {
+    label: "Partly Ready",
+    headline: "Your free 'Top 5 Gaps MSMEs Miss' checklist",
+    body: "You are aware of DPDPA but there are some important gaps. This checklist shows the 5 most common mistakes small businesses make — and simple ways to fix them this week.",
+    resource: "https://saralprivacy.com/resources",
+    resourceLabel: "Download: Top 5 Gaps Checklist",
+  },
+  "Building Controls": {
+    label: "Partly Ready",
+    headline: "Your free 'Top 5 Gaps MSMEs Miss' checklist",
+    body: "You have made good progress. This checklist will help you find the remaining gaps and close them quickly. Focus on consistency and making sure all your vendors follow the same rules.",
+    resource: "https://saralprivacy.com/resources",
+    resourceLabel: "Download: Top 5 Gaps Checklist",
+  },
+  "Moving Well": {
+    label: "Moving Well",
+    headline: "Your free Vendor Data Processing Agreement template",
+    body: "You are ahead of most small businesses. The next level is tightening your vendor agreements. This template gives you the exact clauses to add to your contracts so your vendors handle data the right way.",
+    resource: "https://saralprivacy.com/resources",
+    resourceLabel: "Download: Vendor DPA Template",
+  },
+};
+
+export function surveyResultEmailTemplate(data: SurveyResultData): { subject: string; html: string } {
+  const resource = BAND_RESOURCES[data.band] || BAND_RESOURCES["Just Starting"];
+  const subject  = `Your DPDPA Readiness Score: ${data.score}/7 — ${resource.label}`;
+
+  const recsHtml = data.recommendations
+    .map((rec, i) => `
+      <tr>
+        <td style="padding:8px 0;vertical-align:top;">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+            <td style="width:26px;vertical-align:top;padding-top:2px;">
+              <div style="width:22px;height:22px;background-color:${SAFFRON};border-radius:50%;text-align:center;line-height:22px;">
+                <span style="color:#fff;font-size:11px;font-weight:700;">${i + 1}</span>
+              </div>
+            </td>
+            <td style="padding-left:10px;font-size:13px;color:${TEXT};line-height:1.6;">${rec}</td>
+          </tr></table>
+        </td>
+      </tr>`)
+    .join("");
+
+  const riskHtml = data.riskFlags.length > 0
+    ? `<div style="background:#FEF2F2;border-left:3px solid #EF4444;padding:14px 16px;border-radius:0 8px 8px 0;margin-bottom:20px;">
+        <p style="margin:0 0 8px;font-size:13px;font-weight:700;color:#991B1B;">⚠ Higher-risk areas to address</p>
+        <ul style="margin:0;padding-left:18px;">
+          ${data.riskFlags.map(f => `<li style="font-size:12px;color:#B91C1C;padding:2px 0;">${f}</li>`).join("")}
+        </ul>
+      </div>`
+    : "";
+
+  const html = baseLayout(`
+    <p style="margin:0 0 4px;font-size:12px;color:${MUTED};text-transform:uppercase;letter-spacing:0.5px;">Your DPDPA Readiness Score</p>
+    <h2 style="margin:0 0 20px;font-size:22px;font-weight:700;color:${NAV};">Hi ${data.name || "there"} 👋</h2>
+
+    <!-- Score -->
+    <div style="background-color:${LIGHT_BG};border-radius:12px;padding:24px;text-align:center;margin-bottom:20px;">
+      <div style="font-size:56px;font-weight:800;color:${SAFFRON};line-height:1;">${data.score}</div>
+      <div style="font-size:16px;color:#666;margin-top:2px;">out of 7</div>
+      <div style="display:inline-block;background-color:${SAFFRON};color:#fff;font-size:12px;font-weight:700;padding:4px 14px;border-radius:20px;margin-top:10px;">${data.band}</div>
+    </div>
+
+    <p style="margin:0 0 20px;font-size:14px;color:${TEXT};line-height:1.7;">${data.summary}</p>
+
+    ${riskHtml}
+
+    ${divider()}
+
+    <p style="margin:0 0 12px;font-size:13px;font-weight:700;color:${NAV};">3 things to do this week</p>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      ${recsHtml}
+    </table>
+
+    ${divider()}
+
+    <!-- Resource CTA -->
+    <p style="margin:0 0 8px;font-size:13px;font-weight:700;color:${NAV};">${resource.headline}</p>
+    <p style="margin:0 0 16px;font-size:13px;color:${TEXT};line-height:1.6;">${resource.body}</p>
+
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:20px;">
+      <tr>
+        <td style="background-color:${SAFFRON};border-radius:8px;padding:12px 24px;">
+          <a href="${resource.resource}" style="color:#FFFFFF;font-size:13px;font-weight:700;text-decoration:none;">${resource.resourceLabel} →</a>
+        </td>
+      </tr>
+    </table>
+
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        <td style="background-color:${NAV};border-radius:8px;padding:12px 24px;">
+          <a href="https://saralprivacy.com/contact" style="color:#FFFFFF;font-size:13px;font-weight:600;text-decoration:none;">Book a free consultation →</a>
+        </td>
+      </tr>
+    </table>
+
+    <p style="margin:20px 0 0;font-size:11px;color:${MUTED};line-height:1.6;">
+      You received this because you requested your DPDPA Readiness Score on SaralPrivacy.
+      <a href="https://saralprivacy.com/consent-preferences" style="color:${MUTED};">Manage preferences</a>.
+    </p>
+  `);
+
+  return { subject, html };
+}
+
+// ──────────────────────────────────────────────────────────────────────────────
+// 7. Briefing Email (Subscriber)
 // ──────────────────────────────────────────────────────────────────────────────
 
 export function briefingEmailTemplate(briefing: BriefingData, unsubscribeUrl: string): { subject: string; html: string } {

@@ -27,7 +27,7 @@ export function HeroSection() {
           <div className="inline-flex items-center gap-2 bg-saffron-700/40 border border-saffron-500/50 rounded-full px-3.5 py-1.5 mb-6">
             <div className="w-2 h-2 rounded-full bg-teal-400 animate-pulse" />
             <span className="text-saffron-300 text-xs font-semibold">
-              DPDPA Rules are pending Government notification — Start your compliance today
+              DPDP Rules, 2025 notified 14 November 2025 — use the phased rollout window now
             </span>
           </div>
 

@@ -66,7 +66,7 @@ export function WhitePaperSection() {
                   <div className="font-bold text-brand-700 text-base leading-snug">
                     DPDPA: The Complete Guide for Indian Businesses
                   </div>
-                  <div className="text-slate-500 text-xs mt-0.5">2025 Edition · 45 pages</div>
+                  <div className="text-slate-500 text-xs mt-0.5">2026 Edition · 45 pages</div>
                 </div>
               </div>
 

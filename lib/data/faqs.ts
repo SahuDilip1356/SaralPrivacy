@@ -5,7 +5,7 @@ export const faqs: FAQItem[] = [
     id: "f001",
     question: "What is the Digital Personal Data Protection Act (DPDPA)?",
     answer:
-      "The Digital Personal Data Protection Act, 2023 is India's first comprehensive data protection legislation. It governs how personal data of Indian citizens can be collected, stored, processed, and used by businesses and organisations. The Act was passed by Parliament in August 2023 and is expected to come into full effect once the rules under the Act are notified. It establishes rights for individuals over their personal data and obligations for businesses that process that data.",
+      "The Digital Personal Data Protection Act, 2023 is India's first comprehensive data protection legislation. It governs how personal data of Indian citizens can be collected, stored, processed, and used by businesses and organisations. The Act was passed by Parliament in August 2023. The DPDP Rules, 2025 have been notified, with phased commencement, making this implementation time for businesses. It establishes rights for individuals over their personal data and obligations for businesses that process that data.",
     category: "basics",
   },
   {
@@ -55,7 +55,7 @@ export const faqs: FAQItem[] = [
     id: "f008",
     question: "Who is the Data Protection Board of India?",
     answer:
-      "The Data Protection Board of India (DPBI) is the regulatory authority established under the DPDPA. It is responsible for adjudicating complaints from Data Principals, conducting inquiries into data breaches and non-compliance, issuing orders and imposing penalties, and issuing directions to Data Fiduciaries. The Board is expected to operate as an independent body. Businesses can appeal Board decisions to the Appellate Tribunal and thereafter to the High Court. The Board has not yet been constituted, pending the notification of rules under the Act.",
+      "The Data Protection Board of India (DPBI) is the regulatory authority established under the DPDPA. It is responsible for adjudicating complaints from Data Principals, conducting inquiries into data breaches and non-compliance, issuing orders and imposing penalties, and issuing directions to Data Fiduciaries. The Board is expected to operate as an independent body. Businesses can appeal Board decisions to the Appellate Tribunal and thereafter to the High Court. The Data Protection Board of India is established under the Act.",
     category: "regulatory",
   },
   {
@@ -85,7 +85,7 @@ export const faqs: FAQItem[] = [
     id: "f012",
     question: "When will DPDPA be enforced? Is there a grace period?",
     answer:
-      "The DPDPA was enacted in August 2023, but it will come into full effect only once the Rules under the Act are notified by the Central Government. As of early 2025, the draft rules have been released for public consultation, and the final rules are expected to be notified during 2025. The Act may provide for a transition period after the rules are notified for businesses to achieve compliance. However, given that enforcement can begin quickly after rules are notified, it is strongly advisable to start preparing now. Businesses that begin compliance work early will be in a significantly stronger position than those that wait.",
+      "The DPDP Rules, 2025 were notified on 14 November 2025. Implementation is phased: some rules took effect immediately, others take effect 12 and 18 months later. For most businesses, the priority is to use this transition window productively — fix consent flows, privacy notices, rights-handling workflows, and retention policies now.",
     category: "regulatory",
   },
   {

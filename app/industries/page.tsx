@@ -3,9 +3,9 @@ import Link from "next/link";
 import { ArrowRight, Users, Calculator, GraduationCap, ShoppingBag } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "DPDPA Compliance by Industry",
+  title: "DPDPA by Industry",
   description:
-    "Industry-specific DPDPA guidance for recruitment agencies, CA firms, training institutes, and D2C brands in India.",
+    "See how DPDPA affects recruitment agencies, CA firms, training institutes, and D2C brands, with sector risks, guides, and free assessments.",
   alternates: { canonical: 'https://saralprivacy.com/industries' },
 };
 
@@ -86,11 +86,15 @@ export default function IndustriesPage() {
               specific risk areas, and a free readiness assessment.
             </p>
           </div>
+          <div className="mt-4 max-w-2xl bg-white/10 border border-white/20 rounded-xl px-5 py-4">
+            <p className="text-slate-200 text-sm leading-relaxed">The law is one thing. The mess varies by industry. Recruitment agencies, CA firms, training institutes, and D2C brands process very different data, use different tools, and create different exposure points under DPDPA. Use this sector hub to see where your real risks sit and what to fix first.</p>
+            <p className="text-saffron-300 text-xs mt-2 font-medium">Same law. Different data flows. Different headaches.</p>
+          </div>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
           {industries.map((ind) => (
             <div key={ind.title} className={`rounded-xl border-2 ${ind.border} ${ind.bg} p-6`}>
               <div className="flex items-start gap-4 mb-5">
@@ -137,6 +141,12 @@ export default function IndustriesPage() {
               </div>
             </div>
           ))}
+        </div>
+
+        <div className="mt-10 pt-6 border-t border-slate-200 text-xs text-slate-400 space-y-1">
+          <p><strong>Last reviewed:</strong> March 2026</p>
+          <p><strong>Legal baseline:</strong> DPDP Rules, 2025 notified on 14 November 2025, with phased commencement.</p>
+          <p>This page is for educational purposes and does not constitute legal advice.</p>
         </div>
       </div>
     </div>
