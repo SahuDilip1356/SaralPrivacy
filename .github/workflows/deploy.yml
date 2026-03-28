@@ -27,8 +27,7 @@ jobs:
               \"gitSource\": {
                 \"type\": \"github\",
                 \"repoId\": $REPO_ID,
-                \"ref\": \"main\",
-                \"sha\": \"$GITHUB_SHA\"
+                \"ref\": \"main\"
               },
               \"target\": \"production\"
             }")
