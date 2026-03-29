@@ -12,7 +12,7 @@ export const briefings: Briefing[] = [
     excerpt:
       "The DPDPA mandates that every consent request must be accompanied by a clear, standalone notice. Generic 'I agree to T&Cs' checkboxes are no longer sufficient. Here is what Indian businesses must implement.",
     whyItMatters:
-      "Most Indian business websites currently bundle consent into Terms and Conditions, which the DPDPA explicitly prohibits. If your sign-up form, enquiry form, or checkout page uses pre-checked boxes or bundled consent language, you are operating outside the framework of the Act. Rectifying this before enforcement begins is significantly easier than retrofitting it under regulatory scrutiny.",
+      "Most Indian business websites currently bundle consent into Terms and Conditions, which the DPDPA explicitly prohibits. If your sign-up form, enquiry form, or checkout page uses pre-checked boxes or bundled consent language, you are operating outside the framework of the Act. Rectifying this during the phased implementation window is significantly easier than retrofitting it under active regulatory scrutiny. Reviewed: March 2026.",
     summary:
       "Under Section 6 of the Digital Personal Data Protection Act, 2023, every Data Fiduciary must provide a 'notice' to the Data Principal before or at the time of collecting personal data. This notice must be itemised, clear, and in plain language. It must specify exactly what data is being collected, the purpose for which it is being processed, and how the individual can exercise their rights. Crucially, consent must be free, specific, informed, unconditional, and unambiguous — meaning each distinct purpose requires a separate consent signal. You cannot combine marketing consent with transaction processing consent in the same checkbox.",
     businessImpact:
@@ -174,11 +174,11 @@ export const briefings: Briefing[] = [
     tags: ["data-breach", "notification", "incident-response", "dpb"],
     industries: ["recruitment", "ca-firms", "training-institutes", "d2c-brands"],
     excerpt:
-      "DPDPA requires Data Fiduciaries to notify the Data Protection Board and affected Data Principals in the event of a data breach. The rules on timing, scope, and format are now taking shape.",
+      "DPDPA requires Data Fiduciaries to notify the Data Protection Board and affected Data Principals in the event of a data breach. The DPDP Rules, 2025 set the timeline, scope, and format — here is what businesses must prepare for.",
     whyItMatters:
       "Many Indian businesses have no formal incident response plan. A ransomware attack, leaked database, or accidental email disclosure that exposes customer or employee personal data triggers mandatory notification obligations under DPDPA. Failing to notify can result in penalties up to ₹200 crore. More importantly, delayed or mishandled breach communication dramatically erodes customer trust.",
     summary:
-      "Section 8(6) of DPDPA requires every Data Fiduciary to notify the Data Protection Board (DPB) of a personal data breach 'in such manner and within such period as may be prescribed'. Draft rules suggest a two-stage notification: an initial report within 72 hours of becoming aware of the breach, followed by a detailed investigation report. Data Principals who are affected must also be informed, unless the breach is assessed as low-risk. Businesses should now build basic incident response capabilities: detection, containment, assessment, notification, and remediation.",
+      "Section 8(6) of DPDPA requires every Data Fiduciary to notify the Data Protection Board (DPB) of a personal data breach 'in such manner and within such period as may be prescribed'. The DPDP Rules, 2025 require a two-stage notification: an initial report within 72 hours of becoming aware of the breach, followed by a detailed investigation report. Data Principals who are affected must also be informed, unless the breach is assessed as low-risk. Businesses should now build basic incident response capabilities: detection, containment, assessment, notification, and remediation. Reviewed: March 2026.",
     businessImpact:
       "Businesses must develop or update incident response plans to include DPDPA notification requirements. Contracts with vendors and cloud providers must include breach notification SLAs. Security practices around access logs, encryption, and monitoring should be reviewed. Internal escalation protocols must be documented.",
     whoIsAffected: [
