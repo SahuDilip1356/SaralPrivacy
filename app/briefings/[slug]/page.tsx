@@ -197,6 +197,13 @@ export default async function BriefingDetailPage({ params }: Props) {
   let related: any[] = [];
 
   if (briefing) {
+    // If a static briefing exists for this slug, merge its editorNote.
+    // The Appwrite document has no editorNote field, so without this merge
+    // the editor-note banner would silently disappear for Appwrite-served briefings.
+    const staticMatch = getBriefingBySlug(slug);
+    if (staticMatch?.editorNote) {
+      briefing.editorNote = staticMatch.editorNote;
+    }
     related = await getRelatedFromDb(slug, briefing.category);
   } else {
     // Fallback to static data
