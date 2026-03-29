@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Calendar, Clock, ArrowRight, AlertTriangle } from "lucide-react";
+import { cache } from "react";
+import { unstable_cache } from "next/cache";
 import { BriefingSubscribeCard } from "@/components/briefings/BriefingSubscribeCard";
 import { getBriefingBySlug, briefings as staticBriefings } from "@/lib/data/briefings";
 import { formatDate, formatDateShort, getCategoryLabel, getIndustryLabel } from "@/lib/utils";
@@ -9,7 +11,7 @@ import { Badge } from "@/components/ui/Badge";
 import { articleSchema, breadcrumbSchema } from "@/lib/schema";
 import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 
-export const revalidate = 1800; // Serve from CDN cache for 30 min, then re-fetch
+export const revalidate = 1800; // ISR — re-render at most every 30 min
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -52,8 +54,12 @@ function parseWhyField(raw: string) {
   return { version: 0, whyItMatters: raw };
 }
 
-/** Fetch briefing from Appwrite by slug */
-async function getBriefingFromDb(slug: string) {
+// ─── Cached data fetchers ───────────────────────────────────────────────────
+// unstable_cache: stores result in Next.js data cache (ISR-aware, survives requests)
+// cache (React): deduplicates within a single render pass so generateMetadata
+//                and the page component never hit Appwrite twice for the same slug.
+
+async function _fetchBriefingFromDb(slug: string) {
   try {
     const result = await databases.listDocuments(DB_ID, COLLECTIONS.BRIEFINGS, [
       Query.equal("slug", slug),
@@ -65,13 +71,14 @@ async function getBriefingFromDb(slug: string) {
     const parsed = parseWhyField(doc.why_it_matters || "");
     const isV2 = parsed.version === 2;
 
-    // v1 field extraction for legacy renderer
-    const whyItMatters       = (parsed as any).whyItMatters       || "";
-    const overviewHeading     = (parsed as any).overviewHeading     || "";
-    const businessImpact      = (parsed as any).businessImpact      || "";
-    const whoIsAffected       = (parsed as any).whoIsAffected       || [];
-    const keyHeading          = (parsed as any).keyHeading          || "";
-    const saveWorthyTakeaway  = (parsed as any).saveWorthyTakeaway  || "";
+    const whyItMatters      = (parsed as any).whyItMatters      || "";
+    const overviewHeading   = (parsed as any).overviewHeading   || "";
+    const businessImpact    = (parsed as any).businessImpact    || "";
+    const whoIsAffected     = (parsed as any).whoIsAffected     || [];
+    const keyHeading        = (parsed as any).keyHeading        || "";
+    const saveWorthyTakeaway = (parsed as any).saveWorthyTakeaway || "";
+
+    const raw = doc.infographic_base64 || "";
 
     return {
       id:              doc.$id,
@@ -92,34 +99,32 @@ async function getBriefingFromDb(slug: string) {
       author:          { name: doc.author || "DPDPA Editorial Team" },
       relatedIds:      [] as string[],
       fromDb:          true,
-      // Hook / Body / CTA rich fields (unpacked from why_it_matters JSON envelope — v1)
-      overviewHeading:    overviewHeading  || "",
-      overviewBody:       doc.summary      || whyItMatters,
-      keyPointsHeading:   keyHeading       || "",
+      overviewHeading:    overviewHeading || "",
+      overviewBody:       doc.summary    || whyItMatters,
+      keyPointsHeading:   keyHeading     || "",
       keyPoints:          whoIsAffected,
       bodyHeading:        "What does this mean for YOUR business?",
-      bodyText:           businessImpact   || "",
+      bodyText:           businessImpact || "",
       saveWorthyTakeaway: saveWorthyTakeaway || "",
-      // Infographic
-      infographicBase64:  doc.infographic_base64 || "",
+      // Appwrite Storage URL (new) or base64 data URI (legacy)
+      infographicSrc: !raw ? "" : raw.startsWith("https://") ? raw : `data:image/jpeg;base64,${raw}`,
       infographicTitle:   "",
-      // v2 fields
       isV2,
-      tag:               parsed.tag               || "",
-      hookLine1:         parsed.hook_line1         || "",
-      hookLine2:         parsed.hook_line2         || "",
-      cardWhat:          parsed.card_what          || "",
-      cardWhy:           parsed.card_why           || "",
-      cardAction:        parsed.card_action        || "",
-      cardOwner:         parsed.card_owner         || "",
-      explainerConcept:  parsed.explainer_concept  || "",
-      explainerExample:  parsed.explainer_example  || "",
-      explainerMistake:  parsed.explainer_mistake  || "",
-      actionFormat:      parsed.action_format      || "today",
-      actionItems:       parsed.action_items       || [],
-      saveLine:          parsed.save_line          || doc.summary || "",
-      participation:     parsed.participation      || "",
-      themeLabel:        parsed.theme_label        || "",
+      tag:               (parsed as any).tag               || "",
+      hookLine1:         (parsed as any).hook_line1         || "",
+      hookLine2:         (parsed as any).hook_line2         || "",
+      cardWhat:          (parsed as any).card_what          || "",
+      cardWhy:           (parsed as any).card_why           || "",
+      cardAction:        (parsed as any).card_action        || "",
+      cardOwner:         (parsed as any).card_owner         || "",
+      explainerConcept:  (parsed as any).explainer_concept  || "",
+      explainerExample:  (parsed as any).explainer_example  || "",
+      explainerMistake:  (parsed as any).explainer_mistake  || "",
+      actionFormat:      (parsed as any).action_format      || "today",
+      actionItems:       (parsed as any).action_items       || [],
+      saveLine:          (parsed as any).save_line          || doc.summary || "",
+      participation:     (parsed as any).participation      || "",
+      themeLabel:        (parsed as any).theme_label        || "",
     };
   } catch (err) {
     console.error("[briefing-detail] Appwrite fetch failed:", err);
@@ -127,8 +132,17 @@ async function getBriefingFromDb(slug: string) {
   }
 }
 
-/** Fetch 3 recent briefings from same category for the sidebar */
-async function getRelatedFromDb(currentSlug: string, category: string) {
+// ISR-aware cache: re-fetches at most every 30 min (matches page revalidate)
+const _cachedFetchBriefing = unstable_cache(
+  _fetchBriefingFromDb,
+  ["briefing-detail"],
+  { revalidate: 1800, tags: ["briefings"] }
+);
+
+// Request-level deduplication: generateMetadata + page component share one fetch
+const getBriefingFromDb = cache(_cachedFetchBriefing);
+
+async function _fetchRelatedFromDb(currentSlug: string, category: string) {
   try {
     const result = await databases.listDocuments(DB_ID, COLLECTIONS.BRIEFINGS, [
       Query.equal("status", ["sent", "approved"]),
@@ -150,6 +164,13 @@ async function getRelatedFromDb(currentSlug: string, category: string) {
     return [];
   }
 }
+
+// ISR-aware cache for related briefings
+const getRelatedFromDb = unstable_cache(
+  _fetchRelatedFromDb,
+  ["briefing-related"],
+  { revalidate: 1800, tags: ["briefings"] }
+);
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
@@ -479,10 +500,10 @@ export default async function BriefingDetailPage({ params }: Props) {
                   </div>
 
                   {/* ── HOOK — infographic + overview ────────────────────── */}
-                  {briefing.infographicBase64 && (
+                  {briefing.infographicSrc && (
                     <div className="bg-white rounded-xl border border-slate-200 overflow-hidden mb-5">
                       <img
-                        src={`data:image/jpeg;base64,${briefing.infographicBase64}`}
+                        src={briefing.infographicSrc}
                         alt={briefing.infographicTitle || briefing.title}
                         className="w-full object-cover"
                         loading="lazy"
