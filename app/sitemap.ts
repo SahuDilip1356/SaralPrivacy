@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next'
+import { databases, DB_ID, COLLECTIONS, Query } from '@/lib/appwrite'
 
 const BASE = 'https://saralprivacy.com'
 
@@ -8,7 +9,7 @@ const LEARN_UPDATED    = new Date('2026-03-15')
 const INDUSTRY_UPDATED = new Date('2026-03-20')
 const FAQ_UPDATED      = new Date('2026-03-01')
 const BRIEFINGS_HUB    = new Date('2026-03-28')
-const BLOG_HUB         = new Date('2026-03-28')
+const BLOG_HUB         = new Date('2026-03-29')
 
 const learnTopics = [
   'what-is-dpdpa',
@@ -44,18 +45,33 @@ const briefingSlugs: Array<{ slug: string; updated: Date }> = [
   { slug: 'significant-data-fiduciary-status-dpdpa',         updated: new Date('2026-03-10') },
 ]
 
-// Blog slugs: add as posts are published in Appwrite
-// TODO: replace with async Appwrite fetch + real $updatedAt when sitemap supports it
-const blogSlugs: Array<{ slug: string; updated: Date }> = []
+/** Fetch all published blog post slugs + updated dates from Appwrite */
+async function getBlogSlugs(): Promise<Array<{ slug: string; updated: Date }>> {
+  try {
+    const result = await databases.listDocuments(DB_ID, COLLECTIONS.BLOG_POSTS, [
+      Query.equal('status', 'published'),
+      Query.orderDesc('$updatedAt'),
+      Query.limit(100),
+    ])
+    return result.documents.map((doc) => ({
+      slug: doc.slug as string,
+      updated: new Date((doc.published_at || doc.$updatedAt) as string),
+    }))
+  } catch {
+    return []
+  }
+}
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const blogSlugs = await getBlogSlugs()
+
   return [
     // ── Core ──
     { url: BASE,                    lastModified: CORE_UPDATED,     changeFrequency: 'weekly',  priority: 1.0 },
     { url: `${BASE}/about`,         lastModified: CORE_UPDATED,     changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE}/contact`,       lastModified: CORE_UPDATED,     changeFrequency: 'monthly', priority: 0.5 },
     { url: `${BASE}/white-paper`,   lastModified: CORE_UPDATED,     changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${BASE}/resources`,     lastModified: CORE_UPDATED,     changeFrequency: 'monthly', priority: 0.5 },
+    // /resources → 301 redirect to /blog; excluded from sitemap to avoid index pollution
 
     // ── Assessment hub (crawlable intro text) ──
     { url: `${BASE}/assessment`,    lastModified: CORE_UPDATED,     changeFrequency: 'monthly', priority: 0.8 },
@@ -106,11 +122,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/terms`,         lastModified: new Date('2026-03-01'), changeFrequency: 'yearly', priority: 0.2 },
 
     // EXCLUDED — intentional:
+    // /resources            → 301 redirect to /blog
     // /consent-preferences  → utility page, noindex
-    // /subscribe            → redirect to /#newsletter
+    // /subscribe            → utility subscribe form, noindex
     // /unsubscribe          → redirect to /consent-preferences
-    // /rights/access        → 301 redirect to /privacy#data-rights
-    // /rights/erasure       → 301 redirect to /privacy#data-rights
+    // /rights/access        → redirect to /privacy#data-rights, noindex, robots disallowed
+    // /rights/erasure       → redirect to /privacy#data-rights, noindex, robots disallowed
     // /admin/*              → gated, disallowed in robots
     // /api/*                → internal endpoints
     // /assessment/*         → client-side JS wizards, noindex

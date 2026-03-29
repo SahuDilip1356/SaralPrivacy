@@ -152,6 +152,19 @@ export default async function BlogPage() {
         </div>
       </div>
 
+      {/* SSR answer block — crawlable anchor for snippet and AI extraction */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-7 pb-2">
+        <div className="bg-slate-50 border-l-4 border-saffron-400 rounded-r-xl px-5 py-4">
+          <p className="text-slate-700 text-sm leading-relaxed">
+            SaralPrivacy Insights publishes verified, long-form articles on India&apos;s DPDPA
+            regime — covering the law itself, compliance playbooks, sector-specific obligations,
+            governance developments, and common myths. Every article is checked against the
+            Digital Personal Data Protection Act, 2023 and the DPDP Rules, 2025 before publication.
+            Use the filters below to find content relevant to your role or sector.
+          </p>
+        </div>
+      </div>
+
       {/* Lane filter tabs */}
       <div className="bg-white border-b border-slate-200 sticky top-[calc(4rem+32px)] z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">

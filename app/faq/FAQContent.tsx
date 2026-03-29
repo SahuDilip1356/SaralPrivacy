@@ -83,13 +83,14 @@ export default function FAQContent() {
           })}
         </div>
 
-        {/* FAQ items */}
+        {/* FAQ items — data-nosnippet prevents search engines extracting snippet text
+            from this accordion; the SSR answer blocks in page.tsx are the crawlable source */}
         {filtered.length === 0 ? (
           <div className="text-center py-12 text-slate-500">
             No results found. Try a different search or category.
           </div>
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-3" data-nosnippet>
             {filtered.map((faq) => (
               <div
                 key={faq.id}
@@ -137,7 +138,7 @@ export default function FAQContent() {
         </div>
 
         {/* Last reviewed */}
-        <div className="mt-10 pt-6 border-t border-slate-200 text-xs text-slate-400 space-y-1">
+        <div data-nosnippet className="mt-10 pt-6 border-t border-slate-200 text-xs text-slate-400 space-y-1">
           <p><strong>Last reviewed:</strong> March 2026</p>
           <p><strong>Legal baseline:</strong> DPDP Rules, 2025 notified on 14 November 2025, with phased commencement.</p>
           <p>This page is for educational purposes and does not constitute legal advice.</p>

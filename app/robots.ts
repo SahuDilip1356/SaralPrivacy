@@ -12,6 +12,7 @@ export default function robots(): MetadataRoute.Robots {
           '/admin/',
           '/api/',
           '/consent-preferences',
+          '/rights/',
           '/_next/',
         ],
       },
@@ -20,14 +21,14 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: 'Googlebot',
         allow: '/',
-        disallow: ['/admin', '/admin/', '/api/', '/consent-preferences'],
+        disallow: ['/admin', '/admin/', '/api/', '/consent-preferences', '/rights/'],
       },
 
       // ── Bing ──
       {
         userAgent: 'Bingbot',
         allow: '/',
-        disallow: ['/admin', '/admin/', '/api/', '/consent-preferences'],
+        disallow: ['/admin', '/admin/', '/api/', '/consent-preferences', '/rights/'],
       },
 
       // ── AI / LLM crawlers ──
@@ -37,47 +38,47 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: 'GPTBot',
         allow: '/',
-        disallow: ['/admin', '/admin/', '/api/', '/consent-preferences'],
+        disallow: ['/admin', '/admin/', '/api/', '/consent-preferences', '/rights/'],
       },
       {
         userAgent: 'Google-Extended',
         allow: '/',
-        disallow: ['/admin', '/admin/', '/api/', '/consent-preferences'],
+        disallow: ['/admin', '/admin/', '/api/', '/consent-preferences', '/rights/'],
       },
       {
         userAgent: 'anthropic-ai',
         allow: '/',
-        disallow: ['/admin', '/admin/', '/api/', '/consent-preferences'],
+        disallow: ['/admin', '/admin/', '/api/', '/consent-preferences', '/rights/'],
       },
       {
         userAgent: 'ClaudeBot',
         allow: '/',
-        disallow: ['/admin', '/admin/', '/api/', '/consent-preferences'],
+        disallow: ['/admin', '/admin/', '/api/', '/consent-preferences', '/rights/'],
       },
       {
         userAgent: 'PerplexityBot',
         allow: '/',
-        disallow: ['/admin', '/admin/', '/api/', '/consent-preferences'],
+        disallow: ['/admin', '/admin/', '/api/', '/consent-preferences', '/rights/'],
       },
       {
         userAgent: 'YouBot',
         allow: '/',
-        disallow: ['/admin', '/admin/', '/api/', '/consent-preferences'],
+        disallow: ['/admin', '/admin/', '/api/', '/consent-preferences', '/rights/'],
       },
       {
         userAgent: 'Applebot-Extended',
         allow: '/',
-        disallow: ['/admin', '/admin/', '/api/', '/consent-preferences'],
+        disallow: ['/admin', '/admin/', '/api/', '/consent-preferences', '/rights/'],
       },
       {
         userAgent: 'Diffbot',
         allow: '/',
-        disallow: ['/admin', '/admin/', '/api/', '/consent-preferences'],
+        disallow: ['/admin', '/admin/', '/api/', '/consent-preferences', '/rights/'],
       },
       {
         userAgent: 'cohere-ai',
         allow: '/',
-        disallow: ['/admin', '/admin/', '/api/', '/consent-preferences'],
+        disallow: ['/admin', '/admin/', '/api/', '/consent-preferences', '/rights/'],
       },
     ],
     sitemap: 'https://saralprivacy.com/sitemap.xml',

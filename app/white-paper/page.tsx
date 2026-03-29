@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import WhitePaperContent from "./WhitePaperContent";
+import { articleSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
   title: "DPDPA White Paper Download",
@@ -11,6 +12,13 @@ export const metadata: Metadata = {
 export default function WhitePaperPage() {
   return (
     <>
+      {articleSchema(
+        "DPDPA White Paper — Practical Compliance Guide for Indian Businesses",
+        "Free 45-page white paper covering DPDPA obligations, sector risks, consent framework, rights handling, breach response, and a 30-day action plan. Updated for the DPDP Rules, 2025.",
+        "https://saralprivacy.com/white-paper",
+        "2025-11-14",
+        "2026-03-29",
+      )}
       {/* Server-rendered summary — ensures crawlers and AI systems can index
           what the white paper covers even though the download form is client-side. */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-8">

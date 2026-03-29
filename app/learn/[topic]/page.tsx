@@ -7,7 +7,7 @@ import { articleSchema, breadcrumbSchema } from "@/lib/schema";
 const learnContent: Record<string, { title: string; description: string; content: string }> = {
   "what-is-dpdpa": {
     title: "What Is DPDPA? Practical India Guide",
-    description: "Understand what DPDPA covers, who it applies to, and what businesses should fix now under India's DPDP Act and the notified DPDP Rules, 2025.",
+    description: "The Digital Personal Data Protection Act, 2023 is India's framework for how businesses collect, use, store, share, and delete personal data. The DPDP Rules, 2025 were notified on 14 November 2025 and implementation is phased — meaning the compliance work is happening now, not later. This guide explains what the law covers, who it applies to, and what practical steps matter first.",
     content: `
 The Digital Personal Data Protection Act, 2023 governs how digital personal data is collected, used, stored, shared, and deleted. The DPDP Rules, 2025 have been notified, with phased commencement, so businesses should treat this as implementation time, not theory time. This guide explains what the law covers, who it applies to, and what practical controls matter first.
 
@@ -49,7 +49,7 @@ The DPDP Rules, 2025 were notified on 14 November 2025. India is implementing th
   },
   "applicability": {
     title: "Who Does DPDPA Apply To?",
-    description: "Understanding whether and how DPDPA applies to your business.",
+    description: "DPDPA applies to any entity that processes personal data of Indian residents digitally — including MSMEs, recruiters, CA firms, D2C brands, and B2B operators. If you collect a name, email, or phone number, you are covered. This guide explains scope, exemptions, and what it means for your business today.",
     content: `
 The DPDPA applies broadly to any entity that processes personal data of Indian citizens. Understanding whether you are covered is the essential first step in your compliance journey.
 
@@ -220,7 +220,7 @@ If you have a lawful reason to retain data (active contract, legal obligation, r
   },
   "data-breach": {
     title: "Data Breach Basics",
-    description: "What to do when personal data is compromised.",
+    description: "DPDPA requires businesses to notify the Data Protection Board and affected individuals when personal data is breached — without delay. This applies to all Data Fiduciaries regardless of size. This guide covers what counts as a breach, what you must report, the notification timeline, and the first practical steps to take.",
     content: `
 A data breach is any incident where personal data is accessed, disclosed, altered, or destroyed without authorisation. Under DPDPA, businesses have mandatory obligations when a breach occurs.
 
@@ -314,7 +314,7 @@ A contractual agreement between a Data Fiduciary and a Data Processor setting ou
 
 ## Data Protection Board of India (DPBI)
 
-The regulatory authority established under DPDPA. It adjudicates complaints, conducts inquiries, and can impose penalties. It has not yet been formally constituted as the Rules are still pending.
+The regulatory authority established under DPDPA. It adjudicates complaints, conducts inquiries, and can impose penalties. The Board is being constituted under the phased implementation of the DPDP Rules, 2025, which were notified on 14 November 2025.
 
 ## Data Protection Impact Assessment (DPIA)
 
@@ -507,7 +507,7 @@ Section 9 of DPDPA requires that before processing the personal data of a child,
 
 ## What Is "Verifiable Parental Consent"?
 
-The Act requires that parental consent be verifiable — meaning you must take reasonable steps to confirm that the person giving consent is actually the parent or guardian. The DPDP Rules are expected to specify what verification mechanisms are acceptable.
+The Act requires that parental consent be verifiable — meaning you must take reasonable steps to confirm that the person giving consent is actually the parent or guardian. The DPDP Rules, 2025 specify that age verification must be implemented before processing a child's data, and businesses should apply reasonable technical and procedural checks to verify age and parental identity.
 
 **Interim best practice:**
 - Ask for date of birth at registration; if under 18, require parental consent
@@ -553,7 +553,7 @@ Failure to observe special provisions for children's data can attract penalties 
   },
   "retention": {
     title: "Data Retention and Deletion Under DPDPA",
-    description: "How long can you keep personal data? What are the rules around deletion?",
+    description: "DPDPA requires businesses to delete personal data once the purpose for which it was collected is no longer being served. Holding data indefinitely is not compliant. This guide explains the storage limitation principle, how to define retention periods for common data categories, and how to build a deletion process that works.",
     content: `
 Data retention is one of the most practically urgent compliance areas for Indian businesses. Many organisations hold personal data indefinitely because they have never defined a deletion process. DPDPA requires that you stop.
 

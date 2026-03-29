@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   description:
     "Get practical DPDPA compliance updates delivered daily to your inbox. Written in plain English for Indian business owners — not lawyers.",
   alternates: { canonical: "https://saralprivacy.com/subscribe" },
+  robots: { index: false, follow: false },
 };
 
 export default function SubscribePage() {

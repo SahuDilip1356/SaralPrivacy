@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 import { BriefingSubscribeCard } from "@/components/briefings/BriefingSubscribeCard";
+import { articleSchema, breadcrumbSchema } from "@/lib/schema";
 
 export const revalidate = 3600;
 
@@ -170,6 +171,18 @@ export default async function BlogDetailPage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-slate-50">
+      {articleSchema(
+        post.title,
+        post.excerpt,
+        postUrl,
+        pubDate,
+        post.validated_at || pubDate,
+      )}
+      {breadcrumbSchema([
+        { name: 'Home',     url: siteUrl },
+        { name: 'Insights', url: `${siteUrl}/blog` },
+        { name: post.title, url: postUrl },
+      ])}
       {/* Breadcrumb */}
       <div className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3">

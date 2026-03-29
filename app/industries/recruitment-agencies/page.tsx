@@ -80,14 +80,9 @@ export default function RecruitmentIndustryPage() {
             </div>
             <span className="text-saffron-300 text-sm font-semibold">Industry Guide</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">
+          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4">
             DPDPA for Recruitment and Staffing Agencies
           </h1>
-          <p className="text-slate-300 text-lg leading-relaxed max-w-2xl mb-4">
-            Recruitment agencies sit at the centre of some of the most sensitive personal data flows
-            in India. Candidate consent, CV sharing, background checks, and data retention all
-            create significant DPDPA obligations.
-          </p>
           <div className="bg-white/10 border border-white/20 rounded-xl px-5 py-4 max-w-2xl mb-6">
             <p className="text-slate-200 text-sm leading-relaxed">Recruitment agencies sit on a mountain of personal data: CVs, job applications, background documents, interview notes, and client submissions. Under DPDPA, your biggest risks usually sit in candidate consent, profile sharing, ATS vendors, retention, and rights handling. This guide shows where recruitment workflows break, and what to tighten before they become liabilities.</p>
             <p className="text-saffron-300 text-xs mt-2 font-medium">If your CV database has no clear consent, purpose, or deletion logic, it is not a talent asset. It is a compliance trap.</p>
@@ -206,7 +201,7 @@ export default function RecruitmentIndustryPage() {
             </div>
           </div>
         </div>
-        <div className="mt-10 pt-6 border-t border-slate-200 text-xs text-slate-400 space-y-1">
+        <div data-nosnippet className="mt-10 pt-6 border-t border-slate-200 text-xs text-slate-400 space-y-1">
           <p><strong>Last reviewed:</strong> March 2026</p>
           <p><strong>Legal baseline:</strong> DPDP Rules, 2025 notified on 14 November 2025, with phased commencement.</p>
           <p>This page is for educational purposes and does not constitute legal advice.</p>
