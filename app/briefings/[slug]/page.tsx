@@ -426,6 +426,14 @@ export default async function BriefingDetailPage({ params }: Props) {
                     Back to Daily Briefings
                   </Link>
 
+                  {/* Editor note banner — shown when briefing has been reviewed/updated post-notification */}
+                  {briefing.editorNote && (
+                    <div className="bg-blue-50 border border-blue-200 rounded-xl px-5 py-4 mb-5 flex items-start gap-3">
+                      <span className="text-blue-500 shrink-0 mt-0.5">ℹ️</span>
+                      <p className="text-blue-800 text-xs leading-relaxed">{briefing.editorNote}</p>
+                    </div>
+                  )}
+
                   {/* Header card */}
                   <div className="bg-white rounded-xl border border-slate-200 p-7 mb-5">
                     <div className="flex items-center gap-2 mb-4">

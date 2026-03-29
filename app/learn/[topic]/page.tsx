@@ -9,8 +9,6 @@ const learnContent: Record<string, { title: string; description: string; content
     title: "What Is DPDPA? Practical India Guide",
     description: "The Digital Personal Data Protection Act, 2023 is India's framework for how businesses collect, use, store, share, and delete personal data. The DPDP Rules, 2025 were notified on 14 November 2025 and implementation is phased — meaning the compliance work is happening now, not later. This guide explains what the law covers, who it applies to, and what practical steps matter first.",
     content: `
-The Digital Personal Data Protection Act, 2023 governs how digital personal data is collected, used, stored, shared, and deleted. The DPDP Rules, 2025 have been notified, with phased commencement, so businesses should treat this as implementation time, not theory time. This guide explains what the law covers, who it applies to, and what practical controls matter first.
-
 ## Why Was DPDPA Enacted?
 
 India is the world's third-largest internet user base with over 900 million online users. As digital transactions, e-commerce, fintech, and digital services grew rapidly, it became clear that India needed a modern legal framework to protect citizens' personal data. The DPDPA was passed by Parliament in August 2023 after years of deliberation, multiple draft versions, and extensive consultations.
@@ -915,10 +913,12 @@ export default async function LearnTopicPage({ params }: Props) {
 
             <div className="bg-white rounded-xl border border-slate-200 p-7 mb-5">
               <h1 className="text-2xl sm:text-3xl font-bold text-brand-700 mb-2">{content.title}</h1>
-              <p className="text-slate-500 text-base">{content.description}</p>
+              {topic !== 'what-is-dpdpa' && (
+                <p className="text-slate-500 text-base mb-2">{content.description}</p>
+              )}
               {topic === 'what-is-dpdpa' && (
-                <div className="bg-slate-50 border-l-4 border-saffron-400 rounded-r-xl px-5 py-4 mt-4 mb-2">
-                  <p className="text-slate-700 text-sm leading-relaxed">The Digital Personal Data Protection Act, 2023 governs how digital personal data is collected, used, stored, shared, and deleted. The DPDP Rules, 2025 have been notified, with phased commencement, so businesses should treat this as implementation time, not theory time. This guide explains what the law covers, who it applies to, and what practical controls matter first.</p>
+                <div className="bg-slate-50 border-l-4 border-saffron-400 rounded-r-xl px-5 py-4 mt-3 mb-2">
+                  <p className="text-slate-700 text-sm leading-relaxed">The Digital Personal Data Protection Act, 2023 governs how digital personal data is collected, used, stored, shared, and deleted in India. With the DPDP Rules, 2025 now notified and phased implementation underway, businesses should focus on fixing notices, consent, rights handling, retention, and vendor controls. This guide explains what the law covers, who it applies to, and what practical steps matter first.</p>
                 </div>
               )}
               <div className="mt-5 pt-5 border-t border-slate-100">

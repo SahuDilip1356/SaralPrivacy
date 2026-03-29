@@ -87,13 +87,59 @@ export default function IndustriesPage() {
             </p>
           </div>
           <div className="mt-4 max-w-2xl bg-white/10 border border-white/20 rounded-xl px-5 py-4">
-            <p className="text-slate-200 text-sm leading-relaxed">The law is one thing. The mess varies by industry. Recruitment agencies, CA firms, training institutes, and D2C brands process very different data, use different tools, and create different exposure points under DPDPA. Use this sector hub to see where your real risks sit and what to fix first.</p>
-            <p className="text-saffron-300 text-xs mt-2 font-medium">Same law. Different data flows. Different headaches.</p>
+            <p className="text-slate-200 text-sm leading-relaxed">This page is for businesses that know DPDPA matters but need to understand where the risk actually sits in their own sector. The law is the same. The operational mess is different.</p>
+            <p className="text-saffron-300 text-xs mt-2 font-medium">Same law. Different data flows. Different fixes.</p>
           </div>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+
+        {/* Comparison table — crawlable SSR content for snippet extraction and AI retrieval */}
+        <div className="overflow-x-auto mb-10">
+          <table className="w-full text-sm border-collapse bg-white rounded-xl overflow-hidden shadow-sm border border-slate-200">
+            <thead>
+              <tr className="bg-brand-700 text-white">
+                <th className="text-left px-4 py-3 font-semibold text-xs uppercase tracking-wide">Industry</th>
+                <th className="text-left px-4 py-3 font-semibold text-xs uppercase tracking-wide">Main personal data types</th>
+                <th className="text-left px-4 py-3 font-semibold text-xs uppercase tracking-wide">Highest DPDPA risk</th>
+                <th className="text-left px-4 py-3 font-semibold text-xs uppercase tracking-wide">First fix</th>
+                <th className="text-left px-4 py-3 font-semibold text-xs uppercase tracking-wide">Assessment</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              <tr className="hover:bg-slate-50 transition-colors">
+                <td className="px-4 py-3 font-semibold text-brand-700">Recruitment Agencies</td>
+                <td className="px-4 py-3 text-slate-600">CVs, candidate profiles, Aadhaar/PAN, background documents</td>
+                <td className="px-4 py-3 text-red-700 font-medium">CV databases without consent or deletion policy</td>
+                <td className="px-4 py-3 text-slate-600">Add consent at submission; define retention periods</td>
+                <td className="px-4 py-3"><a href="/assessment/recruitment" className="text-saffron-600 font-semibold hover:underline">Start →</a></td>
+              </tr>
+              <tr className="hover:bg-slate-50 transition-colors">
+                <td className="px-4 py-3 font-semibold text-brand-700">CA Firms</td>
+                <td className="px-4 py-3 text-slate-600">PAN, Aadhaar, payroll records, bank details, tax filings</td>
+                <td className="px-4 py-3 text-red-700 font-medium">Broad staff access to sensitive client documents</td>
+                <td className="px-4 py-3 text-slate-600">Role-based access controls and DPAs with cloud vendors</td>
+                <td className="px-4 py-3"><a href="/assessment/ca-firms" className="text-saffron-600 font-semibold hover:underline">Start →</a></td>
+              </tr>
+              <tr className="hover:bg-slate-50 transition-colors">
+                <td className="px-4 py-3 font-semibold text-brand-700">Training Institutes</td>
+                <td className="px-4 py-3 text-slate-600">Student names, contacts, minor data, placement records</td>
+                <td className="px-4 py-3 text-red-700 font-medium">Processing minors&#39; data without verifiable parental consent</td>
+                <td className="px-4 py-3 text-slate-600">Implement parental consent mechanism for under-18 students</td>
+                <td className="px-4 py-3"><a href="/assessment/training-institutes" className="text-saffron-600 font-semibold hover:underline">Start →</a></td>
+              </tr>
+              <tr className="hover:bg-slate-50 transition-colors">
+                <td className="px-4 py-3 font-semibold text-brand-700">D2C Brands</td>
+                <td className="px-4 py-3 text-slate-600">Checkout details, marketing lists, behavioural and loyalty data</td>
+                <td className="px-4 py-3 text-red-700 font-medium">Bundled marketing consent at checkout</td>
+                <td className="px-4 py-3 text-slate-600">Separate marketing consent from purchase processing</td>
+                <td className="px-4 py-3"><a href="/assessment/d2c-brands" className="text-saffron-600 font-semibold hover:underline">Start →</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
           {industries.map((ind) => (
             <div key={ind.title} className={`rounded-xl border-2 ${ind.border} ${ind.bg} p-6`}>

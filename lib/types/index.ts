@@ -52,6 +52,8 @@ export interface Briefing {
   author: Author;
   featured: boolean;
   readTime: number;
+  /** Optional editorial note displayed as a banner on the briefing page (e.g. post-notification updates) */
+  editorNote?: string;
 }
 
 export type BriefingCategory =
