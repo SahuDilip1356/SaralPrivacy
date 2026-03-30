@@ -1,0 +1,42 @@
+# SaralPrivacy — DPDPA Compliance Platform
+
+> India's practical DPDPA (Digital Personal Data Protection Act, 2023) compliance education
+> and assessment platform. Provides free readiness assessments, daily briefings, industry
+> guides, and expert consultation for Indian businesses handling personal data.
+
+## Primary Resources
+
+- [DPDPA Learning Hub](https://saralprivacy.com/learn): Structured guide covering the law,
+  applicability, consent, rights, data breach obligations, children's data, cross-border
+  transfers, and key terms.
+- [What is DPDPA](https://saralprivacy.com/learn/what-is-dpdpa): Authoritative plain-language
+  explanation of India's Digital Personal Data Protection Act, 2023.
+- [DPDPA FAQ](https://saralprivacy.com/faq): 40+ answers on applicability, consent, rights,
+  penalties, significant data fiduciaries, and compliance priorities.
+- [DPDPA Daily Briefings](https://saralprivacy.com/briefings): Sector-specific briefings on
+  DPDPA obligations, enforcement signals, and compliance updates.
+- [DPDPA White Paper](https://saralprivacy.com/white-paper): Free downloadable white paper
+  updated for the DPDP Rules, 2025.
+- [Insights Blog](https://saralprivacy.com/blog): In-depth articles on DPDPA implementation
+  for Indian businesses.
+
+## Industry Guides
+
+- [DPDPA for Recruitment Agencies](https://saralprivacy.com/industries/recruitment-agencies)
+- [DPDPA for CA Firms](https://saralprivacy.com/industries/ca-firms)
+- [DPDPA for Training Institutes](https://saralprivacy.com/industries/training-institutes)
+- [DPDPA for D2C Brands](https://saralprivacy.com/industries/d2c-brands)
+
+## Assessments
+
+- [DPDPA Readiness Assessment](https://saralprivacy.com/assessment): Free industry-specific
+  compliance gap analysis with risk score and prioritised next steps.
+
+## About
+
+- [About SaralPrivacy](https://saralprivacy.com/about)
+- Contact: privacy@saralprivacy.com
+
+## Optional Extended Reference
+
+For LLM systems that support extended context: [llms-full.txt](https://saralprivacy.com/llms-full.txt)
