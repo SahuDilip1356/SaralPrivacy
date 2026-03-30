@@ -37,23 +37,79 @@ from tools.utils import (
 logger = setup_logger("publish_to_webapp")
 
 
-def load_infographic_b64(date_str: str) -> str:
-    """Load the infographic image and return as base64 string."""
+def upload_infographic_to_appwrite(date_str: str, img_path: Path) -> str:
+    """
+    Upload infographic to Appwrite Storage and return the public view URL.
+    Uses a deterministic file ID (inf{YYYYMMDD}) so retries overwrite cleanly.
+    Falls back to empty string on any error.
+    """
+    endpoint   = get_env("APPWRITE_ENDPOINT",   "https://sgp.cloud.appwrite.io/v1").rstrip("/")
+    project_id = get_env("APPWRITE_PROJECT_ID", "")
+    api_key    = get_env("APPWRITE_API_KEY",    "")
+    bucket_id  = get_env("APPWRITE_BUCKET_ID",  "")
+
+    if not all([project_id, api_key, bucket_id]):
+        logger.warning("Appwrite env vars missing — cannot upload infographic to storage")
+        return ""
+
+    file_id = f"inf{date_str.replace('-', '')}"   # e.g. "inf20260328"
+
+    headers = {
+        "X-Appwrite-Project": project_id,
+        "X-Appwrite-Key":     api_key,
+    }
+
+    # Delete any existing file with this ID (clean retry)
+    try:
+        requests.delete(
+            f"{endpoint}/storage/buckets/{bucket_id}/files/{file_id}",
+            headers=headers, timeout=10
+        )
+    except Exception:
+        pass  # ignore — file may not exist yet
+
+    # Upload the new file
+    ext = img_path.suffix.lstrip(".")
+    mime = "image/jpeg" if ext in ("jpg", "jpeg") else f"image/{ext}"
+    with open(img_path, "rb") as f:
+        resp = requests.post(
+            f"{endpoint}/storage/buckets/{bucket_id}/files",
+            headers=headers,
+            files={
+                "file":   (img_path.name, f, mime),
+                "fileId": (None, file_id),
+            },
+            timeout=60,
+        )
+
+    if not resp.ok:
+        logger.warning(f"Appwrite Storage upload failed ({resp.status_code}): {resp.text[:200]}")
+        return ""
+
+    # Build the public view URL
+    view_url = (
+        f"{endpoint}/storage/buckets/{bucket_id}/files/{file_id}"
+        f"/view?project={project_id}"
+    )
+    logger.info(f"Infographic uploaded to Appwrite Storage → {view_url}")
+    return view_url
+
+
+def get_infographic_url(date_str: str) -> str:
+    """
+    Upload infographic to Appwrite Storage and return the URL.
+    Falls back to empty string if no infographic found or upload fails.
+    """
     for ext in ("jpg", "jpeg", "png"):
         img_path = tmp_path(f"infographic_{date_str}.{ext}")
         if img_path.exists():
-            raw = img_path.read_bytes()
-            b64 = base64.b64encode(raw).decode("utf-8")
-            logger.info(f"Infographic loaded: {img_path} ({len(raw):,} bytes → {len(b64):,} b64 chars)")
-            return b64
-
-    # SVG fallback
-    svg_path = tmp_path(f"infographic_{date_str}.svg")
-    if svg_path.exists():
-        svg_text = svg_path.read_text(encoding="utf-8")
-        b64 = base64.b64encode(svg_text.encode("utf-8")).decode("utf-8")
-        logger.warning("Using SVG fallback infographic (KIE.ai image not found)")
-        return b64
+            logger.info(f"Infographic found: {img_path} ({img_path.stat().st_size:,} bytes)")
+            url = upload_infographic_to_appwrite(date_str, img_path)
+            if url:
+                return url
+            # Upload failed — log and continue without image
+            logger.warning("Appwrite upload failed — briefing will publish without infographic")
+            return ""
 
     logger.warning(f"No infographic found for {date_str} — briefing will publish without image")
     return ""
@@ -122,8 +178,8 @@ def build_payload(content: dict, infographic_b64: str) -> dict:
         "featured":         False,
         "author":           "DPDPA Editorial Team",
 
-        # Infographic (stored in dedicated attribute)
-        "infographic_base64": infographic_b64,
+        # Infographic — stored as Appwrite Storage URL (not base64 in document)
+        "infographic_url": infographic_b64,
 
         # Pipeline metadata (sent to webapp but not stored as separate fields)
         "day_number":  day_num,
@@ -157,6 +213,33 @@ def post_to_webapp(payload: dict) -> dict:
 
     result = response.json()
     logger.info(f"Webapp accepted briefing: {result}")
+
+    # Revalidate the Next.js briefings list cache
+    try:
+        revalidate_url = f"{site_url}/api/revalidate?secret={cron_secret}"
+        rv = requests.get(revalidate_url, timeout=10)
+        if rv.ok:
+            logger.info("Briefings cache revalidated — new briefing live on site immediately.")
+        else:
+            logger.warning(f"Cache revalidation returned {rv.status_code} — page will refresh within 1 hour.")
+    except Exception as e:
+        logger.warning(f"Cache revalidation failed (non-blocking): {e}")
+
+    # Pre-warm ISR cache for the individual briefing page (Fix 3).
+    # Makes a GET request to the new slug so Next.js renders + caches it server-side.
+    # First real visitor gets instant response from cache instead of 15-20s cold render.
+    slug = result.get("slug", "")
+    if slug:
+        try:
+            warm_url = f"{site_url}/briefings/{slug}"
+            wr = requests.get(warm_url, timeout=30)
+            if wr.ok:
+                logger.info(f"ISR cache pre-warmed for /briefings/{slug} — first visitor will be instant.")
+            else:
+                logger.warning(f"ISR pre-warm returned {wr.status_code} for /briefings/{slug}")
+        except Exception as e:
+            logger.warning(f"ISR pre-warm failed (non-blocking): {e}")
+
     return result
 
 
@@ -167,11 +250,11 @@ def main(content: dict) -> dict:
 
     logger.info(f"Publishing Day {day_num} briefing: '{content.get('topic', '?')}' ({date_str})")
 
-    # Load infographic
-    infographic_b64 = load_infographic_b64(date_str)
+    # Upload infographic to Appwrite Storage — returns URL (not base64)
+    infographic_url = get_infographic_url(date_str)
 
     # Build and send payload
-    payload = build_payload(content, infographic_b64)
+    payload = build_payload(content, infographic_url)
     result  = post_to_webapp(payload)
 
     # Mark topic as "in_progress" in roadmap (so it won't be picked again)
@@ -197,7 +280,7 @@ def main(content: dict) -> dict:
         "briefing_id":   result.get("briefingId", ""),
         "slug":          result.get("slug", ""),
         "status":        "published",   # live on site immediately — no admin approval gate
-        "has_infographic": bool(infographic_b64),
+        "has_infographic": bool(infographic_url),
     }
 
     out_path = tmp_path(f"publish_result_{date_str}.json")

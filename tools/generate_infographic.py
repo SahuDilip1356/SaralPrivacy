@@ -126,7 +126,7 @@ Style: {INFOGRAPHIC_STYLE}
 
 The infographic must be self-contained and readable without additional context.
 Include the title prominently at the top.
-Label: "DPDPA Daily Brief" in small text at the bottom right corner.
+Label: "© saralprivacy.com" in small text at the bottom left corner. Keep the bottom right corner clear — do not place any text or watermark there.
 Image dimensions: approximately 560px wide x 280px tall (landscape, 2:1 ratio)."""
 
     return prompt
