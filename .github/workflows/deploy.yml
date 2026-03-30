@@ -1,0 +1,21 @@
+name: Deploy to Vercel
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Vercel production deployment
+        run: |
+          RESPONSE=$(curl -s -X POST \
+            "https://api.vercel.com/v13/deployments?teamId=team_o1Ok9z4S6z5NfHzfK05CSbGY" \
+            -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d '{"name":"saralprivacy","gitSource":{"type":"github","repoId":1185847335,"ref":"main"},"target":"production"}')
+          echo "Vercel response: $RESPONSE"
+          DEPLOY_ID=$(echo "$RESPONSE" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('id') or d.get('error',{}).get('message','no-id'))")
+          echo "Deployment ID: $DEPLOY_ID"
