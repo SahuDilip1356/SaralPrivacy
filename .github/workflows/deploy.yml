@@ -1,4 +1,13 @@
-name: Deploy to Vercel
+# Deployment is handled automatically by Vercel's native GitHub integration.
+# Vercel watches this repo on the main branch and deploys on every push.
+# No Actions workflow needed — this file is kept as documentation only.
+#
+# Vercel project: saralprivacy
+# Root directory: webapp/
+# Production branch: main
+# Dashboard: https://vercel.com/dilipsahu31s-projects/saralprivacy
+
+name: Deploy to Vercel (handled natively)
 
 on:
   push:
@@ -6,22 +15,8 @@ on:
       - main
 
 jobs:
-  deploy:
+  info:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install Vercel CLI
-        run: npm install -g vercel@latest
-
-      - name: Deploy to Vercel Production
-        run: vercel --prod --yes --token=${{ secrets.VERCEL_TOKEN }} --cwd ./webapp
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      - name: Deployment note
+        run: echo "Vercel deploys automatically via its native GitHub integration on push to main."
