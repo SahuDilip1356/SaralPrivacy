@@ -389,24 +389,6 @@ export default function SurveyClient() {
       </div>
 
       <div className="max-w-xl mx-auto px-4 sm:px-6 py-6 w-full flex flex-col gap-4">
-        {/* What you get — 2×2 compact grid */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-4">
-          <p className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-3">What you get — free</p>
-          <div className="grid grid-cols-2 gap-2.5">
-            {[
-              { icon: "🎯", text: "Your Readiness Score (0–10)" },
-              { icon: "📊", text: "Score band + what it means" },
-              { icon: "✅", text: "3 actions you can take this week" },
-              { icon: "📧", text: "Detailed report by email (optional)" },
-            ].map(item => (
-              <div key={item.text} className="flex items-start gap-2 bg-slate-50 rounded-xl p-2.5">
-                <span className="text-base leading-none mt-0.5">{item.icon}</span>
-                <span className="text-xs text-slate-600 leading-snug">{item.text}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
         {/* Privacy Notice — collapsed by default */}
         <div className="bg-blue-50 border border-blue-200 rounded-2xl p-4">
           <div className="flex items-center gap-2 mb-3">
@@ -455,6 +437,24 @@ export default function SurveyClient() {
         >
           Start Free Readiness Check →
         </button>
+
+        {/* What you get — 2×2 compact grid */}
+        <div className="bg-white rounded-2xl border border-slate-200 p-4">
+          <p className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-3">What you get — free</p>
+          <div className="grid grid-cols-2 gap-2.5">
+            {[
+              { icon: "🎯", text: "Your Readiness Score (0–10)" },
+              { icon: "📊", text: "Score band + what it means" },
+              { icon: "✅", text: "3 actions you can take this week" },
+              { icon: "📧", text: "Detailed report by email (optional)" },
+            ].map(item => (
+              <div key={item.text} className="flex items-start gap-2 bg-slate-50 rounded-xl p-2.5">
+                <span className="text-base leading-none mt-0.5">{item.icon}</span>
+                <span className="text-xs text-slate-600 leading-snug">{item.text}</span>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
