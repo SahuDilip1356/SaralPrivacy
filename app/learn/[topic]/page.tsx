@@ -779,13 +779,13 @@ function renderContent(content: string) {
 
     if (line.startsWith("## ")) {
       elements.push(
-        <h2 key={i} className="text-xl font-bold text-brand-700 mt-8 mb-3">
+        <h2 key={i} className="text-xl font-bold text-navy-700 mt-8 mb-3">
           {line.replace("## ", "")}
         </h2>
       );
     } else if (line.startsWith("### ")) {
       elements.push(
-        <h3 key={i} className="text-lg font-bold text-brand-700 mt-6 mb-2">
+        <h3 key={i} className="text-lg font-bold text-navy-700 mt-6 mb-2">
           {line.replace("### ", "")}
         </h3>
       );
@@ -799,7 +799,7 @@ function renderContent(content: string) {
         <ul key={i} className="space-y-2 my-3 pl-4">
           {items.map((item, idx) => (
             <li key={idx} className="flex items-start gap-2 text-slate-600 text-sm leading-relaxed">
-              <span className="w-1.5 h-1.5 rounded-full bg-saffron-500 mt-2 shrink-0" />
+              <span className="w-1.5 h-1.5 rounded-full bg-green-500 mt-2 shrink-0" />
               <span dangerouslySetInnerHTML={{ __html: item.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }} />
             </li>
           ))}
@@ -811,7 +811,7 @@ function renderContent(content: string) {
       elements.push(
         <p key={i} className="text-slate-600 text-sm leading-relaxed mb-3">
           {parts.map((part, idx) =>
-            idx % 2 === 1 ? <strong key={idx} className="text-brand-700">{part}</strong> : part
+            idx % 2 === 1 ? <strong key={idx} className="text-navy-700">{part}</strong> : part
           )}
         </p>
       );
@@ -824,6 +824,7 @@ function renderContent(content: string) {
 }
 
 const topicNav = [
+  { slug: "dpdp-rules-2025-plain-english-guide", label: "DPDP Rules 2025", href: "/learn/dpdp-rules-2025-plain-english-guide" },
   { slug: "what-is-dpdpa", label: "What is DPDPA?" },
   { slug: "applicability", label: "Who It Applies To" },
   { slug: "key-terms", label: "Key Terms" },
@@ -846,9 +847,9 @@ export default async function LearnTopicPage({ params }: Props) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-brand-700 mb-3">Content Coming Soon</h1>
+          <h1 className="text-2xl font-bold text-navy-700 mb-3">Content Coming Soon</h1>
           <p className="text-slate-600 mb-5">This topic is being prepared by our editorial team.</p>
-          <Link href="/learn" className="text-saffron-600 font-semibold hover:underline">
+          <Link href="/learn" className="text-green-600 font-semibold hover:underline">
             ← Back to DPDPA Guide
           </Link>
         </div>
@@ -887,11 +888,11 @@ export default async function LearnTopicPage({ params }: Props) {
                 {topicNav.map((t) => (
                   <Link
                     key={t.slug}
-                    href={`/learn/${t.slug}`}
+                    href={t.href ?? `/learn/${t.slug}`}
                     className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
                       t.slug === topic
-                        ? "bg-saffron-50 text-saffron-600 font-semibold"
-                        : "text-slate-600 hover:text-brand-700 hover:bg-slate-50"
+                        ? "bg-green-50 text-green-600 font-semibold"
+                        : "text-slate-600 hover:text-navy-700 hover:bg-slate-50"
                     }`}
                   >
                     {t.label}
@@ -905,19 +906,19 @@ export default async function LearnTopicPage({ params }: Props) {
           <div className="lg:col-span-3">
             <Link
               href="/learn"
-              className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-saffron-600 mb-5 transition-colors"
+              className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-green-600 mb-5 transition-colors"
             >
               <ArrowLeft size={14} />
               DPDPA Guide
             </Link>
 
             <div className="bg-white rounded-xl border border-slate-200 p-7 mb-5">
-              <h1 className="text-2xl sm:text-3xl font-bold text-brand-700 mb-2">{content.title}</h1>
+              <h1 className="text-2xl sm:text-3xl font-bold text-navy-700 mb-2">{content.title}</h1>
               {topic !== 'what-is-dpdpa' && (
                 <p className="text-slate-500 text-base mb-2">{content.description}</p>
               )}
               {topic === 'what-is-dpdpa' && (
-                <div className="bg-slate-50 border-l-4 border-saffron-400 rounded-r-xl px-5 py-4 mt-3 mb-2">
+                <div className="bg-slate-50 border-l-4 border-green-400 rounded-r-xl px-5 py-4 mt-3 mb-2">
                   <p className="text-slate-700 text-sm leading-relaxed">The Digital Personal Data Protection Act, 2023 governs how digital personal data is collected, used, stored, shared, and deleted in India. With the DPDP Rules, 2025 now notified and phased implementation underway, businesses should focus on fixing notices, consent, rights handling, retention, and vendor controls. This guide explains what the law covers, who it applies to, and what practical steps matter first.</p>
                 </div>
               )}
@@ -943,7 +944,7 @@ export default async function LearnTopicPage({ params }: Props) {
               {prev ? (
                 <Link
                   href={`/learn/${prev.slug}`}
-                  className="flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-saffron-600 transition-colors"
+                  className="flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-green-600 transition-colors"
                 >
                   <ArrowLeft size={16} />
                   {prev.label}
@@ -954,7 +955,7 @@ export default async function LearnTopicPage({ params }: Props) {
               {next ? (
                 <Link
                   href={`/learn/${next.slug}`}
-                  className="flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-saffron-600 transition-colors"
+                  className="flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-green-600 transition-colors"
                 >
                   {next.label}
                   <ArrowRight size={16} />

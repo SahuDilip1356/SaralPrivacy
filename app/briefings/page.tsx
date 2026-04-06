@@ -83,12 +83,12 @@ export default async function BriefingsPage() {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Page header */}
-      <div className="bg-brand-700 py-14">
+      <div className="bg-navy-700 py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 bg-saffron-700/40 border border-saffron-500/50 rounded-full px-3.5 py-1.5 mb-4">
+            <div className="inline-flex items-center gap-2 bg-green-700/40 border border-green-500/50 rounded-full px-3.5 py-1.5 mb-4">
               <div className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
-              <span className="text-saffron-300 text-xs font-semibold">Published daily</span>
+              <span className="text-green-300 text-xs font-semibold">Published daily</span>
             </div>
             <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">
               DPDPA Daily Briefings
@@ -110,7 +110,7 @@ export default async function BriefingsPage() {
                 key={cat.id}
                 className={`shrink-0 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors ${
                   cat.id === "all"
-                    ? "bg-brand-700 text-white"
+                    ? "bg-navy-700 text-white"
                     : "bg-slate-100 text-slate-600 hover:bg-slate-200"
                 }`}
               >
@@ -129,12 +129,12 @@ export default async function BriefingsPage() {
               Featured Briefing
             </h2>
             <Link href={`/briefings/${featured.slug}`}>
-              <div className="bg-brand-700 rounded-xl p-7 hover:bg-brand-800 transition-colors group">
+              <div className="bg-navy-700 rounded-xl p-7 hover:bg-navy-800 transition-colors group">
                 <div className="flex items-center gap-2 mb-3">
                   <Badge variant="teal">Featured</Badge>
                   <Badge variant="amber">{getCategoryLabel(featured.category)}</Badge>
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-saffron-300 transition-colors leading-snug max-w-3xl">
+                <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-green-300 transition-colors leading-snug max-w-3xl">
                   {featured.title}
                 </h3>
                 <p className="text-slate-300 mb-4 max-w-2xl leading-relaxed">{featured.excerpt}</p>
@@ -149,7 +149,7 @@ export default async function BriefingsPage() {
                       {featured.readTime} min read
                     </span>
                   </div>
-                  <span className="flex items-center gap-1 text-saffron-400 font-semibold text-sm group-hover:gap-2 transition-all">
+                  <span className="flex items-center gap-1 text-green-400 font-semibold text-sm group-hover:gap-2 transition-all">
                     Read briefing <ArrowRight size={16} />
                   </span>
                 </div>
@@ -173,7 +173,7 @@ export default async function BriefingsPage() {
                       {getCategoryLabel(briefing.category)}
                     </Badge>
                   </div>
-                  <h3 className="font-bold text-brand-700 text-base leading-snug mb-2 group-hover:text-saffron-600 line-clamp-3">
+                  <h3 className="font-bold text-navy-700 text-base leading-snug mb-2 group-hover:text-green-600 line-clamp-3">
                     {briefing.title}
                   </h3>
                   <p className="text-slate-500 text-sm leading-relaxed flex-1 line-clamp-3 mb-4">
@@ -185,7 +185,7 @@ export default async function BriefingsPage() {
                     {(briefing.industries as string[]).slice(0, 2).map((ind: string) => (
                       <span
                         key={ind}
-                        className="text-[10px] font-semibold text-saffron-600 bg-saffron-50 px-2 py-0.5 rounded-full"
+                        className="text-[10px] font-semibold text-green-600 bg-green-50 px-2 py-0.5 rounded-full"
                       >
                         {getIndustryLabel(ind as any)}
                       </span>

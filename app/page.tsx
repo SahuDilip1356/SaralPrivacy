@@ -24,7 +24,7 @@ export default function HomePage() {
       {websiteSchema()}
       <HeroSection />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
-        <div className="bg-slate-50 border-l-4 border-saffron-400 rounded-r-xl px-5 py-4 mb-6">
+        <div className="bg-slate-50 border-l-4 border-green-400 rounded-r-xl px-5 py-4 mb-6">
           <p className="text-slate-700 text-sm leading-relaxed">DPDPA is India&apos;s framework for handling digital personal data, and the DPDP Rules, 2025 have now been notified. For Indian businesses, the real work is operational: fix your notices, consent flows, rights handling, retention logic, and vendor controls. SaralPrivacy helps you understand what matters, assess your risk, and prioritise the next 30 to 90 days.</p>
         </div>
       </div>

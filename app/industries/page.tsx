@@ -19,11 +19,11 @@ const industries = [
     risks: ["Candidate data without consent", "CV sharing without disclosure", "Indefinite data retention", "Unvetted ATS vendors"],
     stat: "Most recruitment agencies store candidate data with no formal deletion process",
     color: "teal",
-    bg: "bg-saffron-50",
-    border: "border-saffron-200",
-    iconBg: "bg-saffron-100",
-    iconColor: "text-saffron-600",
-    btn: "bg-saffron-500 hover:bg-saffron-600",
+    bg: "bg-green-50",
+    border: "border-green-200",
+    iconBg: "bg-green-100",
+    iconColor: "text-green-600",
+    btn: "bg-green-500 hover:bg-green-600",
   },
   {
     icon: Calculator,
@@ -75,7 +75,7 @@ const industries = [
 export default function IndustriesPage() {
   return (
     <div className="min-h-screen bg-slate-50">
-      <div className="bg-brand-700 py-14">
+      <div className="bg-navy-700 py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="max-w-2xl">
             <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">
@@ -88,7 +88,7 @@ export default function IndustriesPage() {
           </div>
           <div className="mt-4 max-w-2xl bg-white/10 border border-white/20 rounded-xl px-5 py-4">
             <p className="text-slate-200 text-sm leading-relaxed">This page is for businesses that know DPDPA matters but need to understand where the risk actually sits in their own sector. The law is the same. The operational mess is different.</p>
-            <p className="text-saffron-300 text-xs mt-2 font-medium">Same law. Different data flows. Different fixes.</p>
+            <p className="text-green-300 text-xs mt-2 font-medium">Same law. Different data flows. Different fixes.</p>
           </div>
         </div>
       </div>
@@ -99,7 +99,7 @@ export default function IndustriesPage() {
         <div className="overflow-x-auto mb-10">
           <table className="w-full text-sm border-collapse bg-white rounded-xl overflow-hidden shadow-sm border border-slate-200">
             <thead>
-              <tr className="bg-brand-700 text-white">
+              <tr className="bg-navy-700 text-white">
                 <th className="text-left px-4 py-3 font-semibold text-xs uppercase tracking-wide">Industry</th>
                 <th className="text-left px-4 py-3 font-semibold text-xs uppercase tracking-wide">Main personal data types</th>
                 <th className="text-left px-4 py-3 font-semibold text-xs uppercase tracking-wide">Highest DPDPA risk</th>
@@ -109,32 +109,32 @@ export default function IndustriesPage() {
             </thead>
             <tbody className="divide-y divide-slate-100">
               <tr className="hover:bg-slate-50 transition-colors">
-                <td className="px-4 py-3 font-semibold text-brand-700">Recruitment Agencies</td>
+                <td className="px-4 py-3 font-semibold text-navy-700">Recruitment Agencies</td>
                 <td className="px-4 py-3 text-slate-600">CVs, candidate profiles, Aadhaar/PAN, background documents</td>
                 <td className="px-4 py-3 text-red-700 font-medium">CV databases without consent or deletion policy</td>
                 <td className="px-4 py-3 text-slate-600">Add consent at submission; define retention periods</td>
-                <td className="px-4 py-3"><a href="/assessment/recruitment" className="text-saffron-600 font-semibold hover:underline">Start →</a></td>
+                <td className="px-4 py-3"><a href="/assessment/recruitment" className="text-green-600 font-semibold hover:underline">Start →</a></td>
               </tr>
               <tr className="hover:bg-slate-50 transition-colors">
-                <td className="px-4 py-3 font-semibold text-brand-700">CA Firms</td>
+                <td className="px-4 py-3 font-semibold text-navy-700">CA Firms</td>
                 <td className="px-4 py-3 text-slate-600">PAN, Aadhaar, payroll records, bank details, tax filings</td>
                 <td className="px-4 py-3 text-red-700 font-medium">Broad staff access to sensitive client documents</td>
                 <td className="px-4 py-3 text-slate-600">Role-based access controls and DPAs with cloud vendors</td>
-                <td className="px-4 py-3"><a href="/assessment/ca-firms" className="text-saffron-600 font-semibold hover:underline">Start →</a></td>
+                <td className="px-4 py-3"><a href="/assessment/ca-firms" className="text-green-600 font-semibold hover:underline">Start →</a></td>
               </tr>
               <tr className="hover:bg-slate-50 transition-colors">
-                <td className="px-4 py-3 font-semibold text-brand-700">Training Institutes</td>
+                <td className="px-4 py-3 font-semibold text-navy-700">Training Institutes</td>
                 <td className="px-4 py-3 text-slate-600">Student names, contacts, minor data, placement records</td>
                 <td className="px-4 py-3 text-red-700 font-medium">Processing minors&#39; data without verifiable parental consent</td>
                 <td className="px-4 py-3 text-slate-600">Implement parental consent mechanism for under-18 students</td>
-                <td className="px-4 py-3"><a href="/assessment/training-institutes" className="text-saffron-600 font-semibold hover:underline">Start →</a></td>
+                <td className="px-4 py-3"><a href="/assessment/training-institutes" className="text-green-600 font-semibold hover:underline">Start →</a></td>
               </tr>
               <tr className="hover:bg-slate-50 transition-colors">
-                <td className="px-4 py-3 font-semibold text-brand-700">D2C Brands</td>
+                <td className="px-4 py-3 font-semibold text-navy-700">D2C Brands</td>
                 <td className="px-4 py-3 text-slate-600">Checkout details, marketing lists, behavioural and loyalty data</td>
                 <td className="px-4 py-3 text-red-700 font-medium">Bundled marketing consent at checkout</td>
                 <td className="px-4 py-3 text-slate-600">Separate marketing consent from purchase processing</td>
-                <td className="px-4 py-3"><a href="/assessment/d2c-brands" className="text-saffron-600 font-semibold hover:underline">Start →</a></td>
+                <td className="px-4 py-3"><a href="/assessment/d2c-brands" className="text-green-600 font-semibold hover:underline">Start →</a></td>
               </tr>
             </tbody>
           </table>
@@ -148,7 +148,7 @@ export default function IndustriesPage() {
                   <ind.icon size={24} className={ind.iconColor} />
                 </div>
                 <div>
-                  <h2 className="font-bold text-brand-700 text-xl leading-snug">{ind.title}</h2>
+                  <h2 className="font-bold text-navy-700 text-xl leading-snug">{ind.title}</h2>
                   <p className={`text-sm ${ind.iconColor} mt-1`}>{ind.tagline}</p>
                 </div>
               </div>
@@ -180,7 +180,7 @@ export default function IndustriesPage() {
                 </Link>
                 <Link
                   href={ind.href}
-                  className="flex-1 text-center py-2.5 text-sm font-semibold text-brand-700 border border-slate-300 rounded-lg bg-white hover:bg-slate-50 transition-colors"
+                  className="flex-1 text-center py-2.5 text-sm font-semibold text-navy-700 border border-slate-300 rounded-lg bg-white hover:bg-slate-50 transition-colors"
                 >
                   View Full Guide →
                 </Link>

@@ -10,11 +10,11 @@ const audiences = [
     color: "teal",
     painPoints: ["CV databases & candidate data", "Client profile sharing", "Background check documents", "Cross-border data flows"],
     promise: "Find out whether your recruitment workflows create DPDPA exposure in 10 minutes.",
-    accentBg: "bg-saffron-50",
-    accentBorder: "border-saffron-200",
-    accentText: "text-saffron-600",
-    iconBg: "bg-saffron-100",
-    iconColor: "text-saffron-600",
+    accentBg: "bg-teal-50",
+    accentBorder: "border-teal-200",
+    accentText: "text-teal-700",
+    iconBg: "bg-teal-100",
+    iconColor: "text-teal-700",
   },
   {
     icon: Calculator,
@@ -66,12 +66,12 @@ export function AudienceCards() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Heading */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-saffron-50 border border-saffron-200 rounded-full px-3.5 py-1.5 mb-4">
-            <span className="text-saffron-600 text-xs font-semibold">Industry-Specific Guidance</span>
+          <div className="inline-flex items-center gap-2 bg-teal-50 border border-teal-200 rounded-full px-3.5 py-1.5 mb-4">
+            <span className="text-teal-700 text-xs font-semibold">Industry-Specific Guidance</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold text-brand-700 mb-4">
+          <h2 className="text-3xl sm:text-4xl font-bold text-navy-700 mb-4">
             DPDPA affects different businesses
-            <span className="block text-saffron-600">in very different ways</span>
+            <span className="block text-teal-600">in very different ways</span>
           </h2>
           <p className="text-slate-600 max-w-2xl mx-auto leading-relaxed">
             A recruitment agency, a CA firm, a training institute, and a D2C brand all collect personal
@@ -92,7 +92,7 @@ export function AudienceCards() {
               </div>
 
               {/* Title */}
-              <h3 className="font-bold text-brand-700 text-lg mb-2">{audience.title}</h3>
+              <h3 className="font-bold text-navy-700 text-lg mb-2">{audience.title}</h3>
 
               {/* Pain points */}
               <ul className="space-y-1.5 mb-4 flex-1">
@@ -113,7 +113,7 @@ export function AudienceCards() {
               <div className="flex flex-col gap-2">
                 <Link
                   href={audience.assessmentHref}
-                  className={`inline-flex items-center justify-center gap-1.5 py-2.5 px-4 text-sm font-semibold text-white rounded-lg bg-brand-700 hover:bg-brand-800 transition-colors`}
+                  className={`inline-flex items-center justify-center gap-1.5 py-2.5 px-4 text-sm font-semibold text-white rounded-lg bg-green-500 hover:bg-green-600 transition-colors`}
                 >
                   Take Assessment
                   <ArrowRight size={14} />

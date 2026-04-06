@@ -7,11 +7,11 @@ export default function BriefingsLoading() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
 
         {/* Hero skeleton */}
-        <div className="bg-brand-700 rounded-2xl p-8 sm:p-12 mb-10 animate-pulse">
-          <div className="h-4 w-24 bg-brand-600 rounded mb-4" />
-          <div className="h-8 w-2/3 bg-brand-600 rounded mb-3" />
-          <div className="h-4 w-1/2 bg-brand-600 rounded mb-6" />
-          <div className="h-10 w-40 bg-saffron-500/40 rounded-lg" />
+        <div className="bg-navy-700 rounded-2xl p-8 sm:p-12 mb-10 animate-pulse">
+          <div className="h-4 w-24 bg-navy-600 rounded mb-4" />
+          <div className="h-8 w-2/3 bg-navy-600 rounded mb-3" />
+          <div className="h-4 w-1/2 bg-navy-600 rounded mb-6" />
+          <div className="h-10 w-40 bg-green-500/40 rounded-lg" />
         </div>
 
         {/* Category filter skeleton */}

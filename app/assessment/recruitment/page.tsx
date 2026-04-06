@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 export default function RecruitmentAssessmentPage() {
   return (
     <div className="min-h-screen bg-slate-50">
-      <div className="bg-brand-700 py-10">
+      <div className="bg-navy-700 py-10">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <Link
             href="/assessment"
@@ -28,7 +28,7 @@ export default function RecruitmentAssessmentPage() {
             All Assessments
           </Link>
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-9 h-9 rounded-xl bg-saffron-500 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-xl bg-green-500 flex items-center justify-center">
               <Users size={18} className="text-white" />
             </div>
             <h1 className="text-2xl font-bold text-white">
@@ -44,7 +44,7 @@ export default function RecruitmentAssessmentPage() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
         {/* Intro */}
         <div className="bg-white border border-slate-200 rounded-xl p-5 mb-7">
-          <h2 className="font-bold text-brand-700 text-sm mb-2">
+          <h2 className="font-bold text-navy-700 text-sm mb-2">
             What this assessment covers
           </h2>
           <p className="text-slate-600 text-sm leading-relaxed">

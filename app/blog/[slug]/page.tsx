@@ -120,7 +120,7 @@ function SectionBlock({
   return (
     <div className="mb-8">
       <div className="flex items-center gap-2 mb-3">
-        <h2 className="text-lg font-bold text-brand-700">{heading}</h2>
+        <h2 className="text-lg font-bold text-navy-700">{heading}</h2>
         {scopeLabel && (
           <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
             {scopeLabel}
@@ -187,9 +187,9 @@ export default async function BlogDetailPage({ params }: Props) {
       <div className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3">
           <div className="flex items-center gap-2 text-sm text-slate-500">
-            <Link href="/" className="hover:text-brand-700">Home</Link>
+            <Link href="/" className="hover:text-navy-700">Home</Link>
             <span>/</span>
-            <Link href="/blog" className="hover:text-brand-700">Insights</Link>
+            <Link href="/blog" className="hover:text-navy-700">Insights</Link>
             <span>/</span>
             <span className="text-slate-700 line-clamp-1">{post.title}</span>
           </div>
@@ -204,7 +204,7 @@ export default async function BlogDetailPage({ params }: Props) {
             {/* Back link */}
             <Link
               href="/blog"
-              className="inline-flex items-center gap-1.5 text-sm text-brand-600 hover:text-brand-800 mb-6"
+              className="inline-flex items-center gap-1.5 text-sm text-navy-600 hover:text-navy-800 mb-6"
             >
               <ArrowLeft size={14} /> All Insights
             </Link>
@@ -222,7 +222,7 @@ export default async function BlogDetailPage({ params }: Props) {
             </div>
 
             {/* Title */}
-            <h1 className="text-2xl sm:text-3xl font-bold text-brand-700 leading-snug mb-4">
+            <h1 className="text-2xl sm:text-3xl font-bold text-navy-700 leading-snug mb-4">
               {post.title}
             </h1>
 
@@ -267,7 +267,7 @@ export default async function BlogDetailPage({ params }: Props) {
 
             {/* Excerpt / intro */}
             {post.excerpt && (
-              <p className="text-base text-slate-600 leading-relaxed border-l-4 border-saffron-400 pl-4 mb-8 font-medium">
+              <p className="text-base text-slate-600 leading-relaxed border-l-4 border-green-400 pl-4 mb-8 font-medium">
                 {post.excerpt}
               </p>
             )}
@@ -282,7 +282,7 @@ export default async function BlogDetailPage({ params }: Props) {
             {/* Primary sources table */}
             {primarySources.length > 0 && (
               <div className="mb-8">
-                <h2 className="text-lg font-bold text-brand-700 mb-3">Primary Sources</h2>
+                <h2 className="text-lg font-bold text-navy-700 mb-3">Primary Sources</h2>
                 <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
                   <table className="w-full text-sm">
                     <thead>
@@ -310,7 +310,7 @@ export default async function BlogDetailPage({ params }: Props) {
 
             {/* Was this helpful */}
             <div className="bg-white rounded-xl border border-slate-200 p-5 mb-6">
-              <p className="text-sm font-semibold text-brand-700 mb-3">Was this helpful?</p>
+              <p className="text-sm font-semibold text-navy-700 mb-3">Was this helpful?</p>
               <div className="flex items-center gap-3">
                 <button className="flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-lg text-sm text-slate-600 hover:bg-green-50 hover:border-green-200 hover:text-green-700 transition-colors">
                   <ThumbsUp size={14} /> Yes
@@ -349,14 +349,14 @@ export default async function BlogDetailPage({ params }: Props) {
             {/* Bottom CTA */}
             <div className="space-y-4">
               <BriefingSubscribeCard />
-              <div className="bg-brand-700 rounded-xl p-5 text-center">
+              <div className="bg-navy-700 rounded-xl p-5 text-center">
                 <p className="text-white font-bold text-sm mb-1">Need expert guidance?</p>
                 <p className="text-slate-400 text-xs mb-3">
                   Our team helps Indian businesses navigate DPDPA compliance end-to-end.
                 </p>
                 <Link
                   href="/contact"
-                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-saffron-500 text-white text-sm font-semibold rounded-lg hover:bg-saffron-600 transition-colors"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-green-500 text-white text-sm font-semibold rounded-lg hover:bg-green-600 transition-colors"
                 >
                   Talk to Our Experts →
                 </Link>
@@ -367,9 +367,9 @@ export default async function BlogDetailPage({ params }: Props) {
           {/* Sidebar — 1/3 */}
           <aside className="space-y-5">
             {/* Assessment CTA */}
-            <div className="bg-brand-700 rounded-xl p-5">
+            <div className="bg-navy-700 rounded-xl p-5">
               <div className="flex items-center gap-2 mb-3">
-                <Shield size={16} className="text-saffron-400" />
+                <Shield size={16} className="text-green-400" />
                 <h3 className="font-bold text-white text-sm">Check Your Readiness</h3>
               </div>
               <p className="text-slate-400 text-xs mb-4 leading-relaxed">
@@ -378,7 +378,7 @@ export default async function BlogDetailPage({ params }: Props) {
               </p>
               <Link
                 href="/assessment"
-                className="block w-full text-center py-2 bg-saffron-500 text-white text-sm font-semibold rounded-lg hover:bg-saffron-600 transition-colors"
+                className="block w-full text-center py-2 bg-green-500 text-white text-sm font-semibold rounded-lg hover:bg-green-600 transition-colors"
               >
                 Start Free Assessment →
               </Link>
@@ -388,8 +388,8 @@ export default async function BlogDetailPage({ params }: Props) {
             {relatedPosts.length > 0 && (
               <div className="bg-white rounded-xl border border-slate-200 p-5">
                 <div className="flex items-center gap-2 mb-4">
-                  <BookOpen size={14} className="text-brand-600" />
-                  <h3 className="font-bold text-brand-700 text-sm">Related Insights</h3>
+                  <BookOpen size={14} className="text-navy-600" />
+                  <h3 className="font-bold text-navy-700 text-sm">Related Insights</h3>
                 </div>
                 <div className="space-y-4">
                   {relatedPosts.map((related) => (
@@ -398,7 +398,7 @@ export default async function BlogDetailPage({ params }: Props) {
                       href={`/blog/${related.slug}`}
                       className="group block"
                     >
-                      <p className="text-sm font-medium text-brand-700 group-hover:text-brand-800 leading-snug mb-1 line-clamp-2">
+                      <p className="text-sm font-medium text-navy-700 group-hover:text-navy-800 leading-snug mb-1 line-clamp-2">
                         {related.title}
                       </p>
                       <div className="flex items-center gap-2 text-xs text-slate-400">
@@ -417,7 +417,7 @@ export default async function BlogDetailPage({ params }: Props) {
 
             {/* Validation score detail */}
             <div className="bg-white rounded-xl border border-slate-200 p-5">
-              <h3 className="font-bold text-brand-700 text-sm mb-3">Editorial Standards</h3>
+              <h3 className="font-bold text-navy-700 text-sm mb-3">Editorial Standards</h3>
               <div className={`text-center py-3 rounded-lg mb-3 ${scoreColor} border`}>
                 <div className="text-3xl font-bold">{post.validation_score}</div>
                 <div className="text-xs mt-0.5">Editorial Score / 100</div>

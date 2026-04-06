@@ -38,7 +38,7 @@ export function BriefingSubscribeCard() {
 
   if (done) {
     return (
-      <div className="bg-brand-700 rounded-xl p-5 text-center">
+      <div className="bg-navy-700 rounded-xl p-5 text-center">
         <CheckCircle size={28} className="text-green-400 mx-auto mb-2" />
         <p className="text-white font-bold text-sm mb-1">You're subscribed!</p>
         <p className="text-slate-400 text-xs">Daily briefings will arrive in your inbox from tomorrow.</p>
@@ -47,7 +47,7 @@ export function BriefingSubscribeCard() {
   }
 
   return (
-    <div className="bg-brand-700 rounded-xl p-5">
+    <div className="bg-navy-700 rounded-xl p-5">
       <h3 className="font-bold text-white text-sm mb-1">Get daily briefings by email</h3>
       <p className="text-slate-400 text-xs mb-4">
         2-min reads, plain English, every morning. Free forever.
@@ -60,7 +60,7 @@ export function BriefingSubscribeCard() {
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
-          className="w-full px-3 py-2 rounded-lg bg-brand-800 border border-brand-600 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-saffron-400 transition-colors"
+          className="w-full px-3 py-2 rounded-lg bg-navy-800 border border-navy-600 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-green-400 transition-colors"
         />
         <input
           type="email"
@@ -68,7 +68,7 @@ export function BriefingSubscribeCard() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="w-full px-3 py-2 rounded-lg bg-brand-800 border border-brand-600 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-saffron-400 transition-colors"
+          className="w-full px-3 py-2 rounded-lg bg-navy-800 border border-navy-600 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-green-400 transition-colors"
         />
         {error && (
           <p className="text-xs text-red-400">{error}</p>
@@ -76,7 +76,7 @@ export function BriefingSubscribeCard() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-2.5 bg-saffron-500 hover:bg-saffron-600 text-white text-sm font-semibold rounded-lg transition-colors disabled:opacity-60"
+          className="w-full py-2.5 bg-green-500 hover:bg-green-600 text-white text-sm font-semibold rounded-lg transition-colors disabled:opacity-60"
         >
           {loading ? "Subscribing…" : "Subscribe Free →"}
         </button>

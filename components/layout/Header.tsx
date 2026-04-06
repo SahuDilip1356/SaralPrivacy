@@ -74,10 +74,10 @@ export function Header() {
           : "bg-white/95 backdrop-blur-sm border-b border-slate-100"
       )}
     >
-      {/* Top strip */}
-      <div className="bg-brand-700 text-slate-300 text-xs py-1.5 px-4 text-center">
+      {/* Top strip — Cloud 50 light bar */}
+      <div className="bg-cloud-50 border-b border-cloud-200 text-slate-600 text-xs py-1.5 px-4 text-center">
         <span>DPDP Rules, 2025 were notified on 14 November 2025. Use this phased rollout window to fix notices, consent, rights handling, retention, vendor controls, and breach response. </span>
-        <Link href="/assessment" className="text-amber-400 font-semibold hover:text-amber-300 underline underline-offset-2">
+        <Link href="/assessment" className="text-green-600 font-semibold hover:text-green-700 underline underline-offset-2">
           Check your readiness — free
         </Link>
       </div>
@@ -86,15 +86,15 @@ export function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-8 h-8 bg-brand-700 rounded-lg flex items-center justify-center group-hover:bg-saffron-500 transition-colors">
+            <div className="w-8 h-8 bg-navy-700 rounded-lg flex items-center justify-center group-hover:bg-green-500 transition-colors">
               <Shield className="w-4.5 h-4.5 text-white" size={18} />
             </div>
             <div>
-              <div className="font-bold text-brand-700 text-base leading-none tracking-tight">
-                Saral<span className="text-saffron-600">Privacy</span>
+              <div className="font-bold text-navy-700 text-base leading-none tracking-tight">
+                Saral<span className="text-green-500">Privacy</span>
               </div>
               <div className="text-[10px] text-slate-500 leading-none mt-0.5">
-                DPDPA Compliance Platform
+                Privacy Intelligence Platform
               </div>
             </div>
           </Link>
@@ -113,13 +113,13 @@ export function Header() {
                   className={cn(
                     "flex items-center gap-1 px-3.5 py-2 rounded-lg text-sm font-medium transition-colors",
                     pathname === item.href || pathname.startsWith(item.href + "/")
-                      ? "text-saffron-600 bg-saffron-50"
-                      : "text-slate-700 hover:text-brand-700 hover:bg-slate-50"
+                      ? "text-green-600 bg-green-50"
+                      : "text-slate-700 hover:text-navy-700 hover:bg-cloud-50"
                   )}
                 >
                   {item.label}
                   {item.badge && (
-                    <span className="ml-1 bg-amber-100 text-amber-800 text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                    <span className="ml-1 bg-green-100 text-green-700 text-[10px] font-bold px-1.5 py-0.5 rounded-full">
                       {item.badge}
                     </span>
                   )}
@@ -141,7 +141,7 @@ export function Header() {
                       <Link
                         key={child.href}
                         href={child.href}
-                        className="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 hover:text-saffron-600 transition-colors"
+                        className="block px-4 py-2.5 text-sm text-slate-700 hover:bg-cloud-50 hover:text-navy-700 transition-colors"
                       >
                         {child.label}
                       </Link>
@@ -156,13 +156,13 @@ export function Header() {
           <div className="flex items-center gap-3">
             <Link
               href="/white-paper"
-              className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-slate-700 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors"
+              className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-navy-700 border border-navy-300 rounded-lg hover:bg-cloud-50 transition-colors"
             >
               White Paper
             </Link>
             <Link
               href="/contact"
-              className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold bg-brand-700 text-white rounded-lg hover:bg-brand-800 transition-colors"
+              className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
             >
               Get Consultation
             </Link>
@@ -187,13 +187,13 @@ export function Header() {
                 className={cn(
                   "flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium",
                   pathname === item.href
-                    ? "text-saffron-600 bg-saffron-50"
-                    : "text-slate-700 hover:bg-slate-50"
+                    ? "text-green-600 bg-green-50"
+                    : "text-slate-700 hover:bg-cloud-50"
                 )}
               >
                 <span>{item.label}</span>
                 {item.badge && (
-                  <span className="bg-amber-100 text-amber-800 text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                  <span className="bg-green-100 text-green-700 text-[10px] font-bold px-1.5 py-0.5 rounded-full">
                     {item.badge}
                   </span>
                 )}
@@ -204,7 +204,7 @@ export function Header() {
                     <Link
                       key={child.href}
                       href={child.href}
-                      className="block px-3 py-2 text-sm text-slate-600 hover:text-saffron-600 rounded-lg hover:bg-slate-50"
+                      className="block px-3 py-2 text-sm text-slate-600 hover:text-navy-700 rounded-lg hover:bg-cloud-50"
                     >
                       {child.label}
                     </Link>
@@ -216,13 +216,13 @@ export function Header() {
           <div className="pt-3 border-t border-slate-100 space-y-2">
             <Link
               href="/white-paper"
-              className="block w-full text-center px-4 py-2.5 text-sm font-semibold text-slate-700 border border-slate-300 rounded-lg"
+              className="block w-full text-center px-4 py-2.5 text-sm font-semibold text-navy-700 border border-navy-300 rounded-lg"
             >
               Download White Paper
             </Link>
             <Link
               href="/contact"
-              className="block w-full text-center px-4 py-2.5 text-sm font-semibold bg-brand-700 text-white rounded-lg"
+              className="block w-full text-center px-4 py-2.5 text-sm font-semibold bg-green-500 text-white rounded-lg"
             >
               Get Consultation
             </Link>

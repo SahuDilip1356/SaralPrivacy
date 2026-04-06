@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 export default function TrainingAssessmentPage() {
   return (
     <div className="min-h-screen bg-slate-50">
-      <div className="bg-brand-700 py-10">
+      <div className="bg-navy-700 py-10">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <Link
             href="/assessment"
@@ -40,7 +40,7 @@ export default function TrainingAssessmentPage() {
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
         <div className="bg-white border border-slate-200 rounded-xl p-5 mb-7">
-          <h2 className="font-bold text-brand-700 text-sm mb-2">What this assessment covers</h2>
+          <h2 className="font-bold text-navy-700 text-sm mb-2">What this assessment covers</h2>
           <p className="text-slate-600 text-sm leading-relaxed">
             This assessment evaluates your training institute&apos;s DPDPA exposure across student
             data collection, digital admissions, minor students, marketing campaigns, attendance

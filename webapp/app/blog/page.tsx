@@ -83,17 +83,17 @@ function PostCard({ post }: { post: BlogPost }) {
   return (
     <Link
       href={`/blog/${post.slug}`}
-      className="group block bg-white rounded-xl border border-slate-200 p-5 hover:shadow-md hover:border-brand-200 transition-all"
+      className="group block bg-white rounded-xl border border-slate-200 p-5 hover:shadow-md hover:border-navy-200 transition-all"
     >
       <div className="flex items-center gap-2 mb-3">
         <LaneBadge lane={post.lane} />
         {post.featured && (
-          <span className="inline-block px-2 py-0.5 rounded-full text-xs font-semibold bg-saffron-100 text-saffron-700">
+          <span className="inline-block px-2 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-700">
             Featured
           </span>
         )}
       </div>
-      <h2 className="font-bold text-brand-700 text-base leading-snug mb-2 group-hover:text-brand-800 transition-colors line-clamp-3">
+      <h2 className="font-bold text-navy-700 text-base leading-snug mb-2 group-hover:text-navy-800 transition-colors line-clamp-3">
         {post.title}
       </h2>
       <p className="text-sm text-slate-500 leading-relaxed line-clamp-3 mb-4">
@@ -129,7 +129,7 @@ export default async function BlogPage() {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Hero header */}
-      <div className="bg-brand-700 py-14">
+      <div className="bg-navy-700 py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center gap-2 mb-3">
             <span className="inline-flex items-center gap-1.5 bg-green-500 text-white text-xs font-bold px-2.5 py-1 rounded-full">
@@ -154,7 +154,7 @@ export default async function BlogPage() {
 
       {/* SSR answer block — crawlable anchor for snippet and AI extraction */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-7 pb-2">
-        <div className="bg-slate-50 border-l-4 border-saffron-400 rounded-r-xl px-5 py-4">
+        <div className="bg-slate-50 border-l-4 border-green-400 rounded-r-xl px-5 py-4">
           <p className="text-slate-700 text-sm leading-relaxed">
             SaralPrivacy Insights publishes verified, long-form articles on India&apos;s DPDPA
             regime — covering the law itself, compliance playbooks, sector-specific obligations,
@@ -173,7 +173,7 @@ export default async function BlogPage() {
               <a
                 key={filter.id}
                 href={filter.id === "all" ? "/blog" : `/blog?lane=${filter.id}`}
-                className="shrink-0 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors bg-slate-100 text-slate-600 hover:bg-brand-700 hover:text-white"
+                className="shrink-0 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors bg-slate-100 text-slate-600 hover:bg-navy-700 hover:text-white"
               >
                 {filter.label}
               </a>

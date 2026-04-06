@@ -2,11 +2,11 @@ export default function BlogLoading() {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Hero skeleton */}
-      <div className="bg-brand-700 py-14">
+      <div className="bg-navy-700 py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="h-5 w-32 bg-brand-600 rounded-full mb-4 animate-pulse" />
-          <div className="h-10 w-96 bg-brand-600 rounded-lg mb-3 animate-pulse" />
-          <div className="h-5 w-2/3 bg-brand-600 rounded animate-pulse" />
+          <div className="h-5 w-32 bg-navy-600 rounded-full mb-4 animate-pulse" />
+          <div className="h-10 w-96 bg-navy-600 rounded-lg mb-3 animate-pulse" />
+          <div className="h-5 w-2/3 bg-navy-600 rounded animate-pulse" />
         </div>
       </div>
 

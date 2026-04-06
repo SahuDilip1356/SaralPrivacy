@@ -14,7 +14,7 @@ export function FAQPreview() {
     <section className="py-20 bg-slate-50">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-10">
-          <h2 className="text-3xl font-bold text-brand-700 mb-3">
+          <h2 className="text-3xl font-bold text-navy-700 mb-3">
             Frequently asked questions
           </h2>
           <p className="text-slate-600">
@@ -32,7 +32,7 @@ export function FAQPreview() {
                 onClick={() => setOpenId(openId === faq.id ? null : faq.id)}
                 className="w-full flex items-start justify-between gap-4 p-5 text-left hover:bg-slate-50 transition-colors"
               >
-                <span className="font-semibold text-brand-700 text-sm leading-snug">
+                <span className="font-semibold text-navy-700 text-sm leading-snug">
                   {faq.question}
                 </span>
                 <ChevronDown
@@ -55,7 +55,7 @@ export function FAQPreview() {
         <div className="text-center">
           <Link
             href="/faq"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-brand-700 text-white font-semibold rounded-lg hover:bg-brand-800 transition-colors text-sm"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition-colors text-sm"
           >
             Browse all {faqs.length} FAQs
             <ArrowRight size={16} />

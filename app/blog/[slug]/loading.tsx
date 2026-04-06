@@ -27,7 +27,7 @@ export default function BlogDetailLoading() {
             {/* Verification banner */}
             <div className="h-16 bg-green-50 border border-green-200 rounded-xl" />
             {/* Excerpt */}
-            <div className="h-12 bg-slate-100 rounded border-l-4 border-saffron-400 pl-4" />
+            <div className="h-12 bg-slate-100 rounded border-l-4 border-green-400 pl-4" />
             {/* Sections */}
             {Array.from({ length: 5 }).map((_, i) => (
               <div key={i} className="space-y-2">
@@ -41,7 +41,7 @@ export default function BlogDetailLoading() {
 
           {/* Sidebar */}
           <div className="space-y-5 animate-pulse">
-            <div className="h-40 bg-brand-700 rounded-xl opacity-60" />
+            <div className="h-40 bg-navy-700 rounded-xl opacity-60" />
             <div className="h-48 bg-white rounded-xl border border-slate-200" />
           </div>
         </div>

@@ -7,24 +7,27 @@ const whitePaperContents = [
   "Sector-by-sector breakdown: recruitment, CA firms, training, D2C",
   "Rights of individuals and how businesses must respond",
   "Enforcement timeline and penalty structure",
-  "Your 30-day compliance action plan",
+  "Your 30-day privacy readiness action plan",
 ];
 
 export function WhitePaperSection() {
   return (
-    <section className="py-20 bg-brand-700">
+    <section className="py-20 bg-navy-700">
+      {/* Gold rule — ceremonial section divider */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="h-px bg-gold-400 opacity-30 mb-14 -mt-6" />
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left: content */}
           <div>
-            <div className="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/20 rounded-full px-3.5 py-1.5 mb-5">
-              <FileText size={12} className="text-amber-400" />
-              <span className="text-amber-400 text-xs font-semibold">45-page practitioner guide · Free download</span>
+            <div className="inline-flex items-center gap-2 bg-gold-400/10 border border-gold-400/30 rounded-full px-3.5 py-1.5 mb-5">
+              <FileText size={12} className="text-gold-400" />
+              <span className="text-gold-400 text-xs font-semibold">45-page practitioner guide · Free download</span>
             </div>
 
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
               The complete DPDPA guide
-              <span className="block text-saffron-400 mt-1">for Indian businesses</span>
+              <span className="block text-teal-400 mt-1">for Indian businesses</span>
             </h2>
 
             <p className="text-slate-300 text-lg leading-relaxed mb-7">
@@ -36,7 +39,7 @@ export function WhitePaperSection() {
             <ul className="space-y-2.5 mb-8">
               {whitePaperContents.map((item) => (
                 <li key={item} className="flex items-start gap-2.5 text-slate-300 text-sm">
-                  <CheckCircle size={16} className="text-saffron-400 mt-0.5 shrink-0" />
+                  <CheckCircle size={16} className="text-green-400 mt-0.5 shrink-0" />
                   {item}
                 </li>
               ))}
@@ -44,7 +47,7 @@ export function WhitePaperSection() {
 
             <Link
               href="/white-paper"
-              className="inline-flex items-center gap-2 px-7 py-3.5 bg-saffron-500 hover:bg-saffron-500 text-white font-semibold rounded-xl transition-colors text-base"
+              className="inline-flex items-center gap-2 px-7 py-3.5 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl transition-colors text-base"
             >
               <Download size={18} />
               Download Free White Paper
@@ -59,11 +62,11 @@ export function WhitePaperSection() {
             <div className="bg-white rounded-2xl p-8 shadow-2xl">
               {/* Document header */}
               <div className="flex items-center gap-3 mb-6 pb-5 border-b border-slate-100">
-                <div className="w-12 h-12 rounded-xl bg-brand-700 flex items-center justify-center shrink-0">
+                <div className="w-12 h-12 rounded-xl bg-navy-700 flex items-center justify-center shrink-0">
                   <FileText size={24} className="text-white" />
                 </div>
                 <div>
-                  <div className="font-bold text-brand-700 text-base leading-snug">
+                  <div className="font-bold text-navy-700 text-base leading-snug">
                     DPDPA: The Complete Guide for Indian Businesses
                   </div>
                   <div className="text-slate-500 text-xs mt-0.5">2026 Edition · 45 pages</div>
@@ -91,15 +94,15 @@ export function WhitePaperSection() {
                 ))}
               </div>
 
-              <div className="mt-5 p-3.5 rounded-lg bg-saffron-50 border border-saffron-200 text-center">
-                <p className="text-saffron-700 text-sm font-semibold">
+              <div className="mt-5 p-3.5 rounded-lg bg-green-50 border border-green-200 text-center">
+                <p className="text-green-700 text-sm font-semibold">
                   Download instantly · Free · DPDPA-compliant consent
                 </p>
               </div>
             </div>
 
-            {/* Floating badge */}
-            <div className="absolute -top-3 -right-3 bg-amber-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
+            {/* Floating badge — gold accent */}
+            <div className="absolute -top-3 -right-3 bg-gold-400 text-navy-800 text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
               Free Download
             </div>
           </div>

@@ -39,7 +39,7 @@ export default function CAFirmsIndustryPage() {
         { name: 'CA Firms', url: 'https://saralprivacy.com/industries/ca-firms' },
       ])}
     <div className="min-h-screen bg-slate-50">
-      <div className="bg-brand-700 py-14">
+      <div className="bg-navy-700 py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-xl bg-indigo-700 flex items-center justify-center">
@@ -57,11 +57,11 @@ export default function CAFirmsIndustryPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-5">
-            <h2 className="text-2xl font-bold text-brand-700">Key Risk Areas</h2>
+            <h2 className="text-2xl font-bold text-navy-700">Key Risk Areas</h2>
             {riskAreas.map((area) => (
               <div key={area.title} className="bg-white rounded-xl border border-slate-200 p-5">
                 <div className="flex items-start justify-between gap-3 mb-2">
-                  <h3 className="font-bold text-brand-700">{area.title}</h3>
+                  <h3 className="font-bold text-navy-700">{area.title}</h3>
                   <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${area.risk === "High" ? "bg-red-100 text-red-700" : "bg-amber-100 text-amber-700"}`}>{area.risk} Risk</span>
                 </div>
                 <p className="text-slate-600 text-sm mb-3">{area.description}</p>
@@ -70,7 +70,7 @@ export default function CAFirmsIndustryPage() {
                 </div>
               </div>
             ))}
-            <h2 className="text-2xl font-bold text-brand-700 pt-4">Compliance Checklist</h2>
+            <h2 className="text-2xl font-bold text-navy-700 pt-4">Compliance Checklist</h2>
             <div className="bg-white rounded-xl border border-slate-200 p-6">
               {checklistItems.map((item, i) => (
                 <div key={i} className="flex items-start gap-3 py-2 border-b border-slate-100 last:border-0">
@@ -87,23 +87,23 @@ export default function CAFirmsIndustryPage() {
               <Link href="/assessment/ca-firms" className="block text-center py-2.5 bg-white text-indigo-800 font-bold rounded-lg text-sm hover:bg-indigo-50">Start Assessment →</Link>
             </div>
             <div className="bg-white border border-slate-200 rounded-xl p-5">
-              <h3 className="font-bold text-brand-700 text-sm mb-2">Free White Paper</h3>
+              <h3 className="font-bold text-navy-700 text-sm mb-2">Free White Paper</h3>
               <p className="text-slate-600 text-xs mb-3">45-page DPDPA compliance guide for Indian businesses.</p>
-              <Link href="/white-paper" className="block text-center py-2.5 bg-brand-700 text-white font-semibold rounded-lg text-sm hover:bg-brand-800 transition-colors">
+              <Link href="/white-paper" className="block text-center py-2.5 bg-navy-700 text-white font-semibold rounded-lg text-sm hover:bg-navy-800 transition-colors">
                 Download White Paper →
               </Link>
             </div>
             <div className="bg-white border border-slate-200 rounded-xl p-5">
-              <h3 className="font-bold text-brand-700 text-sm mb-3">Related Briefings</h3>
+              <h3 className="font-bold text-navy-700 text-sm mb-3">Related Briefings</h3>
               <div className="space-y-2">
-                <Link href="/briefings/ca-firms-pan-aadhaar-obligations-dpdpa" className="block text-sm text-saffron-600 hover:underline">→ CA Firms: PAN, Aadhaar & DPDPA Obligations</Link>
-                <Link href="/briefings/dpdpa-consent-notice-requirements-2025" className="block text-sm text-saffron-600 hover:underline">→ Consent Notice Requirements</Link>
-                <Link href="/briefings/data-breach-notification-obligations-dpdpa" className="block text-sm text-saffron-600 hover:underline">→ Data Breach Notification</Link>
+                <Link href="/briefings/ca-firms-pan-aadhaar-obligations-dpdpa" className="block text-sm text-green-600 hover:underline">→ CA Firms: PAN, Aadhaar & DPDPA Obligations</Link>
+                <Link href="/briefings/dpdpa-consent-notice-requirements-2025" className="block text-sm text-green-600 hover:underline">→ Consent Notice Requirements</Link>
+                <Link href="/briefings/data-breach-notification-obligations-dpdpa" className="block text-sm text-green-600 hover:underline">→ Data Breach Notification</Link>
               </div>
             </div>
             <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
-              <h3 className="font-bold text-brand-700 text-sm mb-2">Need advice?</h3>
-              <Link href="/contact" className="block text-center py-2.5 bg-brand-700 text-white font-semibold rounded-lg text-sm hover:bg-brand-800">Request Consultation →</Link>
+              <h3 className="font-bold text-navy-700 text-sm mb-2">Need advice?</h3>
+              <Link href="/contact" className="block text-center py-2.5 bg-navy-700 text-white font-semibold rounded-lg text-sm hover:bg-navy-800">Request Consultation →</Link>
             </div>
           </div>
         </div>

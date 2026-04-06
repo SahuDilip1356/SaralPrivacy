@@ -47,7 +47,7 @@ export function AssessmentCTA() {
               <span className="text-amber-700 text-xs font-semibold">Free — takes 10 minutes</span>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl font-bold text-brand-700 mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold text-navy-700 mb-4">
               Find out exactly where you stand with DPDPA
             </h2>
 
@@ -71,7 +71,7 @@ export function AssessmentCTA() {
 
             <Link
               href="/assessment"
-              className="inline-flex items-center gap-2 px-7 py-3.5 bg-brand-700 text-white font-semibold rounded-xl hover:bg-brand-800 transition-colors text-base"
+              className="inline-flex items-center gap-2 px-7 py-3.5 bg-green-500 text-white font-semibold rounded-xl hover:bg-green-600 transition-colors text-base"
             >
               Choose Your Assessment
               <ArrowRight size={18} />
@@ -80,7 +80,7 @@ export function AssessmentCTA() {
 
           {/* Right: assessment picker */}
           <div className="bg-slate-50 rounded-2xl border border-slate-200 p-7">
-            <h3 className="font-bold text-brand-700 text-lg mb-2">Select your industry</h3>
+            <h3 className="font-bold text-navy-700 text-lg mb-2">Select your industry</h3>
             <p className="text-slate-500 text-sm mb-6">
               Each assessment is tailored to the specific data risks and obligations of your sector.
             </p>
@@ -90,21 +90,21 @@ export function AssessmentCTA() {
                 <Link
                   key={href}
                   href={href}
-                  className="flex items-center justify-between p-4 bg-white rounded-xl border border-slate-200 hover:border-saffron-400 hover:shadow-sm transition-all group"
+                  className="flex items-center justify-between p-4 bg-white rounded-xl border border-slate-200 hover:border-teal-400 hover:shadow-sm transition-all group"
                 >
                   <div>
-                    <div className="font-semibold text-brand-700 text-sm group-hover:text-saffron-600 transition-colors">
+                    <div className="font-semibold text-navy-700 text-sm group-hover:text-navy-700 transition-colors">
                       {label}
                     </div>
                     <div className="text-xs text-slate-500 mt-0.5">{count} · ~10 minutes</div>
                   </div>
-                  <ArrowRight size={16} className="text-slate-400 group-hover:text-saffron-500 transition-colors" />
+                  <ArrowRight size={16} className="text-slate-400 group-hover:text-teal-500 transition-colors" />
                 </Link>
               ))}
             </div>
 
-            <div className="mt-5 p-3.5 rounded-lg bg-saffron-50 border border-saffron-200">
-              <p className="text-xs text-saffron-600">
+            <div className="mt-5 p-3.5 rounded-lg bg-green-50 border border-green-200">
+              <p className="text-xs text-green-700">
                 <strong>No account required.</strong> Results are shown immediately after
                 completion. You can optionally save your results by providing your email.
               </p>

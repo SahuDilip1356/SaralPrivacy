@@ -101,7 +101,7 @@ export default function WhitePaperContent() {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
-      <div className="bg-brand-700 py-14">
+      <div className="bg-navy-700 py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="max-w-2xl">
             <div className="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/20 rounded-full px-3.5 py-1.5 mb-4">
@@ -127,7 +127,7 @@ export default function WhitePaperContent() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           {/* Left: about the white paper */}
           <div>
-            <h2 className="text-2xl font-bold text-brand-700 mb-5">
+            <h2 className="text-2xl font-bold text-navy-700 mb-5">
               What&apos;s inside the white paper
             </h2>
 
@@ -135,8 +135,8 @@ export default function WhitePaperContent() {
               <ul className="space-y-3">
                 {whitePaperSections.map((section, i) => (
                   <li key={i} className="flex items-start gap-3 text-sm text-slate-600">
-                    <div className="w-6 h-6 rounded-lg bg-saffron-50 border border-saffron-200 flex items-center justify-center shrink-0 mt-0.5">
-                      <span className="text-saffron-600 text-xs font-bold">{String(i + 1).padStart(2, "0")}</span>
+                    <div className="w-6 h-6 rounded-lg bg-green-50 border border-green-200 flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="text-green-600 text-xs font-bold">{String(i + 1).padStart(2, "0")}</span>
                     </div>
                     {section}
                   </li>
@@ -145,7 +145,7 @@ export default function WhitePaperContent() {
             </div>
 
             {/* Who it is for */}
-            <div className="bg-brand-700 rounded-xl p-6">
+            <div className="bg-navy-700 rounded-xl p-6">
               <h3 className="font-bold text-white text-base mb-3">Who this is for</h3>
               <div className="space-y-2">
                 {[
@@ -157,7 +157,7 @@ export default function WhitePaperContent() {
                   "D2C brand founders and marketing leads",
                 ].map((item) => (
                   <div key={item} className="flex items-center gap-2 text-slate-300 text-sm">
-                    <CheckCircle size={14} className="text-saffron-400 shrink-0" />
+                    <CheckCircle size={14} className="text-green-400 shrink-0" />
                     {item}
                   </div>
                 ))}
@@ -188,7 +188,7 @@ export default function WhitePaperContent() {
               </div>
             ) : (
               <div className="bg-white border border-slate-200 rounded-2xl p-7 shadow-sm">
-                <h2 className="font-bold text-brand-700 text-lg mb-1">
+                <h2 className="font-bold text-navy-700 text-lg mb-1">
                   Get the white paper — free
                 </h2>
                 <p className="text-slate-500 text-sm mb-6">
@@ -259,7 +259,7 @@ export default function WhitePaperContent() {
                   {/* Consent section */}
                   <div className="bg-slate-50 rounded-xl p-4 space-y-3 border border-slate-200">
                     <div className="flex items-center gap-2 mb-2">
-                      <Shield size={14} className="text-saffron-500" />
+                      <Shield size={14} className="text-green-500" />
                       <p className="text-xs font-semibold text-slate-600 uppercase tracking-wide">
                         Consent — please read and choose
                       </p>
@@ -292,10 +292,10 @@ export default function WhitePaperContent() {
 
                     <p className="text-xs text-slate-400 pt-1">
                       Your data is processed under our{" "}
-                      <a href="/privacy" className="text-saffron-500 underline">Privacy Notice</a>{" "}
+                      <a href="/privacy" className="text-green-500 underline">Privacy Notice</a>{" "}
                       (v{PRIVACY_NOTICE_VERSION}). You can request access, correction, or erasure
                       at any time by emailing{" "}
-                      <a href="mailto:privacy@saralprivacy.com" className="text-saffron-500 underline">
+                      <a href="mailto:privacy@saralprivacy.com" className="text-green-500 underline">
                         privacy@saralprivacy.com
                       </a>.
                     </p>

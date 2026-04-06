@@ -59,12 +59,12 @@ export default function BriefingDetailLoading() {
             </div>
 
             {/* Action block */}
-            <div className="bg-brand-700 rounded-xl p-6 mb-4">
-              <div className="h-5 w-36 bg-brand-600 rounded mb-4" />
+            <div className="bg-navy-700 rounded-xl p-6 mb-4">
+              <div className="h-5 w-36 bg-navy-600 rounded mb-4" />
               {[1,2,3].map(i => (
                 <div key={i} className="flex gap-3 mb-3">
-                  <div className="h-6 w-6 rounded-full border border-saffron-400/40 shrink-0" />
-                  <div className="h-4 w-full bg-brand-600 rounded" />
+                  <div className="h-6 w-6 rounded-full border border-green-400/40 shrink-0" />
+                  <div className="h-4 w-full bg-navy-600 rounded" />
                 </div>
               ))}
             </div>
@@ -82,15 +82,15 @@ export default function BriefingDetailLoading() {
                 </div>
               ))}
             </div>
-            <div className="bg-saffron-50 border border-saffron-100 rounded-xl p-5">
-              <div className="h-4 w-40 bg-saffron-100 rounded mb-2" />
-              <div className="h-3 w-full bg-saffron-100 rounded mb-4" />
-              <div className="h-9 w-full bg-saffron-200 rounded-lg" />
+            <div className="bg-green-50 border border-green-100 rounded-xl p-5">
+              <div className="h-4 w-40 bg-green-100 rounded mb-2" />
+              <div className="h-3 w-full bg-green-100 rounded mb-4" />
+              <div className="h-9 w-full bg-green-200 rounded-lg" />
             </div>
-            <div className="bg-brand-700 rounded-xl p-5">
-              <div className="h-4 w-40 bg-brand-600 rounded mb-2" />
-              <div className="h-3 w-full bg-brand-600 rounded mb-4" />
-              <div className="h-9 w-full bg-brand-600 rounded-lg" />
+            <div className="bg-navy-700 rounded-xl p-5">
+              <div className="h-4 w-40 bg-navy-600 rounded mb-2" />
+              <div className="h-3 w-full bg-navy-600 rounded mb-4" />
+              <div className="h-9 w-full bg-navy-600 rounded-lg" />
             </div>
           </div>
 

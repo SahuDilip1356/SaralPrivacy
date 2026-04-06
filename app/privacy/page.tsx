@@ -11,11 +11,11 @@ export const metadata: Metadata = {
 export default function PrivacyPage() {
   return (
     <div className="min-h-screen bg-slate-50">
-      <div className="bg-brand-700 py-12">
+      <div className="bg-navy-700 py-12">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <div className="flex items-center gap-3 mb-3">
-            <Shield size={20} className="text-saffron-400" />
-            <span className="text-saffron-300 text-sm font-semibold">Privacy Notice v1.0</span>
+            <Shield size={20} className="text-green-400" />
+            <span className="text-green-300 text-sm font-semibold">Privacy Notice v1.0</span>
           </div>
           <h1 className="text-3xl font-bold text-white">Privacy Notice</h1>
           <p className="text-slate-300 mt-2">How SaralPrivacy collects, uses, and protects your personal data.</p>
@@ -160,7 +160,7 @@ We are committed to responding within 30 days.`,
             },
           ].map((section) => (
             <div key={section.title} className="bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="font-bold text-brand-700 text-xl mb-3">{section.title}</h2>
+              <h2 className="font-bold text-navy-700 text-xl mb-3">{section.title}</h2>
               <div className="text-slate-600 text-sm leading-relaxed whitespace-pre-line space-y-2">
                 {section.content.split("\n\n").map((para, i) => (
                   <p key={i} dangerouslySetInnerHTML={{
@@ -175,24 +175,24 @@ We are committed to responding within 30 days.`,
         </div>
 
         {/* Contact box */}
-        <div className="mt-8 bg-saffron-50 border border-saffron-200 rounded-xl p-5 flex items-start gap-3">
-          <Mail size={20} className="text-saffron-500 shrink-0 mt-0.5" />
+        <div className="mt-8 bg-green-50 border border-green-200 rounded-xl p-5 flex items-start gap-3">
+          <Mail size={20} className="text-green-500 shrink-0 mt-0.5" />
           <div>
-            <p className="font-semibold text-saffron-700 text-sm">Privacy Contact</p>
-            <p className="text-saffron-600 text-sm">
+            <p className="font-semibold text-green-700 text-sm">Privacy Contact</p>
+            <p className="text-green-600 text-sm">
               For access, correction, erasure, or any privacy question:{" "}
               <a href="mailto:privacy@saralprivacy.com" className="underline">
                 privacy@saralprivacy.com
               </a>
             </p>
             <div className="flex gap-3 mt-2">
-              <Link href="/consent-preferences" className="text-xs text-saffron-500 underline">
+              <Link href="/consent-preferences" className="text-xs text-green-500 underline">
                 Manage Consent
               </Link>
-              <Link href="/rights/erasure" className="text-xs text-saffron-500 underline">
+              <Link href="/rights/erasure" className="text-xs text-green-500 underline">
                 Request Erasure
               </Link>
-              <Link href="/unsubscribe" className="text-xs text-saffron-500 underline">
+              <Link href="/unsubscribe" className="text-xs text-green-500 underline">
                 Unsubscribe
               </Link>
             </div>

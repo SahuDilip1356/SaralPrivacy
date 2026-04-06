@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Shield, Mail, ExternalLink } from "lucide-react";
+import { Shield, Mail } from "lucide-react";
 
 const footerLinks = {
   platform: [
@@ -34,38 +34,41 @@ const footerLinks = {
 
 export function Footer() {
   return (
-    <footer className="bg-brand-700 text-slate-300">
+    <footer className="bg-navy-700 text-slate-300">
+      {/* Gold rule at top — ceremonial brand divider */}
+      <div className="h-px bg-gold-400 opacity-40" />
+
       {/* Main footer */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-14">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           {/* Brand column */}
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center gap-2.5 mb-5">
-              <div className="w-8 h-8 bg-saffron-500 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center">
                 <Shield size={16} className="text-white" />
               </div>
               <div>
                 <div className="font-bold text-white text-base leading-none">
-                  Saral<span className="text-saffron-400">Privacy</span>
+                  Saral<span className="text-green-400">Privacy</span>
                 </div>
-                <div className="text-[10px] text-slate-500 leading-none mt-0.5">
-                  DPDPA Compliance Platform
+                <div className="text-[10px] text-slate-400 leading-none mt-0.5">
+                  Privacy Intelligence Platform
                 </div>
               </div>
             </Link>
             <p className="text-sm text-slate-400 leading-relaxed mb-5 max-w-xs">
-              India&apos;s practical DPDPA compliance platform for businesses. Daily briefings,
+              India&apos;s practical DPDPA readiness platform for businesses. Daily briefings,
               industry assessments, resources, and advisory — without the legalese.
             </p>
             <div className="flex items-center gap-2 text-sm">
-              <Mail size={14} className="text-saffron-400" />
+              <Mail size={14} className="text-teal-400" />
               <a href="mailto:privacy@saralprivacy.com" className="text-slate-400 hover:text-white transition-colors">
                 privacy@saralprivacy.com
               </a>
             </div>
-            <div data-nosnippet className="mt-5 p-3 rounded-lg bg-slate-800 border border-slate-700">
+            <div data-nosnippet className="mt-5 p-3 rounded-lg bg-navy-800 border border-navy-600">
               <p className="text-xs text-slate-400">
-                <span className="text-amber-400 font-semibold">Disclaimer:</span> Information on
+                <span className="text-gold-400 font-semibold">Disclaimer:</span> Information on
                 this platform is for educational purposes only and does not constitute formal legal
                 advice. Consult a qualified professional for legal guidance.
               </p>
@@ -135,11 +138,11 @@ export function Footer() {
               ))}
             </ul>
 
-            <div data-nosnippet className="mt-6 p-3 rounded-lg bg-saffron-700/30 border border-saffron-600">
-              <p className="text-xs text-saffron-300 font-semibold mb-1">Data Rights Contact</p>
+            <div data-nosnippet className="mt-6 p-3 rounded-lg bg-teal-900/40 border border-teal-700/50">
+              <p className="text-xs text-teal-300 font-semibold mb-1">Data Rights Contact</p>
               <a
                 href="mailto:privacy@saralprivacy.com"
-                className="text-xs text-saffron-400 hover:text-saffron-300"
+                className="text-xs text-teal-400 hover:text-teal-300"
               >
                 privacy@saralprivacy.com
               </a>
@@ -152,29 +155,20 @@ export function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div data-nosnippet className="border-t border-slate-800">
+      <div data-nosnippet className="border-t border-navy-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs text-slate-500">
             © {new Date().getFullYear()} SaralPrivacy. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
             <span className="text-xs text-slate-600">Privacy Notice v1.0 · Updated March 2026</span>
-            <Link
-              href="/privacy"
-              className="text-xs text-slate-500 hover:text-slate-300 transition-colors"
-            >
+            <Link href="/privacy" className="text-xs text-slate-500 hover:text-slate-300 transition-colors">
               Privacy
             </Link>
-            <Link
-              href="/terms"
-              className="text-xs text-slate-500 hover:text-slate-300 transition-colors"
-            >
+            <Link href="/terms" className="text-xs text-slate-500 hover:text-slate-300 transition-colors">
               Terms
             </Link>
-            <Link
-              href="/consent-preferences"
-              className="text-xs text-slate-500 hover:text-slate-300 transition-colors"
-            >
+            <Link href="/consent-preferences" className="text-xs text-slate-500 hover:text-slate-300 transition-colors">
               Consent
             </Link>
           </div>
