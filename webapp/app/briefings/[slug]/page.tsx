@@ -61,11 +61,27 @@ function parseWhyField(raw: string) {
 
 async function _fetchBriefingFromDb(slug: string) {
   try {
-    const result = await databases.listDocuments(DB_ID, COLLECTIONS.BRIEFINGS, [
-      Query.equal("slug", slug),
-      Query.limit(1),
-    ]);
-    const doc = result.documents[0];
+    // Primary: query by slug (requires slug index in Appwrite)
+    let doc: any = null;
+    try {
+      const result = await databases.listDocuments(DB_ID, COLLECTIONS.BRIEFINGS, [
+        Query.equal("slug", slug),
+        Query.limit(1),
+      ]);
+      doc = result.documents[0] || null;
+    } catch {
+      // slug attribute not indexed — fall back to scanning recent briefings
+    }
+
+    // Fallback: fetch recent 50 briefings and match by slug in JS
+    if (!doc) {
+      const fallback = await databases.listDocuments(DB_ID, COLLECTIONS.BRIEFINGS, [
+        Query.orderDesc("$createdAt"),
+        Query.limit(50),
+      ]);
+      doc = fallback.documents.find((d: any) => d.slug === slug) || null;
+    }
+
     if (!doc) return null;
 
     const parsed = parseWhyField(doc.why_it_matters || "");
