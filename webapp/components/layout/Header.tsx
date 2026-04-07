@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Menu, X, ChevronDown, Shield } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 
 const navigation = [
   {
@@ -104,18 +105,25 @@ export function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-8 h-8 bg-navy-700 rounded-lg flex items-center justify-center group-hover:bg-green-500 transition-colors">
-              <Shield className="w-4.5 h-4.5 text-white" size={18} />
-            </div>
-            <div>
-              <div className="font-bold text-navy-700 text-base leading-none tracking-tight">
-                Saral<span className="text-green-500">Privacy</span>
-              </div>
-              <div className="text-[10px] text-slate-500 leading-none mt-0.5">
-                Privacy Intelligence Platform
-              </div>
-            </div>
+          <Link href="/" className="flex items-center">
+            {/* Desktop — full logo with wordmark */}
+            <Image
+              src="/logo.png"
+              alt="SaralPrivacy — Privacy made practical for India"
+              width={160}
+              height={64}
+              className="hidden sm:block h-14 w-auto object-contain"
+              priority
+            />
+            {/* Mobile — emblem only */}
+            <Image
+              src="/logo-emblem.png"
+              alt="SaralPrivacy"
+              width={40}
+              height={40}
+              className="block sm:hidden h-10 w-10 object-contain"
+              priority
+            />
           </Link>
 
           {/* Desktop nav */}

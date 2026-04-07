@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { Lock, Eye, EyeOff, Mail } from "lucide-react";
 
 export default function AdminLogin() {
@@ -37,13 +38,15 @@ export default function AdminLogin() {
       <div className="w-full max-w-sm">
         {/* Logo / Brand */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-navy-700 mb-4">
-            <Lock size={20} className="text-white" />
-          </div>
-          <h1 className="text-2xl font-bold text-navy-700">
-            Saral<span className="text-green-500">Privacy</span>
-          </h1>
-          <p className="text-slate-500 text-sm mt-1">Admin Dashboard</p>
+          <Image
+            src="/logo.png"
+            alt="SaralPrivacy"
+            width={180}
+            height={72}
+            className="h-16 w-auto object-contain mx-auto mb-3"
+            priority
+          />
+          <p className="text-slate-500 text-sm">Admin Dashboard</p>
         </div>
 
         <form
