@@ -74,13 +74,19 @@ export function Header() {
           : "bg-white/95 backdrop-blur-sm border-b border-slate-100"
       )}
     >
-      {/* Top urgency strip — Signal Gold */}
-      <div className="bg-gold-400 text-navy-700 text-xs py-2 px-4 text-center font-medium">
+      {/* Top urgency strip — Deep Amber with elevation shadow */}
+      <div
+        className="text-navy-700 text-xs py-2 px-4 text-center font-medium"
+        style={{
+          backgroundColor: "#F59E0B",
+          boxShadow: "0 4px 24px 0 rgba(245,158,11,0.35), 0 1px 0 0 rgba(245,158,11,0.15)",
+        }}
+      >
         <span className="inline-flex items-center gap-2 flex-wrap justify-center">
           {/* Pulsing urgency dot */}
           <span className="relative flex h-2 w-2 shrink-0">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-navy-700 opacity-60" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-navy-700" />
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-navy-800 opacity-50" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-navy-800" />
           </span>
           <span>
             <strong>DPDP Rules 2025 are now in effect.</strong>{" "}
