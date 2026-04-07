@@ -105,25 +105,25 @@ export function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center">
-            {/* Desktop — full logo with wordmark */}
-            <Image
-              src="/logo.png"
-              alt="SaralPrivacy — Privacy made practical for India"
-              width={160}
-              height={64}
-              className="hidden sm:block h-14 w-auto object-contain"
-              priority
-            />
-            {/* Mobile — emblem only */}
+          <Link href="/" className="flex items-center gap-2.5 group">
+            {/* SP circle emblem — shown on all screen sizes */}
             <Image
               src="/logo-emblem.png"
-              alt="SaralPrivacy"
-              width={40}
-              height={40}
-              className="block sm:hidden h-10 w-10 object-contain"
+              alt="SaralPrivacy emblem"
+              width={44}
+              height={44}
+              className="h-11 w-11 object-contain shrink-0"
               priority
             />
+            {/* Wordmark + tagline — hidden on mobile */}
+            <div className="hidden sm:block">
+              <div className="font-bold text-base leading-none tracking-tight">
+                <span className="text-green-500">saral</span><span className="text-navy-700">Privacy</span>
+              </div>
+              <div className="text-[10px] text-slate-400 leading-none mt-1 tracking-wide">
+                Privacy made practical for India
+              </div>
+            </div>
           </Link>
 
           {/* Desktop nav */}
