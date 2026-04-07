@@ -110,17 +110,17 @@ export function Header() {
             <Image
               src="/logo-emblem.png"
               alt="SaralPrivacy emblem"
-              width={44}
-              height={44}
-              className="h-11 w-11 object-contain shrink-0"
+              width={40}
+              height={40}
+              className="h-10 w-10 object-contain shrink-0 self-center"
               priority
             />
             {/* Wordmark + tagline — hidden on mobile */}
-            <div className="hidden sm:block">
-              <div className="font-bold text-base leading-none tracking-tight">
+            <div className="hidden sm:flex flex-col justify-center">
+              <div className="font-bold text-base leading-tight tracking-tight">
                 <span className="text-green-500">saral</span><span className="text-navy-700">Privacy</span>
               </div>
-              <div className="text-[10px] text-slate-400 leading-none mt-1 tracking-wide">
+              <div className="text-[10px] text-slate-400 leading-tight tracking-wide">
                 Privacy made practical for India
               </div>
             </div>
