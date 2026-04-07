@@ -74,12 +74,25 @@ export function Header() {
           : "bg-white/95 backdrop-blur-sm border-b border-slate-100"
       )}
     >
-      {/* Top strip — Cloud 50 light bar */}
-      <div className="bg-cloud-50 border-b border-cloud-200 text-slate-600 text-xs py-1.5 px-4 text-center">
-        <span>DPDP Rules, 2025 were notified on 14 November 2025. Use this phased rollout window to fix notices, consent, rights handling, retention, vendor controls, and breach response. </span>
-        <Link href="/assessment" className="text-green-600 font-semibold hover:text-green-700 underline underline-offset-2">
-          Check your readiness — free
-        </Link>
+      {/* Top urgency strip — Signal Gold */}
+      <div className="bg-gold-400 text-navy-700 text-xs py-2 px-4 text-center font-medium">
+        <span className="inline-flex items-center gap-2 flex-wrap justify-center">
+          {/* Pulsing urgency dot */}
+          <span className="relative flex h-2 w-2 shrink-0">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-navy-700 opacity-60" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-navy-700" />
+          </span>
+          <span>
+            <strong>DPDP Rules 2025 are now in effect.</strong>{" "}
+            Fix your notices, consent flows, and breach response before enforcement begins.
+          </span>
+          <Link
+            href="/assessment"
+            className="inline-flex items-center gap-1 bg-navy-700 text-white text-xs font-bold px-3 py-1 rounded-full hover:bg-navy-800 transition-colors shrink-0"
+          >
+            Check your readiness — free →
+          </Link>
+        </span>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
