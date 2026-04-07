@@ -40,7 +40,7 @@ const navigation = [
   },
   {
     label: "Insights",
-    href: "/blog",
+    href: "/briefings",
   },
   {
     label: "FAQ",
