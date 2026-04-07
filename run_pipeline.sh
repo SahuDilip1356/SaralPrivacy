@@ -1,7 +1,7 @@
 #!/bin/bash
 # ─────────────────────────────────────────────────────────────────────────────
 # DPDPA Daily Brief — Pipeline Runner
-# Triggered by macOS launchd at 9:00 AM IST (03:30 UTC) every day
+# Triggered by macOS launchd at 6:00 AM IST (00:30 UTC) every day
 #
 # Flow:
 #   read_roadmap    → research → generate_content → generate_infographic
