@@ -132,8 +132,8 @@ function RuleSection({
 }) {
   return (
     <section id={id} className="scroll-mt-24 pt-8 pb-6 border-b border-slate-100 last:border-0">
-      <h2 className="text-lg font-bold text-brand-700 mb-1">
-        <span className="text-saffron-500 text-sm font-semibold mr-2">{ruleNumber}</span>
+      <h2 className="text-lg font-bold text-navy-700 mb-1">
+        <span className="text-green-500 text-sm font-semibold mr-2">{ruleNumber}</span>
         {title}
       </h2>
       <div className="mt-3 space-y-3 text-sm text-slate-600 leading-relaxed">{children}</div>
@@ -146,7 +146,7 @@ function BulletList({ items }: { items: string[] }) {
     <ul className="space-y-2 pl-1">
       {items.map((item, i) => (
         <li key={i} className="flex items-start gap-2">
-          <span className="w-1.5 h-1.5 rounded-full bg-saffron-400 mt-2 shrink-0" />
+          <span className="w-1.5 h-1.5 rounded-full bg-green-400 mt-2 shrink-0" />
           <span>{item}</span>
         </li>
       ))}
@@ -169,7 +169,7 @@ function SubBulletList({ items }: { items: string[] }) {
 
 function InfoBox({ children }: { children: React.ReactNode }) {
   return (
-    <div className="bg-saffron-50 border-l-4 border-saffron-400 rounded-r-lg px-4 py-3 text-sm text-slate-700">
+    <div className="bg-green-50 border-l-4 border-green-400 rounded-r-lg px-4 py-3 text-sm text-slate-700">
       {children}
     </div>
   );
@@ -207,7 +207,7 @@ export default function DpdpRules2025Page() {
                 <nav className="space-y-1">
                   <Link
                     href="/learn/dpdp-rules-2025-plain-english-guide"
-                    className="block px-3 py-2 rounded-lg text-sm bg-saffron-50 text-saffron-600 font-semibold"
+                    className="block px-3 py-2 rounded-lg text-sm bg-green-50 text-green-600 font-semibold"
                   >
                     DPDP Rules 2025
                   </Link>
@@ -215,7 +215,7 @@ export default function DpdpRules2025Page() {
                     <Link
                       key={t.slug}
                       href={`/learn/${t.slug}`}
-                      className="block px-3 py-2 rounded-lg text-sm text-slate-600 hover:text-brand-700 hover:bg-slate-50 transition-colors"
+                      className="block px-3 py-2 rounded-lg text-sm text-slate-600 hover:text-navy-700 hover:bg-slate-50 transition-colors"
                     >
                       {t.label}
                     </Link>
@@ -228,7 +228,7 @@ export default function DpdpRules2025Page() {
             <div className="min-w-0">
               <Link
                 href="/learn"
-                className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-saffron-600 mb-5 transition-colors"
+                className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-green-600 mb-5 transition-colors"
               >
                 <ArrowLeft size={14} />
                 DPDPA Guide
@@ -236,11 +236,11 @@ export default function DpdpRules2025Page() {
 
               {/* Hero block */}
               <div className="bg-white rounded-xl border border-slate-200 p-7 mb-5">
-                <div className="inline-flex items-center gap-2 bg-saffron-50 border border-saffron-200 rounded-full px-3 py-1 mb-4">
-                  <FileText size={12} className="text-saffron-600" />
-                  <span className="text-saffron-600 text-xs font-semibold">Rules Reference</span>
+                <div className="inline-flex items-center gap-2 bg-green-50 border border-green-200 rounded-full px-3 py-1 mb-4">
+                  <FileText size={12} className="text-green-600" />
+                  <span className="text-green-600 text-xs font-semibold">Rules Reference</span>
                 </div>
-                <h1 className="text-2xl sm:text-3xl font-bold text-brand-700 mb-3">
+                <h1 className="text-2xl sm:text-3xl font-bold text-navy-700 mb-3">
                   DPDP Rules 2025: Section-by-Section Plain-English Guide
                 </h1>
                 <p className="text-slate-600 text-base leading-relaxed mb-5">
@@ -256,7 +256,7 @@ export default function DpdpRules2025Page() {
 
                 {/* What this page covers */}
                 <div className="mt-8" id="what-this-page-covers">
-                  <h2 className="text-lg font-bold text-brand-700 mb-3">What this page covers</h2>
+                  <h2 className="text-lg font-bold text-navy-700 mb-3">What this page covers</h2>
                   <BulletList
                     items={[
                       "Rule 1 to Rule 23 of the DPDP Rules, 2025",
@@ -709,7 +709,7 @@ export default function DpdpRules2025Page() {
                 {/* ── SCHEDULES ── */}
 
                 <section id="schedules" className="scroll-mt-24 pt-10 pb-4">
-                  <h2 className="text-xl font-bold text-brand-700 mb-1">
+                  <h2 className="text-xl font-bold text-navy-700 mb-1">
                     Schedules under the DPDP Rules, 2025
                   </h2>
                   <p className="text-sm text-slate-500">
@@ -719,7 +719,7 @@ export default function DpdpRules2025Page() {
                 </section>
 
                 <RuleSection id="first-schedule" ruleNumber="First Schedule." title="Consent Manager">
-                  <p className="font-semibold text-brand-700">Part A — Conditions for registration</p>
+                  <p className="font-semibold text-navy-700">Part A — Conditions for registration</p>
                   <p>A Consent Manager applicant must:</p>
                   <BulletList
                     items={[
@@ -735,7 +735,7 @@ export default function DpdpRules2025Page() {
                       "Have independent certification showing that its interoperable platform is consistent with the Board's standards and assurance framework, and that suitable technical and organisational measures are in place",
                     ]}
                   />
-                  <p className="font-semibold text-brand-700 mt-4">Part B — Obligations of Consent Manager</p>
+                  <p className="font-semibold text-navy-700 mt-4">Part B — Obligations of Consent Manager</p>
                   <p>A Consent Manager must:</p>
                   <BulletList
                     items={[
@@ -807,7 +807,7 @@ export default function DpdpRules2025Page() {
                 </RuleSection>
 
                 <RuleSection id="fourth-schedule" ruleNumber="Fourth Schedule." title="Exemptions for processing personal data of a child">
-                  <p className="font-semibold text-brand-700">Part A — Classes of Data Fiduciaries</p>
+                  <p className="font-semibold text-navy-700">Part A — Classes of Data Fiduciaries</p>
                   <p>The listed classes include:</p>
                   <BulletList
                     items={[
@@ -818,7 +818,7 @@ export default function DpdpRules2025Page() {
                       "Persons engaged by educational institutions, crèches, or child care centres for transport of enrolled children, for tracking location during travel",
                     ]}
                   />
-                  <p className="font-semibold text-brand-700 mt-4">Part B — Purposes</p>
+                  <p className="font-semibold text-navy-700 mt-4">Part B — Purposes</p>
                   <p>The listed purposes include:</p>
                   <BulletList
                     items={[
@@ -897,7 +897,7 @@ export default function DpdpRules2025Page() {
                       "Assessment for notifying any Data Fiduciary or class of Data Fiduciaries as a Significant Data Fiduciary",
                     ].map((item, i) => (
                       <div key={i} className="flex items-start gap-3">
-                        <span className="w-5 h-5 rounded-full bg-saffron-100 text-saffron-600 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+                        <span className="w-5 h-5 rounded-full bg-green-100 text-green-600 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
                           {i + 1}
                         </span>
                         <p>{item}</p>
@@ -912,13 +912,13 @@ export default function DpdpRules2025Page() {
 
                 {/* ── FAQ ── */}
                 <section id="faq" className="scroll-mt-24 pt-10">
-                  <h2 className="text-xl font-bold text-brand-700 mb-5">
+                  <h2 className="text-xl font-bold text-navy-700 mb-5">
                     Frequently Asked Questions
                   </h2>
                   <div className="space-y-5">
                     {faqs.map((faq, i) => (
                       <div key={i} className="border-b border-slate-100 pb-5 last:border-0">
-                        <h3 className="font-semibold text-brand-700 text-sm mb-1.5">
+                        <h3 className="font-semibold text-navy-700 text-sm mb-1.5">
                           {faq.question}
                         </h3>
                         <p className="text-slate-600 text-sm leading-relaxed">{faq.answer}</p>
@@ -949,7 +949,7 @@ export default function DpdpRules2025Page() {
               {/* Back link */}
               <Link
                 href="/learn"
-                className="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-600 hover:text-saffron-600 transition-colors"
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-600 hover:text-green-600 transition-colors"
               >
                 <ArrowLeft size={16} />
                 Back to DPDPA Guide
@@ -965,7 +965,7 @@ export default function DpdpRules2025Page() {
                 <nav className="space-y-0.5">
                   <a
                     href="#what-this-page-covers"
-                    className="block px-2 py-1.5 rounded text-xs text-slate-500 hover:text-saffron-600 hover:bg-saffron-50 transition-colors"
+                    className="block px-2 py-1.5 rounded text-xs text-slate-500 hover:text-green-600 hover:bg-green-50 transition-colors"
                   >
                     What this page covers
                   </a>
@@ -976,7 +976,7 @@ export default function DpdpRules2025Page() {
                     <a
                       key={item.id}
                       href={`#${item.id}`}
-                      className="block px-2 py-1 rounded text-xs text-slate-500 hover:text-saffron-600 hover:bg-saffron-50 transition-colors leading-tight"
+                      className="block px-2 py-1 rounded text-xs text-slate-500 hover:text-green-600 hover:bg-green-50 transition-colors leading-tight"
                     >
                       {item.label}
                     </a>
@@ -988,14 +988,14 @@ export default function DpdpRules2025Page() {
                     <a
                       key={item.id}
                       href={`#${item.id}`}
-                      className="block px-2 py-1 rounded text-xs text-slate-500 hover:text-saffron-600 hover:bg-saffron-50 transition-colors leading-tight"
+                      className="block px-2 py-1 rounded text-xs text-slate-500 hover:text-green-600 hover:bg-green-50 transition-colors leading-tight"
                     >
                       {item.label}
                     </a>
                   ))}
                   <a
                     href="#faq"
-                    className="block px-2 py-1.5 mt-1 rounded text-xs text-slate-500 hover:text-saffron-600 hover:bg-saffron-50 transition-colors font-medium"
+                    className="block px-2 py-1.5 mt-1 rounded text-xs text-slate-500 hover:text-green-600 hover:bg-green-50 transition-colors font-medium"
                   >
                     FAQ
                   </a>

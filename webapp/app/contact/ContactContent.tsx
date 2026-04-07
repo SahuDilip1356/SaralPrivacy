@@ -85,7 +85,7 @@ export default function ContactContent() {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
-      <div className="bg-brand-700 py-14">
+      <div className="bg-navy-700 py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="max-w-2xl">
             <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">
@@ -105,7 +105,7 @@ export default function ContactContent() {
           <div className="space-y-5">
             {/* What to expect */}
             <div className="bg-white border border-slate-200 rounded-xl p-5">
-              <h3 className="font-bold text-brand-700 text-sm mb-4">What to expect</h3>
+              <h3 className="font-bold text-navy-700 text-sm mb-4">What to expect</h3>
               <div className="space-y-4">
                 {[
                   { icon: Calendar, title: "Response within 1 business day", desc: "We confirm a time that works for you." },
@@ -113,11 +113,11 @@ export default function ContactContent() {
                   { icon: Mail, title: "Written summary after the call", desc: "Next steps and recommendations by email." },
                 ].map(({ icon: Icon, title, desc }) => (
                   <div key={title} className="flex gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-saffron-50 border border-saffron-200 flex items-center justify-center shrink-0">
-                      <Icon size={15} className="text-saffron-600" />
+                    <div className="w-8 h-8 rounded-lg bg-green-50 border border-green-200 flex items-center justify-center shrink-0">
+                      <Icon size={15} className="text-green-600" />
                     </div>
                     <div>
-                      <div className="text-sm font-semibold text-brand-700">{title}</div>
+                      <div className="text-sm font-semibold text-navy-700">{title}</div>
                       <div className="text-xs text-slate-500">{desc}</div>
                     </div>
                   </div>
@@ -127,20 +127,20 @@ export default function ContactContent() {
 
             {/* Contact alternatives */}
             <div className="bg-white border border-slate-200 rounded-xl p-5">
-              <h3 className="font-bold text-brand-700 text-sm mb-3">Direct contact</h3>
+              <h3 className="font-bold text-navy-700 text-sm mb-3">Direct contact</h3>
               <div className="space-y-3">
                 <a
                   href="mailto:privacy@saralprivacy.com"
-                  className="flex items-center gap-2 text-sm text-slate-600 hover:text-saffron-600 transition-colors"
+                  className="flex items-center gap-2 text-sm text-slate-600 hover:text-green-600 transition-colors"
                 >
-                  <Mail size={14} className="text-saffron-500" />
+                  <Mail size={14} className="text-green-500" />
                   privacy@saralprivacy.com
                 </a>
                 <a
                   href="mailto:privacy@saralprivacy.com"
-                  className="flex items-center gap-2 text-sm text-slate-600 hover:text-saffron-600 transition-colors"
+                  className="flex items-center gap-2 text-sm text-slate-600 hover:text-green-600 transition-colors"
                 >
-                  <Shield size={14} className="text-saffron-500" />
+                  <Shield size={14} className="text-green-500" />
                   privacy@saralprivacy.com (data requests)
                 </a>
               </div>
@@ -170,7 +170,7 @@ export default function ContactContent() {
               </div>
             ) : (
               <div className="bg-white border border-slate-200 rounded-2xl p-7 shadow-sm">
-                <h2 className="font-bold text-brand-700 text-lg mb-1">Consultation Request</h2>
+                <h2 className="font-bold text-navy-700 text-lg mb-1">Consultation Request</h2>
                 <p className="text-slate-500 text-sm mb-6">
                   All fields marked * are required. We will use this information to prepare for your call.
                 </p>
@@ -260,7 +260,7 @@ export default function ContactContent() {
                   {/* Consent */}
                   <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
                     <div className="flex items-center gap-2 mb-3">
-                      <Shield size={14} className="text-saffron-500" />
+                      <Shield size={14} className="text-green-500" />
                       <p className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Consent</p>
                     </div>
                     <Checkbox
@@ -280,7 +280,7 @@ export default function ContactContent() {
                     />
                     <p className="text-xs text-slate-400 mt-2 pl-7">
                       Your data is handled under our{" "}
-                      <a href="/privacy" className="text-saffron-500 underline">Privacy Notice</a>.
+                      <a href="/privacy" className="text-green-500 underline">Privacy Notice</a>.
                       You can withdraw this consent by emailing privacy@saralprivacy.com.
                     </p>
                   </div>

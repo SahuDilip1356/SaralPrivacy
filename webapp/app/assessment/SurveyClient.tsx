@@ -108,7 +108,7 @@ function DropdownSelect({
       <select
         value={value || ""}
         onChange={e => onChange(e.target.value)}
-        className={`w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-saffron-400 bg-white appearance-none pr-10 ${
+        className={`w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-green-400 bg-white appearance-none pr-10 ${
           value ? "text-slate-900" : "text-slate-400"
         }`}
       >
@@ -140,8 +140,8 @@ function SegmentedControl({
           onClick={() => onChange(opt)}
           className={`border rounded-lg px-3 py-2 text-sm font-medium transition-all ${
             value === opt
-              ? "bg-saffron-500 text-white border-saffron-500"
-              : "bg-white text-slate-600 border-slate-200 hover:border-saffron-300"
+              ? "bg-green-500 text-white border-green-500"
+              : "bg-white text-slate-600 border-slate-200 hover:border-green-300"
           }`}
         >
           {opt}
@@ -206,7 +206,7 @@ function MultiSelectChips({
       <button
         type="button"
         onClick={() => setOpen(o => !o)}
-        className={`w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-saffron-400 bg-white flex items-center justify-between ${
+        className={`w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-green-400 bg-white flex items-center justify-between ${
           values.length > 0 ? "text-slate-900" : "text-slate-400"
         }`}
       >
@@ -226,7 +226,7 @@ function MultiSelectChips({
                   type="checkbox"
                   checked={values.includes(opt)}
                   onChange={() => toggle(opt)}
-                  className="w-4 h-4 accent-saffron-500 shrink-0"
+                  className="w-4 h-4 accent-green-500 shrink-0"
                 />
                 <span className="text-sm text-slate-700">{opt}</span>
               </label>
@@ -240,13 +240,13 @@ function MultiSelectChips({
           {values.map(v => (
             <span
               key={v}
-              className="inline-flex items-center gap-1 bg-saffron-100 text-saffron-800 rounded-full px-2.5 py-0.5 text-xs"
+              className="inline-flex items-center gap-1 bg-green-100 text-green-800 rounded-full px-2.5 py-0.5 text-xs"
             >
               {v}
               <button
                 type="button"
                 onClick={() => remove(v)}
-                className="hover:text-saffron-600 leading-none"
+                className="hover:text-green-600 leading-none"
               >
                 <X size={10} />
               </button>
@@ -277,7 +277,7 @@ function MilestoneBar({ step }: { step: number }) {
         {/* Connecting line */}
         <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-0.5 bg-slate-600" />
         <div
-          className="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 bg-saffron-400 transition-all duration-500"
+          className="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 bg-green-400 transition-all duration-500"
           style={{ width: `${(currentIndex / (STEP_MILESTONES.length - 1)) * 100}%` }}
         />
 
@@ -289,18 +289,18 @@ function MilestoneBar({ step }: { step: number }) {
               <div
                 className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${
                   completed
-                    ? "bg-saffron-500 border-saffron-500"
+                    ? "bg-green-500 border-green-500"
                     : current
-                    ? "bg-white border-saffron-400 ring-2 ring-saffron-400/30"
+                    ? "bg-white border-green-400 ring-2 ring-green-400/30"
                     : "bg-slate-700 border-slate-600"
                 }`}
               >
                 {completed && <CheckCircle size={10} className="text-white" />}
-                {current && <div className="w-2 h-2 rounded-full bg-saffron-500" />}
+                {current && <div className="w-2 h-2 rounded-full bg-green-500" />}
               </div>
               <span
                 className={`absolute top-7 text-[10px] font-medium whitespace-nowrap ${
-                  completed || current ? "text-saffron-300" : "text-slate-500"
+                  completed || current ? "text-green-300" : "text-slate-500"
                 }`}
               >
                 {label}
@@ -376,7 +376,7 @@ export default function SurveyClient() {
   if (step === 0) return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
       {/* Compact header */}
-      <div className="bg-brand-700 py-5">
+      <div className="bg-navy-700 py-5">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 text-center">
           <h1 className="text-2xl font-bold text-white mb-1.5">
             Is your business ready for DPDPA?
@@ -398,7 +398,7 @@ export default function SurveyClient() {
                 type="checkbox"
                 checked={consentGiven}
                 onChange={e => setConsentGiven(e.target.checked)}
-                className="w-4 h-4 accent-saffron-500"
+                className="w-4 h-4 accent-green-500"
               />
               <span className="text-blue-800 text-sm font-medium">
                 I have read and agree to the Privacy Notice
@@ -433,7 +433,7 @@ export default function SurveyClient() {
         <button
           onClick={next}
           disabled={!consentGiven}
-          className="w-full py-3 bg-saffron-500 text-white font-bold rounded-xl text-base hover:bg-saffron-600 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="w-full py-3 bg-green-500 text-white font-bold rounded-xl text-base hover:bg-green-600 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
           Start Free Readiness Check →
         </button>
@@ -462,7 +462,7 @@ export default function SurveyClient() {
   // ── Step 5: Results ──────────────────────────────────────────────────────
   if (step === TOTAL_STEPS && result) return (
     <div className="min-h-screen bg-slate-50">
-      <div className="bg-brand-700 py-12">
+      <div className="bg-navy-700 py-12">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 text-center">
           <h1 className="text-3xl font-bold text-white mb-2">Your DPDPA Readiness Score</h1>
           <p className="text-slate-300 text-sm">Based on your answers</p>
@@ -471,9 +471,9 @@ export default function SurveyClient() {
 
       <div className="max-w-xl mx-auto px-4 sm:px-6 py-10 space-y-5">
         {/* Score card */}
-        <div className="bg-white rounded-2xl border-2 border-saffron-200 p-8 text-center">
-          <div className="text-6xl font-bold text-saffron-500 mb-1">{result.score}<span className="text-2xl text-slate-400">/10</span></div>
-          <div className="inline-block bg-saffron-100 text-saffron-700 font-bold px-4 py-1.5 rounded-full text-sm mb-4">
+        <div className="bg-white rounded-2xl border-2 border-green-200 p-8 text-center">
+          <div className="text-6xl font-bold text-green-500 mb-1">{result.score}<span className="text-2xl text-slate-400">/10</span></div>
+          <div className="inline-block bg-green-100 text-green-700 font-bold px-4 py-1.5 rounded-full text-sm mb-4">
             {result.band}
           </div>
           <p className="text-slate-600 text-sm leading-relaxed">{result.summary}</p>
@@ -495,11 +495,11 @@ export default function SurveyClient() {
 
         {/* Recommendations */}
         <div className="bg-white rounded-2xl border border-slate-200 p-6">
-          <h3 className="font-bold text-brand-700 text-base mb-4">3 things to do this week</h3>
+          <h3 className="font-bold text-navy-700 text-base mb-4">3 things to do this week</h3>
           <div className="space-y-3">
             {result.recommendations.map((rec, i) => (
               <div key={i} className="flex items-start gap-3">
-                <span className="w-6 h-6 rounded-full bg-saffron-500 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">{i + 1}</span>
+                <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">{i + 1}</span>
                 <p className="text-slate-600 text-sm leading-relaxed">{rec}</p>
               </div>
             ))}
@@ -518,19 +518,19 @@ export default function SurveyClient() {
         )}
 
         {/* CTA */}
-        <div className="bg-brand-700 rounded-2xl p-6 text-center">
+        <div className="bg-navy-700 rounded-2xl p-6 text-center">
           <p className="text-white font-bold text-base mb-2">Want expert help?</p>
           <p className="text-slate-300 text-sm mb-4">Talk to our DPDPA specialists. Free 30-minute consultation.</p>
           <Link
             href="/contact"
-            className="inline-block py-3 px-6 bg-saffron-500 text-white font-bold rounded-xl hover:bg-saffron-600 transition-colors text-sm"
+            className="inline-block py-3 px-6 bg-green-500 text-white font-bold rounded-xl hover:bg-green-600 transition-colors text-sm"
           >
             Book Free Consultation →
           </Link>
         </div>
 
         <div className="text-center">
-          <Link href="/" className="text-sm text-slate-500 hover:text-brand-700 transition-colors">
+          <Link href="/" className="text-sm text-slate-500 hover:text-navy-700 transition-colors">
             ← Back to SaralPrivacy home
           </Link>
         </div>
@@ -542,7 +542,7 @@ export default function SurveyClient() {
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
       {/* Header with milestone bar */}
-      <div className="bg-brand-700 px-4 sm:px-6 pt-6 pb-10">
+      <div className="bg-navy-700 px-4 sm:px-6 pt-6 pb-10">
         <div className="max-w-2xl mx-auto">
           <MilestoneBar step={step} />
         </div>
@@ -553,7 +553,7 @@ export default function SurveyClient() {
         {/* ── Step 1: Business Profile ─────────────────────────────────── */}
         {step === 1 && (
           <div className="space-y-5">
-            <h2 className="text-xl font-bold text-brand-700 mb-5">Tell us about your business</h2>
+            <h2 className="text-xl font-bold text-navy-700 mb-5">Tell us about your business</h2>
 
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-1.5">What is your role?</label>
@@ -600,7 +600,7 @@ export default function SurveyClient() {
                 <select
                   value={answers.state_ut || ""}
                   onChange={e => set("state_ut", e.target.value)}
-                  className={`w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-saffron-400 bg-white appearance-none pr-10 ${
+                  className={`w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-green-400 bg-white appearance-none pr-10 ${
                     answers.state_ut ? "text-slate-900" : "text-slate-400"
                   }`}
                 >
@@ -620,7 +620,7 @@ export default function SurveyClient() {
                 value={answers.city || ""}
                 onChange={e => set("city", e.target.value)}
                 placeholder="e.g. Pune, Surat, Coimbatore"
-                className="w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-saffron-400 bg-white"
+                className="w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-green-400 bg-white"
               />
             </div>
           </div>
@@ -629,7 +629,7 @@ export default function SurveyClient() {
         {/* ── Step 2: Data Footprint ────────────────────────────────────── */}
         {step === 2 && (
           <div className="space-y-5">
-            <h2 className="text-xl font-bold text-brand-700 mb-5">About your data</h2>
+            <h2 className="text-xl font-bold text-navy-700 mb-5">About your data</h2>
 
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-1.5">Does your business collect or store people's information on a computer or phone?</label>
@@ -678,7 +678,7 @@ export default function SurveyClient() {
         {/* ── Step 3: Preparedness ─────────────────────────────────────── */}
         {step === 3 && (
           <div className="space-y-5">
-            <h2 className="text-xl font-bold text-brand-700 mb-5">What have you already done?</h2>
+            <h2 className="text-xl font-bold text-navy-700 mb-5">What have you already done?</h2>
 
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-1.5">Which of these are already in place in your business?</label>
@@ -728,8 +728,8 @@ export default function SurveyClient() {
         {step === 4 && (
           <div className="space-y-5">
             <div className="flex items-center gap-2 mb-1">
-              <span className="w-8 h-8 rounded-full bg-saffron-100 text-saffron-600 flex items-center justify-center font-bold text-lg">✓</span>
-              <h2 className="text-xl font-bold text-brand-700">Almost done!</h2>
+              <span className="w-8 h-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center font-bold text-lg">✓</span>
+              <h2 className="text-xl font-bold text-navy-700">Almost done!</h2>
             </div>
             <p className="text-sm text-slate-500">Choose what you'd like — both options are free.</p>
 
@@ -740,7 +740,7 @@ export default function SurveyClient() {
                 onClick={() => set("want_detailed_report", "quick_score")}
                 className={`text-left p-4 rounded-xl border-2 transition-all ${
                   answers.want_detailed_report === "quick_score"
-                    ? "border-saffron-500 bg-saffron-50"
+                    ? "border-green-500 bg-green-50"
                     : "border-slate-200 bg-white hover:border-slate-300"
                 }`}
               >
@@ -749,7 +749,7 @@ export default function SurveyClient() {
                 <div className="text-xs text-slate-500 mt-1 leading-snug">
                   See your score on screen + get a short summary email
                 </div>
-                <div className="mt-2 text-xs text-saffron-600 font-medium">Name + email only</div>
+                <div className="mt-2 text-xs text-green-600 font-medium">Name + email only</div>
               </button>
 
               <button
@@ -757,19 +757,19 @@ export default function SurveyClient() {
                 onClick={() => set("want_detailed_report", "full_report")}
                 className={`text-left p-4 rounded-xl border-2 transition-all relative ${
                   answers.want_detailed_report === "full_report"
-                    ? "border-saffron-500 bg-saffron-50"
+                    ? "border-green-500 bg-green-50"
                     : "border-slate-200 bg-white hover:border-slate-300"
                 }`}
               >
                 <div className="absolute top-3 right-3">
-                  <span className="bg-saffron-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">Recommended</span>
+                  <span className="bg-green-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">Recommended</span>
                 </div>
                 <div className="text-2xl mb-1.5">📋</div>
                 <div className="text-sm font-bold text-slate-800">Full Compliance Report</div>
                 <div className="text-xs text-slate-500 mt-1 leading-snug">
                   Score + detailed action plan + sector-specific guidance by email
                 </div>
-                <div className="mt-2 text-xs text-saffron-600 font-medium">Full contact form</div>
+                <div className="mt-2 text-xs text-green-600 font-medium">Full contact form</div>
               </button>
             </div>
 
@@ -784,7 +784,7 @@ export default function SurveyClient() {
                       value={answers.name || ""}
                       onChange={e => set("name", e.target.value)}
                       placeholder="e.g. Rajesh Kumar"
-                      className="w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-saffron-400 bg-white"
+                      className="w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-green-400 bg-white"
                     />
                   </div>
                   <div>
@@ -794,7 +794,7 @@ export default function SurveyClient() {
                       value={answers.work_email || ""}
                       onChange={e => set("work_email", e.target.value)}
                       placeholder="you@yourbusiness.com"
-                      className="w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-saffron-400 bg-white"
+                      className="w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-green-400 bg-white"
                     />
                   </div>
                 </div>
@@ -810,7 +810,7 @@ export default function SurveyClient() {
                           value={answers.business_name || ""}
                           onChange={e => set("business_name", e.target.value)}
                           placeholder="e.g. Kumar Textiles Pvt Ltd"
-                          className="w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-saffron-400 bg-white"
+                          className="w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-green-400 bg-white"
                         />
                       </div>
                       <div>
@@ -822,7 +822,7 @@ export default function SurveyClient() {
                           value={answers.mobile_number || ""}
                           onChange={e => set("mobile_number", e.target.value)}
                           placeholder="+91 98765 43210"
-                          className="w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-saffron-400 bg-white"
+                          className="w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-green-400 bg-white"
                         />
                       </div>
                     </div>
@@ -845,7 +845,7 @@ export default function SurveyClient() {
                       type="checkbox"
                       checked={answers.consent_followup || false}
                       onChange={e => set("consent_followup", e.target.checked)}
-                      className="mt-0.5 w-4 h-4 accent-saffron-500 shrink-0"
+                      className="mt-0.5 w-4 h-4 accent-green-500 shrink-0"
                     />
                     <span className="text-blue-800 text-xs leading-relaxed">
                       I consent to SaralPrivacy using my name and email to send me my DPDPA Readiness results and occasional educational updates. No spam — unsubscribe any time.{" "}
@@ -866,7 +866,7 @@ export default function SurveyClient() {
         <div className="max-w-xl mx-auto flex items-center justify-between">
           <button
             onClick={back}
-            className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-brand-700 transition-colors font-medium"
+            className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-navy-700 transition-colors font-medium"
           >
             <ArrowLeft size={16} />
             Back
@@ -879,7 +879,7 @@ export default function SurveyClient() {
           <button
             onClick={next}
             disabled={!canAdvance() || submitting}
-            className="flex items-center gap-2 py-2.5 px-6 bg-saffron-500 text-white font-bold rounded-xl text-sm hover:bg-saffron-600 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 py-2.5 px-6 bg-green-500 text-white font-bold rounded-xl text-sm hover:bg-green-600 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
             {step === 4 ? (submitting ? "Submitting…" : "Submit & View My Score") : "Next"}
             {step !== 4 && <ArrowRight size={16} />}

@@ -22,7 +22,7 @@ export default function FAQContent() {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
-      <div className="bg-brand-700 py-14">
+      <div className="bg-navy-700 py-14">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">
             Frequently Asked Questions
@@ -39,7 +39,7 @@ export default function FAQContent() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search questions..."
-              className="w-full pl-11 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-saffron-500 text-sm"
+              className="w-full pl-11 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-green-500 text-sm"
             />
           </div>
         </div>
@@ -53,7 +53,7 @@ export default function FAQContent() {
             className={cn(
               "px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors",
               activeCategory === "all"
-                ? "bg-brand-700 text-white"
+                ? "bg-navy-700 text-white"
                 : "bg-white text-slate-600 border border-slate-200 hover:border-slate-300"
             )}
           >
@@ -68,7 +68,7 @@ export default function FAQContent() {
                 className={cn(
                   "px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors",
                   activeCategory === cat.id
-                    ? "bg-brand-700 text-white"
+                    ? "bg-navy-700 text-white"
                     : "bg-white text-slate-600 border border-slate-200 hover:border-slate-300"
                 )}
               >
@@ -95,7 +95,7 @@ export default function FAQContent() {
                   onClick={() => setOpenId(openId === faq.id ? null : faq.id)}
                   className="w-full flex items-start justify-between gap-4 p-5 text-left hover:bg-slate-50 transition-colors"
                 >
-                  <span className="font-semibold text-brand-700 text-sm leading-snug pr-2">
+                  <span className="font-semibold text-navy-700 text-sm leading-snug pr-2">
                     {faq.question}
                   </span>
                   <ChevronDown
@@ -117,8 +117,8 @@ export default function FAQContent() {
         )}
 
         {/* CTA */}
-        <div className="mt-10 bg-saffron-50 border border-saffron-200 rounded-xl p-6 text-center">
-          <h3 className="font-bold text-brand-700 text-lg mb-2">
+        <div className="mt-10 bg-green-50 border border-green-200 rounded-xl p-6 text-center">
+          <h3 className="font-bold text-navy-700 text-lg mb-2">
             Still have questions?
           </h3>
           <p className="text-slate-600 text-sm mb-4">
@@ -126,7 +126,7 @@ export default function FAQContent() {
           </p>
           <a
             href="/contact"
-            className="inline-flex items-center gap-2 px-6 py-2.5 bg-saffron-500 text-white font-semibold rounded-lg text-sm hover:bg-saffron-600 transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-2.5 bg-green-500 text-white font-semibold rounded-lg text-sm hover:bg-green-600 transition-colors"
           >
             Contact Us
           </a>

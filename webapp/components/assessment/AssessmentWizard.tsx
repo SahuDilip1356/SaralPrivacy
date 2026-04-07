@@ -86,12 +86,12 @@ export function AssessmentWizard({ title, industry, questions }: Props) {
 
         {/* Score breakdown */}
         <div className="bg-white rounded-xl border border-slate-200 p-6 mb-5">
-          <h3 className="font-bold text-brand-700 text-sm mb-4">Your Score Breakdown</h3>
+          <h3 className="font-bold text-navy-700 text-sm mb-4">Your Score Breakdown</h3>
           <div className="grid grid-cols-2 gap-4">
             {[
               { label: "Applicability", score: result.applicabilityScore, color: "bg-blue-500" },
               { label: "Risk Level", score: result.riskScore, color: result.riskLevel === "green" ? "bg-green-500" : result.riskLevel === "amber" ? "bg-amber-500" : "bg-red-500" },
-              { label: "Maturity", score: result.maturityScore, color: "bg-saffron-500" },
+              { label: "Maturity", score: result.maturityScore, color: "bg-green-500" },
               { label: "Urgency", score: result.urgencyScore, color: result.urgencyScore > 60 ? "bg-red-400" : "bg-slate-400" },
             ].map(({ label, score, color }) => (
               <div key={label}>
@@ -112,14 +112,14 @@ export function AssessmentWizard({ title, industry, questions }: Props) {
 
         {/* Summary */}
         <div className="bg-white rounded-xl border border-slate-200 p-6 mb-5">
-          <h3 className="font-bold text-brand-700 text-lg mb-3">Assessment Summary</h3>
+          <h3 className="font-bold text-navy-700 text-lg mb-3">Assessment Summary</h3>
           <p className="text-slate-600 text-sm leading-relaxed mb-5">{result.summary}</p>
 
-          <h4 className="font-bold text-brand-700 text-sm mb-3">Key Recommendations</h4>
+          <h4 className="font-bold text-navy-700 text-sm mb-3">Key Recommendations</h4>
           <ul className="space-y-2">
             {result.recommendations.map((rec, i) => (
               <li key={i} className="flex items-start gap-2.5 text-sm text-slate-600">
-                <span className="w-5 h-5 rounded-full bg-saffron-100 text-saffron-600 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+                <span className="w-5 h-5 rounded-full bg-green-100 text-green-600 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
                   {i + 1}
                 </span>
                 {rec}
@@ -129,13 +129,13 @@ export function AssessmentWizard({ title, industry, questions }: Props) {
         </div>
 
         {/* Next step CTA */}
-        <div className="bg-brand-700 rounded-xl p-6 mb-5">
+        <div className="bg-navy-700 rounded-xl p-6 mb-5">
           <h4 className="font-bold text-white text-sm mb-2">Recommended next step</h4>
           <p className="text-slate-300 text-sm mb-4">{result.nextStep}</p>
           <div className="flex flex-col sm:flex-row gap-3">
             <Link
               href="/contact"
-              className="flex-1 text-center py-2.5 px-5 bg-saffron-500 hover:bg-saffron-500 text-white font-semibold rounded-lg text-sm transition-colors"
+              className="flex-1 text-center py-2.5 px-5 bg-green-500 hover:bg-green-500 text-white font-semibold rounded-lg text-sm transition-colors"
             >
               Request Free Consultation
             </Link>
@@ -150,8 +150,8 @@ export function AssessmentWizard({ title, industry, questions }: Props) {
 
         {/* Email capture */}
         {!emailSaved ? (
-          <div className="bg-saffron-50 border border-saffron-200 rounded-xl p-5">
-            <h4 className="font-bold text-brand-700 text-sm mb-1">
+          <div className="bg-green-50 border border-green-200 rounded-xl p-5">
+            <h4 className="font-bold text-navy-700 text-sm mb-1">
               Save your results and get a detailed report
             </h4>
             <p className="text-slate-600 text-xs mb-3">
@@ -163,18 +163,18 @@ export function AssessmentWizard({ title, industry, questions }: Props) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="your@email.com"
-                className="flex-1 px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-saffron-500"
+                className="flex-1 px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
               />
               <button
                 onClick={() => setEmailSaved(true)}
-                className="px-4 py-2.5 bg-saffron-500 text-white font-semibold rounded-lg text-sm hover:bg-saffron-600"
+                className="px-4 py-2.5 bg-green-500 text-white font-semibold rounded-lg text-sm hover:bg-green-600"
               >
                 Save
               </button>
             </div>
             <p className="text-xs text-slate-400 mt-2">
               By sharing your email, you consent to receive your assessment results and related resources.
-              See our <a href="/privacy" className="text-saffron-500 underline">Privacy Notice</a>.
+              See our <a href="/privacy" className="text-green-500 underline">Privacy Notice</a>.
             </p>
           </div>
         ) : (
@@ -205,11 +205,11 @@ export function AssessmentWizard({ title, industry, questions }: Props) {
       <div className="mb-7">
         <div className="flex items-center justify-between text-sm text-slate-500 mb-2">
           <span>Question {step + 1} of {questions.length}</span>
-          <span className="font-semibold text-saffron-600">{progress}% complete</span>
+          <span className="font-semibold text-green-600">{progress}% complete</span>
         </div>
         <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
           <div
-            className="h-full bg-saffron-500 rounded-full transition-all duration-300"
+            className="h-full bg-green-500 rounded-full transition-all duration-300"
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -218,11 +218,11 @@ export function AssessmentWizard({ title, industry, questions }: Props) {
       {/* Question card */}
       <div className="bg-white rounded-xl border border-slate-200 p-7 mb-5">
         {/* Category label */}
-        <div className="text-xs font-semibold text-saffron-600 uppercase tracking-wide mb-3">
+        <div className="text-xs font-semibold text-green-600 uppercase tracking-wide mb-3">
           {currentQuestion.category.replace(/-/g, " ")}
         </div>
 
-        <h2 className="text-lg sm:text-xl font-bold text-brand-700 leading-snug mb-2">
+        <h2 className="text-lg sm:text-xl font-bold text-navy-700 leading-snug mb-2">
           {currentQuestion.text}
         </h2>
 
@@ -241,7 +241,7 @@ export function AssessmentWizard({ title, industry, questions }: Props) {
               className={cn(
                 "w-full text-left p-4 rounded-xl border-2 transition-all text-sm leading-snug font-medium",
                 answers[currentQuestion.id] === option.id
-                  ? "border-saffron-400 bg-saffron-50 text-saffron-700"
+                  ? "border-green-400 bg-green-50 text-green-700"
                   : "border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-50"
               )}
             >
@@ -250,7 +250,7 @@ export function AssessmentWizard({ title, industry, questions }: Props) {
                   className={cn(
                     "w-4 h-4 rounded-full border-2 mt-0.5 shrink-0 transition-colors",
                     answers[currentQuestion.id] === option.id
-                      ? "border-saffron-400 bg-saffron-500"
+                      ? "border-green-400 bg-green-500"
                       : "border-slate-300"
                   )}
                 />
@@ -275,7 +275,7 @@ export function AssessmentWizard({ title, industry, questions }: Props) {
         <button
           onClick={handleNext}
           disabled={!hasAnswer}
-          className="inline-flex items-center gap-2 px-6 py-2.5 bg-brand-700 text-white text-sm font-semibold rounded-lg hover:bg-brand-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="inline-flex items-center gap-2 px-6 py-2.5 bg-navy-700 text-white text-sm font-semibold rounded-lg hover:bg-navy-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
           {isLastQuestion ? "See Results" : "Next Question"}
           <ArrowRight size={16} />

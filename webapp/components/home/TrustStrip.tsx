@@ -34,11 +34,11 @@ export function TrustStrip() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {pillars.map(({ icon: Icon, title, description }) => (
             <div key={title} className="flex gap-4">
-              <div className="w-9 h-9 rounded-lg bg-slate-100 flex items-center justify-center shrink-0 mt-0.5">
-                <Icon size={18} className="text-slate-600" />
+              <div className="w-9 h-9 rounded-lg bg-teal-50 flex items-center justify-center shrink-0 mt-0.5">
+                <Icon size={18} className="text-teal-600" />
               </div>
               <div>
-                <h3 className="font-bold text-brand-700 text-sm mb-1">{title}</h3>
+                <h3 className="font-bold text-navy-700 text-sm mb-1">{title}</h3>
                 <p className="text-slate-500 text-sm leading-relaxed">{description}</p>
               </div>
             </div>

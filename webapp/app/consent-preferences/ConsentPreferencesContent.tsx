@@ -29,11 +29,11 @@ export default function ConsentPreferencesContent() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <div className="bg-brand-700 py-12">
+      <div className="bg-navy-700 py-12">
         <div className="max-w-2xl mx-auto px-4 sm:px-6">
           <div className="flex items-center gap-3 mb-3">
-            <Shield size={20} className="text-saffron-400" />
-            <span className="text-saffron-300 text-sm font-semibold">Your Privacy Rights</span>
+            <Shield size={20} className="text-green-400" />
+            <span className="text-green-300 text-sm font-semibold">Your Privacy Rights</span>
           </div>
           <h1 className="text-3xl font-bold text-white">Consent Preferences</h1>
           <p className="text-slate-300 mt-2">
@@ -45,7 +45,7 @@ export default function ConsentPreferencesContent() {
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-10">
         {!found ? (
           <div className="bg-white border border-slate-200 rounded-xl p-7">
-            <h2 className="font-bold text-brand-700 text-lg mb-2">Find your preferences</h2>
+            <h2 className="font-bold text-navy-700 text-lg mb-2">Find your preferences</h2>
             <p className="text-slate-600 text-sm mb-5">
               Enter the email address you used to subscribe or download resources.
             </p>
@@ -56,7 +56,7 @@ export default function ConsentPreferencesContent() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="your@email.com"
                 required
-                className="flex-1 px-4 py-3 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-saffron-500"
+                className="flex-1 px-4 py-3 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
               />
               <Button type="submit" variant="secondary">Find</Button>
             </form>
@@ -71,7 +71,7 @@ export default function ConsentPreferencesContent() {
           </div>
         ) : (
           <form onSubmit={handleSave} className="bg-white border border-slate-200 rounded-xl p-7">
-            <h2 className="font-bold text-brand-700 text-lg mb-1">Your consent preferences</h2>
+            <h2 className="font-bold text-navy-700 text-lg mb-1">Your consent preferences</h2>
             <p className="text-slate-500 text-sm mb-5">
               Email: <strong>{email}</strong>. Manage each consent purpose independently.
             </p>
@@ -124,7 +124,7 @@ export default function ConsentPreferencesContent() {
 
             <p className="text-xs text-slate-400 mt-4 text-center">
               To request deletion of your data, email{" "}
-              <a href="mailto:privacy@saralprivacy.com" className="text-saffron-500 underline">
+              <a href="mailto:privacy@saralprivacy.com" className="text-green-500 underline">
                 privacy@saralprivacy.com
               </a>
             </p>

@@ -47,11 +47,11 @@ export function NewsletterSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="max-w-2xl mx-auto text-center">
           {/* Icon */}
-          <div className="w-12 h-12 rounded-xl bg-saffron-100 flex items-center justify-center mx-auto mb-5">
-            <Mail size={24} className="text-saffron-600" />
+          <div className="w-12 h-12 rounded-xl bg-teal-100 flex items-center justify-center mx-auto mb-5">
+            <Mail size={24} className="text-teal-600" />
           </div>
 
-          <h2 className="text-3xl font-bold text-brand-700 mb-3">
+          <h2 className="text-3xl font-bold text-navy-700 mb-3">
             DPDPA briefings, delivered to your inbox
           </h2>
           <p className="text-slate-600 mb-8 leading-relaxed">
@@ -104,7 +104,7 @@ export function NewsletterSection() {
                       onClick={() => setFrequency(freq)}
                       className={`flex-1 py-2.5 rounded-lg border text-sm font-semibold transition-colors capitalize ${
                         frequency === freq
-                          ? "border-saffron-400 bg-saffron-50 text-saffron-600"
+                          ? "border-navy-500 bg-cloud-50 text-navy-700"
                           : "border-slate-200 text-slate-600 hover:border-slate-300"
                       }`}
                     >
@@ -130,7 +130,7 @@ export function NewsletterSection() {
                 />
                 <p className="text-xs text-slate-400 pl-7">
                   Your data is processed as described in our{" "}
-                  <a href="/privacy" className="text-saffron-500 underline">Privacy Notice</a>.
+                  <a href="/privacy" className="text-green-600 underline">Privacy Notice</a>.
                   We do not pre-check consent boxes. You must opt in actively.
                 </p>
               </div>

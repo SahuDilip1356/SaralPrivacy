@@ -12,11 +12,11 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variantClasses = {
-  primary: "bg-brand-700 text-white hover:bg-brand-800 border border-transparent",
-  secondary: "bg-saffron-500 text-white hover:bg-saffron-600 border border-transparent",
+  primary: "bg-green-500 text-white hover:bg-green-600 border border-transparent",
+  secondary: "bg-navy-700 text-white hover:bg-navy-800 border border-transparent",
   outline:
-    "bg-transparent text-brand-700 border-2 border-brand-700 hover:bg-brand-700 hover:text-white",
-  accent: "bg-saffron-500 text-brand-700 hover:bg-saffron-600 border border-transparent",
+    "bg-transparent text-navy-700 border-2 border-navy-700 hover:bg-navy-700 hover:text-white",
+  accent: "bg-teal-500 text-white hover:bg-teal-600 border border-transparent",
   ghost: "bg-transparent text-slate-700 hover:bg-slate-100 border border-transparent",
   danger: "bg-red-600 text-white hover:bg-red-700 border border-transparent",
 };
@@ -45,7 +45,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={disabled || loading}
         className={cn(
-          "inline-flex items-center justify-center transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-saffron-500 disabled:opacity-50 disabled:cursor-not-allowed",
+          "inline-flex items-center justify-center transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed",
           variantClasses[variant],
           sizeClasses[size],
           className

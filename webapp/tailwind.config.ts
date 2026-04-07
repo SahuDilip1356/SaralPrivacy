@@ -1,11 +1,14 @@
 import type { Config } from "tailwindcss";
 
-// ─── Bharat Privacy Hub — Design Token System ─────────────────────────────
-// Usage ratio (75 / 15 / 7 / 3 rule):
-//   75% Pearl + Ivory  →  canvas, cards
-//   15% Ashoka Blue    →  nav, footer, authority panels
-//    7% Bharat Saffron →  CTAs, active states, highlights
-//    3% Dharma Green   →  success/low-risk states ONLY
+// ─── SaralPrivacy — Design Token System v3.0 ──────────────────────────────
+// Brand Guidelines v3.0, April 2026
+// Usage ratio (45 / 20 / 10 / 5 rule):
+//   45% Trust Navy   →  hero backgrounds, headings, badge core, footer
+//   20% Verif. Green →  primary CTAs, active states, trust affirmation
+//   10% Assur. Teal  →  secondary accent, hover cues, charts
+//    5% Signal Gold  →  dividers, certification edges, selective emphasis only
+//   10% Slate 700    →  primary body copy on light surfaces
+//   10% Cloud 50     →  light backgrounds, whitespace, reading panels
 
 const config: Config = {
   content: [
@@ -17,59 +20,78 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        brand: {
-          50:  "#EEF5FB",
-          100: "#D9E8F2",
-          200: "#B4CCDF",
-          300: "#7EA5C8",
-          400: "#5782AE",
-          500: "#3A6593",
-          600: "#2B5278",
-          700: "#1E3A5F",
-          800: "#16304F",
-          900: "#0F2540",
-          950: "#091829",
+        // Trust Navy — primary brand field; hero backgrounds; headings; badge core
+        navy: {
+          50:  "#E8ECF2",
+          100: "#C5CDD9",
+          200: "#9FADBF",
+          300: "#7A8DA6",
+          400: "#566D8C",
+          500: "#354F72",
+          600: "#1E3355",
+          700: "#121A2E",  // ← Trust Navy (primary)
+          800: "#0D1322",
+          900: "#080D17",
+          950: "#04060C",
         },
-        saffron: {
-          50:  "#FEF4EE",
-          100: "#FAE0CC",
-          200: "#F5C9A8",
-          300: "#F0B07E",
-          400: "#E99260",
-          500: "#E07B39",
-          600: "#C05520",
-          700: "#9C4319",
-          800: "#7A3414",
-          900: "#5C270F",
-          950: "#3D1809",
+        // Verification Green — primary CTA; active states; trust affirmation; proof points
+        green: {
+          50:  "#E6FAF4",
+          100: "#C0F3E2",
+          200: "#87E9C8",
+          300: "#4DDCA9",
+          400: "#1FCC8D",
+          500: "#07B981",  // ← Verification Green (primary CTA)
+          600: "#059669",
+          700: "#047857",
+          800: "#065F46",
+          900: "#064E3B",
+          950: "#022C22",
         },
-        dharma: {
-          50:  "#EDFBF3",
-          100: "#D1F3E3",
-          200: "#A3E6C8",
-          300: "#6DD5A8",
-          400: "#3DBD85",
-          500: "#22A66B",
-          600: "#138547",
-          700: "#0E6A3A",
-          800: "#094F2B",
-          900: "#05351D",
-          950: "#022611",
+        // Assurance Teal — secondary accent; badge ring; hover cues; charts
+        teal: {
+          50:  "#E9F7F7",
+          100: "#C7ECEB",
+          200: "#9ADAD8",
+          300: "#67C8C5",
+          400: "#48BAB7",
+          500: "#35B6AE",  // ← Assurance Teal (secondary accent)
+          600: "#2A9A93",
+          700: "#207D78",
+          800: "#175F5B",
+          900: "#0F4240",
+          950: "#072422",
         },
-        pearl: {
-          25:  "#FFFEF7",
-          50:  "#F9FAFB",
-          100: "#F2F4F1",
-          200: "#E4E7E2",
-          300: "#C8CCC5",
-          400: "#9DA39A",
-          500: "#6B7280",
-          600: "#4B5563",
-          700: "#374151",
-          800: "#1F2937",
-          900: "#111827",
-          950: "#030712",
+        // Signal Gold — selective emphasis only; certification edge; premium highlight
+        gold: {
+          50:  "#FDF7E8",
+          100: "#FAEDC5",
+          200: "#F5D98A",
+          300: "#EFC24E",
+          400: "#E8AB42",  // ← Signal Gold (selective use only)
+          500: "#D4921F",
+          600: "#B07516",
+          700: "#8A5A10",
+          800: "#64420C",
+          900: "#422B08",
+          950: "#211505",
         },
+        // Cloud — light backgrounds; whitespace; long-form reading panels
+        cloud: {
+          25:  "#FFFFFF",
+          50:  "#F7F9FC",  // ← Cloud 50 (primary light background)
+          100: "#EEF2F7",
+          200: "#DDE4EF",
+          300: "#C2CEDF",
+          400: "#9AAEC8",
+          500: "#7290B0",
+          600: "#506F94",
+          700: "#3A5270",
+          800: "#26384F",
+          900: "#141F2E",
+          950: "#0A1018",
+        },
+        // Slate — body copy on light surfaces
         slate: {
           25:  "#F9FAFB",
           50:  "#F8FAFC",
@@ -79,14 +101,14 @@ const config: Config = {
           400: "#94A3B8",
           500: "#64748B",
           600: "#475569",
-          700: "#334155",
+          700: "#334155",  // ← Slate 700 (primary body copy)
           800: "#1E293B",
           900: "#0F172A",
         },
       },
       fontFamily: {
-        sans:    ["Inter", "system-ui", "sans-serif"],
-        heading: ["Inter", "system-ui", "sans-serif"],
+        sans:    ["Inter", "system-ui", "-apple-system", "Segoe UI", "Roboto", "Arial", "sans-serif"],
+        heading: ["Inter", "system-ui", "-apple-system", "Segoe UI", "Roboto", "Arial", "sans-serif"],
       },
       fontSize: {
         "2xs": ["0.625rem", { lineHeight: "1rem" }],
@@ -110,8 +132,8 @@ const config: Config = {
         wide:    "0.025em",
       },
       spacing: {
-        "18": "4.5rem",
-        "88": "22rem",
+        "18":  "4.5rem",
+        "88":  "22rem",
         "128": "32rem",
       },
       maxWidth: {
@@ -120,10 +142,10 @@ const config: Config = {
       },
       boxShadow: {
         xs:           "0 1px 2px 0 rgb(0 0 0 / 0.05)",
-        card:         "0 1px 3px 0 rgb(30 58 95 / 0.06), 0 1px 2px -1px rgb(30 58 95 / 0.05)",
-        "card-hover": "0 4px 8px -1px rgb(30 58 95 / 0.10), 0 2px 4px -2px rgb(30 58 95 / 0.06)",
-        elevated:     "0 10px 25px -5px rgb(30 58 95 / 0.12), 0 4px 10px -5px rgb(30 58 95 / 0.06)",
-        saffron:      "0 4px 14px 0 rgb(224 123 57 / 0.30)",
+        card:         "0 1px 3px 0 rgb(18 26 46 / 0.06), 0 1px 2px -1px rgb(18 26 46 / 0.05)",
+        "card-hover": "0 4px 8px -1px rgb(18 26 46 / 0.10), 0 2px 4px -2px rgb(18 26 46 / 0.06)",
+        elevated:     "0 10px 25px -5px rgb(18 26 46 / 0.12), 0 4px 10px -5px rgb(18 26 46 / 0.06)",
+        green:        "0 4px 14px 0 rgb(7 185 129 / 0.30)",
       },
       animation: {
         "fade-up":    "fadeUp 0.5s ease-out",

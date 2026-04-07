@@ -26,7 +26,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           id={inputId}
           className={cn(
             "w-full px-4 py-3 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400",
-            "focus:outline-none focus:ring-2 focus:ring-saffron-500 focus:border-transparent",
+            "focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent",
             "transition-colors duration-200 text-sm bg-white",
             error && "border-red-400 focus:ring-red-400",
             className
@@ -67,7 +67,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           id={selectId}
           className={cn(
             "w-full px-4 py-3 border border-slate-300 rounded-lg text-slate-900",
-            "focus:outline-none focus:ring-2 focus:ring-saffron-500 focus:border-transparent",
+            "focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent",
             "transition-colors duration-200 text-sm bg-white appearance-none",
             error && "border-red-400 focus:ring-red-400",
             className
@@ -117,7 +117,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           id={textareaId}
           className={cn(
             "w-full px-4 py-3 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400",
-            "focus:outline-none focus:ring-2 focus:ring-saffron-500 focus:border-transparent",
+            "focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent",
             "transition-colors duration-200 text-sm bg-white resize-y",
             error && "border-red-400 focus:ring-red-400",
             className
@@ -151,8 +151,8 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             type="checkbox"
             id={checkboxId}
             className={cn(
-              "mt-0.5 h-4 w-4 rounded border-slate-300 text-saffron-500",
-              "focus:ring-2 focus:ring-saffron-500 focus:ring-offset-0",
+              "mt-0.5 h-4 w-4 rounded border-slate-300 text-green-500",
+              "focus:ring-2 focus:ring-green-500 focus:ring-offset-0",
               "transition-colors duration-200 cursor-pointer",
               className
             )}

@@ -1,99 +1,115 @@
 @import "tailwindcss";
 
-/* ── Tailwind v4 @theme — Custom Color Tokens ────────────────────────────── */
+/* ── Tailwind v4 @theme — SaralPrivacy Token System v3.0 ─────────────────── */
 @theme {
-  /* Brand — Ashoka Blue */
-  --color-brand-50:  #EEF5FB;
-  --color-brand-100: #D9E8F2;
-  --color-brand-200: #B4CCDF;
-  --color-brand-300: #7EA5C8;
-  --color-brand-400: #5782AE;
-  --color-brand-500: #3A6593;
-  --color-brand-600: #2B5278;
-  --color-brand-700: #1E3A5F;
-  --color-brand-800: #16304F;
-  --color-brand-900: #0F2540;
-  --color-brand-950: #091829;
+  /* Trust Navy — primary brand field */
+  --color-navy-50:  #E8ECF2;
+  --color-navy-100: #C5CDD9;
+  --color-navy-200: #9FADBF;
+  --color-navy-300: #7A8DA6;
+  --color-navy-400: #566D8C;
+  --color-navy-500: #354F72;
+  --color-navy-600: #1E3355;
+  --color-navy-700: #121A2E;
+  --color-navy-800: #0D1322;
+  --color-navy-900: #080D17;
+  --color-navy-950: #04060C;
 
-  /* Saffron — Bharat Saffron */
-  --color-saffron-50:  #FEF4EE;
-  --color-saffron-100: #FAE0CC;
-  --color-saffron-200: #F5C9A8;
-  --color-saffron-300: #F0B07E;
-  --color-saffron-400: #E99260;
-  --color-saffron-500: #E07B39;
-  --color-saffron-600: #C05520;
-  --color-saffron-700: #9C4319;
-  --color-saffron-800: #7A3414;
-  --color-saffron-900: #5C270F;
-  --color-saffron-950: #3D1809;
+  /* Verification Green — primary CTA */
+  --color-green-50:  #E6FAF4;
+  --color-green-100: #C0F3E2;
+  --color-green-200: #87E9C8;
+  --color-green-300: #4DDCA9;
+  --color-green-400: #1FCC8D;
+  --color-green-500: #07B981;
+  --color-green-600: #059669;
+  --color-green-700: #047857;
+  --color-green-800: #065F46;
+  --color-green-900: #064E3B;
+  --color-green-950: #022C22;
 
-  /* Dharma — Green (success states only) */
-  --color-dharma-50:  #EDFBF3;
-  --color-dharma-100: #D1F3E3;
-  --color-dharma-200: #A3E6C8;
-  --color-dharma-300: #6DD5A8;
-  --color-dharma-400: #3DBD85;
-  --color-dharma-500: #22A66B;
-  --color-dharma-600: #138547;
-  --color-dharma-700: #0E6A3A;
-  --color-dharma-800: #094F2B;
-  --color-dharma-900: #05351D;
-  --color-dharma-950: #022611;
+  /* Assurance Teal — secondary accent */
+  --color-teal-50:  #E9F7F7;
+  --color-teal-100: #C7ECEB;
+  --color-teal-200: #9ADAD8;
+  --color-teal-300: #67C8C5;
+  --color-teal-400: #48BAB7;
+  --color-teal-500: #35B6AE;
+  --color-teal-600: #2A9A93;
+  --color-teal-700: #207D78;
+  --color-teal-800: #175F5B;
+  --color-teal-900: #0F4240;
+  --color-teal-950: #072422;
 
-  /* Pearl — Warm neutral canvas */
-  --color-pearl-25:  #FFFEF7;
-  --color-pearl-50:  #F9FAFB;
-  --color-pearl-100: #F2F4F1;
-  --color-pearl-200: #E4E7E2;
-  --color-pearl-300: #C8CCC5;
-  --color-pearl-400: #9DA39A;
-  --color-pearl-500: #6B7280;
-  --color-pearl-600: #4B5563;
-  --color-pearl-700: #374151;
-  --color-pearl-800: #1F2937;
-  --color-pearl-900: #111827;
-  --color-pearl-950: #030712;
+  /* Signal Gold — selective emphasis only */
+  --color-gold-50:  #FDF7E8;
+  --color-gold-100: #FAEDC5;
+  --color-gold-200: #F5D98A;
+  --color-gold-300: #EFC24E;
+  --color-gold-400: #E8AB42;
+  --color-gold-500: #D4921F;
+  --color-gold-600: #B07516;
+  --color-gold-700: #8A5A10;
+  --color-gold-800: #64420C;
+  --color-gold-900: #422B08;
+  --color-gold-950: #211505;
+
+  /* Cloud — light backgrounds */
+  --color-cloud-25:  #FFFFFF;
+  --color-cloud-50:  #F7F9FC;
+  --color-cloud-100: #EEF2F7;
+  --color-cloud-200: #DDE4EF;
+  --color-cloud-300: #C2CEDF;
+  --color-cloud-400: #9AAEC8;
+  --color-cloud-500: #7290B0;
+  --color-cloud-600: #506F94;
+  --color-cloud-700: #3A5270;
+  --color-cloud-800: #26384F;
+  --color-cloud-900: #141F2E;
+  --color-cloud-950: #0A1018;
 
   /* Custom spacing */
   --spacing-18:  4.5rem;
   --spacing-88:  22rem;
   --spacing-128: 32rem;
 
-  /* Custom shadows */
-  --shadow-card:        0 1px 3px 0 rgb(30 58 95 / 0.06), 0 1px 2px -1px rgb(30 58 95 / 0.05);
-  --shadow-card-hover:  0 4px 8px -1px rgb(30 58 95 / 0.10), 0 2px 4px -2px rgb(30 58 95 / 0.06);
-  --shadow-elevated:    0 10px 25px -5px rgb(30 58 95 / 0.12), 0 4px 10px -5px rgb(30 58 95 / 0.06);
-  --shadow-saffron:     0 4px 14px 0 rgb(224 123 57 / 0.30);
+  /* Custom shadows — navy-based */
+  --shadow-card:        0 1px 3px 0 rgb(18 26 46 / 0.06), 0 1px 2px -1px rgb(18 26 46 / 0.05);
+  --shadow-card-hover:  0 4px 8px -1px rgb(18 26 46 / 0.10), 0 2px 4px -2px rgb(18 26 46 / 0.06);
+  --shadow-elevated:    0 10px 25px -5px rgb(18 26 46 / 0.12), 0 4px 10px -5px rgb(18 26 46 / 0.06);
+  --shadow-green:       0 4px 14px 0 rgb(7 185 129 / 0.30);
 }
 
-/* ── Bharat Privacy Hub — Design Tokens ──────────────────────────────────── */
+/* ── SaralPrivacy — CSS Custom Properties ─────────────────────────────────── */
 :root {
   /* Authority */
-  --c-brand:         #1E3A5F;
-  --c-brand-dark:    #091829;
-  --c-brand-light:   #D9E8F2;
+  --c-navy:          #121A2E;
+  --c-navy-dark:     #0D1322;
+  --c-navy-light:    #C5CDD9;
   /* Action */
-  --c-saffron:       #E07B39;
-  --c-saffron-dark:  #C05520;
-  --c-saffron-light: #FEF4EE;
-  /* Success */
-  --c-dharma:        #138547;
-  --c-dharma-light:  #EDFBF3;
+  --c-green:         #07B981;
+  --c-green-dark:    #059669;
+  --c-green-light:   #E6FAF4;
+  /* Accent */
+  --c-teal:          #35B6AE;
+  --c-teal-light:    #E9F7F7;
+  /* Ceremonial */
+  --c-gold:          #E8AB42;
+  --c-gold-light:    #FDF7E8;
   /* Canvas */
-  --c-bg:            #F9FAFB;
+  --c-bg:            #F7F9FC;
   --c-surface:       #FFFFFF;
-  --c-ivory:         #FFFEF7;
   /* Text */
-  --c-text-primary:  #1F2937;
-  --c-text-secondary:#6B7280;
-  --c-border:        #E4E7E2;
+  --c-text-primary:  #334155;
+  --c-text-secondary:#64748B;
+  --c-border:        #DDE4EF;
   /* Semantic */
-  --c-warning:       #D97706;
-  --c-danger:        #DC2626;
+  --c-warning:       #D99A1F;
+  --c-danger:        #C2413A;
+  --c-info:          #2563EB;
 }
 
-/* ── Base layer — utilities always override these ───────────────────────────── */
+/* ── Base layer ─────────────────────────────────────────────────────────────── */
 @layer base {
   *, *::before, *::after { box-sizing: border-box; }
 
@@ -113,13 +129,12 @@
   }
 
   /* Heading scale — overridden by text-* utilities on dark panels */
-  h1 { font-size: clamp(1.75rem, 4vw, 3rem);   font-weight: 800; line-height: 1.1;  letter-spacing: -0.03em;  color: var(--c-brand); }
-  h2 { font-size: clamp(1.4rem, 3vw, 2.25rem);  font-weight: 700; line-height: 1.2;  letter-spacing: -0.025em; color: var(--c-brand); }
-  h3 { font-size: clamp(1.15rem, 2vw, 1.5rem);  font-weight: 700; line-height: 1.3;  letter-spacing: -0.015em; color: var(--c-brand); }
-  h4 { font-size: 1.125rem; font-weight: 600; line-height: 1.4; color: var(--c-brand); }
-  h5, h6 { font-weight: 600; color: var(--c-brand); }
+  h1 { font-size: clamp(1.75rem, 4vw, 3rem);   font-weight: 800; line-height: 1.1;  letter-spacing: -0.03em;  color: var(--c-navy); }
+  h2 { font-size: clamp(1.4rem, 3vw, 2.25rem);  font-weight: 700; line-height: 1.2;  letter-spacing: -0.025em; color: var(--c-navy); }
+  h3 { font-size: clamp(1.15rem, 2vw, 1.5rem);  font-weight: 700; line-height: 1.3;  letter-spacing: -0.015em; color: var(--c-navy); }
+  h4 { font-size: 1.125rem; font-weight: 600; line-height: 1.4; color: var(--c-navy); }
+  h5, h6 { font-weight: 600; color: var(--c-navy); }
 
-  /* Link reset — text-* utilities override this */
   a   { text-decoration: none; }
   p   { margin: 0; }
   img { max-width: 100%; height: auto; }
@@ -127,10 +142,9 @@
 
 /* ── Custom scrollbar ───────────────────────────────────────────────────────── */
 ::-webkit-scrollbar       { width: 5px; height: 5px; }
-::-webkit-scrollbar-track { background: #F2F4F1; }
-::-webkit-scrollbar-thumb { background: #C8CCC5; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #9DA39A; }
+::-webkit-scrollbar-track { background: #EEF2F7; }
+::-webkit-scrollbar-thumb { background: #C2CEDF; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #9AAEC8; }
 
 /* ── Selection ──────────────────────────────────────────────────────────────── */
-::selection { background: #FAE0CC; color: #1E3A5F; }
-
+::selection { background: #C0F3E2; color: #121A2E; }

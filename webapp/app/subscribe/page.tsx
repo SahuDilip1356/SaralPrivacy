@@ -17,7 +17,7 @@ export default function SubscribePage() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-2">
         <Link
           href="/briefings"
-          className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-saffron-600 transition-colors"
+          className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-green-600 transition-colors"
         >
           <ArrowLeft size={14} />
           Back to Daily Briefings
@@ -37,7 +37,7 @@ export default function SubscribePage() {
           ].map(({ icon, title, desc }) => (
             <div key={title} className="bg-white border border-slate-200 rounded-xl p-5 text-center">
               <div className="text-2xl mb-2">{icon}</div>
-              <div className="font-bold text-brand-700 text-sm mb-1">{title}</div>
+              <div className="font-bold text-navy-700 text-sm mb-1">{title}</div>
               <div className="text-xs text-slate-500 leading-relaxed">{desc}</div>
             </div>
           ))}

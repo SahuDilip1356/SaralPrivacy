@@ -18,7 +18,7 @@ export default function TrainingInstitutesPage() {
         { name: 'Training Institutes', url: 'https://saralprivacy.com/industries/training-institutes' },
       ])}
     <div className="min-h-screen bg-slate-50">
-      <div className="bg-brand-700 py-14">
+      <div className="bg-navy-700 py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-xl bg-amber-700 flex items-center justify-center">
@@ -44,7 +44,7 @@ export default function TrainingInstitutesPage() {
             ].map((area) => (
               <div key={area.title} className="bg-white rounded-xl border border-slate-200 p-5">
                 <div className="flex items-start justify-between gap-3 mb-2">
-                  <h3 className="font-bold text-brand-700">{area.title}</h3>
+                  <h3 className="font-bold text-navy-700">{area.title}</h3>
                   <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${area.risk === "Critical" ? "bg-red-100 text-red-700" : area.risk === "High" ? "bg-orange-100 text-orange-700" : "bg-amber-100 text-amber-700"}`}>{area.risk} Risk</span>
                 </div>
                 <p className="text-slate-600 text-sm mb-3">{area.desc}</p>
@@ -61,21 +61,21 @@ export default function TrainingInstitutesPage() {
               <Link href="/assessment/training-institutes" className="block text-center py-2.5 bg-white text-amber-800 font-bold rounded-lg text-sm">Start Assessment →</Link>
             </div>
             <div className="bg-white border border-slate-200 rounded-xl p-5">
-              <h3 className="font-bold text-brand-700 text-sm mb-2">Free White Paper</h3>
+              <h3 className="font-bold text-navy-700 text-sm mb-2">Free White Paper</h3>
               <p className="text-slate-600 text-xs mb-3">45-page DPDPA guide including a section on training institutes.</p>
-              <Link href="/white-paper" className="block text-center py-2.5 bg-brand-700 text-white font-semibold rounded-lg text-sm hover:bg-brand-800 transition-colors">
+              <Link href="/white-paper" className="block text-center py-2.5 bg-navy-700 text-white font-semibold rounded-lg text-sm hover:bg-navy-800 transition-colors">
                 Download White Paper →
               </Link>
             </div>
             <div className="bg-white border border-slate-200 rounded-xl p-5">
-              <h3 className="font-bold text-brand-700 text-sm mb-3">Related Briefings</h3>
+              <h3 className="font-bold text-navy-700 text-sm mb-3">Related Briefings</h3>
               <div className="space-y-2 text-sm">
-                <Link href="/briefings/training-institutes-student-data-dpdpa" className="block text-saffron-600 hover:underline">→ Student Data and DPDPA</Link>
-                <Link href="/briefings/dpdpa-consent-notice-requirements-2025" className="block text-saffron-600 hover:underline">→ Consent Notice Requirements</Link>
+                <Link href="/briefings/training-institutes-student-data-dpdpa" className="block text-green-600 hover:underline">→ Student Data and DPDPA</Link>
+                <Link href="/briefings/dpdpa-consent-notice-requirements-2025" className="block text-green-600 hover:underline">→ Consent Notice Requirements</Link>
               </div>
             </div>
             <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
-              <Link href="/contact" className="block text-center py-2.5 bg-brand-700 text-white font-semibold rounded-lg text-sm">Request Consultation →</Link>
+              <Link href="/contact" className="block text-center py-2.5 bg-navy-700 text-white font-semibold rounded-lg text-sm">Request Consultation →</Link>
             </div>
           </div>
         </div>

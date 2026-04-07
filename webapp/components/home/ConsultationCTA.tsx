@@ -5,14 +5,14 @@ export function ConsultationCTA() {
   return (
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="bg-brand-700 rounded-2xl p-10 lg:p-14 relative overflow-hidden">
-          {/* Background accent */}
+        <div className="bg-navy-700 rounded-2xl p-10 lg:p-14 relative overflow-hidden">
+          {/* Background accent — teal radial */}
           <div className="absolute inset-0 opacity-10">
             <div
               className="absolute right-0 top-0 w-96 h-96 rounded-full"
               style={{
                 background:
-                  "radial-gradient(circle, #E07B39 0%, transparent 70%)",
+                  "radial-gradient(circle, #35B6AE 0%, transparent 70%)",
               }}
             />
           </div>
@@ -20,13 +20,13 @@ export function ConsultationCTA() {
           <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
             {/* Left */}
             <div>
-              <div className="inline-flex items-center gap-2 bg-saffron-700/40 border border-saffron-500/50 rounded-full px-3.5 py-1.5 mb-5">
-                <span className="text-saffron-300 text-xs font-semibold">Free 30-minute consultation</span>
+              <div className="inline-flex items-center gap-2 bg-teal-700/30 border border-teal-500/40 rounded-full px-3.5 py-1.5 mb-5">
+                <span className="text-teal-300 text-xs font-semibold">Free 30-minute consultation</span>
               </div>
 
               <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
                 Not sure where to start?
-                <span className="block text-saffron-400 mt-1">We can help you figure it out.</span>
+                <span className="block text-teal-400 mt-1">We can help you figure it out.</span>
               </h2>
 
               <p className="text-slate-300 text-lg leading-relaxed mb-6">
@@ -41,7 +41,7 @@ export function ConsultationCTA() {
                   { icon: Phone, text: "Available via phone, video, or WhatsApp" },
                 ].map(({ icon: Icon, text }) => (
                   <div key={text} className="flex items-center gap-3 text-slate-300 text-sm">
-                    <Icon size={16} className="text-saffron-400 shrink-0" />
+                    <Icon size={16} className="text-teal-400 shrink-0" />
                     {text}
                   </div>
                 ))}
@@ -49,7 +49,7 @@ export function ConsultationCTA() {
 
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 px-7 py-3.5 bg-saffron-500 hover:bg-saffron-500 text-white font-semibold rounded-xl transition-colors text-base"
+                className="inline-flex items-center gap-2 px-7 py-3.5 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl transition-colors text-base"
               >
                 Request Consultation
                 <ArrowRight size={18} />
@@ -62,13 +62,13 @@ export function ConsultationCTA() {
               <div className="space-y-3">
                 {[
                   "Whether and how DPDPA applies to your specific business model",
-                  "Your highest-risk compliance gaps based on current practices",
+                  "Your highest-risk privacy gaps based on current practices",
                   "Practical quick wins you can implement immediately",
                   "A prioritised roadmap for the next 90 days",
-                  "Resource and cost estimates for your compliance programme",
+                  "Resource and cost estimates for your readiness programme",
                 ].map((item) => (
                   <div key={item} className="flex items-start gap-2.5 text-slate-300 text-sm">
-                    <span className="text-saffron-400 mt-1 shrink-0">→</span>
+                    <span className="text-green-400 mt-1 shrink-0">→</span>
                     {item}
                   </div>
                 ))}

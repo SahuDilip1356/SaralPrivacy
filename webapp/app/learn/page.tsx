@@ -17,7 +17,7 @@ const learnTopics = [
     description: "Every Rule and Schedule under the DPDP Rules, 2025 explained in plain English — section by section, in the same order as the official text.",
     time: "25 min",
     tag: "Rules Reference",
-    tagColor: "bg-brand-100 text-brand-700",
+    tagColor: "bg-navy-100 text-navy-700",
   },
   {
     icon: BookOpen,
@@ -26,7 +26,7 @@ const learnTopics = [
     description: "An overview of the Digital Personal Data Protection Act, 2023 — why it was passed, what it governs, and what it means for Indian businesses.",
     time: "5 min",
     tag: "Start here",
-    tagColor: "bg-saffron-100 text-saffron-600",
+    tagColor: "bg-green-100 text-green-600",
   },
   {
     icon: Users,
@@ -107,7 +107,7 @@ const learnTopics = [
     description: "How long can you keep personal data? What are the rules around deletion? Learn to define and document your retention policies.",
     time: "4 min",
     tag: "Practical",
-    tagColor: "bg-saffron-100 text-saffron-600",
+    tagColor: "bg-green-100 text-green-600",
   },
   {
     icon: Globe,
@@ -133,12 +133,12 @@ export default function LearnPage() {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
-      <div className="bg-brand-700 py-14">
+      <div className="bg-navy-700 py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 bg-saffron-700/40 border border-saffron-500/50 rounded-full px-3.5 py-1.5 mb-4">
-              <BookOpen size={12} className="text-saffron-300" />
-              <span className="text-saffron-300 text-xs font-semibold">DPDPA Learning Hub</span>
+            <div className="inline-flex items-center gap-2 bg-green-700/40 border border-green-500/50 rounded-full px-3.5 py-1.5 mb-4">
+              <BookOpen size={12} className="text-green-300" />
+              <span className="text-green-300 text-xs font-semibold">DPDPA Learning Hub</span>
             </div>
             <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">
               DPDPA Guide — Plain English for Indian Businesses
@@ -153,13 +153,13 @@ export default function LearnPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
         {/* Suggested path */}
-        <div className="bg-saffron-50 border border-saffron-200 rounded-xl p-5 mb-10">
-          <h2 className="font-bold text-brand-700 text-sm mb-2">
+        <div className="bg-green-50 border border-green-200 rounded-xl p-5 mb-10">
+          <h2 className="font-bold text-navy-700 text-sm mb-2">
             Recommended reading order if you are just starting
           </h2>
           <div className="flex flex-wrap gap-2">
             {["What is DPDPA?", "Who Does It Apply To?", "Key Terms", "Consent Under DPDPA", "Rights of Individuals", "Duties of Businesses"].map((item, i) => (
-              <span key={item} className="inline-flex items-center gap-1 text-xs text-saffron-600 bg-white border border-saffron-200 rounded-full px-2.5 py-1">
+              <span key={item} className="inline-flex items-center gap-1 text-xs text-green-600 bg-white border border-green-200 rounded-full px-2.5 py-1">
                 <span className="font-bold">{i + 1}.</span>
                 {item}
               </span>
@@ -171,7 +171,7 @@ export default function LearnPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {learnTopics.map(({ icon: Icon, title, href, description, time, tag, tagColor }) => (
             <Link key={href} href={href}>
-              <div className="bg-white rounded-xl border border-slate-200 p-6 h-full hover:border-saffron-300 hover:shadow-md transition-all group">
+              <div className="bg-white rounded-xl border border-slate-200 p-6 h-full hover:border-green-300 hover:shadow-md transition-all group">
                 <div className="flex items-center justify-between mb-3">
                   <div className="w-9 h-9 rounded-lg bg-slate-100 flex items-center justify-center">
                     <Icon size={18} className="text-slate-600" />
@@ -180,13 +180,13 @@ export default function LearnPage() {
                     {tag}
                   </span>
                 </div>
-                <h3 className="font-bold text-brand-700 text-base mb-2 group-hover:text-saffron-600 transition-colors">
+                <h3 className="font-bold text-navy-700 text-base mb-2 group-hover:text-green-600 transition-colors">
                   {title}
                 </h3>
                 <p className="text-slate-500 text-sm leading-relaxed mb-4">{description}</p>
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-slate-400">{time} read</span>
-                  <span className="text-saffron-500 text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
+                  <span className="text-green-500 text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
                     Read <ArrowRight size={14} />
                   </span>
                 </div>

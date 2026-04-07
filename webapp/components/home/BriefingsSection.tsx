@@ -42,11 +42,11 @@ export async function BriefingsSection() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
           <div>
-            <div className="inline-flex items-center gap-2 bg-navy-100 border border-navy-200 rounded-full px-3.5 py-1.5 mb-3">
-              <div className="w-1.5 h-1.5 rounded-full bg-brand-700" />
-              <span className="text-brand-700 text-xs font-semibold">Daily Briefings</span>
+            <div className="inline-flex items-center gap-2 bg-cloud-100 border border-cloud-200 rounded-full px-3.5 py-1.5 mb-3">
+              <div className="w-1.5 h-1.5 rounded-full bg-navy-700" />
+              <span className="text-navy-700 text-xs font-semibold">Daily Briefings</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-bold text-brand-700">
+            <h2 className="text-3xl sm:text-4xl font-bold text-navy-700">
               Stay ahead of DPDPA developments
             </h2>
             <p className="text-slate-600 mt-2 max-w-xl">
@@ -56,7 +56,7 @@ export async function BriefingsSection() {
           </div>
           <Link
             href="/briefings"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-saffron-600 hover:text-saffron-700 shrink-0"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-green-600 hover:text-green-700 shrink-0"
           >
             All briefings
             <ArrowRight size={16} />
@@ -77,12 +77,12 @@ export async function BriefingsSection() {
             {featured && (
               <div className={latest.length > 0 ? "lg:col-span-2" : "lg:col-span-3"}>
                 <Link href={`/briefings/${featured.slug}`}>
-                  <div className="bg-brand-700 rounded-xl p-7 h-full flex flex-col hover:bg-brand-800 transition-colors group">
+                  <div className="bg-navy-700 rounded-xl p-7 h-full flex flex-col hover:bg-navy-800 transition-colors group">
                     <div className="flex items-center gap-2 mb-4">
                       <Badge variant="teal">Latest</Badge>
                       <Badge variant="amber">{getCategoryLabel(featured.category)}</Badge>
                     </div>
-                    <h3 className="text-xl font-bold text-white leading-snug mb-3 group-hover:text-saffron-300 transition-colors">
+                    <h3 className="text-xl font-bold text-white leading-snug mb-3 group-hover:text-teal-300 transition-colors">
                       {featured.title}
                     </h3>
                     <p className="text-slate-300 text-sm leading-relaxed mb-5 flex-1">
@@ -99,7 +99,7 @@ export async function BriefingsSection() {
                           {featured.readTime} min read
                         </span>
                       </div>
-                      <span className="text-saffron-400 text-sm font-semibold group-hover:gap-2 flex items-center gap-1 transition-all">
+                      <span className="text-green-400 text-sm font-semibold group-hover:gap-2 flex items-center gap-1 transition-all">
                         Read briefing
                         <ArrowRight size={14} />
                       </span>
@@ -119,12 +119,12 @@ export async function BriefingsSection() {
                   <Link
                     key={briefing.id}
                     href={`/briefings/${briefing.slug}`}
-                    className="block bg-white border border-slate-200 rounded-xl p-4 hover:border-saffron-300 hover:shadow-sm transition-all group"
+                    className="block bg-white border border-slate-200 rounded-xl p-4 hover:border-teal-300 hover:shadow-sm transition-all group"
                   >
                     <Badge variant="gray" size="sm">
                       {getCategoryLabel(briefing.category)}
                     </Badge>
-                    <h4 className="text-sm font-semibold text-brand-700 mt-2 leading-snug group-hover:text-saffron-600 transition-colors line-clamp-2">
+                    <h4 className="text-sm font-semibold text-navy-700 mt-2 leading-snug group-hover:text-green-600 transition-colors line-clamp-2">
                       {briefing.title}
                     </h4>
                     <div className="flex items-center gap-3 text-slate-400 text-xs mt-2">
@@ -141,7 +141,7 @@ export async function BriefingsSection() {
                 ))}
                 <Link
                   href="/briefings"
-                  className="block text-center py-3 text-sm font-semibold text-saffron-600 hover:text-saffron-700 border border-dashed border-saffron-300 rounded-xl hover:bg-saffron-50 transition-colors"
+                  className="block text-center py-3 text-sm font-semibold text-green-600 hover:text-green-700 border border-dashed border-green-300 rounded-xl hover:bg-green-50 transition-colors"
                 >
                   Browse all briefings →
                 </Link>

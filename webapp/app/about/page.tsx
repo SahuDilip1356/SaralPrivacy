@@ -33,7 +33,7 @@ export default function AboutPage() {
 
       <div className="min-h-screen bg-slate-50">
         {/* Hero */}
-        <div className="bg-brand-700 py-14">
+        <div className="bg-navy-700 py-14">
           <div className="max-w-4xl mx-auto px-4 sm:px-6">
             <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">About SaralPrivacy</h1>
             <p className="text-slate-300 text-lg leading-relaxed">
@@ -45,7 +45,7 @@ export default function AboutPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 space-y-10">
 
           {/* Answer box */}
-          <div className="bg-slate-50 border-l-4 border-saffron-400 rounded-r-xl px-5 py-4">
+          <div className="bg-slate-50 border-l-4 border-green-400 rounded-r-xl px-5 py-4">
             <p className="text-slate-700 text-sm leading-relaxed">
               SaralPrivacy is a practical DPDPA education, assessment, and advisory platform built for Indian businesses. It exists to turn dense privacy obligations into plain-English guidance, useful assessments, and implementation-focused resources by sector.
             </p>
@@ -53,34 +53,34 @@ export default function AboutPage() {
 
           {/* What SaralPrivacy Does */}
           <div className="bg-white rounded-xl border border-slate-200 p-7">
-            <h2 className="text-xl font-bold text-brand-700 mb-4">What SaralPrivacy Does</h2>
+            <h2 className="text-xl font-bold text-navy-700 mb-4">What SaralPrivacy Does</h2>
             <ul className="space-y-3 text-sm text-slate-600 leading-relaxed">
               <li className="flex items-start gap-3">
-                <span className="w-2 h-2 rounded-full bg-saffron-500 mt-1.5 shrink-0" />
-                <span><strong className="text-brand-700">Free readiness assessments</strong> — Sector-specific questionnaires that surface the biggest DPDPA gaps in your business in 10 minutes, with a plain-English risk score and prioritised next steps.</span>
+                <span className="w-2 h-2 rounded-full bg-green-500 mt-1.5 shrink-0" />
+                <span><strong className="text-navy-700">Free readiness assessments</strong> — Sector-specific questionnaires that surface the biggest DPDPA gaps in your business in 10 minutes, with a plain-English risk score and prioritised next steps.</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="w-2 h-2 rounded-full bg-saffron-500 mt-1.5 shrink-0" />
-                <span><strong className="text-brand-700">Daily briefings</strong> — Short, practical updates on DPDPA developments, regulatory notices, and implementation guidance published regularly for Indian businesses.</span>
+                <span className="w-2 h-2 rounded-full bg-green-500 mt-1.5 shrink-0" />
+                <span><strong className="text-navy-700">Daily briefings</strong> — Short, practical updates on DPDPA developments, regulatory notices, and implementation guidance published regularly for Indian businesses.</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="w-2 h-2 rounded-full bg-saffron-500 mt-1.5 shrink-0" />
-                <span><strong className="text-brand-700">Industry guides</strong> — Sector-specific compliance guidance for recruitment agencies, CA firms, training institutes, and D2C brands, covering the specific risks and workflows that matter in each sector.</span>
+                <span className="w-2 h-2 rounded-full bg-green-500 mt-1.5 shrink-0" />
+                <span><strong className="text-navy-700">Industry guides</strong> — Sector-specific compliance guidance for recruitment agencies, CA firms, training institutes, and D2C brands, covering the specific risks and workflows that matter in each sector.</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="w-2 h-2 rounded-full bg-saffron-500 mt-1.5 shrink-0" />
-                <span><strong className="text-brand-700">White paper</strong> — A 45-page practitioner guide updated for the DPDP Rules, 2025, covering applicability, consent, notices, rights, breach response, sector risks, and a 30-day action plan.</span>
+                <span className="w-2 h-2 rounded-full bg-green-500 mt-1.5 shrink-0" />
+                <span><strong className="text-navy-700">White paper</strong> — A 45-page practitioner guide updated for the DPDP Rules, 2025, covering applicability, consent, notices, rights, breach response, sector risks, and a 30-day action plan.</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="w-2 h-2 rounded-full bg-saffron-500 mt-1.5 shrink-0" />
-                <span><strong className="text-brand-700">Advisory</strong> — Expert consultation for businesses that need specific guidance on their data flows, vendor agreements, consent architecture, or compliance priorities.</span>
+                <span className="w-2 h-2 rounded-full bg-green-500 mt-1.5 shrink-0" />
+                <span><strong className="text-navy-700">Advisory</strong> — Expert consultation for businesses that need specific guidance on their data flows, vendor agreements, consent architecture, or compliance priorities.</span>
               </li>
             </ul>
           </div>
 
           {/* Who It Serves */}
           <div className="bg-white rounded-xl border border-slate-200 p-7">
-            <h2 className="text-xl font-bold text-brand-700 mb-4">Who It Serves</h2>
+            <h2 className="text-xl font-bold text-navy-700 mb-4">Who It Serves</h2>
             <p className="text-sm text-slate-600 leading-relaxed mb-4">
               SaralPrivacy is built for Indian businesses that process personal data as a routine part of their operations — not data protection specialists, but founders, operations leads, compliance managers, and senior staff who need to understand what to do and in what order.
             </p>
@@ -94,7 +94,7 @@ export default function AboutPage() {
                 "Founders and operations leads who need clarity, not commentary",
               ].map((item) => (
                 <div key={item} className="flex items-start gap-2 text-sm text-slate-600">
-                  <span className="w-1.5 h-1.5 rounded-full bg-saffron-500 mt-1.5 shrink-0" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-green-500 mt-1.5 shrink-0" />
                   {item}
                 </div>
               ))}
@@ -103,25 +103,25 @@ export default function AboutPage() {
 
           {/* Editorial Methodology */}
           <div className="bg-white rounded-xl border border-slate-200 p-7">
-            <h2 className="text-xl font-bold text-brand-700 mb-4">Editorial Methodology</h2>
+            <h2 className="text-xl font-bold text-navy-700 mb-4">Editorial Methodology</h2>
             <p className="text-sm text-slate-600 leading-relaxed mb-4">
               All guidance on SaralPrivacy is produced against primary sources only. We do not treat secondary commentary, news coverage, or social media posts as authoritative.
             </p>
             <ul className="space-y-2 text-sm text-slate-600">
               <li className="flex items-start gap-3">
-                <span className="w-2 h-2 rounded-full bg-brand-700 mt-1.5 shrink-0" />
+                <span className="w-2 h-2 rounded-full bg-navy-700 mt-1.5 shrink-0" />
                 All content is checked against the Digital Personal Data Protection Act, 2023 (as enacted).
               </li>
               <li className="flex items-start gap-3">
-                <span className="w-2 h-2 rounded-full bg-brand-700 mt-1.5 shrink-0" />
+                <span className="w-2 h-2 rounded-full bg-navy-700 mt-1.5 shrink-0" />
                 All content reflecting the rules regime is checked against the DPDP Rules, 2025 as notified in the Official Gazette on 14 November 2025.
               </li>
               <li className="flex items-start gap-3">
-                <span className="w-2 h-2 rounded-full bg-brand-700 mt-1.5 shrink-0" />
+                <span className="w-2 h-2 rounded-full bg-navy-700 mt-1.5 shrink-0" />
                 Regulatory developments are cross-referenced against official government press releases and Ministry of Electronics and Information Technology communications.
               </li>
               <li className="flex items-start gap-3">
-                <span className="w-2 h-2 rounded-full bg-brand-700 mt-1.5 shrink-0" />
+                <span className="w-2 h-2 rounded-full bg-navy-700 mt-1.5 shrink-0" />
                 Pages are reviewed and updated periodically. Each page carries a last-reviewed date and legal baseline.
               </li>
             </ul>
@@ -134,17 +134,17 @@ export default function AboutPage() {
 
           {/* Contact */}
           <div className="bg-white rounded-xl border border-slate-200 p-7">
-            <h2 className="text-xl font-bold text-brand-700 mb-4">Contact</h2>
+            <h2 className="text-xl font-bold text-navy-700 mb-4">Contact</h2>
             <div className="space-y-3 text-sm text-slate-600">
               <div>
-                <p className="font-semibold text-brand-700 mb-1">For content questions and editorial enquiries</p>
-                <a href="mailto:privacy@saralprivacy.com" className="text-saffron-600 hover:underline">
+                <p className="font-semibold text-navy-700 mb-1">For content questions and editorial enquiries</p>
+                <a href="mailto:privacy@saralprivacy.com" className="text-green-600 hover:underline">
                   privacy@saralprivacy.com
                 </a>
               </div>
               <div>
-                <p className="font-semibold text-brand-700 mb-1">For data access, correction, erasure, or privacy complaints</p>
-                <a href="mailto:privacy@saralprivacy.com" className="text-saffron-600 hover:underline">
+                <p className="font-semibold text-navy-700 mb-1">For data access, correction, erasure, or privacy complaints</p>
+                <a href="mailto:privacy@saralprivacy.com" className="text-green-600 hover:underline">
                   privacy@saralprivacy.com
                 </a>
               </div>

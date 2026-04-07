@@ -72,23 +72,23 @@ export default function RecruitmentIndustryPage() {
       ])}
     <div className="min-h-screen bg-slate-50">
       {/* Hero */}
-      <div className="bg-brand-700 py-14">
+      <div className="bg-navy-700 py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-xl bg-saffron-500 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-green-500 flex items-center justify-center">
               <Users size={20} className="text-white" />
             </div>
-            <span className="text-saffron-300 text-sm font-semibold">Industry Guide</span>
+            <span className="text-green-300 text-sm font-semibold">Industry Guide</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4">
             DPDPA for Recruitment and Staffing Agencies
           </h1>
           <div className="bg-white/10 border border-white/20 rounded-xl px-5 py-4 max-w-2xl mb-6">
             <p className="text-slate-200 text-sm leading-relaxed">Recruitment agencies sit on a mountain of personal data: CVs, job applications, background documents, interview notes, and client submissions. Under DPDPA, your biggest risks usually sit in candidate consent, profile sharing, ATS vendors, retention, and rights handling. This guide shows where recruitment workflows break, and what to tighten before they become liabilities.</p>
-            <p className="text-saffron-300 text-xs mt-2 font-medium">If your CV database has no clear consent, purpose, or deletion logic, it is not a talent asset. It is a compliance trap.</p>
+            <p className="text-green-300 text-xs mt-2 font-medium">If your CV database has no clear consent, purpose, or deletion logic, it is not a talent asset. It is a compliance trap.</p>
           </div>
-          <div className="inline-flex items-center gap-2 bg-saffron-700/40 border border-saffron-500/50 rounded-full px-3.5 py-1.5">
-            <span className="text-saffron-300 text-xs font-semibold">
+          <div className="inline-flex items-center gap-2 bg-green-700/40 border border-green-500/50 rounded-full px-3.5 py-1.5">
+            <span className="text-green-300 text-xs font-semibold">
               &ldquo;Find out whether your recruitment workflows create DPDPA exposure in 10 minutes.&rdquo;
             </span>
           </div>
@@ -101,12 +101,12 @@ export default function RecruitmentIndustryPage() {
           <div className="lg:col-span-2 space-y-8">
             {/* Risk areas */}
             <div>
-              <h2 className="text-2xl font-bold text-brand-700 mb-5">Key Risk Areas</h2>
+              <h2 className="text-2xl font-bold text-navy-700 mb-5">Key Risk Areas</h2>
               <div className="space-y-4">
                 {riskAreas.map((area) => (
                   <div key={area.title} className="bg-white rounded-xl border border-slate-200 p-5">
                     <div className="flex items-start justify-between gap-3 mb-2">
-                      <h3 className="font-bold text-brand-700 text-base">{area.title}</h3>
+                      <h3 className="font-bold text-navy-700 text-base">{area.title}</h3>
                       <span className={`shrink-0 text-xs font-bold px-2.5 py-1 rounded-full ${
                         area.risk === "High"
                           ? "bg-red-100 text-red-700"
@@ -116,8 +116,8 @@ export default function RecruitmentIndustryPage() {
                       </span>
                     </div>
                     <p className="text-slate-600 text-sm mb-3 leading-relaxed">{area.description}</p>
-                    <div className="bg-saffron-50 border border-saffron-200 rounded-lg p-3">
-                      <p className="text-saffron-700 text-xs">
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                      <p className="text-green-700 text-xs">
                         <strong>Recommended action: </strong>{area.action}
                       </p>
                     </div>
@@ -128,7 +128,7 @@ export default function RecruitmentIndustryPage() {
 
             {/* Checklist */}
             <div>
-              <h2 className="text-2xl font-bold text-brand-700 mb-5">Compliance Checklist</h2>
+              <h2 className="text-2xl font-bold text-navy-700 mb-5">Compliance Checklist</h2>
               <div className="bg-white rounded-xl border border-slate-200 p-6">
                 <div className="space-y-3">
                   {checklistItems.map((item, i) => (
@@ -145,14 +145,14 @@ export default function RecruitmentIndustryPage() {
           {/* Sidebar */}
           <div className="space-y-5">
             {/* Assessment CTA */}
-            <div className="bg-saffron-500 rounded-xl p-5 text-white">
+            <div className="bg-green-500 rounded-xl p-5 text-white">
               <h3 className="font-bold text-base mb-2">Take the Free Assessment</h3>
-              <p className="text-saffron-100 text-sm mb-4">
+              <p className="text-green-100 text-sm mb-4">
                 8 questions. 10 minutes. Get your personalised risk score and recommendations.
               </p>
               <Link
                 href="/assessment/recruitment"
-                className="block text-center py-2.5 px-4 bg-white text-saffron-700 font-bold rounded-lg text-sm hover:bg-saffron-50 transition-colors"
+                className="block text-center py-2.5 px-4 bg-white text-green-700 font-bold rounded-lg text-sm hover:bg-green-50 transition-colors"
               >
                 Start Assessment →
               </Link>
@@ -160,11 +160,11 @@ export default function RecruitmentIndustryPage() {
 
             {/* White Paper */}
             <div className="bg-white border border-slate-200 rounded-xl p-5">
-              <h3 className="font-bold text-brand-700 text-sm mb-2">Free White Paper</h3>
+              <h3 className="font-bold text-navy-700 text-sm mb-2">Free White Paper</h3>
               <p className="text-slate-600 text-xs mb-3">45-page visual guide to DPDPA compliance for Indian businesses.</p>
               <Link
                 href="/white-paper"
-                className="block text-center py-2.5 px-4 bg-brand-700 text-white font-semibold rounded-lg text-sm hover:bg-brand-800 transition-colors"
+                className="block text-center py-2.5 px-4 bg-navy-700 text-white font-semibold rounded-lg text-sm hover:bg-navy-800 transition-colors"
               >
                 Download DPDPA White Paper →
               </Link>
@@ -172,15 +172,15 @@ export default function RecruitmentIndustryPage() {
 
             {/* Resources */}
             <div className="bg-white border border-slate-200 rounded-xl p-5">
-              <h3 className="font-bold text-brand-700 text-sm mb-3">Related Briefings</h3>
+              <h3 className="font-bold text-navy-700 text-sm mb-3">Related Briefings</h3>
               <div className="space-y-2">
-                <Link href="/briefings/recruitment-agencies-dpdpa-cv-database-risk" className="block text-sm text-saffron-600 hover:underline">
+                <Link href="/briefings/recruitment-agencies-dpdpa-cv-database-risk" className="block text-sm text-green-600 hover:underline">
                   → CV Database Risk for Recruitment Agencies
                 </Link>
-                <Link href="/briefings/dpdpa-consent-notice-requirements-2025" className="block text-sm text-saffron-600 hover:underline">
+                <Link href="/briefings/dpdpa-consent-notice-requirements-2025" className="block text-sm text-green-600 hover:underline">
                   → Consent Notice Requirements
                 </Link>
-                <Link href="/briefings/rights-of-data-principals-dpdpa-explained" className="block text-sm text-saffron-600 hover:underline">
+                <Link href="/briefings/rights-of-data-principals-dpdpa-explained" className="block text-sm text-green-600 hover:underline">
                   → Rights of Data Principals
                 </Link>
               </div>
@@ -188,13 +188,13 @@ export default function RecruitmentIndustryPage() {
 
             {/* Consultation */}
             <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
-              <h3 className="font-bold text-brand-700 text-sm mb-2">Need specific guidance?</h3>
+              <h3 className="font-bold text-navy-700 text-sm mb-2">Need specific guidance?</h3>
               <p className="text-slate-600 text-xs mb-3">
                 Our advisory team has worked with recruitment agencies of all sizes on DPDPA compliance.
               </p>
               <Link
                 href="/contact"
-                className="block text-center py-2.5 px-4 bg-brand-700 text-white font-semibold rounded-lg text-sm hover:bg-brand-800 transition-colors"
+                className="block text-center py-2.5 px-4 bg-navy-700 text-white font-semibold rounded-lg text-sm hover:bg-navy-800 transition-colors"
               >
                 Request Consultation →
               </Link>
