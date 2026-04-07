@@ -84,13 +84,13 @@ export function Header() {
           </span>
           <span>
             <strong>DPDP Rules 2025 are now in effect.</strong>{" "}
-            Fix your notices, consent flows, and breach response before enforcement begins.
+            How ready is your business? Most Indian companies don&apos;t know yet.
           </span>
           <Link
             href="/assessment"
             className="inline-flex items-center gap-1 bg-navy-700 text-white text-xs font-bold px-3 py-1 rounded-full hover:bg-navy-800 transition-colors shrink-0"
           >
-            Check your readiness — free →
+            Find out in 10 minutes — free →
           </Link>
         </span>
       </div>
