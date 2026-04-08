@@ -182,7 +182,7 @@ export function Header() {
           {/* CTA + Mobile toggle */}
           <div className="flex items-center gap-3">
             <Link
-              href="/white-paper"
+              href="/white-paper#download"
               className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-navy-700 border border-navy-300 rounded-lg hover:bg-cloud-50 transition-colors"
             >
               White Paper

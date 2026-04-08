@@ -166,7 +166,7 @@ export default function WhitePaperContent() {
           </div>
 
           {/* Right: download form */}
-          <div>
+          <div id="download">
             {submitted ? (
               <div className="bg-green-50 border border-green-200 rounded-2xl p-8 text-center">
                 <div className="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
