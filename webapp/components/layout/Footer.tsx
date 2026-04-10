@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Shield, Mail } from "lucide-react";
+import Image from "next/image";
+import { Mail } from "lucide-react";
 
 const footerLinks = {
   platform: [
@@ -44,9 +45,13 @@ export function Footer() {
           {/* Brand column */}
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center gap-2.5 mb-5">
-              <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center">
-                <Shield size={16} className="text-white" />
-              </div>
+              <Image
+                src="/logo-emblem.png"
+                alt="SaralPrivacy logo"
+                width={32}
+                height={32}
+                className="h-8 w-8 object-contain shrink-0"
+              />
               <div>
                 <div className="font-bold text-white text-base leading-none">
                   Saral<span className="text-green-400">Privacy</span>
