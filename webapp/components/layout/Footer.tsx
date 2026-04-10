@@ -45,19 +45,21 @@ export function Footer() {
           {/* Brand column */}
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center gap-2.5 mb-5">
-              <Image
-                src="/logo-emblem.png"
-                alt="SaralPrivacy logo"
-                width={32}
-                height={32}
-                className="h-8 w-8 object-contain shrink-0"
-              />
+              <div className="h-8 w-8 rounded-full bg-white flex items-center justify-center p-0.5 shrink-0">
+                <Image
+                  src="/logo-emblem.png"
+                  alt="SaralPrivacy logo"
+                  width={28}
+                  height={28}
+                  className="h-7 w-7 object-contain"
+                />
+              </div>
               <div>
                 <div className="font-bold text-white text-base leading-none">
                   Saral<span className="text-green-400">Privacy</span>
                 </div>
                 <div className="text-[10px] text-slate-400 leading-none mt-0.5">
-                  Privacy Intelligence Platform
+                  Privacy Made Practical for India
                 </div>
               </div>
             </Link>

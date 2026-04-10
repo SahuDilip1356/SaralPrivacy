@@ -120,8 +120,8 @@ export function Header() {
               <div className="font-bold text-base leading-tight tracking-tight">
                 <span className="text-green-500">saral</span><span className="text-navy-700">Privacy</span>
               </div>
-              <div className="text-[10px] text-slate-400 leading-tight tracking-wide">
-                Privacy made practical for India
+              <div className="text-[10px] text-navy-700 leading-tight tracking-wide">
+                Privacy Made Practical for India
               </div>
             </div>
           </Link>
