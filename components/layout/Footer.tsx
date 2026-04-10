@@ -47,7 +47,7 @@ export function Footer() {
             <Link href="/" className="flex items-center gap-2.5 mb-5">
               <Image
                 src="/logo-emblem.png"
-                alt="SaralPrivacy emblem"
+                alt="SaralPrivacy logo"
                 width={32}
                 height={32}
                 className="h-8 w-8 object-contain shrink-0"
