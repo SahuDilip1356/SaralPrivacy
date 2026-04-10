@@ -75,19 +75,13 @@ export function Header() {
           : "bg-white/95 backdrop-blur-sm border-b border-slate-100"
       )}
     >
-      {/* Top urgency strip — Deep Amber with elevation shadow */}
-      <div
-        className="text-navy-700 text-xs py-2 px-4 text-center font-medium"
-        style={{
-          backgroundColor: "#F59E0B",
-          boxShadow: "0 4px 24px 0 rgba(245,158,11,0.35), 0 1px 0 0 rgba(245,158,11,0.15)",
-        }}
-      >
+      {/* Top urgency strip — Trust Navy with Signal Gold dot */}
+      <div className="bg-navy-700 text-white text-xs py-2 px-4 text-center font-medium">
         <span className="inline-flex items-center gap-2 flex-wrap justify-center">
-          {/* Pulsing urgency dot */}
+          {/* Pulsing urgency dot — Signal Gold, echoes logo tick */}
           <span className="relative flex h-2 w-2 shrink-0">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-navy-800 opacity-50" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-navy-800" />
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold-400 opacity-60" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-gold-400" />
           </span>
           <span>
             <strong>DPDP Rules 2025 are now in effect.</strong>{" "}
@@ -95,7 +89,7 @@ export function Header() {
           </span>
           <Link
             href="/assessment"
-            className="inline-flex items-center gap-1 bg-navy-700 text-white text-xs font-bold px-3 py-1 rounded-full hover:bg-navy-800 transition-colors shrink-0"
+            className="inline-flex items-center gap-1 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full hover:bg-green-600 transition-colors shrink-0"
           >
             Find out in 10 minutes — free →
           </Link>
