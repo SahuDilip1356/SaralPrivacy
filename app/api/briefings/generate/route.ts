@@ -379,8 +379,10 @@ export async function POST(request: NextRequest) {
       scheduled_for:    tomorrow.toISOString(),
       created_at:       new Date().toISOString(),
 
-      // ── Infographic (stored in dedicated 1MB attribute) ────────────────────
-      infographic_base64:  body.infographic_base64  || "",
+      // ── Infographic — stored as Appwrite Storage URL (new) or base64 (legacy) ──
+      // publish_to_webapp.py now uploads to Appwrite Storage and sends infographic_url.
+      // infographic_base64 kept for backward-compat with any old payloads.
+      infographic_base64:  body.infographic_url || body.infographic_base64 || "",
       // Note: all Hook/Body/CTA rich fields are packed into why_it_matters JSON
       // by publish_to_webapp.py. The briefing detail page unpacks them via parseWhyField().
     };

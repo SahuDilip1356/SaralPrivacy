@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Menu, X, ChevronDown, Shield } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 
 const navigation = [
   {
@@ -74,27 +75,53 @@ export function Header() {
           : "bg-white/95 backdrop-blur-sm border-b border-slate-100"
       )}
     >
-      {/* Top strip — Cloud 50 light bar */}
-      <div className="bg-cloud-50 border-b border-cloud-200 text-slate-600 text-xs py-1.5 px-4 text-center">
-        <span>DPDP Rules, 2025 were notified on 14 November 2025. Use this phased rollout window to fix notices, consent, rights handling, retention, vendor controls, and breach response. </span>
-        <Link href="/assessment" className="text-green-600 font-semibold hover:text-green-700 underline underline-offset-2">
-          Check your readiness — free
-        </Link>
+      {/* Top urgency strip — Deep Amber with elevation shadow */}
+      <div
+        className="text-navy-700 text-xs py-2 px-4 text-center font-medium"
+        style={{
+          backgroundColor: "#F59E0B",
+          boxShadow: "0 4px 24px 0 rgba(245,158,11,0.35), 0 1px 0 0 rgba(245,158,11,0.15)",
+        }}
+      >
+        <span className="inline-flex items-center gap-2 flex-wrap justify-center">
+          {/* Pulsing urgency dot */}
+          <span className="relative flex h-2 w-2 shrink-0">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-navy-800 opacity-50" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-navy-800" />
+          </span>
+          <span>
+            <strong>DPDP Rules 2025 are now in effect.</strong>{" "}
+            How ready is your business? Most Indian companies don&apos;t know yet.
+          </span>
+          <Link
+            href="/assessment"
+            className="inline-flex items-center gap-1 bg-navy-700 text-white text-xs font-bold px-3 py-1 rounded-full hover:bg-navy-800 transition-colors shrink-0"
+          >
+            Find out in 10 minutes — free →
+          </Link>
+        </span>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-8 h-8 bg-navy-700 rounded-lg flex items-center justify-center group-hover:bg-green-500 transition-colors">
-              <Shield className="w-4.5 h-4.5 text-white" size={18} />
-            </div>
-            <div>
-              <div className="font-bold text-navy-700 text-base leading-none tracking-tight">
-                Saral<span className="text-green-500">Privacy</span>
+            {/* SP circle emblem — shown on all screen sizes */}
+            <Image
+              src="/logo-emblem.png"
+              alt="SaralPrivacy emblem"
+              width={40}
+              height={40}
+              className="h-10 w-10 object-contain shrink-0 self-center"
+              priority
+            />
+            {/* Wordmark + tagline — hidden on mobile */}
+            <div className="hidden sm:flex flex-col justify-center">
+              <div className="font-bold text-base leading-tight tracking-tight">
+                <span className="text-green-500">saral</span><span className="text-navy-700">Privacy</span>
               </div>
-              <div className="text-[10px] text-slate-500 leading-none mt-0.5">
-                Privacy Intelligence Platform
+              <div className="text-[10px] text-slate-400 leading-tight tracking-wide">
+                Privacy made practical for India
               </div>
             </div>
           </Link>
@@ -155,7 +182,7 @@ export function Header() {
           {/* CTA + Mobile toggle */}
           <div className="flex items-center gap-3">
             <Link
-              href="/white-paper"
+              href="/white-paper#download"
               className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-navy-700 border border-navy-300 rounded-lg hover:bg-cloud-50 transition-colors"
             >
               White Paper
