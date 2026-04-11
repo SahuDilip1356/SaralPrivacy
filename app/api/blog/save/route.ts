@@ -50,7 +50,7 @@ function buildDocument(payload: SavePayload) {
     score_legal_accuracy + score_primary_source + score_currency + score_scope + score_operational;
 
   // Pack overflow sections into sections_json (Appwrite byte limit workaround)
-  const sectionsJson = JSON.stringify({
+  const sectionsJsonStr = JSON.stringify({
     section_do_now,
     section_uncertain,
     section_mistakes,
@@ -81,7 +81,8 @@ function buildDocument(payload: SavePayload) {
     featured,
     status,
     section_what_changed: section_what_changed ? section_what_changed.slice(0, 10000) : null,
-    section_law_says:     section_law_says ? section_law_says.slice(0, 3000) : null,
+    section_law_says:     section_law_says ? section_law_says.slice(0, 10000) : null,
+    sections_json:        sectionsJsonStr,
     validated_at:         validated_at ? validated_at.slice(0, 30) : null,
     score_legal_accuracy,
     score_primary_source,
@@ -100,6 +101,11 @@ function buildDocument(payload: SavePayload) {
 }
 
 export async function POST(req: NextRequest) {
+  const session = req.cookies.get("admin_session");
+  if (!session || !["authenticated", "blogger"].includes(session.value)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
     const payload: SavePayload = await req.json();
 
@@ -124,6 +130,11 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PATCH(req: NextRequest) {
+  const session = req.cookies.get("admin_session");
+  if (!session || !["authenticated", "blogger"].includes(session.value)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
     const payload: SavePayload = await req.json();
 

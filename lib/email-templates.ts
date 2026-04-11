@@ -597,3 +597,43 @@ export function briefingEmailTemplate(briefing: BriefingData, unsubscribeUrl: st
 
   return { subject, html };
 }
+
+
+// ──────────────────────────────────────────────────────────────────────────────
+// 9. bloggerInviteTemplate — invite a contributor to set up their account
+// ──────────────────────────────────────────────────────────────────────────────
+export interface BloggerInviteData {
+  name: string;
+  email: string;
+  inviteUrl: string;
+}
+
+export function bloggerInviteTemplate(data: BloggerInviteData): { subject: string; html: string } {
+  const subject = `You've been invited to contribute to SaralPrivacy Insights`;
+  const html = baseLayout(`
+    <h2 style="margin:0 0 8px;font-size:22px;font-weight:700;color:#1E3A5F;">Welcome, ${data.name}!</h2>
+    <p style="margin:0 0 20px;font-size:15px;color:#718096;">You have been invited to contribute expert insights to <strong>SaralPrivacy</strong> — India's DPDPA compliance platform.</p>
+
+    <p style="margin:0 0 16px;font-size:14px;color:#2D3748;">As a <strong>Blog Contributor</strong>, you can:</p>
+    <ul style="margin:0 0 24px;padding-left:20px;font-size:14px;color:#2D3748;line-height:1.8;">
+      <li>Write and draft DPDPA compliance insights</li>
+      <li>Run AI-powered DPDPA guardrail validation on your content</li>
+      <li>Generate smart infographics from your articles</li>
+      <li>Submit posts for admin review and publication</li>
+    </ul>
+
+    <p style="margin:0 0 20px;font-size:14px;color:#718096;">Click the button below to set up your password and get started. This invite link is valid for <strong>72 hours</strong>.</p>
+
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 24px;">
+      <tr>
+        <td style="border-radius:8px;background-color:#1E3A5F;">
+          <a href="${data.inviteUrl}" style="display:inline-block;padding:14px 32px;font-size:15px;font-weight:600;color:#ffffff;text-decoration:none;border-radius:8px;">Set Up My Account</a>
+        </td>
+      </tr>
+    </table>
+
+    <p style="margin:0;font-size:12px;color:#718096;">If the button does not work, copy this link into your browser:<br/>
+    <a href="${data.inviteUrl}" style="color:#1E3A5F;word-break:break-all;">${data.inviteUrl}</a></p>
+  `);
+  return { subject, html };
+}

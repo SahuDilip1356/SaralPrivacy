@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { unstable_cache } from "next/cache";
 import { CheckCircle, Clock, BookOpen } from "lucide-react";
 import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 import { BriefingSubscribeCard } from "@/components/briefings/BriefingSubscribeCard";
 
-export const revalidate = 3600;
+// Lane filtering via searchParams makes this dynamic — ISR intentionally disabled
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Verified DPDPA Insights",
@@ -40,23 +40,23 @@ const LANE_CONFIG: Record<string, { label: string; color: string; bg: string }> 
   "governance-watch":    { label: "Governance Watch",    color: "text-red-700",    bg: "bg-red-100"    },
 };
 
-const getPublishedPosts = unstable_cache(
-  async (): Promise<BlogPost[]> => {
-    try {
-      const result = await databases.listDocuments(DB_ID, COLLECTIONS.BLOG_POSTS, [
-        Query.equal("status", "published"),
-        Query.orderDesc("$createdAt"),
-        Query.limit(50),
-      ]);
-      return result.documents as unknown as BlogPost[];
-    } catch (err) {
-      console.error("[blog/page] fetch error", err);
-      return [];
+async function getPublishedPosts(lane?: string): Promise<BlogPost[]> {
+  try {
+    const filters = [
+      Query.equal("status", "published"),
+      Query.orderDesc("$createdAt"),
+      Query.limit(50),
+    ];
+    if (lane && lane !== "all") {
+      filters.push(Query.equal("lane", lane));
     }
-  },
-  ["blog-posts-published"],
-  { revalidate: 3600 }
-);
+    const result = await databases.listDocuments(DB_ID, COLLECTIONS.BLOG_POSTS, filters);
+    return result.documents as unknown as BlogPost[];
+  } catch (err) {
+    console.error("[blog/page] fetch error", err);
+    return [];
+  }
+}
 
 const LANE_FILTERS = [
   { id: "all",                  label: "All"                  },
@@ -123,8 +123,13 @@ function PostCard({ post }: { post: BlogPost }) {
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 
-export default async function BlogPage() {
-  const posts = await getPublishedPosts();
+interface PageProps {
+  searchParams: Promise<{ lane?: string }>;
+}
+
+export default async function BlogPage({ searchParams }: PageProps) {
+  const { lane } = await searchParams;
+  const posts = await getPublishedPosts(lane);
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -169,16 +174,25 @@ export default async function BlogPage() {
       <div className="bg-white border-b border-slate-200 sticky top-[calc(4rem+32px)] z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center gap-2 py-3 overflow-x-auto scrollbar-hide">
-            {LANE_FILTERS.map((filter) => (
-              <a
-                key={filter.id}
-                href={filter.id === "all" ? "/blog" : `/blog?lane=${filter.id}`}
-                className="shrink-0 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors bg-slate-100 text-slate-600 hover:bg-navy-700 hover:text-white"
-              >
-                {filter.label}
-              </a>
-            ))}
+            {LANE_FILTERS.map((filter) => {
+              const isActive =
+                filter.id === "all" ? !lane || lane === "all" : lane === filter.id;
+              return (
+                <a
+                  key={filter.id}
+                  href={filter.id === "all" ? "/blog" : `/blog?lane=${filter.id}`}
+                  className={`shrink-0 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors ${
+                    isActive
+                      ? "bg-navy-700 text-white"
+                      : "bg-slate-100 text-slate-600 hover:bg-navy-700 hover:text-white"
+                  }`}
+                >
+                  {filter.label}
+                </a>
+              );
+            })}
           </div>
+
         </div>
       </div>
 

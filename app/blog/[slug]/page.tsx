@@ -38,6 +38,7 @@ interface BlogPost {
   section_law_says: string;
   sections_json: string;
   tags: string;
+  infographic_url?: string;
 }
 
 // ── Data ──────────────────────────────────────────────────────────────────────
@@ -304,6 +305,24 @@ export default async function BlogDetailPage({ params }: Props) {
                       ))}
                     </tbody>
                   </table>
+                </div>
+              </div>
+            )}
+
+            {/* Infographic — shown when generated */}
+            {post.infographic_url && (
+              <div className="mb-8">
+                <h2 className="text-lg font-bold text-navy-700 mb-3">Visual Summary</h2>
+                <div className="rounded-xl overflow-hidden border border-slate-200 shadow-sm">
+                  <img
+                    src={post.infographic_url}
+                    alt={`${post.title} — DPDPA infographic by SaralPrivacy`}
+                    className="w-full"
+                    loading="lazy"
+                  />
+                  <div className="bg-slate-50 px-4 py-2 text-xs text-slate-400 text-right border-t border-slate-200">
+                    © SaralPrivacy™ — Verified DPDPA Insights
+                  </div>
                 </div>
               </div>
             )}
