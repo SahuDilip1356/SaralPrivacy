@@ -94,8 +94,7 @@ export default function AdminBlogPage() {
           </button>
           <Link
             href="/admin/blog/new"
-            className="flex items-center gap-2 px-4 py-2 text-white text-sm font-semibold rounded-lg transition-colors"
-            style={{ backgroundColor: "#07B981" }}
+            className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white text-sm font-semibold rounded-lg hover:bg-green-600 transition-colors"
           >
             <Plus size={14} /> Write New Post
           </Link>
@@ -132,8 +131,7 @@ export default function AdminBlogPage() {
             </p>
             <Link
               href="/admin/blog/new"
-              className="inline-flex items-center gap-2 px-6 py-3 text-white text-sm font-semibold rounded-lg transition-colors"
-              style={{ backgroundColor: "#07B981" }}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-green-500 text-white text-sm font-semibold rounded-lg hover:bg-green-600 transition-colors"
             >
               <Plus size={16} /> Write New Post
             </Link>

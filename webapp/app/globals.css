@@ -2,6 +2,25 @@
 
 /* ── Tailwind v4 @theme — SaralPrivacy Token System v3.0 ─────────────────── */
 @theme {
+  /* Brand — alias for Trust Navy (used across admin components) */
+  --color-brand-50:  #E8ECF2;
+  --color-brand-100: #C5CDD9;
+  --color-brand-200: #9FADBF;
+  --color-brand-300: #7A8DA6;
+  --color-brand-400: #566D8C;
+  --color-brand-500: #354F72;
+  --color-brand-600: #1E3355;
+  --color-brand-700: #121A2E;
+  --color-brand-800: #0D1322;
+  --color-brand-900: #080D17;
+  --color-brand-950: #04060C;
+
+  /* Pearl — light borders used in card components */
+  --color-pearl-50:  #F7F9FC;
+  --color-pearl-100: #EEF2F7;
+  --color-pearl-200: #DDE4EF;
+  --color-pearl-300: #C2CEDF;
+
   /* Trust Navy — primary brand field */
   --color-navy-50:  #E8ECF2;
   --color-navy-100: #C5CDD9;
