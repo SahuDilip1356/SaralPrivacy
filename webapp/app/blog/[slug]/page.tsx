@@ -1,3 +1,4 @@
+import React from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -108,10 +109,63 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 // ── Components ────────────────────────────────────────────────────────────────
 
+// SaralPrivacy brand gold — matches the logo's gold ring
+const BRAND_GOLD = "#C9A227";
+
 function isBlank(text: string | null | undefined): boolean {
   if (!text) return true;
   const t = text.trim().toLowerCase();
   return t === "" || t === "blank" || t === "(empty)";
+}
+
+// Renders plain-text content with smart bullet detection.
+// Lines starting with - / • / * become styled list items with a golden ✓.
+// All other lines render as paragraphs.
+function renderContent(content: string) {
+  const lines = content.split("\n");
+  const elements: React.ReactNode[] = [];
+  let listBuffer: string[] = [];
+
+  const flushList = (key: string) => {
+    if (listBuffer.length === 0) return;
+    elements.push(
+      <ul key={key} className="space-y-2 my-3">
+        {listBuffer.map((item, i) => (
+          <li key={i} className="flex items-start gap-2.5 text-sm text-slate-700 leading-relaxed">
+            <span
+              className="shrink-0 mt-0.5 text-base font-bold leading-none"
+              style={{ color: BRAND_GOLD }}
+            >
+              ✓
+            </span>
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    );
+    listBuffer = [];
+  };
+
+  lines.forEach((line, idx) => {
+    const trimmed = line.trim();
+    if (!trimmed) {
+      flushList(`list-${idx}`);
+      return;
+    }
+    const bulletMatch = trimmed.match(/^[-•*]\s+(.+)/);
+    if (bulletMatch) {
+      listBuffer.push(bulletMatch[1]);
+    } else {
+      flushList(`list-${idx}`);
+      elements.push(
+        <p key={`p-${idx}`} className="text-sm text-slate-700 leading-relaxed mb-2">
+          {trimmed}
+        </p>
+      );
+    }
+  });
+  flushList("list-end");
+  return elements;
 }
 
 function SectionBlock({
@@ -134,8 +188,8 @@ function SectionBlock({
           </span>
         )}
       </div>
-      <div className="prose prose-slate max-w-none text-sm leading-relaxed text-slate-700 whitespace-pre-wrap">
-        {content}
+      <div className="prose prose-slate max-w-none">
+        {renderContent(content)}
       </div>
     </div>
   );
@@ -208,7 +262,7 @@ export default async function BlogDetailPage({ params }: Props) {
               <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold ${laneCfg.bg} ${laneCfg.color}`}>
                 {laneCfg.label}
               </span>
-              {post.validation_score >= 85 && (
+              {post.validation_score >= 75 && (
                 <span className="inline-flex items-center gap-1 text-xs font-semibold text-green-700 bg-green-50 px-2.5 py-0.5 rounded-full border border-green-200">
                   <CheckCircle size={11} /> Verified
                 </span>
@@ -383,7 +437,7 @@ export default async function BlogDetailPage({ params }: Props) {
                       </p>
                       <div className="flex items-center gap-2 text-xs text-slate-400">
                         <span>{related.read_time || 5} min</span>
-                        {related.validation_score >= 85 && (
+                        {related.validation_score >= 75 && (
                           <span className="flex items-center gap-0.5 text-green-600">
                             <CheckCircle size={9} /> Verified
                           </span>

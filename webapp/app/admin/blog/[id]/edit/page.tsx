@@ -58,5 +58,5 @@ export default async function EditBlogPostPage({ params }: Props) {
     score_operational:    doc.score_operational    ?? 0,
   };
 
-  return <BlogEditor initialData={initialData} docId={id} role={role} />;
+  return <BlogEditor initialData={initialData} docId={id} role={role} initialStatus={doc.status} />;
 }

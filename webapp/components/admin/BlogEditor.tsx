@@ -53,9 +53,10 @@ interface SuggestedSource {
 }
 
 interface BlogEditorProps {
-  initialData?: Partial<BlogPostData>;
-  docId?:       string | null;
-  role?:        "admin" | "blogger";
+  initialData?:    Partial<BlogPostData>;
+  docId?:          string | null;
+  role?:           "admin" | "blogger";
+  initialStatus?:  string;
 }
 
 // ── Constants ─────────────────────────────────────────────────────────────────
@@ -179,7 +180,7 @@ function FeedbackBadge({ fb }: { fb: SectionFeedback }) {
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export default function BlogEditor({ initialData, docId, role = "admin" }: BlogEditorProps) {
+export default function BlogEditor({ initialData, docId, role = "admin", initialStatus }: BlogEditorProps) {
   const router = useRouter();
   const [data, setData]             = useState<BlogPostData>({ ...defaultData, ...initialData });
   const [slugLocked, setSlugLocked] = useState(!!docId);
@@ -204,7 +205,8 @@ export default function BlogEditor({ initialData, docId, role = "admin" }: BlogE
     data.score_legal_accuracy + data.score_primary_source +
     data.score_currency + data.score_scope + data.score_operational;
 
-  const canPublish  = totalScore >= 85 && !!data.validated_at;
+  const isAlreadyPublished = initialStatus === "published";
+  const canPublish  = totalScore >= 75 && !!data.validated_at && !isAlreadyPublished;
   const isAdmin     = role === "admin";
 
   // Auto-generate slug from title (new posts only)
@@ -381,7 +383,7 @@ export default function BlogEditor({ initialData, docId, role = "admin" }: BlogE
 
   const scoreColor =
     totalScore >= 90 ? "text-green-700" :
-    totalScore >= 85 ? "text-amber-600" : "text-red-600";
+    totalScore >= 75 ? "text-amber-600" : "text-red-600";
 
   // ── Render ──────────────────────────────────────────────────────────────────
   return (
@@ -675,7 +677,7 @@ export default function BlogEditor({ initialData, docId, role = "admin" }: BlogE
           {/* Validation scorecard */}
           <div className="bg-white rounded-xl border border-pearl-200 shadow-sm p-5 sticky top-6">
             <h2 className="font-semibold text-brand-700 text-sm mb-1">Validation Scorecard</h2>
-            <p className="text-xs text-slate-400 mb-4">Publish threshold: 85/100. Auto-filled by Validate.</p>
+            <p className="text-xs text-slate-400 mb-4">Publish threshold: 75/100. Auto-filled by Validate.</p>
 
             <div className="space-y-4 mb-5">
               {SCORE_CRITERIA.map(({ key, label, max }) => {
@@ -706,17 +708,17 @@ export default function BlogEditor({ initialData, docId, role = "admin" }: BlogE
             {/* Total score */}
             <div className={`text-center py-3 rounded-xl border-2 ${
               totalScore >= 90 ? "border-green-200 bg-green-50" :
-              totalScore >= 85 ? "border-amber-200 bg-amber-50" :
+              totalScore >= 75 ? "border-amber-200 bg-amber-50" :
               "border-red-200 bg-red-50"
             }`}>
               <div className={`text-4xl font-bold ${scoreColor}`}>{totalScore}</div>
               <div className="text-xs text-slate-500 mt-0.5">out of 100</div>
               <div className={`text-xs font-semibold mt-1 ${scoreColor}`}>
-                {totalScore >= 90 ? "Excellent" : totalScore >= 85 ? "Meets threshold" : "Below threshold"}
+                {totalScore >= 90 ? "Excellent" : totalScore >= 75 ? "Meets threshold" : "Below threshold"}
               </div>
             </div>
 
-            {totalScore < 85 && (
+            {totalScore < 75 && (
               <div className="mt-4 space-y-1.5">
                 <p className="text-xs font-semibold text-red-700">Items to improve:</p>
                 {SCORE_CRITERIA.map(({ key, label, max }) => {
@@ -762,16 +764,26 @@ export default function BlogEditor({ initialData, docId, role = "admin" }: BlogE
                 <div className="relative group">
                   <button
                     onClick={() => { if (canPublish) handleSave("published"); }}
-                    disabled={saving || !canPublish}
-                    className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 ${
-                      canPublish ? "bg-green-600 text-white hover:bg-green-700" : "bg-slate-100 text-slate-400 cursor-not-allowed"
+                    disabled={saving || !canPublish || isAlreadyPublished}
+                    className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                      isAlreadyPublished
+                        ? "bg-green-50 text-green-700 border border-green-200 cursor-not-allowed"
+                        : canPublish
+                        ? "bg-green-600 text-white hover:bg-green-700"
+                        : "bg-slate-100 text-slate-400 cursor-not-allowed"
                     }`}
                   >
-                    <Globe size={14} /> Approve & Publish
+                    <Globe size={14} />
+                    {isAlreadyPublished ? "✓ Already Published" : "Approve & Publish"}
                   </button>
-                  {!canPublish && (
+                  {isAlreadyPublished && (
                     <div className="absolute bottom-full mb-2 left-0 right-0 bg-slate-800 text-white text-xs rounded-lg px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none text-center leading-relaxed">
-                      Score ≥ 85 and validation date required to publish.
+                      This post is already live. Edit content and re-save as draft to republish.
+                    </div>
+                  )}
+                  {!isAlreadyPublished && !canPublish && (
+                    <div className="absolute bottom-full mb-2 left-0 right-0 bg-slate-800 text-white text-xs rounded-lg px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none text-center leading-relaxed">
+                      Score ≥ 75 and validation date required to publish.
                     </div>
                   )}
                 </div>
@@ -783,16 +795,16 @@ export default function BlogEditor({ initialData, docId, role = "admin" }: BlogE
           <div className="bg-white rounded-xl border border-pearl-200 shadow-sm p-5">
             <h2 className="font-semibold text-brand-700 text-sm mb-1">Visual Infographic</h2>
             <p className="text-xs text-slate-400 mb-3">
-              Generated by KIE.ai using your content. Enabled after score ≥ 85.
+              Generated by KIE.ai using your content. Enabled after score ≥ 75.
               {!docId && <span className="block mt-1 text-amber-600">Save as draft first to enable generation.</span>}
             </p>
 
             <div className="relative group mb-3">
               <button
                 onClick={handleGenerateInfographic}
-                disabled={generating || totalScore < 85 || !docId}
+                disabled={generating || totalScore < 75 || !docId}
                 className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 ${
-                  totalScore >= 85 && docId
+                  totalScore >= 75 && docId
                     ? "bg-navy-700 text-white hover:bg-navy-800"
                     : "bg-slate-100 text-slate-400 cursor-not-allowed"
                 }`}
@@ -804,9 +816,9 @@ export default function BlogEditor({ initialData, docId, role = "admin" }: BlogE
                   : <><ImagePlus size={14} /> Generate Infographic →</>
                 }
               </button>
-              {totalScore < 85 && (
+              {totalScore < 75 && (
                 <div className="absolute bottom-full mb-2 left-0 right-0 bg-slate-800 text-white text-xs rounded-lg px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none text-center">
-                  Score must be ≥ 85 to generate infographic.
+                  Score must be ≥ 75 to generate infographic.
                 </div>
               )}
             </div>

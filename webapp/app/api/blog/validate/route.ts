@@ -30,7 +30,7 @@ const ValidateOutputSchema = z.object({
   section_feedback:  z.array(SectionFeedbackSchema),
   suggested_sources: z.array(SuggestedSourceSchema),
   editorial_notes:   z.string(),
-  validated_at:      z.string(),
+  // validated_at is NOT in the AI schema — set server-side in IST below
 });
 
 // ── DPDPA Guardrail System Prompt ─────────────────────────────────────────────
@@ -60,9 +60,6 @@ Your job is to review blog post content and validate it against the DPDPA Act 20
 - "verified": claim is accurate and well-supported
 - "warning": claim is partially correct or needs a citation
 - "error": claim contradicts the Act/Rules or is factually wrong
-
-## validated_at field
-Always return today's date in YYYY-MM-DD format (e.g. "${new Date().toISOString().slice(0, 10)}").
 
 ## Important
 You MUST return a valid JSON object matching the schema. Every field is required. scores.total must equal the sum of all five score fields.`;
@@ -130,7 +127,11 @@ Return the structured validation report with all scores filled in.`;
       );
     }
 
-    return NextResponse.json(output);
+    // Compute validation date server-side in IST (UTC+5:30) — never trust the AI for dates
+    const istDate = new Date(Date.now() + 5.5 * 60 * 60 * 1000);
+    const validated_at = istDate.toISOString().slice(0, 10); // YYYY-MM-DD in IST
+
+    return NextResponse.json({ ...output, validated_at });
   } catch (err: unknown) {
     console.error("[blog/validate POST]", err);
     const message = err instanceof Error ? err.message : "Validation failed";
