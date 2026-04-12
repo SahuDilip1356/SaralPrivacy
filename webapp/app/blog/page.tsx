@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CheckCircle, Clock, BookOpen } from "lucide-react";
+import Image from "next/image";
+import { CheckCircle, BookOpen } from "lucide-react";
 import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 import { BriefingSubscribeCard } from "@/components/briefings/BriefingSubscribeCard";
 
@@ -28,6 +29,7 @@ interface BlogPost {
   published_at: string;
   $createdAt: string;
   featured: boolean;
+  infographic_url?: string;
 }
 
 // ── Data ──────────────────────────────────────────────────────────────────────
@@ -78,72 +80,83 @@ function LaneBadge({ lane }: { lane: string }) {
   );
 }
 
-// Editorial list row — replaces card grid
-function PostRow({ post, featured }: { post: BlogPost; featured?: boolean }) {
+// Lane fallback gradient colours for posts without an infographic
+const LANE_GRADIENTS: Record<string, string> = {
+  "law-explained":       "from-blue-900 to-blue-700",
+  "compliance-playbook": "from-purple-900 to-purple-700",
+  "myth-fact":           "from-orange-800 to-orange-600",
+  "sector-notes":        "from-teal-800 to-teal-600",
+  "governance-watch":    "from-red-900 to-red-700",
+};
+
+// Infographic card — thumbnail top, title + date + badges below, no excerpt
+function PostCard({ post }: { post: BlogPost }) {
   const date = post.published_at || post.$createdAt;
+  const gradient = LANE_GRADIENTS[post.lane] || "from-slate-800 to-slate-600";
+  const laneCfg  = LANE_CONFIG[post.lane] || { label: post.lane, color: "text-slate-600", bg: "bg-slate-100" };
+
   return (
     <Link
       href={`/blog/${post.slug}`}
-      className="group flex items-start gap-5 py-5 border-b border-slate-200 last:border-0 hover:bg-white transition-colors px-4 -mx-4 rounded-xl"
+      className="group block bg-white rounded-2xl border border-slate-200 overflow-hidden hover:shadow-lg hover:border-slate-300 transition-all duration-200"
     >
-      {/* Date column */}
-      <div className="hidden sm:flex flex-col items-center shrink-0 w-14 pt-0.5">
-        {date && (
-          <>
-            <span className="text-lg font-bold text-navy-700 leading-none">
-              {new Date(date).toLocaleDateString("en-IN", { day: "numeric" })}
+      {/* Thumbnail — infographic if available, brand gradient fallback */}
+      <div className="relative w-full aspect-[16/9] overflow-hidden">
+        {post.infographic_url ? (
+          <Image
+            src={post.infographic_url}
+            alt={`${post.title} — DPDPA infographic`}
+            fill
+            className="object-cover group-hover:scale-105 transition-transform duration-300"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+        ) : (
+          <div className={`w-full h-full bg-gradient-to-br ${gradient} flex flex-col items-center justify-center p-6 text-center`}>
+            <span className="text-white/40 text-4xl mb-2">⚖</span>
+            <span className="text-white font-bold text-sm leading-snug line-clamp-3">
+              {post.title}
             </span>
-            <span className="text-xs text-slate-400 uppercase tracking-wide">
-              {new Date(date).toLocaleDateString("en-IN", { month: "short" })}
-            </span>
-            <span className="text-xs text-slate-400">
-              {new Date(date).toLocaleDateString("en-IN", { year: "numeric" })}
-            </span>
-          </>
+            <span className="text-white/60 text-xs mt-2">SaralPrivacy™</span>
+          </div>
         )}
-      </div>
 
-      {/* Divider */}
-      <div className="hidden sm:block w-px self-stretch bg-slate-200 shrink-0" />
-
-      {/* Content */}
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-          <LaneBadge lane={post.lane} />
-          {featured && (
-            <span className="inline-block px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-700">
+        {/* Featured ribbon */}
+        {post.featured && (
+          <div className="absolute top-3 left-3">
+            <span className="inline-block px-2 py-0.5 rounded-full text-xs font-bold bg-amber-400 text-amber-900 shadow-sm">
               Featured
             </span>
-          )}
+          </div>
+        )}
+
+        {/* Verified badge overlay */}
+        <div className="absolute top-3 right-3">
+          <span className="inline-flex items-center gap-1 text-xs font-semibold text-white bg-green-600/90 backdrop-blur-sm px-2 py-0.5 rounded-full shadow-sm">
+            <CheckCircle size={10} /> Verified
+          </span>
         </div>
-        <h2 className="font-bold text-navy-700 text-base leading-snug mb-1.5 group-hover:text-navy-900 transition-colors">
+      </div>
+
+      {/* Card body — title, lane, date only */}
+      <div className="p-4">
+        <div className="mb-2">
+          <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold ${laneCfg.bg} ${laneCfg.color}`}>
+            {laneCfg.label}
+          </span>
+        </div>
+        <h2 className="font-bold text-navy-700 text-sm leading-snug mb-3 line-clamp-2 group-hover:text-navy-900 transition-colors">
           {post.title}
         </h2>
-        <p className="text-sm text-slate-500 leading-relaxed line-clamp-2 mb-2">
-          {post.excerpt}
-        </p>
-        <div className="flex items-center gap-3 text-xs text-slate-400 flex-wrap">
-          {post.author && <span>{post.author}</span>}
-          <span className="flex items-center gap-1">
-            <Clock size={11} /> {post.read_time || 5} min read
-          </span>
-          {/* Mobile date */}
+        <div className="flex items-center justify-between">
           {date && (
-            <span className="sm:hidden">
+            <span className="text-xs text-slate-400">
               {new Date(date).toLocaleDateString("en-IN", {
                 day: "numeric", month: "short", year: "numeric",
               })}
             </span>
           )}
+          <span className="text-slate-300 group-hover:text-navy-600 text-sm transition-colors">→</span>
         </div>
-      </div>
-
-      {/* Verified badge + arrow */}
-      <div className="shrink-0 flex flex-col items-end gap-2 pt-0.5">
-        <span className="flex items-center gap-1 text-xs font-semibold text-green-700 bg-green-50 px-2 py-0.5 rounded-full border border-green-100">
-          <CheckCircle size={10} /> Verified
-        </span>
-        <span className="text-slate-300 group-hover:text-navy-600 transition-colors text-base">→</span>
       </div>
     </Link>
   );
@@ -224,7 +237,7 @@ export default async function BlogPage({ searchParams }: PageProps) {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
         {posts.length === 0 ? (
           <div className="text-center py-20">
             <BookOpen size={48} className="text-slate-300 mx-auto mb-4" />
@@ -238,10 +251,10 @@ export default async function BlogPage({ searchParams }: PageProps) {
           </div>
         ) : (
           <>
-            {/* Single unified list — featured shown inline, no slice cap */}
-            <div className="bg-slate-50 rounded-2xl px-4 mb-12">
+            {/* 3-column infographic card grid — all posts, no slice cap */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
               {posts.map((post) => (
-                <PostRow key={post.$id} post={post} featured={post.featured} />
+                <PostCard key={post.$id} post={post} />
               ))}
             </div>
 
