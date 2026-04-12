@@ -165,11 +165,6 @@ export default async function BlogDetailPage({ params }: Props) {
   const waText   = encodeURIComponent(`${post.title}\n${postUrl}`);
   const liText   = encodeURIComponent(post.title);
 
-  const scoreColor =
-    post.validation_score >= 90 ? "text-green-700 bg-green-50 border-green-200" :
-    post.validation_score >= 85 ? "text-amber-700 bg-amber-50 border-amber-200" :
-                                  "text-red-700 bg-red-50 border-red-200";
-
   return (
     <div className="min-h-screen bg-slate-50">
       {articleSchema(
@@ -243,25 +238,18 @@ export default async function BlogDetailPage({ params }: Props) {
               </span>
             </div>
 
-            {/* Verification badge */}
-            {post.validated_at && (
-              <div className="flex items-start gap-3 bg-green-50 border border-green-200 rounded-xl px-4 py-3 mb-6">
-                <Shield size={18} className="text-green-600 mt-0.5 shrink-0" />
-                <div>
-                  <p className="text-sm font-semibold text-green-800">
-                    Validated against official sources as of{" "}
-                    {new Date(post.validated_at).toLocaleDateString("en-IN", {
-                      day: "numeric", month: "long", year: "numeric",
-                    })}
-                  </p>
-                  <p className="text-xs text-green-600 mt-0.5">
-                    This article has been checked against the DPDPA Act, notified Rules, and
-                    official government releases.{" "}
-                    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full border font-bold text-xs ml-1 ${scoreColor}`}>
-                      Editorial Score: {post.validation_score}/100
-                      {post.validation_score >= 85 && <CheckCircle size={10} />}
-                    </span>
-                  </p>
+            {/* Infographic — shown immediately after byline when available */}
+            {post.infographic_url && (
+              <div className="mb-7 rounded-xl overflow-hidden border border-slate-200 shadow-sm">
+                <img
+                  src={post.infographic_url}
+                  alt={`${post.title} — DPDPA infographic by SaralPrivacy`}
+                  className="w-full"
+                  loading="eager"
+                  fetchPriority="high"
+                />
+                <div className="bg-slate-50 px-4 py-2 text-xs text-slate-400 text-right border-t border-slate-200">
+                  © SaralPrivacy™ — Verified DPDPA Insights
                 </div>
               </div>
             )}
@@ -305,24 +293,6 @@ export default async function BlogDetailPage({ params }: Props) {
                       ))}
                     </tbody>
                   </table>
-                </div>
-              </div>
-            )}
-
-            {/* Infographic — shown when generated */}
-            {post.infographic_url && (
-              <div className="mb-8">
-                <h2 className="text-lg font-bold text-navy-700 mb-3">Visual Summary</h2>
-                <div className="rounded-xl overflow-hidden border border-slate-200 shadow-sm">
-                  <img
-                    src={post.infographic_url}
-                    alt={`${post.title} — DPDPA infographic by SaralPrivacy`}
-                    className="w-full"
-                    loading="lazy"
-                  />
-                  <div className="bg-slate-50 px-4 py-2 text-xs text-slate-400 text-right border-t border-slate-200">
-                    © SaralPrivacy™ — Verified DPDPA Insights
-                  </div>
                 </div>
               </div>
             )}
@@ -434,18 +404,6 @@ export default async function BlogDetailPage({ params }: Props) {
               </div>
             )}
 
-            {/* Validation score detail */}
-            <div className="bg-white rounded-xl border border-slate-200 p-5">
-              <h3 className="font-bold text-navy-700 text-sm mb-3">Editorial Standards</h3>
-              <div className={`text-center py-3 rounded-lg mb-3 ${scoreColor} border`}>
-                <div className="text-3xl font-bold">{post.validation_score}</div>
-                <div className="text-xs mt-0.5">Editorial Score / 100</div>
-              </div>
-              <p className="text-xs text-slate-500 leading-relaxed">
-                Scored on legal accuracy, primary-source support, currency, scope precision,
-                and operational usefulness. Articles below 85 are not published.
-              </p>
-            </div>
           </aside>
         </div>
       </div>
