@@ -61,8 +61,11 @@ Your job is to review blog post content and validate it against the DPDPA Act 20
 - "warning": claim is partially correct or needs a citation
 - "error": claim contradicts the Act/Rules or is factually wrong
 
-## Today's Date
-${new Date().toISOString().slice(0, 10)}`;
+## validated_at field
+Always return today's date in YYYY-MM-DD format (e.g. "${new Date().toISOString().slice(0, 10)}").
+
+## Important
+You MUST return a valid JSON object matching the schema. Every field is required. scores.total must equal the sum of all five score fields.`;
 
 // ── Handler ───────────────────────────────────────────────────────────────────
 
@@ -111,14 +114,21 @@ ${section_uncertain || "(empty)"}
 --- SECTION: Top Mistakes to Avoid ---
 ${section_mistakes || "(empty)"}
 
-Score this content and return the structured validation report.`;
+Return the structured validation report with all scores filled in.`;
 
     const { output } = await generateText({
-      model: anthropic("claude-sonnet-4.5"),
+      model:  anthropic("claude-sonnet-4.6"),
       system: SYSTEM_PROMPT,
       prompt: userContent,
       output: Output.object({ schema: ValidateOutputSchema }),
     });
+
+    if (!output) {
+      return NextResponse.json(
+        { error: "Validation model did not return a structured response. Please try again." },
+        { status: 502 }
+      );
+    }
 
     return NextResponse.json(output);
   } catch (err: unknown) {
