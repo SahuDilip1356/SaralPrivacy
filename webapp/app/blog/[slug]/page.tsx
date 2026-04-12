@@ -118,9 +118,30 @@ function isBlank(text: string | null | undefined): boolean {
   return t === "" || t === "blank" || t === "(empty)";
 }
 
-// Renders plain-text content with smart bullet detection.
-// Lines starting with - / • / * become styled list items with a golden ✓.
-// All other lines render as paragraphs.
+// Parses inline Markdown: **bold** → <strong>, *italic* → <em>
+// Returns an array of React nodes safe to render inside any element.
+function parseInline(text: string): React.ReactNode[] {
+  const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g);
+  return parts.map((part, i) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return (
+        <strong key={i} className="font-semibold text-slate-900">
+          {part.slice(2, -2)}
+        </strong>
+      );
+    }
+    if (part.startsWith("*") && part.endsWith("*")) {
+      return <em key={i}>{part.slice(1, -1)}</em>;
+    }
+    return part;
+  });
+}
+
+// Renders plain-text content with smart formatting detection:
+// - Lines starting with ## → styled sub-heading
+// - Lines starting with - / • / * → golden ✓ bullet list items
+// - All other lines → paragraphs
+// Inline **bold** and *italic* are parsed throughout.
 function renderContent(content: string) {
   const lines = content.split("\n");
   const elements: React.ReactNode[] = [];
@@ -138,7 +159,7 @@ function renderContent(content: string) {
             >
               ✓
             </span>
-            <span>{item}</span>
+            <span>{parseInline(item)}</span>
           </li>
         ))}
       </ul>
@@ -152,14 +173,29 @@ function renderContent(content: string) {
       flushList(`list-${idx}`);
       return;
     }
-    const bulletMatch = trimmed.match(/^[-•*]\s+(.+)/);
+
+    // ## Sub-heading inside content (AI often writes these)
+    const headingMatch = trimmed.match(/^#{1,3}\s+(.+)/);
+    if (headingMatch) {
+      flushList(`list-${idx}`);
+      elements.push(
+        <h3 key={`h-${idx}`} className="text-base font-bold text-navy-700 mt-5 mb-2">
+          {headingMatch[1]}
+        </h3>
+      );
+      return;
+    }
+
+    // Bullet line: -, •, or a leading * not part of bold (**word**)
+    const bulletMatch = trimmed.match(/^[-•]\s+(.+)/) ||
+      (trimmed.startsWith("* ") ? trimmed.match(/^\*\s+(.+)/) : null);
     if (bulletMatch) {
       listBuffer.push(bulletMatch[1]);
     } else {
       flushList(`list-${idx}`);
       elements.push(
         <p key={`p-${idx}`} className="text-sm text-slate-700 leading-relaxed mb-2">
-          {trimmed}
+          {parseInline(trimmed)}
         </p>
       );
     }
