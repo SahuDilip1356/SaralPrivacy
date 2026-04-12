@@ -94,9 +94,10 @@ export default function AdminBlogPage() {
           </button>
           <Link
             href="/admin/blog/new"
-            className="flex items-center gap-2 px-4 py-2 bg-brand-700 text-white text-sm font-medium rounded-lg hover:bg-brand-800 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 text-white text-sm font-semibold rounded-lg transition-colors"
+            style={{ backgroundColor: "#07B981" }}
           >
-            <Plus size={14} /> New Post
+            <Plus size={14} /> Write New Post
           </Link>
         </div>
       </div>
@@ -123,12 +124,19 @@ export default function AdminBlogPage() {
         {loading ? (
           <div className="px-6 py-12 text-center text-sm text-slate-400">Loading…</div>
         ) : posts.length === 0 ? (
-          <div className="px-6 py-12 text-center">
-            <FileText size={32} className="text-slate-300 mx-auto mb-3" />
-            <p className="text-slate-400 text-sm font-medium">No blog posts yet</p>
-            <p className="text-xs text-slate-400 mt-1">
-              Click &ldquo;New Post&rdquo; to write your first verified insight.
+          <div className="px-6 py-16 text-center">
+            <FileText size={40} className="text-slate-300 mx-auto mb-4" />
+            <p className="text-slate-600 text-base font-semibold mb-1">No blog posts yet</p>
+            <p className="text-sm text-slate-400 mb-6">
+              Start writing your first verified DPDPA insight.
             </p>
+            <Link
+              href="/admin/blog/new"
+              className="inline-flex items-center gap-2 px-6 py-3 text-white text-sm font-semibold rounded-lg transition-colors"
+              style={{ backgroundColor: "#07B981" }}
+            >
+              <Plus size={16} /> Write New Post
+            </Link>
           </div>
         ) : (
           <div className="overflow-x-auto">
