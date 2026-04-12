@@ -108,6 +108,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 // ── Components ────────────────────────────────────────────────────────────────
 
+function isBlank(text: string | null | undefined): boolean {
+  if (!text) return true;
+  const t = text.trim().toLowerCase();
+  return t === "" || t === "blank" || t === "(empty)";
+}
+
 function SectionBlock({
   heading,
   content,
@@ -117,7 +123,7 @@ function SectionBlock({
   content: string;
   scopeLabel?: string;
 }) {
-  if (!content) return null;
+  if (isBlank(content)) return null;
   return (
     <div className="mb-8">
       <div className="flex items-center gap-2 mb-3">
@@ -133,14 +139,6 @@ function SectionBlock({
       </div>
     </div>
   );
-}
-
-function RiskBadge({ level }: { level: string }) {
-  const color =
-    level === "High"   ? "bg-red-100 text-red-700" :
-    level === "Medium" ? "bg-amber-100 text-amber-700" :
-                         "bg-green-100 text-green-700";
-  return <span className={`text-xs px-1.5 py-0.5 rounded-full font-semibold ${color}`}>{level}</span>;
 }
 
 // ── Page ──────────────────────────────────────────────────────────────────────
@@ -268,32 +266,25 @@ export default async function BlogDetailPage({ params }: Props) {
             <SectionBlock heading="What Is Still Uncertain" content={section_uncertain} />
             <SectionBlock heading="Top Mistakes to Avoid" content={section_mistakes} />
 
-            {/* Primary sources table */}
+            {/* Sources — numbered citation list */}
             {primarySources.length > 0 && (
-              <div className="mb-8">
-                <h2 className="text-lg font-bold text-navy-700 mb-3">Primary Sources</h2>
-                <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="bg-slate-50 border-b border-slate-200">
-                        <th className="px-4 py-2.5 text-left text-xs font-semibold text-slate-500">Claim</th>
-                        <th className="px-4 py-2.5 text-left text-xs font-semibold text-slate-500">Source Type</th>
-                        <th className="px-4 py-2.5 text-left text-xs font-semibold text-slate-500">Citation</th>
-                        <th className="px-4 py-2.5 text-left text-xs font-semibold text-slate-500">Risk</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100">
-                      {primarySources.map((src, i) => (
-                        <tr key={i} className="hover:bg-slate-50">
-                          <td className="px-4 py-2.5 text-xs text-slate-700">{src.claim}</td>
-                          <td className="px-4 py-2.5 text-xs text-slate-500">{src.sourceType}</td>
-                          <td className="px-4 py-2.5 text-xs text-slate-500 font-mono">{src.citation}</td>
-                          <td className="px-4 py-2.5"><RiskBadge level={src.riskLevel} /></td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+              <div className="mb-8 pt-6 border-t border-slate-200">
+                <h2 className="text-base font-bold text-navy-700 mb-4">Sources</h2>
+                <ol className="space-y-3">
+                  {primarySources.map((src, i) => (
+                    <li key={i} className="flex gap-3 text-sm text-slate-600 leading-relaxed">
+                      <span className="shrink-0 w-5 text-right font-semibold text-slate-400 mt-0.5">
+                        {i + 1}.
+                      </span>
+                      <span>
+                        {src.citation}
+                        <span className="ml-2 text-xs text-slate-400 font-medium">
+                          [{src.sourceType}]
+                        </span>
+                      </span>
+                    </li>
+                  ))}
+                </ol>
               </div>
             )}
 

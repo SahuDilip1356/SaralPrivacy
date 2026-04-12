@@ -49,21 +49,33 @@ function buildDocument(payload: SavePayload) {
   const validation_score =
     score_legal_accuracy + score_primary_source + score_currency + score_scope + score_operational;
 
+  // Normalise section text — treat empty strings and placeholder "Blank" as null
+  function normSection(s: string | null | undefined): string | null {
+    if (!s) return null;
+    const trimmed = s.trim();
+    if (trimmed === "" || trimmed.toLowerCase() === "blank") return null;
+    return trimmed;
+  }
+
+  const norm_do_now    = normSection(section_do_now);
+  const norm_uncertain = normSection(section_uncertain);
+  const norm_mistakes  = normSection(section_mistakes);
+
   // Pack overflow sections into sections_json (Appwrite byte limit workaround)
   const sectionsJsonStr = JSON.stringify({
-    section_do_now,
-    section_uncertain,
-    section_mistakes,
-    primary_sources: JSON.stringify(primary_sources),
+    section_do_now:    norm_do_now,
+    section_uncertain: norm_uncertain,
+    section_mistakes:  norm_mistakes,
+    primary_sources:   JSON.stringify(primary_sources),
   });
 
-  // Auto read_time from word count
+  // Auto read_time from word count (use normalised values so "Blank" doesn't inflate count)
   const totalWords =
     countWords(section_what_changed) +
     countWords(section_law_says) +
-    countWords(section_do_now) +
-    countWords(section_uncertain) +
-    countWords(section_mistakes);
+    countWords(norm_do_now || "") +
+    countWords(norm_uncertain || "") +
+    countWords(norm_mistakes || "");
   const read_time = Math.max(1, Math.round(totalWords / 200));
 
   const published_at =
@@ -80,8 +92,8 @@ function buildDocument(payload: SavePayload) {
     tags:                 tags ? tags.slice(0, 500) : null,
     featured,
     status,
-    section_what_changed: section_what_changed ? section_what_changed.slice(0, 10000) : null,
-    section_law_says:     section_law_says ? section_law_says.slice(0, 10000) : null,
+    section_what_changed: normSection(section_what_changed)?.slice(0, 10000) ?? null,
+    section_law_says:     normSection(section_law_says)?.slice(0, 10000) ?? null,
     sections_json:        sectionsJsonStr,
     validated_at:         validated_at ? validated_at.slice(0, 30) : null,
     score_legal_accuracy,
