@@ -8,11 +8,13 @@ import {
   briefingApprovalTemplate,
   briefingEmailTemplate,
   surveyResultEmailTemplate,
+  bloggerInviteTemplate,
   type LeadData,
   type DownloadData,
   type AssessmentData,
   type BriefingData,
   type SurveyResultData,
+  type BloggerInviteData,
 } from './email-templates';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -228,4 +230,25 @@ export async function sendSurveyResultEmail(data: SurveyResultData): Promise<Ema
   }
 }
 
-export type { LeadData, DownloadData, AssessmentData, BriefingData, SurveyResultData };
+// ──────────────────────────────────────────────────────────────────────────────
+// 9. sendBloggerInvite — send invite link to a new blogger contributor
+// ──────────────────────────────────────────────────────────────────────────────
+export async function sendBloggerInvite(data: BloggerInviteData): Promise<EmailResult> {
+  try {
+    const { subject, html } = bloggerInviteTemplate(data);
+    const { error } = await resend.emails.send({
+      from:    FROM_NOREPLY,
+      to:      data.email,
+      subject,
+      html,
+    });
+    if (error) return { success: false, error: error.message };
+    return { success: true };
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error('[email] sendBloggerInvite failed:', msg);
+    return { success: false, error: msg };
+  }
+}
+
+export type { LeadData, DownloadData, AssessmentData, BriefingData, SurveyResultData, BloggerInviteData };

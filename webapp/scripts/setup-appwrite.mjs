@@ -124,6 +124,30 @@ async function main() {
     { key: "created_at",       type: "datetime",              required: false             },
   ]);
 
+  await createCollection("blog_posts", "Blog Posts - Verified DPDPA Insights", [
+    { key: "title",                type: "string",  size: 200,   required: true  },
+    { key: "slug",                 type: "string",  size: 200,   required: true  },
+    { key: "excerpt",              type: "string",  size: 600,   required: false },
+    { key: "lane",                 type: "string",  size: 60,    required: false },
+    { key: "author",               type: "string",  size: 100,   required: false },
+    { key: "tags",                 type: "string",  size: 500,   required: false },
+    { key: "featured",             type: "boolean",              required: false },
+    { key: "status",               type: "string",  size: 50,    required: false },
+    { key: "section_what_changed", type: "string",  size: 10000, required: false },
+    { key: "section_law_says",     type: "string",  size: 10000, required: false },
+    { key: "sections_json",        type: "string",  size: 50000, required: false },
+    { key: "validated_at",         type: "string",  size: 30,    required: false },
+    { key: "score_legal_accuracy", type: "integer",              required: false },
+    { key: "score_primary_source", type: "integer",              required: false },
+    { key: "score_currency",       type: "integer",              required: false },
+    { key: "score_scope",          type: "integer",              required: false },
+    { key: "score_operational",    type: "integer",              required: false },
+    { key: "validation_score",     type: "integer",              required: false },
+    { key: "read_time",            type: "integer",              required: false },
+    { key: "published_at",         type: "string",  size: 30,    required: false },
+    { key: "infographic_url",      type: "string",  size: 500,   required: false },
+  ]);
+
   console.log("\n✅ Setup complete. Collections are ready in Appwrite.");
 }
 

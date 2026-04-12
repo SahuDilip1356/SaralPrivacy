@@ -20,6 +20,7 @@ export const COLLECTIONS = {
   CONSENT_LOG:      "consent_log",
   SURVEY_RESPONSES: "survey_responses",
   BLOG_POSTS:       "blog_posts",
+  BLOGGER_ACCOUNTS: "blogger_accounts",
 } as const;
 
 /** Returns the public view URL for a file in Appwrite Storage */
