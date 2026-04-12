@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import {
   CheckCircle, Clock, Calendar, ArrowLeft, Shield,
-  ThumbsUp, ThumbsDown, Share2, ExternalLink, BookOpen,
+  Share2, ExternalLink, BookOpen,
 } from "lucide-react";
 import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 import { BriefingSubscribeCard } from "@/components/briefings/BriefingSubscribeCard";
@@ -377,19 +377,6 @@ export default async function BlogDetailPage({ params }: Props) {
                 </ol>
               </div>
             )}
-
-            {/* Was this helpful */}
-            <div className="bg-white rounded-xl border border-slate-200 p-5 mb-6">
-              <p className="text-sm font-semibold text-navy-700 mb-3">Was this helpful?</p>
-              <div className="flex items-center gap-3">
-                <button className="flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-lg text-sm text-slate-600 hover:bg-green-50 hover:border-green-200 hover:text-green-700 transition-colors">
-                  <ThumbsUp size={14} /> Yes
-                </button>
-                <button className="flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-lg text-sm text-slate-600 hover:bg-red-50 hover:border-red-200 hover:text-red-600 transition-colors">
-                  <ThumbsDown size={14} /> No
-                </button>
-              </div>
-            </div>
 
             {/* Share */}
             <div className="flex items-center gap-3 mb-8 flex-wrap">
