@@ -78,44 +78,72 @@ function LaneBadge({ lane }: { lane: string }) {
   );
 }
 
-function PostCard({ post }: { post: BlogPost }) {
+// Editorial list row — replaces card grid
+function PostRow({ post, featured }: { post: BlogPost; featured?: boolean }) {
   const date = post.published_at || post.$createdAt;
   return (
     <Link
       href={`/blog/${post.slug}`}
-      className="group block bg-white rounded-xl border border-slate-200 p-5 hover:shadow-md hover:border-navy-200 transition-all"
+      className="group flex items-start gap-5 py-5 border-b border-slate-200 last:border-0 hover:bg-white transition-colors px-4 -mx-4 rounded-xl"
     >
-      <div className="flex items-center gap-2 mb-3">
-        <LaneBadge lane={post.lane} />
-        {post.featured && (
-          <span className="inline-block px-2 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-700">
-            Featured
-          </span>
+      {/* Date column */}
+      <div className="hidden sm:flex flex-col items-center shrink-0 w-14 pt-0.5">
+        {date && (
+          <>
+            <span className="text-lg font-bold text-navy-700 leading-none">
+              {new Date(date).toLocaleDateString("en-IN", { day: "numeric" })}
+            </span>
+            <span className="text-xs text-slate-400 uppercase tracking-wide">
+              {new Date(date).toLocaleDateString("en-IN", { month: "short" })}
+            </span>
+            <span className="text-xs text-slate-400">
+              {new Date(date).toLocaleDateString("en-IN", { year: "numeric" })}
+            </span>
+          </>
         )}
       </div>
-      <h2 className="font-bold text-navy-700 text-base leading-snug mb-2 group-hover:text-navy-800 transition-colors line-clamp-3">
-        {post.title}
-      </h2>
-      <p className="text-sm text-slate-500 leading-relaxed line-clamp-3 mb-4">
-        {post.excerpt}
-      </p>
-      <div className="flex items-center justify-between flex-wrap gap-2">
-        <div className="flex items-center gap-3 text-xs text-slate-400">
-          <span className="flex items-center gap-1">
-            <Clock size={11} /> {post.read_time || 5} min
-          </span>
+
+      {/* Divider */}
+      <div className="hidden sm:block w-px self-stretch bg-slate-200 shrink-0" />
+
+      {/* Content */}
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+          <LaneBadge lane={post.lane} />
+          {featured && (
+            <span className="inline-block px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-700">
+              Featured
+            </span>
+          )}
+        </div>
+        <h2 className="font-bold text-navy-700 text-base leading-snug mb-1.5 group-hover:text-navy-900 transition-colors">
+          {post.title}
+        </h2>
+        <p className="text-sm text-slate-500 leading-relaxed line-clamp-2 mb-2">
+          {post.excerpt}
+        </p>
+        <div className="flex items-center gap-3 text-xs text-slate-400 flex-wrap">
           {post.author && <span>{post.author}</span>}
+          <span className="flex items-center gap-1">
+            <Clock size={11} /> {post.read_time || 5} min read
+          </span>
+          {/* Mobile date */}
           {date && (
-            <span>
+            <span className="sm:hidden">
               {new Date(date).toLocaleDateString("en-IN", {
                 day: "numeric", month: "short", year: "numeric",
               })}
             </span>
           )}
         </div>
-        <span className="flex items-center gap-1 text-xs font-semibold text-green-700 bg-green-50 px-2 py-0.5 rounded-full">
+      </div>
+
+      {/* Verified badge + arrow */}
+      <div className="shrink-0 flex flex-col items-end gap-2 pt-0.5">
+        <span className="flex items-center gap-1 text-xs font-semibold text-green-700 bg-green-50 px-2 py-0.5 rounded-full border border-green-100">
           <CheckCircle size={10} /> Verified
         </span>
+        <span className="text-slate-300 group-hover:text-navy-600 transition-colors text-base">→</span>
       </div>
     </Link>
   );
@@ -196,7 +224,7 @@ export default async function BlogPage({ searchParams }: PageProps) {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
         {posts.length === 0 ? (
           <div className="text-center py-20">
             <BookOpen size={48} className="text-slate-300 mx-auto mb-4" />
@@ -210,27 +238,10 @@ export default async function BlogPage({ searchParams }: PageProps) {
           </div>
         ) : (
           <>
-            {/* Featured posts */}
-            {posts.filter((p) => p.featured).length > 0 && (
-              <div className="mb-10">
-                <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">
-                  Featured
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  {posts.filter((p) => p.featured).slice(0, 2).map((post) => (
-                    <PostCard key={post.$id} post={post} />
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* All posts */}
-            <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">
-              All Insights
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-12">
-              {posts.filter((p) => !p.featured).map((post) => (
-                <PostCard key={post.$id} post={post} />
+            {/* Single unified list — featured shown inline, no slice cap */}
+            <div className="bg-slate-50 rounded-2xl px-4 mb-12">
+              {posts.map((post) => (
+                <PostRow key={post.$id} post={post} featured={post.featured} />
               ))}
             </div>
 
