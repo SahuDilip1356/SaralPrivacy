@@ -20,12 +20,12 @@ const SuggestedSourceSchema = z.object({
 
 const ValidateOutputSchema = z.object({
   scores: z.object({
-    score_legal_accuracy: z.number().min(0).max(35),
-    score_primary_source: z.number().min(0).max(25),
-    score_currency:       z.number().min(0).max(15),
-    score_scope:          z.number().min(0).max(15),
-    score_operational:    z.number().min(0).max(10),
-    total:                z.number().min(0).max(100),
+    score_legal_accuracy: z.number(),
+    score_primary_source: z.number(),
+    score_currency:       z.number(),
+    score_scope:          z.number(),
+    score_operational:    z.number(),
+    total:                z.number(),
   }),
   section_feedback:  z.array(SectionFeedbackSchema),
   suggested_sources: z.array(SuggestedSourceSchema),
