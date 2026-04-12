@@ -117,7 +117,7 @@ ${section_mistakes || "(empty)"}
 Return the structured validation report with all scores filled in.`;
 
     const { output } = await generateText({
-      model:  anthropic("claude-sonnet-4.6"),
+      model:  anthropic("claude-sonnet-4-6"),
       system: SYSTEM_PROMPT,
       prompt: userContent,
       output: Output.object({ schema: ValidateOutputSchema }),
