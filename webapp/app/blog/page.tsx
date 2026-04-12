@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CheckCircle, BookOpen } from "lucide-react";
+import { BookOpen } from "lucide-react";
 import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 import { BriefingSubscribeCard } from "@/components/briefings/BriefingSubscribeCard";
 
@@ -121,24 +121,9 @@ function PostCard({ post }: { post: BlogPost }) {
           </div>
         )}
 
-        {/* Featured ribbon */}
-        {post.featured && (
-          <div className="absolute top-3 left-3">
-            <span className="inline-block px-2 py-0.5 rounded-full text-xs font-bold bg-amber-400 text-amber-900 shadow-sm">
-              Featured
-            </span>
-          </div>
-        )}
-
-        {/* Verified badge overlay */}
-        <div className="absolute top-3 right-3">
-          <span className="inline-flex items-center gap-1 text-xs font-semibold text-white bg-green-600/90 backdrop-blur-sm px-2 py-0.5 rounded-full shadow-sm">
-            <CheckCircle size={10} /> Verified
-          </span>
-        </div>
       </div>
 
-      {/* Card body — title, lane, date only */}
+      {/* Card body — lane · title · date · verified score */}
       <div className="p-4">
         <div className="mb-2">
           <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold ${laneCfg.bg} ${laneCfg.color}`}>
@@ -148,7 +133,7 @@ function PostCard({ post }: { post: BlogPost }) {
         <h2 className="font-bold text-navy-700 text-sm leading-snug mb-3 line-clamp-2 group-hover:text-navy-900 transition-colors">
           {post.title}
         </h2>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-1.5">
           {date && (
             <span className="text-xs text-slate-400">
               {new Date(date).toLocaleDateString("en-IN", {
@@ -158,6 +143,11 @@ function PostCard({ post }: { post: BlogPost }) {
           )}
           <span className="text-slate-300 group-hover:text-navy-600 text-sm transition-colors">→</span>
         </div>
+        {post.validation_score > 0 && (
+          <p className="text-xs text-green-600 font-medium">
+            ✓ Verified · {post.validation_score}/100
+          </p>
+        )}
       </div>
     </Link>
   );
