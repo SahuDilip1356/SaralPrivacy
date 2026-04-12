@@ -238,13 +238,18 @@ export default function BlogEditor({ initialData, docId, role = "admin", initial
   const [revisingSection, setRevisingSection] = useState<string | null>(null);
   const [reviseToast, setReviseToast]         = useState("");
 
+  // Publish state — local flag so the button locks immediately after a successful publish
+  // without needing a page reload (initialStatus is a static server prop)
+  const [publishedNow, setPublishedNow] = useState(false);
+
   const totalScore =
     data.score_legal_accuracy + data.score_primary_source +
     data.score_currency + data.score_scope + data.score_operational;
 
-  const isAlreadyPublished = initialStatus === "published";
-  const canPublish  = totalScore >= 75 && !!data.validated_at && !isAlreadyPublished;
-  const isAdmin     = role === "admin";
+  const isAlreadyPublished = initialStatus === "published" || publishedNow;
+  // validated_at is not a hard gate — if score ≥ 75 we auto-set it at publish time
+  const canPublish = totalScore >= 75 && !isAlreadyPublished;
+  const isAdmin    = role === "admin";
 
   // Auto-generate slug from title (new posts only)
   useEffect(() => {
@@ -439,7 +444,16 @@ export default function BlogEditor({ initialData, docId, role = "admin", initial
     setSaveError("");
     setSaveOk("");
 
-    const payload = { ...data, status, id: docId || undefined, scope_labels: scopeLabels };
+    // Fix 4: Auto-set validated_at to today's IST date if publishing without one
+    // Score ≥ 75 already proves quality — don't silently block on missing date
+    let resolvedData = { ...data };
+    if (status === "published" && !resolvedData.validated_at) {
+      const istDate = new Date(Date.now() + 5.5 * 60 * 60 * 1000);
+      resolvedData.validated_at = istDate.toISOString().slice(0, 10);
+      setData((prev) => ({ ...prev, validated_at: resolvedData.validated_at }));
+    }
+
+    const payload = { ...resolvedData, status, id: docId || undefined, scope_labels: scopeLabels };
 
     try {
       const method = docId ? "PATCH" : "POST";
@@ -450,8 +464,17 @@ export default function BlogEditor({ initialData, docId, role = "admin", initial
       });
       const result = await res.json();
       if (res.ok) {
-        setSaveOk(`Saved. ID: ${result.id}`);
-        if (!docId) router.push(`/admin/blog/${result.id}/edit`);
+        if (status === "published") {
+          // Fix 1: Lock the button immediately via local state
+          setPublishedNow(true);
+          setSaveOk("Post published successfully!");
+          // Fix 2: Redirect to the posts list so admin sees it's live
+          setTimeout(() => router.push("/admin/blog"), 1500);
+        } else {
+          setSaveOk(`Saved as ${status}. ID: ${result.id}`);
+          // For new posts saved as draft/review, move to the edit URL
+          if (!docId) router.push(`/admin/blog/${result.id}/edit`);
+        }
       } else {
         setSaveError(result.error || "Save failed");
       }
@@ -849,41 +872,58 @@ export default function BlogEditor({ initialData, docId, role = "admin", initial
                 <Save size={14} />
                 {saving ? "Saving…" : "Save as Draft"}
               </button>
-              <button
-                onClick={() => handleSave("review")}
-                disabled={saving}
-                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 border border-amber-200 rounded-lg text-sm font-medium text-amber-700 hover:bg-amber-50 transition-colors disabled:opacity-50"
-              >
-                <Send size={14} />
-                Submit for Review
-              </button>
+              {/* Submit for Review — bloggers only; admins publish directly */}
+              {!isAdmin && (
+                <button
+                  onClick={() => handleSave("review")}
+                  disabled={saving}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-2.5 border border-amber-200 rounded-lg text-sm font-medium text-amber-700 hover:bg-amber-50 transition-colors disabled:opacity-50"
+                >
+                  <Send size={14} />
+                  Submit for Review
+                </button>
+              )}
 
               {/* Publish — admin only */}
               {isAdmin && (
-                <div className="relative group">
-                  <button
-                    onClick={() => { if (canPublish) handleSave("published"); }}
-                    disabled={saving || !canPublish || isAlreadyPublished}
-                    className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                      isAlreadyPublished
-                        ? "bg-green-50 text-green-700 border border-green-200 cursor-not-allowed"
-                        : canPublish
-                        ? "bg-green-600 text-white hover:bg-green-700"
-                        : "bg-slate-100 text-slate-400 cursor-not-allowed"
-                    }`}
-                  >
-                    <Globe size={14} />
-                    {isAlreadyPublished ? "✓ Already Published" : "Approve & Publish"}
-                  </button>
+                <div className="space-y-2">
+                  <div className="relative group">
+                    <button
+                      onClick={() => { if (canPublish) handleSave("published"); }}
+                      disabled={saving || !canPublish}
+                      className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors disabled:opacity-60 ${
+                        isAlreadyPublished
+                          ? "bg-green-50 text-green-700 border border-green-200 cursor-not-allowed"
+                          : canPublish
+                          ? "bg-green-600 text-white hover:bg-green-700 cursor-pointer"
+                          : "bg-slate-100 text-slate-400 cursor-not-allowed"
+                      }`}
+                    >
+                      <Globe size={14} />
+                      {saving && !isAlreadyPublished
+                        ? "Publishing…"
+                        : isAlreadyPublished
+                        ? "✓ Published — redirecting…"
+                        : "Approve & Publish"
+                      }
+                    </button>
+                    {!canPublish && !isAlreadyPublished && (
+                      <div className="absolute bottom-full mb-2 left-0 right-0 bg-slate-800 text-white text-xs rounded-lg px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none text-center leading-relaxed">
+                        Score must be ≥ 75 to publish.
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Fix 5: Inline publish success feedback — visible without scrolling */}
                   {isAlreadyPublished && (
-                    <div className="absolute bottom-full mb-2 left-0 right-0 bg-slate-800 text-white text-xs rounded-lg px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none text-center leading-relaxed">
-                      This post is already live. Edit content and re-save as draft to republish.
-                    </div>
+                    <p className="text-xs text-green-700 text-center font-medium">
+                      ✓ Post is live. Taking you to the posts list…
+                    </p>
                   )}
-                  {!isAlreadyPublished && !canPublish && (
-                    <div className="absolute bottom-full mb-2 left-0 right-0 bg-slate-800 text-white text-xs rounded-lg px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none text-center leading-relaxed">
-                      Score ≥ 75 and validation date required to publish.
-                    </div>
+                  {!isAlreadyPublished && canPublish && (
+                    <p className="text-xs text-slate-400 text-center">
+                      Score ≥ 75 · Ready to publish
+                    </p>
                   )}
                 </div>
               )}
