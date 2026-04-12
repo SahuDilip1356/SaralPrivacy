@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import {
   CheckCircle, AlertCircle, Plus, Trash2, Save, Send, Globe,
-  ShieldCheck, ImagePlus, RefreshCw, AlertTriangle, XCircle,
+  ShieldCheck, ImagePlus, RefreshCw, AlertTriangle, XCircle, Wand2,
 } from "lucide-react";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -153,7 +153,15 @@ const defaultData: BlogPostData = {
 
 // ── Feedback badge ────────────────────────────────────────────────────────────
 
-function FeedbackBadge({ fb }: { fb: SectionFeedback }) {
+function FeedbackBadge({
+  fb,
+  onFix,
+  revising,
+}: {
+  fb:        SectionFeedback;
+  onFix?:    () => void;
+  revising?: boolean;
+}) {
   if (fb.status === "verified") {
     return (
       <div className="flex items-start gap-1.5 mt-1.5 px-3 py-1.5 bg-green-50 border border-green-200 rounded-lg text-xs text-green-800">
@@ -162,18 +170,43 @@ function FeedbackBadge({ fb }: { fb: SectionFeedback }) {
       </div>
     );
   }
-  if (fb.status === "warning") {
-    return (
-      <div className="flex items-start gap-1.5 mt-1.5 px-3 py-1.5 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-800">
-        <AlertTriangle size={12} className="mt-0.5 shrink-0" />
-        <span>{fb.note}</span>
-      </div>
-    );
-  }
+
+  const isWarning = fb.status === "warning";
+  const colours   = isWarning
+    ? { wrap: "bg-amber-50 border-amber-200", text: "text-amber-800", icon: "text-amber-500", btn: "bg-amber-100 hover:bg-amber-200 text-amber-800 border-amber-300" }
+    : { wrap: "bg-red-50 border-red-200",     text: "text-red-800",   icon: "text-red-500",   btn: "bg-red-100 hover:bg-red-200 text-red-800 border-red-300"         };
+
   return (
-    <div className="flex items-start gap-1.5 mt-1.5 px-3 py-1.5 bg-red-50 border border-red-200 rounded-lg text-xs text-red-800">
-      <XCircle size={12} className="mt-0.5 shrink-0" />
-      <span>{fb.note}</span>
+    <div className={`mt-1.5 px-3 py-2.5 border rounded-lg ${colours.wrap}`}>
+      <div className="flex items-start gap-1.5">
+        {isWarning
+          ? <AlertTriangle size={12} className={`mt-0.5 shrink-0 ${colours.icon}`} />
+          : <XCircle      size={12} className={`mt-0.5 shrink-0 ${colours.icon}`} />
+        }
+        <span className={`text-xs leading-relaxed ${colours.text}`}>{fb.note}</span>
+      </div>
+
+      {onFix && (
+        <div className="mt-2 flex justify-end">
+          <button
+            onClick={onFix}
+            disabled={revising}
+            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold border transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${colours.btn}`}
+          >
+            {revising ? (
+              <>
+                <RefreshCw size={11} className="animate-spin" />
+                Fixing…
+              </>
+            ) : (
+              <>
+                <Wand2 size={11} />
+                ✦ Fix This Section
+              </>
+            )}
+          </button>
+        </div>
+      )}
     </div>
   );
 }
@@ -200,6 +233,10 @@ export default function BlogEditor({ initialData, docId, role = "admin", initial
   const [generating, setGenerating]       = useState(false);
   const [infraError, setInfraError]       = useState("");
   const [infraUrl, setInfraUrl]           = useState(initialData?.infographic_url ?? "");
+
+  // Section revise state — tracks which sectionKey is currently being AI-fixed
+  const [revisingSection, setRevisingSection] = useState<string | null>(null);
+  const [reviseToast, setReviseToast]         = useState("");
 
   const totalScore =
     data.score_legal_accuracy + data.score_primary_source +
@@ -293,6 +330,50 @@ export default function BlogEditor({ initialData, docId, role = "admin", initial
       setValidateError(err instanceof Error ? err.message : "Validation error");
     } finally {
       setValidating(false);
+    }
+  }
+
+  // Revise a flagged section using AI based on validation feedback
+  async function handleRevise(sectionKey: string, feedbackNote: string) {
+    const currentContent = data[sectionKey as keyof BlogPostData] as string;
+    if (!currentContent || !feedbackNote) return;
+
+    setRevisingSection(sectionKey);
+    setReviseToast("");
+
+    try {
+      const res = await fetch("/api/blog/revise", {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sectionKey,
+          currentContent,
+          feedbackNote,
+          title: data.title,
+        }),
+      });
+
+      const result = await res.json();
+      if (!res.ok) throw new Error(result.error || "Revision failed");
+
+      // Auto-fill the corrected content into the section textarea
+      setData((prev) => ({ ...prev, [sectionKey]: result.revisedContent }));
+
+      // Clear the stale feedback for this section — user must re-validate
+      setSectionFeedback((prev) =>
+        prev.filter((f) => {
+          const sec = SECTIONS.find((s) => s.key === sectionKey);
+          return f.section !== sec?.fbKey;
+        })
+      );
+
+      setReviseToast(`${SECTIONS.find((s) => s.key === sectionKey)?.heading} revised — re-validate to update your score.`);
+      setTimeout(() => setReviseToast(""), 6000);
+    } catch (err) {
+      setReviseToast(err instanceof Error ? err.message : "Revision failed. Please try again.");
+      setTimeout(() => setReviseToast(""), 6000);
+    } finally {
+      setRevisingSection(null);
     }
   }
 
@@ -540,7 +621,17 @@ export default function BlogEditor({ initialData, docId, role = "admin", initial
                   placeholder={`Write the "${section.heading}" content here…`}
                   className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:border-brand-400 transition-colors resize-y min-h-[200px] leading-relaxed"
                 />
-                {fb && <FeedbackBadge fb={fb} />}
+                {fb && (
+                  <FeedbackBadge
+                    fb={fb}
+                    onFix={
+                      fb.status !== "verified"
+                        ? () => handleRevise(section.key, fb.note)
+                        : undefined
+                    }
+                    revising={revisingSection === section.key}
+                  />
+                )}
               </div>
             );
           })}
@@ -567,6 +658,14 @@ export default function BlogEditor({ initialData, docId, role = "admin", initial
             {validateError && (
               <div className="flex items-center gap-2 px-3 py-2 bg-red-50 border border-red-200 rounded-lg text-xs text-red-700">
                 <AlertCircle size={12} /> {validateError}
+              </div>
+            )}
+
+            {/* Revise toast — shown after a section fix completes */}
+            {reviseToast && (
+              <div className="flex items-start gap-2 px-3 py-2 bg-brand-50 border border-brand-200 rounded-lg text-xs text-brand-800 mt-2">
+                <Wand2 size={12} className="mt-0.5 shrink-0 text-brand-600" />
+                {reviseToast}
               </div>
             )}
 
