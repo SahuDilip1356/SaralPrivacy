@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import { CheckCircle, BookOpen } from "lucide-react";
 import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 import { BriefingSubscribeCard } from "@/components/briefings/BriefingSubscribeCard";
@@ -103,12 +102,14 @@ function PostCard({ post }: { post: BlogPost }) {
       {/* Thumbnail — infographic if available, brand gradient fallback */}
       <div className="relative w-full aspect-[16/9] overflow-hidden">
         {post.infographic_url ? (
-          <Image
+          // Plain <img> — Appwrite CDN already serves optimised images;
+          // avoids next/image domain-whitelist requirement for external URLs
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
             src={post.infographic_url}
             alt={`${post.title} — DPDPA infographic`}
-            fill
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            loading="lazy"
           />
         ) : (
           <div className={`w-full h-full bg-gradient-to-br ${gradient} flex flex-col items-center justify-center p-6 text-center`}>

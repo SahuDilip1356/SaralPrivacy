@@ -1,6 +1,20 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "sgp.cloud.appwrite.io",
+        pathname: "/v1/storage/**",
+      },
+      {
+        protocol: "https",
+        hostname: "*.appwrite.io",
+        pathname: "/v1/storage/**",
+      },
+    ],
+  },
   async redirects() {
     return [
       { source: '/subscribe', destination: '/#newsletter', permanent: false },
