@@ -21,6 +21,20 @@ const config: Config = {
     extend: {
       colors: {
         // Trust Navy — primary brand field; hero backgrounds; headings; badge core
+        // `brand` is an alias for `navy` — used in BlogEditor and admin components
+        brand: {
+          50:  "#E8ECF2",
+          100: "#C5CDD9",
+          200: "#9FADBF",
+          300: "#7A8DA6",
+          400: "#566D8C",
+          500: "#354F72",
+          600: "#1E3355",
+          700: "#121A2E",
+          800: "#0D1322",
+          900: "#080D17",
+          950: "#04060C",
+        },
         navy: {
           50:  "#E8ECF2",
           100: "#C5CDD9",
