@@ -11,7 +11,9 @@ async function fetchBloggers() {
       Query.orderDesc("$createdAt"),
       Query.limit(100),
     ]);
-    return result.documents;
+    // Spread to plain objects — Appwrite Models.Document are class instances
+    // which Next.js App Router cannot serialize across the Server→Client boundary
+    return result.documents.map(doc => ({ ...doc }));
   } catch {
     return [];
   }
