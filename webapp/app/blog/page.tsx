@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BookOpen } from "lucide-react";
+import { BookOpen, CheckCircle } from "lucide-react";
 import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 import { BriefingSubscribeCard } from "@/components/briefings/BriefingSubscribeCard";
 

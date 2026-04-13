@@ -2,310 +2,426 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { CheckCircle, ArrowRight, ArrowLeft, Shield, ChevronDown, X } from "lucide-react";
+import { ArrowRight, ArrowLeft, CheckCircle, AlertTriangle, Shield, SkipForward, ChevronRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { trackEvent } from "@/lib/analytics";
+import {
+  QUESTIONS,
+  VERDICT_BANDS,
+  calculateFullResult,
+  getResourceCTA,
+  getBlockerCTA,
+  type DPDPAAnswers,
+  type DPDPAScoreResult,
+} from "@/lib/data/dpdpa-assessment";
 
-// ── Types ─────────────────────────────────────────────────────────────────────
+// ── Sidebar Sections ──────────────────────────────────────────────────────────
 
-interface Answers {
-  role?: string;
-  employee_size?: string;
-  sector?: string;
-  operating_footprint?: string;
-  state_ut?: string;
-  city?: string;
-  digital_personal_data?: string;
-  data_types?: string[];
-  data_storage?: string[];
-  controls_in_place?: string[];
-  readiness_self_view?: string;
-  biggest_blocker?: string;
-  most_helpful_resource?: string;
-  want_detailed_report?: string;
-  name?: string;
-  business_name?: string;
-  work_email?: string;
-  mobile_number?: string;
-  contact_preference?: string;
-  consent_followup?: boolean;
-}
-
-interface ScoreResult {
-  score: number;
-  band: string;
-  summary: string;
-  recommendations: string[];
-  riskFlags: string[];
-}
-
-// ── Scoring engine — /10 scale ────────────────────────────────────────────────
-
-const SCORE_BANDS = [
-  { min: 0,  max: 2,  label: "Just Starting",     summary: "You handle people's information but have almost no protections in place. The good news: a few focused steps this week will move you forward fast." },
-  { min: 3,  max: 4,  label: "Exposed but Aware",  summary: "You are aware of DPDPA but the basics are still missing. A few quick actions will significantly reduce your risk exposure." },
-  { min: 5,  max: 6,  label: "Building Controls",  summary: "You have solid foundations. Now focus on consistency — make sure all teams follow the same rules and your vendor contracts are covered." },
-  { min: 7,  max: 8,  label: "Moving Well",        summary: "You are well ahead of most Indian SMEs. The next level is documentation, staff training, and annual compliance reviews." },
-  { min: 9,  max: 10, label: "DPDPA Ready",        summary: "Excellent — you have a mature privacy programme in place. Keep it current as the DPDPA Rules are notified and regulations evolve." },
+const SIDEBAR_SECTIONS = [
+  { label: "Your business",      steps: [1] },
+  { label: "Data inventory",     steps: [2, 3] },
+  { label: "How access works",   steps: [4, 5] },
+  { label: "Consent and rights", steps: [6] },
+  { label: "Ownership",          steps: [7] },
+  { label: "Report",             steps: [8, 9] },
 ];
 
-const RECOMMENDATIONS: Record<string, string[]> = {
-  "Just Starting":     ["Add a privacy notice to your website and all data-collection forms.", "Put a consent checkbox wherever you collect customer or employee details.", "Pick one person in your team to own privacy — even part-time."],
-  "Exposed but Aware": ["Write down every type of personal data you collect and where it is stored.", "Check which vendors and third-party tools have access to your data.", "Set a simple rule for how long you keep records — then actually delete old ones."],
-  "Building Controls": ["Audit all vendor contracts and add a data-processing clause to each.", "Create a simple breach-response plan — who to call, what to do in 72 hours.", "Run a 30-minute team awareness session so everyone follows the same rules."],
-  "Moving Well":       ["Formalise your data mapping into a written record (Data Inventory).", "Review how you handle high-risk data like Aadhaar, health records, or children's data.", "Schedule a quarterly privacy check — 30 minutes to review what has changed."],
-  "DPDPA Ready":       ["Monitor DPDPA Rules notifications from MeitY — rules are still being finalised.", "Consider a third-party privacy audit to validate your controls independently.", "Document your compliance posture so it is audit-ready at any time."],
-};
+function SidebarNav({ step, result }: { step: number; result: DPDPAScoreResult | null }) {
+  return (
+    <aside className="hidden lg:flex w-56 bg-navy-950 shrink-0 flex-col sticky top-[96px] h-[calc(100vh-96px)] overflow-y-auto">
+      <div className="px-4 py-5 border-b border-navy-800">
+        <div className="text-xs font-bold text-green-400 uppercase tracking-widest mb-1">Compliance Engine</div>
+        <div className="text-slate-400 text-xs">PRIVACY MADE PRACTICAL FOR INDIA</div>
+      </div>
 
-const HIGH_RISK_DATA   = ["Financial / KYC documents", "CCTV / Biometric data", "Health-related data", "Children's data"];
-const INFORMAL_STORAGE = ["WhatsApp / Email", "Excel / Google Sheets"];
+      <nav className="flex-1 px-3 py-4 space-y-0.5">
+        {SIDEBAR_SECTIONS.map((sec) => {
+          const isActive = sec.steps.includes(step);
+          const isComplete = sec.steps.every(s => s < step);
+          return (
+            <div
+              key={sec.label}
+              className={cn(
+                "flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm transition-colors",
+                isActive ? "bg-navy-800 text-white border-l-2 border-green-400" :
+                isComplete ? "text-green-400" : "text-slate-500"
+              )}
+            >
+              {isComplete ? (
+                <CheckCircle size={14} className="text-green-400 shrink-0" />
+              ) : (
+                <div className={cn("w-3.5 h-3.5 rounded-full border shrink-0",
+                  isActive ? "border-green-400 bg-green-400" : "border-slate-600"
+                )} />
+              )}
+              <span className="text-xs font-medium">{sec.label}</span>
+            </div>
+          );
+        })}
+      </nav>
 
-// 10 controls — each worth 1 point, max score = 10
-const CONTROL_POINTS: Record<string, number> = {
-  "Privacy notice on website or forms":          1,
-  "Consent checkbox or consent capture":          1,
-  "Access controls / role-based access":          1,
-  "Data retention / deletion practice":           1,
-  "Vendor / processor clauses in contracts":      1,
-  "Incident / breach response process":           1,
-  "One person owns privacy / compliance":         1,
-  "Employee awareness / data handling training":  1,
-  "Data mapping — record of what you collect":    1,
-  "Written internal data protection policy":      1,
-};
+      {result && (
+        <div className="mx-3 mb-3 bg-green-500/10 border border-green-500/30 rounded-xl p-3">
+          <div className="text-xs font-bold text-green-400 mb-1">READINESS STATUS</div>
+          <div className="text-2xl font-bold text-white">{result.finalScore}<span className="text-slate-400 text-sm">/100</span></div>
+          <div className="text-xs text-slate-400 mt-0.5">{result.verdictBand}</div>
+        </div>
+      )}
 
-function calculateScore(answers: Answers): ScoreResult {
-  const controls = answers.controls_in_place || [];
-  let score = controls.reduce((sum, c) => sum + (CONTROL_POINTS[c] || 0), 0);
-  score = Math.min(score, 10);
-
-  const band = SCORE_BANDS.find(b => score >= b.min && score <= b.max) || SCORE_BANDS[0];
-  const riskFlags: string[] = [];
-  (answers.data_types  || []).forEach(dt => { if (HIGH_RISK_DATA.includes(dt))   riskFlags.push(dt); });
-  (answers.data_storage|| []).forEach(ds => { if (INFORMAL_STORAGE.includes(ds)) riskFlags.push(ds); });
-
-  return { score, band: band.label, summary: band.summary, recommendations: RECOMMENDATIONS[band.label] || [], riskFlags };
+      <div className="px-5 py-4 border-t border-navy-800 space-y-2">
+        <Link href="/" className="text-xs text-slate-500 hover:text-white block transition-colors">← View Site</Link>
+        <a href="mailto:support@saralprivacy.com" className="text-xs text-slate-500 hover:text-white block transition-colors">Site support</a>
+      </div>
+    </aside>
+  );
 }
 
-// ── State / Options ───────────────────────────────────────────────────────────
+// ── Progress Breadcrumb ───────────────────────────────────────────────────────
 
-const STATES = ["Andhra Pradesh","Arunachal Pradesh","Assam","Bihar","Chhattisgarh","Goa","Gujarat","Haryana","Himachal Pradesh","Jharkhand","Karnataka","Kerala","Madhya Pradesh","Maharashtra","Manipur","Meghalaya","Mizoram","Nagaland","Odisha","Punjab","Rajasthan","Sikkim","Tamil Nadu","Telangana","Tripura","Uttar Pradesh","Uttarakhand","West Bengal","Andaman and Nicobar Islands","Chandigarh","Dadra and Nagar Haveli and Daman and Diu","Delhi","Jammu and Kashmir","Ladakh","Lakshadweep","Puducherry"];
-
-// ── Reusable Components ───────────────────────────────────────────────────────
-
-function DropdownSelect({
-  options,
-  value,
-  onChange,
-  placeholder,
-}: {
-  options: string[];
-  value?: string;
-  onChange: (v: string) => void;
-  placeholder: string;
-}) {
+function ProgressBar({ step, total }: { step: number; total: number }) {
+  const pct = Math.round((step / total) * 100);
+  const labels = ["Q1", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7", "Q8", "Q9", "Q10"];
   return (
-    <div className="relative">
-      <select
-        value={value || ""}
-        onChange={e => onChange(e.target.value)}
-        className={`w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-green-400 bg-white appearance-none pr-10 ${
-          value ? "text-slate-900" : "text-slate-400"
-        }`}
-      >
-        <option value="" disabled>{placeholder}</option>
-        {options.map(opt => (
-          <option key={opt} value={opt}>{opt}</option>
-        ))}
-      </select>
-      <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+    <div className="mb-6">
+      <div className="flex items-center justify-between text-xs text-slate-400 mb-2">
+        <span className="font-mono">
+          START:{" "}
+          {labels.map((l, i) => (
+            <span key={l} className={cn("mr-1", i < step - 1 ? "text-green-500 font-bold" : i === step - 1 ? "text-white font-bold" : "")}>
+              {l}
+            </span>
+          ))}
+        </span>
+        <span className="text-green-400 font-semibold">{pct}% complete</span>
+      </div>
+      <div className="h-1 bg-navy-800 rounded-full overflow-hidden">
+        <div className="h-full bg-green-400 rounded-full transition-all duration-500" style={{ width: `${pct}%` }} />
+      </div>
     </div>
   );
 }
 
-function SegmentedControl({
-  options,
-  value,
-  onChange,
-}: {
-  options: string[];
-  value?: string;
-  onChange: (v: string) => void;
-}) {
+// ── Speedometer SVG ───────────────────────────────────────────────────────────
+
+function SpeedometerGauge({ score, color }: { score: number; color: string }) {
+  const [animated, setAnimated] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setAnimated(true), 100);
+    return () => clearTimeout(t);
+  }, []);
+
+  // Arc path helper: draws an arc segment on a half-circle of radius 80
+  const cx = 100, cy = 100, r = 80;
+  function arcPath(startDeg: number, endDeg: number): string {
+    const toRad = (d: number) => ((d - 90) * Math.PI) / 180;
+    const x1 = cx + r * Math.cos(toRad(startDeg - 90));
+    const y1 = cy + r * Math.sin(toRad(startDeg - 90));
+    const x2 = cx + r * Math.cos(toRad(endDeg - 90));
+    const y2 = cy + r * Math.sin(toRad(endDeg - 90));
+    const large = endDeg - startDeg > 180 ? 1 : 0;
+    return `M ${x1} ${y1} A ${r} ${r} 0 ${large} 1 ${x2} ${y2}`;
+  }
+
+  const bands = [
+    { from: 0,   to: 24,  color: "#EF4444" },
+    { from: 25,  to: 44,  color: "#F97316" },
+    { from: 45,  to: 64,  color: "#EAB308" },
+    { from: 65,  to: 79,  color: "#86EFAC" },
+    { from: 80,  to: 100, color: "#22C55E" },
+  ];
+
+  // Needle rotation: -90° = score 0 (left), +90° = score 100 (right)
+  const needleRot = animated ? (score / 100) * 180 - 90 : -90;
+
   return (
-    <div className="flex flex-wrap gap-2">
-      {options.map(opt => (
-        <button
-          key={opt}
-          type="button"
-          onClick={() => onChange(opt)}
-          className={`border rounded-lg px-3 py-2 text-sm font-medium transition-all ${
-            value === opt
-              ? "bg-green-500 text-white border-green-500"
-              : "bg-white text-slate-600 border-slate-200 hover:border-green-300"
-          }`}
+    <div className="flex flex-col items-center">
+      <svg viewBox="0 0 200 110" className="w-56 h-auto" aria-label={`Readiness score: ${score} out of 100`}>
+        {/* Band arcs */}
+        {bands.map((b) => {
+          const startDeg = (b.from / 100) * 180;
+          const endDeg   = (b.to   / 100) * 180;
+          return (
+            <path
+              key={b.color}
+              d={arcPath(startDeg, endDeg)}
+              fill="none"
+              stroke={b.color}
+              strokeWidth="14"
+              strokeLinecap="butt"
+              opacity="0.9"
+            />
+          );
+        })}
+
+        {/* Track background */}
+        <path d={arcPath(0, 180)} fill="none" stroke="#1e293b" strokeWidth="14" strokeLinecap="butt" style={{ zIndex: -1 }} />
+
+        {/* Needle */}
+        <g
+          transform={`rotate(${needleRot}, ${cx}, ${cy})`}
+          style={{ transformOrigin: `${cx}px ${cy}px`, transition: "transform 1.4s cubic-bezier(0.34, 1.56, 0.64, 1)" }}
         >
-          {opt}
+          <line x1={cx} y1={cy} x2={cx} y2={cy - 72} stroke="white" strokeWidth="2.5" strokeLinecap="round" />
+          <circle cx={cx} cy={cy} r="5" fill="white" />
+        </g>
+
+        {/* Score text */}
+        <text x={cx} y={cy - 8} textAnchor="middle" fill="white" fontSize="28" fontWeight="800" fontFamily="Inter">
+          {score}
+        </text>
+        <text x={cx} y={cy + 8} textAnchor="middle" fill="#94a3b8" fontSize="10" fontFamily="Inter">
+          out of 100
+        </text>
+      </svg>
+    </div>
+  );
+}
+
+// ── Mini Diagnostic Bar ───────────────────────────────────────────────────────
+
+function MiniBar({ label, score }: { label: string; score: number }) {
+  const color = score >= 65 ? "bg-green-400" : score >= 45 ? "bg-amber-400" : "bg-red-400";
+  return (
+    <div>
+      <div className="flex items-center justify-between text-xs mb-1.5">
+        <span className="text-slate-400 font-medium">{label}</span>
+        <span className="text-white font-bold tabular-nums">{score}<span className="text-slate-500">/100</span></span>
+      </div>
+      <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
+        <div className={cn("h-full rounded-full transition-all duration-700", color)} style={{ width: `${score}%` }} />
+      </div>
+    </div>
+  );
+}
+
+// ── Category Bar (report screen) ──────────────────────────────────────────────
+
+function CategoryBar({ label, score }: { label: string; score: number }) {
+  const color = score >= 65 ? "bg-green-400" : score >= 45 ? "bg-amber-400" : "bg-red-400";
+  return (
+    <div>
+      <div className="flex items-center justify-between text-xs mb-1">
+        <span className="text-slate-600 font-medium">{label}</span>
+        <span className="text-slate-800 font-bold tabular-nums">{score}/100</span>
+      </div>
+      <div className="h-1.5 bg-slate-200 rounded-full overflow-hidden">
+        <div className={cn("h-full rounded-full transition-all duration-700", color)} style={{ width: `${score}%` }} />
+      </div>
+    </div>
+  );
+}
+
+// ── Single Select (button cards with radio dot) ───────────────────────────────
+
+function QuestionSingle({
+  options, selected, onChange,
+}: {
+  options: { id: string; text: string; badge?: string; badgeColor?: string }[];
+  selected: string | undefined;
+  onChange: (id: string) => void;
+}) {
+  const badgeClass = (c?: string) =>
+    c === "red" ? "bg-red-100 text-red-700" :
+    c === "amber" ? "bg-amber-100 text-amber-700" :
+    c === "green" ? "bg-green-100 text-green-700" : "bg-slate-100 text-slate-600";
+
+  return (
+    <div className="space-y-2.5">
+      {options.map((opt) => (
+        <button
+          key={opt.id}
+          type="button"
+          onClick={() => onChange(opt.id)}
+          className={cn(
+            "w-full text-left flex items-center justify-between px-4 py-3.5 rounded-xl border-2 transition-all text-sm font-medium",
+            selected === opt.id
+              ? "border-green-500 bg-green-500/10 text-white"
+              : "border-slate-700 text-slate-300 hover:border-slate-500 hover:bg-slate-800/50"
+          )}
+        >
+          <div className="flex items-center gap-3">
+            <div className={cn(
+              "w-4 h-4 rounded-full border-2 shrink-0 flex items-center justify-center transition-all",
+              selected === opt.id ? "border-green-400 bg-green-400" : "border-slate-600"
+            )}>
+              {selected === opt.id && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+            </div>
+            <span>{opt.text}</span>
+          </div>
+          {opt.badge && (
+            <span className={cn("text-xs font-semibold px-2 py-0.5 rounded-full ml-2 shrink-0", badgeClass(opt.badgeColor))}>
+              {opt.badge}
+            </span>
+          )}
         </button>
       ))}
     </div>
   );
 }
 
-function MultiSelectChips({
-  options,
-  values = [],
-  onChange,
-  placeholder,
-  mutuallyExclusive = [],
+// ── Multi-Select: Toggle Pill Grid ────────────────────────────────────────────
+
+function QuestionMultiPills({
+  options, selected, onChange, mutuallyExclusive = [],
 }: {
-  options: string[];
-  values?: string[];
-  onChange: (v: string[]) => void;
-  placeholder: string;
+  options: { id: string; text: string; badge?: string; badgeColor?: string }[];
+  selected: string[];
+  onChange: (ids: string[]) => void;
   mutuallyExclusive?: string[];
 }) {
-  const [open, setOpen] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const badgeClass = (c?: string) =>
+    c === "red" ? "bg-red-100 text-red-700" :
+    c === "amber" ? "bg-amber-100 text-amber-700" :
+    c === "green" ? "bg-green-100 text-green-700" : "bg-slate-100 text-slate-600";
 
-  useEffect(() => {
-    function handleMousedown(e: MouseEvent) {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleMousedown);
-    return () => document.removeEventListener("mousedown", handleMousedown);
-  }, []);
-
-  const toggle = (opt: string) => {
-    if (mutuallyExclusive.includes(opt)) {
-      onChange([opt]);
+  const toggle = (id: string) => {
+    if (mutuallyExclusive.includes(id)) {
+      onChange(selected.includes(id) ? [] : [id]);
       return;
     }
-    const filtered = values.filter(v => !mutuallyExclusive.includes(v));
-    if (filtered.includes(opt)) {
-      onChange(filtered.filter(v => v !== opt));
+    const filtered = selected.filter(s => !mutuallyExclusive.includes(s));
+    if (filtered.includes(id)) {
+      onChange(filtered.filter(s => s !== id));
     } else {
-      onChange([...filtered, opt]);
+      onChange([...filtered, id]);
     }
   };
 
-  const remove = (opt: string) => {
-    onChange(values.filter(v => v !== opt));
-  };
-
-  const triggerLabel =
-    values.length === 0
-      ? placeholder
-      : values.length === 1
-      ? values[0]
-      : `${values.length} selected`;
-
   return (
-    <div ref={containerRef} className="relative">
-      <button
-        type="button"
-        onClick={() => setOpen(o => !o)}
-        className={`w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-green-400 bg-white flex items-center justify-between ${
-          values.length > 0 ? "text-slate-900" : "text-slate-400"
-        }`}
-      >
-        <span>{triggerLabel}</span>
-        <ChevronDown size={16} className={`text-slate-400 transition-transform ${open ? "rotate-180" : ""}`} />
-      </button>
-
-      {open && (
-        <div className="absolute z-50 mt-1.5 w-full bg-white border border-slate-200 rounded-xl shadow-lg overflow-hidden">
-          <div className="max-h-56 overflow-y-auto">
-            {options.map(opt => (
-              <label
-                key={opt}
-                className="flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50 cursor-pointer"
-              >
-                <input
-                  type="checkbox"
-                  checked={values.includes(opt)}
-                  onChange={() => toggle(opt)}
-                  className="w-4 h-4 accent-green-500 shrink-0"
-                />
-                <span className="text-sm text-slate-700">{opt}</span>
-              </label>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {values.length > 0 && (
-        <div className="flex flex-wrap gap-1.5 mt-2">
-          {values.map(v => (
-            <span
-              key={v}
-              className="inline-flex items-center gap-1 bg-green-100 text-green-800 rounded-full px-2.5 py-0.5 text-xs"
-            >
-              {v}
-              <button
-                type="button"
-                onClick={() => remove(v)}
-                className="hover:text-green-600 leading-none"
-              >
-                <X size={10} />
-              </button>
-            </span>
-          ))}
-        </div>
-      )}
+    <div className="grid grid-cols-2 gap-2.5">
+      {options.map((opt) => {
+        const isSelected = selected.includes(opt.id);
+        return (
+          <button
+            key={opt.id}
+            type="button"
+            onClick={() => toggle(opt.id)}
+            className={cn(
+              "text-left px-4 py-3 rounded-xl border-2 transition-all text-sm font-medium",
+              isSelected
+                ? "border-green-500 bg-navy-950 text-white"
+                : "border-slate-700 text-slate-300 hover:border-slate-500 hover:bg-slate-800/50"
+            )}
+          >
+            <div className="flex items-start gap-2">
+              <div className={cn(
+                "w-4 h-4 rounded border-2 shrink-0 mt-0.5 flex items-center justify-center transition-all",
+                isSelected ? "border-green-400 bg-green-400" : "border-slate-600"
+              )}>
+                {isSelected && <CheckCircle size={10} className="text-white" />}
+              </div>
+              <div>
+                <div>{opt.text}</div>
+                {opt.badge && (
+                  <span className={cn("text-xs font-semibold px-1.5 py-0.5 rounded mt-1 inline-block", badgeClass(opt.badgeColor))}>
+                    {opt.badge}
+                  </span>
+                )}
+              </div>
+            </div>
+          </button>
+        );
+      })}
     </div>
   );
 }
 
-// ── Milestone Progress Bar ────────────────────────────────────────────────────
+// ── Multi-Select: Grouped Checklist Cards (Q6) ────────────────────────────────
 
-const STEP_MILESTONES = ["Your Business", "Your Data", "Your Readiness", "Get Score"];
+const Q6_GROUPS = [
+  {
+    label: "TRANSPARENCY & CONSENT",
+    ids: ["privacy-notice", "consent-capture"],
+  },
+  {
+    label: "INTERNAL CONTROLS",
+    ids: ["access-controls", "retention"],
+  },
+  {
+    label: "GOVERNANCE & RESPONSE",
+    ids: ["vendor-clauses", "incident-response", "privacy-owner", "data-inventory"],
+  },
+];
 
-function MilestoneBar({ step }: { step: number }) {
-  // step is 1-based (1–4 correspond to milestones 0–3)
-  const currentIndex = step - 1; // 0-based milestone index
+function QuestionMultiCards({
+  options, selected, onChange,
+}: {
+  options: { id: string; text: string }[];
+  selected: string[];
+  onChange: (ids: string[]) => void;
+}) {
+  const optMap = Object.fromEntries(options.map(o => [o.id, o]));
+  const EXCLUSIVE = ["none", "not-sure"];
+
+  const toggle = (id: string) => {
+    if (EXCLUSIVE.includes(id)) {
+      onChange(selected.includes(id) ? [] : [id]);
+      return;
+    }
+    const filtered = selected.filter(s => !EXCLUSIVE.includes(s));
+    if (filtered.includes(id)) {
+      onChange(filtered.filter(s => s !== id));
+    } else {
+      onChange([...filtered, id]);
+    }
+  };
 
   return (
-    <div className="w-full">
-      <div className="flex items-center justify-between mb-3">
-        <span className="text-slate-300 text-xs font-semibold">
-          Step {step} of 4 — {STEP_MILESTONES[currentIndex]}
-        </span>
-      </div>
-      <div className="relative flex items-center justify-between">
-        {/* Connecting line */}
-        <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-0.5 bg-slate-600" />
-        <div
-          className="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 bg-green-400 transition-all duration-500"
-          style={{ width: `${(currentIndex / (STEP_MILESTONES.length - 1)) * 100}%` }}
-        />
+    <div className="space-y-5">
+      {Q6_GROUPS.map((group) => (
+        <div key={group.label}>
+          <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">{group.label}</div>
+          <div className="space-y-2">
+            {group.ids.map((id) => {
+              const opt = optMap[id];
+              if (!opt) return null;
+              const isSelected = selected.includes(id);
+              return (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => toggle(id)}
+                  className={cn(
+                    "w-full text-left flex items-center gap-3 px-4 py-3 rounded-xl border-2 transition-all text-sm",
+                    isSelected
+                      ? "border-green-500 bg-green-500/10 text-white"
+                      : "border-slate-700 text-slate-300 hover:border-slate-500 hover:bg-slate-800/40"
+                  )}
+                >
+                  <div className={cn(
+                    "w-4 h-4 rounded border-2 shrink-0 flex items-center justify-center transition-all",
+                    isSelected ? "border-green-400 bg-green-400" : "border-slate-600"
+                  )}>
+                    {isSelected && <CheckCircle size={10} className="text-white" />}
+                  </div>
+                  {opt.text}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      ))}
 
-        {STEP_MILESTONES.map((label, idx) => {
-          const completed = idx < currentIndex;
-          const current = idx === currentIndex;
+      {/* Mutually exclusive footer */}
+      <div className="grid grid-cols-2 gap-3 pt-2 border-t border-slate-700">
+        {["none", "not-sure"].map((id) => {
+          const opt = optMap[id];
+          if (!opt) return null;
+          const isSelected = selected.includes(id);
           return (
-            <div key={label} className="relative flex flex-col items-center z-10">
-              <div
-                className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${
-                  completed
-                    ? "bg-green-500 border-green-500"
-                    : current
-                    ? "bg-white border-green-400 ring-2 ring-green-400/30"
-                    : "bg-slate-700 border-slate-600"
-                }`}
-              >
-                {completed && <CheckCircle size={10} className="text-white" />}
-                {current && <div className="w-2 h-2 rounded-full bg-green-500" />}
-              </div>
-              <span
-                className={`absolute top-7 text-[10px] font-medium whitespace-nowrap ${
-                  completed || current ? "text-green-300" : "text-slate-500"
-                }`}
-              >
-                {label}
-              </span>
-            </div>
+            <button
+              key={id}
+              type="button"
+              onClick={() => toggle(id)}
+              className={cn(
+                "text-center py-2.5 px-4 rounded-xl border-2 text-xs font-semibold transition-all",
+                isSelected
+                  ? "border-slate-400 bg-slate-600 text-white"
+                  : "border-slate-700 text-slate-500 hover:border-slate-500 hover:text-slate-300"
+              )}
+            >
+              {opt.text.toUpperCase()}
+            </button>
           );
         })}
       </div>
@@ -313,579 +429,1085 @@ function MilestoneBar({ step }: { step: number }) {
   );
 }
 
-// ── Main component ────────────────────────────────────────────────────────────
+// ── Maturity Grid (Q7, Q8) ────────────────────────────────────────────────────
 
-const TOTAL_STEPS = 5; // consent, profile, data, preparedness, value-exchange
+function MaturityGrid({
+  options, selected, onChange,
+}: {
+  options: { id: string; text: string; badge?: string }[];
+  selected: string | undefined;
+  onChange: (id: string) => void;
+}) {
+  return (
+    <div className="grid grid-cols-2 gap-3">
+      {options.map((opt, i) => (
+        <button
+          key={opt.id}
+          type="button"
+          onClick={() => onChange(opt.id)}
+          className={cn(
+            "text-left p-4 rounded-xl border-2 transition-all",
+            selected === opt.id
+              ? "border-green-500 bg-navy-950 text-white"
+              : "border-slate-700 text-slate-300 hover:border-slate-500 hover:bg-slate-800/50"
+          )}
+        >
+          <div className="text-xs font-bold text-slate-500 mb-1">LEVEL {Math.floor(i / 2) + 1}</div>
+          {opt.badge && (
+            <div className="text-xs font-semibold text-slate-400 mb-1">{opt.badge}</div>
+          )}
+          <div className="text-sm font-medium leading-snug">{opt.text}</div>
+          {selected === opt.id && (
+            <div className="mt-2 flex items-center gap-1 text-green-400 text-xs font-semibold">
+              <CheckCircle size={12} /> Selected
+            </div>
+          )}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+// ── Horizontal Readiness Scale (Q10) ─────────────────────────────────────────
+
+function ReadinessScale({
+  options, selected, onChange,
+}: {
+  options: { id: string; text: string }[];
+  selected: string | undefined;
+  onChange: (id: string) => void;
+}) {
+  return (
+    <div className="space-y-2">
+      {options.map((opt, i) => (
+        <button
+          key={opt.id}
+          type="button"
+          onClick={() => onChange(opt.id)}
+          className={cn(
+            "w-full text-left flex items-center gap-4 px-4 py-3 rounded-xl border-2 transition-all",
+            selected === opt.id
+              ? "border-green-500 bg-green-500/10 text-white"
+              : "border-slate-700 text-slate-300 hover:border-slate-500 hover:bg-slate-800/50"
+          )}
+        >
+          <div className={cn(
+            "w-7 h-7 rounded-full border-2 shrink-0 flex items-center justify-center text-xs font-bold transition-all",
+            selected === opt.id ? "border-green-400 bg-green-400 text-white" : "border-slate-600 text-slate-500"
+          )}>
+            {i + 1}
+          </div>
+          <span className="text-sm font-medium">{opt.text}</span>
+        </button>
+      ))}
+    </div>
+  );
+}
+
+// ── Blocker Icon Grid (Q11) ───────────────────────────────────────────────────
+
+const BLOCKER_ICONS: Record<string, string> = {
+  "not-clear": "🔍", "no-time": "⏱", "no-budget": "💰",
+  "no-owner": "👤", "manual-process": "⚙️", "team-awareness": "👥",
+  "vendor-risk": "🔗", "need-help": "🤝",
+};
+
+function BlockerGrid({
+  options, selected, onChange,
+}: {
+  options: { id: string; text: string }[];
+  selected: string | undefined;
+  onChange: (id: string) => void;
+}) {
+  return (
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      {options.map((opt) => (
+        <button
+          key={opt.id}
+          type="button"
+          onClick={() => onChange(opt.id)}
+          className={cn(
+            "flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all text-center",
+            selected === opt.id
+              ? "border-green-500 bg-navy-950 text-white"
+              : "border-slate-700 text-slate-300 hover:border-slate-500 hover:bg-slate-800/50"
+          )}
+        >
+          <span className="text-2xl">{BLOCKER_ICONS[opt.id] ?? "📋"}</span>
+          <span className="text-xs font-medium leading-snug">{opt.text}</span>
+        </button>
+      ))}
+    </div>
+  );
+}
+
+// ── Strategy Card ─────────────────────────────────────────────────────────────
+
+function StrategyCard({
+  priority, finding, why, what,
+}: {
+  priority: "HIGH PRIORITY" | "QUICK WIN" | "FOUNDATIONAL";
+  finding: string;
+  why: string;
+  what: string;
+}) {
+  const badge =
+    priority === "HIGH PRIORITY" ? "bg-red-100 text-red-700 border border-red-200" :
+    priority === "QUICK WIN"      ? "bg-green-100 text-green-700 border border-green-200" :
+    "bg-slate-100 text-slate-600 border border-slate-200";
+
+  return (
+    <div className="bg-white rounded-xl border border-slate-200 p-5">
+      <span className={cn("text-xs font-bold px-2 py-0.5 rounded-full", badge)}>{priority}</span>
+      <h4 className="font-bold text-slate-800 text-sm mt-3 mb-2 leading-snug">{finding}</h4>
+      <div className="text-xs text-slate-500 font-semibold uppercase tracking-wide mb-1">Why it matters</div>
+      <p className="text-slate-600 text-xs leading-relaxed mb-3">{why}</p>
+      <div className="text-xs text-slate-500 font-semibold uppercase tracking-wide mb-1">What to do</div>
+      <p className="text-slate-600 text-xs leading-relaxed">{what}</p>
+    </div>
+  );
+}
+
+// ── Derived Strategy Cards from Result ───────────────────────────────────────
+
+function buildStrategyCards(result: DPDPAScoreResult): Array<{ priority: "HIGH PRIORITY" | "QUICK WIN" | "FOUNDATIONAL"; finding: string; why: string; what: string }> {
+  const cards: Array<{ priority: "HIGH PRIORITY" | "QUICK WIN" | "FOUNDATIONAL"; finding: string; why: string; what: string }> = [];
+
+  if (result.redFlagsTriggered.length > 0) {
+    cards.push({
+      priority: "HIGH PRIORITY",
+      finding: result.redFlagsTriggered[0],
+      why: "Red flag conditions directly increase regulatory exposure and penalty risk under DPDPA.",
+      what: result.immediateActions[0] ?? "Address the flagged condition immediately before other compliance work.",
+    });
+  }
+
+  if (result.immediateActions.length > (result.redFlagsTriggered.length > 0 ? 1 : 0)) {
+    const idx = result.redFlagsTriggered.length > 0 ? 1 : 0;
+    cards.push({
+      priority: "QUICK WIN",
+      finding: "Control gap with fast resolution path",
+      why: "This control gap has a practical fix that can be implemented within a week with low cost.",
+      what: result.immediateActions[idx] ?? "Close the highest-priority control gap first.",
+    });
+  }
+
+  if (result.thirtyDayActions.length > 0) {
+    cards.push({
+      priority: "FOUNDATIONAL",
+      finding: "30-day structural improvement",
+      why: "Building this control now creates a foundation that makes all future compliance work easier.",
+      what: result.thirtyDayActions[0] ?? "Build one foundational control this month.",
+    });
+  }
+
+  return cards.slice(0, 3);
+}
+
+// ── Main Component ────────────────────────────────────────────────────────────
+
+const TOTAL_Q_STEPS = 7; // steps 1–7 cover Q1–Q10 + Q11/Q12
 
 export default function SurveyClient() {
   const [step, setStep] = useState(0);
-  const [consentGiven, setConsentGiven] = useState(false);
+
+  // Consent state
+  const [consentRequired, setConsentRequired] = useState(false);
+  const [consentReport, setConsentReport] = useState(false);
+  const [consentNewsletter, setConsentNewsletter] = useState(false);
+  const [consentFollowup, setConsentFollowup] = useState(false);
   const [privacyExpanded, setPrivacyExpanded] = useState(false);
-  const [answers, setAnswers] = useState<Answers>({});
-  const [result, setResult] = useState<ScoreResult | null>(null);
+
+  // Answers
+  const [answers, setAnswers] = useState<DPDPAAnswers>({});
+
+  // Result
+  const [result, setResult] = useState<DPDPAScoreResult | null>(null);
+
+  // Gate & contact
+  const [branch, setBranch] = useState<"quick" | "full" | null>(null);
+  const [contactName, setContactName] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
+  const [contactBusiness, setContactBusiness] = useState("");
+  const [contactMobile, setContactMobile] = useState("");
+  const [consentDelivery, setConsentDelivery] = useState(false);
+  const [consentNL, setConsentNL] = useState(false);
+  const [consentFU, setConsentFU] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState("");
 
-  const set = (key: keyof Answers, value: unknown) => setAnswers(prev => ({ ...prev, [key]: value }));
+  const setAnswer = <K extends keyof DPDPAAnswers>(key: K, val: DPDPAAnswers[K]) =>
+    setAnswers(prev => ({ ...prev, [key]: val }));
 
-  const canAdvance = (): boolean => {
-    if (step === 0) return consentGiven;
-    if (step === 1) return !!(answers.role && answers.employee_size && answers.sector && answers.operating_footprint && answers.state_ut);
-    if (step === 2) return !!(answers.digital_personal_data);
-    if (step === 3) return !!(answers.controls_in_place?.length && answers.readiness_self_view && answers.biggest_blocker && answers.most_helpful_resource);
-    if (step === 4) return !!(answers.want_detailed_report && answers.name && answers.work_email);
+  // ── Step navigation helpers ─────────────────────────────────────────────
+
+  const canProceed = (): boolean => {
+    if (step === 0) return consentRequired;
+    if (step === 1) return !!(answers.q1_sector && answers.q2_footprint);
+    if (step === 2) return !!(answers.q3_digital_data);
+    if (step === 3) return !!(answers.q4_data_types?.length && answers.q5_storage?.length);
+    if (step === 4) return !!(answers.q6_controls?.length);
+    if (step === 5) return !!(answers.q7_rights && answers.q8_consent);
+    if (step === 6) return !!(answers.q9_ownership && answers.q10_readiness);
+    // step 7 = optional Q11/Q12
     return true;
   };
 
-  const next = () => {
-    if (step === 4) { handleSubmit(); return; }
-    setStep(s => Math.min(s + 1, TOTAL_STEPS));
+  const handleNext = () => {
+    if (step === 2 && answers.q3_digital_data === "no") {
+      // Skip Q4+Q5, jump to Q6 screen
+      setStep(4);
+      return;
+    }
+    if (step === 6) {
+      // Calculate score after Q9+Q10
+      const r = calculateFullResult(answers);
+      setResult(r);
+      trackEvent.surveyComplete({
+        score: r.finalScore,
+        band: r.verdictBand,
+        sector: answers.q1_sector,
+      });
+    }
+    setStep(s => s + 1);
   };
-  const back = () => setStep(s => Math.max(s - 1, 0));
+
+  const handleBack = () => {
+    if (step === 4 && answers.q3_digital_data === "no") {
+      setStep(2);
+      return;
+    }
+    setStep(s => Math.max(0, s - 1));
+  };
+
+  // ── Submit handler ──────────────────────────────────────────────────────
 
   const handleSubmit = async () => {
-    const scoreResult = calculateScore(answers);
-    setResult(scoreResult);
-
-    // Always save to Appwrite regardless of whether user wants a report
+    if (!contactEmail) { setStep(10); return; }
     setSubmitting(true);
     try {
-      await fetch("/api/survey/submit", {
+      await fetch("/api/assessment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ answers, score: scoreResult }),
+        body: JSON.stringify({
+          email: contactEmail,
+          name: contactName,
+          business: contactBusiness,
+          mobile: contactMobile,
+          report_type: branch,
+          answers,
+          result,
+          consentReport: consentDelivery,
+          consentNewsletter: consentNL,
+          consentFollowup: consentFU,
+        }),
       });
     } catch { /* non-blocking */ }
     setSubmitting(false);
-
-    // Track survey completion in GA4
-    trackEvent.surveyComplete({
-      score:        scoreResult.score,
-      band:         scoreResult.band,
-      role:         answers.role,
-      sector:       answers.sector,
-      wants_report: answers.want_detailed_report === "full_report",
-    });
-
     setSubmitted(true);
-    setStep(TOTAL_STEPS);
+    setStep(10);
   };
 
-  // ── Step 0: Landing Page ──────────────────────────────────────────────────
+  // ── Layout wrapper ──────────────────────────────────────────────────────
+
+  const isLanding = step === 0;
+  const isResults = step >= 8;
+
+  // ── Step 0: Landing ─────────────────────────────────────────────────────
+
   if (step === 0) return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
-      {/* Compact header */}
-      <div className="bg-navy-700 py-5">
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 text-center">
-          <h1 className="text-2xl font-bold text-white mb-1.5">
-            Is your business ready for DPDPA?
-          </h1>
-          <p className="text-slate-300 text-sm leading-relaxed">
-            No legal jargon. Simple questions for Indian small businesses.{" "}
-            <span className="text-amber-400 font-semibold">Free — takes 3 minutes.</span>
-          </p>
-        </div>
-      </div>
-
-      <div className="max-w-xl mx-auto px-4 sm:px-6 py-6 w-full flex flex-col gap-4">
-        {/* Privacy Notice — collapsed by default */}
-        <div className="bg-blue-50 border border-blue-200 rounded-2xl p-4">
-          <div className="flex items-center gap-2 mb-3">
-            <Shield size={14} className="text-blue-600 shrink-0" />
-            <label className="flex items-center gap-2 cursor-pointer flex-1">
-              <input
-                type="checkbox"
-                checked={consentGiven}
-                onChange={e => setConsentGiven(e.target.checked)}
-                className="w-4 h-4 accent-green-500"
-              />
-              <span className="text-blue-800 text-sm font-medium">
-                I have read and agree to the Privacy Notice
-              </span>
-            </label>
-            <button
-              type="button"
-              onClick={() => setPrivacyExpanded(e => !e)}
-              className="text-blue-600 text-xs font-medium flex items-center gap-0.5 whitespace-nowrap hover:text-blue-800 transition-colors"
-            >
-              View details
-              <ChevronDown
-                size={12}
-                className={`transition-transform ${privacyExpanded ? "rotate-180" : ""}`}
-              />
-            </button>
-          </div>
-
-          {privacyExpanded && (
-            <div className="border-t border-blue-200 pt-3 mt-1">
-              <p className="text-blue-700 text-xs leading-relaxed">
-                SaralPrivacy will use your survey answers to understand DPDPA readiness among Indian MSMEs and to generate useful insights.
-                If you choose to get your detailed score report at the end, we will use only the contact details you give us — only for that purpose.
-                We will never sell your data. You can withdraw your consent at any time.{" "}
-                <Link href="/privacy" className="underline text-blue-600">Read our Privacy Notice</Link>.
-              </p>
-            </div>
-          )}
-        </div>
-
-        {/* CTA */}
-        <button
-          onClick={next}
-          disabled={!consentGiven}
-          className="w-full py-3 bg-green-500 text-white font-bold rounded-xl text-base hover:bg-green-600 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-        >
-          Start Free Readiness Check →
-        </button>
-
-        {/* What you get — 2×2 compact grid */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-4">
-          <p className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-3">What you get — free</p>
-          <div className="grid grid-cols-2 gap-2.5">
-            {[
-              { icon: "🎯", text: "Your Readiness Score (0–10)" },
-              { icon: "📊", text: "Score band + what it means" },
-              { icon: "✅", text: "3 actions you can take this week" },
-              { icon: "📧", text: "Detailed report by email (optional)" },
-            ].map(item => (
-              <div key={item.text} className="flex items-start gap-2 bg-slate-50 rounded-xl p-2.5">
-                <span className="text-base leading-none mt-0.5">{item.icon}</span>
-                <span className="text-xs text-slate-600 leading-snug">{item.text}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
-  // ── Step 5: Results ──────────────────────────────────────────────────────
-  if (step === TOTAL_STEPS && result) return (
     <div className="min-h-screen bg-slate-50">
-      <div className="bg-navy-700 py-12">
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 text-center">
-          <h1 className="text-3xl font-bold text-white mb-2">Your DPDPA Readiness Score</h1>
-          <p className="text-slate-300 text-sm">Based on your answers</p>
-        </div>
-      </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+        <div className="grid lg:grid-cols-2 gap-12 items-start">
 
-      <div className="max-w-xl mx-auto px-4 sm:px-6 py-10 space-y-5">
-        {/* Score card */}
-        <div className="bg-white rounded-2xl border-2 border-green-200 p-8 text-center">
-          <div className="text-6xl font-bold text-green-500 mb-1">{result.score}<span className="text-2xl text-slate-400">/10</span></div>
-          <div className="inline-block bg-green-100 text-green-700 font-bold px-4 py-1.5 rounded-full text-sm mb-4">
-            {result.band}
-          </div>
-          <p className="text-slate-600 text-sm leading-relaxed">{result.summary}</p>
-        </div>
-
-        {/* Risk flags */}
-        {result.riskFlags.length > 0 && (
-          <div className="bg-red-50 border border-red-200 rounded-2xl p-5">
-            <h3 className="font-bold text-red-800 text-sm mb-3">⚠ Higher-risk areas found</h3>
-            <ul className="space-y-1.5">
-              {result.riskFlags.map(f => (
-                <li key={f} className="text-red-700 text-sm flex items-start gap-2">
-                  <span className="mt-1 w-1.5 h-1.5 rounded-full bg-red-400 shrink-0" />{f}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {/* Recommendations */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-6">
-          <h3 className="font-bold text-navy-700 text-base mb-4">3 things to do this week</h3>
-          <div className="space-y-3">
-            {result.recommendations.map((rec, i) => (
-              <div key={i} className="flex items-start gap-3">
-                <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">{i + 1}</span>
-                <p className="text-slate-600 text-sm leading-relaxed">{rec}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Report delivery status */}
-        {answers.work_email && (
-          <div className="bg-green-50 border border-green-200 rounded-2xl p-5 text-center">
-            <CheckCircle size={24} className="text-green-500 mx-auto mb-2" />
-            <p className="text-green-800 font-semibold text-sm">
-              {answers.want_detailed_report === "full_report" ? "Your full compliance report is on its way!" : "Your score summary is on its way!"}
+          {/* Left — Hero */}
+          <div>
+            <div className="inline-block bg-green-100 text-green-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide mb-5">
+              DPDPA READINESS ASSESSMENT
+            </div>
+            <h1 className="text-4xl sm:text-5xl font-bold text-navy-900 leading-tight mb-5">
+              Know your privacy gaps in 3–5 minutes
+            </h1>
+            <p className="text-slate-600 text-lg leading-relaxed mb-8">
+              Built for Indian businesses working with customer, employee, or candidate data.
+              Get a clear readiness score, top risk areas, and practical next steps.
             </p>
-            <p className="text-green-700 text-xs mt-1">We will send it to <strong>{answers.work_email}</strong> shortly.</p>
+            <div className="grid grid-cols-2 gap-3">
+              {[
+                { icon: "✅", text: "Built for Indian businesses" },
+                { icon: "⚡", text: "DPDPA-ready practices" },
+                { icon: "📋", text: "Actionable report" },
+                { icon: "⏱", text: "3–5 min completion" },
+                { icon: "🚫", text: "No legal jargon" },
+                { icon: "🔒", text: "Encrypted session" },
+              ].map(item => (
+                <div key={item.text} className="flex items-center gap-2 text-sm text-slate-700">
+                  <span>{item.icon}</span>
+                  <span>{item.text}</span>
+                </div>
+              ))}
+            </div>
+            <div className="mt-8 text-xs text-slate-400 font-mono">SYSTEM STATUS: V.3.0 ACTIVE</div>
           </div>
-        )}
 
-        {/* CTA */}
-        <div className="bg-navy-700 rounded-2xl p-6 text-center">
-          <p className="text-white font-bold text-base mb-2">Want expert help?</p>
-          <p className="text-slate-300 text-sm mb-4">Talk to our DPDPA specialists. Free 30-minute consultation.</p>
-          <Link
-            href="/contact"
-            className="inline-block py-3 px-6 bg-green-500 text-white font-bold rounded-xl hover:bg-green-600 transition-colors text-sm"
-          >
-            Book Free Consultation →
-          </Link>
-        </div>
+          {/* Right — Authorization card */}
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-lg p-7">
+            <h2 className="text-xl font-bold text-navy-900 mb-1">Begin your expert diagnostic</h2>
+            <div className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-6">STEP 1: AUTHORIZATION & SCOPE</div>
 
-        <div className="text-center">
-          <Link href="/" className="text-sm text-slate-500 hover:text-navy-700 transition-colors">
-            ← Back to SaralPrivacy home
-          </Link>
+            {/* Required consent */}
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+              <label className="flex items-start gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={consentRequired}
+                  onChange={e => setConsentRequired(e.target.checked)}
+                  className="mt-0.5 w-4 h-4 accent-green-500 shrink-0"
+                />
+                <span className="text-sm text-slate-700 leading-snug">
+                  I authorize SaralPrivacy to analyze my responses to generate a confidential DPDPA readiness assessment.{" "}
+                  <span className="text-red-500 font-bold">*</span>
+                </span>
+              </label>
+
+              <button
+                type="button"
+                onClick={() => setPrivacyExpanded(e => !e)}
+                className="mt-2 ml-7 text-xs text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1"
+              >
+                View privacy notice {privacyExpanded ? "▲" : "▼"}
+              </button>
+
+              {privacyExpanded && (
+                <div className="mt-3 ml-7 text-xs text-slate-500 leading-relaxed bg-white rounded-lg p-3 border border-slate-200">
+                  SaralPrivacy will use your responses to assess your business's DPDPA readiness, generate your score, and provide recommended next steps.
+                  If you share contact details, we will use them to send your report and requested resources.
+                  You may withdraw consent at any time by contacting{" "}
+                  <a href="mailto:privacy@saralprivacy.com" className="text-blue-600 underline">privacy@saralprivacy.com</a>.{" "}
+                  <Link href="/privacy" className="text-blue-600 underline">Read our full Privacy Notice</Link>.
+                </div>
+              )}
+            </div>
+
+            {/* CTA */}
+            <button
+              onClick={handleNext}
+              disabled={!consentRequired}
+              className="w-full py-4 bg-navy-900 text-white font-bold rounded-xl text-base hover:bg-navy-800 disabled:opacity-30 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 mb-2"
+            >
+              Take free assessment <ArrowRight size={18} />
+            </button>
+            <div className="text-center text-xs text-slate-400 font-semibold mb-5">PROFESSIONAL GRADE</div>
+
+            {/* Optional consents */}
+            <div className="space-y-2.5 border-t border-slate-100 pt-4">
+              {[
+                { label: "Deliver full technical report to my email", val: consentReport, set: setConsentReport },
+                { label: "Notify of MSME DPDPA enforcement updates", val: consentNewsletter, set: setConsentNewsletter },
+              ].map(({ label, val, set }) => (
+                <label key={label} className="flex items-center gap-2.5 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={val}
+                    onChange={e => set(e.target.checked)}
+                    className="w-4 h-4 accent-green-500"
+                  />
+                  <span className="text-xs text-slate-500">{label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>
   );
 
-  // ── Steps 1–4: Survey questions ──────────────────────────────────────────
-  return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
-      {/* Header with milestone bar */}
-      <div className="bg-navy-700 px-4 sm:px-6 pt-6 pb-10">
-        <div className="max-w-2xl mx-auto">
-          <MilestoneBar step={step} />
-        </div>
-      </div>
+  // ── Question Wizard Layout (steps 1–7) ──────────────────────────────────
 
-      <div className="max-w-xl mx-auto px-4 sm:px-6 py-8 w-full flex-1 pb-24 sm:pb-8">
+  if (step >= 1 && step <= 7) {
+    const qStep = step; // 1=Q1+Q2, 2=Q3, 3=Q4+Q5, 4=Q6, 5=Q7+Q8, 6=Q9+Q10, 7=Q11+Q12
+    const isOptionalStep = step === 7;
 
-        {/* ── Step 1: Business Profile ─────────────────────────────────── */}
-        {step === 1 && (
-          <div className="space-y-5">
-            <h2 className="text-xl font-bold text-navy-700 mb-5">Tell us about your business</h2>
+    return (
+      <div className="min-h-screen bg-navy-950 flex">
+        <SidebarNav step={step} result={result} />
 
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1.5">What is your role?</label>
-              <DropdownSelect
-                options={["Owner / Founder","Director / CXO","Operations / Admin","Finance / Accounts","IT / Security / Digital","HR","Legal / Compliance","Consultant / Advisor","Other"]}
-                value={answers.role}
-                onChange={v => set("role", v)}
-                placeholder="Select your role"
-              />
-            </div>
+        {/* Main */}
+        <div className="flex-1 px-6 sm:px-10 py-8 overflow-y-auto max-w-3xl">
+          <ProgressBar step={qStep} total={TOTAL_Q_STEPS} />
 
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1.5">How many people work in your business?</label>
-              <SegmentedControl
-                options={["1–10","11–50","51–250","251–500","500+"]}
-                value={answers.employee_size}
-                onChange={v => set("employee_size", v)}
-              />
-            </div>
-
-            <div className="border-t border-slate-100 pt-4">
-              <label className="block text-sm font-semibold text-slate-700 mb-1.5">What does your business do?</label>
-              <DropdownSelect
-                options={["Manufacturing","Trading / Distribution","Professional Services","IT / SaaS","E-commerce / D2C","Healthcare","Education","Financial Services","Hospitality / Travel","Real Estate","Other"]}
-                value={answers.sector}
-                onChange={v => set("sector", v)}
-                placeholder="Select your industry"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1.5">Where do you mainly operate?</label>
-              <DropdownSelect
-                options={["One city","One state","Multiple states","Pan-India","India + overseas"]}
-                value={answers.operating_footprint}
-                onChange={v => set("operating_footprint", v)}
-                placeholder="Where do you operate?"
-              />
-            </div>
-
-            <div className="border-t border-slate-100 pt-4">
-              <label className="block text-sm font-semibold text-slate-700 mb-1.5">State / UT</label>
-              <div className="relative">
-                <select
-                  value={answers.state_ut || ""}
-                  onChange={e => set("state_ut", e.target.value)}
-                  className={`w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-green-400 bg-white appearance-none pr-10 ${
-                    answers.state_ut ? "text-slate-900" : "text-slate-400"
-                  }`}
-                >
-                  <option value="">Select your state</option>
-                  {STATES.map(s => <option key={s} value={s}>{s}</option>)}
-                </select>
-                <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+          {/* Step 1: Q1 + Q2 */}
+          {step === 1 && (
+            <div className="space-y-8">
+              <div>
+                <div className="text-xs font-bold text-green-400 uppercase tracking-widest mb-2">BUSINESS CONTEXT</div>
+                <h2 className="text-2xl font-bold text-white mb-1">Where privacy risk starts in your business</h2>
+                <p className="text-slate-400 text-sm">This helps identify where privacy exposure is structurally built into your business model.</p>
               </div>
-            </div>
 
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1.5">
-                City / Town <span className="text-slate-400 font-normal">(optional)</span>
-              </label>
-              <input
-                type="text"
-                value={answers.city || ""}
-                onChange={e => set("city", e.target.value)}
-                placeholder="e.g. Pune, Surat, Coimbatore"
-                className="w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-green-400 bg-white"
-              />
-            </div>
-          </div>
-        )}
-
-        {/* ── Step 2: Data Footprint ────────────────────────────────────── */}
-        {step === 2 && (
-          <div className="space-y-5">
-            <h2 className="text-xl font-bold text-navy-700 mb-5">About your data</h2>
-
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1.5">Does your business collect or store people's information on a computer or phone?</label>
-              <p className="text-xs text-slate-400 mb-2">Like customer phone numbers, employee details, or lead forms</p>
-              <SegmentedControl
-                options={["Yes, regularly","Yes, sometimes","Very little","No","Not sure"]}
-                value={answers.digital_personal_data}
-                onChange={v => set("digital_personal_data", v)}
-              />
-            </div>
-
-            <div
-              className={`space-y-5 transition-all duration-300 ${
-                answers.digital_personal_data && answers.digital_personal_data !== "No"
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 pointer-events-none h-0 overflow-hidden"
-              }`}
-            >
-              <div className="border-t border-slate-100 pt-4">
-                <label className="block text-sm font-semibold text-slate-700 mb-1.5">What kind of information do you handle?</label>
-                <p className="text-xs text-slate-400 mb-2">Select all that apply</p>
-                <MultiSelectChips
-                  options={["Customer data","Employee data","Vendor / Partner data","Leads / Website visitor data","Financial / KYC documents","CCTV / Biometric data","Health-related data","Children's data","Other","Not sure"]}
-                  values={answers.data_types}
-                  onChange={v => set("data_types", v)}
-                  placeholder="Select data types"
-                  mutuallyExclusive={["Not sure"]}
+              <div>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0">1</span>
+                  <span className="text-white font-semibold text-sm">Which sector best describes your business?</span>
+                </div>
+                <QuestionMultiPills
+                  options={QUESTIONS[0].options}
+                  selected={answers.q1_sector ? [answers.q1_sector] : []}
+                  onChange={(ids) => setAnswer("q1_sector", ids[0])}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1.5">Where is this information stored?</label>
-                <p className="text-xs text-slate-400 mb-2">Select all that apply</p>
-                <MultiSelectChips
-                  options={["WhatsApp / Email","Excel / Google Sheets","Shared drives / Cloud storage","Website / App forms","ERP / CRM / HRMS","Payroll / Accounting tools","Third-party SaaS tools","Paper records later digitised","Not sure"]}
-                  values={answers.data_storage}
-                  onChange={v => set("data_storage", v)}
-                  placeholder="Select storage methods"
-                  mutuallyExclusive={["Not sure"]}
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0">2</span>
+                  <span className="text-white font-semibold text-sm">Where do you mainly operate?</span>
+                </div>
+                <QuestionSingle
+                  options={QUESTIONS[1].options}
+                  selected={answers.q2_footprint}
+                  onChange={(id) => setAnswer("q2_footprint", id)}
                 />
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* ── Step 3: Preparedness ─────────────────────────────────────── */}
-        {step === 3 && (
-          <div className="space-y-5">
-            <h2 className="text-xl font-bold text-navy-700 mb-5">What have you already done?</h2>
-
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1.5">Which of these are already in place in your business?</label>
-              <p className="text-xs text-slate-400 mb-2">Select all that apply</p>
-              <MultiSelectChips
-                options={["Privacy notice on website or forms","Consent checkbox or consent capture","Access controls / role-based access","Data retention / deletion practice","Vendor / processor clauses in contracts","Incident / breach response process","One person owns privacy / compliance","Employee awareness / data handling training","Data mapping — record of what you collect","Written internal data protection policy","None of these","Not sure"]}
-                values={answers.controls_in_place}
-                onChange={v => set("controls_in_place", v)}
-                placeholder="Select all that apply"
-                mutuallyExclusive={["None of these", "Not sure"]}
+          {/* Step 2: Q3 */}
+          {step === 2 && (
+            <div className="space-y-6">
+              <div>
+                <div className="text-xs font-bold text-green-400 uppercase tracking-widest mb-2">DATA EXPOSURE PROFILE</div>
+                <h2 className="text-2xl font-bold text-white mb-1">Q3 / 10</h2>
+                <div className="bg-navy-900 rounded-xl p-4 mb-4">
+                  <div className="text-xs font-bold text-amber-400 uppercase tracking-wide mb-1">SYSTEM DIAGNOSTIC</div>
+                  <p className="text-white font-semibold text-sm">Where customer or employee data may be exposed in day-to-day operations</p>
+                  <p className="text-slate-400 text-xs mt-1">This helps estimate whether your privacy exposure is occasional, repeated, or embedded in regular business activity.</p>
+                </div>
+              </div>
+              <QuestionSingle
+                options={QUESTIONS[2].options}
+                selected={answers.q3_digital_data}
+                onChange={(id) => setAnswer("q3_digital_data", id)}
               />
             </div>
+          )}
 
-            <div className="border-t border-slate-100 pt-4">
-              <label className="block text-sm font-semibold text-slate-700 mb-1.5">How ready is your business right now?</label>
-              <DropdownSelect
-                options={["We have not started","We are only becoming aware of it","We have started a few actions","We have some structure in place","We are mostly prepared","We are confident and operational"]}
-                value={answers.readiness_self_view}
-                onChange={v => set("readiness_self_view", v)}
-                placeholder="How prepared are you?"
+          {/* Step 3: Q4 + Q5 */}
+          {step === 3 && (
+            <div className="space-y-8">
+              <div>
+                <div className="text-xs font-bold text-green-400 uppercase tracking-widest mb-2">DATA ECOSYSTEM MAPPING</div>
+                <h2 className="text-2xl font-bold text-white mb-1">Define your compliance footprint by data handling practices.</h2>
+                <div className="text-xs text-slate-500 font-mono">04 / 10</div>
+              </div>
+
+              <div>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0">4</span>
+                  <span className="text-white font-semibold text-sm">What data do you handle? <span className="text-slate-500 text-xs font-normal">Select all that apply</span></span>
+                </div>
+                <QuestionMultiPills
+                  options={QUESTIONS[3].options}
+                  selected={answers.q4_data_types ?? []}
+                  onChange={(ids) => setAnswer("q4_data_types", ids)}
+                  mutuallyExclusive={["not-sure"]}
+                />
+              </div>
+
+              <div>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0">5</span>
+                  <span className="text-white font-semibold text-sm">Where is this data usually stored? <span className="text-slate-500 text-xs font-normal">Select all that apply</span></span>
+                </div>
+                <QuestionMultiPills
+                  options={QUESTIONS[4].options}
+                  selected={answers.q5_storage ?? []}
+                  onChange={(ids) => setAnswer("q5_storage", ids)}
+                  mutuallyExclusive={["not-sure"]}
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Step 4: Q6 */}
+          {step === 4 && (
+            <div className="space-y-6">
+              <div>
+                <div className="text-xs font-bold text-green-400 uppercase tracking-widest mb-2">CONTROL MATURITY ASSESSMENT</div>
+                <h2 className="text-2xl font-bold text-white mb-1">Which privacy basics are already in place?</h2>
+                <div className="text-xs text-slate-500 font-mono mb-2">06 / 10</div>
+                <div className="bg-navy-900 rounded-lg px-4 py-2.5 text-xs text-slate-400">
+                  ℹ This section helps distinguish policy intent from operational controls.
+                </div>
+              </div>
+              <QuestionMultiCards
+                options={QUESTIONS[5].options}
+                selected={answers.q6_controls ?? []}
+                onChange={(ids) => setAnswer("q6_controls", ids)}
               />
             </div>
+          )}
 
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1.5">What is your biggest problem right now?</label>
-              <DropdownSelect
-                options={["Not clear what applies to us","No time","No budget","No internal owner","Too many manual processes","Team awareness is low","Vendor / third-party risk","Need legal or implementation help","Other"]}
-                value={answers.biggest_blocker}
-                onChange={v => set("biggest_blocker", v)}
-                placeholder="What's holding you back?"
-              />
+          {/* Step 5: Q7 + Q8 */}
+          {step === 5 && (
+            <div className="space-y-8">
+              <div>
+                <div className="text-xs font-bold text-green-400 uppercase tracking-widest mb-2">COMPLIANCE MATURITY</div>
+                <h2 className="text-2xl font-bold text-white mb-1">How consent and requests are handled today</h2>
+                <p className="text-slate-400 text-sm">Compliance maturity is 80% complete.</p>
+              </div>
+
+              <div>
+                <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">RIGHTS MANAGEMENT</div>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0">7</span>
+                  <span className="text-white font-semibold text-sm">How well can your business handle requests to access, correct, or delete data?</span>
+                </div>
+                <MaturityGrid
+                  options={QUESTIONS[6].options}
+                  selected={answers.q7_rights}
+                  onChange={(id) => setAnswer("q7_rights", id)}
+                />
+              </div>
+
+              <div>
+                <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">CONSENT PRACTICE</div>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0">8</span>
+                  <span className="text-white font-semibold text-sm">How does your business ask for permission before collecting personal data?</span>
+                </div>
+                <MaturityGrid
+                  options={QUESTIONS[7].options}
+                  selected={answers.q8_consent}
+                  onChange={(id) => setAnswer("q8_consent", id)}
+                />
+              </div>
             </div>
+          )}
 
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1.5">What would help you most right now?</label>
-              <DropdownSelect
-                options={["Simple readiness checklist","Privacy notice template","Consent wording template","Vendor assessment checklist","Employee awareness material","Expert consultation","Nothing for now"]}
-                value={answers.most_helpful_resource}
-                onChange={v => set("most_helpful_resource", v)}
-                placeholder="What would help most?"
-              />
+          {/* Step 6: Q9 + Q10 */}
+          {step === 6 && (
+            <div className="space-y-8">
+              <div>
+                <div className="text-xs font-bold text-green-400 uppercase tracking-widest mb-2">OWNERSHIP & READINESS</div>
+                <h2 className="text-2xl font-bold text-white mb-1">Who owns privacy decisions today</h2>
+                <p className="text-slate-400 text-sm">Final phase of the foundational audit.</p>
+                <div className="text-xs text-slate-500 font-mono mt-1">QUESTION 9–10 OF 10</div>
+              </div>
+
+              <div>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0">9</span>
+                  <span className="text-white font-semibold text-sm">Who is primarily responsible for privacy or data protection in your business today?</span>
+                </div>
+                <QuestionSingle
+                  options={QUESTIONS[8].options}
+                  selected={answers.q9_ownership}
+                  onChange={(id) => setAnswer("q9_ownership", id)}
+                />
+              </div>
+
+              <div>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0">10</span>
+                  <span className="text-white font-semibold text-sm">Which statement best describes your current DPDPA readiness?</span>
+                </div>
+                <ReadinessScale
+                  options={QUESTIONS[9].options}
+                  selected={answers.q10_readiness}
+                  onChange={(id) => setAnswer("q10_readiness", id)}
+                />
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* ── Step 4: Value Exchange — two-tier ────────────────────────── */}
-        {step === 4 && (
-          <div className="space-y-5">
-            <div className="flex items-center gap-2 mb-1">
-              <span className="w-8 h-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center font-bold text-lg">✓</span>
-              <h2 className="text-xl font-bold text-navy-700">Almost done!</h2>
-            </div>
-            <p className="text-sm text-slate-500">Choose what you'd like — both options are free.</p>
+          {/* Step 7: Q11 + Q12 (optional) */}
+          {step === 7 && (
+            <div className="space-y-8">
+              <div>
+                <div className="text-xs font-bold text-green-400 uppercase tracking-widest mb-2">PERSONALISATION</div>
+                <h2 className="text-2xl font-bold text-white mb-1">Help us prioritize the right fixes</h2>
+                <p className="text-slate-400 text-sm">This tailors your report to your operating reality, not generic advice.</p>
+                <div className="mt-2 h-1.5 bg-navy-800 rounded-full overflow-hidden">
+                  <div className="h-full bg-green-400 rounded-full" style={{ width: "95%" }} />
+                </div>
+              </div>
 
-            {/* Tier selection cards */}
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="w-6 h-6 rounded-full bg-slate-600 text-slate-300 text-xs font-bold flex items-center justify-center shrink-0">11</span>
+                  <span className="text-white font-semibold text-sm">What is your biggest blocker right now? <span className="text-slate-500 font-normal text-xs">(Optional)</span></span>
+                </div>
+                <BlockerGrid
+                  options={QUESTIONS[10].options}
+                  selected={answers.q11_blocker}
+                  onChange={(id) => setAnswer("q11_blocker", id)}
+                />
+              </div>
+
+              <div>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="w-6 h-6 rounded-full bg-slate-600 text-slate-300 text-xs font-bold flex items-center justify-center shrink-0">12</span>
+                  <span className="text-white font-semibold text-sm">What would help you most right now? <span className="text-slate-500 font-normal text-xs">(Optional)</span></span>
+                </div>
+                <QuestionSingle
+                  options={QUESTIONS[11].options}
+                  selected={answers.q12_resource}
+                  onChange={(id) => setAnswer("q12_resource", id)}
+                />
+              </div>
+
               <button
                 type="button"
-                onClick={() => set("want_detailed_report", "quick_score")}
-                className={`text-left p-4 rounded-xl border-2 transition-all ${
-                  answers.want_detailed_report === "quick_score"
-                    ? "border-green-500 bg-green-50"
-                    : "border-slate-200 bg-white hover:border-slate-300"
-                }`}
+                onClick={() => { setStep(8); }}
+                className="text-slate-500 hover:text-slate-300 text-sm flex items-center gap-1.5 transition-colors"
               >
-                <div className="text-2xl mb-1.5">📊</div>
-                <div className="text-sm font-bold text-slate-800">Quick Score</div>
-                <div className="text-xs text-slate-500 mt-1 leading-snug">
-                  See your score on screen + get a short summary email
-                </div>
-                <div className="mt-2 text-xs text-green-600 font-medium">Name + email only</div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => set("want_detailed_report", "full_report")}
-                className={`text-left p-4 rounded-xl border-2 transition-all relative ${
-                  answers.want_detailed_report === "full_report"
-                    ? "border-green-500 bg-green-50"
-                    : "border-slate-200 bg-white hover:border-slate-300"
-                }`}
-              >
-                <div className="absolute top-3 right-3">
-                  <span className="bg-green-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">Recommended</span>
-                </div>
-                <div className="text-2xl mb-1.5">📋</div>
-                <div className="text-sm font-bold text-slate-800">Full Compliance Report</div>
-                <div className="text-xs text-slate-500 mt-1 leading-snug">
-                  Score + detailed action plan + sector-specific guidance by email
-                </div>
-                <div className="mt-2 text-xs text-green-600 font-medium">Full contact form</div>
+                <SkipForward size={14} /> Skip these questions for now
               </button>
             </div>
+          )}
 
-            {/* Shared: name + email (always required for both tiers) */}
-            {answers.want_detailed_report && (
-              <div className="space-y-4 border-t border-slate-100 pt-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* Navigation */}
+          <div className="flex items-center justify-between mt-10 pt-6 border-t border-navy-800">
+            <button
+              onClick={handleBack}
+              className="inline-flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium text-slate-400 hover:text-white transition-colors"
+            >
+              <ArrowLeft size={16} /> Back
+            </button>
+
+            <button
+              onClick={handleNext}
+              disabled={!canProceed()}
+              className="inline-flex items-center gap-2 px-7 py-3 bg-green-500 text-white text-sm font-bold rounded-xl hover:bg-green-400 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+            >
+              {step === 6 ? "See my readiness score" : isOptionalStep ? "Next →" : "Next question"}
+              {step !== 6 && <ArrowRight size={16} />}
+            </button>
+          </div>
+        </div>
+
+        {/* Right context panel (shown on some steps) */}
+        {(step === 2 || step === 5 || step === 6) && (
+          <div className="hidden xl:block w-64 bg-navy-900 px-5 py-8 border-l border-navy-800 shrink-0">
+            <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">WHY THIS AFFECTS READINESS</div>
+            <p className="text-slate-300 text-xs leading-relaxed mb-5">
+              {step === 2 && "The DPDPA 2023 applies to any entity that processes digital personal data. Even occasional collection creates obligations under the Act if the data subject is identifiable."}
+              {step === 5 && "The DPDPA 2023 mandates that consent must be freely given, specific, and informed. Non-compliance may lead to significant regulatory scrutiny."}
+              {step === 6 && "Accountability is the core of DPDPA. Without a clear owner, compliance efforts often stall, leaving the organisation exposed to significant regulatory risk."}
+            </p>
+            <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">WHAT STRONG TEAMS USUALLY DO</div>
+            <p className="text-slate-300 text-xs leading-relaxed">
+              {step === 2 && "Strong teams audit data collection points across all channels — not just the main website — and classify each by purpose and frequency."}
+              {step === 5 && "Strong teams maintain timestamped logs of every consent event and automate data rights fulfillment via self-service dashboards."}
+              {step === 6 && "Strong teams assign a named Data Protection Officer or Privacy Lead and link their responsibilities directly to business outcomes."}
+            </p>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // ── Step 8: Full Report Screen ──────────────────────────────────────────
+
+  if (step === 8 && result) {
+    const cats = result.categoryScores;
+    const stratCards = buildStrategyCards(result);
+    const reportId = `SP-${Date.now().toString(36).toUpperCase()}`;
+
+    return (
+      <div className="min-h-screen bg-slate-50">
+        <div className="flex">
+          <SidebarNav step={8} result={result} />
+          <div className="flex-1 px-6 sm:px-10 py-10 max-w-4xl">
+
+            <div className="flex items-start justify-between mb-6">
+              <div>
+                <h1 className="text-3xl font-bold text-navy-900">Your DPDPA readiness report</h1>
+                <div className="flex items-center gap-2 mt-2">
+                  <span className="text-sm font-bold px-3 py-1 rounded-full"
+                    style={{ backgroundColor: result.verdictColor + "20", color: result.verdictColor }}>
+                    ✦ {result.verdictBand}
+                  </span>
+                  <span className="text-xs text-slate-400">This report is designed for Indian businesses working toward DPDPA-ready practices.</span>
+                </div>
+              </div>
+              <div className="text-right text-xs text-slate-400">
+                <div>REPORT REF</div>
+                <div className="font-mono font-bold text-slate-600">{reportId}</div>
+              </div>
+            </div>
+
+            {/* Executive summary + speedometer */}
+            <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-6">
+              <div className="grid sm:grid-cols-2 gap-6 items-center">
+                <div>
+                  <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">EXECUTIVE SUMMARY</div>
+                  <p className="text-slate-700 text-sm leading-relaxed">{result.verdictDescription}</p>
+                </div>
+                <div className="flex flex-col items-center">
+                  <SpeedometerGauge score={result.finalScore} color={result.verdictColor} />
+                  <div className="text-xs text-slate-400 mt-2 text-center">Your readiness score</div>
+                </div>
+              </div>
+            </div>
+
+            {/* 6 score categories */}
+            <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-6">
+              <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">SCORE CATEGORIES</div>
+              <div className="grid sm:grid-cols-2 gap-4">
+                <CategoryBar label="Notice and consent"       score={cats.noticeConsent} />
+                <CategoryBar label="Access and control"       score={cats.accessControl} />
+                <CategoryBar label="Retention and deletion"   score={cats.retentionDeletion} />
+                <CategoryBar label="Ownership and governance" score={cats.ownershipGovernance} />
+                <CategoryBar label="Vendor and partner risk"  score={cats.vendorPartnerRisk} />
+                <CategoryBar label="Incident readiness"       score={cats.incidentReadiness} />
+              </div>
+            </div>
+
+            {/* 3 mini diagnostics */}
+            <div className="bg-navy-900 rounded-2xl p-6 mb-6">
+              <div className="text-xs font-bold text-green-400 uppercase tracking-widest mb-4">DIAGNOSTIC SIGNALS</div>
+              <div className="space-y-4">
+                <MiniBar label="Data Exposure"          score={result.dataExposure} />
+                <MiniBar label="Control Maturity"       score={result.controlMaturity} />
+                <MiniBar label="Operational Readiness"  score={result.operationalReadiness} />
+              </div>
+            </div>
+
+            {/* Red flags */}
+            {result.redFlagsTriggered.length > 0 && (
+              <div className="bg-red-50 border border-red-200 rounded-2xl p-5 mb-6">
+                <div className="flex items-center gap-2 mb-3">
+                  <AlertTriangle size={16} className="text-red-600" />
+                  <span className="font-bold text-red-700 text-sm">{result.redFlagsTriggered.length} red flag{result.redFlagsTriggered.length > 1 ? "s" : ""} detected</span>
+                </div>
+                <ul className="space-y-1.5">
+                  {result.redFlagsTriggered.map(f => (
+                    <li key={f} className="text-red-600 text-sm flex items-start gap-2">
+                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-red-400 shrink-0" />{f}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Strategic recommendations */}
+            <div className="mb-6">
+              <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">STRATEGIC RECOMMENDATIONS</div>
+              <div className="grid sm:grid-cols-3 gap-4">
+                {stratCards.map((card, i) => (
+                  <StrategyCard key={i} {...card} />
+                ))}
+              </div>
+            </div>
+
+            {/* CTA bar */}
+            <div className="bg-navy-900 rounded-2xl p-6 text-center">
+              <h3 className="text-xl font-bold text-white mb-2">Elevate your readiness today.</h3>
+              <p className="text-slate-400 text-sm mb-5">
+                The DPDP Rules require a compliance posture. Our experts help you build the DPDPA-aligned framework and implementation strategy.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <Link href="/contact" className="px-6 py-3 bg-green-500 text-white font-bold rounded-xl text-sm hover:bg-green-400 transition-colors flex items-center justify-center gap-2">
+                  Book expert consultation
+                </Link>
+                <Link href="/resources" className="px-6 py-3 bg-white/10 text-white font-bold rounded-xl text-sm hover:bg-white/20 transition-colors flex items-center justify-center gap-2">
+                  Download readiness checklist
+                </Link>
+              </div>
+            </div>
+
+            {/* Proceed to gate */}
+            <div className="mt-6 text-center">
+              <button
+                onClick={() => setStep(9)}
+                className="inline-flex items-center gap-2 px-6 py-3 bg-navy-700 text-white font-semibold rounded-xl text-sm hover:bg-navy-600 transition-colors"
+              >
+                Get your detailed report by email <ChevronRight size={16} />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Step 9: Gate / Unlock Screen ────────────────────────────────────────
+
+  if (step === 9 && result) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex">
+        <SidebarNav step={9} result={result} />
+        <div className="flex-1 px-4 sm:px-10 py-10">
+          <div className="max-w-5xl mx-auto">
+            <div className="grid lg:grid-cols-2 gap-8 items-start">
+
+              {/* Left — score recap */}
+              <div>
+                <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">READINESS RESULT</div>
+                <div className="flex items-end gap-2 mb-1">
+                  <span className="text-7xl font-bold text-navy-900 leading-none">{result.finalScore}</span>
+                  <span className="text-2xl text-slate-400 mb-2">/100</span>
+                </div>
+                <div className="inline-flex items-center gap-2 bg-amber-100 border border-amber-200 text-amber-800 text-xs font-bold px-3 py-1.5 rounded-lg mb-4">
+                  MATURITY LEVEL: {result.verdictBand.toUpperCase()}
+                </div>
+                <p className="text-slate-600 text-sm leading-relaxed mb-6">{result.verdictDescription}</p>
+
+                <div className="bg-white rounded-2xl border border-slate-200 p-5">
+                  <div className="text-xs font-bold text-slate-500 mb-3">✦ What you&apos;ll get</div>
+                  {[
+                    "Complete score breakdown — detailed assessment across all five DPDPA compliance pillars",
+                    "Top 3 priority actions — prioritized remediation steps to lower your legal risk profile",
+                    "Downloadable checklist — a structured roadmap for implementing end-to-end privacy controls",
+                  ].map(item => (
+                    <div key={item} className="flex items-start gap-2.5 mb-3">
+                      <CheckCircle size={15} className="text-green-500 mt-0.5 shrink-0" />
+                      <span className="text-slate-600 text-sm leading-snug">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right — unlock form */}
+              <div className="bg-white rounded-2xl border border-slate-200 shadow-lg p-7">
+                <h2 className="text-xl font-bold text-navy-900 mb-1">Get your detailed report with top risks, quick wins, and next steps</h2>
+                <div className="flex items-center gap-1.5 text-xs text-green-700 font-semibold mb-5">
+                  <Shield size={12} /> SECURE DELIVERY MODE
+                </div>
+
+                <div className="grid grid-cols-2 gap-3 mb-4">
                   <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">Your name <span className="text-red-400">*</span></label>
-                    <input
-                      type="text"
-                      value={answers.name || ""}
-                      onChange={e => set("name", e.target.value)}
-                      placeholder="e.g. Rajesh Kumar"
-                      className="w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-green-400 bg-white"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">Work email <span className="text-red-400">*</span></label>
+                    <label className="text-xs font-semibold text-slate-500 block mb-1">WORK EMAIL (REQUIRED)</label>
                     <input
                       type="email"
-                      value={answers.work_email || ""}
-                      onChange={e => set("work_email", e.target.value)}
-                      placeholder="you@yourbusiness.com"
-                      className="w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-green-400 bg-white"
+                      value={contactEmail}
+                      onChange={e => setContactEmail(e.target.value)}
+                      placeholder="rahul@company.com"
+                      className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs font-semibold text-slate-500 block mb-1">YOUR NAME (OPTIONAL)</label>
+                    <input
+                      type="text"
+                      value={contactName}
+                      onChange={e => setContactName(e.target.value)}
+                      placeholder="e.g. Rahul Sharma"
+                      className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs font-semibold text-slate-500 block mb-1">BUSINESS NAME (OPTIONAL)</label>
+                    <input
+                      type="text"
+                      value={contactBusiness}
+                      onChange={e => setContactBusiness(e.target.value)}
+                      placeholder="Company India Pvt. Ltd."
+                      className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs font-semibold text-slate-500 block mb-1">MOBILE (OPTIONAL)</label>
+                    <input
+                      type="tel"
+                      value={contactMobile}
+                      onChange={e => setContactMobile(e.target.value)}
+                      placeholder="+91 90000 00000"
+                      className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
                     />
                   </div>
                 </div>
 
-                {/* Full report tier: extra fields */}
-                {answers.want_detailed_report === "full_report" && (
-                  <div className="space-y-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-1.5">Business name</label>
-                        <input
-                          type="text"
-                          value={answers.business_name || ""}
-                          onChange={e => set("business_name", e.target.value)}
-                          placeholder="e.g. Kumar Textiles Pvt Ltd"
-                          className="w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-green-400 bg-white"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-1.5">
-                          Mobile <span className="text-slate-400 font-normal">(optional)</span>
-                        </label>
-                        <input
-                          type="tel"
-                          value={answers.mobile_number || ""}
-                          onChange={e => set("mobile_number", e.target.value)}
-                          placeholder="+91 98765 43210"
-                          className="w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-green-400 bg-white"
-                        />
-                      </div>
-                    </div>
+                <p className="text-xs text-slate-400 mb-4 leading-relaxed">
+                  We only use these details to generate and deliver your secure compliance report. Your data is encrypted and managed according to DPDPA standards.
+                </p>
 
-                    <div>
-                      <label className="block text-sm font-semibold text-slate-700 mb-1.5">How do you prefer to be contacted?</label>
-                      <SegmentedControl
-                        options={["Email", "WhatsApp", "Phone call", "No preference"]}
-                        value={answers.contact_preference}
-                        onChange={v => set("contact_preference", v)}
-                      />
-                    </div>
-                  </div>
-                )}
-
-                {/* DPDPA consent */}
-                <div className="bg-blue-50 border border-blue-200 rounded-xl p-3">
-                  <label className="flex items-start gap-3 cursor-pointer">
+                {/* Consents */}
+                <div className="space-y-2.5 mb-5">
+                  <label className="flex items-start gap-2.5 cursor-pointer bg-green-50 border border-green-200 rounded-lg px-3 py-2.5">
                     <input
                       type="checkbox"
-                      checked={answers.consent_followup || false}
-                      onChange={e => set("consent_followup", e.target.checked)}
-                      className="mt-0.5 w-4 h-4 accent-green-500 shrink-0"
+                      checked={consentDelivery}
+                      onChange={e => setConsentDelivery(e.target.checked)}
+                      className="mt-0.5 w-4 h-4 accent-green-500"
                     />
-                    <span className="text-blue-800 text-xs leading-relaxed">
-                      I consent to SaralPrivacy using my name and email to send me my DPDPA Readiness results and occasional educational updates. No spam — unsubscribe any time.{" "}
-                      <Link href="/privacy" className="underline text-blue-600">Privacy Notice</Link>.
+                    <span className="text-xs text-slate-700 leading-snug">
+                      I consent to SaralPrivacy using my details to deliver my readiness report. <span className="text-red-500">*</span>
                     </span>
                   </label>
+                  <label className="flex items-start gap-2.5 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={consentNL}
+                      onChange={e => setConsentNL(e.target.checked)}
+                      className="mt-0.5 w-4 h-4 accent-green-500"
+                    />
+                    <span className="text-xs text-slate-500 leading-snug">I would like to receive occasional updates regarding Indian privacy laws.</span>
+                  </label>
+                  <label className="flex items-start gap-2.5 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={consentFU}
+                      onChange={e => setConsentFU(e.target.checked)}
+                      className="mt-0.5 w-4 h-4 accent-green-500"
+                    />
+                    <span className="text-xs text-slate-500 leading-snug">I agree to be contacted for a professional consultation for specific DPDPA needs.</span>
+                  </label>
+                </div>
+
+                <button
+                  onClick={handleSubmit}
+                  disabled={!contactEmail || !consentDelivery || submitting}
+                  className="w-full py-3.5 bg-green-500 text-white font-bold rounded-xl text-sm hover:bg-green-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
+                >
+                  {submitting ? "Sending…" : "Unlock detailed report"} {!submitting && <ArrowRight size={16} />}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setStep(10)}
+                  className="w-full text-center text-xs text-slate-400 hover:text-slate-600 mt-3 transition-colors"
+                >
+                  Skip — show basic results
+                </button>
+              </div>
+            </div>
+
+            <div className="mt-8 text-center text-xs text-slate-400 flex items-center justify-center gap-2">
+              <Shield size={12} />
+              Trusted by 200+ Indian enterprises for DPDPA readiness and secure privacy governance.
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Step 10: Final Results ───────────────────────────────────────────────
+
+  if (step === 10 && result) {
+    const resourceCTA = getResourceCTA(answers.q12_resource);
+    const blockerCTA = answers.q11_blocker ? getBlockerCTA(answers.q11_blocker) : null;
+
+    return (
+      <div className="min-h-screen bg-slate-50">
+        <div className="flex">
+          <SidebarNav step={9} result={result} />
+          <div className="flex-1 px-6 sm:px-10 py-10 max-w-3xl">
+
+            {submitted && (
+              <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-6 flex items-center gap-3">
+                <CheckCircle size={18} className="text-green-600 shrink-0" />
+                <div>
+                  <div className="font-semibold text-green-800 text-sm">Report on its way!</div>
+                  <div className="text-green-700 text-xs">We will send your detailed report to <strong>{contactEmail}</strong> shortly.</div>
                 </div>
               </div>
             )}
+
+            {/* Score header */}
+            <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-5 text-center">
+              <SpeedometerGauge score={result.finalScore} color={result.verdictColor} />
+              <div className="mt-3 text-sm font-bold" style={{ color: result.verdictColor }}>{result.verdictBand}</div>
+              <p className="text-slate-600 text-sm mt-2 leading-relaxed max-w-md mx-auto">{result.verdictDescription}</p>
+            </div>
+
+            {/* 3 mini-bars */}
+            <div className="bg-navy-900 rounded-2xl p-6 mb-5">
+              <div className="text-xs font-bold text-green-400 uppercase tracking-widest mb-4">DIAGNOSTIC SIGNALS</div>
+              <div className="space-y-4">
+                <MiniBar label="Data Exposure"          score={result.dataExposure} />
+                <MiniBar label="Control Maturity"       score={result.controlMaturity} />
+                <MiniBar label="Operational Readiness"  score={result.operationalReadiness} />
+              </div>
+            </div>
+
+            {/* Red flags */}
+            {result.redFlagsTriggered.length > 0 && (
+              <div className="bg-red-50 border border-red-200 rounded-2xl p-5 mb-5">
+                <div className="flex items-center gap-2 mb-3">
+                  <AlertTriangle size={16} className="text-red-600" />
+                  <span className="font-bold text-red-700 text-sm">{result.redFlagsTriggered.length} red flag{result.redFlagsTriggered.length > 1 ? "s" : ""} detected</span>
+                </div>
+                <ul className="space-y-1.5">
+                  {result.redFlagsTriggered.map(f => (
+                    <li key={f} className="text-red-600 text-sm flex items-start gap-2">
+                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-red-400 shrink-0" />{f}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Immediate actions */}
+            <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-5">
+              <h3 className="font-bold text-navy-700 text-base mb-4">3 things to do this week</h3>
+              <div className="space-y-3">
+                {result.immediateActions.map((action, i) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">{i + 1}</span>
+                    <p className="text-slate-600 text-sm leading-relaxed">{action}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* 30-day plan */}
+            {result.thirtyDayActions.length > 0 && (
+              <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-5">
+                <h3 className="font-bold text-navy-700 text-base mb-4">Your 30-day action plan</h3>
+                <div className="space-y-3">
+                  {result.thirtyDayActions.map((action, i) => (
+                    <div key={i} className="flex items-start gap-3">
+                      <span className="w-6 h-6 rounded-full bg-slate-200 text-slate-600 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">{i + 1}</span>
+                      <p className="text-slate-600 text-sm leading-relaxed">{action}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* CTAs */}
+            <div className="bg-navy-900 rounded-2xl p-6 mb-5">
+              <h4 className="font-bold text-white text-base mb-1">Recommended next step</h4>
+              <p className="text-slate-400 text-sm mb-4">{result.blockerNote ?? "Start with the highest-priority action above."}</p>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Link
+                  href={resourceCTA.href}
+                  className="flex-1 text-center py-3 px-5 bg-green-500 hover:bg-green-400 text-white font-semibold rounded-xl text-sm transition-colors"
+                >
+                  {resourceCTA.label}
+                </Link>
+                {blockerCTA && (
+                  <Link
+                    href={blockerCTA.href}
+                    className="flex-1 text-center py-3 px-5 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl text-sm border border-white/20 transition-colors"
+                  >
+                    {blockerCTA.label}
+                  </Link>
+                )}
+              </div>
+            </div>
+
+            <button
+              onClick={() => {
+                setAnswers({});
+                setResult(null);
+                setStep(0);
+                setConsentRequired(false);
+                setContactEmail(""); setContactName(""); setContactBusiness(""); setContactMobile("");
+                setSubmitted(false);
+              }}
+              className="w-full text-center text-sm text-slate-400 hover:text-slate-600 underline transition-colors"
+            >
+              Retake Assessment
+            </button>
           </div>
-        )}
-
-        {error && <p className="text-red-600 text-xs mt-3 text-center">{error}</p>}
-      </div>
-
-      {/* Navigation Footer — sticky on mobile, inline on desktop */}
-      <div className="sticky bottom-0 bg-white border-t border-slate-100 px-4 py-3 sm:static sm:bg-transparent sm:border-t-0 sm:px-0 sm:pb-8">
-        <div className="max-w-xl mx-auto flex items-center justify-between">
-          <button
-            onClick={back}
-            className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-navy-700 transition-colors font-medium"
-          >
-            <ArrowLeft size={16} />
-            Back
-          </button>
-
-          <span className="text-xs text-slate-400 font-medium sm:hidden">
-            Step {step} of 4
-          </span>
-
-          <button
-            onClick={next}
-            disabled={!canAdvance() || submitting}
-            className="flex items-center gap-2 py-2.5 px-6 bg-green-500 text-white font-bold rounded-xl text-sm hover:bg-green-600 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-          >
-            {step === 4 ? (submitting ? "Submitting…" : "Submit & View My Score") : "Next"}
-            {step !== 4 && <ArrowRight size={16} />}
-          </button>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
+
+  return null;
 }
