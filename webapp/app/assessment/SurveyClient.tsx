@@ -60,13 +60,7 @@ function SidebarNav({ step, result }: { step: number; result: DPDPAScoreResult |
         })}
       </nav>
 
-      {result && (
-        <div className="mx-3 mb-3 bg-green-500/10 border border-green-500/30 rounded-xl p-3">
-          <div className="text-xs font-bold text-green-400 mb-1">READINESS STATUS</div>
-          <div className="text-2xl font-bold text-white">{result.finalScore}<span className="text-slate-400 text-sm">/100</span></div>
-          <div className="text-xs text-slate-400 mt-0.5">{result.verdictBand}</div>
-        </div>
-      )}
+      {/* Score hidden during assessment — revealed at gate screen */}
 
       <div className="px-5 py-4 border-t border-navy-800 space-y-2">
         <Link href="/" className="text-xs text-slate-500 hover:text-white block transition-colors">← View Site</Link>
@@ -83,18 +77,18 @@ function ProgressBar({ step, total }: { step: number; total: number }) {
   const labels = ["Q1", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7", "Q8", "Q9", "Q10"];
   return (
     <div className="mb-6">
-      <div className="flex items-center justify-between text-xs text-slate-400 mb-2">
+      <div className="flex items-center justify-between text-xs text-slate-500 mb-2">
         <span className="font-mono">
           START:{" "}
           {labels.map((l, i) => (
-            <span key={l} className={cn("mr-1", i < step - 1 ? "text-green-500 font-bold" : i === step - 1 ? "text-white font-bold" : "")}>
+            <span key={l} className={cn("mr-1", i < step - 1 ? "text-green-600 font-bold" : i === step - 1 ? "text-navy-900 font-bold" : "text-slate-400")}>
               {l}
             </span>
           ))}
         </span>
-        <span className="text-green-400 font-semibold">{pct}% complete</span>
+        <span className="text-green-600 font-semibold">{pct}% complete</span>
       </div>
-      <div className="h-1 bg-navy-800 rounded-full overflow-hidden">
+      <div className="h-1 bg-slate-200 rounded-full overflow-hidden">
         <div className="h-full bg-green-400 rounded-full transition-all duration-500" style={{ width: `${pct}%` }} />
       </div>
     </div>
@@ -106,9 +100,12 @@ function ProgressBar({ step, total }: { step: number; total: number }) {
 function SpeedometerGauge({ score, color }: { score: number; color: string }) {
   const [animated, setAnimated] = useState(false);
   useEffect(() => {
-    const t = setTimeout(() => setAnimated(true), 100);
-    return () => clearTimeout(t);
-  }, []);
+    let raf: number;
+    raf = requestAnimationFrame(() => {
+      setTimeout(() => setAnimated(true), 50);
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [score]);
 
   // Arc path helper: draws an arc segment on a half-circle of radius 80
   const cx = 100, cy = 100, r = 80;
@@ -156,20 +153,23 @@ function SpeedometerGauge({ score, color }: { score: number; color: string }) {
         {/* Track background */}
         <path d={arcPath(0, 180)} fill="none" stroke="#1e293b" strokeWidth="14" strokeLinecap="butt" style={{ zIndex: -1 }} />
 
-        {/* Needle */}
+        {/* Needle — CSS-only transform to avoid SVG/CSS conflict */}
         <g
-          transform={`rotate(${needleRot}, ${cx}, ${cy})`}
-          style={{ transformOrigin: `${cx}px ${cy}px`, transition: "transform 1.4s cubic-bezier(0.34, 1.56, 0.64, 1)" }}
+          style={{
+            transformOrigin: `${cx}px ${cy}px`,
+            transform: `rotate(${needleRot}deg)`,
+            transition: animated ? "transform 1.4s cubic-bezier(0.34, 1.56, 0.64, 1)" : "none",
+          }}
         >
-          <line x1={cx} y1={cy} x2={cx} y2={cy - 72} stroke="white" strokeWidth="2.5" strokeLinecap="round" />
-          <circle cx={cx} cy={cy} r="5" fill="white" />
+          <line x1={cx} y1={cy} x2={cx} y2={cy - 72} stroke="#1e293b" strokeWidth="3" strokeLinecap="round" />
+          <circle cx={cx} cy={cy} r="6" fill="#1e293b" />
         </g>
 
         {/* Score text */}
-        <text x={cx} y={cy - 8} textAnchor="middle" fill="white" fontSize="28" fontWeight="800" fontFamily="Inter">
+        <text x={cx} y={cy - 8} textAnchor="middle" fill="#0f172a" fontSize="28" fontWeight="800" fontFamily="Inter">
           {score}
         </text>
-        <text x={cx} y={cy + 8} textAnchor="middle" fill="#94a3b8" fontSize="10" fontFamily="Inter">
+        <text x={cx} y={cy + 8} textAnchor="middle" fill="#64748b" fontSize="10" fontFamily="Inter">
           out of 100
         </text>
       </svg>
@@ -233,16 +233,16 @@ function QuestionSingle({
           type="button"
           onClick={() => onChange(opt.id)}
           className={cn(
-            "w-full text-left flex items-center justify-between px-4 py-3.5 rounded-xl border-2 transition-all text-sm font-medium",
+            "w-full text-left flex items-center justify-between px-4 py-3.5 rounded-xl border-2 transition-all text-base font-medium",
             selected === opt.id
-              ? "border-green-500 bg-green-500/10 text-white"
-              : "border-slate-700 text-slate-300 hover:border-slate-500 hover:bg-slate-800/50"
+              ? "border-green-500 bg-green-50 text-navy-900"
+              : "border-slate-200 text-slate-700 hover:border-slate-400 hover:bg-slate-50"
           )}
         >
           <div className="flex items-center gap-3">
             <div className={cn(
               "w-4 h-4 rounded-full border-2 shrink-0 flex items-center justify-center transition-all",
-              selected === opt.id ? "border-green-400 bg-green-400" : "border-slate-600"
+              selected === opt.id ? "border-green-500 bg-green-500" : "border-slate-300"
             )}>
               {selected === opt.id && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
             </div>
@@ -297,10 +297,10 @@ function QuestionMultiPills({
             type="button"
             onClick={() => toggle(opt.id)}
             className={cn(
-              "text-left px-4 py-3 rounded-xl border-2 transition-all text-sm font-medium",
+              "text-left px-4 py-3 rounded-xl border-2 transition-all text-base font-medium",
               isSelected
                 ? "border-green-500 bg-navy-950 text-white"
-                : "border-slate-700 text-slate-300 hover:border-slate-500 hover:bg-slate-800/50"
+                : "border-slate-200 text-slate-700 hover:border-slate-400 hover:bg-slate-50"
             )}
           >
             <div className="flex items-start gap-2">
@@ -382,10 +382,10 @@ function QuestionMultiCards({
                   type="button"
                   onClick={() => toggle(id)}
                   className={cn(
-                    "w-full text-left flex items-center gap-3 px-4 py-3 rounded-xl border-2 transition-all text-sm",
+                    "w-full text-left flex items-center gap-3 px-4 py-3 rounded-xl border-2 transition-all text-base",
                     isSelected
-                      ? "border-green-500 bg-green-500/10 text-white"
-                      : "border-slate-700 text-slate-300 hover:border-slate-500 hover:bg-slate-800/40"
+                      ? "border-green-500 bg-green-50 text-navy-900"
+                      : "border-slate-200 text-slate-700 hover:border-slate-400 hover:bg-slate-50"
                   )}
                 >
                   <div className={cn(
@@ -403,7 +403,7 @@ function QuestionMultiCards({
       ))}
 
       {/* Mutually exclusive footer */}
-      <div className="grid grid-cols-2 gap-3 pt-2 border-t border-slate-700">
+      <div className="grid grid-cols-2 gap-3 pt-2 border-t border-slate-200">
         {["none", "not-sure"].map((id) => {
           const opt = optMap[id];
           if (!opt) return null;
@@ -416,8 +416,8 @@ function QuestionMultiCards({
               className={cn(
                 "text-center py-2.5 px-4 rounded-xl border-2 text-xs font-semibold transition-all",
                 isSelected
-                  ? "border-slate-400 bg-slate-600 text-white"
-                  : "border-slate-700 text-slate-500 hover:border-slate-500 hover:text-slate-300"
+                  ? "border-slate-400 bg-slate-700 text-white"
+                  : "border-slate-200 text-slate-500 hover:border-slate-400 hover:text-slate-700"
               )}
             >
               {opt.text.toUpperCase()}
@@ -449,14 +449,10 @@ function MaturityGrid({
             "text-left p-4 rounded-xl border-2 transition-all",
             selected === opt.id
               ? "border-green-500 bg-navy-950 text-white"
-              : "border-slate-700 text-slate-300 hover:border-slate-500 hover:bg-slate-800/50"
+              : "border-slate-200 text-slate-700 hover:border-slate-400 hover:bg-slate-50"
           )}
         >
-          <div className="text-xs font-bold text-slate-500 mb-1">LEVEL {Math.floor(i / 2) + 1}</div>
-          {opt.badge && (
-            <div className="text-xs font-semibold text-slate-400 mb-1">{opt.badge}</div>
-          )}
-          <div className="text-sm font-medium leading-snug">{opt.text}</div>
+          <div className="text-base font-medium leading-snug">{opt.text}</div>
           {selected === opt.id && (
             <div className="mt-2 flex items-center gap-1 text-green-400 text-xs font-semibold">
               <CheckCircle size={12} /> Selected
@@ -487,17 +483,17 @@ function ReadinessScale({
           className={cn(
             "w-full text-left flex items-center gap-4 px-4 py-3 rounded-xl border-2 transition-all",
             selected === opt.id
-              ? "border-green-500 bg-green-500/10 text-white"
-              : "border-slate-700 text-slate-300 hover:border-slate-500 hover:bg-slate-800/50"
+              ? "border-green-500 bg-green-50 text-navy-900"
+              : "border-slate-200 text-slate-700 hover:border-slate-400 hover:bg-slate-50"
           )}
         >
           <div className={cn(
             "w-7 h-7 rounded-full border-2 shrink-0 flex items-center justify-center text-xs font-bold transition-all",
-            selected === opt.id ? "border-green-400 bg-green-400 text-white" : "border-slate-600 text-slate-500"
+            selected === opt.id ? "border-green-500 bg-green-500 text-white" : "border-slate-300 text-slate-400"
           )}>
             {i + 1}
           </div>
-          <span className="text-sm font-medium">{opt.text}</span>
+          <span className="text-base font-medium">{opt.text}</span>
         </button>
       ))}
     </div>
@@ -530,7 +526,7 @@ function BlockerGrid({
             "flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all text-center",
             selected === opt.id
               ? "border-green-500 bg-navy-950 text-white"
-              : "border-slate-700 text-slate-300 hover:border-slate-500 hover:bg-slate-800/50"
+              : "border-slate-200 text-slate-600 hover:border-slate-400 hover:bg-slate-50"
           )}
         >
           <span className="text-2xl">{BLOCKER_ICONS[opt.id] ?? "📋"}</span>
@@ -683,7 +679,7 @@ export default function SurveyClient() {
   // ── Submit handler ──────────────────────────────────────────────────────
 
   const handleSubmit = async () => {
-    if (!contactEmail) { setStep(10); return; }
+    if (!contactEmail) { setStep(9); return; }
     setSubmitting(true);
     try {
       await fetch("/api/assessment", {
@@ -705,7 +701,7 @@ export default function SurveyClient() {
     } catch { /* non-blocking */ }
     setSubmitting(false);
     setSubmitted(true);
-    setStep(10);
+    setStep(9);
   };
 
   // ── Layout wrapper ──────────────────────────────────────────────────────
@@ -829,7 +825,7 @@ export default function SurveyClient() {
     const isOptionalStep = step === 7;
 
     return (
-      <div className="min-h-screen bg-navy-950 flex">
+      <div className="min-h-screen bg-white flex">
         <SidebarNav step={step} result={result} />
 
         {/* Main */}
@@ -840,27 +836,39 @@ export default function SurveyClient() {
           {step === 1 && (
             <div className="space-y-8">
               <div>
-                <div className="text-xs font-bold text-green-400 uppercase tracking-widest mb-2">BUSINESS CONTEXT</div>
-                <h2 className="text-2xl font-bold text-white mb-1">Where privacy risk starts in your business</h2>
-                <p className="text-slate-400 text-sm">This helps identify where privacy exposure is structurally built into your business model.</p>
+                <div className="text-xs font-bold text-green-600 uppercase tracking-widest mb-2">BUSINESS CONTEXT</div>
+                <h2 className="text-3xl font-bold text-navy-900 mb-1">Where privacy risk starts in your business</h2>
+                <p className="text-slate-500 text-sm">This helps identify where privacy exposure is structurally built into your business model.</p>
               </div>
 
               <div>
                 <div className="flex items-center gap-2 mb-3">
                   <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0">1</span>
-                  <span className="text-white font-semibold text-sm">Which sector best describes your business?</span>
+                  <span className="text-navy-800 font-semibold text-base">Which sector best describes your business?</span>
                 </div>
-                <QuestionMultiPills
+                <QuestionSingle
                   options={QUESTIONS[0].options}
-                  selected={answers.q1_sector ? [answers.q1_sector] : []}
-                  onChange={(ids) => setAnswer("q1_sector", ids[0])}
+                  selected={answers.q1_sector}
+                  onChange={(id) => setAnswer("q1_sector", id)}
                 />
+                {answers.q1_sector === "other" && (
+                  <div className="mt-3">
+                    <label className="block text-sm font-semibold text-slate-600 mb-1">Please describe your industry</label>
+                    <input
+                      type="text"
+                      value={(answers as any).q1_sector_other ?? ""}
+                      onChange={(e) => setAnswers(prev => ({ ...prev, q1_sector_other: e.target.value } as any))}
+                      placeholder="e.g. Real estate, Education, Agriculture..."
+                      className="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-green-500 bg-white"
+                    />
+                  </div>
+                )}
               </div>
 
               <div>
                 <div className="flex items-center gap-2 mb-3">
                   <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0">2</span>
-                  <span className="text-white font-semibold text-sm">Where do you mainly operate?</span>
+                  <span className="text-navy-800 font-semibold text-base">Where do you mainly operate?</span>
                 </div>
                 <QuestionSingle
                   options={QUESTIONS[1].options}
@@ -875,12 +883,12 @@ export default function SurveyClient() {
           {step === 2 && (
             <div className="space-y-6">
               <div>
-                <div className="text-xs font-bold text-green-400 uppercase tracking-widest mb-2">DATA EXPOSURE PROFILE</div>
-                <h2 className="text-2xl font-bold text-white mb-1">Q3 / 10</h2>
-                <div className="bg-navy-900 rounded-xl p-4 mb-4">
-                  <div className="text-xs font-bold text-amber-400 uppercase tracking-wide mb-1">SYSTEM DIAGNOSTIC</div>
-                  <p className="text-white font-semibold text-sm">Where customer or employee data may be exposed in day-to-day operations</p>
-                  <p className="text-slate-400 text-xs mt-1">This helps estimate whether your privacy exposure is occasional, repeated, or embedded in regular business activity.</p>
+                <div className="text-xs font-bold text-green-600 uppercase tracking-widest mb-2">DATA EXPOSURE PROFILE</div>
+                <h2 className="text-3xl font-bold text-navy-900 mb-1">Q3 / 10</h2>
+                <div className="bg-slate-100 rounded-xl p-4 mb-4">
+                  <div className="text-xs font-bold text-amber-600 uppercase tracking-wide mb-1">SYSTEM DIAGNOSTIC</div>
+                  <p className="text-navy-800 font-semibold text-sm">Where customer or employee data may be exposed in day-to-day operations</p>
+                  <p className="text-slate-500 text-xs mt-1">This helps estimate whether your privacy exposure is occasional, repeated, or embedded in regular business activity.</p>
                 </div>
               </div>
               <QuestionSingle
@@ -895,15 +903,15 @@ export default function SurveyClient() {
           {step === 3 && (
             <div className="space-y-8">
               <div>
-                <div className="text-xs font-bold text-green-400 uppercase tracking-widest mb-2">DATA ECOSYSTEM MAPPING</div>
-                <h2 className="text-2xl font-bold text-white mb-1">Define your compliance footprint by data handling practices.</h2>
-                <div className="text-xs text-slate-500 font-mono">04 / 10</div>
+                <div className="text-xs font-bold text-green-600 uppercase tracking-widest mb-2">DATA ECOSYSTEM MAPPING</div>
+                <h2 className="text-3xl font-bold text-navy-900 mb-1">Define your compliance footprint by data handling practices.</h2>
+                <div className="text-xs text-slate-400 font-mono">04 / 10</div>
               </div>
 
               <div>
                 <div className="flex items-center gap-2 mb-3">
                   <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0">4</span>
-                  <span className="text-white font-semibold text-sm">What data do you handle? <span className="text-slate-500 text-xs font-normal">Select all that apply</span></span>
+                  <span className="text-navy-800 font-semibold text-base">What data do you handle? <span className="text-slate-500 text-xs font-normal">Select all that apply</span></span>
                 </div>
                 <QuestionMultiPills
                   options={QUESTIONS[3].options}
@@ -916,7 +924,7 @@ export default function SurveyClient() {
               <div>
                 <div className="flex items-center gap-2 mb-3">
                   <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0">5</span>
-                  <span className="text-white font-semibold text-sm">Where is this data usually stored? <span className="text-slate-500 text-xs font-normal">Select all that apply</span></span>
+                  <span className="text-navy-800 font-semibold text-base">Where is this data usually stored? <span className="text-slate-500 text-xs font-normal">Select all that apply</span></span>
                 </div>
                 <QuestionMultiPills
                   options={QUESTIONS[4].options}
@@ -932,10 +940,10 @@ export default function SurveyClient() {
           {step === 4 && (
             <div className="space-y-6">
               <div>
-                <div className="text-xs font-bold text-green-400 uppercase tracking-widest mb-2">CONTROL MATURITY ASSESSMENT</div>
-                <h2 className="text-2xl font-bold text-white mb-1">Which privacy basics are already in place?</h2>
-                <div className="text-xs text-slate-500 font-mono mb-2">06 / 10</div>
-                <div className="bg-navy-900 rounded-lg px-4 py-2.5 text-xs text-slate-400">
+                <div className="text-xs font-bold text-green-600 uppercase tracking-widest mb-2">CONTROL MATURITY ASSESSMENT</div>
+                <h2 className="text-3xl font-bold text-navy-900 mb-1">Which privacy basics are already in place?</h2>
+                <div className="text-xs text-slate-400 font-mono mb-2">06 / 10</div>
+                <div className="bg-slate-100 rounded-lg px-4 py-2.5 text-xs text-slate-500">
                   ℹ This section helps distinguish policy intent from operational controls.
                 </div>
               </div>
@@ -951,16 +959,16 @@ export default function SurveyClient() {
           {step === 5 && (
             <div className="space-y-8">
               <div>
-                <div className="text-xs font-bold text-green-400 uppercase tracking-widest mb-2">COMPLIANCE MATURITY</div>
-                <h2 className="text-2xl font-bold text-white mb-1">How consent and requests are handled today</h2>
-                <p className="text-slate-400 text-sm">Compliance maturity is 80% complete.</p>
+                <div className="text-xs font-bold text-green-600 uppercase tracking-widest mb-2">COMPLIANCE MATURITY</div>
+                <h2 className="text-3xl font-bold text-navy-900 mb-1">How consent and requests are handled today</h2>
+                <p className="text-slate-500 text-sm">Compliance maturity is 80% complete.</p>
               </div>
 
               <div>
-                <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">RIGHTS MANAGEMENT</div>
+                <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">RIGHTS MANAGEMENT</div>
                 <div className="flex items-center gap-2 mb-3">
                   <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0">7</span>
-                  <span className="text-white font-semibold text-sm">How well can your business handle requests to access, correct, or delete data?</span>
+                  <span className="text-navy-800 font-semibold text-base">How well can your business handle requests to access, correct, or delete data?</span>
                 </div>
                 <MaturityGrid
                   options={QUESTIONS[6].options}
@@ -970,10 +978,10 @@ export default function SurveyClient() {
               </div>
 
               <div>
-                <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">CONSENT PRACTICE</div>
+                <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">CONSENT PRACTICE</div>
                 <div className="flex items-center gap-2 mb-3">
                   <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0">8</span>
-                  <span className="text-white font-semibold text-sm">How does your business ask for permission before collecting personal data?</span>
+                  <span className="text-navy-800 font-semibold text-base">How does your business ask for permission before collecting personal data?</span>
                 </div>
                 <MaturityGrid
                   options={QUESTIONS[7].options}
@@ -988,16 +996,16 @@ export default function SurveyClient() {
           {step === 6 && (
             <div className="space-y-8">
               <div>
-                <div className="text-xs font-bold text-green-400 uppercase tracking-widest mb-2">OWNERSHIP & READINESS</div>
-                <h2 className="text-2xl font-bold text-white mb-1">Who owns privacy decisions today</h2>
-                <p className="text-slate-400 text-sm">Final phase of the foundational audit.</p>
-                <div className="text-xs text-slate-500 font-mono mt-1">QUESTION 9–10 OF 10</div>
+                <div className="text-xs font-bold text-green-600 uppercase tracking-widest mb-2">OWNERSHIP & READINESS</div>
+                <h2 className="text-3xl font-bold text-navy-900 mb-1">Who owns privacy decisions today</h2>
+                <p className="text-slate-500 text-sm">Final phase of the foundational audit.</p>
+                <div className="text-xs text-slate-400 font-mono mt-1">QUESTION 9–10 OF 10</div>
               </div>
 
               <div>
                 <div className="flex items-center gap-2 mb-3">
                   <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0">9</span>
-                  <span className="text-white font-semibold text-sm">Who is primarily responsible for privacy or data protection in your business today?</span>
+                  <span className="text-navy-800 font-semibold text-base">Who is primarily responsible for privacy or data protection in your business today?</span>
                 </div>
                 <QuestionSingle
                   options={QUESTIONS[8].options}
@@ -1009,7 +1017,7 @@ export default function SurveyClient() {
               <div>
                 <div className="flex items-center gap-2 mb-3">
                   <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0">10</span>
-                  <span className="text-white font-semibold text-sm">Which statement best describes your current DPDPA readiness?</span>
+                  <span className="text-navy-800 font-semibold text-base">Which statement best describes your current DPDPA readiness?</span>
                 </div>
                 <ReadinessScale
                   options={QUESTIONS[9].options}
@@ -1024,10 +1032,10 @@ export default function SurveyClient() {
           {step === 7 && (
             <div className="space-y-8">
               <div>
-                <div className="text-xs font-bold text-green-400 uppercase tracking-widest mb-2">PERSONALISATION</div>
-                <h2 className="text-2xl font-bold text-white mb-1">Help us prioritize the right fixes</h2>
-                <p className="text-slate-400 text-sm">This tailors your report to your operating reality, not generic advice.</p>
-                <div className="mt-2 h-1.5 bg-navy-800 rounded-full overflow-hidden">
+                <div className="text-xs font-bold text-green-600 uppercase tracking-widest mb-2">PERSONALISATION</div>
+                <h2 className="text-3xl font-bold text-navy-900 mb-1">Help us prioritize the right fixes</h2>
+                <p className="text-slate-500 text-sm">This tailors your report to your operating reality, not generic advice.</p>
+                <div className="mt-2 h-1.5 bg-slate-200 rounded-full overflow-hidden">
                   <div className="h-full bg-green-400 rounded-full" style={{ width: "95%" }} />
                 </div>
               </div>
@@ -1035,7 +1043,7 @@ export default function SurveyClient() {
               <div>
                 <div className="flex items-center gap-2 mb-3">
                   <span className="w-6 h-6 rounded-full bg-slate-600 text-slate-300 text-xs font-bold flex items-center justify-center shrink-0">11</span>
-                  <span className="text-white font-semibold text-sm">What is your biggest blocker right now? <span className="text-slate-500 font-normal text-xs">(Optional)</span></span>
+                  <span className="text-navy-800 font-semibold text-base">What is your biggest blocker right now? <span className="text-slate-400 font-normal text-xs">(Optional)</span></span>
                 </div>
                 <BlockerGrid
                   options={QUESTIONS[10].options}
@@ -1047,7 +1055,7 @@ export default function SurveyClient() {
               <div>
                 <div className="flex items-center gap-2 mb-3">
                   <span className="w-6 h-6 rounded-full bg-slate-600 text-slate-300 text-xs font-bold flex items-center justify-center shrink-0">12</span>
-                  <span className="text-white font-semibold text-sm">What would help you most right now? <span className="text-slate-500 font-normal text-xs">(Optional)</span></span>
+                  <span className="text-navy-800 font-semibold text-base">What would help you most right now? <span className="text-slate-400 font-normal text-xs">(Optional)</span></span>
                 </div>
                 <QuestionSingle
                   options={QUESTIONS[11].options}
@@ -1067,10 +1075,10 @@ export default function SurveyClient() {
           )}
 
           {/* Navigation */}
-          <div className="flex items-center justify-between mt-10 pt-6 border-t border-navy-800">
+          <div className="flex items-center justify-between mt-10 pt-6 border-t border-slate-200">
             <button
               onClick={handleBack}
-              className="inline-flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium text-slate-400 hover:text-white transition-colors"
+              className="inline-flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors"
             >
               <ArrowLeft size={16} /> Back
             </button>
@@ -1088,15 +1096,15 @@ export default function SurveyClient() {
 
         {/* Right context panel (shown on some steps) */}
         {(step === 2 || step === 5 || step === 6) && (
-          <div className="hidden xl:block w-64 bg-navy-900 px-5 py-8 border-l border-navy-800 shrink-0">
-            <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">WHY THIS AFFECTS READINESS</div>
-            <p className="text-slate-300 text-xs leading-relaxed mb-5">
+          <div className="hidden xl:block w-64 bg-slate-50 px-5 py-8 border-l border-slate-200 shrink-0">
+            <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">WHY THIS AFFECTS READINESS</div>
+            <p className="text-slate-600 text-xs leading-relaxed mb-5">
               {step === 2 && "The DPDPA 2023 applies to any entity that processes digital personal data. Even occasional collection creates obligations under the Act if the data subject is identifiable."}
               {step === 5 && "The DPDPA 2023 mandates that consent must be freely given, specific, and informed. Non-compliance may lead to significant regulatory scrutiny."}
               {step === 6 && "Accountability is the core of DPDPA. Without a clear owner, compliance efforts often stall, leaving the organisation exposed to significant regulatory risk."}
             </p>
-            <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">WHAT STRONG TEAMS USUALLY DO</div>
-            <p className="text-slate-300 text-xs leading-relaxed">
+            <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">WHAT STRONG TEAMS USUALLY DO</div>
+            <p className="text-slate-600 text-xs leading-relaxed">
               {step === 2 && "Strong teams audit data collection points across all channels — not just the main website — and classify each by purpose and frequency."}
               {step === 5 && "Strong teams maintain timestamped logs of every consent event and automate data rights fulfillment via self-service dashboards."}
               {step === 6 && "Strong teams assign a named Data Protection Officer or Privacy Lead and link their responsibilities directly to business outcomes."}
@@ -1107,9 +1115,143 @@ export default function SurveyClient() {
     );
   }
 
-  // ── Step 8: Full Report Screen ──────────────────────────────────────────
+  // ── Step 8: Gate / Unlock Screen (comes BEFORE full report) ────────────
 
   if (step === 8 && result) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex">
+        <SidebarNav step={8} result={result} />
+        <div className="flex-1 px-4 sm:px-10 py-10">
+          <div className="max-w-5xl mx-auto">
+            <div className="grid lg:grid-cols-2 gap-8 items-start">
+
+              {/* Left — score teaser */}
+              <div>
+                <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">READINESS RESULT</div>
+                <div className="flex items-end gap-2 mb-1">
+                  <span className="text-7xl font-bold text-navy-900 leading-none">{result.finalScore}</span>
+                  <span className="text-2xl text-slate-400 mb-2">/100</span>
+                </div>
+                <div className="inline-flex items-center gap-2 bg-amber-100 border border-amber-200 text-amber-800 text-xs font-bold px-3 py-1.5 rounded-lg mb-4">
+                  MATURITY LEVEL: {result.verdictBand.toUpperCase()}
+                </div>
+                <p className="text-slate-600 text-sm leading-relaxed mb-6">{result.verdictDescription}</p>
+
+                <div className="bg-white rounded-2xl border border-slate-200 p-5">
+                  <div className="text-xs font-bold text-slate-500 mb-3">✦ What you&apos;ll get</div>
+                  {[
+                    "Complete score breakdown — detailed assessment across all five DPDPA compliance pillars",
+                    "Top 3 priority actions — prioritized remediation steps to lower your legal risk profile",
+                    "Downloadable checklist — a structured roadmap for implementing end-to-end privacy controls",
+                  ].map(item => (
+                    <div key={item} className="flex items-start gap-2.5 mb-3">
+                      <CheckCircle size={15} className="text-green-500 mt-0.5 shrink-0" />
+                      <span className="text-slate-600 text-sm leading-snug">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right — unlock form */}
+              <div className="bg-white rounded-2xl border border-slate-200 shadow-lg p-7">
+                <h2 className="text-xl font-bold text-navy-900 mb-1">Get your detailed report with top risks, quick wins, and next steps</h2>
+                <div className="flex items-center gap-1.5 text-xs text-green-700 font-semibold mb-5">
+                  <Shield size={12} /> SECURE DELIVERY MODE
+                </div>
+
+                <div className="grid grid-cols-2 gap-3 mb-4">
+                  <div>
+                    <label className="text-xs font-semibold text-slate-500 block mb-1">WORK EMAIL (REQUIRED)</label>
+                    <input
+                      type="email"
+                      value={contactEmail}
+                      onChange={e => setContactEmail(e.target.value)}
+                      placeholder="rahul@company.com"
+                      className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs font-semibold text-slate-500 block mb-1">YOUR NAME (OPTIONAL)</label>
+                    <input
+                      type="text"
+                      value={contactName}
+                      onChange={e => setContactName(e.target.value)}
+                      placeholder="e.g. Rahul Sharma"
+                      className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs font-semibold text-slate-500 block mb-1">BUSINESS NAME (OPTIONAL)</label>
+                    <input
+                      type="text"
+                      value={contactBusiness}
+                      onChange={e => setContactBusiness(e.target.value)}
+                      placeholder="Company India Pvt. Ltd."
+                      className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs font-semibold text-slate-500 block mb-1">MOBILE (OPTIONAL)</label>
+                    <input
+                      type="tel"
+                      value={contactMobile}
+                      onChange={e => setContactMobile(e.target.value)}
+                      placeholder="+91 90000 00000"
+                      className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
+                    />
+                  </div>
+                </div>
+
+                <p className="text-xs text-slate-400 mb-4 leading-relaxed">
+                  We only use these details to generate and deliver your secure compliance report. Your data is encrypted and managed according to DPDPA standards.
+                </p>
+
+                <div className="space-y-2.5 mb-5">
+                  <label className="flex items-start gap-2.5 cursor-pointer bg-green-50 border border-green-200 rounded-lg px-3 py-2.5">
+                    <input type="checkbox" checked={consentDelivery} onChange={e => setConsentDelivery(e.target.checked)} className="mt-0.5 w-4 h-4 accent-green-500" />
+                    <span className="text-xs text-slate-700 leading-snug">I consent to SaralPrivacy using my details to deliver my readiness report. <span className="text-red-500">*</span></span>
+                  </label>
+                  <label className="flex items-start gap-2.5 cursor-pointer">
+                    <input type="checkbox" checked={consentNL} onChange={e => setConsentNL(e.target.checked)} className="mt-0.5 w-4 h-4 accent-green-500" />
+                    <span className="text-xs text-slate-500 leading-snug">I would like to receive occasional updates regarding Indian privacy laws.</span>
+                  </label>
+                  <label className="flex items-start gap-2.5 cursor-pointer">
+                    <input type="checkbox" checked={consentFU} onChange={e => setConsentFU(e.target.checked)} className="mt-0.5 w-4 h-4 accent-green-500" />
+                    <span className="text-xs text-slate-500 leading-snug">I agree to be contacted for a professional consultation for specific DPDPA needs.</span>
+                  </label>
+                </div>
+
+                <button
+                  onClick={handleSubmit}
+                  disabled={!contactEmail || !consentDelivery || submitting}
+                  className="w-full py-3.5 bg-green-500 text-white font-bold rounded-xl text-sm hover:bg-green-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
+                >
+                  {submitting ? "Sending…" : "Unlock detailed report"} {!submitting && <ArrowRight size={16} />}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setStep(9)}
+                  className="w-full text-center text-xs text-slate-400 hover:text-slate-600 mt-3 transition-colors"
+                >
+                  Skip — show basic results
+                </button>
+              </div>
+            </div>
+
+            <div className="mt-8 text-center text-xs text-slate-400 flex items-center justify-center gap-2">
+              <Shield size={12} />
+              Trusted by 200+ Indian enterprises for DPDPA readiness and secure privacy governance.
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Step 9: Full Report Screen ──────────────────────────────────────────
+
+  if (step === 9 && result) {
     const cats = result.categoryScores;
     const stratCards = buildStrategyCards(result);
     const reportId = `SP-${Date.now().toString(36).toUpperCase()}`;
@@ -1117,8 +1259,18 @@ export default function SurveyClient() {
     return (
       <div className="min-h-screen bg-slate-50">
         <div className="flex">
-          <SidebarNav step={8} result={result} />
+          <SidebarNav step={9} result={result} />
           <div className="flex-1 px-6 sm:px-10 py-10 max-w-4xl">
+
+            {submitted && (
+              <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-6 flex items-center gap-3">
+                <CheckCircle size={18} className="text-green-600 shrink-0" />
+                <div>
+                  <div className="font-semibold text-green-800 text-sm">Report on its way!</div>
+                  <div className="text-green-700 text-xs">We will send your detailed report to <strong>{contactEmail}</strong> shortly.</div>
+                </div>
+              </div>
+            )}
 
             <div className="flex items-start justify-between mb-6">
               <div>
@@ -1217,166 +1369,14 @@ export default function SurveyClient() {
               </div>
             </div>
 
-            {/* Proceed to gate */}
+            {/* Retake link */}
             <div className="mt-6 text-center">
               <button
-                onClick={() => setStep(9)}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-navy-700 text-white font-semibold rounded-xl text-sm hover:bg-navy-600 transition-colors"
+                onClick={() => { setAnswers({}); setResult(null); setStep(0); setConsentRequired(false); setContactEmail(""); setContactName(""); setContactBusiness(""); setContactMobile(""); setSubmitted(false); }}
+                className="text-sm text-slate-400 hover:text-slate-600 underline transition-colors"
               >
-                Get your detailed report by email <ChevronRight size={16} />
+                Retake Assessment
               </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // ── Step 9: Gate / Unlock Screen ────────────────────────────────────────
-
-  if (step === 9 && result) {
-    return (
-      <div className="min-h-screen bg-slate-50 flex">
-        <SidebarNav step={9} result={result} />
-        <div className="flex-1 px-4 sm:px-10 py-10">
-          <div className="max-w-5xl mx-auto">
-            <div className="grid lg:grid-cols-2 gap-8 items-start">
-
-              {/* Left — score recap */}
-              <div>
-                <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">READINESS RESULT</div>
-                <div className="flex items-end gap-2 mb-1">
-                  <span className="text-7xl font-bold text-navy-900 leading-none">{result.finalScore}</span>
-                  <span className="text-2xl text-slate-400 mb-2">/100</span>
-                </div>
-                <div className="inline-flex items-center gap-2 bg-amber-100 border border-amber-200 text-amber-800 text-xs font-bold px-3 py-1.5 rounded-lg mb-4">
-                  MATURITY LEVEL: {result.verdictBand.toUpperCase()}
-                </div>
-                <p className="text-slate-600 text-sm leading-relaxed mb-6">{result.verdictDescription}</p>
-
-                <div className="bg-white rounded-2xl border border-slate-200 p-5">
-                  <div className="text-xs font-bold text-slate-500 mb-3">✦ What you&apos;ll get</div>
-                  {[
-                    "Complete score breakdown — detailed assessment across all five DPDPA compliance pillars",
-                    "Top 3 priority actions — prioritized remediation steps to lower your legal risk profile",
-                    "Downloadable checklist — a structured roadmap for implementing end-to-end privacy controls",
-                  ].map(item => (
-                    <div key={item} className="flex items-start gap-2.5 mb-3">
-                      <CheckCircle size={15} className="text-green-500 mt-0.5 shrink-0" />
-                      <span className="text-slate-600 text-sm leading-snug">{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Right — unlock form */}
-              <div className="bg-white rounded-2xl border border-slate-200 shadow-lg p-7">
-                <h2 className="text-xl font-bold text-navy-900 mb-1">Get your detailed report with top risks, quick wins, and next steps</h2>
-                <div className="flex items-center gap-1.5 text-xs text-green-700 font-semibold mb-5">
-                  <Shield size={12} /> SECURE DELIVERY MODE
-                </div>
-
-                <div className="grid grid-cols-2 gap-3 mb-4">
-                  <div>
-                    <label className="text-xs font-semibold text-slate-500 block mb-1">WORK EMAIL (REQUIRED)</label>
-                    <input
-                      type="email"
-                      value={contactEmail}
-                      onChange={e => setContactEmail(e.target.value)}
-                      placeholder="rahul@company.com"
-                      className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs font-semibold text-slate-500 block mb-1">YOUR NAME (OPTIONAL)</label>
-                    <input
-                      type="text"
-                      value={contactName}
-                      onChange={e => setContactName(e.target.value)}
-                      placeholder="e.g. Rahul Sharma"
-                      className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs font-semibold text-slate-500 block mb-1">BUSINESS NAME (OPTIONAL)</label>
-                    <input
-                      type="text"
-                      value={contactBusiness}
-                      onChange={e => setContactBusiness(e.target.value)}
-                      placeholder="Company India Pvt. Ltd."
-                      className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs font-semibold text-slate-500 block mb-1">MOBILE (OPTIONAL)</label>
-                    <input
-                      type="tel"
-                      value={contactMobile}
-                      onChange={e => setContactMobile(e.target.value)}
-                      placeholder="+91 90000 00000"
-                      className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
-                    />
-                  </div>
-                </div>
-
-                <p className="text-xs text-slate-400 mb-4 leading-relaxed">
-                  We only use these details to generate and deliver your secure compliance report. Your data is encrypted and managed according to DPDPA standards.
-                </p>
-
-                {/* Consents */}
-                <div className="space-y-2.5 mb-5">
-                  <label className="flex items-start gap-2.5 cursor-pointer bg-green-50 border border-green-200 rounded-lg px-3 py-2.5">
-                    <input
-                      type="checkbox"
-                      checked={consentDelivery}
-                      onChange={e => setConsentDelivery(e.target.checked)}
-                      className="mt-0.5 w-4 h-4 accent-green-500"
-                    />
-                    <span className="text-xs text-slate-700 leading-snug">
-                      I consent to SaralPrivacy using my details to deliver my readiness report. <span className="text-red-500">*</span>
-                    </span>
-                  </label>
-                  <label className="flex items-start gap-2.5 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={consentNL}
-                      onChange={e => setConsentNL(e.target.checked)}
-                      className="mt-0.5 w-4 h-4 accent-green-500"
-                    />
-                    <span className="text-xs text-slate-500 leading-snug">I would like to receive occasional updates regarding Indian privacy laws.</span>
-                  </label>
-                  <label className="flex items-start gap-2.5 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={consentFU}
-                      onChange={e => setConsentFU(e.target.checked)}
-                      className="mt-0.5 w-4 h-4 accent-green-500"
-                    />
-                    <span className="text-xs text-slate-500 leading-snug">I agree to be contacted for a professional consultation for specific DPDPA needs.</span>
-                  </label>
-                </div>
-
-                <button
-                  onClick={handleSubmit}
-                  disabled={!contactEmail || !consentDelivery || submitting}
-                  className="w-full py-3.5 bg-green-500 text-white font-bold rounded-xl text-sm hover:bg-green-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
-                >
-                  {submitting ? "Sending…" : "Unlock detailed report"} {!submitting && <ArrowRight size={16} />}
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setStep(10)}
-                  className="w-full text-center text-xs text-slate-400 hover:text-slate-600 mt-3 transition-colors"
-                >
-                  Skip — show basic results
-                </button>
-              </div>
-            </div>
-
-            <div className="mt-8 text-center text-xs text-slate-400 flex items-center justify-center gap-2">
-              <Shield size={12} />
-              Trusted by 200+ Indian enterprises for DPDPA readiness and secure privacy governance.
             </div>
           </div>
         </div>
@@ -1393,7 +1393,7 @@ export default function SurveyClient() {
     return (
       <div className="min-h-screen bg-slate-50">
         <div className="flex">
-          <SidebarNav step={9} result={result} />
+          <SidebarNav step={8} result={result} />
           <div className="flex-1 px-6 sm:px-10 py-10 max-w-3xl">
 
             {submitted && (

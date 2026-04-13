@@ -264,11 +264,10 @@ export const QUESTIONS: QuestionDef[] = [
     helpText: "If someone asks to access, correct, or delete their personal data.",
     type: "single",
     options: [
-      { id: "no-process",      text: "Not handled",                          badge: "LEVEL 1", badgeColor: "red"   },
-      { id: "manual",          text: "Handled manually if asked",             badge: "LEVEL 1", badgeColor: "amber" },
-      { id: "partial",         text: "Partially defined",                     badge: "LEVEL 2", badgeColor: "amber" },
-      { id: "defined",         text: "Documented & operational",              badge: "LEVEL 2", badgeColor: "green" },
-      { id: "operational",     text: "Documented and operational process",    badge: "LEVEL 3", badgeColor: "green" },
+      { id: "no-process",   text: "Not handled" },
+      { id: "manual",       text: "Handled manually if asked" },
+      { id: "partial",      text: "Partially defined" },
+      { id: "operational",  text: "Documented and operational" },
     ],
   },
 
@@ -418,7 +417,7 @@ function scoreQ6(answers: string[]): number {
 
 function scoreQ7(answer: string): number {
   const map: Record<string, number> = {
-    "no-process": 0, "manual": 3, "partial": 5, "defined": 7, "operational": 10,
+    "no-process": 0, "manual": 3, "partial": 5, "operational": 10,
   };
   return map[answer] ?? 0;
 }
