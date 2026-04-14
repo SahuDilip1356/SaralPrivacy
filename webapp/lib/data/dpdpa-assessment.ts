@@ -278,11 +278,11 @@ export const QUESTIONS: QuestionDef[] = [
     text: "How does your business ask for permission before collecting personal data?",
     type: "single",
     options: [
-      { id: "no-ask",     text: "We usually do not ask formally",                          badge: "LEVEL 1", badgeColor: "red"   },
-      { id: "implied",    text: "We rely on implied or verbal understanding",              badge: "LEVEL 1", badgeColor: "amber" },
-      { id: "generic",    text: "We use generic wording or broad terms",                   badge: "LEVEL 2", badgeColor: "amber" },
-      { id: "inconsistent",text: "We ask in some places, but not consistently",           badge: "LEVEL 2", badgeColor: "amber" },
-      { id: "clear",      text: "Clear, specific consent with records where needed",       badge: "LEVEL 3", badgeColor: "green" },
+      { id: "no-ask",      text: "We usually do not ask formally" },
+      { id: "implied",     text: "We rely on implied or verbal understanding" },
+      { id: "generic",     text: "We use generic wording or broad terms" },
+      { id: "inconsistent",text: "We ask in some places, but not consistently" },
+      { id: "clear",       text: "Clear, specific consent with records where needed" },
     ],
   },
 

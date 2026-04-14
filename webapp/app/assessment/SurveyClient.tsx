@@ -1056,25 +1056,25 @@ export default function SurveyClient() {
         {/* Right context panel — all steps, dark navy */}
         {step >= 1 && step <= 7 && (
           <div className="hidden xl:block w-64 bg-navy-900 px-5 py-8 border-l border-navy-800 shrink-0">
-            <div className="text-xs font-bold text-green-400 uppercase tracking-widest mb-3">WHY THIS AFFECTS READINESS</div>
+            <div className="text-xs font-bold text-green-400 uppercase tracking-widest mb-3">WHY THIS MATTERS</div>
             <p className="text-slate-300 text-xs leading-relaxed mb-5">
               {step === 1 && "Your sector and scale determine which DPDPA obligations apply to you and at what threshold."}
-              {step === 2 && "The DPDPA 2023 applies to any entity that processes digital personal data. Even occasional collection creates obligations if the data subject is identifiable."}
-              {step === 3 && "Sensitive data categories attract significantly heavier penalties and mandatory security standards under DPDPA."}
+              {step === 2 && "How you collect data determines whether you need explicit consent or can rely on legitimate interest."}
+              {step === 3 && "Sensitive data categories attract heavier penalties and mandatory security standards under DPDPA."}
               {step === 4 && "Controls in place reduce your penalty exposure by up to 60% in the event of a data breach."}
-              {step === 5 && "The DPDPA 2023 mandates that consent must be freely given, specific, and informed. Non-compliance may lead to significant regulatory scrutiny."}
-              {step === 6 && "Accountability is the core of DPDPA. Without a clear owner, compliance efforts often stall, leaving the organisation exposed to significant regulatory risk."}
-              {step === 7 && "Your answers help us personalise your action plan — no scoring impact from these questions."}
+              {step === 5 && "Rights handling and consent quality are the two highest-weighted assessment factors."}
+              {step === 6 && "Designated ownership is required by DPDPA — informal ownership is treated as non-compliance."}
+              {step === 7 && "Your answers help us personalise your action plan — no scoring impact."}
             </p>
-            <div className="text-xs font-bold text-green-400 uppercase tracking-widest mb-3">WHAT STRONG TEAMS USUALLY DO</div>
+            <div className="text-xs font-bold text-green-400 uppercase tracking-widest mb-3">WHAT STRONG TEAMS DO</div>
             <p className="text-slate-300 text-xs leading-relaxed">
-              {step === 1 && "Strong teams map their regulatory profile by sector before starting any compliance work — it defines scope and priority."}
-              {step === 2 && "Strong teams audit data collection points across all channels and classify each by purpose and frequency."}
-              {step === 3 && "Strong teams track sensitive data separately, applying enhanced controls and dedicated access policies."}
-              {step === 4 && "Strong teams implement controls systematically, not reactively. They test them quarterly."}
-              {step === 5 && "Strong teams maintain timestamped logs of every consent event and automate data rights fulfillment."}
-              {step === 6 && "Strong teams assign a named Data Protection Officer or Privacy Lead and link their responsibilities directly to business outcomes."}
-              {step === 7 && "Strong teams prioritise their top 3 gaps before expanding compliance scope — breadth without depth is ineffective."}
+              {step === 1 && "Strong teams classify their sector first — healthcare and financial services face stricter obligations and lower penalty thresholds than other sectors."}
+              {step === 2 && "Strong teams document every touchpoint where personal data enters their systems and establish the legal basis for each collection channel."}
+              {step === 3 && "Strong teams maintain a live data inventory that separates sensitive from non-sensitive categories, with dedicated access controls per type."}
+              {step === 4 && "Strong teams treat privacy controls as operational infrastructure — each control has a named owner and is tested quarterly."}
+              {step === 5 && "Strong teams automate rights fulfilment — access requests resolved in 72 hours, deletion tracked end-to-end, consent records timestamped."}
+              {step === 6 && "Strong teams assign a Privacy Lead with a clear mandate and board visibility — not just an informal responsibility added to someone's role."}
+              {step === 7 && "Strong teams fix their highest-penalty-risk gap first — not the easiest one."}
             </p>
           </div>
         )}
