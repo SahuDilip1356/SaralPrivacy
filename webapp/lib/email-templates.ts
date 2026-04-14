@@ -328,63 +328,89 @@ export function briefingApprovalTemplate(briefing: BriefingData, approveLink: st
 }
 
 // ──────────────────────────────────────────────────────────────────────────────
-// 6. Survey Result Email (Score-based follow-up to survey respondent)
+// 6. Assessment Result Email (sent to user after gate form submission)
 // ──────────────────────────────────────────────────────────────────────────────
 
 export interface SurveyResultData {
   email: string;
   name: string;
   businessName: string;
-  score: number;
-  band: string;
-  summary: string;
-  recommendations: string[];
-  riskFlags: string[];
+  score: number;                 // final score out of 100
+  band: string;                  // e.g. "Building Foundations"
+  summary: string;               // verdict description
+  recommendations: string[];     // immediate actions (top 3)
+  riskFlags: string[];           // red flags triggered
+  answerSummary: Array<{ question: string; answer: string }>; // readable Q&A pairs
 }
 
-// Score-band follow-up content
-const BAND_RESOURCES: Record<string, { label: string; headline: string; body: string; resource: string; resourceLabel: string }> = {
-  "Just Starting": {
-    label: "Early Stage",
-    headline: "Your free 'What is DPDPA?' guide is here",
-    body: "You are at the beginning of your DPDPA journey. That is totally okay — most small businesses are. This one-page guide explains DPDPA in plain language. No legal words. Just what you need to know to start.",
-    resource: "https://saralprivacy.com/learn/what-is-dpdpa",
-    resourceLabel: "Read: What is DPDPA? (Plain English)",
+// Band colours for email (hex, email-safe)
+const BAND_COLOR: Record<string, string> = {
+  "Not Started":           "#DC2626",
+  "Early Stage":           "#F97316",
+  "Building Foundations":  "#EAB308",
+  "Progressing Well":      "#22C55E",
+  "Operationally Strong":  "#16A34A",
+};
+
+// Band-specific next-step resource
+const BAND_CTA: Record<string, { headline: string; body: string; href: string; label: string }> = {
+  "Not Started": {
+    headline: "Start here — What is DPDPA? (Plain English guide)",
+    body: "You are at the beginning of your DPDPA journey. This guide explains what the law requires in plain language — no legal jargon, just the essentials for your business.",
+    href: "https://saralprivacy.com/learn/what-is-dpdpa",
+    label: "Read the Plain English Guide →",
   },
-  "Exposed but Aware": {
-    label: "Partly Ready",
-    headline: "Your free 'Top 5 Gaps MSMEs Miss' checklist",
-    body: "You are aware of DPDPA but there are some important gaps. This checklist shows the 5 most common mistakes small businesses make — and simple ways to fix them this week.",
-    resource: "https://saralprivacy.com/resources",
-    resourceLabel: "Download: Top 5 Gaps Checklist",
+  "Early Stage": {
+    headline: "Download your free DPDPA Readiness Checklist",
+    body: "You have some awareness but important gaps remain. This checklist shows the 5 most common mistakes Indian businesses make and simple ways to fix them this week.",
+    href: "https://saralprivacy.com/white-paper",
+    label: "Download White Paper →",
   },
-  "Building Controls": {
-    label: "Partly Ready",
-    headline: "Your free 'Top 5 Gaps MSMEs Miss' checklist",
-    body: "You have made good progress. This checklist will help you find the remaining gaps and close them quickly. Focus on consistency and making sure all your vendors follow the same rules.",
-    resource: "https://saralprivacy.com/resources",
-    resourceLabel: "Download: Top 5 Gaps Checklist",
+  "Building Foundations": {
+    headline: "Download your free DPDPA Readiness Checklist",
+    body: "Good progress. Use this checklist to find remaining gaps and close them systematically. Focus on consistency across all your data channels and vendor agreements.",
+    href: "https://saralprivacy.com/white-paper",
+    label: "Download White Paper →",
   },
-  "Moving Well": {
-    label: "Moving Well",
-    headline: "Your free Vendor Data Processing Agreement template",
-    body: "You are ahead of most small businesses. The next level is tightening your vendor agreements. This template gives you the exact clauses to add to your contracts so your vendors handle data the right way.",
-    resource: "https://saralprivacy.com/resources",
-    resourceLabel: "Download: Vendor DPA Template",
+  "Progressing Well": {
+    headline: "Tighten your vendor agreements with our DPA template",
+    body: "You are ahead of most businesses. The next step is securing your vendor chain. This template gives you the exact data processing clauses to add to your contracts.",
+    href: "https://saralprivacy.com/white-paper",
+    label: "Download White Paper →",
+  },
+  "Operationally Strong": {
+    headline: "Book a review session to certify your controls",
+    body: "Strong readiness signals across all areas. A structured review with our experts will confirm your controls are audit-ready and identify any remaining edge-case gaps.",
+    href: "https://saralprivacy.com/contact",
+    label: "Book Expert Review →",
   },
 };
 
 export function surveyResultEmailTemplate(data: SurveyResultData): { subject: string; html: string } {
-  const resource = BAND_RESOURCES[data.band] || BAND_RESOURCES["Just Starting"];
-  const subject  = `Your DPDPA Readiness Score: ${data.score}/7 — ${resource.label}`;
+  const bandColor = BAND_COLOR[data.band] ?? SAFFRON;
+  const cta       = BAND_CTA[data.band] ?? BAND_CTA["Early Stage"];
+  const subject   = `Your DPDPA Readiness Score: ${data.score}/100 — ${data.band}`;
 
-  const recsHtml = data.recommendations
+  // Score progress bar (600px email = 536px body content)
+  const barWidth  = Math.max(4, Math.round(data.score * 5.36));
+
+  // Answers summary rows
+  const answersHtml = data.answerSummary
+    .map(row => `
+      <tr>
+        <td style="padding:7px 12px 7px 0;font-size:12px;color:${MUTED};vertical-align:top;width:200px;border-bottom:1px solid #F1F5F9;">${row.question}</td>
+        <td style="padding:7px 0;font-size:12px;color:${TEXT};font-weight:500;vertical-align:top;border-bottom:1px solid #F1F5F9;">${row.answer}</td>
+      </tr>`)
+    .join("");
+
+  // Key steps rows
+  const stepsHtml = data.recommendations
     .map((rec, i) => `
       <tr>
-        <td style="padding:8px 0;vertical-align:top;">
+        <td style="padding:10px 0;vertical-align:top;">
           <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
-            <td style="width:26px;vertical-align:top;padding-top:2px;">
-              <div style="width:22px;height:22px;background-color:${SAFFRON};border-radius:50%;text-align:center;line-height:22px;">
+            <td style="width:28px;vertical-align:top;padding-top:1px;">
+              <div style="width:24px;height:24px;background-color:${NAV};border-radius:50%;text-align:center;line-height:24px;">
                 <span style="color:#fff;font-size:11px;font-weight:700;">${i + 1}</span>
               </div>
             </td>
@@ -394,47 +420,74 @@ export function surveyResultEmailTemplate(data: SurveyResultData): { subject: st
       </tr>`)
     .join("");
 
+  // Red flags
   const riskHtml = data.riskFlags.length > 0
-    ? `<div style="background:#FEF2F2;border-left:3px solid #EF4444;padding:14px 16px;border-radius:0 8px 8px 0;margin-bottom:20px;">
-        <p style="margin:0 0 8px;font-size:13px;font-weight:700;color:#991B1B;">⚠ Higher-risk areas to address</p>
+    ? `
+      <div style="background:#FEF2F2;border-left:3px solid #DC2626;padding:14px 16px;border-radius:0 8px 8px 0;margin-bottom:24px;">
+        <p style="margin:0 0 8px;font-size:12px;font-weight:700;color:#991B1B;text-transform:uppercase;letter-spacing:0.5px;">⚠ Risk flags detected</p>
         <ul style="margin:0;padding-left:18px;">
-          ${data.riskFlags.map(f => `<li style="font-size:12px;color:#B91C1C;padding:2px 0;">${f}</li>`).join("")}
+          ${data.riskFlags.map(f => `<li style="font-size:12px;color:#B91C1C;padding:3px 0;line-height:1.5;">${f}</li>`).join("")}
         </ul>
       </div>`
     : "";
 
+  const greeting = data.name ? `Hi ${data.name}` : "Hi there";
+  const businessLine = data.businessName
+    ? `<p style="margin:0 0 24px;font-size:13px;color:${MUTED};">Business: <strong style="color:${TEXT};">${data.businessName}</strong></p>`
+    : "";
+
   const html = baseLayout(`
-    <p style="margin:0 0 4px;font-size:12px;color:${MUTED};text-transform:uppercase;letter-spacing:0.5px;">Your DPDPA Readiness Score</p>
-    <h2 style="margin:0 0 20px;font-size:22px;font-weight:700;color:${NAV};">Hi ${data.name || "there"} 👋</h2>
+    <p style="margin:0 0 4px;font-size:12px;color:${MUTED};text-transform:uppercase;letter-spacing:0.5px;">DPDPA Readiness Assessment — Your Report</p>
+    <h2 style="margin:0 0 6px;font-size:22px;font-weight:700;color:${NAV};">${greeting} 👋</h2>
+    ${businessLine}
 
-    <!-- Score -->
-    <div style="background-color:${LIGHT_BG};border-radius:12px;padding:24px;text-align:center;margin-bottom:20px;">
-      <div style="font-size:56px;font-weight:800;color:${SAFFRON};line-height:1;">${data.score}</div>
-      <div style="font-size:16px;color:#666;margin-top:2px;">out of 7</div>
-      <div style="display:inline-block;background-color:${SAFFRON};color:#fff;font-size:12px;font-weight:700;padding:4px 14px;border-radius:20px;margin-top:10px;">${data.band}</div>
+    <!-- Score block -->
+    <div style="background-color:${LIGHT_BG};border-radius:12px;padding:24px;margin-bottom:24px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td style="vertical-align:middle;">
+            <div style="font-size:52px;font-weight:800;color:${bandColor};line-height:1;">${data.score}</div>
+            <div style="font-size:14px;color:${MUTED};margin-top:2px;">out of 100</div>
+          </td>
+          <td style="vertical-align:middle;text-align:right;padding-left:20px;">
+            <div style="display:inline-block;background-color:${bandColor};color:#fff;font-size:12px;font-weight:700;padding:5px 14px;border-radius:20px;">${data.band.toUpperCase()}</div>
+          </td>
+        </tr>
+      </table>
+      <!-- Progress bar -->
+      <div style="margin-top:16px;background-color:#E2E8F0;border-radius:4px;height:8px;overflow:hidden;">
+        <div style="height:8px;width:${barWidth}px;background-color:${bandColor};border-radius:4px;"></div>
+      </div>
+      <p style="margin:12px 0 0;font-size:13px;color:${TEXT};line-height:1.6;">${data.summary}</p>
     </div>
-
-    <p style="margin:0 0 20px;font-size:14px;color:${TEXT};line-height:1.7;">${data.summary}</p>
 
     ${riskHtml}
 
-    ${divider()}
-
-    <p style="margin:0 0 12px;font-size:13px;font-weight:700;color:${NAV};">3 things to do this week</p>
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-      ${recsHtml}
+    <!-- Answers summary -->
+    <p style="margin:0 0 10px;font-size:13px;font-weight:700;color:${NAV};">Your responses</p>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:24px;">
+      ${answersHtml}
     </table>
 
     ${divider()}
 
-    <!-- Resource CTA -->
-    <p style="margin:0 0 8px;font-size:13px;font-weight:700;color:${NAV};">${resource.headline}</p>
-    <p style="margin:0 0 16px;font-size:13px;color:${TEXT};line-height:1.6;">${resource.body}</p>
+    <!-- Key steps -->
+    <p style="margin:0 0 4px;font-size:13px;font-weight:700;color:${NAV};">Key steps to improve your score</p>
+    <p style="margin:0 0 12px;font-size:12px;color:${MUTED};">Focus on these actions first — they have the highest impact on your readiness score.</p>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:24px;">
+      ${stepsHtml}
+    </table>
 
-    <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:20px;">
+    ${divider()}
+
+    <!-- Band-specific resource CTA -->
+    <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:${NAV};">${cta.headline}</p>
+    <p style="margin:0 0 16px;font-size:13px;color:${TEXT};line-height:1.6;">${cta.body}</p>
+
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:12px;">
       <tr>
-        <td style="background-color:${SAFFRON};border-radius:8px;padding:12px 24px;">
-          <a href="${resource.resource}" style="color:#FFFFFF;font-size:13px;font-weight:700;text-decoration:none;">${resource.resourceLabel} →</a>
+        <td style="background-color:${bandColor};border-radius:8px;padding:12px 24px;">
+          <a href="${cta.href}" style="color:#FFFFFF;font-size:13px;font-weight:700;text-decoration:none;">${cta.label}</a>
         </td>
       </tr>
     </table>
@@ -442,13 +495,13 @@ export function surveyResultEmailTemplate(data: SurveyResultData): { subject: st
     <table role="presentation" cellpadding="0" cellspacing="0" border="0">
       <tr>
         <td style="background-color:${NAV};border-radius:8px;padding:12px 24px;">
-          <a href="https://saralprivacy.com/contact" style="color:#FFFFFF;font-size:13px;font-weight:600;text-decoration:none;">Book a free consultation →</a>
+          <a href="https://saralprivacy.com/contact" style="color:#FFFFFF;font-size:13px;font-weight:600;text-decoration:none;">Book a free expert consultation →</a>
         </td>
       </tr>
     </table>
 
-    <p style="margin:20px 0 0;font-size:11px;color:${MUTED};line-height:1.6;">
-      You received this because you requested your DPDPA Readiness Score on SaralPrivacy.
+    <p style="margin:24px 0 0;font-size:11px;color:${MUTED};line-height:1.6;">
+      You received this report because you completed the DPDPA Readiness Assessment at SaralPrivacy and consented to report delivery.
       <a href="https://saralprivacy.com/consent-preferences" style="color:${MUTED};">Manage preferences</a>.
     </p>
   `);

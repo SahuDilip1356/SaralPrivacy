@@ -69,6 +69,7 @@ export async function POST(request: NextRequest) {
         summary:      score.summary,
         recommendations: score.recommendations || [],
         riskFlags:    score.riskFlags || [],
+        answerSummary: [],
       }).catch(err => {
         console.error("[survey] Follow-up email failed:", err);
       });

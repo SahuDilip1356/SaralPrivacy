@@ -1,7 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PRIVACY_NOTICE_VERSION } from "@/lib/utils";
 import { databases, DB_ID, COLLECTIONS, ID } from "@/lib/appwrite";
-import { sendAssessmentAlert } from "@/lib/email";
+import { sendAssessmentAlert, sendSurveyResultEmail } from "@/lib/email";
+import { QUESTIONS } from "@/lib/data/dpdpa-assessment";
+
+function buildAnswerSummary(answers: Record<string, unknown>): Array<{ question: string; answer: string }> {
+  const result: Array<{ question: string; answer: string }> = [];
+  for (const q of QUESTIONS) {
+    const val = answers[q.key as keyof typeof answers];
+    if (!val) continue;
+    if (Array.isArray(val)) {
+      const texts = (val as string[])
+        .map((id) => q.options.find((o) => o.id === id)?.text)
+        .filter(Boolean) as string[];
+      if (texts.length) result.push({ question: q.text, answer: texts.join(", ") });
+    } else {
+      const opt = q.options.find((o) => o.id === val);
+      if (opt) result.push({ question: q.text, answer: opt.text });
+    }
+  }
+  return result;
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -101,6 +120,21 @@ export async function POST(request: NextRequest) {
     sendAssessmentAlert(assessmentData).catch((err) =>
       console.error("sendAssessmentAlert error:", err)
     );
+
+    // Send personalised report email to user when they consented to report delivery
+    if (consentReport && email) {
+      sendSurveyResultEmail({
+        email,
+        name: name ?? "",
+        businessName: business ?? "",
+        score: result?.finalScore ?? 0,
+        band: result?.verdictBand ?? "Early Stage",
+        summary: result?.verdictDescription ?? "",
+        recommendations: result?.immediateActions ?? [],
+        riskFlags: result?.redFlagsTriggered ?? [],
+        answerSummary: buildAnswerSummary((answers as Record<string, unknown>) ?? {}),
+      }).catch((err) => console.error("sendSurveyResultEmail error:", err));
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {
