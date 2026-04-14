@@ -636,9 +636,9 @@ export default function SurveyClient() {
           report_type: branch,
           answers,
           result,
-          consentReport: consentDelivery,
-          consentNewsletter: consentNL,
-          consentFollowup: consentFU,
+          consentReport,
+          consentNewsletter,
+          consentFollowup,
         }),
       });
     } catch { /* non-blocking */ }
