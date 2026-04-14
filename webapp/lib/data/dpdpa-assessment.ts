@@ -98,15 +98,15 @@ export interface VerdictBand {
 
 export const VERDICT_BANDS: VerdictBand[] = [
   {
-    min: 0, max: 24,
+    min: 0, max: 20,
     label: "Not Started",
-    color: "#EF4444",
-    tailwind: "bg-red-500",
+    color: "#DC2626",
+    tailwind: "bg-red-600",
     textClass: "text-red-600",
     description: "Your business shows high exposure or very weak controls. Immediate action is needed on the fundamentals before your risk compounds.",
   },
   {
-    min: 25, max: 44,
+    min: 21, max: 40,
     label: "Early Stage",
     color: "#F97316",
     tailwind: "bg-orange-500",
@@ -114,7 +114,7 @@ export const VERDICT_BANDS: VerdictBand[] = [
     description: "You have some awareness of DPDPA obligations but important gaps remain. A focused 30-day effort will close most of the critical gaps.",
   },
   {
-    min: 45, max: 64,
+    min: 41, max: 60,
     label: "Building Foundations",
     color: "#EAB308",
     tailwind: "bg-yellow-500",
@@ -122,7 +122,7 @@ export const VERDICT_BANDS: VerdictBand[] = [
     description: "Basic elements exist but are not applied consistently across your business. Focus on ownership, consent, and operational readiness.",
   },
   {
-    min: 65, max: 79,
+    min: 61, max: 80,
     label: "Progressing Well",
     color: "#86EFAC",
     tailwind: "bg-green-300",
@@ -130,7 +130,7 @@ export const VERDICT_BANDS: VerdictBand[] = [
     description: "Good momentum and some operational maturity. Tighten documentation, vendor controls, and test your incident response.",
   },
   {
-    min: 80, max: 100,
+    min: 81, max: 100,
     label: "Operationally Strong",
     color: "#22C55E",
     tailwind: "bg-green-500",
@@ -241,7 +241,7 @@ export const QUESTIONS: QuestionDef[] = [
     text: "Which of these are already in place in your business?",
     subtext: "Select all that apply.",
     type: "multi",
-    mutuallyExclusive: ["none", "not-sure"],
+    mutuallyExclusive: ["none"],
     options: [
       { id: "privacy-notice",   text: "Privacy notice on website or forms" },
       { id: "consent-capture",  text: "Consent capture" },
@@ -251,8 +251,7 @@ export const QUESTIONS: QuestionDef[] = [
       { id: "incident-response",text: "Incident / breach response process" },
       { id: "privacy-owner",    text: "One person owns privacy / compliance" },
       { id: "data-inventory",   text: "Data inventory / mapping" },
-      { id: "none",             text: "None of these" },
-      { id: "not-sure",         text: "Not sure" },
+      { id: "none",             text: "None of these / Not sure" },
     ],
   },
 
@@ -267,6 +266,7 @@ export const QUESTIONS: QuestionDef[] = [
       { id: "no-process",   text: "Not handled" },
       { id: "manual",       text: "Handled manually if asked" },
       { id: "partial",      text: "Partially defined" },
+      { id: "defined",      text: "Process defined but not operationalised" },
       { id: "operational",  text: "Documented and operational" },
     ],
   },
@@ -417,7 +417,7 @@ function scoreQ6(answers: string[]): number {
 
 function scoreQ7(answer: string): number {
   const map: Record<string, number> = {
-    "no-process": 0, "manual": 3, "partial": 5, "operational": 10,
+    "no-process": 0, "manual": 3, "partial": 5, "defined": 7, "operational": 10,
   };
   return map[answer] ?? 0;
 }

@@ -74,7 +74,7 @@ function SidebarNav({ step, result }: { step: number; result: DPDPAScoreResult |
 
 function ProgressBar({ step, total }: { step: number; total: number }) {
   const pct = Math.round((step / total) * 100);
-  const labels = ["Q1", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7", "Q8", "Q9", "Q10"];
+  const labels = ["S1", "S2", "S3", "S4", "S5", "S6", "S7"];
   return (
     <div className="mb-6">
       <div className="flex items-center justify-between text-xs text-slate-500 mb-2">
@@ -120,10 +120,10 @@ function SpeedometerGauge({ score, color }: { score: number; color: string }) {
   }
 
   const bands = [
-    { from: 0,   to: 24,  color: "#EF4444" },
-    { from: 25,  to: 44,  color: "#F97316" },
-    { from: 45,  to: 64,  color: "#EAB308" },
-    { from: 65,  to: 79,  color: "#86EFAC" },
+    { from: 0,   to: 20,  color: "#DC2626" },
+    { from: 20,  to: 40,  color: "#F97316" },
+    { from: 40,  to: 60,  color: "#EAB308" },
+    { from: 60,  to: 80,  color: "#86EFAC" },
     { from: 80,  to: 100, color: "#22C55E" },
   ];
 
@@ -211,114 +211,138 @@ function CategoryBar({ label, score }: { label: string; score: number }) {
   );
 }
 
-// ── Single Select (button cards with radio dot) ───────────────────────────────
+// ── Option Icons ──────────────────────────────────────────────────────────────
 
-function QuestionSingle({
-  options, selected, onChange,
+const OPTION_ICONS: Record<string, string> = {
+  // Q1 Sector
+  "manufacturing": "🏭", "trading": "📦", "professional-services": "💼",
+  "it-saas": "💻", "ecommerce": "🛒", "healthcare": "🏥",
+  "financial-services": "🏦", "other": "🏢",
+  // Q2 Footprint
+  "one-city": "🏙", "one-state": "📍", "multi-state": "🗺",
+  "pan-india": "🇮🇳", "india-plus": "🌏",
+  // Q3 Digital data
+  "yes-regularly": "🔄", "yes-sometimes": "📊", "very-little": "📉",
+  "no": "🚫", "not-sure": "❓",
+  // Q4 Data types
+  "customer-data": "👥", "employee-data": "👤", "vendor-data": "🤝",
+  "leads-data": "📋", "financial-kyc": "💳", "cctv-biometric": "📷",
+  "health-children": "🏥",
+  // Q5 Storage
+  "whatsapp-email": "💬", "excel-sheets": "📊", "shared-drives": "☁️",
+  "website-forms": "🌐", "erp-crm": "🖥", "accounting": "💰",
+  "saas-tools": "⚙️", "paper-digitised": "📄",
+  // Q6 Controls
+  "privacy-notice": "📢", "consent-capture": "✅", "access-controls": "🔐",
+  "retention": "🗑", "vendor-clauses": "📝", "incident-response": "🚨",
+  "privacy-owner": "👤", "data-inventory": "🗂", "none": "❌",
+  // Q7 Rights
+  "no-process": "❌", "manual": "✋", "partial": "📋",
+  "defined": "🔧", "operational": "✅",
+  // Q8 Consent
+  "no-ask": "❌", "implied": "🗣", "generic": "📄",
+  "inconsistent": "⚠️", "clear": "✅",
+  // Q9 Ownership
+  "no-owner": "❌", "founder": "👨‍💼", "ops-admin": "⚙️",
+  "legal-hr": "⚖️", "shared-team": "👥",
+  // Q10 Readiness
+  "not-started": "🔴", "aware": "🟡", "first-actions": "🟠",
+  "basic-structure": "🟢", "mostly-prepared": "✅",
+  // Q12 Resources
+  "checklist": "✅", "notice-template": "📢", "consent-template": "📝",
+  "vendor-checklist": "🔍", "awareness-kit": "📚", "consultation": "💬",
+};
+
+// Badge text shortened for 4-col narrow cards
+const BADGE_SHORT: Record<string, string> = {
+  "CRITICAL CLASSIFICATION": "CRITICAL",
+  "HIGHER REGULATION": "REGULATED",
+  "HIGH FREQUENCY": "FREQUENT",
+  "NEEDS REVIEW": "REVIEW",
+  "HIGHER COMPLEXITY": "COMPLEX",
+};
+
+// ── Universal Card Grid (single + multi) ─────────────────────────────────────
+
+function QuestionCardGrid({
+  options, mode, columns, selected, onChange, mutuallyExclusive = [],
 }: {
   options: { id: string; text: string; badge?: string; badgeColor?: string }[];
-  selected: string | undefined;
-  onChange: (id: string) => void;
-}) {
-  const badgeClass = (c?: string) =>
-    c === "red" ? "bg-red-100 text-red-700" :
-    c === "amber" ? "bg-amber-100 text-amber-700" :
-    c === "green" ? "bg-green-100 text-green-700" : "bg-slate-100 text-slate-600";
-
-  return (
-    <div className="space-y-2.5">
-      {options.map((opt) => (
-        <button
-          key={opt.id}
-          type="button"
-          onClick={() => onChange(opt.id)}
-          className={cn(
-            "w-full text-left flex items-center justify-between px-4 py-3.5 rounded-xl border-2 transition-all text-base font-medium",
-            selected === opt.id
-              ? "border-green-500 bg-green-50 text-navy-900"
-              : "border-slate-200 text-slate-700 hover:border-slate-400 hover:bg-slate-50"
-          )}
-        >
-          <div className="flex items-center gap-3">
-            <div className={cn(
-              "w-4 h-4 rounded-full border-2 shrink-0 flex items-center justify-center transition-all",
-              selected === opt.id ? "border-green-500 bg-green-500" : "border-slate-300"
-            )}>
-              {selected === opt.id && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
-            </div>
-            <span>{opt.text}</span>
-          </div>
-          {opt.badge && (
-            <span className={cn("text-xs font-semibold px-2 py-0.5 rounded-full ml-2 shrink-0", badgeClass(opt.badgeColor))}>
-              {opt.badge}
-            </span>
-          )}
-        </button>
-      ))}
-    </div>
-  );
-}
-
-// ── Multi-Select: Toggle Pill Grid ────────────────────────────────────────────
-
-function QuestionMultiPills({
-  options, selected, onChange, mutuallyExclusive = [],
-}: {
-  options: { id: string; text: string; badge?: string; badgeColor?: string }[];
-  selected: string[];
-  onChange: (ids: string[]) => void;
+  mode: "single" | "multi";
+  columns: 2 | 4;
+  selected: string | string[] | undefined;
+  onChange: (val: string | string[]) => void;
   mutuallyExclusive?: string[];
 }) {
-  const badgeClass = (c?: string) =>
-    c === "red" ? "bg-red-100 text-red-700" :
+  const isSelected = (id: string): boolean =>
+    mode === "single"
+      ? selected === id
+      : Array.isArray(selected) && selected.includes(id);
+
+  const handleClick = (id: string) => {
+    if (mode === "single") {
+      (onChange as (v: string) => void)(id);
+      return;
+    }
+    const sel = (Array.isArray(selected) ? selected : []) as string[];
+    if (mutuallyExclusive.includes(id)) {
+      (onChange as (v: string[]) => void)(sel.includes(id) ? [] : [id]);
+      return;
+    }
+    const filtered = sel.filter(s => !mutuallyExclusive.includes(s));
+    (onChange as (v: string[]) => void)(
+      filtered.includes(id) ? filtered.filter(s => s !== id) : [...filtered, id]
+    );
+  };
+
+  const badgeColor = (c?: string) =>
+    c === "red"   ? "bg-red-100 text-red-700" :
     c === "amber" ? "bg-amber-100 text-amber-700" :
     c === "green" ? "bg-green-100 text-green-700" : "bg-slate-100 text-slate-600";
 
-  const toggle = (id: string) => {
-    if (mutuallyExclusive.includes(id)) {
-      onChange(selected.includes(id) ? [] : [id]);
-      return;
-    }
-    const filtered = selected.filter(s => !mutuallyExclusive.includes(s));
-    if (filtered.includes(id)) {
-      onChange(filtered.filter(s => s !== id));
-    } else {
-      onChange([...filtered, id]);
-    }
-  };
+  const gridClass = columns === 4
+    ? "grid grid-cols-2 sm:grid-cols-4 gap-3"
+    : "grid grid-cols-2 gap-3";
 
   return (
-    <div className="grid grid-cols-2 gap-2.5">
-      {options.map((opt) => {
-        const isSelected = selected.includes(opt.id);
+    <div className={gridClass}>
+      {options.map((opt, idx) => {
+        const sel = isSelected(opt.id);
+        // For 4-col with odd count: last lone item starts at col 2 to center
+        const isLone = columns === 4 && options.length % 4 !== 0 && idx === options.length - 1 && options.length % 2 !== 0;
+        const badgeLabel = columns === 4 && opt.badge ? (BADGE_SHORT[opt.badge] ?? opt.badge) : opt.badge;
         return (
           <button
             key={opt.id}
             type="button"
-            onClick={() => toggle(opt.id)}
+            onClick={() => handleClick(opt.id)}
             className={cn(
-              "text-left px-4 py-3 rounded-xl border-2 transition-all text-base font-medium",
-              isSelected
-                ? "border-green-500 bg-navy-950 text-white"
-                : "border-slate-200 text-slate-700 hover:border-slate-400 hover:bg-slate-50"
+              "relative flex flex-col items-center justify-start gap-2 p-4 rounded-xl border-2 transition-all text-center min-h-[100px]",
+              isLone && "sm:col-start-2",
+              sel
+                ? "border-navy-950 bg-navy-950 text-white"
+                : "border-slate-200 bg-white text-slate-700 hover:border-navy-300 hover:bg-slate-50"
             )}
           >
-            <div className="flex items-start gap-2">
-              <div className={cn(
-                "w-4 h-4 rounded border-2 shrink-0 mt-0.5 flex items-center justify-center transition-all",
-                isSelected ? "border-green-400 bg-green-400" : "border-slate-600"
+            {sel && (
+              <div className="absolute top-2 right-2 w-4 h-4 rounded-full bg-green-400 flex items-center justify-center">
+                <CheckCircle size={10} className="text-white" />
+              </div>
+            )}
+            <span className="text-2xl leading-none mt-1" aria-hidden="true">
+              {OPTION_ICONS[opt.id] ?? "📌"}
+            </span>
+            <span className={cn("text-xs font-semibold leading-snug", sel ? "text-white" : "text-slate-700")}>
+              {opt.text}
+            </span>
+            {badgeLabel && (
+              <span className={cn(
+                "text-[9px] font-bold px-1.5 py-0.5 rounded-full leading-none",
+                sel ? "bg-white/20 text-white" : badgeColor(opt.badgeColor)
               )}>
-                {isSelected && <CheckCircle size={10} className="text-white" />}
-              </div>
-              <div>
-                <div>{opt.text}</div>
-                {opt.badge && (
-                  <span className={cn("text-xs font-semibold px-1.5 py-0.5 rounded mt-1 inline-block", badgeClass(opt.badgeColor))}>
-                    {opt.badge}
-                  </span>
-                )}
-              </div>
-            </div>
+                {badgeLabel}
+              </span>
+            )}
           </button>
         );
       })}
@@ -326,21 +350,12 @@ function QuestionMultiPills({
   );
 }
 
-// ── Multi-Select: Grouped Checklist Cards (Q6) ────────────────────────────────
+// ── Multi-Select: Grouped Cards (Q6) ─────────────────────────────────────────
 
 const Q6_GROUPS = [
-  {
-    label: "TRANSPARENCY & CONSENT",
-    ids: ["privacy-notice", "consent-capture"],
-  },
-  {
-    label: "INTERNAL CONTROLS",
-    ids: ["access-controls", "retention"],
-  },
-  {
-    label: "GOVERNANCE & RESPONSE",
-    ids: ["vendor-clauses", "incident-response", "privacy-owner", "data-inventory"],
-  },
+  { label: "TRANSPARENCY & CONSENT",  ids: ["privacy-notice", "consent-capture"] },
+  { label: "INTERNAL CONTROLS",       ids: ["access-controls", "retention"] },
+  { label: "GOVERNANCE & RESPONSE",   ids: ["vendor-clauses", "incident-response", "privacy-owner", "data-inventory"] },
 ];
 
 function QuestionMultiCards({
@@ -351,19 +366,14 @@ function QuestionMultiCards({
   onChange: (ids: string[]) => void;
 }) {
   const optMap = Object.fromEntries(options.map(o => [o.id, o]));
-  const EXCLUSIVE = ["none", "not-sure"];
 
   const toggle = (id: string) => {
-    if (EXCLUSIVE.includes(id)) {
-      onChange(selected.includes(id) ? [] : [id]);
+    if (id === "none") {
+      onChange(selected.includes("none") ? [] : ["none"]);
       return;
     }
-    const filtered = selected.filter(s => !EXCLUSIVE.includes(s));
-    if (filtered.includes(id)) {
-      onChange(filtered.filter(s => s !== id));
-    } else {
-      onChange([...filtered, id]);
-    }
+    const filtered = selected.filter(s => s !== "none");
+    onChange(filtered.includes(id) ? filtered.filter(s => s !== id) : [...filtered, id]);
   };
 
   return (
@@ -371,30 +381,34 @@ function QuestionMultiCards({
       {Q6_GROUPS.map((group) => (
         <div key={group.label}>
           <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">{group.label}</div>
-          <div className="space-y-2">
+          <div className="grid grid-cols-2 gap-2">
             {group.ids.map((id) => {
               const opt = optMap[id];
               if (!opt) return null;
-              const isSelected = selected.includes(id);
+              const isSel = selected.includes(id);
               return (
                 <button
                   key={id}
                   type="button"
                   onClick={() => toggle(id)}
                   className={cn(
-                    "w-full text-left flex items-center gap-3 px-4 py-3 rounded-xl border-2 transition-all text-base",
-                    isSelected
-                      ? "border-green-500 bg-green-50 text-navy-900"
-                      : "border-slate-200 text-slate-700 hover:border-slate-400 hover:bg-slate-50"
+                    "relative flex flex-col items-center justify-start gap-2 p-3 rounded-xl border-2 transition-all text-center min-h-[90px]",
+                    isSel
+                      ? "border-navy-950 bg-navy-950 text-white"
+                      : "border-slate-200 bg-white text-slate-700 hover:border-navy-300 hover:bg-slate-50"
                   )}
                 >
-                  <div className={cn(
-                    "w-4 h-4 rounded border-2 shrink-0 flex items-center justify-center transition-all",
-                    isSelected ? "border-green-400 bg-green-400" : "border-slate-600"
-                  )}>
-                    {isSelected && <CheckCircle size={10} className="text-white" />}
-                  </div>
-                  {opt.text}
+                  {isSel && (
+                    <div className="absolute top-2 right-2 w-4 h-4 rounded-full bg-green-400 flex items-center justify-center">
+                      <CheckCircle size={10} className="text-white" />
+                    </div>
+                  )}
+                  <span className="text-xl leading-none mt-1" aria-hidden="true">
+                    {OPTION_ICONS[id] ?? "📌"}
+                  </span>
+                  <span className={cn("text-xs font-semibold leading-snug", isSel ? "text-white" : "text-slate-700")}>
+                    {opt.text}
+                  </span>
                 </button>
               );
             })}
@@ -402,100 +416,29 @@ function QuestionMultiCards({
         </div>
       ))}
 
-      {/* Mutually exclusive footer */}
-      <div className="grid grid-cols-2 gap-3 pt-2 border-t border-slate-200">
-        {["none", "not-sure"].map((id) => {
-          const opt = optMap[id];
+      {/* Single merged footer option */}
+      <div className="pt-2 border-t border-slate-200">
+        {(() => {
+          const opt = optMap["none"];
           if (!opt) return null;
-          const isSelected = selected.includes(id);
+          const isSel = selected.includes("none");
           return (
             <button
-              key={id}
               type="button"
-              onClick={() => toggle(id)}
+              onClick={() => toggle("none")}
               className={cn(
-                "text-center py-2.5 px-4 rounded-xl border-2 text-xs font-semibold transition-all",
-                isSelected
-                  ? "border-slate-400 bg-slate-700 text-white"
+                "w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border-2 text-xs font-semibold transition-all",
+                isSel
+                  ? "border-navy-950 bg-navy-950 text-white"
                   : "border-slate-200 text-slate-500 hover:border-slate-400 hover:text-slate-700"
               )}
             >
+              <span aria-hidden="true">❌</span>
               {opt.text.toUpperCase()}
             </button>
           );
-        })}
+        })()}
       </div>
-    </div>
-  );
-}
-
-// ── Maturity Grid (Q7, Q8) ────────────────────────────────────────────────────
-
-function MaturityGrid({
-  options, selected, onChange,
-}: {
-  options: { id: string; text: string; badge?: string }[];
-  selected: string | undefined;
-  onChange: (id: string) => void;
-}) {
-  return (
-    <div className="grid grid-cols-2 gap-3">
-      {options.map((opt, i) => (
-        <button
-          key={opt.id}
-          type="button"
-          onClick={() => onChange(opt.id)}
-          className={cn(
-            "text-left p-4 rounded-xl border-2 transition-all",
-            selected === opt.id
-              ? "border-green-500 bg-navy-950 text-white"
-              : "border-slate-200 text-slate-700 hover:border-slate-400 hover:bg-slate-50"
-          )}
-        >
-          <div className="text-base font-medium leading-snug">{opt.text}</div>
-          {selected === opt.id && (
-            <div className="mt-2 flex items-center gap-1 text-green-400 text-xs font-semibold">
-              <CheckCircle size={12} /> Selected
-            </div>
-          )}
-        </button>
-      ))}
-    </div>
-  );
-}
-
-// ── Horizontal Readiness Scale (Q10) ─────────────────────────────────────────
-
-function ReadinessScale({
-  options, selected, onChange,
-}: {
-  options: { id: string; text: string }[];
-  selected: string | undefined;
-  onChange: (id: string) => void;
-}) {
-  return (
-    <div className="space-y-2">
-      {options.map((opt, i) => (
-        <button
-          key={opt.id}
-          type="button"
-          onClick={() => onChange(opt.id)}
-          className={cn(
-            "w-full text-left flex items-center gap-4 px-4 py-3 rounded-xl border-2 transition-all",
-            selected === opt.id
-              ? "border-green-500 bg-green-50 text-navy-900"
-              : "border-slate-200 text-slate-700 hover:border-slate-400 hover:bg-slate-50"
-          )}
-        >
-          <div className={cn(
-            "w-7 h-7 rounded-full border-2 shrink-0 flex items-center justify-center text-xs font-bold transition-all",
-            selected === opt.id ? "border-green-500 bg-green-500 text-white" : "border-slate-300 text-slate-400"
-          )}>
-            {i + 1}
-          </div>
-          <span className="text-base font-medium">{opt.text}</span>
-        </button>
-      ))}
     </div>
   );
 }
@@ -846,10 +789,12 @@ export default function SurveyClient() {
                   <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0">1</span>
                   <span className="text-navy-800 font-semibold text-base">Which sector best describes your business?</span>
                 </div>
-                <QuestionSingle
+                <QuestionCardGrid
                   options={QUESTIONS[0].options}
+                  mode="single"
+                  columns={4}
                   selected={answers.q1_sector}
-                  onChange={(id) => setAnswer("q1_sector", id)}
+                  onChange={(v) => setAnswer("q1_sector", v as string)}
                 />
                 {answers.q1_sector === "other" && (
                   <div className="mt-3">
@@ -870,10 +815,12 @@ export default function SurveyClient() {
                   <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0">2</span>
                   <span className="text-navy-800 font-semibold text-base">Where do you mainly operate?</span>
                 </div>
-                <QuestionSingle
+                <QuestionCardGrid
                   options={QUESTIONS[1].options}
+                  mode="single"
+                  columns={4}
                   selected={answers.q2_footprint}
-                  onChange={(id) => setAnswer("q2_footprint", id)}
+                  onChange={(v) => setAnswer("q2_footprint", v as string)}
                 />
               </div>
             </div>
@@ -884,17 +831,15 @@ export default function SurveyClient() {
             <div className="space-y-6">
               <div>
                 <div className="text-xs font-bold text-green-600 uppercase tracking-widest mb-2">DATA EXPOSURE PROFILE</div>
-                <h2 className="text-3xl font-bold text-navy-900 mb-1">Q3 / 10</h2>
-                <div className="bg-slate-100 rounded-xl p-4 mb-4">
-                  <div className="text-xs font-bold text-amber-600 uppercase tracking-wide mb-1">SYSTEM DIAGNOSTIC</div>
-                  <p className="text-navy-800 font-semibold text-sm">Where customer or employee data may be exposed in day-to-day operations</p>
-                  <p className="text-slate-500 text-xs mt-1">This helps estimate whether your privacy exposure is occasional, repeated, or embedded in regular business activity.</p>
-                </div>
+                <h2 className="text-3xl font-bold text-navy-900 mb-1">Does your business collect or store personal data digitally?</h2>
+                <p className="text-slate-500 text-sm">Even occasional digital data collection creates obligations under DPDPA if individuals are identifiable.</p>
               </div>
-              <QuestionSingle
+              <QuestionCardGrid
                 options={QUESTIONS[2].options}
+                mode="single"
+                columns={4}
                 selected={answers.q3_digital_data}
-                onChange={(id) => setAnswer("q3_digital_data", id)}
+                onChange={(v) => setAnswer("q3_digital_data", v as string)}
               />
             </div>
           )}
@@ -913,10 +858,12 @@ export default function SurveyClient() {
                   <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0">4</span>
                   <span className="text-navy-800 font-semibold text-base">What data do you handle? <span className="text-slate-500 text-xs font-normal">Select all that apply</span></span>
                 </div>
-                <QuestionMultiPills
+                <QuestionCardGrid
                   options={QUESTIONS[3].options}
+                  mode="multi"
+                  columns={2}
                   selected={answers.q4_data_types ?? []}
-                  onChange={(ids) => setAnswer("q4_data_types", ids)}
+                  onChange={(v) => setAnswer("q4_data_types", v as string[])}
                   mutuallyExclusive={["not-sure"]}
                 />
               </div>
@@ -926,10 +873,12 @@ export default function SurveyClient() {
                   <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0">5</span>
                   <span className="text-navy-800 font-semibold text-base">Where is this data usually stored? <span className="text-slate-500 text-xs font-normal">Select all that apply</span></span>
                 </div>
-                <QuestionMultiPills
+                <QuestionCardGrid
                   options={QUESTIONS[4].options}
+                  mode="multi"
+                  columns={2}
                   selected={answers.q5_storage ?? []}
-                  onChange={(ids) => setAnswer("q5_storage", ids)}
+                  onChange={(v) => setAnswer("q5_storage", v as string[])}
                   mutuallyExclusive={["not-sure"]}
                 />
               </div>
@@ -970,10 +919,12 @@ export default function SurveyClient() {
                   <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0">7</span>
                   <span className="text-navy-800 font-semibold text-base">How well can your business handle requests to access, correct, or delete data?</span>
                 </div>
-                <MaturityGrid
+                <QuestionCardGrid
                   options={QUESTIONS[6].options}
+                  mode="single"
+                  columns={2}
                   selected={answers.q7_rights}
-                  onChange={(id) => setAnswer("q7_rights", id)}
+                  onChange={(v) => setAnswer("q7_rights", v as string)}
                 />
               </div>
 
@@ -983,10 +934,12 @@ export default function SurveyClient() {
                   <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0">8</span>
                   <span className="text-navy-800 font-semibold text-base">How does your business ask for permission before collecting personal data?</span>
                 </div>
-                <MaturityGrid
+                <QuestionCardGrid
                   options={QUESTIONS[7].options}
+                  mode="single"
+                  columns={2}
                   selected={answers.q8_consent}
-                  onChange={(id) => setAnswer("q8_consent", id)}
+                  onChange={(v) => setAnswer("q8_consent", v as string)}
                 />
               </div>
             </div>
@@ -1007,10 +960,12 @@ export default function SurveyClient() {
                   <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0">9</span>
                   <span className="text-navy-800 font-semibold text-base">Who is primarily responsible for privacy or data protection in your business today?</span>
                 </div>
-                <QuestionSingle
+                <QuestionCardGrid
                   options={QUESTIONS[8].options}
+                  mode="single"
+                  columns={4}
                   selected={answers.q9_ownership}
-                  onChange={(id) => setAnswer("q9_ownership", id)}
+                  onChange={(v) => setAnswer("q9_ownership", v as string)}
                 />
               </div>
 
@@ -1019,10 +974,12 @@ export default function SurveyClient() {
                   <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0">10</span>
                   <span className="text-navy-800 font-semibold text-base">Which statement best describes your current DPDPA readiness?</span>
                 </div>
-                <ReadinessScale
+                <QuestionCardGrid
                   options={QUESTIONS[9].options}
+                  mode="single"
+                  columns={4}
                   selected={answers.q10_readiness}
-                  onChange={(id) => setAnswer("q10_readiness", id)}
+                  onChange={(v) => setAnswer("q10_readiness", v as string)}
                 />
               </div>
             </div>
@@ -1057,10 +1014,12 @@ export default function SurveyClient() {
                   <span className="w-6 h-6 rounded-full bg-slate-600 text-slate-300 text-xs font-bold flex items-center justify-center shrink-0">12</span>
                   <span className="text-navy-800 font-semibold text-base">What would help you most right now? <span className="text-slate-400 font-normal text-xs">(Optional)</span></span>
                 </div>
-                <QuestionSingle
+                <QuestionCardGrid
                   options={QUESTIONS[11].options}
+                  mode="single"
+                  columns={4}
                   selected={answers.q12_resource}
-                  onChange={(id) => setAnswer("q12_resource", id)}
+                  onChange={(v) => setAnswer("q12_resource", v as string)}
                 />
               </div>
 
@@ -1094,20 +1053,28 @@ export default function SurveyClient() {
           </div>
         </div>
 
-        {/* Right context panel (shown on some steps) */}
-        {(step === 2 || step === 5 || step === 6) && (
-          <div className="hidden xl:block w-64 bg-slate-50 px-5 py-8 border-l border-slate-200 shrink-0">
-            <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">WHY THIS AFFECTS READINESS</div>
-            <p className="text-slate-600 text-xs leading-relaxed mb-5">
-              {step === 2 && "The DPDPA 2023 applies to any entity that processes digital personal data. Even occasional collection creates obligations under the Act if the data subject is identifiable."}
+        {/* Right context panel — all steps, dark navy */}
+        {step >= 1 && step <= 7 && (
+          <div className="hidden xl:block w-64 bg-navy-900 px-5 py-8 border-l border-navy-800 shrink-0">
+            <div className="text-xs font-bold text-green-400 uppercase tracking-widest mb-3">WHY THIS AFFECTS READINESS</div>
+            <p className="text-slate-300 text-xs leading-relaxed mb-5">
+              {step === 1 && "Your sector and scale determine which DPDPA obligations apply to you and at what threshold."}
+              {step === 2 && "The DPDPA 2023 applies to any entity that processes digital personal data. Even occasional collection creates obligations if the data subject is identifiable."}
+              {step === 3 && "Sensitive data categories attract significantly heavier penalties and mandatory security standards under DPDPA."}
+              {step === 4 && "Controls in place reduce your penalty exposure by up to 60% in the event of a data breach."}
               {step === 5 && "The DPDPA 2023 mandates that consent must be freely given, specific, and informed. Non-compliance may lead to significant regulatory scrutiny."}
               {step === 6 && "Accountability is the core of DPDPA. Without a clear owner, compliance efforts often stall, leaving the organisation exposed to significant regulatory risk."}
+              {step === 7 && "Your answers help us personalise your action plan — no scoring impact from these questions."}
             </p>
-            <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">WHAT STRONG TEAMS USUALLY DO</div>
-            <p className="text-slate-600 text-xs leading-relaxed">
-              {step === 2 && "Strong teams audit data collection points across all channels — not just the main website — and classify each by purpose and frequency."}
-              {step === 5 && "Strong teams maintain timestamped logs of every consent event and automate data rights fulfillment via self-service dashboards."}
+            <div className="text-xs font-bold text-green-400 uppercase tracking-widest mb-3">WHAT STRONG TEAMS USUALLY DO</div>
+            <p className="text-slate-300 text-xs leading-relaxed">
+              {step === 1 && "Strong teams map their regulatory profile by sector before starting any compliance work — it defines scope and priority."}
+              {step === 2 && "Strong teams audit data collection points across all channels and classify each by purpose and frequency."}
+              {step === 3 && "Strong teams track sensitive data separately, applying enhanced controls and dedicated access policies."}
+              {step === 4 && "Strong teams implement controls systematically, not reactively. They test them quarterly."}
+              {step === 5 && "Strong teams maintain timestamped logs of every consent event and automate data rights fulfillment."}
               {step === 6 && "Strong teams assign a named Data Protection Officer or Privacy Lead and link their responsibilities directly to business outcomes."}
+              {step === 7 && "Strong teams prioritise their top 3 gaps before expanding compliance scope — breadth without depth is ineffective."}
             </p>
           </div>
         )}
@@ -1363,8 +1330,8 @@ export default function SurveyClient() {
                 <Link href="/contact" className="px-6 py-3 bg-green-500 text-white font-bold rounded-xl text-sm hover:bg-green-400 transition-colors flex items-center justify-center gap-2">
                   Book expert consultation
                 </Link>
-                <Link href="/resources" className="px-6 py-3 bg-white/10 text-white font-bold rounded-xl text-sm hover:bg-white/20 transition-colors flex items-center justify-center gap-2">
-                  Download readiness checklist
+                <Link href="/white-paper" className="px-6 py-3 bg-white/10 text-white font-bold rounded-xl text-sm hover:bg-white/20 transition-colors flex items-center justify-center gap-2">
+                  Download White Paper
                 </Link>
               </div>
             </div>
