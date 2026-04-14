@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { CheckCircle, Search, ShieldAlert } from "lucide-react";
+import { CheckCircle, Search, ShieldAlert, Send } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -84,6 +84,23 @@ export default function AssessmentsPage() {
   const [assessments, setAssessments] = useState<any[]>([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
+  // Track per-row send state: "idle" | "sending" | "sent" | "error"
+  const [sendState, setSendState] = useState<Record<string, "idle" | "sending" | "sent" | "error">>({});
+
+  const sendReport = async (assessmentId: string) => {
+    setSendState(prev => ({ ...prev, [assessmentId]: "sending" }));
+    try {
+      const res = await fetch("/api/admin/send-report", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ assessmentId }),
+      });
+      const data = await res.json();
+      setSendState(prev => ({ ...prev, [assessmentId]: data.success ? "sent" : "error" }));
+    } catch {
+      setSendState(prev => ({ ...prev, [assessmentId]: "error" }));
+    }
+  };
 
   useEffect(() => {
     fetch("/api/admin/data?collection=assessments&limit=200")
@@ -196,6 +213,7 @@ export default function AssessmentsPage() {
                     "Type",
                     "Location",
                     "Date",
+                    "Action",
                   ].map((h) => (
                     <th key={h} className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase whitespace-nowrap">
                       {h}
@@ -281,6 +299,25 @@ export default function AssessmentsPage() {
                     {/* Date */}
                     <td className="px-4 py-3 text-slate-400 whitespace-nowrap text-xs">
                       {new Date(a.$createdAt).toLocaleDateString("en-IN")}
+                    </td>
+
+                    {/* Send Report */}
+                    <td className="px-4 py-3 whitespace-nowrap">
+                      {a.email && a.final_score > 0 ? (() => {
+                        const state = sendState[a.$id] ?? "idle";
+                        if (state === "sent") return <span className="text-xs text-green-600 font-semibold">Sent ✓</span>;
+                        if (state === "error") return <span className="text-xs text-red-500">Failed</span>;
+                        return (
+                          <button
+                            onClick={() => sendReport(a.$id)}
+                            disabled={state === "sending"}
+                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium bg-navy-50 text-navy-700 border border-navy-200 hover:bg-navy-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                          >
+                            <Send size={11} />
+                            {state === "sending" ? "Sending…" : "Send Report"}
+                          </button>
+                        );
+                      })() : <span className="text-xs text-slate-300">—</span>}
                     </td>
                   </tr>
                 ))}
