@@ -84,11 +84,13 @@ export default function AssessmentsPage() {
   const [assessments, setAssessments] = useState<any[]>([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
-  // Track per-row send state: "idle" | "sending" | "sent" | "error"
+  // Track per-row send state
   const [sendState, setSendState] = useState<Record<string, "idle" | "sending" | "sent" | "error">>({});
+  const [sendError, setSendError] = useState<Record<string, string>>({});
 
   const sendReport = async (assessmentId: string) => {
     setSendState(prev => ({ ...prev, [assessmentId]: "sending" }));
+    setSendError(prev => ({ ...prev, [assessmentId]: "" }));
     try {
       const res = await fetch("/api/admin/send-report", {
         method: "POST",
@@ -96,9 +98,15 @@ export default function AssessmentsPage() {
         body: JSON.stringify({ assessmentId }),
       });
       const data = await res.json();
-      setSendState(prev => ({ ...prev, [assessmentId]: data.success ? "sent" : "error" }));
-    } catch {
+      if (data.success) {
+        setSendState(prev => ({ ...prev, [assessmentId]: "sent" }));
+      } else {
+        setSendState(prev => ({ ...prev, [assessmentId]: "error" }));
+        setSendError(prev => ({ ...prev, [assessmentId]: data.error || "Unknown error" }));
+      }
+    } catch (err) {
       setSendState(prev => ({ ...prev, [assessmentId]: "error" }));
+      setSendError(prev => ({ ...prev, [assessmentId]: err instanceof Error ? err.message : "Network error" }));
     }
   };
 
@@ -306,7 +314,11 @@ export default function AssessmentsPage() {
                       {a.email && a.final_score > 0 ? (() => {
                         const state = sendState[a.$id] ?? "idle";
                         if (state === "sent") return <span className="text-xs text-green-600 font-semibold">Sent ✓</span>;
-                        if (state === "error") return <span className="text-xs text-red-500">Failed</span>;
+                        if (state === "error") return (
+                          <span className="text-xs text-red-500" title={sendError[a.$id] || "Unknown error"}>
+                            Failed — {sendError[a.$id] ? sendError[a.$id].slice(0, 40) : "check logs"}
+                          </span>
+                        );
                         return (
                           <button
                             onClick={() => sendReport(a.$id)}
