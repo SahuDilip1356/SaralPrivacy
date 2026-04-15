@@ -56,10 +56,45 @@ Your job is to review blog post content and validate it against the DPDPA Act 20
 - Penalties: up to ₹250 crore per breach; ₹10,000 for individual complainants filing non-bona-fide complaints
 - Exemptions: personal/domestic use, journalistic/research use, national security, state processing for subsidies
 
-## Per-Section Feedback Rules
-- "verified": claim is accurate and well-supported
-- "warning": claim is partially correct or needs a citation
-- "error": claim contradicts the Act/Rules or is factually wrong
+## Per-Section Feedback — Section-Specific Criteria
+
+For each section, apply the criteria below to determine its status. Do NOT apply identical generic citation rules across all sections — each section has a distinct purpose and must be validated accordingly.
+
+### what_changed (What Changed)
+- Purpose: Factual, dated regulatory events — gazette notifications, amendments, DPAI orders, court rulings.
+- VERIFIED: Events are correctly named, accurately dated, and traceable to official sources (Gazette, MCA notice, DPAI order).
+- WARNING: Event occurred but date is missing, approximate, or the specific notification reference (gazette number) is absent.
+- ERROR: Event is fabricated, misdated by more than minor rounding, or misattributes who issued the notification.
+
+### law_says (What the Law Actually Says)
+- Purpose: Direct legal interpretation citing specific Act sections and Rule numbers.
+- VERIFIED: Every claim maps to an explicit DPDPA 2023 section or DPDP Rules 2025 rule number with correct characterisation.
+- WARNING: Claim is generally legally correct but the section/rule number is missing, imprecise, or paraphrased in a potentially misleading way.
+- ERROR: GDPR concepts imported without qualification (e.g., "legitimate interest", "DPO" without citing the correct Rule), wrong section numbers cited, claim contradicts the Act text, or Indian-law-specific nuances misrepresented.
+
+### do_now (What Businesses Should Do Now)
+- Purpose: Concrete, operationally actionable steps for Indian MSMEs to achieve compliance today.
+- VERIFIED: Every action step is legally grounded, specific (not vague), and immediately actionable by an MSME without requiring legal interpretation.
+- WARNING: Advice is legally correct but too vague ("review your privacy policy") without specifying what to review or what the legal standard is; or advice is premature because the relevant Rule has not yet been notified.
+- ERROR: Following this advice would lead a business to non-compliance; advice contradicts what law_says states; advice is only applicable to Significant Data Fiduciaries (SDFs) without flagging that scope limitation.
+
+### uncertain (What Is Still Uncertain)
+- Purpose: Genuine, unresolved regulatory questions — pending Rules, unissued DPAI guidance, unlitigated interpretations.
+- VERIFIED: Uncertainty is real (the Rule/guidance has not been notified as of today), properly attributed, and not speculation presented as fact.
+- WARNING: Item flagged as uncertain has since been resolved by a notified Rule, official clarification, or gazette notification — meaning it should move to what_changed or law_says.
+- ERROR: A settled legal point (clearly stated in the Act or notified Rules) is misrepresented as uncertain; or speculative claims ("DPAI may introduce X") are stated without explicitly labelling them as speculation.
+
+### mistakes (Top Mistakes to Avoid)
+- Purpose: Common compliance errors businesses make, with the legally correct alternative.
+- VERIFIED: Each mistake is a documented real-world pitfall, the legal basis for why it's wrong is cited (Act section or Rule), and the correction is accurate.
+- WARNING: Mistake is plausible but lacks citation of the legal standard being violated; or the "correct" alternative is stated without legal grounding.
+- ERROR: The "correct" alternative guidance is itself non-compliant; or a mistake is described that is not actually prohibited under DPDPA (importing GDPR prohibitions that do not apply in India).
+
+## Cross-Section Consistency Check
+After evaluating each section individually, verify:
+1. do_now action steps must not contradict law_says legal claims. If there is a conflict, flag the relevant section as "error".
+2. uncertain items must not overlap with what_changed — if something is listed as uncertain but was already resolved in what_changed, flag uncertain as "warning".
+3. mistakes corrections must align with law_says legal claims — if a mistake's "correct" answer contradicts the law_says section, flag mistakes as "error".
 
 ## Important
 You MUST return a valid JSON object matching the schema. Every field is required. scores.total must equal the sum of all five score fields.`;

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="x-apple-disable-message-reformatting">
+  <meta name="format-detection" content="telephone=no,address=no,email=no,date=no,url=no">
+  <title>{{ subject_line }}</title>
+  <!--[if mso]>
+  <noscript>
+    <xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></noscript>
+  <![endif]-->
+</head>
+<body style="margin:0;padding:0;background-color:#F7F9FC;font-family:'Helvetica Neue',Arial,sans-serif;">
+
+  <!-- Preview text (hidden) -->
+  <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">{{ preview_text }}</div>
+  <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;</div>
+
+  <!-- Email wrapper -->
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+    style="background-color:#F7F9FC;padding:20px 0;">
+    <tr>
+      <td align="center">
+        <!-- Email container (600px) -->
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0"
+          style="max-width:600px;width:100%;background-color:#FFFFFF;border-radius:8px;overflow:hidden;">
+
+          {% include 'sections/header.html' %}
+          {% include 'sections/hero.html' %}
+
+          <!-- Overview section -->
+          {% with section=overview, section_class="overview" %}
+            {% include 'sections/content_block.html' %}
+          {% endwith %}
+
+          <!-- Infographic -->
+          {% include 'sections/infographic_embed.html' %}
+
+          <!-- Key Points -->
+          {% include 'sections/key_points.html' %}
+
+          <!-- What This Means -->
+          {% with section=what_this_means, section_class="what-this-means" %}
+            {% include 'sections/content_block.html' %}
+          {% endwith %}
+
+          <!-- Action Items -->
+          {% include 'sections/action_items.html' %}
+
+          <!-- Save-worthy takeaway -->
+          {% include 'sections/takeaway.html' %}
+
+          {% include 'sections/footer.html' %}
+
+        </table>
+        <!-- /email container -->
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>

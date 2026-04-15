@@ -354,7 +354,12 @@ export default function BlogEditor({ initialData, docId, role = "admin", initial
           sectionKey,
           currentContent,
           feedbackNote,
-          title: data.title,
+          title:                data.title,
+          section_what_changed: data.section_what_changed,
+          section_law_says:     data.section_law_says,
+          section_do_now:       data.section_do_now,
+          section_uncertain:    data.section_uncertain,
+          section_mistakes:     data.section_mistakes,
         }),
       });
 

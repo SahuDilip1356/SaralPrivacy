@@ -1,0 +1,37 @@
+<!-- ── ACTION ITEMS ── -->
+<tr>
+  <td style="padding:28px 32px;border-bottom:1px solid #E2E8F0;">
+    <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:#07B981;margin:0 0 16px;">
+      {{ action_items.heading }}
+    </p>
+    {% for item in action_items['items'] %}
+      {% if item.priority == 'high' %}
+        {% set bg = '#FFF5F5' %}{% set border = '#E53E3E' %}{% set pcolor = '#E53E3E' %}
+      {% elif item.priority == 'medium' %}
+        {% set bg = '#ECFDF5' %}{% set border = '#07B981' %}{% set pcolor = '#07B981' %}
+      {% else %}
+        {% set bg = '#F0FFF4' %}{% set border = '#38A169' %}{% set pcolor = '#38A169' %}
+      {% endif %}
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+        style="background-color:{{ bg }};border-left:3px solid {{ border }};border-radius:6px;margin-bottom:8px;">
+        <tr>
+          <td style="padding:12px 16px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="width:48px;vertical-align:top;">
+                  <span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:{{ pcolor }};">
+                    {{ item.priority | upper }}
+                  </span>
+                </td>
+                <td style="vertical-align:top;padding-left:10px;">
+                  <div style="font-size:14px;color:#2D3748;line-height:1.5;">{{ item.action }}</div>
+                  <div style="font-size:11px;color:#718096;margin-top:3px;">Owner: {{ item.owner }}</div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    {% endfor %}
+  </td>
+</tr>

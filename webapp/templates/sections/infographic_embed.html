@@ -1,0 +1,39 @@
+<!-- ── INFOGRAPHIC (base64 embedded image or SVG fallback) ── -->
+<tr>
+  <td style="padding:0;background-color:#F7F9FC;text-align:center;">
+    {% if infographic_b64 %}
+      <!-- KIE.ai Nano Banana generated PNG -->
+      <!--[if !mso]><!-->
+      <img src="data:image/{{ infographic_format }};base64,{{ infographic_b64 }}"
+        alt="{{ infographic_title }}"
+        width="600"
+        style="width:100%;max-width:600px;height:auto;display:block;border:0;outline:none;">
+      <!--<![endif]-->
+      <!--[if mso]>
+      <img src="{{ infographic_cid_fallback }}" width="560" alt="{{ infographic_title }}"
+        style="width:560px;display:block;border:0;">
+      <![endif]-->
+    {% elif infographic_svg %}
+      <!-- SVG fallback (inline) -->
+      <!--[if !mso]><!-->
+      {{ infographic_svg | safe }}
+      <!--<![endif]-->
+    {% else %}
+      <!-- No infographic available -->
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+        style="background-color:#F0F4F8;">
+        <tr>
+          <td style="padding:32px;text-align:center;">
+            <p style="font-size:13px;color:#9CA3AF;margin:0;">Infographic not available for this edition.</p>
+          </td>
+        </tr>
+      </table>
+    {% endif %}
+    <!-- Infographic caption -->
+    {% if infographic_title %}
+    <p style="font-size:11px;color:#9CA3AF;text-align:center;margin:8px 0 12px;padding:0 32px;">
+      {{ infographic_title }}
+    </p>
+    {% endif %}
+  </td>
+</tr>

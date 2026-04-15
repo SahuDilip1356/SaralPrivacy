@@ -14,9 +14,50 @@ const POLL_TIMEOUT_MS  = 120000; // 120 second max wait
 const MAX_RETRIES      = 2;
 const RETRY_DELAY_MS   = 8000;
 
-// ── Brand palette (same as briefings pipeline) ────────────────────────────────
-const BRAND_NAVY    = "#1B3A5C";
-const BRAND_SAFFRON = "#F4941B";
+// ── Brand tokens v3.0 (SaralPrivacy Brand Guidelines) ────────────────────────
+const BRAND_NAVY  = "#121A2E";
+const BRAND_GREEN = "#07B981";
+const BRAND_TEAL  = "#35B6AE";
+const BRAND_GOLD  = "#E8AB42";
+const BRAND_SLATE = "#334155";
+const BRAND_CLOUD = "#F7F9FC";
+const BRAND_WHITE = "#FFFFFF";
+
+// ── 4-palette system (A–D) ────────────────────────────────────────────────────
+const PALETTES: Record<string, {
+  name: string; background: string; heading: string;
+  accent: string; highlight: string; body_text: string;
+}> = {
+  A: { name: "Trust Navy",    background: BRAND_NAVY,  heading: BRAND_WHITE, accent: BRAND_GREEN, highlight: BRAND_GOLD,  body_text: BRAND_CLOUD },
+  B: { name: "Cloud & Green", background: BRAND_CLOUD, heading: BRAND_NAVY,  accent: BRAND_GREEN, highlight: BRAND_TEAL,  body_text: BRAND_SLATE },
+  C: { name: "Teal Forward",  background: BRAND_WHITE, heading: BRAND_NAVY,  accent: BRAND_TEAL,  highlight: BRAND_GREEN, body_text: BRAND_SLATE },
+  D: { name: "Midnight Gold", background: BRAND_NAVY,  heading: BRAND_GOLD,  accent: BRAND_TEAL,  highlight: BRAND_GREEN, body_text: BRAND_WHITE },
+};
+
+// Lane → palette mapping (kebab-case keys used by the blog editor)
+const LANE_PALETTE_MAP: Record<string, string> = {
+  "law-explained":       "A",
+  "compliance-playbook": "D",
+  "myth-fact":           "C",
+  "sector-notes":        "B",
+  "governance-watch":    "D",
+};
+const DEFAULT_PALETTE = "A";
+
+function selectPalette(lane: string): typeof PALETTES[string] {
+  const key = LANE_PALETTE_MAP[lane] ?? DEFAULT_PALETTE;
+  return PALETTES[key];
+}
+
+function paletteStyle(p: typeof PALETTES[string]): string {
+  return (
+    `Professional infographic design. Clean, modern layout. ` +
+    `Color palette: background ${p.background}, heading text ${p.heading}, ` +
+    `primary accent ${p.accent}, highlight color ${p.highlight}, body text ${p.body_text}. ` +
+    `Sans-serif typography. Indian business context. No extra watermarks from the model. No borders. Flat design style. ` +
+    `Newsletter-ready, 600px wide format.`
+  );
+}
 
 // ── Lane → infographic type mapping ──────────────────────────────────────────
 const LANE_TYPE_MAP: Record<string, string> = {
@@ -27,46 +68,48 @@ const LANE_TYPE_MAP: Record<string, string> = {
   "governance-watch":    "timeline",
 };
 
-// ── Layout instructions (mirrored from generate_infographic.py) ───────────────
-const LAYOUT_INSTRUCTIONS: Record<string, string> = {
-  stat: (
-    "Large statistic callout cards. 2-3 bold numbers or key facts displayed prominently. " +
-    "Each card has a number/value, short label, and accent color bar. " +
-    "Horizontal layout. Clean white cards with navy headings and saffron highlights."
-  ),
-  process: (
-    "Vertical step-by-step process flowchart. " +
-    "Numbered steps with connecting arrows. " +
-    "Each step has an icon area, bold heading, and short description. " +
-    "Navy numbered circles, saffron arrows, white card backgrounds."
-  ),
-  comparison: (
-    "Side-by-side comparison table. " +
-    "Two columns with a clear divider. " +
-    "Row-by-row comparison of attributes. " +
-    "Navy headers, alternating white/light rows, saffron highlights for key differences."
-  ),
-  checklist: (
-    "Visual checklist or summary card. " +
-    "Bullet points with checkmark icons. " +
-    "Clear heading at top, items below with icons. " +
-    "Two-column layout if more than 5 items. " +
-    "Navy headings, saffron checkmarks."
-  ),
-  timeline: (
-    "Horizontal timeline. " +
-    "Nodes connected by a line showing progression. " +
-    "Each node has a year/label and short event description. " +
-    "Navy line, saffron milestone dots, white background."
-  ),
-};
-
-const STYLE_BASE = (
-  `Professional infographic design. Clean, modern layout. ` +
-  `Color palette: navy blue ${BRAND_NAVY} as primary, saffron orange ${BRAND_SAFFRON} as accent, white #FFFFFF background. ` +
-  `Sans-serif typography. Indian business context. No extra watermarks from the model. No borders. Flat design style. ` +
-  `Newsletter-ready, 600px wide format.`
-);
+// ── Layout instructions (palette-aware) ───────────────────────────────────────
+function layoutInstructions(infType: string, p: typeof PALETTES[string]): string {
+  switch (infType) {
+    case "stat":
+      return (
+        `Large statistic callout cards. 2-3 bold numbers or key facts displayed prominently. ` +
+        `Each card has a number/value, short label, and accent color bar. ` +
+        `Horizontal layout. Cards use ${p.background} background with ${p.heading} headings and ${p.accent} highlights.`
+      );
+    case "process":
+      return (
+        `Vertical step-by-step process flowchart. ` +
+        `Numbered steps with connecting arrows. ` +
+        `Each step has an icon area, bold heading, and short description. ` +
+        `${p.accent} numbered circles, ${p.highlight} arrows, ${p.background} card backgrounds.`
+      );
+    case "comparison":
+      return (
+        `Side-by-side comparison table. ` +
+        `Two columns with a clear divider. ` +
+        `Row-by-row comparison of attributes. ` +
+        `${p.heading} headers, alternating ${p.background}/${p.body_text} rows, ${p.accent} highlights for key differences.`
+      );
+    case "checklist":
+      return (
+        `Visual checklist or summary card. ` +
+        `Bullet points with checkmark icons. ` +
+        `Clear heading at top, items below with icons. ` +
+        `Two-column layout if more than 5 items. ` +
+        `${p.heading} headings, ${p.accent} checkmarks.`
+      );
+    case "timeline":
+      return (
+        `Horizontal timeline. ` +
+        `Nodes connected by a line showing progression. ` +
+        `Each node has a year/label and short event description. ` +
+        `${p.accent} line, ${p.highlight} milestone dots, ${p.background} background.`
+      );
+    default:
+      return `Clean infographic layout with ${p.background} background and ${p.heading} headings.`;
+  }
+}
 
 // ── Prompt builder ────────────────────────────────────────────────────────────
 
@@ -79,7 +122,9 @@ function buildPrompt(params: {
   section_do_now: string;
 }): string {
   const infType   = LANE_TYPE_MAP[params.lane] ?? "stat";
-  const layout    = LAYOUT_INSTRUCTIONS[infType];
+  const palette   = selectPalette(params.lane);
+  const layout    = layoutInstructions(infType, palette);
+  const style     = paletteStyle(palette);
   const keyPoints = [
     params.section_what_changed,
     params.section_law_says,
@@ -99,7 +144,7 @@ Layout type: ${layout}
 Key points to visualise:
 ${keyPoints}
 
-Style: ${STYLE_BASE}
+Style: ${style}
 
 The infographic must be self-contained and readable without additional context.
 Include the title prominently at the top.

@@ -47,11 +47,26 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { sectionKey, currentContent, feedbackNote, title } = body as {
-      sectionKey:     string;
-      currentContent: string;
-      feedbackNote:   string;
-      title:          string;
+    const {
+      sectionKey,
+      currentContent,
+      feedbackNote,
+      title,
+      section_what_changed,
+      section_law_says,
+      section_do_now,
+      section_uncertain,
+      section_mistakes,
+    } = body as {
+      sectionKey:           string;
+      currentContent:       string;
+      feedbackNote:         string;
+      title:                string;
+      section_what_changed?: string;
+      section_law_says?:     string;
+      section_do_now?:       string;
+      section_uncertain?:    string;
+      section_mistakes?:     string;
     };
 
     if (!sectionKey || !currentContent || !feedbackNote) {
@@ -63,6 +78,25 @@ export async function POST(req: NextRequest) {
 
     const sectionLabel = SECTION_LABELS[sectionKey] ?? sectionKey;
 
+    // Build context from the other sections so the AI revises in the context of the full post
+    const otherSections: string[] = [];
+    const allSections: Record<string, string | undefined> = {
+      section_what_changed,
+      section_law_says,
+      section_do_now,
+      section_uncertain,
+      section_mistakes,
+    };
+    for (const [key, content] of Object.entries(allSections)) {
+      if (key !== sectionKey && content?.trim()) {
+        otherSections.push(`--- ${SECTION_LABELS[key] ?? key} ---\n${content.trim()}`);
+      }
+    }
+
+    const contextBlock = otherSections.length
+      ? `\n\n## Other Sections in This Post (for cross-section consistency — do NOT rewrite these)\n${otherSections.join("\n\n")}`
+      : "";
+
     const prompt = `Blog post title: "${title}"
 
 Section being corrected: "${sectionLabel}"
@@ -71,9 +105,9 @@ Section being corrected: "${sectionLabel}"
 ${currentContent}
 
 --- VALIDATION FEEDBACK (issues to fix) ---
-${feedbackNote}
+${feedbackNote}${contextBlock}
 
-Please rewrite the section content above, addressing every issue in the validation feedback. Follow all rules in your system prompt. Return only the corrected section text.`;
+Please rewrite the section content above, addressing every issue in the validation feedback. Ensure your revision is consistent with the other sections shown above — do NOT contradict their legal claims or duplicate their content. Follow all rules in your system prompt. Return only the corrected section text.`;
 
     const { text } = await generateText({
       model:  anthropic("claude-sonnet-4-6"),
