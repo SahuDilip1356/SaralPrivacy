@@ -139,6 +139,13 @@ export default async function ReportPage({ params }: { params: Promise<{ token: 
     "Progressing Well":      "text-lime-600",
     "Operationally Strong":  "text-green-600",
   };
+  const BAND_HEX: Record<string, string> = {
+    "Not Started":           "#DC2626",
+    "Early Stage":           "#F97316",
+    "Building Foundations":  "#EAB308",
+    "Progressing Well":      "#65A30D",
+    "Operationally Strong":  "#16A34A",
+  };
   const BAND_BG: Record<string, string> = {
     "Not Started":           "bg-red-50 border-red-200",
     "Early Stage":           "bg-orange-50 border-orange-200",
@@ -156,6 +163,7 @@ export default async function ReportPage({ params }: { params: Promise<{ token: 
 
   const bandColor = BAND_COLOR[band] ?? "text-orange-500";
   const bandBg    = BAND_BG[band]    ?? "bg-orange-50 border-orange-200";
+  const bandHex   = BAND_HEX[band]   ?? "#F97316";
   const expiryDate = expiresAt
     ? new Date(expiresAt).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })
     : "";
@@ -187,8 +195,8 @@ export default async function ReportPage({ params }: { params: Promise<{ token: 
             </div>
             <div className="h-2.5 bg-white/60 rounded-full overflow-hidden mb-3">
               <div
-                className="h-full rounded-full bg-current opacity-70"
-                style={{ width: `${score}%`, color: "inherit" }}
+                className="h-full rounded-full opacity-80"
+                style={{ width: `${score}%`, backgroundColor: bandHex }}
               />
             </div>
             <p className="text-sm text-slate-700 leading-relaxed">{BAND_DESCRIPTIONS[band]}</p>
