@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { CheckCircle, Search, ShieldAlert, Send } from "lucide-react";
+import { CheckCircle, Search, ShieldAlert, Send, Eye, X, AlertTriangle } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -80,13 +80,245 @@ const BANDS_ORDERED = [
   "Operationally Strong",
 ];
 
+// ── Scorecard block for preview panel ──────────────────────────────────────
+const SCORECARD_BLOCKS = [
+  { label: "Notice & Consent",                key: "noticeConsent",      ref: "§6–7" },
+  { label: "Data Inventory & Storage",        key: "dataInventory",      ref: "§8–9" },
+  { label: "Data Principal Rights & Control", key: "accessControl",      ref: "§11–12" },
+  { label: "Ownership & Governance",          key: "ownershipGovernance",ref: "§13" },
+  { label: "Incident & Operational Readiness",key: "incidentReadiness",  ref: "§10" },
+];
+
+function computeScores(raw: Record<string, number>) {
+  return {
+    noticeConsent:      raw.noticeConsent      ?? 0,
+    dataInventory:      Math.round(((raw.retentionDeletion ?? 0) + (raw.vendorPartnerRisk ?? 0)) / 2),
+    accessControl:      raw.accessControl      ?? 0,
+    ownershipGovernance:raw.ownershipGovernance ?? 0,
+    incidentReadiness:  raw.incidentReadiness  ?? 0,
+  };
+}
+
+function ScorecardBar({ label, score, dpdpaRef }: { label: string; score: number; dpdpaRef: string }) {
+  const pct = Math.min(100, Math.max(0, score));
+  const color = pct >= 65 ? "bg-green-500" : pct >= 45 ? "bg-amber-400" : "bg-red-400";
+  const status = pct >= 65 ? "On Track" : pct >= 45 ? "Needs Work" : "At Risk";
+  const statusColor = pct >= 65 ? "text-green-600 bg-green-50" : pct >= 45 ? "text-amber-700 bg-amber-50" : "text-red-600 bg-red-50";
+  return (
+    <div className="mb-3">
+      <div className="flex items-center justify-between mb-1">
+        <span className="text-xs font-medium text-slate-700">{label}</span>
+        <div className="flex items-center gap-2">
+          <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded ${statusColor}`}>{status}</span>
+          <span className="text-xs text-slate-400">{dpdpaRef}</span>
+          <span className="text-xs font-bold text-slate-700 w-7 text-right">{score}</span>
+        </div>
+      </div>
+      <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+        <div className={`h-full ${color} rounded-full transition-all`} style={{ width: `${pct}%` }} />
+      </div>
+    </div>
+  );
+}
+
+// ── Preview Panel ───────────────────────────────────────────────────────────
+function PreviewPanel({
+  assessment,
+  sendState,
+  sendError,
+  onSend,
+  onClose,
+}: {
+  assessment: any;
+  sendState: "idle" | "sending" | "sent" | "error";
+  sendError: string;
+  onSend: () => void;
+  onClose: () => void;
+}) {
+  let categoryScores: Record<string, number> = {};
+  let redFlags: string[] = [];
+  let immediateActions: string[] = [];
+  let thirtyDayActions: string[] = [];
+  let answers: Record<string, unknown> = {};
+
+  try { categoryScores = JSON.parse(assessment.category_scores_json || "{}"); } catch { /* noop */ }
+  try { redFlags = JSON.parse(assessment.red_flags_json || "[]"); } catch { /* noop */ }
+  try { immediateActions = JSON.parse(assessment.immediate_actions_json || "[]"); } catch { /* noop */ }
+  try { thirtyDayActions = JSON.parse(assessment.thirty_day_actions_json || "[]"); } catch { /* noop */ }
+  try { answers = JSON.parse(assessment.answers_json || "{}"); } catch { /* noop */ }
+
+  const scores = computeScores(categoryScores);
+  const hasCategoryData = Object.keys(categoryScores).length > 0;
+
+  const reportUrl = assessment.report_token
+    ? `https://saralprivacy.com/report/${assessment.report_token}`
+    : null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex">
+      {/* Overlay */}
+      <div className="flex-1 bg-black/30" onClick={onClose} />
+
+      {/* Panel */}
+      <div className="w-full max-w-xl bg-white shadow-2xl overflow-y-auto flex flex-col">
+        {/* Panel header */}
+        <div className="sticky top-0 bg-white border-b border-slate-200 px-5 py-4 flex items-center justify-between z-10">
+          <div>
+            <h2 className="text-base font-bold text-slate-800">Report Preview</h2>
+            <p className="text-xs text-slate-500 mt-0.5 truncate max-w-xs">{assessment.email}</p>
+          </div>
+          <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500">
+            <X size={18} />
+          </button>
+        </div>
+
+        <div className="flex-1 px-5 py-5 space-y-5">
+          {/* Identity + Score */}
+          <div className="bg-slate-50 rounded-xl p-4">
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="font-semibold text-slate-800">{assessment.name || "—"}</p>
+                {assessment.business_name && (
+                  <p className="text-xs text-slate-500 mt-0.5">{assessment.business_name}</p>
+                )}
+                <p className="text-xs text-slate-500 mt-0.5">{assessment.industry || "—"}</p>
+              </div>
+              <div className="text-right">
+                <p className="text-2xl font-bold text-slate-800">{assessment.final_score ?? "—"}<span className="text-sm font-normal text-slate-400">/100</span></p>
+                {assessment.verdict_band && <VerdictBadge band={assessment.verdict_band} />}
+              </div>
+            </div>
+          </div>
+
+          {/* Red flags */}
+          {redFlags.length > 0 && (
+            <div className="bg-red-50 border border-red-200 rounded-xl p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <AlertTriangle size={14} className="text-red-500" />
+                <p className="text-xs font-semibold text-red-700">{redFlags.length} Red Flag{redFlags.length > 1 ? "s" : ""} Detected</p>
+              </div>
+              <ul className="space-y-1">
+                {redFlags.map((f, i) => (
+                  <li key={i} className="text-xs text-red-600 flex items-start gap-1.5">
+                    <span className="mt-0.5 shrink-0">•</span>{f}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* 5 Scoring blocks */}
+          <div>
+            <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Category Scores</h3>
+            {hasCategoryData ? (
+              <div className="bg-white border border-slate-200 rounded-xl p-4">
+                {SCORECARD_BLOCKS.map(({ label, key, ref }) => (
+                  <ScorecardBar
+                    key={key}
+                    label={label}
+                    score={(scores as any)[key] ?? 0}
+                    dpdpaRef={ref}
+                  />
+                ))}
+              </div>
+            ) : (
+              <p className="text-xs text-slate-400 italic">Category scores not available for this assessment.</p>
+            )}
+          </div>
+
+          {/* Quick Wins */}
+          {immediateActions.length > 0 && (
+            <div>
+              <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Quick Wins (0–30 days)</h3>
+              <ul className="space-y-1.5">
+                {immediateActions.slice(0, 3).map((a, i) => (
+                  <li key={i} className="flex items-start gap-2 text-xs text-slate-700">
+                    <span className="w-4 h-4 rounded-full bg-green-100 text-green-700 font-bold flex items-center justify-center shrink-0 text-[10px] mt-0.5">{i + 1}</span>
+                    {a}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* 30-day plan preview */}
+          {thirtyDayActions.length > 0 && (
+            <div>
+              <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">30-Day Plan (preview)</h3>
+              <ul className="space-y-1.5">
+                {thirtyDayActions.slice(0, 2).map((a, i) => (
+                  <li key={i} className="flex items-start gap-2 text-xs text-slate-600">
+                    <span className="shrink-0 mt-0.5 text-slate-300">→</span>{a}
+                  </li>
+                ))}
+                {thirtyDayActions.length > 2 && (
+                  <li className="text-xs text-slate-400 italic">+{thirtyDayActions.length - 2} more in full report</li>
+                )}
+              </ul>
+            </div>
+          )}
+
+          {/* Report URL */}
+          {reportUrl && (
+            <div className="bg-blue-50 border border-blue-200 rounded-xl p-3">
+              <p className="text-[10px] text-blue-500 font-semibold uppercase tracking-wide mb-1">Report URL (valid 90 days)</p>
+              <a href={reportUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-700 underline break-all">{reportUrl}</a>
+            </div>
+          )}
+
+          {/* Email sent status */}
+          {assessment.email_sent_at && (
+            <div className="bg-green-50 border border-green-200 rounded-xl p-3">
+              <p className="text-xs text-green-700 font-semibold">
+                Report already sent on {new Date(assessment.email_sent_at).toLocaleDateString("en-IN")} by {assessment.email_sent_by || "admin"}
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* Send action footer */}
+        <div className="sticky bottom-0 bg-white border-t border-slate-200 px-5 py-4">
+          {sendState === "sent" ? (
+            <div className="flex items-center gap-2 text-green-600 text-sm font-semibold">
+              <CheckCircle size={16} /> Report sent successfully
+            </div>
+          ) : sendState === "error" ? (
+            <div className="space-y-2">
+              <p className="text-xs text-red-500 font-medium">Send failed: {sendError || "Unknown error"}</p>
+              <button
+                onClick={onSend}
+                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold bg-red-50 text-red-700 border border-red-200 hover:bg-red-100 transition-colors"
+              >
+                <Send size={14} /> Retry Send
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={onSend}
+              disabled={sendState === "sending" || !assessment.email || !(assessment.final_score > 0)}
+              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold bg-brand-600 text-white hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              style={{ backgroundColor: "#1E3A5F" }}
+            >
+              <Send size={14} />
+              {sendState === "sending" ? "Sending report…" : "Send Report to User"}
+            </button>
+          )}
+          <p className="text-[10px] text-slate-400 text-center mt-2">
+            This will send the personalised DPDPA report to {assessment.email}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function AssessmentsPage() {
   const [assessments, setAssessments] = useState<any[]>([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
-  // Track per-row send state
   const [sendState, setSendState] = useState<Record<string, "idle" | "sending" | "sent" | "error">>({});
   const [sendError, setSendError] = useState<Record<string, string>>({});
+  const [previewAssessment, setPreviewAssessment] = useState<any | null>(null);
 
   const sendReport = async (assessmentId: string) => {
     setSendState(prev => ({ ...prev, [assessmentId]: "sending" }));
@@ -100,6 +332,19 @@ export default function AssessmentsPage() {
       const data = await res.json();
       if (data.success) {
         setSendState(prev => ({ ...prev, [assessmentId]: "sent" }));
+        // Refresh email_sent_at in local state
+        setAssessments(prev => prev.map(a =>
+          a.$id === assessmentId
+            ? { ...a, email_sent_at: new Date().toISOString(), email_sent_by: "admin" }
+            : a
+        ));
+        if (previewAssessment?.$id === assessmentId) {
+          setPreviewAssessment((prev: any) => ({
+            ...prev,
+            email_sent_at: new Date().toISOString(),
+            email_sent_by: "admin",
+          }));
+        }
       } else {
         setSendState(prev => ({ ...prev, [assessmentId]: "error" }));
         setSendError(prev => ({ ...prev, [assessmentId]: data.error || "Unknown error" }));
@@ -130,9 +375,7 @@ export default function AssessmentsPage() {
   });
 
   const total = filtered.length || 1;
-
-  // Score distribution buckets (new final_score field)
-  const newAssessments  = filtered.filter((a) => a.final_score > 0);
+  const newAssessments = filtered.filter((a) => a.final_score > 0);
   const avgScore = newAssessments.length
     ? Math.round(newAssessments.reduce((s, a) => s + (a.final_score || 0), 0) / newAssessments.length)
     : 0;
@@ -144,6 +387,17 @@ export default function AssessmentsPage() {
 
   return (
     <div className="px-6 py-6">
+      {/* Preview Panel */}
+      {previewAssessment && (
+        <PreviewPanel
+          assessment={previewAssessment}
+          sendState={sendState[previewAssessment.$id] ?? "idle"}
+          sendError={sendError[previewAssessment.$id] ?? ""}
+          onSend={() => sendReport(previewAssessment.$id)}
+          onClose={() => setPreviewAssessment(null)}
+        />
+      )}
+
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <div className="w-9 h-9 bg-green-50 rounded-lg flex items-center justify-center">
@@ -221,7 +475,8 @@ export default function AssessmentsPage() {
                     "Type",
                     "Location",
                     "Date",
-                    "Action",
+                    "Email Sent",
+                    "Actions",
                   ].map((h) => (
                     <th key={h} className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase whitespace-nowrap">
                       {h}
@@ -309,27 +564,54 @@ export default function AssessmentsPage() {
                       {new Date(a.$createdAt).toLocaleDateString("en-IN")}
                     </td>
 
-                    {/* Send Report */}
+                    {/* Email Sent */}
                     <td className="px-4 py-3 whitespace-nowrap">
-                      {a.email && a.final_score > 0 ? (() => {
-                        const state = sendState[a.$id] ?? "idle";
-                        if (state === "sent") return <span className="text-xs text-green-600 font-semibold">Sent ✓</span>;
-                        if (state === "error") return (
-                          <span className="text-xs text-red-500" title={sendError[a.$id] || "Unknown error"}>
-                            Failed — {sendError[a.$id] ? sendError[a.$id].slice(0, 40) : "check logs"}
-                          </span>
-                        );
-                        return (
+                      {a.email_sent_at ? (
+                        <span className="inline-flex items-center gap-1 text-xs text-green-600 font-medium">
+                          <CheckCircle size={11} />
+                          {new Date(a.email_sent_at).toLocaleDateString("en-IN")}
+                        </span>
+                      ) : (
+                        <span className="text-xs text-slate-300">Not sent</span>
+                      )}
+                    </td>
+
+                    {/* Actions */}
+                    <td className="px-4 py-3 whitespace-nowrap">
+                      {a.final_score > 0 ? (
+                        <div className="flex items-center gap-1.5">
+                          {/* Preview button */}
                           <button
-                            onClick={() => sendReport(a.$id)}
-                            disabled={state === "sending"}
-                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium bg-navy-50 text-navy-700 border border-navy-200 hover:bg-navy-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                            onClick={() => setPreviewAssessment(a)}
+                            className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200 hover:bg-slate-200 transition-colors"
                           >
-                            <Send size={11} />
-                            {state === "sending" ? "Sending…" : "Send Report"}
+                            <Eye size={11} /> Preview
                           </button>
-                        );
-                      })() : <span className="text-xs text-slate-300">—</span>}
+
+                          {/* Quick send (outside panel) */}
+                          {(() => {
+                            const state = sendState[a.$id] ?? "idle";
+                            if (state === "sent" || a.email_sent_at) return <span className="text-xs text-green-600 font-semibold">Sent ✓</span>;
+                            if (state === "error") return (
+                              <span className="text-xs text-red-500" title={sendError[a.$id] || "Unknown error"}>
+                                Failed
+                              </span>
+                            );
+                            return (
+                              <button
+                                onClick={() => sendReport(a.$id)}
+                                disabled={state === "sending" || !a.email}
+                                className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium bg-navy-50 text-navy-700 border border-navy-200 hover:bg-navy-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                              >
+                                <Send size={11} />
+                                {state === "sending" ? "…" : "Send"}
+                              </button>
+                            );
+                          })()}
+                        </div>
+                      ) : (
+                        <span className="text-xs text-slate-300">—</span>
+                      )}
                     </td>
                   </tr>
                 ))}
