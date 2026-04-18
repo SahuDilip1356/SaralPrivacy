@@ -335,12 +335,21 @@ export interface SurveyResultData {
   email: string;
   name: string;
   businessName: string;
-  score: number;                 // final score out of 100
-  band: string;                  // e.g. "Building Foundations"
-  summary: string;               // verdict description
-  recommendations: string[];     // immediate actions (top 3)
-  riskFlags: string[];           // red flags triggered
-  answerSummary: Array<{ question: string; answer: string }>; // readable Q&A pairs
+  score: number;
+  band: string;
+  summary: string;
+  recommendations: string[];
+  riskFlags: string[];
+  answerSummary: Array<{ question: string; answer: string }>;
+  reportToken?: string;
+  categoryScores?: {
+    noticeConsent: number;
+    accessControl: number;
+    retentionDeletion: number;
+    ownershipGovernance: number;
+    vendorPartnerRisk: number;
+    incidentReadiness: number;
+  };
 }
 
 // Band colours for email (hex, email-safe)
@@ -389,21 +398,86 @@ const BAND_CTA: Record<string, { headline: string; body: string; href: string; l
 export function surveyResultEmailTemplate(data: SurveyResultData): { subject: string; html: string } {
   const bandColor = BAND_COLOR[data.band] ?? SAFFRON;
   const cta       = BAND_CTA[data.band] ?? BAND_CTA["Early Stage"];
-  const subject   = `Your DPDPA Readiness Score: ${data.score}/100 — ${data.band}`;
 
-  // Score progress bar (600px email = 536px body content)
-  const barWidth  = Math.max(4, Math.round(data.score * 5.36));
+  // Subject line varies by band
+  const isLow  = ["Not Started", "Early Stage"].includes(data.band);
+  const isHigh = data.band === "Operationally Strong";
+  const subject = isLow
+    ? `Your DPDPA Score: ${data.score}/100 — Here's exactly why and what to do first`
+    : isHigh
+    ? `Your DPDPA Score: ${data.score}/100 — Strong start. Here's what to protect`
+    : `Your DPDPA Score: ${data.score}/100 — You're building. Here's the path to 70+`;
 
-  // Answers summary rows
-  const answersHtml = data.answerSummary
-    .map(row => `
+  const barWidth = Math.max(4, Math.round(data.score * 5.36));
+
+  // ── 5 scoring blocks (display layer mapping, engine untouched) ──────────────
+  const cats = data.categoryScores;
+  const dataInventoryScore = cats
+    ? Math.round((cats.retentionDeletion + cats.vendorPartnerRisk) / 2)
+    : 0;
+
+  function scoreStatus(s: number): { label: string; color: string } {
+    if (s >= 70) return { label: "Strong",      color: "#16A34A" };
+    if (s >= 40) return { label: "Developing",  color: SAFFRON   };
+    return              { label: "Needs Work",  color: "#DC2626" };
+  }
+
+  function scorecardRow(label: string, score: number): string {
+    const pct    = Math.min(100, Math.max(0, score));
+    const filled = Math.round(pct * 2.36); // max fill ~236px in a 600px email
+    const st     = scoreStatus(pct);
+    return `
       <tr>
-        <td style="padding:7px 12px 7px 0;font-size:12px;color:${MUTED};vertical-align:top;width:200px;border-bottom:1px solid #F1F5F9;">${row.question}</td>
-        <td style="padding:7px 0;font-size:12px;color:${TEXT};font-weight:500;vertical-align:top;border-bottom:1px solid #F1F5F9;">${row.answer}</td>
-      </tr>`)
-    .join("");
+        <td style="padding:10px 0;border-bottom:1px solid #F1F5F9;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+              <td style="font-size:12px;font-weight:600;color:${TEXT};width:190px;vertical-align:middle;">${label}</td>
+              <td style="vertical-align:middle;padding:0 10px;">
+                <div style="background:#E2E8F0;border-radius:4px;height:6px;overflow:hidden;">
+                  <div style="height:6px;width:${filled}px;background-color:${st.color};border-radius:4px;"></div>
+                </div>
+              </td>
+              <td style="text-align:right;vertical-align:middle;white-space:nowrap;">
+                <span style="font-size:12px;font-weight:700;color:${TEXT};">${score}/100</span>
+                <span style="display:inline-block;margin-left:6px;padding:2px 8px;background-color:${st.color}1A;color:${st.color};font-size:10px;font-weight:700;border-radius:10px;">${st.label}</span>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>`;
+  }
 
-  // Key steps rows
+  const scorecardsHtml = cats ? `
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:8px;">
+      ${scorecardRow("Notice &amp; Consent",               cats.noticeConsent)}
+      ${scorecardRow("Data Inventory &amp; Storage",       dataInventoryScore)}
+      ${scorecardRow("Data Principal Rights &amp; Control",cats.accessControl)}
+      ${scorecardRow("Ownership &amp; Governance",         cats.ownershipGovernance)}
+      ${scorecardRow("Incident &amp; Operational Readiness",cats.incidentReadiness)}
+    </table>
+    <p style="margin:0 0 0;font-size:11px;color:${MUTED};">These 5 areas explain why your overall score is ${data.score}/100.</p>
+  ` : "";
+
+  // ── Red flags ───────────────────────────────────────────────────────────────
+  const riskHtml = data.riskFlags.length > 0 ? `
+    <div style="background:#FEF2F2;border-left:3px solid #DC2626;padding:14px 16px;border-radius:0 8px 8px 0;margin-bottom:24px;">
+      <p style="margin:0 0 8px;font-size:12px;font-weight:700;color:#991B1B;text-transform:uppercase;letter-spacing:0.5px;">⚠ Risk Flags Detected</p>
+      <ul style="margin:0;padding-left:18px;">
+        ${data.riskFlags.map(f => `<li style="font-size:12px;color:#B91C1C;padding:3px 0;line-height:1.5;">${f}</li>`).join("")}
+      </ul>
+    </div>` : "";
+
+  // ── Top 3 answers ───────────────────────────────────────────────────────────
+  const top3Answers = data.answerSummary.slice(0, 3);
+  const answersHtml = top3Answers.length > 0 ? `
+    ${top3Answers.map(row => `
+      <div style="border:1px solid ${BORDER};border-radius:8px;padding:12px 14px;margin-bottom:8px;">
+        <p style="margin:0 0 4px;font-size:11px;color:${MUTED};font-weight:600;text-transform:uppercase;letter-spacing:0.4px;">Your response</p>
+        <p style="margin:0 0 6px;font-size:12px;color:${TEXT};font-weight:600;">${row.question}</p>
+        <p style="margin:0;font-size:12px;color:${SAFFRON};font-weight:700;">${row.answer}</p>
+      </div>`).join("")}` : "";
+
+  // ── Quick wins / recommendations ────────────────────────────────────────────
   const stepsHtml = data.recommendations
     .map((rec, i) => `
       <tr>
@@ -417,21 +491,14 @@ export function surveyResultEmailTemplate(data: SurveyResultData): { subject: st
             <td style="padding-left:10px;font-size:13px;color:${TEXT};line-height:1.6;">${rec}</td>
           </tr></table>
         </td>
-      </tr>`)
-    .join("");
+      </tr>`).join("");
 
-  // Red flags
-  const riskHtml = data.riskFlags.length > 0
-    ? `
-      <div style="background:#FEF2F2;border-left:3px solid #DC2626;padding:14px 16px;border-radius:0 8px 8px 0;margin-bottom:24px;">
-        <p style="margin:0 0 8px;font-size:12px;font-weight:700;color:#991B1B;text-transform:uppercase;letter-spacing:0.5px;">⚠ Risk flags detected</p>
-        <ul style="margin:0;padding-left:18px;">
-          ${data.riskFlags.map(f => `<li style="font-size:12px;color:#B91C1C;padding:3px 0;line-height:1.5;">${f}</li>`).join("")}
-        </ul>
-      </div>`
-    : "";
+  // ── Report page link ────────────────────────────────────────────────────────
+  const reportUrl = data.reportToken
+    ? `https://saralprivacy.com/report/${data.reportToken}`
+    : "https://saralprivacy.com/assessment";
 
-  const greeting = data.name ? `Hi ${data.name}` : "Hi there";
+  const greeting     = data.name ? `Hi ${data.name}` : "Hi there";
   const businessLine = data.businessName
     ? `<p style="margin:0 0 24px;font-size:13px;color:${MUTED};">Business: <strong style="color:${TEXT};">${data.businessName}</strong></p>`
     : "";
@@ -441,7 +508,7 @@ export function surveyResultEmailTemplate(data: SurveyResultData): { subject: st
     <h2 style="margin:0 0 6px;font-size:22px;font-weight:700;color:${NAV};">${greeting} 👋</h2>
     ${businessLine}
 
-    <!-- Score block -->
+    <!-- Block 2: Score + Verdict -->
     <div style="background-color:${LIGHT_BG};border-radius:12px;padding:24px;margin-bottom:24px;">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
@@ -454,54 +521,85 @@ export function surveyResultEmailTemplate(data: SurveyResultData): { subject: st
           </td>
         </tr>
       </table>
-      <!-- Progress bar -->
       <div style="margin-top:16px;background-color:#E2E8F0;border-radius:4px;height:8px;overflow:hidden;">
         <div style="height:8px;width:${barWidth}px;background-color:${bandColor};border-radius:4px;"></div>
       </div>
       <p style="margin:12px 0 0;font-size:13px;color:${TEXT};line-height:1.6;">${data.summary}</p>
     </div>
 
+    <!-- Block 3: Red flags (conditional) -->
     ${riskHtml}
 
-    <!-- Answers summary -->
+    <!-- Block 4: 5 Scoring blocks -->
+    ${cats ? `
+    <p style="margin:0 0 12px;font-size:13px;font-weight:700;color:${NAV};">Your readiness by area</p>
+    <div style="background-color:${LIGHT_BG};border-radius:12px;padding:16px 20px;margin-bottom:24px;">
+      ${scorecardsHtml}
+    </div>` : ""}
+
+    <!-- Block 5: Your top answers -->
+    ${answersHtml ? `
     <p style="margin:0 0 10px;font-size:13px;font-weight:700;color:${NAV};">Your responses</p>
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:24px;">
-      ${answersHtml}
-    </table>
+    <div style="margin-bottom:24px;">${answersHtml}</div>` : ""}
 
     ${divider()}
 
-    <!-- Key steps -->
+    <!-- Block 6: Quick wins -->
     <p style="margin:0 0 4px;font-size:13px;font-weight:700;color:${NAV};">Key steps to improve your score</p>
-    <p style="margin:0 0 12px;font-size:12px;color:${MUTED};">Focus on these actions first — they have the highest impact on your readiness score.</p>
+    <p style="margin:0 0 12px;font-size:12px;color:${MUTED};">Focus on these first — they have the highest impact on your readiness.</p>
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:24px;">
       ${stepsHtml}
     </table>
 
     ${divider()}
 
-    <!-- Band-specific resource CTA -->
+    <!-- Block 7: Reassessment prompt -->
+    <div style="background-color:#EFF6FF;border-radius:10px;padding:16px 20px;margin-bottom:24px;">
+      <p style="margin:0 0 4px;font-size:13px;font-weight:700;color:#1E40AF;">Track your improvement</p>
+      <p style="margin:0 0 12px;font-size:12px;color:#1E40AF;line-height:1.6;">Implement the quick wins above, then retake the assessment in 14 days to measure your progress.</p>
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td style="background-color:#1E40AF;border-radius:8px;padding:10px 20px;">
+            <a href="https://saralprivacy.com/assessment" style="color:#FFFFFF;font-size:12px;font-weight:700;text-decoration:none;">Retake Assessment →</a>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Block 8: CTAs -->
     <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:${NAV};">${cta.headline}</p>
     <p style="margin:0 0 16px;font-size:13px;color:${TEXT};line-height:1.6;">${cta.body}</p>
 
-    <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:12px;">
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;">
       <tr>
         <td style="background-color:${bandColor};border-radius:8px;padding:12px 24px;">
-          <a href="${cta.href}" style="color:#FFFFFF;font-size:13px;font-weight:700;text-decoration:none;">${cta.label}</a>
+          <a href="${reportUrl}" style="color:#FFFFFF;font-size:13px;font-weight:700;text-decoration:none;">View Full Report →</a>
+        </td>
+      </tr>
+    </table>
+
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;">
+      <tr>
+        <td style="background-color:${NAV};border-radius:8px;padding:12px 24px;">
+          <a href="${cta.href}" style="color:#FFFFFF;font-size:13px;font-weight:600;text-decoration:none;">${cta.label}</a>
         </td>
       </tr>
     </table>
 
     <table role="presentation" cellpadding="0" cellspacing="0" border="0">
       <tr>
-        <td style="background-color:${NAV};border-radius:8px;padding:12px 24px;">
-          <a href="https://saralprivacy.com/contact" style="color:#FFFFFF;font-size:13px;font-weight:600;text-decoration:none;">Book a free expert consultation →</a>
+        <td style="border:1px solid ${BORDER};border-radius:8px;padding:12px 24px;">
+          <a href="https://saralprivacy.com/contact" style="color:${NAV};font-size:13px;font-weight:600;text-decoration:none;">Book a free expert consultation →</a>
         </td>
       </tr>
     </table>
 
-    <p style="margin:24px 0 0;font-size:11px;color:${MUTED};line-height:1.6;">
-      You received this report because you completed the DPDPA Readiness Assessment at SaralPrivacy and consented to report delivery.
+    <!-- Block 9: Disclaimer + footer note -->
+    <p style="margin:24px 0 8px;font-size:11px;color:${MUTED};line-height:1.6;border-top:1px solid ${BORDER};padding-top:16px;">
+      <strong>Disclaimer:</strong> Information on this report is for educational purposes only and does not constitute formal legal advice. Consult a qualified professional for legal guidance.
+    </p>
+    <p style="margin:0;font-size:11px;color:${MUTED};line-height:1.6;">
+      You received this because you completed the DPDPA Readiness Assessment at SaralPrivacy and consented to report delivery.
       <a href="https://saralprivacy.com/consent-preferences" style="color:${MUTED};">Manage preferences</a>.
     </p>
   `);

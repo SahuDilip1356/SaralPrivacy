@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { randomUUID } from "crypto";
 import { PRIVACY_NOTICE_VERSION } from "@/lib/utils";
 import { databases, DB_ID, COLLECTIONS, ID } from "@/lib/appwrite";
 import { sendAssessmentAlert, sendSurveyResultEmail } from "@/lib/email";
@@ -59,6 +60,9 @@ export async function POST(request: NextRequest) {
     const resolvedIndustry = answers?.q1_sector || industry || "general";
     const resolvedRiskLevel = result?.verdictBand || riskLevel || "";
 
+    const reportToken = randomUUID();
+    const reportTokenExpiresAt = new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString();
+
     const assessmentData = {
       // ── Legacy fields (kept for backward compatibility with industry assessments) ──
       email,
@@ -96,6 +100,12 @@ export async function POST(request: NextRequest) {
       city,
       country,
       region,
+
+      // ── Report delivery ──
+      report_token:            reportToken,
+      report_token_expires_at: reportTokenExpiresAt,
+      answers_json:            JSON.stringify(answers ?? {}),
+      category_scores_json:    JSON.stringify(result?.categoryScores ?? {}),
     };
 
     await databases.createDocument(DB_ID, COLLECTIONS.ASSESSMENTS, ID.unique(), assessmentData);
@@ -125,14 +135,16 @@ export async function POST(request: NextRequest) {
     if (consentReport && email) {
       sendSurveyResultEmail({
         email,
-        name: name ?? "",
-        businessName: business ?? "",
-        score: result?.finalScore ?? 0,
-        band: result?.verdictBand ?? "Early Stage",
-        summary: result?.verdictDescription ?? "",
+        name:            name ?? "",
+        businessName:    business ?? "",
+        score:           result?.finalScore ?? 0,
+        band:            result?.verdictBand ?? "Early Stage",
+        summary:         result?.verdictDescription ?? "",
         recommendations: result?.immediateActions ?? [],
-        riskFlags: result?.redFlagsTriggered ?? [],
-        answerSummary: buildAnswerSummary((answers as Record<string, unknown>) ?? {}),
+        riskFlags:       result?.redFlagsTriggered ?? [],
+        answerSummary:   buildAnswerSummary((answers as Record<string, unknown>) ?? {}),
+        reportToken,
+        categoryScores:  result?.categoryScores,
       }).catch((err) => console.error("sendSurveyResultEmail error:", err));
     }
 
