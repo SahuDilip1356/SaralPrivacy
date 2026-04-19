@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 import { QUESTIONS } from "@/lib/data/dpdpa-assessment";
+import TemplateGateModal, { type TemplateItem } from "@/components/TemplateGateModal";
 
 export const metadata: Metadata = {
   title: "DPDPA Readiness Report | SaralPrivacy",
@@ -304,58 +305,57 @@ export default async function ReportPage({ params }: { params: Promise<{ token: 
 
         {/* Section 8: Downloadable Resources */}
         <Section title="Free Templates — Download &amp; Adapt">
-          <p className="text-sm text-slate-500 mb-4">DPDPA-aligned templates to help you close the gaps identified above. Click to open in Google Docs/Sheets, then make a copy for your business.</p>
-          <div className="space-y-3">
-            {[
+          <p className="text-sm text-slate-500 mb-4">
+            DPDPA-aligned templates to help you close the gaps above. Click any template to download instantly — no Google account needed.
+          </p>
+          <TemplateGateModal
+            reportToken={(doc.report_token as string) || token}
+            email={(doc.email as string) || ""}
+            templates={[
               {
                 title: "Data Inventory Register",
+                file:  "data-inventory-register.xlsx",
+                tag:   "Excel",
                 desc:  "Map every data type, storage location, retention period, and legal basis — the foundation of DPDPA compliance",
-                href:  "https://docs.google.com/spreadsheets/d/1P5yxGP6K1sJZLqqdwBebewRLu23SRS97/edit?usp=sharing",
-                tag:   "Google Sheet",
               },
               {
                 title: "Privacy Notice Template",
+                file:  "privacy-notice.docx",
+                tag:   "Word",
                 desc:  "DPDPA-aligned privacy notice covering all 10 required sections — adapt for your website, app, or printed materials",
-                href:  "https://docs.google.com/document/d/1C5VhNs00ppgbYEm9O3eCVOjhbuOaU2In/edit?usp=sharing",
-                tag:   "Google Doc",
               },
               {
                 title: "Consent Language Examples",
+                file:  "consent-language-examples.docx",
+                tag:   "Word",
                 desc:  "8 ready-to-use consent statements for website forms, WhatsApp, checkout, app onboarding, in-person, and employee data",
-                href:  "https://docs.google.com/document/d/1mGgp7y8sf0rzRfRbMRl0xRCBfztSJMK9/edit?usp=sharing",
-                tag:   "Google Doc",
               },
               {
                 title: "DSR & Grievance Handling SOP",
+                file:  "dsr-grievance-sop.docx",
+                tag:   "Word",
                 desc:  "Step-by-step process to handle access, correction, erasure, and grievance requests from customers and employees",
-                href:  "https://docs.google.com/document/d/18elwZ5idzrNr0Emch55bZpqjqS6M7iaX/edit?usp=sharing",
-                tag:   "Google Doc",
               },
               {
                 title: "Vendor Data-Sharing Register",
+                file:  "vendor-data-sharing-register.xlsx",
+                tag:   "Excel",
                 desc:  "Track every third party who receives personal data, what DPAs are in place, and when to review each relationship",
-                href:  "https://docs.google.com/spreadsheets/d/1Z1gXe1rQBAqNABhwPnbPXHmU2iKIfsKZ/edit?usp=sharing",
-                tag:   "Google Sheet",
               },
-              {
-                title: "DPDPA White Paper",
-                desc:  "Comprehensive plain-English guide to the Digital Personal Data Protection Act for Indian businesses",
-                href:  "https://saralprivacy.com/white-paper",
-                tag:   "PDF Guide",
-              },
-            ].map((r) => (
-              <a key={r.title} href={r.href} target="_blank" rel="noopener noreferrer"
-                className="flex items-center justify-between p-4 border border-slate-200 rounded-xl hover:border-[#1E3A5F]/30 hover:bg-slate-50 transition-colors group">
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-0.5">
-                    <p className="text-sm font-semibold text-slate-800 group-hover:text-[#1E3A5F]">{r.title}</p>
-                    <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-slate-100 text-slate-500 whitespace-nowrap">{r.tag}</span>
-                  </div>
-                  <p className="text-xs text-slate-500">{r.desc}</p>
+            ] satisfies TemplateItem[]}
+          />
+          <div className="mt-3">
+            <a href="https://saralprivacy.com/white-paper" target="_blank" rel="noopener noreferrer"
+              className="flex items-center justify-between p-4 border border-slate-200 rounded-xl hover:border-[#1E3A5F]/30 hover:bg-slate-50 transition-colors group">
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-0.5">
+                  <p className="text-sm font-semibold text-slate-800 group-hover:text-[#1E3A5F]">DPDPA White Paper</p>
+                  <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-slate-100 text-slate-500">PDF Guide</span>
                 </div>
-                <span className="text-[#E07B39] font-bold text-sm ml-4 flex-shrink-0">↓</span>
-              </a>
-            ))}
+                <p className="text-xs text-slate-500">Comprehensive plain-English guide to the Digital Personal Data Protection Act for Indian businesses</p>
+              </div>
+              <span className="text-[#E07B39] font-bold text-sm ml-4 flex-shrink-0">↓</span>
+            </a>
           </div>
         </Section>
 

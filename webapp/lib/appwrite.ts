@@ -12,15 +12,16 @@ export const DB_ID     = (process.env.APPWRITE_DATABASE_ID || "").trim();
 export const BUCKET_ID = (process.env.APPWRITE_BUCKET_ID   || "").trim();;
 
 export const COLLECTIONS = {
-  LEADS:            "leads",
-  SUBSCRIBERS:      "subscribers",
-  DOWNLOADS:        "downloads",
-  ASSESSMENTS:      "assessments",
-  BRIEFINGS:        "briefings",
-  CONSENT_LOG:      "consent_log",
-  SURVEY_RESPONSES: "survey_responses",
-  BLOG_POSTS:       "blog_posts",
-  BLOGGER_ACCOUNTS: "blogger_accounts",
+  LEADS:              "leads",
+  SUBSCRIBERS:        "subscribers",
+  DOWNLOADS:          "downloads",
+  ASSESSMENTS:        "assessments",
+  BRIEFINGS:          "briefings",
+  CONSENT_LOG:        "consent_log",
+  SURVEY_RESPONSES:   "survey_responses",
+  BLOG_POSTS:         "blog_posts",
+  BLOGGER_ACCOUNTS:   "blogger_accounts",
+  TEMPLATE_DOWNLOADS: "template_downloads",
 } as const;
 
 /** Returns the public view URL for a file in Appwrite Storage */
