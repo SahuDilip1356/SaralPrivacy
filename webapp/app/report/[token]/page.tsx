@@ -310,31 +310,31 @@ export default async function ReportPage({ params }: { params: Promise<{ token: 
               {
                 title: "Data Inventory Register",
                 desc:  "Map every data type, storage location, retention period, and legal basis — the foundation of DPDPA compliance",
-                href:  "https://docs.google.com/spreadsheets/d/1BDx_ogcBa1sxrXocGLXVFa43KV58VbDX4sdZKTtqgDs/edit?usp=sharing",
+                href:  "https://docs.google.com/spreadsheets/d/1P5yxGP6K1sJZLqqdwBebewRLu23SRS97/edit?usp=sharing",
                 tag:   "Google Sheet",
               },
               {
                 title: "Privacy Notice Template",
                 desc:  "DPDPA-aligned privacy notice covering all 10 required sections — adapt for your website, app, or printed materials",
-                href:  "https://docs.google.com/document/d/1Fk4flzdHr8krs9qNl3HWLrgXdZFD6CRwdOYlnx7bU08/edit?usp=sharing",
+                href:  "https://docs.google.com/document/d/1C5VhNs00ppgbYEm9O3eCVOjhbuOaU2In/edit?usp=sharing",
                 tag:   "Google Doc",
               },
               {
                 title: "Consent Language Examples",
                 desc:  "8 ready-to-use consent statements for website forms, WhatsApp, checkout, app onboarding, in-person, and employee data",
-                href:  "https://docs.google.com/document/d/1ATzdVDG8uZxHl13MYFDJwVozx5EcoQ1kGLq6XcltUWo/edit?usp=sharing",
+                href:  "https://docs.google.com/document/d/1mGgp7y8sf0rzRfRbMRl0xRCBfztSJMK9/edit?usp=sharing",
                 tag:   "Google Doc",
               },
               {
                 title: "DSR & Grievance Handling SOP",
                 desc:  "Step-by-step process to handle access, correction, erasure, and grievance requests from customers and employees",
-                href:  "https://docs.google.com/document/d/1OOmymHsA8wmFwmU86D9BoydRIu0NeByUMCv8UShaUu8/edit?usp=sharing",
+                href:  "https://docs.google.com/document/d/18elwZ5idzrNr0Emch55bZpqjqS6M7iaX/edit?usp=sharing",
                 tag:   "Google Doc",
               },
               {
                 title: "Vendor Data-Sharing Register",
                 desc:  "Track every third party who receives personal data, what DPAs are in place, and when to review each relationship",
-                href:  "https://docs.google.com/spreadsheets/d/1ddNx1HbWgqY0N9NqpDVXsOkjDIBcX3OzC6qu-74swRU/edit?usp=sharing",
+                href:  "https://docs.google.com/spreadsheets/d/1Z1gXe1rQBAqNABhwPnbPXHmU2iKIfsKZ/edit?usp=sharing",
                 tag:   "Google Sheet",
               },
               {
