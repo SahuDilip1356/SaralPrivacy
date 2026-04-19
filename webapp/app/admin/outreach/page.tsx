@@ -18,33 +18,35 @@ const STATUS_BADGE: Record<string, string> = {
 export const dynamic = "force-dynamic";
 
 export default function OutreachPage() {
-  const [contacts, setContacts]       = useState<Contact[]>([]);
-  const [loading, setLoading]         = useState(true);
-  const [search, setSearch]           = useState("");
+  const [contacts, setContacts]         = useState<Contact[]>([]);
+  const [stats, setStats]               = useState<Stats>({ total: 0, pending: 0, sent: 0, subscribed: 0, bounced: 0 });
+  const [loading, setLoading]           = useState(true);
+  const [search, setSearch]             = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
-  const [uploading, setUploading]     = useState(false);
-  const [result, setResult]           = useState<ImportResult | null>(null);
-  const [importError, setImportError] = useState("");
+  const [uploading, setUploading]       = useState(false);
+  const [result, setResult]             = useState<ImportResult | null>(null);
+  const [importError, setImportError]   = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
+
+  const loadStats = () =>
+    fetch("/api/outreach/stats")
+      .then((r) => r.json())
+      .then((d) => { if (!d.error) setStats(d); })
+      .catch(console.error);
 
   const load = () => {
     setLoading(true);
-    fetch("/api/admin/data?collection=outreach_contacts&limit=200")
-      .then((r) => r.json())
-      .then((d) => setContacts(d.documents || []))
+    Promise.all([
+      fetch("/api/admin/data?collection=outreach_contacts&limit=200")
+        .then((r) => r.json())
+        .then((d) => setContacts(d.documents || [])),
+      loadStats(),
+    ])
       .catch(console.error)
       .finally(() => setLoading(false));
   };
 
   useEffect(() => { load(); }, []);
-
-  const stats: Stats = {
-    total:      contacts.length,
-    pending:    contacts.filter((c) => c.status === "pending").length,
-    sent:       contacts.filter((c) => c.status === "sent").length,
-    subscribed: contacts.filter((c) => c.status === "subscribed").length,
-    bounced:    contacts.filter((c) => c.status === "bounced").length,
-  };
 
   const filtered = contacts.filter((c) => {
     const q = search.toLowerCase();
@@ -62,7 +64,7 @@ export default function OutreachPage() {
     try {
       const res  = await fetch("/api/outreach/import", { method: "POST", body: form });
       const data = await res.json();
-      if (data.success) { setResult(data); load(); }
+      if (data.success) { setResult(data); load(); loadStats(); }
       else setImportError(data.error || "Import failed.");
     } catch {
       setImportError("Network error. Please try again.");
@@ -179,7 +181,7 @@ export default function OutreachPage() {
         ) : (
           <>
             <div className="px-4 py-2.5 bg-slate-50 border-b border-slate-200 text-xs text-slate-500">
-              Showing {filtered.length} of {contacts.length} contacts (first 200 loaded)
+              Showing {filtered.length} of {stats.total.toLocaleString()} total contacts (first 200 displayed)
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
