@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { NewsletterSection } from "@/components/home/NewsletterSection";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import MagicSubscribeClient from "./MagicSubscribeClient";
 
 export const metadata: Metadata = {
   title: "Subscribe to DPDPA Daily Briefings",
@@ -11,7 +12,33 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function SubscribePage() {
+export default function SubscribePage({ searchParams }: { searchParams: Promise<{ token?: string }> }) {
+  // Magic-link one-click subscribe from outreach email
+  const tokenPromise = searchParams.then((p) => p.token || "");
+  return <SubscribePageContent tokenPromise={tokenPromise} />;
+}
+
+async function SubscribePageContent({ tokenPromise }: { tokenPromise: Promise<string> }) {
+  const token = await tokenPromise;
+
+  if (token) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center">
+        <div className="max-w-lg w-full bg-white rounded-2xl border border-slate-200 shadow-sm mx-4">
+          <div className="px-8 py-6 border-b border-slate-100">
+            <p className="font-bold text-lg text-navy-700">Saral<span className="text-green-500">Privacy</span></p>
+            <p className="text-xs text-slate-400 mt-0.5">DPDPA Daily Briefings</p>
+          </div>
+          <MagicSubscribeClient token={token} />
+        </div>
+      </div>
+    );
+  }
+
+  return <StandardSubscribePage />;
+}
+
+function StandardSubscribePage() {
   return (
     <div className="min-h-screen bg-slate-50">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-2">
