@@ -303,19 +303,55 @@ export default async function ReportPage({ params }: { params: Promise<{ token: 
         </Section>
 
         {/* Section 8: Downloadable Resources */}
-        <Section title="Downloadable Resources">
-          <p className="text-sm text-slate-500 mb-4">Free templates to help you close the gaps identified above.</p>
+        <Section title="Free Templates — Download &amp; Adapt">
+          <p className="text-sm text-slate-500 mb-4">DPDPA-aligned templates to help you close the gaps identified above. Click to open in Google Docs/Sheets, then make a copy for your business.</p>
           <div className="space-y-3">
             {[
-              { title: "DPDPA White Paper",           desc: "Comprehensive guide to DPDPA compliance for Indian businesses",        href: "https://saralprivacy.com/white-paper" },
-              { title: "Data Inventory Template",     desc: "Document where your customer data lives and who has access",           href: "https://saralprivacy.com/white-paper" },
-              { title: "Privacy Notice Template",     desc: "DPDPA-aligned privacy notice you can adapt for your business",        href: "https://saralprivacy.com/white-paper" },
+              {
+                title: "Data Inventory Register",
+                desc:  "Map every data type, storage location, retention period, and legal basis — the foundation of DPDPA compliance",
+                href:  "https://docs.google.com/spreadsheets/d/1BDx_ogcBa1sxrXocGLXVFa43KV58VbDX4sdZKTtqgDs/edit?usp=sharing",
+                tag:   "Google Sheet",
+              },
+              {
+                title: "Privacy Notice Template",
+                desc:  "DPDPA-aligned privacy notice covering all 10 required sections — adapt for your website, app, or printed materials",
+                href:  "https://docs.google.com/document/d/1Fk4flzdHr8krs9qNl3HWLrgXdZFD6CRwdOYlnx7bU08/edit?usp=sharing",
+                tag:   "Google Doc",
+              },
+              {
+                title: "Consent Language Examples",
+                desc:  "8 ready-to-use consent statements for website forms, WhatsApp, checkout, app onboarding, in-person, and employee data",
+                href:  "https://docs.google.com/document/d/1ATzdVDG8uZxHl13MYFDJwVozx5EcoQ1kGLq6XcltUWo/edit?usp=sharing",
+                tag:   "Google Doc",
+              },
+              {
+                title: "DSR & Grievance Handling SOP",
+                desc:  "Step-by-step process to handle access, correction, erasure, and grievance requests from customers and employees",
+                href:  "https://docs.google.com/document/d/1OOmymHsA8wmFwmU86D9BoydRIu0NeByUMCv8UShaUu8/edit?usp=sharing",
+                tag:   "Google Doc",
+              },
+              {
+                title: "Vendor Data-Sharing Register",
+                desc:  "Track every third party who receives personal data, what DPAs are in place, and when to review each relationship",
+                href:  "https://docs.google.com/spreadsheets/d/1ddNx1HbWgqY0N9NqpDVXsOkjDIBcX3OzC6qu-74swRU/edit?usp=sharing",
+                tag:   "Google Sheet",
+              },
+              {
+                title: "DPDPA White Paper",
+                desc:  "Comprehensive plain-English guide to the Digital Personal Data Protection Act for Indian businesses",
+                href:  "https://saralprivacy.com/white-paper",
+                tag:   "PDF Guide",
+              },
             ].map((r) => (
               <a key={r.title} href={r.href} target="_blank" rel="noopener noreferrer"
                 className="flex items-center justify-between p-4 border border-slate-200 rounded-xl hover:border-[#1E3A5F]/30 hover:bg-slate-50 transition-colors group">
-                <div>
-                  <p className="text-sm font-semibold text-slate-800 group-hover:text-[#1E3A5F]">{r.title}</p>
-                  <p className="text-xs text-slate-500 mt-0.5">{r.desc}</p>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-0.5">
+                    <p className="text-sm font-semibold text-slate-800 group-hover:text-[#1E3A5F]">{r.title}</p>
+                    <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-slate-100 text-slate-500 whitespace-nowrap">{r.tag}</span>
+                  </div>
+                  <p className="text-xs text-slate-500">{r.desc}</p>
                 </div>
                 <span className="text-[#E07B39] font-bold text-sm ml-4 flex-shrink-0">↓</span>
               </a>
