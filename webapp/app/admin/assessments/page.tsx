@@ -295,7 +295,7 @@ function PreviewPanel({
           ) : (
             <button
               onClick={onSend}
-              disabled={sendState === "sending" || !assessment.email || !(assessment.final_score > 0)}
+              disabled={sendState === "sending" || !assessment.email || !assessment.verdict_band}
               className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold bg-brand-600 text-white hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               style={{ backgroundColor: "#1E3A5F" }}
             >
@@ -578,7 +578,7 @@ export default function AssessmentsPage() {
 
                     {/* Actions */}
                     <td className="px-4 py-3 whitespace-nowrap">
-                      {a.final_score > 0 ? (
+                      {a.verdict_band && a.email ? (
                         <div className="flex items-center gap-1.5">
                           {/* Preview button */}
                           <button
