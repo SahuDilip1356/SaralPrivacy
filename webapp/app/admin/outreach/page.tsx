@@ -11,6 +11,7 @@ const STATUS_BADGE: Record<string, string> = {
   sent:        "bg-blue-50 text-blue-700",
   subscribed:  "bg-green-50 text-green-700",
   bounced:     "bg-red-50 text-red-700",
+  failed:      "bg-red-50 text-red-600",
   unsubscribed:"bg-orange-50 text-orange-700",
   complained:  "bg-red-100 text-red-800",
 };

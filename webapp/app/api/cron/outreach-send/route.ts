@@ -167,6 +167,9 @@ export async function GET(request: NextRequest) {
       if (error || !data) {
         console.error(`[outreach-send] Failed ${contact.email}:`, error);
         failed++;
+        databases.updateDocument(DB_ID, COLLECTIONS.OUTREACH_CONTACTS, contact.$id, {
+          status: "failed",
+        }).catch(() => {});
         continue;
       }
 
