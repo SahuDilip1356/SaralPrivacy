@@ -20,8 +20,10 @@ export async function GET(request: NextRequest) {
   }
 
   try {
+    const status = searchParams.get("status");
     const queries: string[] = [Query.orderDesc("$createdAt"), Query.limit(limit)];
     if (source) queries.push(Query.equal("source", source));
+    if (status) queries.push(Query.equal("status", status));
 
     const result = await databases.listDocuments(DB_ID, collection, queries);
     return NextResponse.json({ documents: result.documents, total: result.total });

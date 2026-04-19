@@ -35,25 +35,25 @@ export default function OutreachPage() {
       .then((d) => { if (!d.error) setStats(d); })
       .catch(console.error);
 
-  const load = () => {
+  const loadContacts = (status: string) => {
     setLoading(true);
-    Promise.all([
-      fetch("/api/admin/data?collection=outreach_contacts&limit=200")
-        .then((r) => r.json())
-        .then((d) => setContacts(d.documents || [])),
-      loadStats(),
-    ])
+    const qs = status === "all"
+      ? "/api/admin/data?collection=outreach_contacts&limit=200"
+      : `/api/admin/data?collection=outreach_contacts&limit=200&status=${status}`;
+    fetch(qs)
+      .then((r) => r.json())
+      .then((d) => setContacts(d.documents || []))
       .catch(console.error)
       .finally(() => setLoading(false));
   };
 
-  useEffect(() => { load(); }, []);
+  const load = () => { loadContacts(statusFilter); loadStats(); };
+
+  useEffect(() => { loadStats(); loadContacts("all"); }, []);
 
   const filtered = contacts.filter((c) => {
     const q = search.toLowerCase();
-    const matchSearch = !q || c.email.includes(q) || (c.name ?? "").toLowerCase().includes(q) || (c.company ?? "").toLowerCase().includes(q);
-    const matchStatus = statusFilter === "all" || c.status === statusFilter;
-    return matchSearch && matchStatus;
+    return !q || c.email.includes(q) || (c.name ?? "").toLowerCase().includes(q) || (c.company ?? "").toLowerCase().includes(q);
   });
 
   const handleUpload = async (file: File) => {
@@ -156,10 +156,10 @@ export default function OutreachPage() {
           className="border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-300 w-64"
         />
         <div className="flex gap-1.5 flex-wrap">
-          {["all", "pending", "sent", "subscribed", "bounced", "unsubscribed"].map((s) => (
+          {["all", "pending", "sent", "subscribed", "bounced", "failed", "unsubscribed"].map((s) => (
             <button
               key={s}
-              onClick={() => setStatusFilter(s)}
+              onClick={() => { setStatusFilter(s); loadContacts(s); }}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-colors ${
                 statusFilter === s ? "bg-brand-700 text-white" : "bg-white border border-slate-200 text-slate-600 hover:border-brand-300"
               }`}
