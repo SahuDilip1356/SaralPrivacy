@@ -3,6 +3,7 @@ import { randomUUID } from "crypto";
 import { PRIVACY_NOTICE_VERSION } from "@/lib/utils";
 import { databases, DB_ID, COLLECTIONS, ID } from "@/lib/appwrite";
 import { sendAssessmentAlert, sendSurveyResultEmail } from "@/lib/email";
+import { upsertSubscriber } from "@/lib/subscribers";
 import { QUESTIONS } from "@/lib/data/dpdpa-assessment";
 
 function buildAnswerSummary(answers: Record<string, unknown>): Array<{ question: string; answer: string }> {
@@ -130,6 +131,17 @@ export async function POST(request: NextRequest) {
     sendAssessmentAlert(assessmentData).catch((err) =>
       console.error("sendAssessmentAlert error:", err)
     );
+
+    // Create subscriber if user opted in to daily briefings
+    if (consentNewsletter && email) {
+      upsertSubscriber({
+        email,
+        name:    name ?? "",
+        industry: resolvedIndustry,
+        source:  "assessment_form",
+        ip, userAgent, city, country, region,
+      }).catch((err) => console.error("upsertSubscriber assessment:", err));
+    }
 
     // Send personalised report email to user when they consented to report delivery
     if (consentReport && email) {

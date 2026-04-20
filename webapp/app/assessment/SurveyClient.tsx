@@ -742,7 +742,7 @@ export default function SurveyClient() {
             <div className="space-y-2.5 border-t border-slate-100 pt-4">
               {[
                 { label: "Deliver full technical report to my email", val: consentReport, set: setConsentReport },
-                { label: "Notify of MSME DPDPA enforcement updates", val: consentNewsletter, set: setConsentNewsletter },
+                { label: "Send me free daily DPDPA briefings (2-min reads, unsubscribe anytime)", val: consentNewsletter, set: setConsentNewsletter },
               ].map(({ label, val, set }) => (
                 <label key={label} className="flex items-center gap-2.5 cursor-pointer">
                   <input

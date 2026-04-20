@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { PRIVACY_NOTICE_VERSION } from "@/lib/utils";
 import { databases, DB_ID, COLLECTIONS, ID, getFileDownloadUrl } from "@/lib/appwrite";
 import { sendDownloadAlert } from "@/lib/email";
+import { upsertSubscriber } from "@/lib/subscribers";
 
 export async function POST(request: NextRequest) {
   try {
@@ -107,6 +108,17 @@ export async function POST(request: NextRequest) {
     sendDownloadAlert(downloadData).catch((err) =>
       console.error("sendDownloadAlert error:", err)
     );
+
+    // Create subscriber if user consented to email briefings
+    if (body.consentEmail) {
+      upsertSubscriber({
+        email:    workEmail,
+        name:     fullName,
+        industry,
+        source:   "whitepaper_form",
+        ip, userAgent, city, country, region,
+      }).catch((err) => console.error("upsertSubscriber whitepaper:", err));
+    }
 
     // Use Appwrite Storage URL when file has been uploaded, else fallback to public asset
     const fileId      = (process.env.APPWRITE_WHITE_PAPER_FILE_ID || "").trim();

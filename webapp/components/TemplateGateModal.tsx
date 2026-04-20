@@ -32,6 +32,7 @@ export default function TemplateGateModal({ templates, reportToken, email }: Pro
     contactName: "",
     phone: "",
     consent: false,
+    consentBriefings: false,
   });
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -72,12 +73,13 @@ export default function TemplateGateModal({ templates, reportToken, email }: Pro
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          businessName:  form.businessName,
-          employees:     form.employees,
-          contactName:   form.contactName,
-          phone:         form.phone,
-          consentContact: form.consent,
-          templateName:  pendingTemplate?.title ?? "",
+          businessName:    form.businessName,
+          employees:       form.employees,
+          contactName:     form.contactName,
+          phone:           form.phone,
+          consentContact:  form.consent,
+          consentBriefings: form.consentBriefings,
+          templateName:    pendingTemplate?.title ?? "",
           reportToken,
           email,
         }),
@@ -199,6 +201,19 @@ export default function TemplateGateModal({ templates, reportToken, email }: Pro
                 />
                 <label htmlFor="tg-consent" className="text-xs text-slate-500 leading-relaxed">
                   I agree to SaralPrivacy contacting me about DPDPA compliance guidance. I can opt out at any time.
+                </label>
+              </div>
+
+              <div className="flex items-start gap-2.5">
+                <input
+                  type="checkbox"
+                  id="tg-briefings"
+                  checked={form.consentBriefings}
+                  onChange={(e) => setForm(f => ({ ...f, consentBriefings: e.target.checked }))}
+                  className="mt-0.5 h-4 w-4 accent-[#1E3A5F] flex-shrink-0"
+                />
+                <label htmlFor="tg-briefings" className="text-xs text-slate-500 leading-relaxed">
+                  Also send me free daily DPDPA briefings (2-min reads, unsubscribe anytime).
                 </label>
               </div>
 

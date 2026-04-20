@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { databases, DB_ID, COLLECTIONS, ID } from "@/lib/appwrite";
+import { upsertSubscriber } from "@/lib/subscribers";
 
 export async function POST(request: NextRequest) {
   try {
@@ -10,6 +11,7 @@ export async function POST(request: NextRequest) {
       contactName,
       phone,
       consentContact,
+      consentBriefings,
       templateName,
       reportToken,
       email,
@@ -37,6 +39,18 @@ export async function POST(request: NextRequest) {
       country,
       created_at:      new Date().toISOString(),
     });
+
+    // Create subscriber if user opted in to daily briefings
+    if (consentBriefings && email) {
+      upsertSubscriber({
+        email,
+        name:   contactName,
+        source: "template_form",
+        ip,
+        city,
+        country,
+      }).catch((err) => console.error("upsertSubscriber template:", err));
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {
