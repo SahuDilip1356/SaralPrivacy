@@ -769,9 +769,7 @@ export function outreachBriefingEmail(
   const subject = `${briefing.title}`;
   const firstName = (contact.name || "").split(" ")[0] || "there";
 
-  const dateStr = briefing.scheduled_for
-    ? new Date(briefing.scheduled_for).toLocaleDateString("en-IN", { weekday: "long", year: "numeric", month: "long", day: "numeric" })
-    : new Date().toLocaleDateString("en-IN", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
+  const dateStr = new Date().toLocaleDateString("en-IN", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
 
   let checklistHtml = "";
   let checklistText = "";
