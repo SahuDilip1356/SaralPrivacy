@@ -1,0 +1,122 @@
+import { NextRequest, NextResponse } from "next/server";
+import { databases, DB_ID, COLLECTIONS, ID, Query } from "@/lib/appwrite";
+import { briefingEmailTemplate } from "@/lib/email-templates";
+import { Resend } from "resend";
+import type { BriefingData } from "@/lib/email-templates";
+
+const resend   = new Resend(process.env.RESEND_API_KEY);
+const BASE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://saralprivacy.com").replace(/\/$/, "");
+const FROM     = process.env.RESEND_FROM_BRIEFINGS || "briefings@saralprivacy.com";
+
+const SUPPRESSED = ["bounced", "complained", "unsubscribed"];
+
+export async function GET(request: NextRequest) {
+  if (request.headers.get("authorization") !== `Bearer ${process.env.CRON_SECRET}`) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  try {
+    // 1. Find the most recent approved briefing
+    const approvedRes = await databases.listDocuments(DB_ID, COLLECTIONS.BRIEFINGS, [
+      Query.equal("status", "approved"),
+      Query.orderDesc("scheduled_for"),
+      Query.limit(1),
+    ]);
+
+    if (!approvedRes.documents.length) {
+      return NextResponse.json({ error: "No approved briefing found. Approve a briefing first." }, { status: 404 });
+    }
+
+    const briefing = approvedRes.documents[0];
+
+    const briefingPayload: BriefingData = {
+      id:               briefing.$id,
+      title:            briefing.title,
+      summary:          briefing.summary,
+      content:          briefing.content,
+      why_it_matters:   briefing.why_it_matters,
+      action_checklist: briefing.action_checklist,
+      status:           "approved",
+      scheduled_for:    briefing.scheduled_for,
+      created_at:       briefing.created_at,
+    };
+
+    // 2. Fetch all subscribers (up to 500)
+    const subRes = await databases.listDocuments(DB_ID, COLLECTIONS.SUBSCRIBERS, [
+      Query.limit(500),
+    ]);
+
+    const now      = new Date();
+    const nowISO   = now.toISOString();
+    const isMonday = now.getDay() === 1;
+
+    // Filter: skip suppressed + weekly subscribers on non-Monday days
+    const eligible = subRes.documents.filter((s) => {
+      if (SUPPRESSED.includes(s.status as string)) return false;
+      if ((s.frequency as string) === "weekly" && !isMonday) return false;
+      return true;
+    });
+
+    if (!eligible.length) {
+      return NextResponse.json({ message: "No eligible subscribers today.", briefing_used: briefing.title });
+    }
+
+    // 3. Send to each subscriber
+    let sent   = 0;
+    let failed = 0;
+
+    for (const sub of eligible) {
+      const email          = sub.email as string;
+      const unsubscribeUrl = `${BASE_URL}/unsubscribe?email=${encodeURIComponent(email)}`;
+      const { subject, html } = briefingEmailTemplate(briefingPayload, unsubscribeUrl);
+
+      const { data, error } = await resend.emails.send({
+        from:    FROM,
+        to:      email,
+        subject,
+        html,
+        headers: { "List-Unsubscribe": `<${unsubscribeUrl}>` },
+      });
+
+      if (error || !data) {
+        console.error(`[briefing-send] Failed ${email}:`, error);
+        failed++;
+        continue;
+      }
+
+      databases.createDocument(DB_ID, COLLECTIONS.EMAIL_SEND_LOG, ID.unique(), {
+        recipient_email:   email,
+        email_type:        (sub.frequency as string) === "weekly" ? "briefing_weekly" : "briefing_daily",
+        resend_message_id: data.id,
+        status:            "sent",
+        consent_basis:     "explicit_consent",
+        sent_at:           nowISO,
+      }).catch((err) => console.error("[briefing-send] log:", err));
+
+      sent++;
+      // Avoid Resend rate limits
+      await new Promise((r) => setTimeout(r, 100));
+    }
+
+    // 4. Mark briefing as sent
+    await databases.updateDocument(DB_ID, COLLECTIONS.BRIEFINGS, briefing.$id, {
+      status:           "sent",
+      sent_at:          nowISO,
+      subscriber_count: sent,
+    });
+
+    console.log(`[briefing-send] Done — sent: ${sent}, failed: ${failed}, briefing: "${briefing.title}"`);
+
+    return NextResponse.json({
+      sent,
+      failed,
+      total_eligible: eligible.length,
+      briefing_used:  briefing.title,
+      briefing_id:    briefing.$id,
+    });
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error("[briefing-send]", msg);
+    return NextResponse.json({ error: msg }, { status: 500 });
+  }
+}

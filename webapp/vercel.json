@@ -1,6 +1,7 @@
 {
   "regions": ["sin1"],
   "crons": [
-    { "path": "/api/cron/outreach-send", "schedule": "0 4 * * *" }
+    { "path": "/api/cron/outreach-send",  "schedule": "0 4 * * *"  },
+    { "path": "/api/cron/briefing-send",  "schedule": "30 4 * * *" }
   ]
 }
