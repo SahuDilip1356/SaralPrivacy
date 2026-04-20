@@ -751,7 +751,195 @@ export function briefingEmailTemplate(briefing: BriefingData, unsubscribeUrl: st
 
 
 // ──────────────────────────────────────────────────────────────────────────────
-// 9. bloggerInviteTemplate — invite a contributor to set up their account
+// 9. outreachBriefingEmail — cold outreach email wrapping actual daily briefing
+//    One-time send to cold contacts. Subscribe CTA replaces unsubscribe footer.
+// ──────────────────────────────────────────────────────────────────────────────
+
+export interface OutreachBriefingContact {
+  name?: string;
+  email: string;
+  subscribeUrl: string;
+  unsubscribeUrl: string;
+}
+
+export function outreachBriefingEmail(
+  briefing: BriefingData,
+  contact: OutreachBriefingContact,
+): { subject: string; html: string; text: string } {
+  const subject = `${briefing.title}`;
+  const firstName = (contact.name || "").split(" ")[0] || "there";
+
+  const dateStr = briefing.scheduled_for
+    ? new Date(briefing.scheduled_for).toLocaleDateString("en-IN", { weekday: "long", year: "numeric", month: "long", day: "numeric" })
+    : new Date().toLocaleDateString("en-IN", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
+
+  let checklistHtml = "";
+  let checklistText = "";
+  try {
+    const raw = briefing.action_checklist || "[]";
+    const items: string[] = JSON.parse(raw);
+    checklistHtml = items.map(item => `
+      <tr>
+        <td style="padding:8px 0;vertical-align:top;">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+            <td style="width:22px;vertical-align:top;padding-top:2px;">
+              <div style="width:18px;height:18px;background-color:${SAFFRON};border-radius:50%;text-align:center;line-height:18px;">
+                <span style="color:#fff;font-size:11px;font-weight:700;">✓</span>
+              </div>
+            </td>
+            <td style="padding-left:8px;font-size:13px;color:${TEXT};line-height:1.5;">${item}</td>
+          </tr></table>
+        </td>
+      </tr>`).join("");
+    checklistText = items.map((item, i) => `${i + 1}. ${item}`).join("\n");
+  } catch { checklistHtml = ""; checklistText = ""; }
+
+  const whyText = (() => {
+    try {
+      const raw = briefing.why_it_matters || "";
+      const parsed = typeof raw === "string" ? JSON.parse(raw) : raw;
+      return parsed?.hook_line1 || parsed?.why || raw;
+    } catch { return briefing.why_it_matters || ""; }
+  })();
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>${briefing.title}</title>
+</head>
+<body style="margin:0;padding:0;background-color:${LIGHT_BG};font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;color:${TEXT};">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${LIGHT_BG};padding:32px 16px;">
+    <tr><td align="center">
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;">
+
+        <!-- Header -->
+        <tr>
+          <td style="background-color:${NAV};border-radius:12px 12px 0 0;padding:28px 32px;">
+            <span style="color:#FFFFFF;font-size:20px;font-weight:700;">Saral<span style="color:${SAFFRON};">Privacy</span></span>
+            <p style="margin:2px 0 12px;color:rgba(255,255,255,0.6);font-size:11px;text-transform:uppercase;letter-spacing:1px;">DPDPA Daily Brief</p>
+            <p style="margin:0;color:rgba(255,255,255,0.8);font-size:13px;">${dateStr}</p>
+          </td>
+        </tr>
+
+        <!-- Intro band -->
+        <tr>
+          <td style="background-color:#f0fdf4;border-left:1px solid ${BORDER};border-right:1px solid ${BORDER};padding:16px 32px;">
+            <p style="margin:0;font-size:13px;color:#166534;line-height:1.6;">
+              Hi ${firstName}, here is today's DPDPA briefing — we're sharing it because your business operates in a sector covered by the Act.
+              <strong>One email. Practical. Plain English.</strong>
+            </p>
+          </td>
+        </tr>
+
+        <!-- Title -->
+        <tr>
+          <td style="background-color:#FFFFFF;padding:28px 32px 0;border-left:1px solid ${BORDER};border-right:1px solid ${BORDER};">
+            <h1 style="margin:0 0 16px;font-size:24px;font-weight:700;color:${NAV};line-height:1.3;">${briefing.title}</h1>
+            ${briefing.summary ? `<p style="margin:0;font-size:15px;color:${MUTED};line-height:1.7;border-left:3px solid ${SAFFRON};padding-left:16px;">${briefing.summary}</p>` : ""}
+          </td>
+        </tr>
+
+        <!-- Divider -->
+        <tr>
+          <td style="background-color:#FFFFFF;padding:0 32px;border-left:1px solid ${BORDER};border-right:1px solid ${BORDER};">
+            <hr style="border:none;border-top:1px solid ${BORDER};margin:24px 0;" />
+          </td>
+        </tr>
+
+        ${whyText ? `
+        <!-- Why It Matters -->
+        <tr>
+          <td style="background-color:#FFFFFF;padding:0 32px 24px;border-left:1px solid ${BORDER};border-right:1px solid ${BORDER};">
+            <p style="margin:0 0 12px;font-size:11px;font-weight:700;color:${SAFFRON};text-transform:uppercase;letter-spacing:1px;">Why It Matters</p>
+            <p style="margin:0;font-size:14px;color:${TEXT};line-height:1.7;">${whyText}</p>
+          </td>
+        </tr>` : ""}
+
+        ${briefing.content ? `
+        <!-- Content -->
+        <tr>
+          <td style="background-color:#FFFFFF;padding:0 32px 24px;border-left:1px solid ${BORDER};border-right:1px solid ${BORDER};">
+            <div style="font-size:14px;color:${TEXT};line-height:1.7;">${briefing.content}</div>
+          </td>
+        </tr>` : ""}
+
+        ${checklistHtml ? `
+        <!-- Action Checklist -->
+        <tr>
+          <td style="background-color:#F0F7FF;padding:24px 32px;border-left:1px solid ${BORDER};border-right:1px solid ${BORDER};">
+            <p style="margin:0 0 16px;font-size:11px;font-weight:700;color:${NAV};text-transform:uppercase;letter-spacing:1px;">Your Action Checklist</p>
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">${checklistHtml}</table>
+          </td>
+        </tr>` : ""}
+
+        <!-- Subscribe CTA -->
+        <tr>
+          <td style="background-color:#FFFFFF;padding:28px 32px;border-left:1px solid ${BORDER};border-right:1px solid ${BORDER};text-align:center;">
+            <p style="margin:0 0 16px;font-size:15px;color:${TEXT};font-weight:600;">Want this every morning?</p>
+            <p style="margin:0 0 20px;font-size:13px;color:${MUTED};line-height:1.6;">
+              We publish a free DPDPA briefing every day — practical steps for Indian businesses. No jargon. 2-minute reads.
+            </p>
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;">
+              <tr>
+                <td style="background-color:#16a34a;border-radius:8px;padding:14px 32px;">
+                  <a href="${contact.subscribeUrl}" style="color:#FFFFFF;font-size:15px;font-weight:700;text-decoration:none;">Subscribe to Daily Briefings →</a>
+                </td>
+              </tr>
+            </table>
+            <p style="margin:12px 0 0;font-size:12px;color:${MUTED};">One email per day. Unsubscribe anytime. No spam — ever.</p>
+          </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+          <td style="background-color:${LIGHT_BG};border:1px solid ${BORDER};border-top:none;border-radius:0 0 12px 12px;padding:20px 32px;text-align:center;">
+            <p style="margin:0 0 8px;font-size:12px;color:${MUTED};line-height:1.6;">
+              You are receiving this one-time briefing because your business operates in a sector covered by DPDPA.
+              We will not email you again unless you subscribe above.
+            </p>
+            <p style="margin:0;font-size:12px;color:${MUTED};">
+              <a href="${contact.unsubscribeUrl}" style="color:${MUTED};text-decoration:underline;">Remove me from this list</a>
+              &nbsp;·&nbsp;
+              <a href="https://saralprivacy.com/privacy-policy" style="color:${MUTED};text-decoration:underline;">Privacy Policy</a>
+              &nbsp;·&nbsp;SaralPrivacy, India
+            </p>
+          </td>
+        </tr>
+
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+
+  const text = `Hi ${firstName},
+
+Here is today's DPDPA briefing — ${briefing.title}
+
+${briefing.summary || ""}
+
+${whyText ? `WHY IT MATTERS\n${whyText}\n` : ""}
+${briefing.content ? `${briefing.content}\n` : ""}
+${checklistText ? `YOUR ACTION CHECKLIST\n${checklistText}\n` : ""}
+
+Want this every morning?
+Subscribe here: ${contact.subscribeUrl}
+One email per day. Unsubscribe anytime.
+
+---
+You are receiving this one-time briefing because your business operates in a sector covered by DPDPA.
+We will not email you again unless you subscribe.
+
+Remove me: ${contact.unsubscribeUrl}
+SaralPrivacy, India`;
+
+  return { subject, html, text };
+}
+
+// ──────────────────────────────────────────────────────────────────────────────
+// 10. bloggerInviteTemplate — invite a contributor to set up their account
 // ──────────────────────────────────────────────────────────────────────────────
 export interface BloggerInviteData {
   name: string;
