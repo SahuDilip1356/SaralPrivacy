@@ -37,6 +37,7 @@ export async function upsertSubscriber({
     email:           normalised,
     industry,
     frequency:       "daily",
+    status:          "active",
     consent_version: PRIVACY_NOTICE_VERSION,
     created_at:      now,
     ip_address:      ip,
