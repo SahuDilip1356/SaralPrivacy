@@ -102,7 +102,7 @@ export async function GET(request: NextRequest) {
         }),
         databases.createDocument(DB_ID, COLLECTIONS.EMAIL_SEND_LOG, ID.unique(), {
           recipient_email:   contact.email,
-          email_type:        "outreach_briefing",
+          email_type:        "intro",
           resend_message_id: data.id,
           status:            "sent",
           consent_basis:     "one_time_dpdpa_sensitization",
