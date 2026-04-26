@@ -6,6 +6,8 @@ import {
   CheckCircle, Clock, Calendar, ArrowLeft, Shield,
   Share2, ExternalLink, BookOpen,
 } from "lucide-react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 import { BriefingSubscribeCard } from "@/components/briefings/BriefingSubscribeCard";
 import { articleSchema, breadcrumbSchema } from "@/lib/schema";
@@ -118,90 +120,89 @@ function isBlank(text: string | null | undefined): boolean {
   return t === "" || t === "blank" || t === "(empty)";
 }
 
-// Parses inline Markdown: **bold** → <strong>, *italic* → <em>
-// Returns an array of React nodes safe to render inside any element.
-function parseInline(text: string): React.ReactNode[] {
-  const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g);
-  return parts.map((part, i) => {
-    if (part.startsWith("**") && part.endsWith("**")) {
-      return (
-        <strong key={i} className="font-semibold text-slate-900">
-          {part.slice(2, -2)}
-        </strong>
-      );
-    }
-    if (part.startsWith("*") && part.endsWith("*")) {
-      return <em key={i}>{part.slice(1, -1)}</em>;
-    }
-    return part;
-  });
-}
-
-// Renders plain-text content with smart formatting detection:
-// - Lines starting with ## → styled sub-heading
-// - Lines starting with - / • / * → golden ✓ bullet list items
-// - All other lines → paragraphs
-// Inline **bold** and *italic* are parsed throughout.
-function renderContent(content: string) {
-  const lines = content.split("\n");
-  const elements: React.ReactNode[] = [];
-  let listBuffer: string[] = [];
-
-  const flushList = (key: string) => {
-    if (listBuffer.length === 0) return;
-    elements.push(
-      <ul key={key} className="space-y-2 my-3">
-        {listBuffer.map((item, i) => (
-          <li key={i} className="flex items-start gap-2.5 text-sm text-slate-700 leading-relaxed">
-            <span
-              className="shrink-0 mt-0.5 text-base font-bold leading-none"
-              style={{ color: BRAND_GOLD }}
-            >
-              ✓
-            </span>
-            <span>{parseInline(item)}</span>
-          </li>
-        ))}
-      </ul>
-    );
-    listBuffer = [];
-  };
-
-  lines.forEach((line, idx) => {
-    const trimmed = line.trim();
-    if (!trimmed) {
-      flushList(`list-${idx}`);
-      return;
-    }
-
-    // ## Sub-heading inside content (AI often writes these)
-    const headingMatch = trimmed.match(/^#{1,3}\s+(.+)/);
-    if (headingMatch) {
-      flushList(`list-${idx}`);
-      elements.push(
-        <h3 key={`h-${idx}`} className="text-base font-bold text-navy-700 mt-5 mb-2">
-          {headingMatch[1]}
-        </h3>
-      );
-      return;
-    }
-
-    // Bullet line: -, •, or a leading * not part of bold (**word**)
-    const bulletMatch = trimmed.match(/^[-•]\s+(.+)/) ||
-      (trimmed.startsWith("* ") ? trimmed.match(/^\*\s+(.+)/) : null);
-    if (bulletMatch) {
-      listBuffer.push(bulletMatch[1]);
-    } else {
-      flushList(`list-${idx}`);
-      elements.push(
-        <p key={`p-${idx}`} className="text-sm text-slate-700 leading-relaxed mb-2">
-          {parseInline(trimmed)}
-        </p>
-      );
-    }
-  });
-  flushList("list-end");
-  return elements;
+function MarkdownContent({ content }: { content: string }) {
+  return (
+    <ReactMarkdown
+      remarkPlugins={[remarkGfm]}
+      components={{
+        h1: ({ children }) => (
+          <h2 className="text-lg font-bold text-navy-700 mt-6 mb-2">{children}</h2>
+        ),
+        h2: ({ children }) => (
+          <h2 className="text-lg font-bold text-navy-700 mt-6 mb-2">{children}</h2>
+        ),
+        h3: ({ children }) => (
+          <h3 className="text-base font-bold text-navy-700 mt-5 mb-2">{children}</h3>
+        ),
+        p: ({ children }) => (
+          <p className="text-sm text-slate-700 leading-relaxed mb-2">{children}</p>
+        ),
+        strong: ({ children }) => (
+          <strong className="font-semibold text-slate-900">{children}</strong>
+        ),
+        ul: ({ children }) => (
+          <ul className="space-y-2 my-3">{children}</ul>
+        ),
+        ol: ({ children }) => (
+          <ol className="space-y-2 my-3 list-decimal list-inside text-sm text-slate-700">{children}</ol>
+        ),
+        li: ({ children, ...props }) => {
+          const isOrdered = (props as { ordered?: boolean }).ordered;
+          if (isOrdered) {
+            return <li className="text-sm text-slate-700 leading-relaxed">{children}</li>;
+          }
+          return (
+            <li className="flex items-start gap-2.5 text-sm text-slate-700 leading-relaxed">
+              <span
+                className="shrink-0 mt-0.5 text-base font-bold leading-none"
+                style={{ color: BRAND_GOLD }}
+              >
+                ✓
+              </span>
+              <span>{children}</span>
+            </li>
+          );
+        },
+        blockquote: ({ children }) => (
+          <blockquote className="border-l-4 border-slate-300 pl-4 my-3 italic text-slate-500 text-sm">
+            {children}
+          </blockquote>
+        ),
+        table: ({ children }) => (
+          <div className="overflow-x-auto my-4">
+            <table className="w-full text-sm border-collapse">{children}</table>
+          </div>
+        ),
+        thead: ({ children }) => (
+          <thead className="bg-slate-100">{children}</thead>
+        ),
+        th: ({ children }) => (
+          <th className="text-left px-3 py-2 font-semibold text-slate-800 border border-slate-200">
+            {children}
+          </th>
+        ),
+        tbody: ({ children }) => <tbody>{children}</tbody>,
+        tr: ({ children }) => <tr className="odd:bg-white even:bg-slate-50">{children}</tr>,
+        td: ({ children }) => (
+          <td className="px-3 py-2 text-slate-700 border border-slate-200 align-top">
+            {children}
+          </td>
+        ),
+        code: ({ children }) => (
+          <code className="bg-slate-100 text-slate-800 text-xs px-1.5 py-0.5 rounded font-mono">
+            {children}
+          </code>
+        ),
+        a: ({ href, children }) => (
+          <a href={href} className="text-navy-600 underline hover:text-navy-800" target="_blank" rel="noopener noreferrer">
+            {children}
+          </a>
+        ),
+      }}
+    >
+      {content}
+    </ReactMarkdown>
+  );
 }
 
 function SectionBlock({
@@ -225,7 +226,7 @@ function SectionBlock({
         )}
       </div>
       <div className="prose prose-slate max-w-none">
-        {renderContent(content)}
+        <MarkdownContent content={content} />
       </div>
     </div>
   );
