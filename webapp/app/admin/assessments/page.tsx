@@ -289,7 +289,7 @@ function PreviewPanel({
                 onClick={onSend}
                 className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold bg-red-50 text-red-700 border border-red-200 hover:bg-red-100 transition-colors"
               >
-                <Send size={14} /> Retry Send
+                <Send size={14} /> Retry Resend
               </button>
             </div>
           ) : (
@@ -300,7 +300,7 @@ function PreviewPanel({
               style={{ backgroundColor: "#1E3A5F" }}
             >
               <Send size={14} />
-              {sendState === "sending" ? "Sending report…" : "Send Report to User"}
+              {sendState === "sending" ? "Resending report…" : "Resend Report"}
             </button>
           )}
           <p className="text-[10px] text-slate-400 text-center mt-2">
@@ -604,7 +604,7 @@ export default function AssessmentsPage() {
                                 className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium bg-navy-50 text-navy-700 border border-navy-200 hover:bg-navy-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                               >
                                 <Send size={11} />
-                                {state === "sending" ? "…" : "Send"}
+                                {state === "sending" ? "…" : "Resend"}
                               </button>
                             );
                           })()}

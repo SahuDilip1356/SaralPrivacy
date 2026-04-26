@@ -574,6 +574,7 @@ export default function SurveyClient() {
   const [consentFU, setConsentFU] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [reportToken, setReportToken] = useState("");
 
   const setAnswer = <K extends keyof DPDPAAnswers>(key: K, val: DPDPAAnswers[K]) =>
     setAnswers(prev => ({ ...prev, [key]: val }));
@@ -625,7 +626,7 @@ export default function SurveyClient() {
     if (!contactEmail) { setStep(9); return; }
     setSubmitting(true);
     try {
-      await fetch("/api/assessment", {
+      const res = await fetch("/api/assessment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -641,6 +642,8 @@ export default function SurveyClient() {
           consentFollowup,
         }),
       });
+      const data = await res.json().catch(() => ({}));
+      if (data.reportToken) setReportToken(data.reportToken);
     } catch { /* non-blocking */ }
     setSubmitting(false);
     setSubmitted(true);
@@ -1221,7 +1224,7 @@ export default function SurveyClient() {
   if (step === 9 && result) {
     const cats = result.categoryScores;
     const stratCards = buildStrategyCards(result);
-    const reportId = `SP-${Date.now().toString(36).toUpperCase()}`;
+    const reportId = reportToken ? `SP-${reportToken.slice(0, 8).toUpperCase()}` : `SP-${Date.now().toString(36).toUpperCase()}`;
 
     return (
       <div className="min-h-screen bg-slate-50">
@@ -1327,7 +1330,12 @@ export default function SurveyClient() {
                 The DPDP Rules require a compliance posture. Our experts help you build the DPDPA-aligned framework and implementation strategy.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Link href="/contact" className="px-6 py-3 bg-green-500 text-white font-bold rounded-xl text-sm hover:bg-green-400 transition-colors flex items-center justify-center gap-2">
+                {reportToken && (
+                  <a href={`/report/${reportToken}`} target="_blank" rel="noopener noreferrer" className="px-6 py-3 bg-green-500 text-white font-bold rounded-xl text-sm hover:bg-green-400 transition-colors flex items-center justify-center gap-2">
+                    View Full Report →
+                  </a>
+                )}
+                <Link href="/contact" className="px-6 py-3 bg-white/10 text-white font-bold rounded-xl text-sm hover:bg-white/20 transition-colors flex items-center justify-center gap-2">
                   Book expert consultation
                 </Link>
                 <Link href="/white-paper" className="px-6 py-3 bg-white/10 text-white font-bold rounded-xl text-sm hover:bg-white/20 transition-colors flex items-center justify-center gap-2">
@@ -1339,7 +1347,7 @@ export default function SurveyClient() {
             {/* Retake link */}
             <div className="mt-6 text-center">
               <button
-                onClick={() => { setAnswers({}); setResult(null); setStep(0); setConsentRequired(false); setContactEmail(""); setContactName(""); setContactBusiness(""); setContactMobile(""); setSubmitted(false); }}
+                onClick={() => { setAnswers({}); setResult(null); setStep(0); setConsentRequired(false); setContactEmail(""); setContactName(""); setContactBusiness(""); setContactMobile(""); setSubmitted(false); setReportToken(""); }}
                 className="text-sm text-slate-400 hover:text-slate-600 underline transition-colors"
               >
                 Retake Assessment
@@ -1440,9 +1448,19 @@ export default function SurveyClient() {
               <h4 className="font-bold text-white text-base mb-1">Recommended next step</h4>
               <p className="text-slate-400 text-sm mb-4">{result.blockerNote ?? "Start with the highest-priority action above."}</p>
               <div className="flex flex-col sm:flex-row gap-3">
+                {reportToken && (
+                  <a
+                    href={`/report/${reportToken}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 text-center py-3 px-5 bg-green-500 hover:bg-green-400 text-white font-semibold rounded-xl text-sm transition-colors"
+                  >
+                    View Full Report →
+                  </a>
+                )}
                 <Link
                   href={resourceCTA.href}
-                  className="flex-1 text-center py-3 px-5 bg-green-500 hover:bg-green-400 text-white font-semibold rounded-xl text-sm transition-colors"
+                  className="flex-1 text-center py-3 px-5 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl text-sm border border-white/20 transition-colors"
                 >
                   {resourceCTA.label}
                 </Link>
@@ -1464,7 +1482,7 @@ export default function SurveyClient() {
                 setStep(0);
                 setConsentRequired(false);
                 setContactEmail(""); setContactName(""); setContactBusiness(""); setContactMobile("");
-                setSubmitted(false);
+                setSubmitted(false); setReportToken("");
               }}
               className="w-full text-center text-sm text-slate-400 hover:text-slate-600 underline transition-colors"
             >

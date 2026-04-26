@@ -109,7 +109,7 @@ export async function POST(request: NextRequest) {
       category_scores_json:    JSON.stringify(result?.categoryScores ?? {}),
     };
 
-    await databases.createDocument(DB_ID, COLLECTIONS.ASSESSMENTS, ID.unique(), assessmentData);
+    const doc = await databases.createDocument(DB_ID, COLLECTIONS.ASSESSMENTS, ID.unique(), assessmentData);
 
     // Write consent log entry
     const timestamp = new Date().toISOString();
@@ -145,22 +145,32 @@ export async function POST(request: NextRequest) {
 
     // Send personalised report email to user when they consented to report delivery
     if (consentReport && email) {
-      sendSurveyResultEmail({
-        email,
-        name:            name ?? "",
-        businessName:    business ?? "",
-        score:           result?.finalScore ?? 0,
-        band:            result?.verdictBand ?? "Early Stage",
-        summary:         result?.verdictDescription ?? "",
-        recommendations: result?.immediateActions ?? [],
-        riskFlags:       result?.redFlagsTriggered ?? [],
-        answerSummary:   buildAnswerSummary((answers as Record<string, unknown>) ?? {}),
-        reportToken,
-        categoryScores:  result?.categoryScores,
-      }).catch((err) => console.error("sendSurveyResultEmail error:", err));
+      try {
+        const emailResult = await sendSurveyResultEmail({
+          email,
+          name:            name ?? "",
+          businessName:    business ?? "",
+          score:           result?.finalScore ?? 0,
+          band:            result?.verdictBand ?? "Early Stage",
+          summary:         result?.verdictDescription ?? "",
+          recommendations: result?.immediateActions ?? [],
+          riskFlags:       result?.redFlagsTriggered ?? [],
+          answerSummary:   buildAnswerSummary((answers as Record<string, unknown>) ?? {}),
+          reportToken,
+          categoryScores:  result?.categoryScores,
+        });
+        if (emailResult.success) {
+          databases.updateDocument(DB_ID, COLLECTIONS.ASSESSMENTS, doc.$id, {
+            email_sent_at: new Date().toISOString(),
+            email_sent_by: "auto",
+          }).catch((err) => console.error("Failed to record auto email_sent_at:", err));
+        }
+      } catch (err) {
+        console.error("sendSurveyResultEmail error:", err);
+      }
     }
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, reportToken });
   } catch (error) {
     console.error("Assessment save error:", error);
     return NextResponse.json({ error: "Failed to save assessment." }, { status: 500 });
