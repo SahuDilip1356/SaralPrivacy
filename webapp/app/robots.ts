@@ -29,6 +29,5 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: 'cohere-ai',            allow: '/', disallow: COMMON_DISALLOW },
     ],
     sitemap: 'https://saralprivacy.com/sitemap.xml',
-    host: 'https://saralprivacy.com',
   }
 }
