@@ -188,6 +188,14 @@ const getRelatedFromDb = unstable_cache(
   { revalidate: 1800, tags: ["briefings"] }
 );
 
+function seoTitle(title: string, max = 46): string {
+  if (title.length <= max) return title;
+  const truncated = title.slice(0, max - 1).trimEnd();
+  return truncated.endsWith("—") || truncated.endsWith("-")
+    ? truncated.slice(0, -1).trimEnd()
+    : truncated + "…";
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const canonicalUrl = `https://saralprivacy.com/briefings/${slug}`;
@@ -195,14 +203,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // Try Appwrite first
   const dbBriefing = await getBriefingFromDb(slug);
   if (dbBriefing) {
+    const title = seoTitle(dbBriefing.title);
     return {
-      title: dbBriefing.title,
+      title,
       description: dbBriefing.excerpt,
       alternates: { canonical: canonicalUrl },
       openGraph: {
         type: 'article',
         url: canonicalUrl,
-        title: dbBriefing.title,
+        title,
         description: dbBriefing.excerpt,
         publishedTime: dbBriefing.date,
         authors: ['SaralPrivacy Editorial Team'],
@@ -213,14 +222,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // Fallback to static
   const staticBriefing = getBriefingBySlug(slug);
   if (!staticBriefing) return {};
+  const title = seoTitle(staticBriefing.title);
   return {
-    title: staticBriefing.title,
+    title,
     description: staticBriefing.excerpt,
     alternates: { canonical: canonicalUrl },
     openGraph: {
       type: 'article',
       url: canonicalUrl,
-      title: staticBriefing.title,
+      title,
       description: staticBriefing.excerpt,
     },
   };

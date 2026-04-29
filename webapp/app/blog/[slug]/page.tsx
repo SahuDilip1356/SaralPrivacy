@@ -93,16 +93,25 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
+function seoTitle(title: string, max = 46): string {
+  if (title.length <= max) return title;
+  const truncated = title.slice(0, max - 1).trimEnd();
+  return truncated.endsWith("—") || truncated.endsWith("-")
+    ? truncated.slice(0, -1).trimEnd()
+    : truncated + "…";
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
   if (!post) return { title: "Not Found" };
+  const title = seoTitle(post.title);
   return {
-    title: post.title,
+    title,
     description: post.excerpt,
     alternates: { canonical: `https://saralprivacy.com/blog/${slug}` },
     openGraph: {
-      title: post.title,
+      title,
       description: post.excerpt,
       url: `https://saralprivacy.com/blog/${slug}`,
       type: "article",
