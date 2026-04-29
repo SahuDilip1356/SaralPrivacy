@@ -79,7 +79,7 @@ export default function PenaltyCalculatorPage() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
             {[
               { step: "1", label: "Select breach category", sub: "6 Schedule items, Section 33(1)" },
-              { step: "2", label: "Rate 6 statutory factors", sub: "Section 33(2) — Low / Medium / High" },
+              { step: "2", label: "Rate 7 statutory factors", sub: "Section 33(2) — Low / Medium / High" },
               { step: "3", label: "Get your risk band", sub: "Low · Moderate · High · Severe" },
             ].map(({ step, label, sub }) => (
               <div key={step} className="bg-white rounded-xl border border-slate-200 p-4 flex items-start gap-3">
@@ -101,45 +101,54 @@ export default function PenaltyCalculatorPage() {
 
           {/* Legal framework note */}
           <div className="mt-10 bg-white rounded-xl border border-slate-200 p-6">
-            <h2 className="font-bold text-navy-700 text-base mb-4">About the DPDPA Penalty Framework</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+            <h2 className="font-bold text-navy-700 text-base mb-1">About the DPDPA Penalty Framework</h2>
+            <p className="text-xs text-slate-500 mb-5 leading-relaxed">
+              Source: DPDPA 2023, Section 33 and Schedule. The Act contains <strong>no arithmetic formula</strong> for
+              penalty calculation — no % of turnover, no ₹ per data principal, no scoring matrix. The Data Protection Board
+              determines the penalty after inquiry and hearing, within the Schedule cap.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <h3 className="font-semibold text-navy-700 mb-2">Section 33(1) — Schedule Caps</h3>
-                <p className="text-slate-600 text-xs leading-relaxed mb-3">
-                  The Act prescribes maximum penalty caps for each category of non-compliance. These are upper limits — the Board may impose any amount up to the cap based on the facts of the case.
+                <h3 className="font-semibold text-navy-700 text-sm mb-2">Section 33(1) — Schedule Caps</h3>
+                <p className="text-slate-500 text-xs leading-relaxed mb-3">
+                  Maximum caps only. The Board may impose any amount up to (not necessarily equal to) the cap.
                 </p>
-                <ul className="space-y-1.5">
+                <ul className="space-y-2">
                   {[
-                    ["Section 8(5) — Security safeguards", "up to ₹250 Cr"],
-                    ["Section 8(6) — Breach notification", "up to ₹200 Cr"],
-                    ["Section 9 — Children's data", "up to ₹200 Cr"],
-                    ["Section 10 — SDF obligations", "up to ₹150 Cr"],
-                    ["Other provisions of Act/Rules", "up to ₹50 Cr"],
-                    ["Section 15 — Data Principal duties", "up to ₹10,000"],
+                    ["Section 8(5) — Security safeguards", "may extend to ₹250 Cr"],
+                    ["Section 8(6) — Breach notification", "may extend to ₹200 Cr"],
+                    ["Section 9 — Children's data", "may extend to ₹200 Cr"],
+                    ["Section 10 — SDF obligations", "may extend to ₹150 Cr"],
+                    ["Section 32 — Voluntary undertaking breach", "cap for underlying breach"],
+                    ["Any other provision of Act/Rules", "may extend to ₹50 Cr"],
+                    ["Section 15 — Data Principal duties", "may extend to ₹10,000"],
                   ].map(([item, cap]) => (
-                    <li key={item} className="flex items-center justify-between text-xs">
+                    <li key={item} className="flex items-start justify-between gap-2 text-xs">
                       <span className="text-slate-600">{item}</span>
-                      <span className="font-semibold text-navy-700 shrink-0 ml-2">{cap}</span>
+                      <span className="font-semibold text-navy-700 shrink-0 ml-2 text-right">{cap}</span>
                     </li>
                   ))}
                 </ul>
               </div>
               <div>
-                <h3 className="font-semibold text-navy-700 mb-2">Section 33(2) — Factors the Board Considers</h3>
-                <p className="text-slate-600 text-xs leading-relaxed mb-3">
-                  In determining the actual penalty, the Board must take into account all six statutory factors. There is no prescribed formula — the Board exercises discretion.
+                <h3 className="font-semibold text-navy-700 text-sm mb-2">Section 33(2) — All 7 Factors the Board Must Consider</h3>
+                <p className="text-slate-500 text-xs leading-relaxed mb-3">
+                  The Board shall consider all seven factors. There is no weighting or prescribed formula.
                 </p>
-                <ul className="space-y-1.5">
+                <ul className="space-y-2">
                   {[
-                    "Nature, gravity, and duration of the breach",
-                    "Type of personal data affected",
-                    "Repetitive nature of the non-compliance",
-                    "Whether the person gained financially or avoided loss",
-                    "Steps taken to mitigate loss to Data Principals",
-                    "Whether the Board has previously taken action",
+                    "Nature, gravity and duration of the breach",
+                    "Type and nature of personal data affected",
+                    "Repetitive nature of the breach",
+                    "Gain realised or loss avoided by the non-compliance",
+                    "Actions taken to mitigate the breach — timeliness and effectiveness",
+                    "Whether the penalty is proportionate and effective for observance and deterrence",
+                    "Likely impact of the penalty on the person",
                   ].map((factor, i) => (
                     <li key={i} className="flex items-start gap-2 text-xs text-slate-600">
-                      <span className="w-4 h-4 rounded-full bg-navy-100 text-navy-700 flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">{i + 1}</span>
+                      <span className="w-4 h-4 rounded-full bg-navy-100 text-navy-700 flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">
+                        {i + 1}
+                      </span>
                       {factor}
                     </li>
                   ))}

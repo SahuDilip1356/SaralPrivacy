@@ -2,11 +2,30 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
-import { Shield, AlertTriangle, Users, FileText, BookOpen, User, ChevronRight, RotateCcw, ArrowRight } from "lucide-react";
+import {
+  Shield, AlertTriangle, Users, FileText, BookOpen, User, Handshake,
+  ChevronRight, RotateCcw, ArrowRight, Info,
+} from "lucide-react";
+
+// ─── Guardrail note ───────────────────────────────────────────────────────────
+// The DPDPA 2023 contains NO arithmetic formula for penalty calculation.
+// No % of turnover, no ₹ per data principal, no scoring matrix.
+// The Data Protection Board determines penalties after inquiry, hearing,
+// and applying Section 33(2) factors within the applicable Schedule cap.
+// This tool's risk band is SaralPrivacy's own indicative framework — not a
+// statutory formula. The Board's determination is entirely independent.
+// ─────────────────────────────────────────────────────────────────────────────
 
 // ─── Breach categories (Schedule to Section 33(1)) ───────────────────────────
 
-type BreachId = "security" | "breach-notification" | "childrens-data" | "sdf" | "other" | "data-principal";
+type BreachId =
+  | "security"
+  | "breach-notification"
+  | "childrens-data"
+  | "sdf"
+  | "voluntary-undertaking"
+  | "other"
+  | "data-principal";
 
 interface BreachCategory {
   id: BreachId;
@@ -26,9 +45,10 @@ const BREACH_CATEGORIES: BreachCategory[] = [
     section: "Section 8(5)",
     scheduleItem: "Schedule Item 1",
     title: "Failure to Protect Personal Data",
-    description: "Not implementing reasonable security safeguards to prevent personal data breach — technical or organisational measures were inadequate.",
+    description:
+      "Not implementing reasonable security safeguards (as specified under Rule 6 of the DPDP Rules, 2025) to prevent personal data breach.",
     cap: "₹250 Crore",
-    capLabel: "up to ₹250 Cr",
+    capLabel: "may extend to ₹250 Cr",
     icon: Shield,
     capColor: "bg-red-100 text-red-700 border-red-200",
   },
@@ -36,10 +56,11 @@ const BREACH_CATEGORIES: BreachCategory[] = [
     id: "breach-notification",
     section: "Section 8(6)",
     scheduleItem: "Schedule Item 2",
-    title: "Failure to Notify a Data Breach",
-    description: "Not notifying the Data Protection Board and affected Data Principals about a personal data breach in the prescribed form and timeline.",
+    title: "Failure to Notify a Personal Data Breach",
+    description:
+      "Not notifying the Data Protection Board and affected Data Principals about a personal data breach in the form and manner prescribed under Rule 7 of the DPDP Rules, 2025.",
     cap: "₹200 Crore",
-    capLabel: "up to ₹200 Cr",
+    capLabel: "may extend to ₹200 Cr",
     icon: AlertTriangle,
     capColor: "bg-orange-100 text-orange-700 border-orange-200",
   },
@@ -47,10 +68,11 @@ const BREACH_CATEGORIES: BreachCategory[] = [
     id: "childrens-data",
     section: "Section 9",
     scheduleItem: "Schedule Item 3",
-    title: "Non-Compliance — Children's Data",
-    description: "Processing a child's personal data without verifiable parental consent, or undertaking behavioural tracking or targeted advertising directed at children.",
+    title: "Breach of Children's Data Obligations",
+    description:
+      "Processing a child's personal data without verifiable parental consent, or undertaking tracking, behavioural monitoring, or targeted advertising directed at children.",
     cap: "₹200 Crore",
-    capLabel: "up to ₹200 Cr",
+    capLabel: "may extend to ₹200 Cr",
     icon: Users,
     capColor: "bg-orange-100 text-orange-700 border-orange-200",
   },
@@ -58,55 +80,82 @@ const BREACH_CATEGORIES: BreachCategory[] = [
     id: "sdf",
     section: "Section 10",
     scheduleItem: "Schedule Item 4",
-    title: "Non-Compliance — Significant Data Fiduciary",
-    description: "Failure to meet the additional obligations applicable to Significant Data Fiduciaries — data protection impact assessments, audits, Data Protection Officer appointment, etc.",
+    title: "Breach of Significant Data Fiduciary Obligations",
+    description:
+      "Failure to meet additional obligations applicable to Significant Data Fiduciaries — such as data protection impact assessments, periodic audits, or Data Protection Officer appointment.",
     cap: "₹150 Crore",
-    capLabel: "up to ₹150 Cr",
+    capLabel: "may extend to ₹150 Cr",
     icon: BookOpen,
     capColor: "bg-amber-100 text-amber-700 border-amber-200",
   },
   {
-    id: "other",
-    section: "Any provision",
+    id: "voluntary-undertaking",
+    section: "Section 32",
     scheduleItem: "Schedule Item 5",
-    title: "Other Contravention of Act or Rules",
-    description: "Non-compliance with any other provision of the DPDPA or DPDP Rules — such as consent obligations, notice requirements, data minimisation, purpose limitation, or retention.",
+    title: "Breach of Voluntary Undertaking",
+    description:
+      "Non-compliance with a voluntary undertaking accepted by the Board under Section 32 — where the person undertook to comply with the Act in lieu of inquiry proceedings under Section 28.",
+    cap: "Cap for underlying breach",
+    capLabel: "cap for underlying breach",
+    icon: Handshake,
+    capColor: "bg-purple-100 text-purple-700 border-purple-200",
+  },
+  {
+    id: "other",
+    section: "Any other provision",
+    scheduleItem: "Schedule Item 6",
+    title: "Breach of Any Other Provision of Act or Rules",
+    description:
+      "Non-compliance with any other provision of the DPDPA 2023 or DPDP Rules, 2025 — such as consent obligations, notice requirements, data minimisation, purpose limitation, or retention.",
     cap: "₹50 Crore",
-    capLabel: "up to ₹50 Cr",
+    capLabel: "may extend to ₹50 Cr",
     icon: FileText,
     capColor: "bg-yellow-100 text-yellow-700 border-yellow-200",
   },
   {
     id: "data-principal",
     section: "Section 15",
-    scheduleItem: "Schedule Item 6",
+    scheduleItem: "Schedule Item 7",
     title: "Breach of Data Principal Duties",
-    description: "A Data Principal provided false particulars, impersonated another person, or made frivolous or vexatious complaints.",
+    description:
+      "A Data Principal provided false particulars, impersonated another person, suppressed material information, or made frivolous or vexatious complaints.",
     cap: "₹10,000",
-    capLabel: "up to ₹10,000",
+    capLabel: "may extend to ₹10,000",
     icon: User,
     capColor: "bg-slate-100 text-slate-600 border-slate-200",
   },
 ];
 
-// ─── Section 33(2) Factors ────────────────────────────────────────────────────
+// ─── Section 33(2) Factors — all 7 as enacted ────────────────────────────────
+// Source: Section 33(2), DPDPA 2023.
+// The Board SHALL consider these matters when determining the penalty amount.
 
 type Rating = "low" | "medium" | "high";
-type FactorId = "nature" | "dataType" | "repetitive" | "financialGain" | "mitigation" | "priorAction";
+type FactorId =
+  | "nature"
+  | "dataType"
+  | "repetitive"
+  | "financialGain"
+  | "mitigation"
+  | "proportionality"
+  | "impact";
 
 interface Factor {
   id: FactorId;
   label: string;
+  statutory: string;       // exact statutory language
   description: string;
   lowLabel: string;
   mediumLabel: string;
   highLabel: string;
+  note?: string;           // optional clarification
 }
 
 const FACTORS: Factor[] = [
   {
     id: "nature",
     label: "Nature, Gravity & Duration",
+    statutory: "Nature, gravity and duration of the breach",
     description: "How serious was the non-compliance? How long did it persist?",
     lowLabel: "Minor, short-lived",
     mediumLabel: "Moderate, some duration",
@@ -114,53 +163,70 @@ const FACTORS: Factor[] = [
   },
   {
     id: "dataType",
-    label: "Type of Personal Data Affected",
-    description: "Was the data sensitive? How many individuals were affected?",
+    label: "Type & Nature of Personal Data",
+    statutory: "Type and nature of personal data affected",
+    description: "What category of data was affected? How many individuals?",
     lowLabel: "Non-sensitive, limited scope",
     mediumLabel: "Mixed or moderate scale",
-    highLabel: "Sensitive / children's / large scale",
+    highLabel: "Sensitive / children's data / large scale",
   },
   {
     id: "repetitive",
-    label: "Repetitive Nature of Breach",
-    description: "Is this the first time, or has this type of non-compliance occurred before?",
+    label: "Repetitive Nature",
+    statutory: "Repetitive nature of the breach",
+    description: "Is this a first occurrence or has this pattern of non-compliance happened before?",
     lowLabel: "First occurrence",
     mediumLabel: "Isolated recurrence",
     highLabel: "Repeated pattern",
   },
   {
     id: "financialGain",
-    label: "Financial Gain or Loss Avoidance",
-    description: "Did your business profit from or avoid costs through the non-compliance?",
-    lowLabel: "No benefit derived",
+    label: "Gain Realised or Loss Avoided",
+    statutory: "Gain realised or loss avoided by non-compliance",
+    description: "Did your business derive financial benefit from, or avoid costs through, the non-compliance?",
+    lowLabel: "No gain or saving",
     mediumLabel: "Incidental benefit",
     highLabel: "Clear financial gain",
   },
   {
     id: "mitigation",
-    label: "Mitigation of Harm to Data Principals",
-    description: "Did you take steps to reduce the harm caused to affected individuals?",
+    label: "Mitigation — Timeliness & Effectiveness",
+    statutory: "Actions taken to mitigate the breach, and the timeliness and effectiveness of such actions",
+    description: "Did you take prompt, effective steps to reduce harm to affected Data Principals?",
     lowLabel: "Prompt, effective remediation",
     mediumLabel: "Partial steps taken",
     highLabel: "No meaningful mitigation",
   },
   {
-    id: "priorAction",
-    label: "Prior Board Action Against You",
-    description: "Has the Data Protection Board previously issued directions or penalties against your organisation?",
-    lowLabel: "No prior action",
-    mediumLabel: "Advisory or directions",
-    highLabel: "Prior penalty imposed",
+    id: "proportionality",
+    label: "Proportionality & Deterrence",
+    statutory: "Whether penalty is proportionate and effective for the purpose of observance and deterrence",
+    description: "Would a significant penalty be proportionate to the seriousness of the breach and serve as an effective deterrent?",
+    lowLabel: "Minor breach — proportionality would limit penalty",
+    mediumLabel: "Moderate breach — moderate penalty proportionate",
+    highLabel: "Serious breach — significant penalty warranted",
+  },
+  {
+    id: "impact",
+    label: "Likely Impact on Your Organisation",
+    statutory: "Likely impact of the imposed penalty on the person",
+    description: "The Board considers the financial and operational impact a penalty would have on your organisation. This can work to reduce as well as confirm the penalty.",
+    lowLabel: "Penalty would not cause material distress",
+    mediumLabel: "Significant penalty would be materially disruptive",
+    highLabel: "Any penalty would cause severe financial distress",
+    note: "This factor can support either a higher or lower penalty — the Board weighs it in the context of all other factors.",
   },
 ];
 
 // ─── Risk Band ────────────────────────────────────────────────────────────────
+// IMPORTANT: This risk band is SaralPrivacy's indicative assessment framework.
+// It is informed by (but not derived from) the Section 33(2) factors.
+// The Act contains no formula. The Board determines penalties independently.
 
 type RiskBand = "low" | "moderate" | "high" | "severe";
 
 interface BandConfig {
   label: string;
-  color: string;
   bgColor: string;
   borderColor: string;
   textColor: string;
@@ -170,54 +236,57 @@ interface BandConfig {
 
 const BAND_CONFIG: Record<RiskBand, BandConfig> = {
   low: {
-    label: "Low Risk",
-    color: "green",
+    label: "Lower Exposure Indicated",
     bgColor: "bg-green-50",
     borderColor: "border-green-300",
     textColor: "text-green-700",
-    headline: "Lower exposure — but compliance action is still required.",
-    detail: "Your self-assessment indicates relatively limited aggravating factors. Proactive remediation and documentation now will significantly reduce exposure if the Board investigates.",
+    headline: "Fewer aggravating factors — but compliance action is still required.",
+    detail:
+      "Your self-assessment indicates relatively limited aggravating factors across the Section 33(2) matters. Proactive remediation and documentation now will substantially reduce exposure if the Board commences inquiry.",
   },
   moderate: {
-    label: "Moderate Risk",
-    color: "amber",
+    label: "Moderate Exposure Indicated",
     bgColor: "bg-amber-50",
     borderColor: "border-amber-300",
     textColor: "text-amber-700",
-    headline: "Non-trivial exposure — immediate remediation advised.",
-    detail: "Several Section 33(2) factors are working against you. Begin remediation now, document all corrective steps taken, and review your DPDPA compliance posture across all processing activities.",
+    headline: "Several factors present — immediate remediation advised.",
+    detail:
+      "Multiple Section 33(2) factors are working against you. Begin remediation now, document all corrective steps taken, and review your DPDPA compliance posture across all processing activities.",
   },
   high: {
-    label: "High Risk",
-    color: "orange",
+    label: "Significant Exposure Indicated",
     bgColor: "bg-orange-50",
     borderColor: "border-orange-300",
     textColor: "text-orange-700",
-    headline: "Significant exposure — legal advice and urgent action required.",
-    detail: "Multiple aggravating factors are present. The Board has broad discretion to impose substantial penalties at this level. Seek legal counsel immediately and prepare a remediation plan before any inquiry commences.",
+    headline: "Multiple aggravating factors — legal advice and urgent action required.",
+    detail:
+      "Several serious aggravating factors are present. The Board has broad discretion and may impose a substantial penalty. Seek legal counsel immediately and prepare a remediation plan before any inquiry commences.",
   },
   severe: {
-    label: "Severe Risk",
-    color: "red",
+    label: "Highest Exposure Indicated",
     bgColor: "bg-red-50",
     borderColor: "border-red-300",
     textColor: "text-red-700",
-    headline: "Maximum exposure — immediate expert legal counsel required.",
-    detail: "Your assessment indicates the most serious aggravating factors — repeated non-compliance, prior Board action, or both. The Board may impose penalties approaching the Schedule maximum. Do not delay engaging a DPDPA-qualified lawyer.",
+    headline: "Most serious factors present — immediate expert legal counsel required.",
+    detail:
+      "Your self-assessment identifies the most serious aggravating factors — repeated non-compliance and/or clear financial gain. The Board may exercise its full discretion under the Schedule. Do not delay engaging a DPDPA-qualified lawyer.",
   },
 };
 
+// Risk band logic — qualitative pattern matching, not a statutory formula.
+// "Repetitive" and "financial gain" at High are the most serious triggers per the Act's
+// emphasis on deterrence and gain-based penalties.
 function computeRiskBand(factors: Partial<Record<FactorId, Rating>>): RiskBand {
-  const score = (FACTORS as Factor[]).reduce((sum, f) => {
-    const r = factors[f.id];
-    return sum + (r === "high" ? 2 : r === "medium" ? 1 : 0);
-  }, 0);
+  // Impact is excluded from the aggravating count — it is bidirectional (can reduce or confirm)
+  const aggravatableIds: FactorId[] = ["nature", "dataType", "repetitive", "financialGain", "mitigation", "proportionality"];
+  const highCount   = aggravatableIds.filter((id) => factors[id] === "high").length;
+  const mediumCount = aggravatableIds.filter((id) => factors[id] === "medium").length;
 
-  // Mandatory escalation for most serious factors
-  if (factors.repetitive === "high" || factors.priorAction === "high") return "severe";
-  if (score >= 8) return "severe";
-  if (score >= 5) return "high";
-  if (score >= 3) return "moderate";
+  // Statutory emphasis: repeated breach and financial gain treated as most serious
+  if (factors.repetitive === "high" || factors.financialGain === "high") return "severe";
+  if (highCount >= 4) return "severe";
+  if (highCount >= 2 || (highCount >= 1 && mediumCount >= 3)) return "high";
+  if (highCount >= 1 || mediumCount >= 3) return "moderate";
   return "low";
 }
 
@@ -226,16 +295,16 @@ function computeRiskBand(factors: Partial<Record<FactorId, Rating>>): RiskBand {
 const INITIAL_FACTORS: Partial<Record<FactorId, Rating>> = {};
 
 export default function PenaltyCalculatorClient() {
-  const [step, setStep] = useState<1 | 2 | 3>(1);
+  const [step, setStep]               = useState<1 | 2 | 3>(1);
   const [selectedBreach, setSelectedBreach] = useState<BreachCategory | null>(null);
-  const [factors, setFactors] = useState<Partial<Record<FactorId, Rating>>>(INITIAL_FACTORS);
+  const [factors, setFactors]         = useState<Partial<Record<FactorId, Rating>>>(INITIAL_FACTORS);
 
   const allFactorsRated = FACTORS.every((f) => factors[f.id] !== undefined);
 
-  const band = useMemo(() => computeRiskBand(factors), [factors]);
+  const band       = useMemo(() => computeRiskBand(factors), [factors]);
   const bandConfig = BAND_CONFIG[band];
 
-  const highFactors = FACTORS.filter((f) => factors[f.id] === "high");
+  const highFactors   = FACTORS.filter((f) => factors[f.id] === "high");
   const mediumFactors = FACTORS.filter((f) => factors[f.id] === "medium");
 
   function reset() {
@@ -249,7 +318,7 @@ export default function PenaltyCalculatorClient() {
     return (
       <div>
         <p className="text-slate-600 text-sm mb-6 leading-relaxed">
-          Select the provision your business may have failed to comply with. This determines the applicable Schedule cap under Section 33(1).
+          Select the provision your business may have failed to comply with. This determines which Schedule entry under Section 33(1) applies.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {BREACH_CATEGORIES.map((cat) => {
@@ -268,7 +337,9 @@ export default function PenaltyCalculatorClient() {
                     {cat.capLabel}
                   </span>
                 </div>
-                <div className="text-xs font-semibold text-slate-400 mb-1">{cat.section} · {cat.scheduleItem}</div>
+                <div className="text-xs font-semibold text-slate-400 mb-1">
+                  {cat.section} · {cat.scheduleItem}
+                </div>
                 <div className="font-bold text-navy-700 text-sm mb-2 group-hover:text-green-600 transition-colors">
                   {cat.title}
                 </div>
@@ -289,36 +360,53 @@ export default function PenaltyCalculatorClient() {
     return (
       <div>
         {/* Selected breach summary */}
-        <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-6 flex items-center justify-between gap-4">
+        <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-5 flex items-center justify-between gap-4">
           <div>
-            <div className="text-xs text-slate-400 font-medium mb-0.5">{selectedBreach.section} · {selectedBreach.scheduleItem}</div>
-            <div className="font-bold text-navy-700 text-sm">{selectedBreach.title}</div>
-            <div className={`inline-block mt-1 text-xs font-semibold px-2.5 py-0.5 rounded-full border ${selectedBreach.capColor}`}>
-              Schedule cap: {selectedBreach.cap}
+            <div className="text-xs text-slate-400 font-medium mb-0.5">
+              {selectedBreach.section} · {selectedBreach.scheduleItem}
             </div>
+            <div className="font-bold text-navy-700 text-sm">{selectedBreach.title}</div>
+            <span className={`inline-block mt-1 text-xs font-semibold px-2.5 py-0.5 rounded-full border ${selectedBreach.capColor}`}>
+              Schedule cap: {selectedBreach.cap}
+            </span>
           </div>
           <button onClick={() => setStep(1)} className="text-xs text-slate-500 hover:text-slate-700 underline shrink-0">
             Change
           </button>
         </div>
 
-        <p className="text-slate-600 text-sm mb-5 leading-relaxed">
-          Rate each Section 33(2) factor as it applies to your situation. The Board considers all six factors when determining the actual penalty.
-        </p>
+        {/* Statutory basis note */}
+        <div className="flex items-start gap-2 bg-blue-50 border border-blue-200 rounded-lg px-4 py-3 mb-5 text-xs text-blue-800 leading-relaxed">
+          <Info size={14} className="shrink-0 mt-0.5 text-blue-500" />
+          <span>
+            Rate each of the <strong>7 factors under Section 33(2)</strong> of the DPDPA 2023 as they apply to your situation.
+            The Board is required by the Act to consider all seven before determining any penalty.
+          </span>
+        </div>
 
         <div className="space-y-4">
           {FACTORS.map((factor, idx) => (
             <div key={factor.id} className="bg-white rounded-xl border border-slate-200 p-5">
-              <div className="mb-3">
-                <div className="text-xs font-semibold text-slate-400 mb-1">Factor {idx + 1} of 6</div>
-                <div className="font-bold text-navy-700 text-sm mb-1">{factor.label}</div>
-                <p className="text-xs text-slate-500">{factor.description}</p>
+              <div className="mb-1">
+                <div className="text-xs font-semibold text-slate-400 mb-1">Factor {idx + 1} of 7 · Section 33(2)</div>
+                <div className="font-bold text-navy-700 text-sm mb-0.5">{factor.label}</div>
+                <div className="text-xs text-slate-400 italic mb-2">"{factor.statutory}"</div>
+                <p className="text-xs text-slate-500 mb-3">{factor.description}</p>
+                {factor.note && (
+                  <div className="flex items-start gap-1.5 text-xs text-amber-700 bg-amber-50 rounded px-2.5 py-2 mb-3 leading-relaxed">
+                    <Info size={12} className="shrink-0 mt-0.5" />
+                    {factor.note}
+                  </div>
+                )}
               </div>
               <div className="grid grid-cols-3 gap-2">
                 {(["low", "medium", "high"] as Rating[]).map((rating) => {
                   const isSelected = factors[factor.id] === rating;
-                  const ratingLabel = rating === "low" ? factor.lowLabel : rating === "medium" ? factor.mediumLabel : factor.highLabel;
-                  const colors = {
+                  const ratingLabel =
+                    rating === "low" ? factor.lowLabel
+                    : rating === "medium" ? factor.mediumLabel
+                    : factor.highLabel;
+                  const colorMap = {
                     low:    isSelected ? "bg-green-500 text-white border-green-500"  : "bg-white text-slate-600 border-slate-200 hover:border-green-300",
                     medium: isSelected ? "bg-amber-500 text-white border-amber-500"  : "bg-white text-slate-600 border-slate-200 hover:border-amber-300",
                     high:   isSelected ? "bg-red-500 text-white border-red-500"      : "bg-white text-slate-600 border-slate-200 hover:border-red-300",
@@ -327,7 +415,7 @@ export default function PenaltyCalculatorClient() {
                     <button
                       key={rating}
                       onClick={() => setFactors((prev) => ({ ...prev, [factor.id]: rating }))}
-                      className={`text-left rounded-lg border p-3 transition-all ${colors[rating]}`}
+                      className={`text-left rounded-lg border p-3 transition-all ${colorMap[rating]}`}
                     >
                       <div className="text-xs font-bold capitalize mb-1">{rating}</div>
                       <div className="text-xs leading-tight opacity-80">{ratingLabel}</div>
@@ -339,24 +427,22 @@ export default function PenaltyCalculatorClient() {
           ))}
         </div>
 
-        <div className="mt-6 flex items-center gap-3">
+        <div className="mt-6">
           <button
             onClick={() => setStep(3)}
             disabled={!allFactorsRated}
-            className={`flex-1 py-3 rounded-lg font-semibold text-sm flex items-center justify-center gap-2 transition-all ${
+            className={`w-full py-3 rounded-lg font-semibold text-sm flex items-center justify-center gap-2 transition-all ${
               allFactorsRated
                 ? "bg-green-500 text-white hover:bg-green-600"
                 : "bg-slate-200 text-slate-400 cursor-not-allowed"
             }`}
           >
-            View Risk Assessment <ArrowRight size={16} />
+            View Risk Indicator <ArrowRight size={16} />
           </button>
+          {!allFactorsRated && (
+            <p className="text-xs text-slate-400 text-center mt-2">Rate all 7 factors to continue</p>
+          )}
         </div>
-        {!allFactorsRated && (
-          <p className="text-xs text-slate-400 text-center mt-2">
-            Rate all 6 factors to continue
-          </p>
-        )}
       </div>
     );
   }
@@ -366,43 +452,46 @@ export default function PenaltyCalculatorClient() {
     return (
       <div>
         {/* Risk band */}
-        <div className={`rounded-xl border-2 p-6 mb-6 ${bandConfig.bgColor} ${bandConfig.borderColor}`}>
-          <div className="flex items-start gap-4">
-            <div className={`px-3 py-1 rounded-full text-sm font-bold ${bandConfig.textColor} bg-white border ${bandConfig.borderColor}`}>
-              {bandConfig.label}
-            </div>
-          </div>
+        <div className={`rounded-xl border-2 p-6 mb-5 ${bandConfig.bgColor} ${bandConfig.borderColor}`}>
+          <span className={`inline-block px-3 py-1 rounded-full text-sm font-bold bg-white border ${bandConfig.borderColor} ${bandConfig.textColor}`}>
+            {bandConfig.label}
+          </span>
           <p className={`mt-3 font-bold text-base ${bandConfig.textColor}`}>{bandConfig.headline}</p>
           <p className="mt-2 text-sm text-slate-700 leading-relaxed">{bandConfig.detail}</p>
         </div>
 
-        {/* Breach + cap summary */}
-        <div className="bg-white rounded-xl border border-slate-200 p-5 mb-5">
-          <h3 className="font-bold text-navy-700 text-sm mb-3">Applicable Penalty Framework</h3>
-          <div className="flex flex-wrap items-center gap-3">
+        {/* No-formula disclaimer — prominent */}
+        <div className="flex items-start gap-2.5 bg-slate-100 border border-slate-300 rounded-xl px-4 py-3.5 mb-5 text-xs text-slate-700 leading-relaxed">
+          <Info size={14} className="shrink-0 mt-0.5 text-slate-500" />
+          <span>
+            <strong>No statutory formula exists.</strong> The DPDPA 2023 contains no arithmetic formula, scoring matrix, or prescribed calculation method for penalties. The Data Protection Board determines the actual penalty independently — after a formal inquiry and hearing — by applying all Section 33(2) factors to the specific facts of your case. This indicator is SaralPrivacy&apos;s own assessment framework, not a prediction.
+          </span>
+        </div>
+
+        {/* Breach + cap */}
+        <div className="bg-white rounded-xl border border-slate-200 p-5 mb-4">
+          <h3 className="font-bold text-navy-700 text-sm mb-3">Applicable Schedule Entry</h3>
+          <div className="flex flex-wrap items-center gap-2">
             <span className="text-xs text-slate-500">{selectedBreach.section} · {selectedBreach.scheduleItem}</span>
             <span className="text-xs font-semibold text-navy-700">{selectedBreach.title}</span>
             <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full border ${selectedBreach.capColor}`}>
-              Schedule cap: {selectedBreach.cap}
+              {selectedBreach.cap}
             </span>
           </div>
-          <p className="text-xs text-slate-400 mt-3 leading-relaxed">
-            The Board may impose a penalty up to this cap. The actual penalty is determined by applying Section 33(2) factors to the specific facts of the case.
-          </p>
         </div>
 
         {/* Factor summary */}
         {(highFactors.length > 0 || mediumFactors.length > 0) && (
-          <div className="bg-white rounded-xl border border-slate-200 p-5 mb-5">
-            <h3 className="font-bold text-navy-700 text-sm mb-3">Key Factors in Your Assessment</h3>
+          <div className="bg-white rounded-xl border border-slate-200 p-5 mb-4">
+            <h3 className="font-bold text-navy-700 text-sm mb-3">Your Section 33(2) Assessment</h3>
             {highFactors.length > 0 && (
               <div className="mb-3">
-                <div className="text-xs font-semibold text-red-600 mb-1.5">Aggravating (High)</div>
+                <div className="text-xs font-semibold text-red-600 mb-1.5">High — most likely to weigh against you</div>
                 <ul className="space-y-1">
                   {highFactors.map((f) => (
-                    <li key={f.id} className="flex items-center gap-2 text-xs text-slate-700">
-                      <span className="w-1.5 h-1.5 rounded-full bg-red-400 shrink-0" />
-                      {f.label}
+                    <li key={f.id} className="flex items-start gap-2 text-xs text-slate-700">
+                      <span className="w-1.5 h-1.5 rounded-full bg-red-400 shrink-0 mt-1" />
+                      <span><strong>{f.label}</strong> — {f.statutory}</span>
                     </li>
                   ))}
                 </ul>
@@ -410,12 +499,12 @@ export default function PenaltyCalculatorClient() {
             )}
             {mediumFactors.length > 0 && (
               <div>
-                <div className="text-xs font-semibold text-amber-600 mb-1.5">Moderate</div>
+                <div className="text-xs font-semibold text-amber-600 mb-1.5">Medium — mixed weight</div>
                 <ul className="space-y-1">
                   {mediumFactors.map((f) => (
-                    <li key={f.id} className="flex items-center gap-2 text-xs text-slate-700">
-                      <span className="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0" />
-                      {f.label}
+                    <li key={f.id} className="flex items-start gap-2 text-xs text-slate-700">
+                      <span className="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0 mt-1" />
+                      <span><strong>{f.label}</strong> — {f.statutory}</span>
                     </li>
                   ))}
                 </ul>
@@ -430,22 +519,24 @@ export default function PenaltyCalculatorClient() {
           <ul className="space-y-2">
             {[
               "Document the non-compliance event — timeline, scope, data affected, and individuals impacted.",
-              "Initiate remediation immediately and keep a dated record of every corrective action taken.",
-              "If a personal data breach occurred, assess whether Board notification is required (Section 8(6)).",
-              "Review your DPDPA compliance posture across all other processing activities to identify related gaps.",
-              "Engage a DPDPA-qualified lawyer before any communication with the Data Protection Board.",
+              "Initiate remediation immediately and maintain a dated record of every corrective action taken.",
+              "If a personal data breach occurred, assess whether Board and Data Principal notification is required under Section 8(6) and Rule 7.",
+              "Review your full DPDPA compliance posture across all processing activities to identify related gaps.",
+              "Engage a DPDPA-qualified lawyer before any communication with, or response to, the Data Protection Board.",
             ].map((action, i) => (
               <li key={i} className="flex items-start gap-2 text-xs text-slate-700 leading-relaxed">
-                <span className="shrink-0 w-4 h-4 rounded-full bg-green-100 text-green-600 flex items-center justify-center font-bold text-[10px] mt-0.5">{i + 1}</span>
+                <span className="shrink-0 w-4 h-4 rounded-full bg-green-100 text-green-600 flex items-center justify-center font-bold text-[10px] mt-0.5">
+                  {i + 1}
+                </span>
                 {action}
               </li>
             ))}
           </ul>
         </div>
 
-        {/* Disclaimer */}
+        {/* Full disclaimer */}
         <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6 text-xs text-amber-800 leading-relaxed">
-          <strong>Important:</strong> This tool provides an indicative risk band only. The Data Protection Board of India determines actual penalties by independently applying all Section 33(2) factors to the specific facts of each case. Penalty amounts are not derived or predicted by this tool. No reliance should be placed on this assessment for legal or compliance decisions. Consult a qualified DPDPA lawyer for case-specific advice.
+          <strong>Important disclaimer:</strong> This tool provides an indicative risk band only. The Digital Personal Data Protection Act, 2023 contains no arithmetic formula or prescribed calculation method for penalties. The Data Protection Board of India independently determines actual penalties after conducting a formal inquiry, giving the person an opportunity of being heard, and applying all Section 33(2) factors to the specific facts of the case. No reliance should be placed on this assessment for any legal or compliance decision. Consult a qualified DPDPA lawyer for case-specific advice.
         </div>
 
         {/* CTAs */}
