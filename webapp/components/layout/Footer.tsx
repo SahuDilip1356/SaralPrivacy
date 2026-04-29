@@ -8,6 +8,7 @@ const footerLinks = {
     { label: "DPDPA Guide", href: "/learn" },
     { label: "Insights", href: "/blog" },
     { label: "FAQ", href: "/faq" },
+    { label: "Glossary", href: "/glossary" },
     { label: "About", href: "/about" },
   ],
   industries: [
