@@ -19,11 +19,11 @@ export interface TemplateItem {
 
 interface Props {
   templates: TemplateItem[];
-  reportToken: string;
+  reportToken?: string;
   email?: string;
 }
 
-export default function TemplateGateModal({ templates, reportToken, email }: Props) {
+export default function TemplateGateModal({ templates, reportToken = "public", email }: Props) {
   const [pendingTemplate, setPendingTemplate] = useState<TemplateItem | null>(null);
   const [gateCompleted, setGateCompleted] = useState(false);
   const [form, setForm] = useState({
