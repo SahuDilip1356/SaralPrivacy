@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import TemplateGateModal, { type TemplateItem } from "@/components/TemplateGateModal";
+import ResourceTemplateGate, { type ResourceTemplate } from "@/components/ResourceTemplateGate";
 
 export const metadata: Metadata = {
   title: "Free DPDPA Templates | SaralPrivacy",
@@ -8,12 +8,12 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Free DPDPA Compliance Templates | SaralPrivacy",
     description:
-      "5 ready-to-use DPDPA templates for Indian businesses. No signup required — just tell us about your business and download instantly.",
+      "5 ready-to-use DPDPA templates for Indian businesses. Tell us about your business once and download all 5 instantly.",
     url: "https://saralprivacy.com/resources",
   },
 };
 
-const TEMPLATES: TemplateItem[] = [
+const TEMPLATES: ResourceTemplate[] = [
   {
     title: "Privacy Notice Template",
     file: "privacy-notice.docx",
@@ -67,12 +67,7 @@ export default function ResourcesPage() {
 
         {/* Trust strip */}
         <div className="flex items-center justify-center gap-6 mb-8 flex-wrap">
-          {[
-            "Free forever",
-            "No account needed",
-            "DPDPA-aligned",
-            "Instant download",
-          ].map((label) => (
+          {["Free forever", "No account needed", "DPDPA-aligned", "Instant download"].map((label) => (
             <div key={label} className="flex items-center gap-1.5 text-xs text-slate-500">
               <span className="text-green-500 font-bold">✓</span>
               {label}
@@ -80,15 +75,15 @@ export default function ResourcesPage() {
           ))}
         </div>
 
-        {/* Template list with gate */}
+        {/* Templates */}
         <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-6">
           <h2 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">
             Available Templates
           </h2>
-          <TemplateGateModal templates={TEMPLATES} />
+          <ResourceTemplateGate templates={TEMPLATES} />
         </div>
 
-        {/* White paper CTA */}
+        {/* White paper */}
         <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-6">
           <h2 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">
             Guides & Reports
@@ -109,8 +104,7 @@ export default function ResourcesPage() {
                 </span>
               </div>
               <p className="text-xs text-slate-500">
-                Comprehensive plain-English guide to the Digital Personal Data
-                Protection Act for Indian businesses
+                Comprehensive plain-English guide to the Digital Personal Data Protection Act for Indian businesses
               </p>
             </div>
             <span className="text-[#E07B39] font-bold text-sm ml-4 flex-shrink-0">↓</span>

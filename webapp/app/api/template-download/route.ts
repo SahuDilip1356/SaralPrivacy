@@ -15,6 +15,7 @@ export async function POST(request: NextRequest) {
       templateName,
       reportToken,
       email,
+      source,
     } = body;
 
     if (!businessName || !contactName || !phone || !employees) {
@@ -34,6 +35,7 @@ export async function POST(request: NextRequest) {
       template_name:   templateName || "",
       consent_contact: consentContact ?? false,
       report_token:    reportToken || "",
+      source:          source || "report_page",
       ip_address:      ip,
       city,
       country,

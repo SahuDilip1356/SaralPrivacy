@@ -2,6 +2,8 @@
 import { useState, useEffect } from "react";
 import { X, Download } from "lucide-react";
 
+const STORAGE_KEY = "sp_rg_v1";
+
 const EMPLOYEE_OPTIONS = [
   "1–10 employees",
   "11–50 employees",
@@ -10,7 +12,7 @@ const EMPLOYEE_OPTIONS = [
   "500+ employees",
 ];
 
-export interface TemplateItem {
+export interface ResourceTemplate {
   title: string;
   file: string;
   tag: string;
@@ -18,30 +20,27 @@ export interface TemplateItem {
 }
 
 interface Props {
-  templates: TemplateItem[];
-  reportToken: string;
-  email?: string;
+  templates: ResourceTemplate[];
 }
 
-export default function TemplateGateModal({ templates, reportToken, email }: Props) {
-  const [pendingTemplate, setPendingTemplate] = useState<TemplateItem | null>(null);
+export default function ResourceTemplateGate({ templates }: Props) {
+  const [pendingTemplate, setPendingTemplate] = useState<ResourceTemplate | null>(null);
   const [gateCompleted, setGateCompleted] = useState(false);
   const [form, setForm] = useState({
+    email: "",
+    contactName: "",
     businessName: "",
     employees: "",
-    contactName: "",
     phone: "",
-    consent: false,
+    consentContact: false,
     consentBriefings: false,
   });
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
-  const storageKey = `sp_tg_${reportToken}`;
-
   useEffect(() => {
-    setGateCompleted(!!localStorage.getItem(storageKey));
-  }, [storageKey]);
+    setGateCompleted(!!localStorage.getItem(STORAGE_KEY));
+  }, []);
 
   const triggerDownload = (file: string) => {
     const a = document.createElement("a");
@@ -52,7 +51,7 @@ export default function TemplateGateModal({ templates, reportToken, email }: Pro
     document.body.removeChild(a);
   };
 
-  const handleClick = (template: TemplateItem) => {
+  const handleClick = (template: ResourceTemplate) => {
     if (gateCompleted) {
       triggerDownload(template.file);
     } else {
@@ -62,7 +61,7 @@ export default function TemplateGateModal({ templates, reportToken, email }: Pro
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.businessName || !form.contactName || !form.phone || !form.employees) {
+    if (!form.email || !form.contactName || !form.businessName || !form.employees || !form.phone) {
       setError("Please fill in all required fields.");
       return;
     }
@@ -73,20 +72,21 @@ export default function TemplateGateModal({ templates, reportToken, email }: Pro
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          businessName:    form.businessName,
-          employees:       form.employees,
-          contactName:     form.contactName,
-          phone:           form.phone,
-          consentContact:  form.consent,
+          email:            form.email,
+          contactName:      form.contactName,
+          businessName:     form.businessName,
+          employees:        form.employees,
+          phone:            form.phone,
+          consentContact:   form.consentContact,
           consentBriefings: form.consentBriefings,
-          templateName:    pendingTemplate?.title ?? "",
-          reportToken,
-          email,
+          templateName:     pendingTemplate?.title ?? "",
+          reportToken:      "",
+          source:           "resources_page",
         }),
       });
       const data = await res.json();
       if (data.success) {
-        localStorage.setItem(storageKey, "1");
+        localStorage.setItem(STORAGE_KEY, "1");
         setGateCompleted(true);
         if (pendingTemplate) triggerDownload(pendingTemplate.file);
         setPendingTemplate(null);
@@ -143,6 +143,30 @@ export default function TemplateGateModal({ templates, reportToken, email }: Pro
 
             <form onSubmit={handleSubmit} className="space-y-3">
               <div>
+                <label className="block text-xs font-semibold text-slate-600 mb-1">Email Address *</label>
+                <input
+                  type="email"
+                  required
+                  value={form.email}
+                  onChange={(e) => setForm(f => ({ ...f, email: e.target.value }))}
+                  placeholder="you@company.com"
+                  className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]/30"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-slate-600 mb-1">Contact Person Name *</label>
+                <input
+                  type="text"
+                  required
+                  value={form.contactName}
+                  onChange={(e) => setForm(f => ({ ...f, contactName: e.target.value }))}
+                  placeholder="e.g. Priya Sharma"
+                  className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]/30"
+                />
+              </div>
+
+              <div>
                 <label className="block text-xs font-semibold text-slate-600 mb-1">Business Name *</label>
                 <input
                   type="text"
@@ -168,18 +192,6 @@ export default function TemplateGateModal({ templates, reportToken, email }: Pro
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-600 mb-1">Contact Person Name *</label>
-                <input
-                  type="text"
-                  required
-                  value={form.contactName}
-                  onChange={(e) => setForm(f => ({ ...f, contactName: e.target.value }))}
-                  placeholder="e.g. Priya Sharma"
-                  className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]/30"
-                />
-              </div>
-
-              <div>
                 <label className="block text-xs font-semibold text-slate-600 mb-1">Phone Number *</label>
                 <input
                   type="tel"
@@ -194,12 +206,12 @@ export default function TemplateGateModal({ templates, reportToken, email }: Pro
               <div className="flex items-start gap-2.5 pt-1">
                 <input
                   type="checkbox"
-                  id="tg-consent"
-                  checked={form.consent}
-                  onChange={(e) => setForm(f => ({ ...f, consent: e.target.checked }))}
+                  id="rg-consent"
+                  checked={form.consentContact}
+                  onChange={(e) => setForm(f => ({ ...f, consentContact: e.target.checked }))}
                   className="mt-0.5 h-4 w-4 accent-[#1E3A5F] flex-shrink-0"
                 />
-                <label htmlFor="tg-consent" className="text-xs text-slate-500 leading-relaxed">
+                <label htmlFor="rg-consent" className="text-xs text-slate-500 leading-relaxed">
                   I agree to SaralPrivacy contacting me about DPDPA compliance guidance. I can opt out at any time.
                 </label>
               </div>
@@ -207,12 +219,12 @@ export default function TemplateGateModal({ templates, reportToken, email }: Pro
               <div className="flex items-start gap-2.5">
                 <input
                   type="checkbox"
-                  id="tg-briefings"
+                  id="rg-briefings"
                   checked={form.consentBriefings}
                   onChange={(e) => setForm(f => ({ ...f, consentBriefings: e.target.checked }))}
                   className="mt-0.5 h-4 w-4 accent-[#1E3A5F] flex-shrink-0"
                 />
-                <label htmlFor="tg-briefings" className="text-xs text-slate-500 leading-relaxed">
+                <label htmlFor="rg-briefings" className="text-xs text-slate-500 leading-relaxed">
                   Also send me free daily DPDPA briefings (2-min reads, unsubscribe anytime).
                 </label>
               </div>
