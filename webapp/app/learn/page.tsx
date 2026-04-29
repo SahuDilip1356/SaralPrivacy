@@ -47,6 +47,15 @@ const learnTopics = [
     tagColor: "bg-slate-100 text-slate-600",
   },
   {
+    icon: BookOpen,
+    title: "DPDPA Glossary — 50 Key Terms",
+    href: "/glossary",
+    description: "Every key term from the Act and Rules — Data Principal, Data Fiduciary, Deemed Consent, Penalty Schedule, and more — with exact section references.",
+    time: "Reference",
+    tag: "Reference",
+    tagColor: "bg-blue-100 text-blue-700",
+  },
+  {
     icon: Shield,
     title: "Consent Under DPDPA",
     href: "/learn/consent",
