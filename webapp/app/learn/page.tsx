@@ -11,6 +11,15 @@ export const metadata: Metadata = {
 
 const learnTopics = [
   {
+    icon: BookOpen,
+    title: "DPDPA Glossary — 50 Key Terms",
+    href: "/glossary",
+    description: "Every key term from the Act and Rules — Data Principal, Data Fiduciary, Deemed Consent, Penalty Schedule, and more — with exact section references.",
+    time: "Reference",
+    tag: "Reference",
+    tagColor: "bg-blue-100 text-blue-700",
+  },
+  {
     icon: FileText,
     title: "DPDP Rules 2025: Plain-English Guide",
     href: "/learn/dpdp-rules-2025-plain-english-guide",
@@ -39,21 +48,12 @@ const learnTopics = [
   },
   {
     icon: FileText,
-    title: "Key Terms in Simple Language",
+    title: "Must Learn: Key Terms",
     href: "/learn/key-terms",
     description: "Data Fiduciary, Data Principal, Data Processor, Significant Data Fiduciary — all the DPDPA vocabulary you need, explained plainly.",
     time: "6 min",
     tag: "Reference",
     tagColor: "bg-slate-100 text-slate-600",
-  },
-  {
-    icon: BookOpen,
-    title: "DPDPA Glossary — 50 Key Terms",
-    href: "/glossary",
-    description: "Every key term from the Act and Rules — Data Principal, Data Fiduciary, Deemed Consent, Penalty Schedule, and more — with exact section references.",
-    time: "Reference",
-    tag: "Reference",
-    tagColor: "bg-blue-100 text-blue-700",
   },
   {
     icon: Shield,

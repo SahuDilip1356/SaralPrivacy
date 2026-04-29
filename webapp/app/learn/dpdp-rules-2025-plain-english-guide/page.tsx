@@ -107,7 +107,8 @@ const tocSchedules = [
 const guideNav = [
   { slug: "what-is-dpdpa", label: "What is DPDPA?" },
   { slug: "applicability", label: "Who It Applies To" },
-  { slug: "key-terms", label: "Key Terms" },
+  { slug: "key-terms", label: "Must Learn: Key Terms" },
+  { slug: "glossary", label: "Glossary (50+ Terms)", href: "/glossary" },
   { slug: "consent", label: "Consent" },
   { slug: "notice", label: "Notice Requirements" },
   { slug: "rights", label: "Rights" },
@@ -214,7 +215,7 @@ export default function DpdpRules2025Page() {
                   {guideNav.map((t) => (
                     <Link
                       key={t.slug}
-                      href={`/learn/${t.slug}`}
+                      href={t.href ?? `/learn/${t.slug}`}
                       className="block px-3 py-2 rounded-lg text-sm text-slate-600 hover:text-navy-700 hover:bg-slate-50 transition-colors"
                     >
                       {t.label}
