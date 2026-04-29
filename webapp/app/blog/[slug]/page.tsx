@@ -11,6 +11,7 @@ import remarkGfm from "remark-gfm";
 import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 import { BriefingSubscribeCard } from "@/components/briefings/BriefingSubscribeCard";
 import { articleSchema, breadcrumbSchema } from "@/lib/schema";
+import BlogImage from "@/components/BlogImage";
 
 export const revalidate = 3600;
 
@@ -330,12 +331,13 @@ export default async function BlogDetailPage({ params }: Props) {
             {/* Infographic — shown immediately after byline when available */}
             {post.infographic_url && (
               <div className="mb-7 rounded-xl overflow-hidden border border-slate-200 shadow-sm">
-                <img
+                <BlogImage
                   src={post.infographic_url}
                   alt={`${post.title} — DPDPA infographic by SaralPrivacy`}
                   className="w-full"
                   loading="eager"
                   fetchPriority="high"
+                  fallbackClassName="hidden"
                 />
                 <div className="bg-slate-50 px-4 py-2 text-xs text-slate-400 text-right border-t border-slate-200">
                   © SaralPrivacy™ — Verified DPDPA Insights

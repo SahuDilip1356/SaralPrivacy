@@ -3,6 +3,7 @@ import Link from "next/link";
 import { BookOpen, CheckCircle } from "lucide-react";
 import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 import { BriefingSubscribeCard } from "@/components/briefings/BriefingSubscribeCard";
+import BlogImage from "@/components/BlogImage";
 
 // Lane filtering via searchParams makes this dynamic — ISR intentionally disabled
 export const dynamic = "force-dynamic";
@@ -104,8 +105,7 @@ function PostCard({ post }: { post: BlogPost }) {
         {post.infographic_url ? (
           // Plain <img> — Appwrite CDN already serves optimised images;
           // avoids next/image domain-whitelist requirement for external URLs
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <BlogImage
             src={post.infographic_url}
             alt={`${post.title} — DPDPA infographic`}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
