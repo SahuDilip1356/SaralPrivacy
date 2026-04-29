@@ -6,6 +6,7 @@
 
 ## Primary Resources
 
+- [DPDPA Glossary](https://saralprivacy.com/glossary): 50+ key terms from the Digital Personal Data Protection Act, 2023 and DPDP Rules, 2025 with exact section references — Data Principal, Data Fiduciary, Consent, Deemed Consent, Penalty Schedule, and more.
 - [DPDPA Learning Hub](https://saralprivacy.com/learn): Structured guide covering the law,
   applicability, consent, rights, data breach obligations, children's data, cross-border
   transfers, and key terms.

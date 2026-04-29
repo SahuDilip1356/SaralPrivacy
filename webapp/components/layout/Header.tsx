@@ -19,6 +19,7 @@ const navigation = [
       { label: "What is DPDPA?", href: "/learn/what-is-dpdpa" },
       { label: "Who Does It Apply To?", href: "/learn/applicability" },
       { label: "Key Terms Explained", href: "/learn/key-terms" },
+      { label: "DPDPA Glossary (50+ Terms)", href: "/glossary" },
       { label: "Consent Under DPDPA", href: "/learn/consent" },
       { label: "Rights of Individuals", href: "/learn/rights" },
       { label: "Data Breach Basics", href: "/learn/data-breach" },
