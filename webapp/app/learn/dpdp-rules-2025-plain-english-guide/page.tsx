@@ -4,14 +4,14 @@ import { ArrowLeft, FileText } from "lucide-react";
 import { articleSchema, breadcrumbSchema, faqPageSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
-  title: "DPDP Rules 2025: Section-by-Section Plain-English Guide | SaralPrivacy",
+  title: "DPDP Rules 2025: Plain-English Guide",
   description:
     "Read the DPDP Rules 2025 in simple English. A section-by-section guide covering every Rule and Schedule under the Digital Personal Data Protection Rules, 2025.",
   alternates: { canonical: "https://saralprivacy.com/learn/dpdp-rules-2025-plain-english-guide" },
   openGraph: {
     type: "article",
     url: "https://saralprivacy.com/learn/dpdp-rules-2025-plain-english-guide",
-    title: "DPDP Rules 2025: Section-by-Section Plain-English Guide",
+    title: "DPDP Rules 2025: Plain-English Guide",
     description:
       "Read the DPDP Rules 2025 in simple English. A section-by-section guide covering every Rule and Schedule under the Digital Personal Data Protection Rules, 2025.",
   },

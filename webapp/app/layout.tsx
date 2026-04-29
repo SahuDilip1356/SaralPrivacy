@@ -14,7 +14,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL('https://saralprivacy.com'),
   title: {
-    default: 'SaralPrivacy — DPDPA Compliance Made Simple for Indian Businesses',
+    default: 'SaralPrivacy — DPDPA Compliance for Indian Businesses',
     template: '%s | SaralPrivacy',
   },
   description: "India's practical DPDPA compliance platform. Free readiness assessments, daily briefings, industry guides, and expert consultation for recruitment agencies, CA firms, training institutes, and D2C brands.",
@@ -26,13 +26,13 @@ export const metadata: Metadata = {
     locale: 'en_IN',
     url: 'https://saralprivacy.com',
     siteName: 'SaralPrivacy',
-    title: 'SaralPrivacy — DPDPA Compliance Made Simple for Indian Businesses',
+    title: 'SaralPrivacy — DPDPA Compliance for Indian Businesses',
     description: 'Free DPDPA readiness assessments, daily briefings, and practical compliance guides for Indian businesses.',
     images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'SaralPrivacy — DPDPA Compliance' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'SaralPrivacy — DPDPA Compliance Made Simple for Indian Businesses',
+    title: 'SaralPrivacy — DPDPA Compliance for Indian Businesses',
     description: 'Free DPDPA readiness assessments, daily briefings, and practical compliance guides for Indian businesses.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
