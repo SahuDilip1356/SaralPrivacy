@@ -10,6 +10,7 @@ export const topicNav = [
   { slug: "duties",           label: "Business Duties" },
   { slug: "childrens-data",   label: "Children's Data" },
   { slug: "data-breach",      label: "Data Breach" },
+  { slug: "penalties",        label: "Penalties", href: "/penalty-calculator" },
   { slug: "retention",        label: "Retention" },
   { slug: "cross-border",     label: "Cross-Border" },
   { slug: "myths",            label: "Myth vs Fact" },

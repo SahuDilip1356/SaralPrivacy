@@ -20,7 +20,7 @@ const navigation = [
       { label: "Who Does It Apply To?", href: "/learn/applicability" },
       { label: "Key Terms Explained", href: "/learn/key-terms" },
       { label: "DPDPA Glossary (50+ Terms)", href: "/glossary" },
-      { label: "Penalty Risk Indicator", href: "/penalty-calculator" },
+      { label: "Penalties Under DPDPA", href: "/penalty-calculator" },
       { label: "Consent Under DPDPA", href: "/learn/consent" },
       { label: "Rights of Individuals", href: "/learn/rights" },
       { label: "Data Breach Basics", href: "/learn/data-breach" },
