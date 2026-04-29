@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { notFound } from "next/navigation";
 import { articleSchema, breadcrumbSchema } from "@/lib/schema";
+import { topicNav } from "@/lib/learnNav";
 
 const learnContent: Record<string, { title: string; description: string; content: string }> = {
   "what-is-dpdpa": {
@@ -823,22 +824,6 @@ function renderContent(content: string) {
   return elements;
 }
 
-const topicNav = [
-  { slug: "dpdp-rules-2025-plain-english-guide", label: "DPDP Rules 2025", href: "/learn/dpdp-rules-2025-plain-english-guide" },
-  { slug: "what-is-dpdpa", label: "What is DPDPA?" },
-  { slug: "applicability", label: "Who It Applies To" },
-  { slug: "key-terms", label: "Must Learn: Key Terms" },
-  { slug: "glossary", label: "Glossary (50+ Terms)", href: "/glossary" },
-  { slug: "consent", label: "Consent" },
-  { slug: "notice", label: "Notice Requirements" },
-  { slug: "rights", label: "Rights" },
-  { slug: "duties", label: "Business Duties" },
-  { slug: "childrens-data", label: "Children's Data" },
-  { slug: "data-breach", label: "Data Breach" },
-  { slug: "retention", label: "Retention" },
-  { slug: "cross-border", label: "Cross-Border" },
-  { slug: "myths", label: "Myth vs Fact" },
-];
 
 export default async function LearnTopicPage({ params }: Props) {
   const { topic } = await params;

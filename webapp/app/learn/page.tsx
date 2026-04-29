@@ -12,12 +12,12 @@ export const metadata: Metadata = {
 const learnTopics = [
   {
     icon: BookOpen,
-    title: "DPDPA Glossary — 50 Key Terms",
-    href: "/glossary",
-    description: "Every key term from the Act and Rules — Data Principal, Data Fiduciary, Deemed Consent, Penalty Schedule, and more — with exact section references.",
-    time: "Reference",
-    tag: "Reference",
-    tagColor: "bg-blue-100 text-blue-700",
+    title: "What is DPDPA?",
+    href: "/learn/what-is-dpdpa",
+    description: "An overview of the Digital Personal Data Protection Act, 2023 — why it was passed, what it governs, and what it means for Indian businesses.",
+    time: "5 min",
+    tag: "Start here",
+    tagColor: "bg-green-100 text-green-600",
   },
   {
     icon: FileText,
@@ -30,12 +30,12 @@ const learnTopics = [
   },
   {
     icon: BookOpen,
-    title: "What is DPDPA?",
-    href: "/learn/what-is-dpdpa",
-    description: "An overview of the Digital Personal Data Protection Act, 2023 — why it was passed, what it governs, and what it means for Indian businesses.",
-    time: "5 min",
-    tag: "Start here",
-    tagColor: "bg-green-100 text-green-600",
+    title: "DPDPA Glossary — 50 Key Terms",
+    href: "/glossary",
+    description: "Every key term from the Act and Rules — Data Principal, Data Fiduciary, Deemed Consent, Penalty Schedule, and more — with exact section references.",
+    time: "Reference",
+    tag: "Reference",
+    tagColor: "bg-blue-100 text-blue-700",
   },
   {
     icon: Users,
