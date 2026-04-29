@@ -16,6 +16,7 @@
   penalties, significant data fiduciaries, and compliance priorities.
 - [DPDPA Daily Briefings](https://saralprivacy.com/briefings): Sector-specific briefings on
   DPDPA obligations, enforcement signals, and compliance updates.
+- [DPDPA Penalty Risk Indicator](https://saralprivacy.com/penalty-calculator): Free self-assessment tool based on the six statutory factors under Section 33(2) — select breach category, rate each factor, receive indicative risk band (Low / Moderate / High / Severe).
 - [DPDPA White Paper](https://saralprivacy.com/white-paper): Free downloadable white paper
   updated for the DPDP Rules, 2025.
 - [Insights Blog](https://saralprivacy.com/blog): In-depth articles on DPDPA implementation

@@ -9,6 +9,7 @@ const footerLinks = {
     { label: "Insights", href: "/blog" },
     { label: "FAQ", href: "/faq" },
     { label: "Glossary", href: "/glossary" },
+    { label: "Penalty Risk Indicator", href: "/penalty-calculator" },
     { label: "About", href: "/about" },
   ],
   industries: [

@@ -4,8 +4,9 @@ import { databases, DB_ID, COLLECTIONS, Query } from '@/lib/appwrite'
 const BASE = 'https://saralprivacy.com'
 
 // Update these dates when content materially changes
-const CORE_UPDATED     = new Date('2026-03-28')
+const CORE_UPDATED     = new Date('2026-04-29')
 const GLOSSARY_UPDATED = new Date('2026-04-29')
+const TOOLS_UPDATED    = new Date('2026-04-29')
 const LEARN_UPDATED    = new Date('2026-03-15')
 const INDUSTRY_UPDATED = new Date('2026-03-20')
 const FAQ_UPDATED      = new Date('2026-03-01')
@@ -73,6 +74,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE}/contact`,       lastModified: CORE_UPDATED,     changeFrequency: 'monthly', priority: 0.5 },
     { url: `${BASE}/white-paper`,   lastModified: CORE_UPDATED,     changeFrequency: 'monthly', priority: 0.8 },
     // /resources → 301 redirect to /blog; excluded from sitemap to avoid index pollution
+
+    // ── Tools ──
+    { url: `${BASE}/penalty-calculator`, lastModified: TOOLS_UPDATED, changeFrequency: 'monthly', priority: 0.8 },
 
     // ── Assessment hub (crawlable intro text) ──
     { url: `${BASE}/assessment`,    lastModified: CORE_UPDATED,     changeFrequency: 'monthly', priority: 0.8 },
