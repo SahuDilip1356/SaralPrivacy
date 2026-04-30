@@ -1,7 +1,30 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Users, CheckCircle, AlertTriangle } from "lucide-react";
-import { breadcrumbSchema } from "@/lib/schema";
+import { breadcrumbSchema, faqPageSchema } from "@/lib/schema";
+
+const faqs = [
+  {
+    question: "Does the DPDPA apply to recruitment agencies?",
+    answer: "Yes. Recruitment agencies process personal data of candidates — names, contact details, CVs, experience, salaries, and identity documents — making them Data Fiduciaries under the Digital Personal Data Protection Act, 2023. Compliance obligations apply regardless of agency size.",
+  },
+  {
+    question: "Do we need consent before sharing a candidate's CV with a client company?",
+    answer: "Yes. Sharing a candidate's CV with a client is a disclosure of personal data to a third party. Under DPDPA, you must have valid consent from the candidate that covers this purpose. The consent notice must clearly state that CVs may be shared with prospective employers.",
+  },
+  {
+    question: "How long can we keep candidate data in our ATS after a placement or rejection?",
+    answer: "DPDPA requires data to be deleted once the purpose for which it was collected is fulfilled. For candidates not placed, a reasonable retention window is 12–24 months for potential future roles, after which data should be erased unless the candidate opts in to remain in your database.",
+  },
+  {
+    question: "Are background check documents like Aadhaar and PAN copies covered under DPDPA?",
+    answer: "Yes. Aadhaar numbers and PAN details are personal data under DPDPA. Recruitment agencies must collect only what is necessary for the specific check, store it securely with restricted access, and delete it once the verification purpose is complete.",
+  },
+  {
+    question: "What should we do if a candidate asks to erase their data?",
+    answer: "Under Section 13 of the DPDPA, candidates have the right to erasure of personal data no longer needed for the purpose it was collected. You must acknowledge the request, verify identity, and erase the data unless retention is required by law. A documented process with a response timeline of 30 days is recommended.",
+  },
+];
 
 export const metadata: Metadata = {
   title: "DPDPA for Recruitment Agencies",
@@ -70,6 +93,7 @@ export default function RecruitmentIndustryPage() {
         { name: 'Industries', url: 'https://saralprivacy.com/industries' },
         { name: 'Recruitment Agencies', url: 'https://saralprivacy.com/industries/recruitment-agencies' },
       ])}
+      {faqPageSchema(faqs)}
     <div className="min-h-screen bg-slate-50">
       {/* Hero */}
       <div className="bg-navy-700 py-14">

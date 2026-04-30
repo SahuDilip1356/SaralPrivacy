@@ -1,7 +1,30 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ShoppingBag } from "lucide-react";
-import { breadcrumbSchema } from "@/lib/schema";
+import { breadcrumbSchema, faqPageSchema } from "@/lib/schema";
+
+const faqs = [
+  {
+    question: "Does the DPDPA apply to D2C brands and e-commerce stores?",
+    answer: "Yes. D2C brands collect and process extensive customer personal data — checkout details, purchase history, WhatsApp numbers, analytics profiles, loyalty data, and behavioural signals. This makes them Data Fiduciaries under the Digital Personal Data Protection Act, 2023. All D2C businesses selling to Indian customers are covered, regardless of size.",
+  },
+  {
+    question: "Can we send WhatsApp marketing messages to customers who placed an order on our store?",
+    answer: "Not automatically. Transactional consent (placing an order) does not extend to marketing messages. Under DPDPA, marketing via WhatsApp, SMS, or email requires separate, specific consent for that purpose. You must implement a distinct opt-in at checkout or during onboarding for marketing communications, and run a re-consent campaign for your existing subscriber list.",
+  },
+  {
+    question: "Is a pre-ticked marketing checkbox at checkout compliant with DPDPA?",
+    answer: "No. DPDPA requires consent to be free, specific, informed, and unambiguous. Pre-ticked boxes do not satisfy these conditions because the user has not taken an active affirmative action. Checkboxes bundled with order acceptance also fail the specificity test. Each marketing channel (email, SMS, WhatsApp) should have a separate unchecked consent option.",
+  },
+  {
+    question: "Do tools like Meta Pixel and Google Analytics need to be disclosed under DPDPA?",
+    answer: "Yes. Third-party analytics and advertising tools process personal data of your customers and visitors. Under DPDPA, you must disclose all such tools in your Privacy Notice. For non-essential tracking (remarketing, behavioural profiling), you should also implement a consent mechanism before these tools fire.",
+  },
+  {
+    question: "How long can we keep customer personal data after their last purchase?",
+    answer: "DPDPA requires deletion once the purpose for collecting data is no longer valid. A practical retention policy for D2C brands: keep data for active customers as long as the relationship continues; for inactive customers (no purchase in 12–18 months), send a re-engagement notice and delete unless the customer responds. Do not hold data indefinitely without a defined purpose.",
+  },
+];
 
 export const metadata: Metadata = {
   title: "DPDPA for D2C Brands",
@@ -17,6 +40,7 @@ export default function D2CBrandsPage() {
         { name: 'Industries', url: 'https://saralprivacy.com/industries' },
         { name: 'D2C Brands', url: 'https://saralprivacy.com/industries/d2c-brands' },
       ])}
+      {faqPageSchema(faqs)}
     <div className="min-h-screen bg-slate-50">
       <div className="bg-navy-700 py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">

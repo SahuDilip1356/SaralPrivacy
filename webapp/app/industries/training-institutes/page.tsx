@@ -1,7 +1,30 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { GraduationCap } from "lucide-react";
-import { breadcrumbSchema } from "@/lib/schema";
+import { breadcrumbSchema, faqPageSchema } from "@/lib/schema";
+
+const faqs = [
+  {
+    question: "Does the DPDPA apply to training institutes and coaching centres?",
+    answer: "Yes. Training institutes and coaching centres collect personal data at every stage of the student lifecycle — enquiries, admissions, fee records, attendance, placements, and marketing. This makes them Data Fiduciaries under the Digital Personal Data Protection Act, 2023. All institutes, including small coaching centres, are covered.",
+  },
+  {
+    question: "Do we need parental consent to collect data from students under 18?",
+    answer: "Yes. Section 9 of the DPDPA and the DPDP Rules, 2025 require verifiable parental or guardian consent before processing personal data of children under 18. This applies to admissions forms, attendance systems, and marketing communications. Standard consent checkboxes signed by the student alone are not sufficient.",
+  },
+  {
+    question: "Are our enquiry and admissions forms DPDPA-compliant?",
+    answer: "Most are not. Common issues include no consent notice explaining purpose and data use, marketing consent bundled with admission processing, no mention of data sharing with third parties, and no information on the right to withdraw consent. Each form must include a clear, specific notice and separate consent checkboxes for different purposes.",
+  },
+  {
+    question: "Can we use a student's placement data — salary, employer name — for marketing testimonials?",
+    answer: "Not without separate, specific consent. Salary and employer details are personal data. Using them for marketing testimonials or social proof requires explicit written consent from the placed student that covers this specific use. The consent obtained at admission does not extend to this purpose.",
+  },
+  {
+    question: "Do tracking pixels on our website require consent under DPDPA?",
+    answer: "Yes. Tools like Meta Pixel, Google Tag, and remarketing pixels collect and process personal data of website visitors. Under DPDPA, you must disclose all such tracking in your Privacy Notice. If the tracking is non-essential (e.g., remarketing), you should implement a consent mechanism before firing those pixels.",
+  },
+];
 
 export const metadata: Metadata = {
   title: "DPDPA for Training Institutes",
@@ -17,6 +40,7 @@ export default function TrainingInstitutesPage() {
         { name: 'Industries', url: 'https://saralprivacy.com/industries' },
         { name: 'Training Institutes', url: 'https://saralprivacy.com/industries/training-institutes' },
       ])}
+      {faqPageSchema(faqs)}
     <div className="min-h-screen bg-slate-50">
       <div className="bg-navy-700 py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">

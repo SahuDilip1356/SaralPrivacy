@@ -1,7 +1,30 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Calculator } from "lucide-react";
-import { breadcrumbSchema } from "@/lib/schema";
+import { breadcrumbSchema, faqPageSchema } from "@/lib/schema";
+
+const faqs = [
+  {
+    question: "Does the DPDPA apply to CA firms and accounting practices?",
+    answer: "Yes. CA firms process substantial personal data including PAN, Aadhaar, bank details, salary records, and tax documents. This makes them Data Fiduciaries under the Digital Personal Data Protection Act, 2023. Obligations apply to all firms regardless of size, including sole practitioners.",
+  },
+  {
+    question: "Can we store client PAN and Aadhaar copies on Google Drive or shared folders?",
+    answer: "You can, but with controls. Cloud storage platforms like Google Drive are Data Processors under DPDPA. You must have a Data Processing Agreement in place, restrict folder access to only those who need it, and disclose this storage in your client engagement terms or privacy notice.",
+  },
+  {
+    question: "How long should CA firms retain client documents under DPDPA?",
+    answer: "DPDPA requires deletion once purpose is served. For CA firms, practical retention periods are: ITR copies and supporting documents — 7 years; employee records — 5 years after employment end; KYC documents — as required by applicable law (Income Tax Act, PMLA). Define these periods formally and implement annual deletion reviews.",
+  },
+  {
+    question: "If we outsource bookkeeping or data entry, do we need a Data Processing Agreement?",
+    answer: "Yes. Any contractor or outsourced vendor who accesses client personal data on your behalf becomes a Data Processor under DPDPA. You must sign a Data Processing Agreement that restricts their use of the data, requires them to follow your instructions, and mandates adequate security measures.",
+  },
+  {
+    question: "Can a client ask us to delete their personal data?",
+    answer: "Yes. Under Section 13 of the DPDPA, individuals have a right to erasure of personal data that is no longer needed for the original purpose. However, if you are legally required to retain records (e.g., under the Income Tax Act), you can decline deletion for that specific data. You must inform the client of the legal basis for continued retention.",
+  },
+];
 
 export const metadata: Metadata = {
   title: "DPDPA for CA Firms",
@@ -38,6 +61,7 @@ export default function CAFirmsIndustryPage() {
         { name: 'Industries', url: 'https://saralprivacy.com/industries' },
         { name: 'CA Firms', url: 'https://saralprivacy.com/industries/ca-firms' },
       ])}
+      {faqPageSchema(faqs)}
     <div className="min-h-screen bg-slate-50">
       <div className="bg-navy-700 py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
