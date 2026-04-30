@@ -257,15 +257,151 @@ New sections added per page:
 
 ---
 
+---
+
+### 2026-04-30 — Block 5: FAQPage JSON-LD on 4 industry pages
+
+**Commit:** `8682628`
+**Files changed:** 4 industry pages (+100 / -4 lines)
+
+| Page | FAQs added |
+|------|-----------|
+| `/industries/recruitment-agencies` | 5 FAQs: DPDPA applies? / CV sharing consent / ATS retention / Aadhaar copies / erasure requests |
+| `/industries/ca-firms` | 5 FAQs: DPDPA applies? / Google Drive for PAN-Aadhaar / retention periods / outsourced bookkeeping / client deletion rights |
+| `/industries/training-institutes` | 5 FAQs: DPDPA applies? / parental consent under-18 / admissions form compliance / placement data for marketing / tracking pixels |
+| `/industries/d2c-brands` | 5 FAQs: DPDPA applies? / WhatsApp from order data / pre-ticked checkbox legality / Meta Pixel/GA disclosure / retention after last purchase |
+
+**Pattern used:** `import { breadcrumbSchema, faqPageSchema }` + `const faqs = [...]` above component + `{faqPageSchema(faqs)}` injected after `{breadcrumbSchema(...)}` in JSX fragment. No new deps required — `faqPageSchema` already existed in `lib/schema.tsx`.
+
+---
+
+---
+
+### 2026-04-30 — Block 6: Related Briefings in article body (mobile)
+
+**Commit:** `d501baa`
+**File changed:** `webapp/app/briefings/[slug]/page.tsx` (+54 lines)
+
+- Added "More on this topic" section inside the main content column (`lg:hidden`)
+- Appears at the bottom of the article on mobile/tablet — desktop already shows related in the sidebar
+- Added to **both** renderers: v2 (new 6-block format) and legacy (v0/v1)
+- Only renders when `related.length > 0` — safe fallback, no empty state needed
+- Uses `related` array already fetched by `getRelatedFromDb` — zero new queries
+- Style: white card, category label (green), title (navy → green on hover), date (slate), ArrowRight icon
+
+---
+
+---
+
+### 2026-04-30 — Block 7: Sitemap + llms.txt housekeeping
+
+**Commit:** `3b321da`
+**Files changed:** `webapp/app/sitemap.ts`, `webapp/public/llms.txt`
+
+- `INDUSTRY_UPDATED` bumped from `2026-03-20` → `2026-04-30` (reflects Block 5 FAQ additions)
+- `llms.txt` industry guide entries expanded with FAQ topic descriptions — LLMs can now surface industry-specific Q&As
+
+---
+
+## Sprint 8 — COMPLETE ✅
+
+| Block | Deliverable | Commit |
+|-------|------------|--------|
+| Block 4 | Expand 5 thin learn pages (916–1081 words each) | `ec61bff` |
+| Block 5 | FAQPage JSON-LD on 4 industry pages (20 FAQs) | `8682628` |
+| Block 6 | "More on this topic" in briefing body (mobile) | `d501baa` |
+| Block 7 | Sitemap + llms.txt date/content update | `3b321da` |
+
+---
+
+---
+
+### 2026-04-30 — Cross-linking Phase 1: Act + Rules pages
+
+**Commit:** `b002878`
+**Files created:** `webapp/lib/termLinks.ts`, `webapp/lib/linkifyText.tsx`
+**Files modified:** `webapp/app/learn/dpdp-act-2023/page.tsx`, `webapp/app/learn/dpdp-rules-2025-plain-english-guide/page.tsx`
+
+**What was built:**
+- `termLinks.ts` — 29-term TERM_LINKS map (single source of truth). Each entry: `term`, `href` (optional), `className` (blue/green/amber). Ordered longest-first for correct regex alternation.
+- `linkifyText.tsx` — utility function. Takes a string, splits by TERM_REGEX, wraps first occurrence of each term in `<Link>` with dotted underline, subsequent occurrences in `<span>` (highlight only). Per-call `Set<string>` tracks seen terms.
+- Act page: removed `HIGHLIGHT_TERMS`, `HIGHLIGHT_REGEX`, `highlightKeywords()` — replaced with `linkifyText()` in `OfficialText`, `PlainEnglishBox`, `KeyTakeaways` components. Covers all 44 sections.
+- Rules page: `BulletList` and `SubBulletList` now call `linkifyText()` on each item. Covers all 23 Rules + 7 Schedules bullet content.
+
+**Term destinations (sample):**
+- Data Fiduciary → `/glossary#data-fiduciary`
+- Consent → `/learn/consent`
+- Personal Data Breach → `/learn/data-breach`
+- Penalty → `/penalty-calculator`
+- Data Protection Board → `/glossary#dpb`
+
+**Cross-linking Phases remaining:**
+- **Phase 2:** Glossary outbound links + Learn pages cross-links
+- **Phase 3:** Briefings — `linkifyText()` on dynamic Appwrite body text
+
+---
+
+---
+
+### 2026-04-30 — Cross-linking Phase 2A: Glossary outbound links
+
+**Commits:** `cc14e0d`
+**Files modified:** `webapp/components/glossary/glossaryData.ts`, `webapp/components/glossary/GlossaryClient.tsx`
+
+**What was built:**
+- Added `learnHref?: string` to `GlossaryTerm` interface
+- Added `learnHref` to all 50 glossary terms (100% coverage):
+  - roles → `/learn/duties`, `/learn/rights`, `/learn/key-terms`, `/penalty-calculator`
+  - concepts → `/learn/what-is-dpdpa`, `/learn/data-breach`, `/learn/key-terms`, `/learn/consent`
+  - consent → `/learn/consent`, `/learn/notice`, `/learn/duties`
+  - rights → `/learn/rights`
+  - obligations → `/learn/duties`, `/learn/data-breach`, `/learn/retention`, `/learn/childrens-data`, `/learn/key-terms`
+  - cross-border → `/learn/cross-border`
+  - enforcement → `/penalty-calculator`
+  - exemptions → `/learn/what-is-dpdpa`, `/learn/consent`
+- `GlossaryClient.tsx` footer updated: single border-t row, `See also:` left + `Read more in the Guide →` right
+  - "Read more" only renders when `term.learnHref` exists
+  - Row only renders when term has at least one of relatedIds OR learnHref
+
+---
+
+---
+
+### 2026-04-30 — Cross-linking Phase 2B: Related topics strip on Learn pages
+
+**Commit:** `9f485d9`
+**File modified:** `webapp/app/learn/[topic]/page.tsx`
+
+**What was built:**
+- Added `RELATED_TOPICS` constant (12 topic slugs → 3 related slugs each)
+- "Related topics" chip strip rendered between disclaimer and prev/next nav
+- Chips are rounded-full, slate background → green on hover
+- Only renders for topics that have entries in RELATED_TOPICS
+- Zero new dependencies — reuses `topicNav` labels and hrefs
+
+---
+
+## Cross-linking Summary (Phases complete)
+
+| Phase | What | Status |
+|-------|------|--------|
+| Phase 1 | `termLinks.ts` + `linkifyText.tsx` applied to Act reader + Rules page | ✅ `b002878` |
+| Phase 2A | `learnHref` on all 50 glossary terms + "Read more" link in GlossaryClient | ✅ `cc14e0d` |
+| Phase 2B | Related topics chip strip on all 12 `[topic]` Learn pages | ✅ `9f485d9` |
+| Phase 3 | Apply `linkifyText()` to briefing body text (Appwrite strings) | 🔜 Deferred |
+
+---
+
 ## Next Recommended Action
 
-**Sprint 8 — Next block:**
-- **Block 5 (next):** Add FAQPage JSON-LD to 4 industry pages — 5 targeted Q&As per page, import `faqPageSchema`
-- **Block 6:** Add "More on this topic" Related Briefings section at bottom of briefing article body (mobile-visible)
-- **Block 7:** Final sitemap + llms.txt update — bump LEARN_UPDATED and INDUSTRY_UPDATED dates
+**Cross-linking Phase 3 (deferred — complex):**
+- Apply `linkifyText()` to dynamic briefing body text (Appwrite-sourced strings)
+- Needs server-side text processor; worth doing when briefing volume grows
 
-**Template download (parked):** Needs `react-hook-form`, `@hookform/resolvers/zod`, missing UI components. Tackle separately.
+**Other parked work:**
+- **Template download feature:** install `react-hook-form`, `@hookform/resolvers/zod`, missing UI components. Tackle separately.
+- **`feature/email-report-upgrade` branch** — review, merge or discard
 
-Start next session by reading MEMORY.md then `git status --short webapp/`.
+**Latest commit on `main`:** `9f485d9`
 
 Start next session by reading this file, then run `git status --short webapp/` to verify repo state.
