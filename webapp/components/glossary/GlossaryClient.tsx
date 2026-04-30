@@ -206,20 +206,32 @@ export default function GlossaryClient() {
                       {term.definition}
                     </dd>
 
-                    {/* Related terms */}
-                    {term.relatedIds && term.relatedIds.length > 0 && (
-                      <div className="flex flex-wrap items-center gap-1.5 pt-2 border-t border-slate-100">
-                        <span className="text-xs text-slate-400 font-medium">See also:</span>
-                        {term.relatedIds.map((id) =>
-                          termMap[id] ? (
-                            <a
-                              key={id}
-                              href={`#${id}`}
-                              className="text-xs text-navy-600 hover:text-navy-800 underline underline-offset-2 transition-colors"
-                            >
-                              {termMap[id]}
-                            </a>
-                          ) : null
+                    {/* Footer: See also + Learn more */}
+                    {((term.relatedIds && term.relatedIds.length > 0) || term.learnHref) && (
+                      <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100">
+                        {term.relatedIds && term.relatedIds.length > 0 && (
+                          <div className="flex flex-wrap items-center gap-1.5">
+                            <span className="text-xs text-slate-400 font-medium">See also:</span>
+                            {term.relatedIds.map((id) =>
+                              termMap[id] ? (
+                                <a
+                                  key={id}
+                                  href={`#${id}`}
+                                  className="text-xs text-navy-600 hover:text-navy-800 underline underline-offset-2 transition-colors"
+                                >
+                                  {termMap[id]}
+                                </a>
+                              ) : null
+                            )}
+                          </div>
+                        )}
+                        {term.learnHref && (
+                          <Link
+                            href={term.learnHref}
+                            className="shrink-0 text-xs font-semibold text-green-600 hover:text-green-700 transition-colors"
+                          >
+                            Read more in the Guide →
+                          </Link>
                         )}
                       </div>
                     )}
