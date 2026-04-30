@@ -26,10 +26,10 @@
 
 ## Industry Guides
 
-- [DPDPA for Recruitment Agencies](https://saralprivacy.com/industries/recruitment-agencies)
-- [DPDPA for CA Firms](https://saralprivacy.com/industries/ca-firms)
-- [DPDPA for Training Institutes](https://saralprivacy.com/industries/training-institutes)
-- [DPDPA for D2C Brands](https://saralprivacy.com/industries/d2c-brands)
+- [DPDPA for Recruitment Agencies](https://saralprivacy.com/industries/recruitment-agencies): Risk areas, compliance checklist, and FAQs covering candidate consent, CV sharing, ATS retention, Aadhaar documents, and erasure rights.
+- [DPDPA for CA Firms](https://saralprivacy.com/industries/ca-firms): Risk areas, compliance checklist, and FAQs covering PAN/Aadhaar storage, Google Drive controls, retention periods, outsourced bookkeeping, and client deletion rights.
+- [DPDPA for Training Institutes](https://saralprivacy.com/industries/training-institutes): Risk areas, compliance checklist, and FAQs covering minor student data, parental consent, admissions forms, placement data marketing, and tracking pixels.
+- [DPDPA for D2C Brands](https://saralprivacy.com/industries/d2c-brands): Risk areas, compliance checklist, and FAQs covering checkout consent, WhatsApp marketing, pre-ticked checkboxes, Meta Pixel disclosure, and customer data retention.
 
 ## Assessments
 
