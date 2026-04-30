@@ -1,3 +1,4 @@
+import React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, BookOpen, Scale } from "lucide-react";
@@ -46,9 +47,65 @@ const tocChapters = dpdpAct2023.chapters.map((ch) => ({
   chapterId: `chapter-${ch.chapterNumber}`,
   sections: ch.sections.map((s) => ({
     id: `section-${s.sectionNumber}`,
-    label: `§${s.sectionNumber}. ${s.title}`,
+    label: `#${s.sectionNumber}. ${s.title}`,
   })),
 }));
+
+// ─── Keyword highlighting ─────────────────────────────────────────────────────
+
+/**
+ * Three colour categories — each a list of [term, className] pairs.
+ * Terms are matched case-sensitively (they are capitalised in the Act).
+ * Longest terms listed first to avoid partial matches swallowing longer ones.
+ */
+const HIGHLIGHT_TERMS: Array<{ term: string; className: string }> = [
+  // Entities / Roles — blue
+  { term: "Significant Data Fiduciary", className: "bg-blue-50 text-blue-700 border border-blue-200 rounded px-0.5" },
+  { term: "Data Protection Board of India", className: "bg-blue-50 text-blue-700 border border-blue-200 rounded px-0.5" },
+  { term: "Data Protection Board", className: "bg-blue-50 text-blue-700 border border-blue-200 rounded px-0.5" },
+  { term: "Consent Manager", className: "bg-blue-50 text-blue-700 border border-blue-200 rounded px-0.5" },
+  { term: "Data Fiduciary", className: "bg-blue-50 text-blue-700 border border-blue-200 rounded px-0.5" },
+  { term: "Data Principal", className: "bg-blue-50 text-blue-700 border border-blue-200 rounded px-0.5" },
+  { term: "Data Processor", className: "bg-blue-50 text-blue-700 border border-blue-200 rounded px-0.5" },
+  { term: "Appellate Tribunal", className: "bg-blue-50 text-blue-700 border border-blue-200 rounded px-0.5" },
+  { term: "Central Government", className: "bg-blue-50 text-blue-700 border border-blue-200 rounded px-0.5" },
+  // Legal Mechanisms — green
+  { term: "Deemed Consent", className: "bg-green-50 text-green-700 border border-green-200 rounded px-0.5" },
+  { term: "Personal Data", className: "bg-green-50 text-green-700 border border-green-200 rounded px-0.5" },
+  { term: "Consent", className: "bg-green-50 text-green-700 border border-green-200 rounded px-0.5" },
+  { term: "Notice", className: "bg-green-50 text-green-700 border border-green-200 rounded px-0.5" },
+  { term: "Purpose Limitation", className: "bg-green-50 text-green-700 border border-green-200 rounded px-0.5" },
+  { term: "Data Minimisation", className: "bg-green-50 text-green-700 border border-green-200 rounded px-0.5" },
+  { term: "Legitimate Uses", className: "bg-green-50 text-green-700 border border-green-200 rounded px-0.5" },
+  // Enforcement — amber
+  { term: "Personal Data Breach", className: "bg-amber-50 text-amber-700 border border-amber-200 rounded px-0.5" },
+  { term: "Financial Penalty", className: "bg-amber-50 text-amber-700 border border-amber-200 rounded px-0.5" },
+  { term: "Penalty", className: "bg-amber-50 text-amber-700 border border-amber-200 rounded px-0.5" },
+  { term: "Breach", className: "bg-amber-50 text-amber-700 border border-amber-200 rounded px-0.5" },
+  { term: "Inquiry", className: "bg-amber-50 text-amber-700 border border-amber-200 rounded px-0.5" },
+  { term: "Complaint", className: "bg-amber-50 text-amber-700 border border-amber-200 rounded px-0.5" },
+];
+
+// Build a single regex with all terms (longest first prevents partial matches)
+const HIGHLIGHT_REGEX = new RegExp(
+  `(${HIGHLIGHT_TERMS.map((t) => t.term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})`,
+  "g"
+);
+
+function highlightKeywords(text: string): React.ReactNode {
+  const parts = text.split(HIGHLIGHT_REGEX);
+  return parts.map((part, i) => {
+    const match = HIGHLIGHT_TERMS.find((t) => t.term === part);
+    if (match) {
+      return (
+        <span key={i} className={match.className}>
+          {part}
+        </span>
+      );
+    }
+    return part;
+  });
+}
 
 // ─── Helper components ────────────────────────────────────────────────────────
 
@@ -58,8 +115,8 @@ function OfficialText({ text }: { text: string }) {
       <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-widest mb-2">
         Official Text
       </p>
-      <div className="text-sm text-slate-700 leading-relaxed whitespace-pre-line font-mono-legal">
-        {text}
+      <div className="text-sm text-slate-700 leading-relaxed whitespace-pre-line">
+        {highlightKeywords(text)}
       </div>
     </div>
   );
@@ -71,7 +128,7 @@ function PlainEnglishBox({ text }: { text: string }) {
       <p className="text-[11px] font-semibold text-green-600 uppercase tracking-widest mb-1.5">
         Plain English
       </p>
-      <p className="text-sm text-slate-700 leading-relaxed">{text}</p>
+      <p className="text-sm text-slate-700 leading-relaxed">{highlightKeywords(text)}</p>
     </div>
   );
 }
@@ -86,7 +143,7 @@ function KeyTakeaways({ items }: { items: string[] }) {
         {items.map((item, i) => (
           <li key={i} className="flex items-start gap-2 text-sm text-slate-600">
             <span className="w-1.5 h-1.5 rounded-full bg-green-400 mt-2 shrink-0" />
-            <span>{item}</span>
+            <span>{highlightKeywords(item)}</span>
           </li>
         ))}
       </ul>
@@ -101,7 +158,7 @@ function SectionCard({ section }: { section: ActSection }) {
       className="scroll-mt-24 pt-7 pb-6 border-b border-slate-100 last:border-0"
     >
       <h3 className="text-base font-bold text-navy-700">
-        <span className="text-green-500 font-semibold mr-2">§{section.sectionNumber}.</span>
+        <span className="text-green-500 font-semibold mr-2">#{section.sectionNumber}.</span>
         {section.title}
       </h3>
       <OfficialText text={section.officialText} />
@@ -123,9 +180,9 @@ function ChapterBlock({ chapter }: { chapter: ActChapter }) {
         <h2 className="text-lg font-bold">{chapter.chapterTitle}</h2>
         <p className="text-xs text-slate-300 mt-1">
           {chapter.sections.length} section{chapter.sections.length !== 1 ? "s" : ""} —{" "}
-          §{chapter.sections[0].sectionNumber}
+          #{chapter.sections[0].sectionNumber}
           {chapter.sections.length > 1
-            ? ` to §${chapter.sections[chapter.sections.length - 1].sectionNumber}`
+            ? ` to #${chapter.sections[chapter.sections.length - 1].sectionNumber}`
             : ""}
         </p>
       </div>

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, BookOpen, FileText, Shield, Users, AlertTriangle, Database, Globe, HelpCircle } from "lucide-react";
+import { ArrowRight, BookOpen, FileText, Shield, Users, AlertTriangle, Database, Globe, HelpCircle, Scale } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "DPDPA Learning Hub — Complete Guide",
@@ -11,13 +11,13 @@ export const metadata: Metadata = {
 
 const learnTopics = [
   {
-    icon: BookOpen,
-    title: "What is DPDPA?",
-    href: "/learn/what-is-dpdpa",
-    description: "An overview of the Digital Personal Data Protection Act, 2023 — why it was passed, what it governs, and what it means for Indian businesses.",
-    time: "5 min",
-    tag: "Start here",
-    tagColor: "bg-green-100 text-green-600",
+    icon: Scale,
+    title: "DPDP Act 2023 — Full Text",
+    href: "/learn/dpdp-act-2023",
+    description: "The complete Digital Personal Data Protection Act, 2023 — all 9 chapters, 44 sections, and the Penalty Schedule — official text with plain-English summaries.",
+    time: "Act Reference",
+    tag: "Act Reference",
+    tagColor: "bg-navy-100 text-navy-700",
   },
   {
     icon: FileText,
@@ -30,12 +30,12 @@ const learnTopics = [
   },
   {
     icon: BookOpen,
-    title: "DPDPA Glossary — 50 Key Terms",
-    href: "/glossary",
-    description: "Every key term from the Act and Rules — Data Principal, Data Fiduciary, Deemed Consent, Penalty Schedule, and more — with exact section references.",
-    time: "Reference",
-    tag: "Reference",
-    tagColor: "bg-blue-100 text-blue-700",
+    title: "What is DPDPA?",
+    href: "/learn/what-is-dpdpa",
+    description: "An overview of the Digital Personal Data Protection Act, 2023 — why it was passed, what it governs, and what it means for Indian businesses.",
+    time: "5 min",
+    tag: "Start here",
+    tagColor: "bg-green-100 text-green-600",
   },
   {
     icon: Users,
@@ -135,6 +135,24 @@ const learnTopics = [
     time: "5 min",
     tag: "Popular",
     tagColor: "bg-purple-100 text-purple-700",
+  },
+  {
+    icon: AlertTriangle,
+    title: "Penalties Under DPDPA",
+    href: "/penalty-calculator",
+    description: "Understand the 7-item Penalty Schedule — who can be fined, how much, and under what circumstances. Includes a free Penalty Risk Indicator tool.",
+    time: "Tool",
+    tag: "Tools",
+    tagColor: "bg-amber-100 text-amber-700",
+  },
+  {
+    icon: BookOpen,
+    title: "DPDPA Glossary — 50 Key Terms",
+    href: "/glossary",
+    description: "Every key term from the Act and Rules — Data Principal, Data Fiduciary, Deemed Consent, Penalty Schedule, and more — with exact section references.",
+    time: "Reference",
+    tag: "Reference",
+    tagColor: "bg-blue-100 text-blue-700",
   },
 ];
 

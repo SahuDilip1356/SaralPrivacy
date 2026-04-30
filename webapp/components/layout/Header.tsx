@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -56,7 +56,17 @@ export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pathname = usePathname();
+
+  function openMenu(label: string) {
+    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+    setOpenDropdown(label);
+  }
+
+  function scheduleClose() {
+    closeTimerRef.current = setTimeout(() => setOpenDropdown(null), 150);
+  }
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 8);
@@ -129,8 +139,8 @@ export function Header() {
               <div
                 key={item.label}
                 className="relative"
-                onMouseEnter={() => item.children && setOpenDropdown(item.label)}
-                onMouseLeave={() => setOpenDropdown(null)}
+                onMouseEnter={() => item.children && openMenu(item.label)}
+                onMouseLeave={() => item.children && scheduleClose()}
               >
                 <Link
                   href={item.href}
@@ -160,7 +170,11 @@ export function Header() {
 
                 {/* Dropdown */}
                 {item.children && openDropdown === item.label && (
-                  <div className="absolute top-full left-0 mt-1 w-56 bg-white rounded-xl border border-slate-200 shadow-xl py-1.5 z-50">
+                  <div
+                    className="absolute top-full left-0 mt-1 w-56 bg-white rounded-xl border border-slate-200 shadow-xl py-1.5 z-50"
+                    onMouseEnter={() => openMenu(item.label)}
+                    onMouseLeave={() => scheduleClose()}
+                  >
                     {item.children.map((child) => (
                       <Link
                         key={child.href}

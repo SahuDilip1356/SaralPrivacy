@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, FileText } from "lucide-react";
 import { articleSchema, breadcrumbSchema, faqPageSchema } from "@/lib/schema";
+import { topicNav } from "@/lib/learnNav";
 
 export const metadata: Metadata = {
   title: "DPDP Rules 2025: Plain-English Guide",
@@ -104,21 +105,8 @@ const tocSchedules = [
   { id: "seventh-schedule", label: "Seventh Schedule. Information purposes" },
 ];
 
-const guideNav = [
-  { slug: "what-is-dpdpa", label: "What is DPDPA?" },
-  { slug: "applicability", label: "Who It Applies To" },
-  { slug: "key-terms", label: "Must Learn: Key Terms" },
-  { slug: "glossary", label: "Glossary (50+ Terms)", href: "/glossary" },
-  { slug: "consent", label: "Consent" },
-  { slug: "notice", label: "Notice Requirements" },
-  { slug: "rights", label: "Rights" },
-  { slug: "duties", label: "Business Duties" },
-  { slug: "childrens-data", label: "Children's Data" },
-  { slug: "data-breach", label: "Data Breach" },
-  { slug: "retention", label: "Retention" },
-  { slug: "cross-border", label: "Cross-Border" },
-  { slug: "myths", label: "Myth vs Fact" },
-];
+// Sidebar nav is driven by the shared topicNav from learnNav.ts
+// so any new entries (e.g. DPDP Act 2023) appear here automatically.
 
 function RuleSection({
   id,
@@ -206,17 +194,15 @@ export default function DpdpRules2025Page() {
                   DPDPA Guide
                 </h3>
                 <nav className="space-y-1">
-                  <Link
-                    href="/learn/dpdp-rules-2025-plain-english-guide"
-                    className="block px-3 py-2 rounded-lg text-sm bg-green-50 text-green-600 font-semibold"
-                  >
-                    DPDP Rules 2025
-                  </Link>
-                  {guideNav.map((t) => (
+                  {topicNav.map((t) => (
                     <Link
                       key={t.slug}
                       href={t.href ?? `/learn/${t.slug}`}
-                      className="block px-3 py-2 rounded-lg text-sm text-slate-600 hover:text-navy-700 hover:bg-slate-50 transition-colors"
+                      className={
+                        t.slug === "dpdp-rules-2025-plain-english-guide"
+                          ? "block px-3 py-2 rounded-lg text-sm bg-green-50 text-green-600 font-semibold"
+                          : "block px-3 py-2 rounded-lg text-sm text-slate-600 hover:text-navy-700 hover:bg-slate-50 transition-colors"
+                      }
                     >
                       {t.label}
                     </Link>
