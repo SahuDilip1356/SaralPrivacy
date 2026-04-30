@@ -937,6 +937,22 @@ The government *may* notify exemptions for specific categories of businesses thr
   },
 };
 
+/** Slugs of related topics shown as chips at the bottom of each page */
+const RELATED_TOPICS: Record<string, string[]> = {
+  "what-is-dpdpa":  ["applicability", "key-terms", "consent"],
+  "applicability":  ["what-is-dpdpa", "key-terms", "duties"],
+  "key-terms":      ["what-is-dpdpa", "applicability", "consent"],
+  "consent":        ["notice", "rights", "duties"],
+  "notice":         ["consent", "duties", "rights"],
+  "rights":         ["duties", "data-breach", "notice"],
+  "duties":         ["consent", "rights", "data-breach"],
+  "data-breach":    ["duties", "retention", "rights"],
+  "childrens-data": ["consent", "duties", "applicability"],
+  "retention":      ["duties", "data-breach", "cross-border"],
+  "cross-border":   ["duties", "retention", "applicability"],
+  "myths":          ["what-is-dpdpa", "applicability", "consent"],
+};
+
 interface Props {
   params: Promise<{ topic: string }>;
 }
@@ -1119,6 +1135,30 @@ export default async function LearnTopicPage({ params }: Props) {
               does not constitute legal advice. Please consult a qualified data protection lawyer
               for formal legal opinions specific to your business situation.
             </div>
+
+            {/* Related topics strip */}
+            {RELATED_TOPICS[topic] && (
+              <div className="bg-white rounded-xl border border-slate-200 p-5 mb-5">
+                <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
+                  Related topics
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {RELATED_TOPICS[topic].map((relSlug) => {
+                    const relTopic = topicNav.find((t) => t.slug === relSlug);
+                    if (!relTopic) return null;
+                    return (
+                      <Link
+                        key={relSlug}
+                        href={relTopic.href ?? `/learn/${relSlug}`}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-green-50 hover:text-green-700 transition-colors"
+                      >
+                        {relTopic.label}
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
             {/* Prev/Next nav */}
             <div className="flex items-center justify-between gap-4">
