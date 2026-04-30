@@ -227,7 +227,7 @@ Order must be maintained consistently across Header dropdown, /learn page, and a
 ## Current Pause Point
 
 All work from this session is committed and live on production.
-Latest commit on `main`: `1344beb`
+Latest commit on `main`: `ec61bff`
 Vercel deploy: triggered automatically on push.
 
 **Remaining / not committed:**
@@ -235,16 +235,37 @@ Vercel deploy: triggered automatically on push.
 
 ---
 
+### 2026-04-30 — Block 4: Expand 5 thin learn pages
+
+**Commit:** `ec61bff`
+**File changed:** `webapp/app/learn/[topic]/page.tsx` (1 file, +311 / -116 lines)
+
+| Page | Before | After |
+|------|--------|-------|
+| what-is-dpdpa | 448 words | 916 words |
+| applicability | 403 words | 846 words |
+| consent | 437 words | 1081 words |
+| rights | 509 words | 1044 words |
+| data-breach | 631 words | 1074 words |
+
+New sections added per page:
+- **what-is-dpdpa**: GDPR comparison table, implementation timeline, penalty overview, First Three Steps
+- **applicability**: Size doesn't matter section, business-type table, SDF tier, 5-question scope test
+- **consent**: Deemed Consent (Section 7), context examples (ecommerce/HR/WhatsApp), record-keeping fields, 7-item checklist
+- **rights**: Why rights matter operationally, 4 scenario walkthroughs, response guidance, min. process requirements
+- **data-breach**: Section 2(t) definition, breach vs incident test, DPDP Rules two-part notification detail, individual notification, penalties table
+
+---
+
 ## Next Recommended Action
 
-**Option 1 (continue content):** Sprint 8 remaining blocks:
-- Block 4: Expand 5 thin `/learn` pages (what-is-dpdpa, applicability, consent, rights, data-breach) from ~350 to 700+ words
-- Block 5: Add FAQPage JSON-LD to 4 industry pages
-- Block 6: Fix internal linking on briefing template — add "Related Briefings" section
-- Block 7: Final sitemap + llms.txt update after all blocks deploy
+**Sprint 8 — Next block:**
+- **Block 5 (next):** Add FAQPage JSON-LD to 4 industry pages — 5 targeted Q&As per page, import `faqPageSchema`
+- **Block 6:** Add "More on this topic" Related Briefings section at bottom of briefing article body (mobile-visible)
+- **Block 7:** Final sitemap + llms.txt update — bump LEARN_UPDATED and INDUSTRY_UPDATED dates
 
-**Option 2 (fix template download):** Install missing deps (`react-hook-form`, `@hookform/resolvers/zod`, `next-auth/react`), create missing UI components (`dialog`, `select`, `form`, `checkbox`), resolve TS errors, then commit.
+**Template download (parked):** Needs `react-hook-form`, `@hookform/resolvers/zod`, missing UI components. Tackle separately.
 
-**Option 3 (new feature):** Individual section routes `/learn/dpdp-act-2023/section-[N]/page.tsx` for deep SEO.
+Start next session by reading MEMORY.md then `git status --short webapp/`.
 
 Start next session by reading this file, then run `git status --short webapp/` to verify repo state.
