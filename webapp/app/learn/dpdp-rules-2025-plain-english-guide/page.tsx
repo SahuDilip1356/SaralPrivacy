@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowLeft, FileText } from "lucide-react";
 import { articleSchema, breadcrumbSchema, faqPageSchema } from "@/lib/schema";
 import { topicNav } from "@/lib/learnNav";
+import { linkifyText } from "@/lib/linkifyText";
 
 export const metadata: Metadata = {
   title: "DPDP Rules 2025: Plain-English Guide",
@@ -136,7 +137,7 @@ function BulletList({ items }: { items: string[] }) {
       {items.map((item, i) => (
         <li key={i} className="flex items-start gap-2">
           <span className="w-1.5 h-1.5 rounded-full bg-green-400 mt-2 shrink-0" />
-          <span>{item}</span>
+          <span>{linkifyText(item)}</span>
         </li>
       ))}
     </ul>
@@ -149,7 +150,7 @@ function SubBulletList({ items }: { items: string[] }) {
       {items.map((item, i) => (
         <li key={i} className="flex items-start gap-2 text-slate-500">
           <span className="w-1 h-1 rounded-full bg-slate-300 mt-2.5 shrink-0" />
-          <span>{item}</span>
+          <span>{linkifyText(item)}</span>
         </li>
       ))}
     </ul>
