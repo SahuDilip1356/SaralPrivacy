@@ -7,7 +7,7 @@ const BASE = 'https://saralprivacy.com'
 const CORE_UPDATED     = new Date('2026-04-29')
 const GLOSSARY_UPDATED = new Date('2026-04-29')
 const TOOLS_UPDATED    = new Date('2026-04-29')
-const LEARN_UPDATED    = new Date('2026-03-15')
+const LEARN_UPDATED    = new Date('2026-04-30')
 const INDUSTRY_UPDATED = new Date('2026-03-20')
 const FAQ_UPDATED      = new Date('2026-03-01')
 const BRIEFINGS_HUB    = new Date('2026-03-28')
@@ -84,7 +84,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // /assessment/recruitment, /assessment/ca-firms, /assessment/training-institutes, /assessment/d2c-brands
 
     // ── Learn ──
-    { url: `${BASE}/learn`,         lastModified: LEARN_UPDATED,    changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${BASE}/learn`,                       lastModified: LEARN_UPDATED, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${BASE}/learn/dpdp-act-2023`,         lastModified: LEARN_UPDATED, changeFrequency: 'monthly', priority: 0.9 },
+    { url: `${BASE}/learn/dpdp-rules-2025-plain-english-guide`, lastModified: LEARN_UPDATED, changeFrequency: 'monthly', priority: 0.9 },
     ...learnTopics.map((topic) => ({
       url: `${BASE}/learn/${topic}`,
       lastModified: LEARN_UPDATED,

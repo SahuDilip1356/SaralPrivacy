@@ -16,6 +16,7 @@ const navigation = [
     label: "DPDPA Guide",
     href: "/learn",
     children: [
+      { label: "DPDP Act 2023 (Full Text)", href: "/learn/dpdp-act-2023" },
       { label: "What is DPDPA?", href: "/learn/what-is-dpdpa" },
       { label: "Who Does It Apply To?", href: "/learn/applicability" },
       { label: "Key Terms Explained", href: "/learn/key-terms" },

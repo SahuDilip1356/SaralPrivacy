@@ -1,4 +1,5 @@
 export const topicNav = [
+  { slug: "dpdp-act-2023", label: "DPDP Act 2023 (Full Text)", href: "/learn/dpdp-act-2023" },
   { slug: "dpdp-rules-2025-plain-english-guide", label: "DPDP Rules 2025", href: "/learn/dpdp-rules-2025-plain-english-guide" },
   { slug: "what-is-dpdpa",    label: "What is DPDPA?" },
   { slug: "applicability",    label: "Who It Applies To" },
