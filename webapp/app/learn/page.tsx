@@ -2,6 +2,24 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, BookOpen, FileText, Shield, Users, AlertTriangle, Database, Globe, HelpCircle, Scale } from "lucide-react";
 
+// ─── Reading guide data ───────────────────────────────────────────────────────
+
+const learningPath = [
+  { label: "What is DPDPA?",        href: "/learn/what-is-dpdpa" },
+  { label: "Who Does It Apply To?", href: "/learn/applicability" },
+  { label: "Key Terms",             href: "/learn/key-terms" },
+  { label: "Consent Under DPDPA",   href: "/learn/consent" },
+  { label: "Rights of Individuals", href: "/learn/rights" },
+  { label: "Duties of Businesses",  href: "/learn/duties" },
+];
+
+const referenceDocuments = [
+  { label: "DPDP Act 2023",      href: "/learn/dpdp-act-2023",                        icon: Scale },
+  { label: "DPDP Rules 2025",    href: "/learn/dpdp-rules-2025-plain-english-guide",  icon: FileText },
+  { label: "Penalties",          href: "/penalty-calculator",                         icon: AlertTriangle },
+  { label: "Glossary (50+ Terms)", href: "/glossary",                                 icon: BookOpen },
+];
+
 export const metadata: Metadata = {
   title: "DPDPA Learning Hub — Complete Guide",
   description:
@@ -179,19 +197,50 @@ export default function LearnPage() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
-        {/* Suggested path */}
-        <div className="bg-green-50 border border-green-200 rounded-xl p-5 mb-10">
-          <h2 className="font-bold text-navy-700 text-sm mb-2">
-            Recommended reading order if you are just starting
-          </h2>
-          <div className="flex flex-wrap gap-2">
-            {["What is DPDPA?", "Who Does It Apply To?", "Key Terms", "Consent Under DPDPA", "Rights of Individuals", "Duties of Businesses"].map((item, i) => (
-              <span key={item} className="inline-flex items-center gap-1 text-xs text-green-600 bg-white border border-green-200 rounded-full px-2.5 py-1">
-                <span className="font-bold">{i + 1}.</span>
-                {item}
-              </span>
-            ))}
+        {/* Reading guide — two rows */}
+        <div className="bg-green-50 border border-green-200 rounded-xl p-5 mb-10 space-y-4">
+
+          {/* Row 1 — Beginner learning path */}
+          <div>
+            <h2 className="font-bold text-navy-700 text-sm mb-2.5">
+              New to DPDPA? Start here →
+            </h2>
+            <div className="flex flex-wrap gap-2">
+              {learningPath.map((item, i) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="inline-flex items-center gap-1 text-xs text-green-700 bg-white border border-green-200 rounded-full px-2.5 py-1 hover:border-green-400 hover:shadow-sm transition-all"
+                >
+                  <span className="font-bold">{i + 1}.</span>
+                  {item.label}
+                </Link>
+              ))}
+            </div>
           </div>
+
+          {/* Divider */}
+          <div className="border-t border-green-200" />
+
+          {/* Row 2 — Key reference documents */}
+          <div>
+            <h2 className="font-bold text-navy-700 text-sm mb-2.5">
+              Key Reference Documents
+            </h2>
+            <div className="flex flex-wrap gap-2">
+              {referenceDocuments.map(({ label, href, icon: Icon }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className="inline-flex items-center gap-1.5 text-xs text-navy-700 bg-white border border-navy-300 rounded-full px-3 py-1 hover:bg-navy-50 hover:border-navy-500 hover:shadow-sm transition-all"
+                >
+                  <Icon size={11} className="text-navy-500 shrink-0" />
+                  {label}
+                </Link>
+              ))}
+            </div>
+          </div>
+
         </div>
 
         {/* Topics grid */}

@@ -16,15 +16,16 @@ const navigation = [
     label: "DPDPA Guide",
     href: "/learn",
     children: [
-      { label: "DPDP Act 2023 (Full Text)", href: "/learn/dpdp-act-2023" },
-      { label: "What is DPDPA?", href: "/learn/what-is-dpdpa" },
-      { label: "Who Does It Apply To?", href: "/learn/applicability" },
-      { label: "Key Terms Explained", href: "/learn/key-terms" },
+      { label: "DPDP Act 2023 (Full Text)",   href: "/learn/dpdp-act-2023" },
+      { label: "DPDP Rules 2025",             href: "/learn/dpdp-rules-2025-plain-english-guide" },
+      { label: "What is DPDPA?",             href: "/learn/what-is-dpdpa" },
+      { label: "Who Does It Apply To?",      href: "/learn/applicability" },
+      { label: "Key Terms Explained",        href: "/learn/key-terms" },
+      { label: "Consent Under DPDPA",        href: "/learn/consent" },
+      { label: "Rights of Individuals",      href: "/learn/rights" },
+      { label: "Data Breach Basics",         href: "/learn/data-breach" },
+      { label: "Penalties Under DPDPA",      href: "/penalty-calculator" },
       { label: "DPDPA Glossary (50+ Terms)", href: "/glossary" },
-      { label: "Penalties Under DPDPA", href: "/penalty-calculator" },
-      { label: "Consent Under DPDPA", href: "/learn/consent" },
-      { label: "Rights of Individuals", href: "/learn/rights" },
-      { label: "Data Breach Basics", href: "/learn/data-breach" },
     ],
   },
   {
@@ -171,7 +172,7 @@ export function Header() {
                 {/* Dropdown */}
                 {item.children && openDropdown === item.label && (
                   <div
-                    className="absolute top-full left-0 mt-1 w-56 bg-white rounded-xl border border-slate-200 shadow-xl py-1.5 z-50"
+                    className="absolute top-full left-0 mt-1 w-64 bg-white rounded-xl border border-slate-200 shadow-xl py-1.5 z-50"
                     onMouseEnter={() => openMenu(item.label)}
                     onMouseLeave={() => scheduleClose()}
                   >
