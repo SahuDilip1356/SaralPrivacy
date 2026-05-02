@@ -14,5 +14,6 @@ export const topicNav = [
   { slug: "retention",       label: "Retention" },
   { slug: "cross-border",    label: "Cross-Border" },
   { slug: "myths",           label: "Myth vs Fact" },
-  { slug: "glossary",        label: "Glossary (50+ Terms)", href: "/glossary" },   // ← last
+  { slug: "glossary",        label: "Glossary (50+ Terms)", href: "/glossary" },
+  { slug: "compliance-checklist", label: "Compliance Checklist (90 Controls)", href: "/compliance-checklist" },
 ];

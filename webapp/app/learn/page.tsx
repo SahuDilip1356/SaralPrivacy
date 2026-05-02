@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, BookOpen, FileText, Shield, Users, AlertTriangle, Database, Globe, HelpCircle, Scale } from "lucide-react";
+import { ArrowRight, BookOpen, FileText, Shield, Users, AlertTriangle, Database, Globe, HelpCircle, Scale, ClipboardList, FileSearch, CheckSquare } from "lucide-react";
 
 // ─── Reading guide data ───────────────────────────────────────────────────────
 
@@ -14,10 +14,16 @@ const learningPath = [
 ];
 
 const referenceDocuments = [
-  { label: "DPDP Act 2023",      href: "/learn/dpdp-act-2023",                        icon: Scale },
-  { label: "DPDP Rules 2025",    href: "/learn/dpdp-rules-2025-plain-english-guide",  icon: FileText },
-  { label: "Penalties",          href: "/penalty-calculator",                         icon: AlertTriangle },
-  { label: "Glossary (50+ Terms)", href: "/glossary",                                 icon: BookOpen },
+  { label: "DPDP Act 2023",        href: "/learn/dpdp-act-2023",                        icon: Scale },
+  { label: "DPDP Rules 2025",      href: "/learn/dpdp-rules-2025-plain-english-guide",  icon: FileText },
+  { label: "Penalties",            href: "/penalty-calculator",                         icon: AlertTriangle },
+  { label: "Glossary (50+ Terms)", href: "/glossary",                                   icon: BookOpen },
+];
+
+const complianceTools = [
+  { label: "Compliance Checklist (90 Controls)", href: "/compliance-checklist", icon: ClipboardList },
+  { label: "DPDPA Assessment",                   href: "/assessment",           icon: FileSearch },
+  { label: "DPDPA White Paper",                  href: "/white-paper",          icon: CheckSquare },
 ];
 
 export const metadata: Metadata = {
@@ -172,6 +178,15 @@ const learnTopics = [
     tag: "Reference",
     tagColor: "bg-blue-100 text-blue-700",
   },
+  {
+    icon: ClipboardList,
+    title: "DPDPA Compliance Checklist — 90 Controls",
+    href: "/compliance-checklist",
+    description: "Statutory and operational controls across 27 sections — applicability, consent, notice, rights, breach, SDF obligations, and evidence requirements. Based on DPDPA Act 2023 + DPDP Rules 2025.",
+    time: "Checklist",
+    tag: "Tools",
+    tagColor: "bg-teal-100 text-teal-700",
+  },
 ];
 
 export default function LearnPage() {
@@ -235,6 +250,28 @@ export default function LearnPage() {
                   className="inline-flex items-center gap-1.5 text-xs text-navy-700 bg-white border border-navy-300 rounded-full px-3 py-1 hover:bg-navy-50 hover:border-navy-500 hover:shadow-sm transition-all"
                 >
                   <Icon size={11} className="text-navy-500 shrink-0" />
+                  {label}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Divider */}
+          <div className="border-t border-green-200" />
+
+          {/* Row 3 — Compliance tools */}
+          <div>
+            <h2 className="font-bold text-navy-700 text-sm mb-2.5">
+              Compliance Tools
+            </h2>
+            <div className="flex flex-wrap gap-2">
+              {complianceTools.map(({ label, href, icon: Icon }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className="inline-flex items-center gap-1.5 text-xs text-teal-700 bg-white border border-teal-300 rounded-full px-3 py-1 hover:bg-teal-50 hover:border-teal-500 hover:shadow-sm transition-all"
+                >
+                  <Icon size={11} className="text-teal-500 shrink-0" />
                   {label}
                 </Link>
               ))}

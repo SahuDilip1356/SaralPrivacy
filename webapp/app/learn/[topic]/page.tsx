@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, ClipboardList, FileSearch, CheckSquare } from "lucide-react";
 import { notFound } from "next/navigation";
 import { articleSchema, breadcrumbSchema } from "@/lib/schema";
 import { topicNav } from "@/lib/learnNav";
@@ -1095,6 +1095,36 @@ export default async function LearnTopicPage({ params }: Props) {
                     {t.label}
                   </Link>
                 ))}
+              </nav>
+            </div>
+
+            {/* Compliance Tools widget */}
+            <div className="bg-teal-50 border border-teal-200 rounded-xl p-4 mt-4">
+              <h3 className="text-xs font-semibold text-teal-700 uppercase tracking-wider mb-3">
+                Compliance Tools
+              </h3>
+              <nav className="space-y-1">
+                <Link
+                  href="/compliance-checklist"
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-teal-100 hover:text-teal-700 transition-colors"
+                >
+                  <ClipboardList size={14} className="text-teal-500 shrink-0" />
+                  Compliance Checklist
+                </Link>
+                <Link
+                  href="/assessment"
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-teal-100 hover:text-teal-700 transition-colors"
+                >
+                  <FileSearch size={14} className="text-teal-500 shrink-0" />
+                  DPDPA Assessment
+                </Link>
+                <Link
+                  href="/white-paper"
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-teal-100 hover:text-teal-700 transition-colors"
+                >
+                  <CheckSquare size={14} className="text-teal-500 shrink-0" />
+                  White Paper
+                </Link>
               </nav>
             </div>
           </div>
