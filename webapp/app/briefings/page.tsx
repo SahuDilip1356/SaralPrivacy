@@ -20,7 +20,7 @@ const getCachedBriefings = unstable_cache(
     ]);
     return result.documents;
   },
-  ["briefings-list"],
+  ["briefings-list-v2"],
   { revalidate: 3600, tags: ["briefings"] }
 );
 
