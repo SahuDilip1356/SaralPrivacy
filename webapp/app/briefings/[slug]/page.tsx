@@ -151,7 +151,7 @@ async function _fetchBriefingFromDb(slug: string) {
 // ISR-aware cache: re-fetches at most every 30 min (matches page revalidate)
 const _cachedFetchBriefing = unstable_cache(
   _fetchBriefingFromDb,
-  ["briefing-detail"],
+  ["briefing-detail-v2"],
   { revalidate: 1800, tags: ["briefings"] }
 );
 
