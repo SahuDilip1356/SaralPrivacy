@@ -195,25 +195,19 @@ export function Header() {
           </nav>
 
           {/* CTA + Mobile toggle */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <button
               onClick={() => setTemplateModalOpen(true)}
-              className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold bg-navy-700 text-white rounded-lg hover:bg-navy-800 transition-colors"
+              className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold whitespace-nowrap bg-navy-700 text-white rounded-lg hover:bg-navy-800 transition-colors"
             >
               <Download size={14} />
               Templates
             </button>
             <Link
               href="/white-paper#download"
-              className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+              className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold whitespace-nowrap bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
             >
               White Paper
-            </Link>
-            <Link
-              href="/contact"
-              className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold border border-navy-300 text-navy-700 rounded-lg hover:bg-cloud-50 transition-colors"
-            >
-              Get Consultation
             </Link>
             <button
               className="lg:hidden p-2 text-slate-600 hover:text-slate-900"

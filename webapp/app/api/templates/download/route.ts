@@ -102,7 +102,7 @@ async function sendTemplateEmail(props: {
     <div class="body">
       <p>Hi ${props.contactPersonName},</p>
       <p>Your <strong>${props.templateName}</strong> for <strong>${props.businessName}</strong> is ready.</p>
-      <a href="${props.downloadUrl}" style="display:inline-block;background:#22c55e;color:#ffffff;font-weight:700;font-size:15px;padding:14px 28px;border-radius:8px;text-decoration:none;margin:8px 0 24px;">⬇ Download Template</a>
+      <a href="${props.downloadUrl}" style="display:inline-block;background:#07B981;color:#ffffff;font-weight:700;font-size:15px;padding:14px 28px;border-radius:8px;text-decoration:none;margin:8px 0 24px;">⬇ Download Template</a>
       <div class="note">
         <strong>What's in this template?</strong><br />
         This is a ready-to-use DPDPA compliance document. Review it with your legal team before publishing or sharing externally.
