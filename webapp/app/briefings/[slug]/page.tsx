@@ -10,6 +10,8 @@ import { formatDate, formatDateShort, getCategoryLabel, getIndustryLabel } from 
 import { Badge } from "@/components/ui/Badge";
 import { articleSchema, breadcrumbSchema } from "@/lib/schema";
 import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
+import { WhitepaperCTA } from "@/components/cta/WhitepaperCTA";
+import { TemplatesCTA } from "@/components/cta/TemplatesCTA";
 
 export const revalidate = 1800; // ISR — re-render at most every 30 min
 
@@ -797,6 +799,10 @@ export default async function BriefingDetailPage({ params }: Props) {
                   Take Free Assessment →
                 </Link>
               </div>
+
+              {/* Whitepaper + Templates sidebar CTAs */}
+              <WhitepaperCTA variant="sidebar" />
+              <TemplatesCTA variant="sidebar" />
 
               {/* Newsletter — inline form, no navigation needed */}
               <BriefingSubscribeCard />

@@ -4,6 +4,9 @@ import { ArrowLeft, ArrowRight, ClipboardList, FileSearch, CheckSquare } from "l
 import { notFound } from "next/navigation";
 import { articleSchema, breadcrumbSchema } from "@/lib/schema";
 import { topicNav } from "@/lib/learnNav";
+import { AssessmentCTA } from "@/components/cta/AssessmentCTA";
+import { WhitepaperCTA } from "@/components/cta/WhitepaperCTA";
+import { TemplatesCTA } from "@/components/cta/TemplatesCTA";
 
 const learnContent: Record<string, { title: string; description: string; content: string }> = {
   "what-is-dpdpa": {
@@ -1127,6 +1130,11 @@ export default async function LearnTopicPage({ params }: Props) {
                 </Link>
               </nav>
             </div>
+
+            {/* Templates CTA — sidebar */}
+            <div className="mt-4">
+              <TemplatesCTA variant="sidebar" />
+            </div>
           </div>
 
           {/* Main content */}
@@ -1164,6 +1172,12 @@ export default async function LearnTopicPage({ params }: Props) {
               <strong>Educational content only.</strong> This guide is for educational purposes and
               does not constitute legal advice. Please consult a qualified data protection lawyer
               for formal legal opinions specific to your business situation.
+            </div>
+
+            {/* Contextual CTAs — Assessment + Whitepaper after article content */}
+            <div className="space-y-4 mb-5">
+              <AssessmentCTA variant="full" />
+              <WhitepaperCTA variant="full" />
             </div>
 
             {/* Related topics strip */}

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ShoppingBag } from "lucide-react";
 import { breadcrumbSchema, faqPageSchema } from "@/lib/schema";
+import { AssessmentCTA } from "@/components/cta/AssessmentCTA";
+import { industryAssessmentCopy } from "@/lib/cta-copy";
 
 const faqs = [
   {
@@ -78,6 +80,12 @@ export default function D2CBrandsPage() {
                 </div>
               </div>
             ))}
+
+            {/* Industry-specific Assessment CTA */}
+            <AssessmentCTA
+              variant="full"
+              copy={industryAssessmentCopy["d2c-brands"]}
+            />
           </div>
           <div className="space-y-5">
             <div className="bg-rose-700 rounded-xl p-5 text-white">

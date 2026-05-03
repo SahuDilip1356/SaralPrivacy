@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Users, CheckCircle, AlertTriangle } from "lucide-react";
 import { breadcrumbSchema, faqPageSchema } from "@/lib/schema";
+import { AssessmentCTA } from "@/components/cta/AssessmentCTA";
+import { industryAssessmentCopy } from "@/lib/cta-copy";
 
 const faqs = [
   {
@@ -164,6 +166,12 @@ export default function RecruitmentIndustryPage() {
                 </div>
               </div>
             </div>
+
+            {/* Industry-specific Assessment CTA */}
+            <AssessmentCTA
+              variant="full"
+              copy={industryAssessmentCopy["recruitment-agencies"]}
+            />
           </div>
 
           {/* Sidebar */}

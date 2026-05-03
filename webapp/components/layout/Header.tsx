@@ -82,6 +82,15 @@ export function Header() {
     setOpenDropdown(null);
   }, [pathname]);
 
+  // Allow any page CTA (e.g. TemplatesCTA component) to open the modal
+  // by dispatching a "openTemplatesModal" CustomEvent — avoids prop-drilling
+  // through server components.
+  useEffect(() => {
+    const handler = () => setTemplateModalOpen(true);
+    window.addEventListener("openTemplatesModal", handler);
+    return () => window.removeEventListener("openTemplatesModal", handler);
+  }, []);
+
   return (
     <>
     <header

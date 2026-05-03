@@ -5,6 +5,8 @@ import Link from "next/link";
 import { Search, X } from "lucide-react";
 import { TERMS, CATEGORIES } from "./glossaryData";
 import { topicNav } from "@/lib/learnNav";
+import { WhitepaperCTA } from "@/components/cta/WhitepaperCTA";
+import { AssessmentCTA } from "@/components/cta/AssessmentCTA";
 
 const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
@@ -247,15 +249,10 @@ export default function GlossaryClient() {
           <strong>Statutory reference note:</strong> All definitions are sourced from the Digital Personal Data Protection Act, 2023 and the Digital Personal Data Protection Rules, 2025. Section numbers cited are those of the Act unless stated otherwise. This glossary is for educational reference only and does not constitute legal advice. Consult a qualified lawyer for compliance guidance.
         </div>
 
-        {/* CTA */}
-        <div className="mt-8 text-center">
-          <p className="text-sm text-slate-500 mb-4">Ready to check your compliance posture?</p>
-          <Link
-            href="/assessment"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-green-500 text-white text-sm font-semibold rounded-lg hover:bg-green-600 transition-colors"
-          >
-            Take the Free DPDPA Assessment →
-          </Link>
+        {/* Contextual CTAs — Whitepaper (research intent) + Assessment */}
+        <div className="mt-8 space-y-4">
+          <WhitepaperCTA variant="full" />
+          <AssessmentCTA variant="compact" />
         </div>
 
           </div>{/* end main content col */}

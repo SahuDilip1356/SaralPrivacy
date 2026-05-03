@@ -4,6 +4,8 @@ import { useState } from "react";
 import { ChevronDown, Search } from "lucide-react";
 import { faqs, faqCategories } from "@/lib/data/faqs";
 import { cn } from "@/lib/utils";
+import { AssessmentCTA } from "@/components/cta/AssessmentCTA";
+import { TemplatesCTA } from "@/components/cta/TemplatesCTA";
 
 export default function FAQContent() {
   const [openId, setOpenId] = useState<string | null>(null);
@@ -116,8 +118,14 @@ export default function FAQContent() {
           </div>
         )}
 
+        {/* Contextual CTAs — Assessment + Templates for high-intent FAQ readers */}
+        <div className="mt-10 space-y-4">
+          <AssessmentCTA variant="compact" />
+          <TemplatesCTA variant="compact" />
+        </div>
+
         {/* CTA */}
-        <div className="mt-10 bg-green-50 border border-green-200 rounded-xl p-6 text-center">
+        <div className="mt-6 bg-green-50 border border-green-200 rounded-xl p-6 text-center">
           <h3 className="font-bold text-navy-700 text-lg mb-2">
             Still have questions?
           </h3>

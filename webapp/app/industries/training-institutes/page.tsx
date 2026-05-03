@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { GraduationCap } from "lucide-react";
 import { breadcrumbSchema, faqPageSchema } from "@/lib/schema";
+import { AssessmentCTA } from "@/components/cta/AssessmentCTA";
+import { industryAssessmentCopy } from "@/lib/cta-copy";
 
 const faqs = [
   {
@@ -77,6 +79,12 @@ export default function TrainingInstitutesPage() {
                 </div>
               </div>
             ))}
+
+            {/* Industry-specific Assessment CTA */}
+            <AssessmentCTA
+              variant="full"
+              copy={industryAssessmentCopy["training-institutes"]}
+            />
           </div>
           <div className="space-y-5">
             <div className="bg-amber-600 rounded-xl p-5 text-white">
