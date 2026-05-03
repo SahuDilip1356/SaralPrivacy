@@ -5,7 +5,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, Download } from "lucide-react";
+import { TemplateDownloadModal } from "@/components/TemplateDownloadModal";
 
 const navigation = [
   {
@@ -57,6 +58,7 @@ export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [templateModalOpen, setTemplateModalOpen] = useState(false);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pathname = usePathname();
 
@@ -81,6 +83,7 @@ export function Header() {
   }, [pathname]);
 
   return (
+    <>
     <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
@@ -193,6 +196,13 @@ export function Header() {
 
           {/* CTA + Mobile toggle */}
           <div className="flex items-center gap-3">
+            <button
+              onClick={() => setTemplateModalOpen(true)}
+              className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-teal-700 border border-teal-300 rounded-lg hover:bg-teal-50 transition-colors"
+            >
+              <Download size={14} />
+              Templates
+            </button>
             <Link
               href="/white-paper#download"
               className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-navy-700 border border-navy-300 rounded-lg hover:bg-cloud-50 transition-colors"
@@ -253,6 +263,12 @@ export function Header() {
             </div>
           ))}
           <div className="pt-3 border-t border-slate-100 space-y-2">
+            <button
+              onClick={() => { setMobileOpen(false); setTemplateModalOpen(true); }}
+              className="block w-full text-center px-4 py-2.5 text-sm font-semibold text-teal-700 border border-teal-300 rounded-lg hover:bg-teal-50 transition-colors"
+            >
+              Download DPDPA Templates
+            </button>
             <Link
               href="/white-paper"
               className="block w-full text-center px-4 py-2.5 text-sm font-semibold text-navy-700 border border-navy-300 rounded-lg"
@@ -269,5 +285,12 @@ export function Header() {
         </div>
       )}
     </header>
+
+    {/* Template download modal — mounted outside <header> to avoid z-index conflicts */}
+    <TemplateDownloadModal
+      open={templateModalOpen}
+      onOpenChange={setTemplateModalOpen}
+    />
+    </>
   );
 }
