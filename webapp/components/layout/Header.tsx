@@ -117,7 +117,7 @@ export function Header() {
             href="/assessment"
             className="inline-flex items-center gap-1 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full hover:bg-green-600 transition-colors shrink-0"
           >
-            Find out in 10 minutes — free →
+            Find out in 3–5 minutes — free →
           </Link>
         </span>
       </div>
