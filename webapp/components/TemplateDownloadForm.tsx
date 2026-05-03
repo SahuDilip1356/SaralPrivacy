@@ -57,7 +57,7 @@ export function TemplateDownloadForm({
       templateSelected:  undefined,
       phoneNumber:       "+91",
       consentContact:    false,
-      consentBriefings:  true,
+      consentBriefings:  false,
     },
   });
 
@@ -224,55 +224,74 @@ export function TemplateDownloadForm({
           )}
         />
 
-        {/* Consent checkboxes */}
-        <div className="space-y-3 pt-1">
-          <FormField
-            control={form.control}
-            name="consentContact"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-start gap-3">
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                    className="mt-0.5"
-                  />
-                </FormControl>
-                <div>
-                  <FormLabel className="font-medium cursor-pointer">
-                    Send template to WhatsApp
-                  </FormLabel>
-                  <FormDescription>
-                    We'll send the download link to your WhatsApp number above.
-                  </FormDescription>
-                </div>
-              </FormItem>
-            )}
-          />
+        {/* DPDPA Consent Card */}
+        <div className="rounded-xl border border-green-200 bg-green-50/40 p-4 space-y-4">
+          <div className="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 text-green-600 shrink-0">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+            <p className="text-xs font-bold text-slate-700 uppercase tracking-wide">Consent — Please Read and Choose</p>
+          </div>
+          <p className="text-xs text-slate-600 leading-relaxed">
+            We collect your information to deliver your chosen template and, only if you consent below, to send relevant follow-up content. Each consent is separate and optional. <strong>No boxes are pre-checked.</strong>
+          </p>
 
-          <FormField
-            control={form.control}
-            name="consentBriefings"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-start gap-3">
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                    className="mt-0.5"
-                  />
-                </FormControl>
-                <div>
-                  <FormLabel className="font-medium cursor-pointer">
-                    Subscribe to daily DPDPA briefings
-                  </FormLabel>
-                  <FormDescription>
-                    Free daily updates on compliance, enforcement, and sector news.
-                  </FormDescription>
-                </div>
-              </FormItem>
-            )}
-          />
+          <div className="space-y-3">
+            <FormField
+              control={form.control}
+              name="consentBriefings"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-start gap-3">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      className="mt-0.5"
+                    />
+                  </FormControl>
+                  <div className="space-y-0.5">
+                    <FormLabel className="text-sm font-medium text-slate-800 cursor-pointer leading-snug">
+                      I consent to receive DPDPA briefings, updates, and educational content from SaralPrivacy by email.
+                    </FormLabel>
+                    <FormDescription className="text-xs text-slate-500">
+                      You can unsubscribe at any time. We do not share your email with third parties for marketing.
+                    </FormDescription>
+                  </div>
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="consentContact"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-start gap-3">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      className="mt-0.5"
+                    />
+                  </FormControl>
+                  <div className="space-y-0.5">
+                    <FormLabel className="text-sm font-medium text-slate-800 cursor-pointer leading-snug">
+                      I consent to being contacted by phone or WhatsApp about DPDPA compliance services.
+                    </FormLabel>
+                    <FormDescription className="text-xs text-slate-500">
+                      We will only contact during business hours. You can withdraw this consent at any time.
+                    </FormDescription>
+                  </div>
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <p className="text-[11px] text-slate-500 leading-relaxed border-t border-green-200 pt-3">
+            Your data is processed under our{" "}
+            <a href="/privacy" className="underline hover:text-slate-700">Privacy Notice</a>{" "}
+            (v1.0.0). You can request access, correction, or erasure at any time by emailing{" "}
+            <a href="mailto:privacy@saralprivacy.com" className="underline hover:text-slate-700">privacy@saralprivacy.com</a>.
+          </p>
         </div>
 
         {submitError && (
@@ -293,9 +312,7 @@ export function TemplateDownloadForm({
         </Button>
 
         <p className="text-[11px] text-slate-400 text-center leading-relaxed">
-          By downloading you agree to our{" "}
-          <a href="/privacy" className="underline hover:text-slate-600">Privacy Policy</a>.
-          We will never share your details.
+          🔒 Secure submission. Your data is not shared with third parties for marketing.
         </p>
       </form>
     </Form>

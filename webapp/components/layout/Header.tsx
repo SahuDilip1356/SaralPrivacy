@@ -198,20 +198,20 @@ export function Header() {
           <div className="flex items-center gap-3">
             <button
               onClick={() => setTemplateModalOpen(true)}
-              className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-teal-700 border border-teal-300 rounded-lg hover:bg-teal-50 transition-colors"
+              className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold bg-navy-700 text-white rounded-lg hover:bg-navy-800 transition-colors"
             >
               <Download size={14} />
               Templates
             </button>
             <Link
               href="/white-paper#download"
-              className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-navy-700 border border-navy-300 rounded-lg hover:bg-cloud-50 transition-colors"
+              className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
             >
               White Paper
             </Link>
             <Link
               href="/contact"
-              className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+              className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold border border-navy-300 text-navy-700 rounded-lg hover:bg-cloud-50 transition-colors"
             >
               Get Consultation
             </Link>
@@ -265,19 +265,19 @@ export function Header() {
           <div className="pt-3 border-t border-slate-100 space-y-2">
             <button
               onClick={() => { setMobileOpen(false); setTemplateModalOpen(true); }}
-              className="block w-full text-center px-4 py-2.5 text-sm font-semibold text-teal-700 border border-teal-300 rounded-lg hover:bg-teal-50 transition-colors"
+              className="block w-full text-center px-4 py-2.5 text-sm font-semibold bg-navy-700 text-white rounded-lg hover:bg-navy-800 transition-colors"
             >
               Download DPDPA Templates
             </button>
             <Link
-              href="/white-paper"
-              className="block w-full text-center px-4 py-2.5 text-sm font-semibold text-navy-700 border border-navy-300 rounded-lg"
+              href="/white-paper#download"
+              className="block w-full text-center px-4 py-2.5 text-sm font-semibold bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
             >
               Download White Paper
             </Link>
             <Link
               href="/contact"
-              className="block w-full text-center px-4 py-2.5 text-sm font-semibold bg-green-500 text-white rounded-lg"
+              className="block w-full text-center px-4 py-2.5 text-sm font-semibold border border-navy-300 text-navy-700 rounded-lg hover:bg-cloud-50 transition-colors"
             >
               Get Consultation
             </Link>
