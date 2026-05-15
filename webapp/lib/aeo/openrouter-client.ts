@@ -43,24 +43,40 @@ export async function callOpenRouter(
   model: string,
   prompt: string,
   apiKey: string,
+  timeoutMs = 90_000,
 ): Promise<CallResult> {
-  const res = await fetch(OPENROUTER_URL, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${apiKey}`,
-      'Content-Type':  'application/json',
-      // OpenRouter ranking signals — helps with their dashboard, no functional impact
-      'HTTP-Referer':  SITE_URL,
-      'X-Title':       APP_NAME,
-    },
-    body: JSON.stringify({
-      model,
-      messages: [{ role: 'user', content: prompt }],
-      // Cap output to keep responses comparable and costs predictable
-      max_tokens: 1500,
-      temperature: 0.2,
-    }),
-  })
+  // Per-call timeout — prevents one slow engine from blocking the whole batch
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), timeoutMs)
+
+  let res: Response
+  try {
+    res = await fetch(OPENROUTER_URL, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type':  'application/json',
+        // OpenRouter ranking signals — helps with their dashboard, no functional impact
+        'HTTP-Referer':  SITE_URL,
+        'X-Title':       APP_NAME,
+      },
+      body: JSON.stringify({
+        model,
+        messages: [{ role: 'user', content: prompt }],
+        // Cap output to keep responses comparable and costs predictable
+        max_tokens: 1500,
+        temperature: 0.2,
+      }),
+      signal: controller.signal,
+    })
+  } catch (e: unknown) {
+    clearTimeout(timer)
+    if (e instanceof Error && e.name === 'AbortError') {
+      throw new Error(`OpenRouter timeout after ${timeoutMs / 1000}s for model ${model}`)
+    }
+    throw e
+  }
+  clearTimeout(timer)
 
   if (!res.ok) {
     const text = await res.text().catch(() => '')

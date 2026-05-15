@@ -38,11 +38,25 @@ export default function RunButton() {
     try {
       const res = await fetch('/api/admin/aeo-panel-run', { method: 'POST' })
       clearInterval(tick)
-      const data: RunResponse = await res.json()
 
-      if (!res.ok || !data.ok) {
+      // Defensive parse — Vercel returns HTML on 504 timeouts and 500 errors
+      const text = await res.text()
+      let data: RunResponse | null = null
+      try {
+        data = JSON.parse(text) as RunResponse
+      } catch {
         setState('error')
-        setMessage(data.error || `HTTP ${res.status}`)
+        if (res.status === 504) {
+          setMessage(`Vercel function timed out (504, ${elapsed}s). The run exceeded the 300s ceiling. Tell Claude — the runner needs parallelization.`)
+        } else {
+          setMessage(`HTTP ${res.status} returned non-JSON: ${text.slice(0, 200)}`)
+        }
+        return
+      }
+
+      if (!res.ok || !data?.ok) {
+        setState('error')
+        setMessage(data?.error || `HTTP ${res.status}`)
         return
       }
 

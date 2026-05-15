@@ -24,7 +24,8 @@ function uuid(): string {
 
 /**
  * Run the full AEO panel: 5 prompts × 4 engines = 20 OpenRouter calls.
- * Returns RunResult[] — caller persists to Appwrite + returns summary.
+ * All 20 calls fire in PARALLEL via Promise.all — wall-clock time becomes
+ * the slowest individual call (~30-60s) instead of the sum (~150-300s).
  *
  * Engine errors are captured per-row (not fatal) so a single engine outage
  * doesn't kill the whole run.
@@ -35,12 +36,15 @@ export async function runAeoPanel(apiKey: string): Promise<RunResult[]> {
   const date    = now.toISOString().slice(0, 10)
   const weekNum = weekNumber(now)
 
-  const results: RunResult[] = []
+  // Build flat array of all 20 (prompt, engine) pairs
+  const pairs = PROMPTS.flatMap((prompt) =>
+    ENGINES.map((engine) => ({ prompt, engine }))
+  )
 
-  for (const prompt of PROMPTS) {
-    for (const engine of ENGINES) {
+  const results = await Promise.all(
+    pairs.map(async ({ prompt, engine }): Promise<RunResult> => {
       const startedAt = Date.now()
-      const base: Omit<RunResult, 'cited' | 'position' | 'citedPage' | 'quoteType' | 'competitors' | 'rawCitations' | 'contentSnippet' | 'durationMs' | 'errorMessage'> = {
+      const base = {
         runId,
         date,
         weekNum,
@@ -54,16 +58,16 @@ export async function runAeoPanel(apiKey: string): Promise<RunResult[]> {
         const { content, citations } = await callOpenRouter(engine.model, prompt.text, apiKey)
         const detection = detectCitation(content, citations)
 
-        results.push({
+        return {
           ...base,
           ...detection,
           quoteType:     null,                    // human review only — leave null in v1
           rawCitations:  citations,
           contentSnippet: content.slice(0, 500),
           durationMs:    Date.now() - startedAt,
-        })
+        }
       } catch (err) {
-        results.push({
+        return {
           ...base,
           cited:         'No',
           position:      null,
@@ -74,10 +78,10 @@ export async function runAeoPanel(apiKey: string): Promise<RunResult[]> {
           contentSnippet: '',
           durationMs:    Date.now() - startedAt,
           errorMessage:  err instanceof Error ? err.message : String(err),
-        })
+        }
       }
-    }
-  }
+    })
+  )
 
   return results
 }
