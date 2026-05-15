@@ -1,0 +1,18 @@
+Metric,Formula (paste exactly into the cell),What it tells you
+Total queries logged,"=COUNTA(Log!F2:F)",Sample size
+Overall cite rate,"=COUNTIF(Log!F:F,""Yes"")/COUNTA(Log!F2:F)",% of queries where saralprivacy was cited
+Cite rate — ChatGPT,"=IFERROR(COUNTIFS(Log!C:C,""ChatGPT"",Log!F:F,""Yes"")/COUNTIF(Log!C:C,""ChatGPT""),0)",ChatGPT-only cite rate
+Cite rate — Claude,"=IFERROR(COUNTIFS(Log!C:C,""Claude"",Log!F:F,""Yes"")/COUNTIF(Log!C:C,""Claude""),0)",Claude-only cite rate
+Cite rate — Perplexity,"=IFERROR(COUNTIFS(Log!C:C,""Perplexity"",Log!F:F,""Yes"")/COUNTIF(Log!C:C,""Perplexity""),0)",Perplexity-only cite rate
+Cite rate — Gemini,"=IFERROR(COUNTIFS(Log!C:C,""Gemini"",Log!F:F,""Yes"")/COUNTIF(Log!C:C,""Gemini""),0)",Gemini-only cite rate
+Mentioned (no link) rate,"=COUNTIF(Log!F:F,""Mentioned-no-link"")/COUNTA(Log!F2:F)",Brand awareness without citation
+Avg position when cited,"=IFERROR(AVERAGEIF(Log!F:F,""Yes"",Log!G:G),""—"")",Lower is better (1 = best)
+Verbatim quote count,"=COUNTIF(Log!I:I,""Verbatim"")",Schema/AnswerBlock working when this rises
+Most-cited page,"=IFERROR(INDEX(Log!H:H,MATCH(MAX(COUNTIF(Log!H2:H,Log!H2:H)),COUNTIF(Log!H2:H,Log!H2:H),0)+1),""—"")",Your flagship page — invest more here
+Most-cited competitor,"=IFERROR(INDEX(Log!J:J,MATCH(MAX(COUNTIF(Log!J2:J,Log!J2:J)),COUNTIF(Log!J2:J,Log!J2:J),0)+1),""—"")",Your real benchmark — study their schema
+Cite rate — last 4 weeks (trend),"=IFERROR(COUNTIFS(Log!B:B,"">=""&WEEKNUM(TODAY())-3,Log!F:F,""Yes"")/COUNTIFS(Log!B:B,"">=""&WEEKNUM(TODAY())-3),0)",Rolling 4-week trend
+Q1 cite rate (Recruitment),"=IFERROR(COUNTIFS(Log!D:D,""Q1"",Log!F:F,""Yes"")/COUNTIF(Log!D:D,""Q1""),0)",Where are we strong/weak by topic
+Q2 cite rate (Penalty),"=IFERROR(COUNTIFS(Log!D:D,""Q2"",Log!F:F,""Yes"")/COUNTIF(Log!D:D,""Q2""),0)",
+Q3 cite rate (Consent),"=IFERROR(COUNTIFS(Log!D:D,""Q3"",Log!F:F,""Yes"")/COUNTIF(Log!D:D,""Q3""),0)",
+Q4 cite rate (DPDP Rules 2025),"=IFERROR(COUNTIFS(Log!D:D,""Q4"",Log!F:F,""Yes"")/COUNTIF(Log!D:D,""Q4""),0)",
+Q5 cite rate (SDF),"=IFERROR(COUNTIFS(Log!D:D,""Q5"",Log!F:F,""Yes"")/COUNTIF(Log!D:D,""Q5""),0)",

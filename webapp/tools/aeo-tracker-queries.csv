@@ -1,0 +1,6 @@
+Query ID,Topic,Query,Target Page,Why This Query
+Q1,Recruitment,"I run a recruitment agency in India. What does DPDPA require me to do about candidate CVs and consent? Cite sources.",/industries/recruitment-agencies,Industry-specific intent — tests vertical authority
+Q2,Penalty,"What's the maximum DPDPA penalty for a small business that fails to notify a data breach in India? Cite sources.",/penalty-calculator,Fact-lookup intent — tests citation of statutory specifics
+Q3,Consent,"Under India's DPDPA, do I need consent before sharing a candidate's CV with a client company? Cite sources.",/learn/consent,Decision intent — tests practical guidance citation
+Q4,DPDP Rules 2025,"Plain-English summary of India's DPDP Rules 2025 — what changed and when does it apply? Cite sources.",/learn/dpdp-rules-2025-plain-english-guide,Summary intent — tests definitive-source positioning
+Q5,Significant Data Fiduciary,"What classifies a company as a Significant Data Fiduciary under India's DPDPA, and what extra obligations does it trigger? Cite sources.",/glossary (or /learn/duties),Definition intent — tests glossary authority

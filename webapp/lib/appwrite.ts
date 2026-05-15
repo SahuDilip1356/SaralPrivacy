@@ -24,6 +24,7 @@ export const COLLECTIONS = {
   TEMPLATE_DOWNLOADS: "template_downloads",
   OUTREACH_CONTACTS:  "outreach_contacts",
   EMAIL_SEND_LOG:     "email_send_log",
+  AI_CITATIONS:       "ai_citations",
 } as const;
 
 /** Returns the public view URL for a file in Appwrite Storage */
