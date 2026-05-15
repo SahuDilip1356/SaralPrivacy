@@ -1047,17 +1047,10 @@ export default async function LearnTopicPage({ params }: Props) {
   const content = learnContent[topic];
 
   if (!content) {
-    return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-navy-700 mb-3">Content Coming Soon</h1>
-          <p className="text-slate-600 mb-5">This topic is being prepared by our editorial team.</p>
-          <Link href="/learn" className="text-green-600 font-semibold hover:underline">
-            ← Back to DPDPA Guide
-          </Link>
-        </div>
-      </div>
-    );
+    // Unknown topic slug → render a proper 404 (handled by ./not-found.tsx).
+    // Previously returned a 200 OK with "Content Coming Soon" which left phantom
+    // URLs indexable by Google with thin content — bad for topical authority.
+    notFound();
   }
 
   const currentIndex = topicNav.findIndex((t) => t.slug === topic);
