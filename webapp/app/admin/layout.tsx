@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
-import { BarChart2, Users, Mail, Download, CheckCircle, Shield, Clock, LogOut, FileText, ClipboardList, BookOpen, UserPlus, Send } from "lucide-react";
+import { BarChart2, Users, Mail, Download, CheckCircle, Shield, Clock, LogOut, FileText, ClipboardList, BookOpen, UserPlus, Send, TrendingUp } from "lucide-react";
 
 const adminNav = [
   { label: "Dashboard",        href: "/admin",                  icon: BarChart2,     adminOnly: true  },
@@ -16,6 +16,7 @@ const adminNav = [
   { label: "Survey Responses", href: "/admin/survey-responses", icon: ClipboardList, adminOnly: true  },
   { label: "Consent Log",      href: "/admin/consent",          icon: Shield,        adminOnly: true  },
   { label: "Consultations",    href: "/admin/consultations",    icon: Clock,         adminOnly: true  },
+  { label: "AEO Citations",    href: "/admin/citations",        icon: TrendingUp,    adminOnly: true  },
 ];
 
 // The middleware.ts already protects all /admin/* routes (except /admin/login).
