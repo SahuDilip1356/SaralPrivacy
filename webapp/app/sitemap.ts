@@ -1,17 +1,19 @@
 import { MetadataRoute } from 'next'
 import { databases, DB_ID, COLLECTIONS, Query } from '@/lib/appwrite'
+import { FRESHNESS } from '@/lib/content-freshness'
 
 const BASE = 'https://saralprivacy.com'
 
-// Update these dates when content materially changes
-const CORE_UPDATED     = new Date('2026-04-29')
-const GLOSSARY_UPDATED = new Date('2026-04-29')
-const TOOLS_UPDATED    = new Date('2026-04-29')
-const LEARN_UPDATED    = new Date('2026-04-30')
-const INDUSTRY_UPDATED = new Date('2026-04-30')
-const FAQ_UPDATED      = new Date('2026-03-01')
-const BRIEFINGS_HUB    = new Date('2026-03-28')
-const BLOG_HUB         = new Date('2026-03-29')
+// Date constants now live in lib/content-freshness.ts so sitemap, schema, and
+// the visible Byline component all read one source of truth. Update there.
+const CORE_UPDATED     = FRESHNESS.core
+const GLOSSARY_UPDATED = FRESHNESS.glossary
+const TOOLS_UPDATED    = FRESHNESS.tools
+const LEARN_UPDATED    = FRESHNESS.learn
+const INDUSTRY_UPDATED = FRESHNESS.industry
+const FAQ_UPDATED      = FRESHNESS.faq
+const BRIEFINGS_HUB    = FRESHNESS.briefingsHub
+const BLOG_HUB         = FRESHNESS.blogHub
 
 const learnTopics = [
   'what-is-dpdpa',
@@ -128,8 +130,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })),
 
     // ── Legal (low priority) ──
-    { url: `${BASE}/privacy`,       lastModified: new Date('2026-03-01'), changeFrequency: 'yearly', priority: 0.2 },
-    { url: `${BASE}/terms`,         lastModified: new Date('2026-03-01'), changeFrequency: 'yearly', priority: 0.2 },
+    { url: `${BASE}/privacy`,       lastModified: FRESHNESS.legal, changeFrequency: 'yearly', priority: 0.2 },
+    { url: `${BASE}/terms`,         lastModified: FRESHNESS.legal, changeFrequency: 'yearly', priority: 0.2 },
 
     // EXCLUDED — intentional:
     // /resources            → 301 redirect to /blog

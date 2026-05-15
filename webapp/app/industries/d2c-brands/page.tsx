@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ShoppingBag } from "lucide-react";
-import { breadcrumbSchema, faqPageSchema } from "@/lib/schema";
+import { breadcrumbSchema, faqPageSchema, speakableSchema } from "@/lib/schema";
 import { AssessmentCTA } from "@/components/cta/AssessmentCTA";
 import { industryAssessmentCopy } from "@/lib/cta-copy";
+import { Byline } from "@/components/seo/Byline";
+import { FRESHNESS, toISODate } from "@/lib/content-freshness";
 
 const faqs = [
   {
@@ -42,7 +44,11 @@ export default function D2CBrandsPage() {
         { name: 'Industries', url: 'https://saralprivacy.com/industries' },
         { name: 'D2C Brands', url: 'https://saralprivacy.com/industries/d2c-brands' },
       ])}
-      {faqPageSchema(faqs)}
+      {faqPageSchema(faqs, {
+        url: 'https://saralprivacy.com/industries/d2c-brands',
+        dateModified: toISODate(FRESHNESS.industry),
+      })}
+      {speakableSchema(['.answer-block'], 'https://saralprivacy.com/industries/d2c-brands')}
     <div className="min-h-screen bg-slate-50">
       <div className="bg-navy-700 py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -53,13 +59,14 @@ export default function D2CBrandsPage() {
             <span className="text-rose-300 text-sm font-semibold">Industry Guide</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4">DPDPA for D2C Brands and E-commerce Businesses</h1>
-          <div className="bg-white/10 border border-white/20 rounded-xl px-5 py-4 max-w-2xl">
+          <div className="answer-block bg-white/10 border border-white/20 rounded-xl px-5 py-4 max-w-2xl" data-speakable="true">
             <p className="text-slate-200 text-sm leading-relaxed">D2C brands run on customer data: checkout details, remarketing audiences, WhatsApp lists, analytics tools, loyalty signals, and behavioural targeting. Under DPDPA, the biggest problems usually show up in bundled consent, undisclosed tracking, sloppy opt-ins, and indefinite retention. This guide shows D2C teams how to keep growth systems running without turning the customer funnel into a compliance minefield.</p>
             <p className="text-rose-300 text-xs mt-2 font-medium">If checkout consent is doing three jobs at once, it is probably doing all three badly.</p>
           </div>
         </div>
       </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+        <Byline lastReviewed={FRESHNESS.industry} className="mb-6" />
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-5">
             {[

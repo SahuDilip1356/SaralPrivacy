@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Users, CheckCircle, AlertTriangle } from "lucide-react";
-import { breadcrumbSchema, faqPageSchema } from "@/lib/schema";
+import { breadcrumbSchema, faqPageSchema, speakableSchema } from "@/lib/schema";
 import { AssessmentCTA } from "@/components/cta/AssessmentCTA";
 import { industryAssessmentCopy } from "@/lib/cta-copy";
+import { Byline } from "@/components/seo/Byline";
+import { FRESHNESS, toISODate } from "@/lib/content-freshness";
 
 const faqs = [
   {
@@ -95,7 +97,11 @@ export default function RecruitmentIndustryPage() {
         { name: 'Industries', url: 'https://saralprivacy.com/industries' },
         { name: 'Recruitment Agencies', url: 'https://saralprivacy.com/industries/recruitment-agencies' },
       ])}
-      {faqPageSchema(faqs)}
+      {faqPageSchema(faqs, {
+        url: 'https://saralprivacy.com/industries/recruitment-agencies',
+        dateModified: toISODate(FRESHNESS.industry),
+      })}
+      {speakableSchema(['.answer-block'], 'https://saralprivacy.com/industries/recruitment-agencies')}
     <div className="min-h-screen bg-slate-50">
       {/* Hero */}
       <div className="bg-navy-700 py-14">
@@ -109,7 +115,7 @@ export default function RecruitmentIndustryPage() {
           <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4">
             DPDPA for Recruitment and Staffing Agencies
           </h1>
-          <div className="bg-white/10 border border-white/20 rounded-xl px-5 py-4 max-w-2xl mb-6">
+          <div className="answer-block bg-white/10 border border-white/20 rounded-xl px-5 py-4 max-w-2xl mb-6" data-speakable="true">
             <p className="text-slate-200 text-sm leading-relaxed">Recruitment agencies sit on a mountain of personal data: CVs, job applications, background documents, interview notes, and client submissions. Under DPDPA, your biggest risks usually sit in candidate consent, profile sharing, ATS vendors, retention, and rights handling. This guide shows where recruitment workflows break, and what to tighten before they become liabilities.</p>
             <p className="text-green-300 text-xs mt-2 font-medium">If your CV database has no clear consent, purpose, or deletion logic, it is not a talent asset. It is a compliance trap.</p>
           </div>
@@ -122,6 +128,7 @@ export default function RecruitmentIndustryPage() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+        <Byline lastReviewed={FRESHNESS.industry} className="mb-6" />
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main content */}
           <div className="lg:col-span-2 space-y-8">

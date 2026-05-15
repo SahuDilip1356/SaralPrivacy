@@ -51,6 +51,9 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* LLM-friendly site summary — emerging convention, probed by some AI crawlers */}
+        <link rel="alternate" type="text/markdown" title="LLM-friendly site summary" href="/llms.txt" />
+        <link rel="alternate" type="text/markdown" title="LLM extended reference" href="/llms-full.txt" />
       </head>
       <body className="font-sans antialiased bg-slate-50 text-slate-900 min-h-screen flex flex-col">
         <Header />

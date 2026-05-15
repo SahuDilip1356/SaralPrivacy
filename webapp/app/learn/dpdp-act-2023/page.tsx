@@ -2,9 +2,12 @@ import React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, BookOpen, Scale } from "lucide-react";
-import { articleSchema, breadcrumbSchema } from "@/lib/schema";
+import { articleSchema, breadcrumbSchema, speakableSchema } from "@/lib/schema";
 import { dpdpAct2023, type ActSection, type ActChapter } from "@/content/dpdp-act-2023";
 import { linkifyText } from "@/lib/linkifyText";
+import { AnswerBlock } from "@/components/seo/AnswerBlock";
+import { Byline } from "@/components/seo/Byline";
+import { FRESHNESS } from "@/lib/content-freshness";
 
 export const metadata: Metadata = {
   title: "DPDPA 2023: Full Act Text with Plain-English Guide — Section by Section",
@@ -153,6 +156,7 @@ export default function DpdpAct2023Page() {
         "https://saralprivacy.com/learn/dpdp-act-2023",
         "2026-04-30"
       )}
+      {speakableSchema(['.answer-block'], 'https://saralprivacy.com/learn/dpdp-act-2023')}
       {breadcrumbSchema([
         { name: "Home", url: "https://saralprivacy.com" },
         { name: "DPDPA Guide", url: "https://saralprivacy.com/learn" },
@@ -206,6 +210,11 @@ export default function DpdpAct2023Page() {
                 <h1 className="text-2xl sm:text-3xl font-bold text-navy-700 mb-3">
                   Digital Personal Data Protection Act, 2023
                 </h1>
+                <Byline lastReviewed={FRESHNESS.learn} className="mb-3" />
+                <AnswerBlock
+                  answer="The Digital Personal Data Protection Act, 2023 is India's primary law governing how digital personal data is collected, used, stored, shared, and deleted. It has 9 chapters and 44 sections plus a Schedule of penalties up to ₹250 crore. The DPDP Rules, 2025 were notified on 14 November 2025, and implementation is phased. This page reproduces the full official text with plain-English summaries for each section."
+                  className="mb-4"
+                />
                 <p className="text-slate-600 text-base leading-relaxed mb-2">
                   This page presents the full text of the{" "}
                   <strong>Digital Personal Data Protection Act, 2023</strong> — all 9 chapters and

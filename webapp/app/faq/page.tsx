@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { faqs } from "@/lib/data/faqs";
-import { faqPageSchema } from "@/lib/schema";
+import { faqPageSchema, speakableSchema } from "@/lib/schema";
 import FAQContent from "./FAQContent";
+import { AnswerBlock } from "@/components/seo/AnswerBlock";
+import { Byline } from "@/components/seo/Byline";
+import { FRESHNESS, toISODate } from "@/lib/content-freshness";
 
 export const metadata: Metadata = {
   title: "DPDPA FAQ for Indian Businesses",
@@ -24,7 +27,11 @@ export default function FAQPage() {
 
   return (
     <>
-      {faqPageSchema(faqs.map((f) => ({ question: f.question, answer: f.answer })))}
+      {faqPageSchema(faqs.map((f) => ({ question: f.question, answer: f.answer })), {
+        url: 'https://saralprivacy.com/faq',
+        dateModified: toISODate(FRESHNESS.faq),
+      })}
+      {speakableSchema(['.answer-block'], 'https://saralprivacy.com/faq')}
 
       {/* Interactive section: hero (H1 first in DOM), search, filters, accordion */}
       <FAQContent />
@@ -36,9 +43,11 @@ export default function FAQPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-12">
         <div className="border-t-2 border-slate-200 pt-8 mb-6">
           <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-4">Complete Answer Reference</p>
-          <div className="bg-slate-50 border-l-4 border-green-400 rounded-r-xl px-5 py-4 mb-6">
-            <p className="text-slate-700 text-sm leading-relaxed">These are the DPDPA questions Indian businesses ask when privacy stops being theory and starts affecting forms, marketing, payroll, candidate files, student records, and customer data. The DPDP Rules, 2025 have been notified, so the useful question is no longer whether the law is coming, but what you need to fix first. Start here for clear, practical answers.</p>
-          </div>
+          <Byline lastReviewed={FRESHNESS.faq} className="mb-4" />
+          <AnswerBlock
+            answer="These are the DPDPA questions Indian businesses ask when privacy stops being theory and starts affecting forms, marketing, payroll, candidate files, student records, and customer data. The DPDP Rules, 2025 have been notified, so the useful question is no longer whether the law is coming, but what you need to fix first. Start here for clear, practical answers."
+            className="mb-6"
+          />
         </div>
         <div className="space-y-4">
           {keyFaqs.map((faq) => (

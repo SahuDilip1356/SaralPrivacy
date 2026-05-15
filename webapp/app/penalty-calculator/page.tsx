@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { topicNav } from "@/lib/learnNav";
+import { articleSchema as articleSchemaTag, speakableSchema } from "@/lib/schema";
+import { Byline } from "@/components/seo/Byline";
+import { FRESHNESS, toISODate } from "@/lib/content-freshness";
 
 const BASE = "https://saralprivacy.com";
 
@@ -27,16 +30,9 @@ const breadcrumbSchema = {
   ],
 };
 
-const articleSchema = {
-  "@context": "https://schema.org",
-  "@type": "Article",
-  headline: "Penalties Under the Digital Personal Data Protection Act, 2023",
-  description: "Complete guide to the DPDPA penalty framework — Schedule caps, Section 33(2) factors, Section 33(3) enhancement, and the Board inquiry process.",
-  url: `${BASE}/penalty-calculator`,
-  datePublished: "2026-04-29",
-  dateModified: "2026-04-29",
-  publisher: { "@type": "Organization", name: "SaralPrivacy", url: BASE },
-};
+// Article schema now flows through lib/schema's articleSchemaTag() helper below
+// so the named Person author, inLanguage, and mainEntityOfPage stay consistent
+// with every other content page on the site.
 
 // ─── Reusable prose components ────────────────────────────────────────────────
 
@@ -75,7 +71,14 @@ export default function PenaltyPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      {articleSchemaTag(
+        "Penalties Under the Digital Personal Data Protection Act, 2023",
+        "Complete guide to the DPDPA penalty framework — Schedule caps, Section 33(2) factors, Section 33(3) enhancement, and the Board inquiry process.",
+        `${BASE}/penalty-calculator`,
+        "2026-04-29",
+        toISODate(FRESHNESS.tools)
+      )}
+      {speakableSchema(['.answer-block'], `${BASE}/penalty-calculator`)}
 
       <div className="min-h-screen bg-slate-50">
 
@@ -93,15 +96,18 @@ export default function PenaltyPage() {
               <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3 leading-snug">
                 Penalties Under DPDPA — Complete Guide
               </h1>
-              <p className="text-slate-300 text-base leading-relaxed">
-                Schedule-capped monetary penalties, Section 33(2) factors, the 2× enhancement mechanism, and the Board inquiry process — all in one place.
-              </p>
+              <div className="answer-block bg-white/10 border border-white/20 rounded-xl px-5 py-4" data-speakable="true">
+                <p className="text-slate-200 text-sm leading-relaxed">
+                  DPDPA penalties are administrative, Schedule-capped, and discretionary — not formula-based. The maximum penalty is ₹250 crore for failure to implement adequate security safeguards. The Data Protection Board determines the actual amount after considering six mandatory factors in Section 33(2) and may double it under Section 33(3) for repeat or grave breaches. This page explains the full framework, the inquiry process, and what factors weigh against you.
+                </p>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Body */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+          <Byline lastReviewed={FRESHNESS.tools} className="mb-6" />
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
 
             {/* Sidebar */}

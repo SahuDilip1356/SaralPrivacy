@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Calculator } from "lucide-react";
-import { breadcrumbSchema, faqPageSchema } from "@/lib/schema";
+import { breadcrumbSchema, faqPageSchema, speakableSchema } from "@/lib/schema";
 import { AssessmentCTA } from "@/components/cta/AssessmentCTA";
 import { industryAssessmentCopy } from "@/lib/cta-copy";
+import { Byline } from "@/components/seo/Byline";
+import { FRESHNESS, toISODate } from "@/lib/content-freshness";
 
 const faqs = [
   {
@@ -63,7 +65,11 @@ export default function CAFirmsIndustryPage() {
         { name: 'Industries', url: 'https://saralprivacy.com/industries' },
         { name: 'CA Firms', url: 'https://saralprivacy.com/industries/ca-firms' },
       ])}
-      {faqPageSchema(faqs)}
+      {faqPageSchema(faqs, {
+        url: 'https://saralprivacy.com/industries/ca-firms',
+        dateModified: toISODate(FRESHNESS.industry),
+      })}
+      {speakableSchema(['.answer-block'], 'https://saralprivacy.com/industries/ca-firms')}
     <div className="min-h-screen bg-slate-50">
       <div className="bg-navy-700 py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -74,13 +80,14 @@ export default function CAFirmsIndustryPage() {
             <span className="text-indigo-300 text-sm font-semibold">Industry Guide</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4">DPDPA for CA Firms and Accounting Practices</h1>
-          <div className="bg-white/10 border border-white/20 rounded-xl px-5 py-4 max-w-2xl">
+          <div className="answer-block bg-white/10 border border-white/20 rounded-xl px-5 py-4 max-w-2xl" data-speakable="true">
             <p className="text-slate-200 text-sm leading-relaxed">CA firms handle some of the most sensitive personal data in routine business operations: PAN, Aadhaar, payroll records, bank details, tax files, and employee documents. DPDPA adds practical obligations around access control, vendor governance, retention, rights handling, and internal accountability. This guide helps CA firms move from professional confidentiality to operational privacy discipline.</p>
             <p className="text-indigo-300 text-xs mt-2 font-medium">If everyone in the office can open every client folder, that is not collaboration. It is exposure with good lighting.</p>
           </div>
         </div>
       </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+        <Byline lastReviewed={FRESHNESS.industry} className="mb-6" />
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-5">
             <h2 className="text-2xl font-bold text-navy-700">Key Risk Areas</h2>

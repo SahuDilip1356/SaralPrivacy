@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, FileText } from "lucide-react";
-import { articleSchema, breadcrumbSchema, faqPageSchema } from "@/lib/schema";
+import { articleSchema, breadcrumbSchema, faqPageSchema, speakableSchema } from "@/lib/schema";
 import { topicNav } from "@/lib/learnNav";
 import { linkifyText } from "@/lib/linkifyText";
+import { AnswerBlock } from "@/components/seo/AnswerBlock";
+import { Byline } from "@/components/seo/Byline";
+import { FRESHNESS, toISODate } from "@/lib/content-freshness";
 
 export const metadata: Metadata = {
   title: "DPDP Rules 2025: Plain-English Guide",
@@ -182,7 +185,11 @@ export default function DpdpRules2025Page() {
           url: "https://saralprivacy.com/learn/dpdp-rules-2025-plain-english-guide",
         },
       ])}
-      {faqPageSchema(faqs)}
+      {speakableSchema(['.answer-block'], 'https://saralprivacy.com/learn/dpdp-rules-2025-plain-english-guide')}
+      {faqPageSchema(faqs, {
+        url: 'https://saralprivacy.com/learn/dpdp-rules-2025-plain-english-guide',
+        dateModified: toISODate(FRESHNESS.learn),
+      })}
 
       <div className="min-h-screen bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
@@ -231,10 +238,14 @@ export default function DpdpRules2025Page() {
                 <h1 className="text-2xl sm:text-3xl font-bold text-navy-700 mb-3">
                   DPDP Rules 2025: Section-by-Section Plain-English Guide
                 </h1>
+                <Byline lastReviewed={FRESHNESS.learn} className="mb-3" />
+                <AnswerBlock
+                  answer="The Digital Personal Data Protection Rules, 2025 were notified on 14 November 2025. They contain 23 Rules and 7 Schedules that set out the operational details under the DPDPA, 2023 — covering notice content, consent flows, breach notification, children's data, retention, and Significant Data Fiduciary obligations. Different Rules commence on different dates: some on notification, others after 12 or 18 months."
+                  className="mb-4"
+                />
                 <p className="text-slate-600 text-base leading-relaxed mb-5">
-                  The Digital Personal Data Protection Rules, 2025 explain the operational details
-                  under the Digital Personal Data Protection Act, 2023. This page presents each
-                  Rule and each Schedule in plain English, in the same order as the official text.
+                  This page presents each Rule and each Schedule in plain English, in the same
+                  order as the official text.
                 </p>
                 <InfoBox>
                   This guide is designed to help readers understand what each Rule says, using

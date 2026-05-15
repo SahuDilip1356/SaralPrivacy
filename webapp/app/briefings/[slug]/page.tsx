@@ -8,7 +8,8 @@ import { BriefingSubscribeCard } from "@/components/briefings/BriefingSubscribeC
 import { getBriefingBySlug, briefings as staticBriefings } from "@/lib/data/briefings";
 import { formatDate, formatDateShort, getCategoryLabel, getIndustryLabel } from "@/lib/utils";
 import { Badge } from "@/components/ui/Badge";
-import { articleSchema, breadcrumbSchema } from "@/lib/schema";
+import { articleSchema, breadcrumbSchema, speakableSchema } from "@/lib/schema";
+import { AnswerBlock } from "@/components/seo/AnswerBlock";
 import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 import { WhitepaperCTA } from "@/components/cta/WhitepaperCTA";
 import { TemplatesCTA } from "@/components/cta/TemplatesCTA";
@@ -283,6 +284,7 @@ export default async function BriefingDetailPage({ params }: Props) {
         `https://saralprivacy.com/briefings/${briefing.slug}`,
         briefing.date
       )}
+      {speakableSchema(['.answer-block'], `https://saralprivacy.com/briefings/${briefing.slug}`)}
       {breadcrumbSchema([
         { name: "Home",           url: "https://saralprivacy.com" },
         { name: "Daily Briefings",url: "https://saralprivacy.com/briefings" },
@@ -325,6 +327,9 @@ export default async function BriefingDetailPage({ params }: Props) {
                       <span className="text-slate-300">·</span>
                       <span className="font-medium text-slate-600">{briefing.author.name}</span>
                     </div>
+                    {briefing.excerpt && (
+                      <AnswerBlock answer={briefing.excerpt} className="mt-4" />
+                    )}
                   </div>
 
                   {/* BLOCK 2 — HOOK */}
@@ -542,7 +547,7 @@ export default async function BriefingDetailPage({ params }: Props) {
                     </div>
 
                     {/* Industry tags */}
-                    <div className="flex flex-wrap gap-1.5">
+                    <div className="flex flex-wrap gap-1.5 mb-4">
                       {(briefing.industries as string[]).map((ind: string) => (
                         <span
                           key={ind}
@@ -552,6 +557,7 @@ export default async function BriefingDetailPage({ params }: Props) {
                         </span>
                       ))}
                     </div>
+                    {briefing.excerpt && <AnswerBlock answer={briefing.excerpt} />}
                   </div>
 
                   {/* ── HOOK — infographic + overview ────────────────────── */}

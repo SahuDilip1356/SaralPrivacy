@@ -8,7 +8,8 @@ import { WhitePaperSection } from "@/components/home/WhitePaperSection";
 import { FAQPreview } from "@/components/home/FAQPreview";
 import { NewsletterSection } from "@/components/home/NewsletterSection";
 import { ConsultationCTA } from "@/components/home/ConsultationCTA";
-import { organizationSchema, websiteSchema } from "@/lib/schema";
+import { organizationSchema, websiteSchema, speakableSchema } from "@/lib/schema";
+import { AnswerBlock } from "@/components/seo/AnswerBlock";
 
 export const metadata: Metadata = {
   title: "DPDPA Compliance for Indian Businesses",
@@ -22,11 +23,14 @@ export default function HomePage() {
     <>
       {organizationSchema()}
       {websiteSchema()}
+      {speakableSchema(['.answer-block'], 'https://saralprivacy.com')}
       <HeroSection />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
-        <div className="bg-slate-50 border-l-4 border-green-400 rounded-r-xl px-5 py-4 mb-6">
-          <p className="text-slate-700 text-sm leading-relaxed">DPDPA is India&apos;s framework for handling digital personal data, and the DPDP Rules, 2025 have now been notified. For Indian businesses, the real work is operational: fix your notices, consent flows, rights handling, retention logic, and vendor controls. SaralPrivacy helps you understand what matters, assess your risk, and prioritise the next 30 to 90 days.</p>
-        </div>
+        <AnswerBlock
+          question="What is DPDPA?"
+          answer="DPDPA is India's framework for handling digital personal data, and the DPDP Rules, 2025 have now been notified. For Indian businesses, the real work is operational: fix your notices, consent flows, rights handling, retention logic, and vendor controls. SaralPrivacy helps you understand what matters, assess your risk, and prioritise the next 30 to 90 days."
+          className="mb-6"
+        />
       </div>
       <TrustStrip />
       <AudienceCards />

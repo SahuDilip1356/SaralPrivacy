@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { GraduationCap } from "lucide-react";
-import { breadcrumbSchema, faqPageSchema } from "@/lib/schema";
+import { breadcrumbSchema, faqPageSchema, speakableSchema } from "@/lib/schema";
 import { AssessmentCTA } from "@/components/cta/AssessmentCTA";
 import { industryAssessmentCopy } from "@/lib/cta-copy";
+import { Byline } from "@/components/seo/Byline";
+import { FRESHNESS, toISODate } from "@/lib/content-freshness";
 
 const faqs = [
   {
@@ -42,7 +44,11 @@ export default function TrainingInstitutesPage() {
         { name: 'Industries', url: 'https://saralprivacy.com/industries' },
         { name: 'Training Institutes', url: 'https://saralprivacy.com/industries/training-institutes' },
       ])}
-      {faqPageSchema(faqs)}
+      {faqPageSchema(faqs, {
+        url: 'https://saralprivacy.com/industries/training-institutes',
+        dateModified: toISODate(FRESHNESS.industry),
+      })}
+      {speakableSchema(['.answer-block'], 'https://saralprivacy.com/industries/training-institutes')}
     <div className="min-h-screen bg-slate-50">
       <div className="bg-navy-700 py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -53,13 +59,14 @@ export default function TrainingInstitutesPage() {
             <span className="text-amber-300 text-sm font-semibold">Industry Guide</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4">DPDPA for Training Institutes and Coaching Centres</h1>
-          <div className="bg-white/10 border border-white/20 rounded-xl px-5 py-4 max-w-2xl">
+          <div className="answer-block bg-white/10 border border-white/20 rounded-xl px-5 py-4 max-w-2xl" data-speakable="true">
             <p className="text-slate-200 text-sm leading-relaxed">Training institutes collect personal data at every stage of the student lifecycle: enquiries, admissions, attendance, fees, placements, and marketing. If minors are involved, the compliance stakes rise fast because parental consent and careful data handling become central. This guide helps institutes fix the most common weak spots in forms, tracking, permissions, and student data workflows.</p>
             <p className="text-amber-300 text-xs mt-2 font-medium">Most institutes think they run classes. They also run a quiet little data factory.</p>
           </div>
         </div>
       </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+        <Byline lastReviewed={FRESHNESS.industry} className="mb-6" />
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-5">
             {[

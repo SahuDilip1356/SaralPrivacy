@@ -2,11 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, ClipboardList, FileSearch, CheckSquare } from "lucide-react";
 import { notFound } from "next/navigation";
-import { articleSchema, breadcrumbSchema } from "@/lib/schema";
+import { articleSchema, breadcrumbSchema, speakableSchema } from "@/lib/schema";
 import { topicNav } from "@/lib/learnNav";
 import { AssessmentCTA } from "@/components/cta/AssessmentCTA";
 import { WhitepaperCTA } from "@/components/cta/WhitepaperCTA";
 import { TemplatesCTA } from "@/components/cta/TemplatesCTA";
+import { AnswerBlock } from "@/components/seo/AnswerBlock";
+import { Byline } from "@/components/seo/Byline";
+import { FRESHNESS, toISODate } from "@/lib/content-freshness";
 
 const learnContent: Record<string, { title: string; description: string; content: string }> = {
   "what-is-dpdpa": {
@@ -1068,8 +1071,9 @@ export default async function LearnTopicPage({ params }: Props) {
         content.description,
         `https://saralprivacy.com/learn/${topic}`,
         '2025-03-01',
-        '2026-03-15'
+        toISODate(FRESHNESS.learn)
       )}
+      {speakableSchema(['.answer-block'], `https://saralprivacy.com/learn/${topic}`)}
       {breadcrumbSchema([
         { name: 'Home', url: 'https://saralprivacy.com' },
         { name: 'DPDPA Guide', url: 'https://saralprivacy.com/learn' },
@@ -1149,19 +1153,19 @@ export default async function LearnTopicPage({ params }: Props) {
 
             <div className="bg-white rounded-xl border border-slate-200 p-7 mb-5">
               <h1 className="text-2xl sm:text-3xl font-bold text-navy-700 mb-2">{content.title}</h1>
-              {topic !== 'what-is-dpdpa' && (
-                <p className="text-slate-500 text-base mb-2">{content.description}</p>
-              )}
-              {topic === 'what-is-dpdpa' && (
-                <div className="bg-slate-50 border-l-4 border-green-400 rounded-r-xl px-5 py-4 mt-3 mb-2">
-                  <p className="text-slate-700 text-sm leading-relaxed">The Digital Personal Data Protection Act, 2023 governs how digital personal data is collected, used, stored, shared, and deleted in India. With the DPDP Rules, 2025 now notified and phased implementation underway, businesses should focus on fixing notices, consent, rights handling, retention, and vendor controls. This guide explains what the law covers, who it applies to, and what practical steps matter first.</p>
-                </div>
+              <Byline lastReviewed={FRESHNESS.learn} className="mb-3" />
+              {topic === 'what-is-dpdpa' ? (
+                <AnswerBlock
+                  answer="The Digital Personal Data Protection Act, 2023 governs how digital personal data is collected, used, stored, shared, and deleted in India. With the DPDP Rules, 2025 now notified and phased implementation underway, businesses should focus on fixing notices, consent, rights handling, retention, and vendor controls. This guide explains what the law covers, who it applies to, and what practical steps matter first."
+                  className="mt-3 mb-2"
+                />
+              ) : (
+                <AnswerBlock answer={content.description} className="mt-3 mb-2" />
               )}
               <div className="mt-5 pt-5 border-t border-slate-100">
                 {renderContent(content.content)}
               </div>
               <div className="mt-10 pt-6 border-t border-slate-200 text-xs text-slate-400 space-y-1">
-                <p><strong>Last reviewed:</strong> March 2026</p>
                 <p><strong>Legal baseline:</strong> DPDP Rules, 2025 notified on 14 November 2025, with phased commencement.</p>
                 <p>This page is for educational purposes and does not constitute legal advice.</p>
               </div>

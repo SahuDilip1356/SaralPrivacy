@@ -7,6 +7,8 @@ import { TERMS, CATEGORIES } from "./glossaryData";
 import { topicNav } from "@/lib/learnNav";
 import { WhitepaperCTA } from "@/components/cta/WhitepaperCTA";
 import { AssessmentCTA } from "@/components/cta/AssessmentCTA";
+import { Byline } from "@/components/seo/Byline";
+import { FRESHNESS } from "@/lib/content-freshness";
 
 const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
@@ -60,6 +62,10 @@ export default function GlossaryClient() {
             {TERMS.length} key terms from the Digital Personal Data Protection Act, 2023 and DPDP Rules, 2025.
             Every definition cites the exact section of the statute.
           </p>
+          <Byline
+            lastReviewed={FRESHNESS.glossary}
+            className="mt-4 text-slate-400 [&_a]:text-slate-200 [&_a:hover]:text-green-300 [&_time]:text-slate-300"
+          />
         </div>
       </div>
 
