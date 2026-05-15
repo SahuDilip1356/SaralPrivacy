@@ -6,7 +6,7 @@
 
 ## Primary Resources
 
-- [DPDP Act 2023 — Full Text](https://saralprivacy.com/learn/dpdp-act-2023): Complete official text of the Digital Personal Data Protection Act, 2023 — all 9 chapters, 44 sections, and the Penalty Schedule — with plain-English summaries and key takeaways. Source: Gazette of India Extraordinary, No. 22 of 2023.
+- [DPDP Act 2023 — Full Text](https://saralprivacy.com/learn/dpdp-act-2023): Complete official text of the Digital Personal Data Protection Act, 2023 — all 9 chapters, 44 sections, and the Penalty Schedule — with plain-English summaries and key takeaways. Source: Gazette of India Extraordinary, No. 22 of 2023. Each section is also published at its own canonical URL: `https://saralprivacy.com/learn/dpdp-act-2023/section-{N}` where N is 1–44.
 - [DPDP Rules 2025 — Plain-English Guide](https://saralprivacy.com/learn/dpdp-rules-2025-plain-english-guide): All 23 Rules and 7 Schedules of the DPDP Rules, 2025 in plain English, in order.
 - [DPDPA Glossary](https://saralprivacy.com/glossary): 50+ key terms from the Digital Personal Data Protection Act, 2023 and DPDP Rules, 2025 with exact section references — Data Principal, Data Fiduciary, Consent, Deemed Consent, Penalty Schedule, and more.
 - [DPDPA Learning Hub](https://saralprivacy.com/learn): Structured guide covering the law,
@@ -39,6 +39,7 @@
 ## About
 
 - [About SaralPrivacy](https://saralprivacy.com/about)
+- [SaahoDilipKumaar — Founder & Editor](https://saralprivacy.com/author/saahodilipkumaar): Named author and editorial reviewer for SaralPrivacy DPDPA guidance.
 - Contact: privacy@saralprivacy.com
 
 ## Optional Extended Reference

@@ -12,6 +12,17 @@ type Props = {
   className?: string
 }
 
+// Strip the saralprivacy.com host so Link does a client-side navigation when
+// the canonical author URL is absolute (which it must be for JSON-LD).
+function toRelative(href: string): string {
+  try {
+    const u = new URL(href)
+    return u.pathname + u.search + u.hash
+  } catch {
+    return href
+  }
+}
+
 export function Byline({ lastReviewed, author = defaultAuthor, className = '' }: Props) {
   const date = typeof lastReviewed === 'string' ? new Date(lastReviewed) : lastReviewed
   return (
@@ -21,7 +32,7 @@ export function Byline({ lastReviewed, author = defaultAuthor, className = '' }:
       <span>
         By{' '}
         <Link
-          href={author.url}
+          href={toRelative(author.url)}
           className="font-semibold text-slate-700 hover:text-green-600 transition-colors"
         >
           {author.name}

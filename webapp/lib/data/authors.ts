@@ -8,12 +8,15 @@ export type Author = {
   description?: string
 }
 
+// To strengthen author E-E-A-T for LLM citation, add verified profile URLs to
+// `sameAs` (LinkedIn, X, GitHub, academic page, Wikipedia, etc.). LLMs use
+// these to confirm the author is a real, identifiable expert.
 export const AUTHORS = {
   saahodilipkumaar: {
     id: 'saahodilipkumaar',
     name: 'SaahoDilipKumaar',
     jobTitle: 'Founder, SaralPrivacy',
-    url: 'https://saralprivacy.com/about',
+    url: 'https://saralprivacy.com/author/saahodilipkumaar',
     sameAs: [],
     image: 'https://saralprivacy.com/og-image.png',
     description:

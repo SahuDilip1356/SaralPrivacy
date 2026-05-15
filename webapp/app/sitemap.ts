@@ -1,6 +1,8 @@
 import { MetadataRoute } from 'next'
 import { databases, DB_ID, COLLECTIONS, Query } from '@/lib/appwrite'
 import { FRESHNESS } from '@/lib/content-freshness'
+import { allSections } from '@/content/dpdp-act-2023'
+import { AUTHORS } from '@/lib/data/authors'
 
 const BASE = 'https://saralprivacy.com'
 
@@ -94,6 +96,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: LEARN_UPDATED,
       changeFrequency: 'monthly' as const,
       priority: 0.7,
+    })),
+    // ── DPDP Act 2023 — per-section pages (44 atomic URLs for AEO citation) ──
+    ...allSections.map((s) => ({
+      url: `${BASE}/learn/dpdp-act-2023/${s.slug}`,
+      lastModified: LEARN_UPDATED,
+      changeFrequency: 'monthly' as const,
+      priority: 0.75,
+    })),
+
+    // ── Author pages (Person schema surface for E-E-A-T) ──
+    ...Object.values(AUTHORS).map((a) => ({
+      url: `${BASE}/author/${a.id}`,
+      lastModified: CORE_UPDATED,
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
     })),
 
     // ── Industries ──

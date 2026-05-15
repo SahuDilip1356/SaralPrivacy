@@ -105,10 +105,18 @@ function SectionCard({ section }: { section: ActSection }) {
       id={`section-${section.sectionNumber}`}
       className="scroll-mt-24 pt-7 pb-6 border-b border-slate-100 last:border-0"
     >
-      <h3 className="text-base font-bold text-navy-700">
-        <span className="text-green-500 font-semibold mr-2">#{section.sectionNumber}.</span>
-        {section.title}
-      </h3>
+      <div className="flex items-baseline justify-between gap-3 flex-wrap">
+        <h3 className="text-base font-bold text-navy-700">
+          <span className="text-green-500 font-semibold mr-2">#{section.sectionNumber}.</span>
+          {section.title}
+        </h3>
+        <Link
+          href={`/learn/dpdp-act-2023/${section.slug}`}
+          className="text-xs font-semibold text-green-600 hover:text-green-700 hover:underline transition-colors shrink-0"
+        >
+          Open standalone →
+        </Link>
+      </div>
       <OfficialText text={section.officialText} />
       {section.plainEnglish && <PlainEnglishBox text={section.plainEnglish} />}
       {section.keyTakeaways && section.keyTakeaways.length > 0 && (
