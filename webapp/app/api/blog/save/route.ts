@@ -55,6 +55,17 @@ function countWords(text: string): number {
   return text ? text.trim().split(/\s+/).filter(Boolean).length : 0;
 }
 
+/**
+ * Normalise a slug to a bare URL path segment. A leading "/" (or trailing
+ * slash/whitespace) makes the stored value differ from the clean public URL,
+ * so getPostBySlug's exact-match query misses and the live post 404s while
+ * still showing in the /blog list. Strip slashes/whitespace so the stored
+ * slug always equals what the public route receives.
+ */
+function normalizeSlug(raw: string): string {
+  return raw.trim().replace(/^\/+|\/+$/g, "").trim();
+}
+
 function buildDocument(payload: SavePayload) {
   const {
     title, slug, excerpt, lane, author, tags, featured, status,
@@ -103,7 +114,7 @@ function buildDocument(payload: SavePayload) {
 
   const doc: Record<string, unknown> = {
     title:                title.slice(0, 200),
-    slug:                 slug.slice(0, 200),
+    slug:                 normalizeSlug(slug).slice(0, 200),
     excerpt:              excerpt.slice(0, 600),
     lane:                 lane.slice(0, 60),
     author:               author.slice(0, 100),
@@ -142,6 +153,9 @@ export async function POST(req: NextRequest) {
     if (!payload.title || !payload.slug) {
       return NextResponse.json({ error: "Title and slug are required" }, { status: 400 });
     }
+    if (!normalizeSlug(payload.slug)) {
+      return NextResponse.json({ error: "Slug cannot be only slashes or whitespace" }, { status: 400 });
+    }
 
     const doc = buildDocument(payload);
     const result = await databases.createDocument(
@@ -172,6 +186,9 @@ export async function PATCH(req: NextRequest) {
 
     if (!payload.id) {
       return NextResponse.json({ error: "Document ID required for update" }, { status: 400 });
+    }
+    if (payload.slug && !normalizeSlug(payload.slug)) {
+      return NextResponse.json({ error: "Slug cannot be only slashes or whitespace" }, { status: 400 });
     }
 
     const doc = buildDocument(payload);
