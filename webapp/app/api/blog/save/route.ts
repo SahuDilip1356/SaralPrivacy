@@ -1,5 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { databases, DB_ID, COLLECTIONS, ID } from "@/lib/appwrite";
+
+/**
+ * Bust the ISR cache for a blog post so the public route reflects the DB
+ * immediately after any create/update — covers publish, unpublish, and edits.
+ * Fired unconditionally (status is irrelevant: an unpublished post must also
+ * stop serving its cached page). Wrapped so a cache-purge failure can never
+ * turn a successful DB write into a 500 — that would make the admin retry a
+ * POST and create a duplicate post.
+ */
+function safeRevalidateBlog(slug: string): void {
+  try {
+    if (slug) revalidatePath(`/blog/${slug}`);
+    revalidatePath("/blog");
+  } catch (err) {
+    console.error("[blog/save revalidate]", err);
+  }
+}
 
 interface PrimarySource {
   claim: string;
@@ -133,6 +151,8 @@ export async function POST(req: NextRequest) {
       doc
     );
 
+    safeRevalidateBlog(result.slug as string);
+
     return NextResponse.json({ success: true, id: result.$id, slug: result.slug });
   } catch (err: unknown) {
     console.error("[blog/save POST]", err);
@@ -161,6 +181,8 @@ export async function PATCH(req: NextRequest) {
       payload.id,
       doc
     );
+
+    safeRevalidateBlog(result.slug as string);
 
     return NextResponse.json({ success: true, id: result.$id, slug: result.slug });
   } catch (err: unknown) {
