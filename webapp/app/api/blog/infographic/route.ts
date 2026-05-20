@@ -1,9 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
+import { Resvg } from "@resvg/resvg-js";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { databases, storage, DB_ID, COLLECTIONS } from "@/lib/appwrite";
 
-// Deterministic SVG generation is sub-second; the old 180s budget was for AI polling.
+// Deterministic SVG → PNG rasterisation is sub-second; the old 180s budget
+// was for AI polling. PNG is used (not SVG) because Appwrite Storage's /view
+// endpoint serves SVG as text/plain with x-content-type-options: nosniff for
+// XSS safety, which browsers refuse to render in <img> tags. PNG is served
+// with image/png correctly.
 export const maxDuration = 30;
+
+// Bundled Inter font files (Regular 400 + Bold 700). Absolute paths so the
+// Vercel serverless function bundles them, and so resvg loads them
+// deterministically (we do not trust system fonts in serverless). Touch them
+// at module init via readFileSync to fail fast if the files are missing.
+const FONT_DIR       = join(process.cwd(), "lib", "fonts");
+const FONT_REG_PATH  = join(FONT_DIR, "Inter-Regular.woff2");
+const FONT_BOLD_PATH = join(FONT_DIR, "Inter-Bold.woff2");
+readFileSync(FONT_REG_PATH);   // fail-fast existence check
+readFileSync(FONT_BOLD_PATH);  // fail-fast existence check
 
 // ── SaralPrivacy Brand v3.0 — locked tokens ───────────────────────────────────
 const BRAND = {
@@ -312,33 +329,46 @@ function buildSvg(input: InfographicInput): string {
   }
 }
 
+// ── SVG → PNG rasterisation ──────────────────────────────────────────────────
+
+function rasterizeToPng(svg: string): Buffer {
+  const resvg = new Resvg(svg, {
+    fitTo: { mode: "width", value: 1200 },
+    font: {
+      fontFiles: [FONT_REG_PATH, FONT_BOLD_PATH],
+      loadSystemFonts: false,    // serverless has no consistent system fonts
+      defaultFontFamily: "Inter",
+    },
+    background: "transparent",   // honours the SVG's own <rect> background
+  });
+  return resvg.render().asPng();
+}
+
 // ── Appwrite Storage upload ──────────────────────────────────────────────────
 
-async function uploadSvg(svg: string, docId: string): Promise<string> {
+async function uploadPng(png: Buffer, docId: string): Promise<string> {
   const BUCKET_ID  = process.env.APPWRITE_BUCKET_ID!;
   const ENDPOINT   = process.env.APPWRITE_ENDPOINT!;
   const PROJECT_ID = process.env.APPWRITE_PROJECT_ID!;
   const fileId     = `blog_inf_${docId}`;
 
-  // Replace any prior file (re-generation case)
+  // Replace any prior file (re-generation case) — includes the broken SVGs
+  // that earlier deploys may have uploaded for posts being regenerated now.
   try {
     await storage.deleteFile(BUCKET_ID, fileId);
   } catch {
     // File doesn't exist yet — fine
   }
 
-  const blob = new Blob([svg], { type: "image/svg+xml" });
-  const file = new File([blob], `${fileId}.svg`, { type: "image/svg+xml" });
+  const blob = new Blob([new Uint8Array(png)], { type: "image/png" });
+  const file = new File([blob], `${fileId}.png`, { type: "image/png" });
 
   await storage.createFile(BUCKET_ID, fileId, file);
 
-  // The Appwrite Storage URL is byte-identical across regenerations because
-  // the fileId is deterministic (`blog_inf_<docId>`). Without a per-write
-  // cache-buster, browser image cache and Vercel ISR snapshots keep serving
-  // the previously cached file content (the off-brand JPG, in our case) even
-  // though Appwrite has the new SVG. The `v` param forces a unique URL per
-  // regenerate so the next render fetches the fresh file. Appwrite ignores
-  // unknown query params on /view, so the file still serves.
+  // Cache-buster: the fileId is deterministic so the URL is byte-identical
+  // across regenerations. Without `?v=<ts>`, browsers and Vercel ISR keep
+  // serving the previously cached file content. Appwrite ignores unknown
+  // query params on /view, so the file still serves correctly.
   return `${ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${fileId}/view?project=${PROJECT_ID}&v=${Date.now()}`;
 }
 
@@ -375,7 +405,11 @@ export async function POST(req: NextRequest) {
       lane: lane ?? "",
     });
 
-    const publicUrl = await uploadSvg(svg, docId);
+    // Rasterise the brand-locked SVG to PNG so Appwrite serves it with
+    // image/png (browsers refuse the text/plain that Appwrite returns for
+    // raw SVG files via /view).
+    const png       = rasterizeToPng(svg);
+    const publicUrl = await uploadPng(png, docId);
 
     await databases.updateDocument(DB_ID, COLLECTIONS.BLOG_POSTS, docId, {
       infographic_url: publicUrl,

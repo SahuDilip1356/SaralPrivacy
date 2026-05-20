@@ -1,6 +1,20 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // @resvg/resvg-js loads platform-specific native binaries
+  // (@resvg/resvg-js-darwin-arm64 locally, @resvg/resvg-js-linux-x64-gnu on
+  // Vercel, etc.) via a conditional require pattern that Turbopack's static
+  // resolver can't follow. Marking it external means Next.js falls back to
+  // Node's native require, which handles the platform branch correctly.
+  serverExternalPackages: ["@resvg/resvg-js"],
+  // The infographic route reads Inter font files from lib/fonts/ via
+  // fs.readFileSync(join(process.cwd(), "lib/fonts", ...)). Next.js's File
+  // Trace builder can't always follow that path expression, so include the
+  // fonts explicitly to guarantee Vercel bundles them with the serverless
+  // function. Without this, the route 500s on Vercel with ENOENT.
+  outputFileTracingIncludes: {
+    "/api/blog/infographic": ["./lib/fonts/**/*"],
+  },
   images: {
     remotePatterns: [
       {
