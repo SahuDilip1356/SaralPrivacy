@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { databases, storage, DB_ID, COLLECTIONS } from "@/lib/appwrite";
 
 // Deterministic SVG generation is sub-second; the old 180s budget was for AI polling.
@@ -331,7 +332,14 @@ async function uploadSvg(svg: string, docId: string): Promise<string> {
 
   await storage.createFile(BUCKET_ID, fileId, file);
 
-  return `${ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${fileId}/view?project=${PROJECT_ID}`;
+  // The Appwrite Storage URL is byte-identical across regenerations because
+  // the fileId is deterministic (`blog_inf_<docId>`). Without a per-write
+  // cache-buster, browser image cache and Vercel ISR snapshots keep serving
+  // the previously cached file content (the off-brand JPG, in our case) even
+  // though Appwrite has the new SVG. The `v` param forces a unique URL per
+  // regenerate so the next render fetches the fresh file. Appwrite ignores
+  // unknown query params on /view, so the file still serves.
+  return `${ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${fileId}/view?project=${PROJECT_ID}&v=${Date.now()}`;
 }
 
 // ── Handler ──────────────────────────────────────────────────────────────────
@@ -372,6 +380,22 @@ export async function POST(req: NextRequest) {
     await databases.updateDocument(DB_ID, COLLECTIONS.BLOG_POSTS, docId, {
       infographic_url: publicUrl,
     });
+
+    // Bust the 1-hour ISR cache on the public blog detail + listing so the new
+    // infographic appears immediately, not after the 3600s revalidate window.
+    // Same pattern as the save route added by commit 1b27b5d. Failures here are
+    // non-fatal: the DB write already succeeded.
+    try {
+      const post = await databases.getDocument(
+        DB_ID,
+        COLLECTIONS.BLOG_POSTS,
+        docId,
+      ) as { slug?: string };
+      if (post.slug) revalidatePath(`/blog/${post.slug}`);
+      revalidatePath("/blog");
+    } catch (e) {
+      console.warn("[blog/infographic] revalidatePath failed (non-fatal)", e);
+    }
 
     return NextResponse.json({ success: true, url: publicUrl });
   } catch (err: unknown) {
