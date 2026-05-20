@@ -1,66 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
-import { databases, storage, DB_ID, COLLECTIONS, ID } from "@/lib/appwrite";
+import { databases, storage, DB_ID, COLLECTIONS } from "@/lib/appwrite";
 
-// Allow up to 3 minutes for KIE.ai polling (120s timeout + buffer)
-export const maxDuration = 180;
+// Deterministic SVG generation is sub-second; the old 180s budget was for AI polling.
+export const maxDuration = 30;
 
-// ── KIE.ai config (same service as daily briefings pipeline) ──────────────────
-const KIE_API_BASE    = "https://api.kie.ai/api/v1";
-const KIE_CREATE_TASK = `${KIE_API_BASE}/jobs/createTask`;
-const KIE_RECORD_INFO = `${KIE_API_BASE}/jobs/recordInfo`;
+// ── SaralPrivacy Brand v3.0 — locked tokens ───────────────────────────────────
+const BRAND = {
+  navy:  "#121A2E",
+  green: "#07B981",
+  teal:  "#35B6AE",
+  gold:  "#E8AB42",
+  slate: "#334155",
+  cloud: "#F7F9FC",
+  white: "#FFFFFF",
+  mute:  "#94A3B8",
+} as const;
 
-const POLL_INTERVAL_MS = 5000;   // 5 seconds between polls
-const POLL_TIMEOUT_MS  = 120000; // 120 second max wait
-const MAX_RETRIES      = 2;
-const RETRY_DELAY_MS   = 8000;
+type LayoutId = "stat" | "process" | "comparison" | "checklist" | "timeline";
 
-// ── Brand tokens v3.0 (SaralPrivacy Brand Guidelines) ────────────────────────
-const BRAND_NAVY  = "#121A2E";
-const BRAND_GREEN = "#07B981";
-const BRAND_TEAL  = "#35B6AE";
-const BRAND_GOLD  = "#E8AB42";
-const BRAND_SLATE = "#334155";
-const BRAND_CLOUD = "#F7F9FC";
-const BRAND_WHITE = "#FFFFFF";
-
-// ── 4-palette system (A–D) ────────────────────────────────────────────────────
-const PALETTES: Record<string, {
-  name: string; background: string; heading: string;
-  accent: string; highlight: string; body_text: string;
-}> = {
-  A: { name: "Trust Navy",    background: BRAND_NAVY,  heading: BRAND_WHITE, accent: BRAND_GREEN, highlight: BRAND_GOLD,  body_text: BRAND_CLOUD },
-  B: { name: "Cloud & Green", background: BRAND_CLOUD, heading: BRAND_NAVY,  accent: BRAND_GREEN, highlight: BRAND_TEAL,  body_text: BRAND_SLATE },
-  C: { name: "Teal Forward",  background: BRAND_WHITE, heading: BRAND_NAVY,  accent: BRAND_TEAL,  highlight: BRAND_GREEN, body_text: BRAND_SLATE },
-  D: { name: "Midnight Gold", background: BRAND_NAVY,  heading: BRAND_GOLD,  accent: BRAND_TEAL,  highlight: BRAND_GREEN, body_text: BRAND_WHITE },
-};
-
-// Lane → palette mapping (kebab-case keys used by the blog editor)
-const LANE_PALETTE_MAP: Record<string, string> = {
-  "law-explained":       "A",
-  "compliance-playbook": "D",
-  "myth-fact":           "C",
-  "sector-notes":        "B",
-  "governance-watch":    "D",
-};
-const DEFAULT_PALETTE = "A";
-
-function selectPalette(lane: string): typeof PALETTES[string] {
-  const key = LANE_PALETTE_MAP[lane] ?? DEFAULT_PALETTE;
-  return PALETTES[key];
-}
-
-function paletteStyle(p: typeof PALETTES[string]): string {
-  return (
-    `Professional infographic design. Clean, modern layout. ` +
-    `Color palette: background ${p.background}, heading text ${p.heading}, ` +
-    `primary accent ${p.accent}, highlight color ${p.highlight}, body text ${p.body_text}. ` +
-    `Sans-serif typography. Indian business context. No extra watermarks from the model. No borders. Flat design style. ` +
-    `Newsletter-ready, 600px wide format.`
-  );
-}
-
-// ── Lane → infographic type mapping ──────────────────────────────────────────
-const LANE_TYPE_MAP: Record<string, string> = {
+const LANE_LAYOUT: Record<string, LayoutId> = {
   "law-explained":       "stat",
   "compliance-playbook": "process",
   "myth-fact":           "comparison",
@@ -68,200 +26,320 @@ const LANE_TYPE_MAP: Record<string, string> = {
   "governance-watch":    "timeline",
 };
 
-// ── Layout instructions (palette-aware) ───────────────────────────────────────
-function layoutInstructions(infType: string, p: typeof PALETTES[string]): string {
-  switch (infType) {
-    case "stat":
-      return (
-        `Large statistic callout cards. 2-3 bold numbers or key facts displayed prominently. ` +
-        `Each card has a number/value, short label, and accent color bar. ` +
-        `Horizontal layout. Cards use ${p.background} background with ${p.heading} headings and ${p.accent} highlights.`
-      );
-    case "process":
-      return (
-        `Vertical step-by-step process flowchart. ` +
-        `Numbered steps with connecting arrows. ` +
-        `Each step has an icon area, bold heading, and short description. ` +
-        `${p.accent} numbered circles, ${p.highlight} arrows, ${p.background} card backgrounds.`
-      );
-    case "comparison":
-      return (
-        `Side-by-side comparison table. ` +
-        `Two columns with a clear divider. ` +
-        `Row-by-row comparison of attributes. ` +
-        `${p.heading} headers, alternating ${p.background}/${p.body_text} rows, ${p.accent} highlights for key differences.`
-      );
-    case "checklist":
-      return (
-        `Visual checklist or summary card. ` +
-        `Bullet points with checkmark icons. ` +
-        `Clear heading at top, items below with icons. ` +
-        `Two-column layout if more than 5 items. ` +
-        `${p.heading} headings, ${p.accent} checkmarks.`
-      );
-    case "timeline":
-      return (
-        `Horizontal timeline. ` +
-        `Nodes connected by a line showing progression. ` +
-        `Each node has a year/label and short event description. ` +
-        `${p.accent} line, ${p.highlight} milestone dots, ${p.background} background.`
-      );
-    default:
-      return `Clean infographic layout with ${p.background} background and ${p.heading} headings.`;
-  }
-}
+const DEFAULT_LAYOUT: LayoutId = "stat";
 
-// ── Prompt builder ────────────────────────────────────────────────────────────
-
-function buildPrompt(params: {
-  lane: string;
+interface InfographicInput {
   title: string;
-  excerpt: string;
-  section_what_changed: string;
-  section_law_says: string;
-  section_do_now: string;
-}): string {
-  const infType   = LANE_TYPE_MAP[params.lane] ?? "stat";
-  const palette   = selectPalette(params.lane);
-  const layout    = layoutInstructions(infType, palette);
-  const style     = paletteStyle(palette);
-  const keyPoints = [
-    params.section_what_changed,
-    params.section_law_says,
-    params.section_do_now,
-  ]
-    .filter(Boolean)
-    .map((s) => s.trim().slice(0, 200))
-    .join("\n");
-
-  return `Create a professional newsletter infographic for a DPDPA compliance article.
-
-Title: "${params.title}"
-Summary: ${params.excerpt?.slice(0, 300) || ""}
-
-Layout type: ${layout}
-
-Key points to visualise:
-${keyPoints}
-
-Style: ${style}
-
-The infographic must be self-contained and readable without additional context.
-Include the title prominently at the top.
-Label: "© SaralPrivacy™" in small text at the bottom right corner.
-Image dimensions: approximately 560px wide × 280px tall (landscape, 2:1 ratio).`;
+  excerpt?: string;
+  section_what_changed?: string;
+  section_law_says?: string;
+  section_do_now?: string;
+  lane: string;
 }
 
-// ── KIE.ai API call (same pattern as tools/generate_infographic.py) ───────────
+// ── Canvas ────────────────────────────────────────────────────────────────────
+const W   = 1200;
+const H   = 630;
+const PAD = 60;
 
-async function callKieNanoBanana(prompt: string, apiKey: string): Promise<Buffer> {
-  const model = process.env.NANO_BANANA_MODEL ?? "nano-banana-2";
+// ── XML / SVG primitives ──────────────────────────────────────────────────────
 
-  const headers: Record<string, string> = {
-    Authorization: `Bearer ${apiKey}`,
-    "Content-Type": "application/json",
-  };
+function esc(s: string): string {
+  return (s ?? "")
+    .replace(/&/g,  "&amp;")
+    .replace(/</g,  "&lt;")
+    .replace(/>/g,  "&gt;")
+    .replace(/"/g,  "&quot;")
+    .replace(/'/g,  "&apos;");
+}
 
-  // Step 1: Submit task
-  const createRes = await fetch(KIE_CREATE_TASK, {
-    method: "POST",
-    headers,
-    body: JSON.stringify({
-      model,
-      input: {
-        prompt,
-        aspect_ratio:  "16:9",
-        resolution:    "1K",
-        output_format: "jpg",
-        google_search: false,
-        image_input:   [],
-      },
-    }),
-    signal: AbortSignal.timeout(30000),
+// SVG <text> has no auto-wrap; this approximate wrapper splits on character
+// budget (Inter at the supplied size renders close enough to char-monospace
+// estimate for short headings and bullets).
+function wrapText(text: string, maxChars: number, maxLines: number): string[] {
+  const words = (text ?? "").trim().split(/\s+/).filter(Boolean);
+  if (!words.length) return [];
+  const lines: string[] = [];
+  let cur = "";
+  for (const w of words) {
+    if (lines.length >= maxLines) break;
+    const next = cur ? cur + " " + w : w;
+    if (next.length <= maxChars) cur = next;
+    else { if (cur) lines.push(cur); cur = w; }
+  }
+  if (cur && lines.length < maxLines) lines.push(cur);
+  const used  = lines.join(" ").split(/\s+/).filter(Boolean).length;
+  if (used < words.length && lines.length) {
+    lines[lines.length - 1] = lines[lines.length - 1].replace(/[\s.,;:!?]*$/, "") + "…";
+  }
+  return lines;
+}
+
+function splitBullets(content: string, maxItems: number): string[] {
+  return (content ?? "")
+    .split(/\r?\n+/)
+    .map((line) => line.replace(/^[\s•·▪◦\-*\d.)]+/, "").trim())
+    .filter((line) => line.length > 0)
+    .slice(0, maxItems);
+}
+
+function textWrapped(s: string, opts: {
+  x: number; y: number; maxChars: number; maxLines: number;
+  lineHeight: number; fill: string; size: number; weight?: number; anchor?: "start" | "middle" | "end";
+}): string {
+  const lines = wrapText(s, opts.maxChars, opts.maxLines);
+  if (!lines.length) return "";
+  const tspans = lines.map((ln, i) =>
+    `<tspan x="${opts.x}" dy="${i === 0 ? 0 : opts.lineHeight}">${esc(ln)}</tspan>`,
+  ).join("");
+  return `<text x="${opts.x}" y="${opts.y}" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="${opts.size}" font-weight="${opts.weight ?? 400}" fill="${opts.fill}"${opts.anchor ? ` text-anchor="${opts.anchor}"` : ""}>${tspans}</text>`;
+}
+
+// ── Shared chrome: outer frame, title, footer ─────────────────────────────────
+
+function frame(bg: string, body: string): string {
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img">
+  <title>SaralPrivacy — Verified DPDPA insights</title>
+  <rect width="${W}" height="${H}" fill="${bg}"/>
+  ${body}
+</svg>`;
+}
+
+function titleBlock(title: string, color: string): string {
+  return textWrapped(title, {
+    x: PAD, y: PAD + 36,
+    maxChars: 50, maxLines: 2, lineHeight: 44,
+    fill: color, size: 34, weight: 700,
   });
+}
 
-  if (createRes.status === 401) throw new Error("KIE.ai API key invalid or expired");
-  if (createRes.status === 429) throw new Error("KIE.ai rate limit hit — try again shortly");
-  if (!createRes.ok) throw new Error(`KIE.ai createTask failed: ${createRes.status}`);
+function footer(onDark: boolean): string {
+  const txtFg = onDark ? BRAND.cloud : BRAND.slate;
+  const meta  = BRAND.mute;
+  return `
+  <line x1="${PAD}" y1="${H - 60}" x2="${W - PAD}" y2="${H - 60}" stroke="${BRAND.green}" stroke-width="2"/>
+  <text x="${PAD}" y="${H - 28}" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="700" fill="${txtFg}">© SaralPrivacy</text>
+  <text x="${W - PAD}" y="${H - 28}" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="500" fill="${meta}" text-anchor="end">Verified DPDPA insights  ·  saralprivacy.com</text>
+  `;
+}
 
-  const createData = await createRes.json();
-  if (createData.code !== 200) throw new Error(`KIE.ai createTask error: ${createData.msg}`);
+// ── Layout: STAT — three card columns on navy (law-explained) ─────────────────
 
-  const taskId = createData.data?.taskId as string;
-  if (!taskId) throw new Error("KIE.ai returned no taskId");
+function layoutStat(input: InfographicInput): string {
+  const bullets: string[] = [];
+  bullets.push(...splitBullets(input.section_what_changed ?? "", 1));
+  bullets.push(...splitBullets(input.section_law_says    ?? "", 1));
+  bullets.push(...splitBullets(input.section_do_now      ?? "", 1));
+  while (bullets.length < 3) bullets.push("");
 
-  // Step 2: Poll for completion
-  const deadline = Date.now() + POLL_TIMEOUT_MS;
-  while (Date.now() < deadline) {
-    await new Promise((r) => setTimeout(r, POLL_INTERVAL_MS));
+  const labels = ["What changed", "What the law says", "What to do now"];
+  const gap    = 24;
+  const cardW  = (W - PAD * 2 - gap * 2) / 3;
+  const cardH  = 330;
+  const cardY  = 190;
 
-    const pollRes = await fetch(`${KIE_RECORD_INFO}?taskId=${taskId}`, {
-      headers,
-      signal: AbortSignal.timeout(15000),
-    });
-    if (!pollRes.ok) throw new Error(`KIE.ai poll failed: ${pollRes.status}`);
+  const cards = bullets.slice(0, 3).map((b, i) => {
+    const x = PAD + i * (cardW + gap);
+    return `
+    <rect x="${x}" y="${cardY}" width="${cardW}" height="${cardH}" fill="${BRAND.cloud}" rx="12" ry="12"/>
+    <rect x="${x}" y="${cardY}" width="${cardW}" height="6" fill="${BRAND.green}" rx="3" ry="3"/>
+    <text x="${x + 24}" y="${cardY + 50}" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="700" fill="${BRAND.green}" letter-spacing="2">${esc(labels[i].toUpperCase())}</text>
+    ${textWrapped(b, {
+      x: x + 24, y: cardY + 90,
+      maxChars: 30, maxLines: 8, lineHeight: 26,
+      fill: BRAND.navy, size: 17, weight: 500,
+    })}`;
+  }).join("");
 
-    const pollData = await pollRes.json();
-    if (pollData.code !== 200) throw new Error(`KIE.ai recordInfo error: ${JSON.stringify(pollData)}`);
+  return frame(BRAND.navy,
+    titleBlock(input.title, BRAND.white) + cards + footer(true),
+  );
+}
 
-    const task  = pollData.data ?? {};
-    const state = task.state as string;
+// ── Layout: PROCESS — vertical numbered steps on navy (compliance-playbook) ───
 
-    if (state === "success") {
-      const resultJson = JSON.parse(task.resultJson ?? "{}");
-      const urls: string[] = resultJson.resultUrls ?? [];
-      if (!urls.length) throw new Error("KIE.ai task succeeded but no result URL returned");
+function layoutProcess(input: InfographicInput): string {
+  const items = [
+    ...splitBullets(input.section_do_now      ?? "", 5),
+    ...splitBullets(input.section_what_changed ?? "", 5),
+  ].slice(0, 5);
+  while (items.length < 3) items.push("");
 
-      const imgRes = await fetch(urls[0], { signal: AbortSignal.timeout(30000) });
-      if (!imgRes.ok) throw new Error(`Failed to download KIE.ai image: ${imgRes.status}`);
+  const steps = items.length;
+  const stepGap = 16;
+  const startY  = 200;
+  const stepH   = (H - startY - 90 - stepGap * (steps - 1)) / steps;
 
-      const arrayBuf = await imgRes.arrayBuffer();
-      return Buffer.from(arrayBuf);
-    }
+  const rows = items.map((it, i) => {
+    const y = startY + i * (stepH + stepGap);
+    const cx = PAD + 36;
+    const cy = y + stepH / 2;
+    return `
+    <circle cx="${cx}" cy="${cy}" r="28" fill="${BRAND.green}"/>
+    <text x="${cx}" y="${cy + 8}" font-family="Inter, system-ui, sans-serif" font-size="22" font-weight="700" fill="${BRAND.white}" text-anchor="middle">${i + 1}</text>
+    <rect x="${PAD + 88}" y="${y}" width="${W - PAD * 2 - 88}" height="${stepH}" fill="${BRAND.cloud}" rx="10" ry="10" opacity="0.06"/>
+    ${textWrapped(it, {
+      x: PAD + 108, y: y + 36,
+      maxChars: 78, maxLines: 2, lineHeight: 24,
+      fill: BRAND.white, size: 18, weight: 500,
+    })}`;
+  }).join("");
 
-    if (state === "failed" || state === "error") {
-      throw new Error(`KIE.ai task failed: ${task.failMsg ?? "unknown error"}`);
-    }
-    // state === "pending" → keep polling
+  return frame(BRAND.navy,
+    titleBlock(input.title, BRAND.white) + rows + footer(true),
+  );
+}
+
+// ── Layout: COMPARISON — two-column table on cloud (myth-fact) ────────────────
+
+function layoutComparison(input: InfographicInput): string {
+  const leftSrc  = splitBullets(input.section_what_changed ?? "", 5);
+  const rightSrc = splitBullets(input.section_law_says     ?? input.section_do_now ?? "", 5);
+  const rows     = Math.max(leftSrc.length, rightSrc.length, 3);
+
+  const tableY  = 200;
+  const tableH  = 330;
+  const colW    = (W - PAD * 2) / 2;
+  const headerH = 50;
+  const rowH    = (tableH - headerH) / rows;
+
+  let body = "";
+  // Header row
+  body += `
+    <rect x="${PAD}"          y="${tableY}" width="${colW}" height="${headerH}" fill="${BRAND.navy}"  rx="10" ry="10"/>
+    <rect x="${PAD + colW}"   y="${tableY}" width="${colW}" height="${headerH}" fill="${BRAND.green}" rx="10" ry="10"/>
+    <text x="${PAD + 20}"        y="${tableY + 32}" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="700" fill="${BRAND.cloud}" letter-spacing="2">CLAIM</text>
+    <text x="${PAD + colW + 20}" y="${tableY + 32}" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="700" fill="${BRAND.white}" letter-spacing="2">VERDICT</text>`;
+
+  for (let i = 0; i < rows; i++) {
+    const y = tableY + headerH + i * rowH;
+    const stripe = i % 2 === 0 ? BRAND.cloud : "#EEF2F7";
+    body += `
+      <rect x="${PAD}" y="${y}" width="${W - PAD * 2}" height="${rowH}" fill="${stripe}"/>
+      <line x1="${PAD + colW}" y1="${y}" x2="${PAD + colW}" y2="${y + rowH}" stroke="${BRAND.green}" stroke-width="2"/>
+      ${textWrapped(leftSrc[i]  ?? "", { x: PAD + 20,        y: y + 26, maxChars: 44, maxLines: 2, lineHeight: 22, fill: BRAND.slate, size: 15, weight: 500 })}
+      ${textWrapped(rightSrc[i] ?? "", { x: PAD + colW + 20, y: y + 26, maxChars: 44, maxLines: 2, lineHeight: 22, fill: BRAND.navy,  size: 15, weight: 600 })}`;
   }
 
-  throw new Error(`KIE.ai task ${taskId} did not complete within ${POLL_TIMEOUT_MS / 1000}s`);
+  return frame(BRAND.cloud,
+    titleBlock(input.title, BRAND.navy) + body + footer(false),
+  );
 }
 
-// ── Appwrite upload + URL ─────────────────────────────────────────────────────
+// ── Layout: CHECKLIST — green checkmark bullets on cloud (sector-notes) ───────
 
-async function uploadToAppwrite(imageBuffer: Buffer, docId: string): Promise<string> {
-  const BUCKET_ID   = process.env.APPWRITE_BUCKET_ID!;
-  const ENDPOINT    = process.env.APPWRITE_ENDPOINT!;
-  const PROJECT_ID  = process.env.APPWRITE_PROJECT_ID!;
-  const fileId      = `blog_inf_${docId}`;
+function layoutChecklist(input: InfographicInput): string {
+  const items = [
+    ...splitBullets(input.section_do_now       ?? "", 8),
+    ...splitBullets(input.section_what_changed ?? "", 8),
+  ].slice(0, 8);
+  while (items.length < 4) items.push("");
 
-  // Delete existing file if present (re-generation case)
+  const twoCol  = items.length > 4;
+  const colW    = twoCol ? (W - PAD * 2 - 40) / 2 : W - PAD * 2;
+  const perCol  = twoCol ? Math.ceil(items.length / 2) : items.length;
+  const startY  = 200;
+  const rowH    = 56;
+
+  const rows = items.map((it, i) => {
+    const col = twoCol && i >= perCol ? 1 : 0;
+    const row = twoCol && i >= perCol ? i - perCol : i;
+    const x   = PAD + col * (colW + 40);
+    const y   = startY + row * rowH;
+    return `
+    <circle cx="${x + 16}" cy="${y + 14}" r="14" fill="${BRAND.green}"/>
+    <path d="M ${x + 10} ${y + 14} l 4 4 l 8 -8" stroke="${BRAND.white}" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    ${textWrapped(it, {
+      x: x + 44, y: y + 18,
+      maxChars: twoCol ? 38 : 80, maxLines: 2, lineHeight: 22,
+      fill: BRAND.slate, size: 15, weight: 500,
+    })}`;
+  }).join("");
+
+  return frame(BRAND.cloud,
+    titleBlock(input.title, BRAND.navy) + rows + footer(false),
+  );
+}
+
+// ── Layout: TIMELINE — horizontal milestones on navy (governance-watch) ───────
+
+function layoutTimeline(input: InfographicInput): string {
+  const items = [
+    ...splitBullets(input.section_what_changed ?? "", 5),
+    ...splitBullets(input.section_law_says     ?? "", 5),
+  ].slice(0, 5);
+  while (items.length < 3) items.push("");
+
+  const count   = items.length;
+  const lineY   = 330;
+  const startX  = PAD + 40;
+  const endX    = W - PAD - 40;
+  const stepX   = count > 1 ? (endX - startX) / (count - 1) : 0;
+
+  const dots = items.map((it, i) => {
+    const cx = startX + i * stepX;
+    const labelY = i % 2 === 0 ? lineY - 60 : lineY + 90;
+    return `
+    <circle cx="${cx}" cy="${lineY}" r="14" fill="${BRAND.gold}"/>
+    <circle cx="${cx}" cy="${lineY}" r="6"  fill="${BRAND.navy}"/>
+    ${textWrapped(it, {
+      x: cx, y: labelY,
+      maxChars: 22, maxLines: 3, lineHeight: 20,
+      fill: BRAND.white, size: 14, weight: 500, anchor: "middle",
+    })}`;
+  }).join("");
+
+  return frame(BRAND.navy,
+    titleBlock(input.title, BRAND.white) +
+    `<line x1="${startX}" y1="${lineY}" x2="${endX}" y2="${lineY}" stroke="${BRAND.green}" stroke-width="3" stroke-linecap="round"/>` +
+    dots +
+    footer(true),
+  );
+}
+
+// ── Dispatcher ───────────────────────────────────────────────────────────────
+
+function buildSvg(input: InfographicInput): string {
+  const layout = LANE_LAYOUT[input.lane] ?? DEFAULT_LAYOUT;
+  switch (layout) {
+    case "stat":       return layoutStat(input);
+    case "process":    return layoutProcess(input);
+    case "comparison": return layoutComparison(input);
+    case "checklist":  return layoutChecklist(input);
+    case "timeline":   return layoutTimeline(input);
+  }
+}
+
+// ── Appwrite Storage upload ──────────────────────────────────────────────────
+
+async function uploadSvg(svg: string, docId: string): Promise<string> {
+  const BUCKET_ID  = process.env.APPWRITE_BUCKET_ID!;
+  const ENDPOINT   = process.env.APPWRITE_ENDPOINT!;
+  const PROJECT_ID = process.env.APPWRITE_PROJECT_ID!;
+  const fileId     = `blog_inf_${docId}`;
+
+  // Replace any prior file (re-generation case)
   try {
     await storage.deleteFile(BUCKET_ID, fileId);
   } catch {
     // File doesn't exist yet — fine
   }
 
-  const blob = new Blob([new Uint8Array(imageBuffer)], { type: "image/jpeg" });
-  const file = new File([blob], `${fileId}.jpg`, { type: "image/jpeg" });
+  const blob = new Blob([svg], { type: "image/svg+xml" });
+  const file = new File([blob], `${fileId}.svg`, { type: "image/svg+xml" });
 
   await storage.createFile(BUCKET_ID, fileId, file);
 
   return `${ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${fileId}/view?project=${PROJECT_ID}`;
 }
 
-// ── Handler ───────────────────────────────────────────────────────────────────
+// ── Handler ──────────────────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest) {
   const session = req.cookies.get("admin_session");
   if (!session || !["authenticated", "blogger"].includes(session.value)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  const apiKey = process.env.KIE_API_KEY;
-  if (!apiKey) {
-    return NextResponse.json({ error: "KIE_API_KEY not configured" }, { status: 500 });
   }
 
   try {
@@ -274,42 +352,23 @@ export async function POST(req: NextRequest) {
       section_what_changed,
       section_law_says,
       section_do_now,
-    } = body;
+    } = body as Partial<InfographicInput> & { id?: string };
 
     if (!docId || !title) {
       return NextResponse.json({ error: "id and title are required" }, { status: 400 });
     }
 
-    const prompt = buildPrompt({ lane, title, excerpt, section_what_changed, section_law_says, section_do_now });
+    const svg = buildSvg({
+      title,
+      excerpt,
+      section_what_changed,
+      section_law_says,
+      section_do_now,
+      lane: lane ?? "",
+    });
 
-    // Try KIE.ai with retries (same retry logic as Python pipeline)
-    let imageBuffer: Buffer | null = null;
-    let lastError: string = "";
+    const publicUrl = await uploadSvg(svg, docId);
 
-    for (let attempt = 1; attempt <= MAX_RETRIES + 1; attempt++) {
-      try {
-        imageBuffer = await callKieNanoBanana(prompt, apiKey);
-        break;
-      } catch (err) {
-        lastError = err instanceof Error ? err.message : String(err);
-        console.warn(`[blog/infographic] KIE.ai attempt ${attempt} failed: ${lastError}`);
-        if (attempt <= MAX_RETRIES) {
-          await new Promise((r) => setTimeout(r, RETRY_DELAY_MS));
-        }
-      }
-    }
-
-    if (!imageBuffer) {
-      return NextResponse.json(
-        { error: `KIE.ai failed after ${MAX_RETRIES + 1} attempts: ${lastError}` },
-        { status: 502 }
-      );
-    }
-
-    // Upload to Appwrite Storage
-    const publicUrl = await uploadToAppwrite(imageBuffer, docId);
-
-    // Save infographic_url back to the blog_posts document
     await databases.updateDocument(DB_ID, COLLECTIONS.BLOG_POSTS, docId, {
       infographic_url: publicUrl,
     });

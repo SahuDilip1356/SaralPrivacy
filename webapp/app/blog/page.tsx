@@ -117,7 +117,7 @@ function PostCard({ post }: { post: BlogPost }) {
             <span className="text-white font-bold text-sm leading-snug line-clamp-3">
               {post.title}
             </span>
-            <span className="text-white/60 text-xs mt-2">SaralPrivacy™</span>
+            <span className="text-white/60 text-xs mt-2">SaralPrivacy</span>
           </div>
         )}
 

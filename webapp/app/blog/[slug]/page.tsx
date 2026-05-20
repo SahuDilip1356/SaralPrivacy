@@ -47,12 +47,13 @@ interface BlogPost {
 
 // ── Data ──────────────────────────────────────────────────────────────────────
 
+// Brand v3.0 — only Navy / Green / Teal / Gold / Slate / Cloud permitted.
 const LANE_CONFIG: Record<string, { label: string; color: string; bg: string }> = {
-  "law-explained":       { label: "Law Explained",       color: "text-blue-700",   bg: "bg-blue-100"   },
-  "compliance-playbook": { label: "Compliance Playbook", color: "text-purple-700", bg: "bg-purple-100" },
-  "myth-fact":           { label: "Myth vs Fact",        color: "text-orange-700", bg: "bg-orange-100" },
-  "sector-notes":        { label: "Sector Notes",        color: "text-teal-700",   bg: "bg-teal-100"   },
-  "governance-watch":    { label: "Governance Watch",    color: "text-red-700",    bg: "bg-red-100"    },
+  "law-explained":       { label: "Law explained",       color: "text-navy-700",  bg: "bg-cloud-100" },
+  "compliance-playbook": { label: "Compliance playbook", color: "text-green-700", bg: "bg-green-50"  },
+  "myth-fact":           { label: "Myth vs fact",        color: "text-gold-700",  bg: "bg-gold-50"   },
+  "sector-notes":        { label: "Sector notes",        color: "text-teal-700",  bg: "bg-teal-50"   },
+  "governance-watch":    { label: "Governance watch",    color: "text-navy-700",  bg: "bg-navy-100"  },
 };
 
 function tryParse<T>(str: string | null | undefined, fallback: T): T {
@@ -121,9 +122,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 // ── Components ────────────────────────────────────────────────────────────────
 
-// SaralPrivacy brand gold — matches the logo's gold ring
-const BRAND_GOLD = "#C9A227";
-
 function isBlank(text: string | null | undefined): boolean {
   if (!text) return true;
   const t = text.trim().toLowerCase();
@@ -135,37 +133,39 @@ function MarkdownContent({ content }: { content: string }) {
     <ReactMarkdown
       remarkPlugins={[remarkGfm]}
       components={{
+        // Brand v3.0 hierarchy: H2 32px, H3 24px, Body 16px. Source-MD H1s are
+        // demoted to H2 to keep one true H1 (the article title) per page.
         h1: ({ children }) => (
-          <h2 className="text-lg font-bold text-navy-700 mt-6 mb-2">{children}</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-navy-700 mt-8 mb-3 leading-tight">{children}</h2>
         ),
         h2: ({ children }) => (
-          <h2 className="text-lg font-bold text-navy-700 mt-6 mb-2">{children}</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-navy-700 mt-8 mb-3 leading-tight">{children}</h2>
         ),
         h3: ({ children }) => (
-          <h3 className="text-base font-bold text-navy-700 mt-5 mb-2">{children}</h3>
+          <h3 className="text-xl sm:text-2xl font-semibold text-navy-700 mt-6 mb-2 leading-snug">{children}</h3>
         ),
         p: ({ children }) => (
-          <p className="text-sm text-slate-700 leading-relaxed mb-2">{children}</p>
+          <p className="text-base text-slate-700 leading-relaxed mb-4">{children}</p>
         ),
         strong: ({ children }) => (
           <strong className="font-semibold text-slate-900">{children}</strong>
         ),
         ul: ({ children }) => (
-          <ul className="space-y-2 my-3">{children}</ul>
+          <ul className="space-y-2 my-4">{children}</ul>
         ),
         ol: ({ children }) => (
-          <ol className="space-y-2 my-3 list-decimal list-inside text-sm text-slate-700">{children}</ol>
+          <ol className="space-y-2 my-4 list-decimal list-inside text-base text-slate-700 leading-relaxed">{children}</ol>
         ),
         li: ({ children, ...props }) => {
           const isOrdered = (props as { ordered?: boolean }).ordered;
           if (isOrdered) {
-            return <li className="text-sm text-slate-700 leading-relaxed">{children}</li>;
+            return <li className="text-base text-slate-700 leading-relaxed">{children}</li>;
           }
           return (
-            <li className="flex items-start gap-2.5 text-sm text-slate-700 leading-relaxed">
+            <li className="flex items-start gap-2.5 text-base text-slate-700 leading-relaxed">
               <span
-                className="shrink-0 mt-0.5 text-base font-bold leading-none"
-                style={{ color: BRAND_GOLD }}
+                className="shrink-0 mt-1 text-base font-bold leading-none"
+                style={{ color: "#07B981" }}
               >
                 ✓
               </span>
@@ -174,7 +174,7 @@ function MarkdownContent({ content }: { content: string }) {
           );
         },
         blockquote: ({ children }) => (
-          <blockquote className="border-l-4 border-slate-300 pl-4 my-3 italic text-slate-500 text-sm">
+          <blockquote className="border-l-4 border-green-500 pl-5 my-6 italic text-navy-700 text-lg leading-snug font-medium bg-cloud-50 py-3 pr-4 rounded-r-md">
             {children}
           </blockquote>
         ),
@@ -316,8 +316,8 @@ export default async function BlogDetailPage({ params }: Props) {
               )}
             </div>
 
-            {/* Title */}
-            <h1 className="text-2xl sm:text-3xl font-bold text-navy-700 leading-snug mb-4">
+            {/* Title — brand H1 scale (Inter Display, sentence case enforced upstream) */}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-navy-700 leading-tight tracking-tight mb-4">
               {post.title}
             </h1>
 
@@ -349,14 +349,14 @@ export default async function BlogDetailPage({ params }: Props) {
                   fallbackClassName="hidden"
                 />
                 <div className="bg-slate-50 px-4 py-2 text-xs text-slate-400 text-right border-t border-slate-200">
-                  © SaralPrivacy™ — Verified DPDPA Insights
+                  © SaralPrivacy — Verified DPDPA insights
                 </div>
               </div>
             )}
 
             {/* Excerpt / intro */}
             {post.excerpt && (
-              <p className="text-base text-slate-600 leading-relaxed border-l-4 border-green-400 pl-4 mb-8 font-medium">
+              <p className="text-base text-slate-600 leading-relaxed border-l-4 border-green-500 pl-4 mb-8 font-medium">
                 {post.excerpt}
               </p>
             )}
@@ -421,13 +421,13 @@ export default async function BlogDetailPage({ params }: Props) {
               <div className="bg-navy-700 rounded-xl p-5 text-center">
                 <p className="text-white font-bold text-sm mb-1">Need expert guidance?</p>
                 <p className="text-slate-400 text-xs mb-3">
-                  Our team helps Indian businesses navigate DPDPA compliance end-to-end.
+                  Our team helps Indian businesses turn DPDPA readiness into a visible trust signal.
                 </p>
                 <Link
                   href="/contact"
                   className="inline-flex items-center gap-1.5 px-4 py-2 bg-green-500 text-white text-sm font-semibold rounded-lg hover:bg-green-600 transition-colors"
                 >
-                  Talk to Our Experts →
+                  Get Consultation →
                 </Link>
               </div>
             </div>
@@ -435,11 +435,11 @@ export default async function BlogDetailPage({ params }: Props) {
 
           {/* Sidebar — 1/3 */}
           <aside className="space-y-5">
-            {/* Assessment CTA */}
+            {/* Assessment CTA — primary action on this page */}
             <div className="bg-navy-700 rounded-xl p-5">
               <div className="flex items-center gap-2 mb-3">
-                <Shield size={16} className="text-green-400" />
-                <h3 className="font-bold text-white text-sm">Check Your Readiness</h3>
+                <Shield size={16} className="text-green-500" />
+                <h3 className="font-bold text-white text-sm">Check your readiness</h3>
               </div>
               <p className="text-slate-400 text-xs mb-4 leading-relaxed">
                 Take our free 7-question DPDPA readiness assessment. Get a risk score and
@@ -449,7 +449,7 @@ export default async function BlogDetailPage({ params }: Props) {
                 href="/assessment"
                 className="block w-full text-center py-2 bg-green-500 text-white text-sm font-semibold rounded-lg hover:bg-green-600 transition-colors"
               >
-                Start Free Assessment →
+                Take Free Assessment →
               </Link>
             </div>
 
@@ -458,7 +458,7 @@ export default async function BlogDetailPage({ params }: Props) {
               <div className="bg-white rounded-xl border border-slate-200 p-5">
                 <div className="flex items-center gap-2 mb-4">
                   <BookOpen size={14} className="text-navy-600" />
-                  <h3 className="font-bold text-navy-700 text-sm">Related Insights</h3>
+                  <h3 className="font-bold text-navy-700 text-sm">Related insights</h3>
                 </div>
                 <div className="space-y-4">
                   {relatedPosts.map((related) => (
