@@ -17,8 +17,8 @@ export const maxDuration = 30;
 // deterministically (we do not trust system fonts in serverless). Touch them
 // at module init via readFileSync to fail fast if the files are missing.
 const FONT_DIR       = join(process.cwd(), "lib", "fonts");
-const FONT_REG_PATH  = join(FONT_DIR, "Inter-Regular.woff2");
-const FONT_BOLD_PATH = join(FONT_DIR, "Inter-Bold.woff2");
+const FONT_REG_PATH  = join(FONT_DIR, "Inter-Regular.ttf");
+const FONT_BOLD_PATH = join(FONT_DIR, "Inter-Bold.ttf");
 readFileSync(FONT_REG_PATH);   // fail-fast existence check
 readFileSync(FONT_BOLD_PATH);  // fail-fast existence check
 
