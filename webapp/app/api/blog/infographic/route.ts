@@ -347,9 +347,9 @@ function rasterizeToPng(svg: string): Buffer {
 // ── Appwrite Storage upload ──────────────────────────────────────────────────
 
 async function uploadPng(png: Buffer, docId: string): Promise<string> {
-  const BUCKET_ID  = process.env.APPWRITE_BUCKET_ID!;
-  const ENDPOINT   = process.env.APPWRITE_ENDPOINT!;
-  const PROJECT_ID = process.env.APPWRITE_PROJECT_ID!;
+  const BUCKET_ID  = (process.env.APPWRITE_BUCKET_ID  || "").trim();
+  const ENDPOINT   = (process.env.APPWRITE_ENDPOINT   || "").trim();
+  const PROJECT_ID = (process.env.APPWRITE_PROJECT_ID || "").trim();
   const fileId     = `blog_inf_${docId}`;
 
   // Replace any prior file (re-generation case) — includes the broken SVGs
