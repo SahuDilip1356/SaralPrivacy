@@ -1,7 +1,8 @@
 #!/bin/bash
 # ─────────────────────────────────────────────────────────────────────────────
 # DPDPA Daily Brief — Pipeline Runner
-# Triggered by macOS launchd at 6:00 AM IST (00:30 UTC) every day
+# Scheduled by GitHub Actions at 09:00 IST (03:30 UTC) every day.
+# Can also be invoked locally for backfills: ./run_pipeline.sh 2026-05-30
 #
 # Flow:
 #   read_roadmap    → research → generate_content → generate_infographic
@@ -11,9 +12,17 @@
 # ─────────────────────────────────────────────────────────────────────────────
 set -euo pipefail
 
-PROJECT="/Users/sahudilip/Desktop/Product Dev/DPDPA Daily Brief"
-PYTHON="$PROJECT/.venv/bin/python3"
-DATE=$(TZ="Asia/Kolkata" date +%F)
+# Resolve project root from script location — portable across local Mac, CI, and Linux.
+PROJECT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Prefer local venv python (for dev), fall back to system python3 (for CI).
+if [ -x "$PROJECT/.venv/bin/python3" ]; then
+    PYTHON="$PROJECT/.venv/bin/python3"
+else
+    PYTHON="python3"
+fi
+# Accept optional override date (YYYY-MM-DD) for backfilling missed days.
+# Without an argument, defaults to today (IST).
+DATE="${1:-$(TZ="Asia/Kolkata" date +%F)}"
 LOG_DIR="$PROJECT/.tmp"
 LOG="$LOG_DIR/pipeline_$DATE.log"
 

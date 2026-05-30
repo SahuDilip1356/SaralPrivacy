@@ -1,0 +1,85 @@
+name: Daily DPDPA Briefing
+
+# Replaces the local macOS launchd job (which failed silently due to TCC blocks
+# on ~/Desktop and depended on the Mac being awake at 09:00 IST). GH Actions
+# runs the same Python pipeline on a clean ubuntu-latest runner every day.
+
+on:
+  schedule:
+    # 09:00 IST = 03:30 UTC every day
+    - cron: '30 3 * * *'
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Date to publish, YYYY-MM-DD. Leave empty for today (IST). Used for backfilling missed days.'
+        required: false
+        type: string
+
+# Only one run at a time — prevents racing if a manual backfill overlaps with
+# the scheduled cron.
+concurrency:
+  group: daily-briefing
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    env:
+      TZ: Asia/Kolkata
+      # ── Public config (not sensitive) ───────────────────────────────────────
+      NEXT_PUBLIC_SITE_URL: https://saralprivacy.com
+      CLAUDE_MODEL: claude-sonnet-4-6
+      CLAUDE_MAX_TOKENS: '4096'
+      CLAUDE_TEMPERATURE: '0.3'
+      NANO_BANANA_MODEL: nano-banana-2
+      GOOGLE_CREDENTIALS_PATH: ${{ github.workspace }}/credentials.json
+      # ── Sensitive (GH repo secrets) ─────────────────────────────────────────
+      ANTHROPIC_API_KEY:    ${{ secrets.ANTHROPIC_API_KEY }}
+      SERP_API_KEY:         ${{ secrets.SERP_API_KEY }}
+      KIE_API_KEY:          ${{ secrets.KIE_API_KEY }}
+      BRIEFING_CRON_SECRET: ${{ secrets.BRIEFING_CRON_SECRET }}
+      APPWRITE_API_KEY:     ${{ secrets.APPWRITE_API_KEY }}
+      APPWRITE_ENDPOINT:    ${{ secrets.APPWRITE_ENDPOINT }}
+      APPWRITE_PROJECT_ID:  ${{ secrets.APPWRITE_PROJECT_ID }}
+      APPWRITE_BUCKET_ID:   ${{ secrets.APPWRITE_BUCKET_ID }}
+      GOOGLE_SHEET_ID:      ${{ secrets.GOOGLE_SHEET_ID }}
+
+    steps:
+      - name: Check out repository (full repo, pipeline lives at root)
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Decode Google service-account credentials
+        run: |
+          # GOOGLE_CREDENTIALS_JSON is the full JSON of the service-account key,
+          # stored as a single multi-line GH secret.
+          printf '%s' "$GOOGLE_CREDENTIALS_JSON" > credentials.json
+          # Sanity check — fail fast if the secret is missing or malformed.
+          python -c "import json; json.load(open('credentials.json'))"
+        env:
+          GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
+
+      - name: Run pipeline
+        # Quotes around inputs.date so an empty value becomes ""
+        # which run_pipeline.sh's "${1:-$(date)}" pattern handles correctly.
+        run: ./run_pipeline.sh "${{ inputs.date }}"
+
+      - name: Upload pipeline log (always, even on failure)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pipeline-log-${{ github.run_id }}
+          path: .tmp/pipeline_*.log
+          retention-days: 30
+          if-no-files-found: warn
