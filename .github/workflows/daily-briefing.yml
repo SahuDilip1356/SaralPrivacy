@@ -82,4 +82,6 @@ jobs:
           name: pipeline-log-${{ github.run_id }}
           path: .tmp/pipeline_*.log
           retention-days: 30
+          # .tmp/ is a hidden dir; upload-artifact@v4 skips hidden paths unless told otherwise.
+          include-hidden-files: true
           if-no-files-found: warn
