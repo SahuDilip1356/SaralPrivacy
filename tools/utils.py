@@ -25,13 +25,16 @@ def load_env() -> dict:
     env_path = PROJECT_ROOT / ".env"
     load_dotenv(dotenv_path=env_path, override=True)
 
+    # Only the vars the 5-step publish pipeline actually uses are required here.
+    # GMAIL_SENDER_ADDRESS / GMAIL_APP_PASSWORD are NOT required: they are used
+    # solely by the standalone email tools (send_email.py, send_confirmation.py),
+    # which carry their own missing-credential guards. Subscriber email delivery
+    # runs separately via the Vercel cron + Resend, not this pipeline.
     required = [
         "ANTHROPIC_API_KEY",
         "KIE_API_KEY",
         "SERP_API_KEY",
         "GOOGLE_SHEET_ID",
-        "GMAIL_SENDER_ADDRESS",
-        "GMAIL_APP_PASSWORD",
     ]
     missing = [k for k in required if not os.getenv(k)]
     if missing:
