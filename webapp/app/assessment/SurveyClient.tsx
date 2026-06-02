@@ -74,17 +74,13 @@ function SidebarNav({ step, result }: { step: number; result: DPDPAScoreResult |
 
 function ProgressBar({ step, total }: { step: number; total: number }) {
   const pct = Math.round((step / total) * 100);
-  const labels = ["S1", "S2", "S3", "S4", "S5", "S6", "S7"];
+  const section = SIDEBAR_SECTIONS.find(s => s.steps.includes(step))?.label ?? "";
   return (
     <div className="mb-6">
       <div className="flex items-center justify-between text-xs text-slate-500 mb-2">
-        <span className="font-mono">
-          START:{" "}
-          {labels.map((l, i) => (
-            <span key={l} className={cn("mr-1", i < step - 1 ? "text-green-600 font-bold" : i === step - 1 ? "text-navy-900 font-bold" : "text-slate-400")}>
-              {l}
-            </span>
-          ))}
+        <span className="font-semibold text-navy-900">
+          Step {step} of {total}
+          {section ? <span className="text-slate-400 font-normal"> · {section}</span> : null}
         </span>
         <span className="text-green-600 font-semibold">{pct}% complete</span>
       </div>
@@ -691,20 +687,22 @@ export default function SurveyClient() {
               DPDPA READINESS ASSESSMENT
             </div>
             <h1 className="text-4xl sm:text-5xl font-bold text-navy-900 leading-tight mb-5">
-              Know your privacy gaps in 3–5 minutes
+              Find your DPDPA readiness gaps in 3–5 minutes
             </h1>
-            <p className="text-slate-600 text-lg leading-relaxed mb-8">
-              Built for Indian businesses working with customer, employee, or candidate data.
-              Get a clear readiness score, top risk areas, and practical next steps.
+            <p className="text-slate-600 text-lg leading-relaxed mb-7">
+              Check how your business handles personal data, consent, storage, data rights
+              requests, vendors, and privacy ownership — and get a plain-English readiness
+              score with practical next steps.
             </p>
-            <div className="grid grid-cols-2 gap-3">
+            {/* Trust row */}
+            <div className="grid grid-cols-2 gap-3 mb-8">
               {[
-                { icon: "✅", text: "Built for Indian businesses" },
-                { icon: "⚡", text: "DPDPA-ready practices" },
-                { icon: "📋", text: "Actionable report" },
-                { icon: "⏱", text: "3–5 min completion" },
+                { icon: "🇮🇳", text: "Built for Indian businesses" },
+                { icon: "🆓", text: "No payment required" },
                 { icon: "🚫", text: "No legal jargon" },
-                { icon: "🔒", text: "Encrypted session" },
+                { icon: "⏱", text: "Takes 3–5 minutes" },
+                { icon: "📋", text: "Practical score + next steps" },
+                { icon: "⚖️", text: "Educational, not legal advice" },
               ].map(item => (
                 <div key={item.text} className="flex items-center gap-2 text-sm text-slate-700">
                   <span>{item.icon}</span>
@@ -712,13 +710,50 @@ export default function SurveyClient() {
                 </div>
               ))}
             </div>
-            <div className="mt-8 text-xs text-slate-400 font-mono">SYSTEM STATUS: V.3.0 ACTIVE</div>
+
+            {/* What you'll get */}
+            <div className="bg-white rounded-xl border border-slate-200 p-5 mb-5">
+              <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">What you&apos;ll get</div>
+              <div className="grid sm:grid-cols-2 gap-x-5 gap-y-2">
+                {[
+                  "Your readiness score (0–100)",
+                  "Your top 3 privacy gaps",
+                  "Your risk category",
+                  "Recommended next steps",
+                  "A simple DPDPA checklist",
+                  "Option to email your full report",
+                ].map(t => (
+                  <div key={t} className="flex items-start gap-2 text-sm text-slate-700">
+                    <CheckCircle size={15} className="text-green-500 mt-0.5 shrink-0" />
+                    <span>{t}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* How it works */}
+            <div>
+              <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">How it works</div>
+              <div className="space-y-2">
+                {[
+                  "Answer 12 quick questions about your business",
+                  "Get your readiness score instantly",
+                  "See your biggest privacy gaps",
+                  "Receive recommended next actions",
+                ].map((t, i) => (
+                  <div key={t} className="flex items-center gap-3 text-sm text-slate-700">
+                    <span className="shrink-0 w-6 h-6 rounded-full bg-navy-900 text-white text-xs font-bold flex items-center justify-center">{i + 1}</span>
+                    <span>{t}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* Right — Authorization card */}
           <div className="bg-white rounded-2xl border border-slate-200 shadow-lg p-7">
-            <h2 className="text-xl font-bold text-navy-900 mb-1">Begin your expert diagnostic</h2>
-            <div className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-6">STEP 1: AUTHORIZATION & SCOPE</div>
+            <h2 className="text-xl font-bold text-navy-900 mb-1">Start your free DPDPA readiness check</h2>
+            <div className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-6">Before you begin</div>
 
             {/* Required consent */}
             <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
@@ -762,7 +797,7 @@ export default function SurveyClient() {
             >
               Take free assessment <ArrowRight size={18} />
             </button>
-            <div className="text-center text-xs text-slate-400 font-semibold mb-5">PROFESSIONAL GRADE</div>
+            <div className="text-center text-xs text-slate-400 mb-5">Free · No payment required</div>
 
             {/* Optional consents */}
             <div className="space-y-2.5 border-t border-slate-100 pt-4">
