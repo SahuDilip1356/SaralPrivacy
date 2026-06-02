@@ -33,7 +33,7 @@ export default function D2CAssessmentPage() {
             </h1>
           </div>
           <p className="text-slate-400 text-sm">
-            {d2cBrandQuestions.length} questions · ~10 minutes · Free · No account required
+            {d2cBrandQuestions.length} questions · ~3–5 minutes · Free · No account required
           </p>
         </div>
       </div>

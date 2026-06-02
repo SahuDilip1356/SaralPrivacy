@@ -44,7 +44,7 @@ export function AssessmentCTA() {
           <div>
             <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-full px-3.5 py-1.5 mb-5">
               <Clock size={12} className="text-amber-700" />
-              <span className="text-amber-700 text-xs font-semibold">Free — takes 10 minutes</span>
+              <span className="text-amber-700 text-xs font-semibold">Free — takes 3–5 minutes</span>
             </div>
 
             <h2 className="text-3xl sm:text-4xl font-bold text-navy-700 mb-4">
@@ -96,7 +96,7 @@ export function AssessmentCTA() {
                     <div className="font-semibold text-navy-700 text-sm group-hover:text-navy-700 transition-colors">
                       {label}
                     </div>
-                    <div className="text-xs text-slate-500 mt-0.5">{count} · ~10 minutes</div>
+                    <div className="text-xs text-slate-500 mt-0.5">{count} · ~3–5 minutes</div>
                   </div>
                   <ArrowRight size={16} className="text-slate-400 group-hover:text-teal-500 transition-colors" />
                 </Link>

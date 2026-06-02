@@ -57,7 +57,7 @@ export default function AboutPage() {
             <ul className="space-y-3 text-sm text-slate-600 leading-relaxed">
               <li className="flex items-start gap-3">
                 <span className="w-2 h-2 rounded-full bg-green-500 mt-1.5 shrink-0" />
-                <span><strong className="text-navy-700">Free readiness assessments</strong> — Sector-specific questionnaires that surface the biggest DPDPA gaps in your business in 10 minutes, with a plain-English risk score and prioritised next steps.</span>
+                <span><strong className="text-navy-700">Free readiness assessments</strong> — Sector-specific questionnaires that surface the biggest DPDPA gaps in your business in 3–5 minutes, with a plain-English risk score and prioritised next steps.</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="w-2 h-2 rounded-full bg-green-500 mt-1.5 shrink-0" />
