@@ -49,17 +49,25 @@ changing the gate/email mechanic, autoscaling/queues, any Appwrite data migratio
 ## Phase A — Resilience (backend, invisible to users)
 | ID | Task | Files | Regression risk | Verify | Status |
 |----|------|-------|-----------------|--------|--------|
-| A1 | Honeypot + lightweight rate-limit on public POSTs | `api/assessment`, `api/survey/submit`, `api/subscribe`, `api/contact` | Med (don't block real users) | Normal submit works; flood gets blocked | ☐ |
-| A2 | Submit-retry + preserve answers on failure | `SurveyClient.tsx` (submit handler only) | Low | Forced-fail submit keeps answers + retries | ☐ |
-| A3 | `/blog` listing → ISR (`revalidate`) | `app/blog/page.tsx` | Low | List renders; new post appears after window | ☐ |
+| A1 | Honeypot + lightweight rate-limit on public POSTs | `lib/abuseGuard.ts` + `api/assessment`, `api/survey/submit`, `api/subscribe`, `api/contact` | Med (don't block real users) | Build passes; preview live | ✅ |
+| A2 | Submit-retry + preserve answers on failure | `SurveyClient.tsx` (submit handler only) | Low | 3x retry w/ backoff added | ✅ |
+| A3 | `/blog` query cached per-lane (stays dynamic) + revalidateTag on publish | `app/blog/page.tsx`, `api/blog/save`, `api/blog/infographic` | Low | New posts instant via tag-bust | ✅ |
+
+> **Phase A complete** — committed on `assessment-launch-prep`, `next build` clean.
+> **Also fixed:** Preview env was missing all Appwrite/Resend/Anthropic vars (Production-only),
+> which broke every branch preview. Mirrored 13 vars into the `assessment-launch-prep` Preview
+> branch so preview builds now succeed. (Side note: preview shares the prod Appwrite DB.)
+> **Preview URL:** https://webapp-git-assessment-launch-prep-dilipsahu31s-projects.vercel.app
 
 ## Phase B — Measurement (GA4 funnel)
+> ✅ **Phase B complete** (commit `58b8a84`) — events live: assessment_start, assessment_step_3/6, report_requested, call_booking_clicked (+ existing survey_complete).
 | ID | Task | Files | Risk | Verify | Status |
 |----|------|-------|------|--------|--------|
 | B1 | Add events: `assessment_start`, `assessment_step_3`, `assessment_step_6`, `email_submitted`, `report_requested`, `call_clicked` | `SurveyClient.tsx` (additive) | Very low | GA4 DebugView shows each | ☐ |
 | B2 | UTM scheme for the PR link (doc only) | — | None | `?utm_source=<outlet>&utm_medium=referral&utm_campaign=launch` | ☐ |
 
 ## Phase C — Conversion copy/UI (landing step 0)
+> ✅ **Phase C complete** (commit `f63aac0`) — C1–C6 all done, build clean, on the preview URL above. Copy/layout only; no logic touched.
 | ID | Task | Files | Risk | Verify | Status |
 |----|------|-------|------|--------|--------|
 | C1 | Sharper hero headline + subhead (5 data dimensions) | `SurveyClient.tsx` step 0 | Low | Visual | ☐ |
@@ -70,6 +78,7 @@ changing the gate/email mechanic, autoscaling/queues, any Appwrite data migratio
 | C6 | Progress label "Step X of 7 · [section]" | step 0 / wizard header | Low | Visual | ☐ |
 
 ## Phase D — Lead capture
+> ✅ **Phase D complete** (commit `58b8a84`) — step 9 CTA → "Book a free 20-min call"; step 10 adds a consultation card. Both → /contact, both tracked.
 | ID | Task | Files | Risk | Verify | Status |
 |----|------|-------|------|--------|--------|
 | D1 | Result-page "Book a free 20-min call" CTA → `/contact`, fires `call_clicked` | result screens (steps 9–10) | Low (additive) | Click → /contact + event fires | ☐ |
