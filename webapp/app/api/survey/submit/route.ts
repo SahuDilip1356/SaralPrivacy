@@ -1,11 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import { databases, DB_ID, COLLECTIONS, ID } from "@/lib/appwrite";
 import { sendSurveyResultEmail } from "@/lib/email";
+import { getClientIp, rateLimit, isHoneypotTripped } from "@/lib/abuseGuard";
 
 export async function POST(request: NextRequest) {
+  const rl = rateLimit(`survey:${getClientIp(request)}`, 8, 60_000);
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: "Too many requests. Please wait a moment and try again." },
+      { status: 429, headers: { "Retry-After": String(rl.retryAfter) } }
+    );
+  }
+
   try {
     const body = await request.json();
     const { answers, score } = body;
+
+    // Honeypot: only bots fill the hidden field. Pretend success, store nothing.
+    if (isHoneypotTripped(body)) {
+      return NextResponse.json({ success: true });
+    }
 
     if (!answers || !score) {
       return NextResponse.json({ error: "Missing answers or score" }, { status: 400 });

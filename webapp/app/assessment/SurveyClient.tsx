@@ -575,6 +575,8 @@ export default function SurveyClient() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [reportToken, setReportToken] = useState("");
+  // Honeypot — hidden from real users; only bots fill it. Left empty by humans.
+  const [hpUrl, setHpUrl] = useState("");
 
   const setAnswer = <K extends keyof DPDPAAnswers>(key: K, val: DPDPAAnswers[K]) =>
     setAnswers(prev => ({ ...prev, [key]: val }));
@@ -625,26 +627,47 @@ export default function SurveyClient() {
   const handleSubmit = async () => {
     if (!contactEmail) { setStep(9); return; }
     setSubmitting(true);
-    try {
-      const res = await fetch("/api/assessment", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: contactEmail,
-          name: contactName,
-          business: contactBusiness,
-          mobile: contactMobile,
-          report_type: branch,
-          answers,
-          result,
-          consentReport,
-          consentNewsletter,
-          consentFollowup,
-        }),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (data.reportToken) setReportToken(data.reportToken);
-    } catch { /* non-blocking */ }
+
+    const payload = JSON.stringify({
+      email: contactEmail,
+      name: contactName,
+      business: contactBusiness,
+      mobile: contactMobile,
+      report_type: branch,
+      answers,
+      result,
+      consentReport,
+      consentNewsletter,
+      consentFollowup,
+      hp_url: hpUrl, // honeypot — empty for real users
+    });
+
+    // Retry on transient failure so a momentary network/DB blip doesn't lose the
+    // lead. The user's answers stay in React state throughout, so nothing is lost.
+    let saved = false;
+    for (let attempt = 1; attempt <= 3 && !saved; attempt++) {
+      try {
+        const res = await fetch("/api/assessment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: payload,
+        });
+        if (res.ok) {
+          const data = await res.json().catch(() => ({}));
+          if (data.reportToken) setReportToken(data.reportToken);
+          saved = true;
+        } else if (res.status === 429) {
+          // Rate-limited — wait the suggested time, then retry.
+          const wait = Number(res.headers.get("Retry-After")) || 2;
+          await new Promise(r => setTimeout(r, Math.min(wait, 5) * 1000));
+        } else {
+          await new Promise(r => setTimeout(r, attempt * 800));
+        }
+      } catch {
+        await new Promise(r => setTimeout(r, attempt * 800));
+      }
+    }
+
     setSubmitting(false);
     setSubmitted(true);
     setStep(9);
@@ -1128,6 +1151,18 @@ export default function SurveyClient() {
                 <div className="flex items-center gap-1.5 text-xs text-green-700 font-semibold mb-5">
                   <Shield size={12} /> SECURE DELIVERY MODE
                 </div>
+
+                {/* Honeypot — hidden from real users; bots auto-fill it and get dropped server-side */}
+                <input
+                  type="text"
+                  name="hp_url"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  value={hpUrl}
+                  onChange={e => setHpUrl(e.target.value)}
+                  style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
+                />
 
                 <div className="grid grid-cols-2 gap-3 mb-4">
                   <div>

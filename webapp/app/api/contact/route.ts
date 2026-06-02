@@ -2,11 +2,25 @@ import { NextRequest, NextResponse } from "next/server";
 import { PRIVACY_NOTICE_VERSION } from "@/lib/utils";
 import { databases, DB_ID, COLLECTIONS, ID } from "@/lib/appwrite";
 import { sendConsultationAlert } from "@/lib/email";
+import { getClientIp, rateLimit, isHoneypotTripped } from "@/lib/abuseGuard";
 
 export async function POST(request: NextRequest) {
+  const rl = rateLimit(`contact:${getClientIp(request)}`, 6, 60_000);
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: "Too many requests. Please wait a moment and try again." },
+      { status: 429, headers: { "Retry-After": String(rl.retryAfter) } }
+    );
+  }
+
   try {
     const body = await request.json();
     const { fullName, workEmail, mobileNumber, companyName, industry, companySize, issueSummary, preferredContact, preferredTime, consentContact } = body;
+
+    // Honeypot: only bots fill the hidden field. Pretend success, store nothing.
+    if (isHoneypotTripped(body)) {
+      return NextResponse.json({ success: true, message: "Your request has been received." });
+    }
 
     if (!fullName || !workEmail || !companyName || !issueSummary || !consentContact) {
       return NextResponse.json({ error: "Required fields are missing." }, { status: 400 });
