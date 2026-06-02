@@ -7,7 +7,7 @@ import { ArrowLeft, Users } from "lucide-react";
 export const metadata: Metadata = {
   title: "Recruitment Agency DPDPA Assessment",
   description:
-    "Free DPDPA readiness assessment for recruitment and staffing agencies. Check your candidate data, consent flows, and retention practices in 10 minutes.",
+    "Free DPDPA readiness assessment for recruitment and staffing agencies. Check your candidate data, consent flows, and retention practices in 3–5 minutes.",
   // Canonical → hub page. Sub-route is a client-side JS wizard with minimal
   // crawlable HTML; noindex prevents index pollution and keeps link equity
   // consolidated on /assessment.
@@ -36,7 +36,7 @@ export default function RecruitmentAssessmentPage() {
             </h1>
           </div>
           <p className="text-slate-400 text-sm">
-            {recruitmentQuestions.length} questions · ~10 minutes · Free · No account required
+            {recruitmentQuestions.length} questions · ~3–5 minutes · Free · No account required
           </p>
         </div>
       </div>

@@ -50,6 +50,7 @@ export default function ContactContent() {
     preferredContact: "",
     preferredTime: "",
     consentContact: false,
+    hp_url: "", // honeypot — hidden from humans, only bots fill it
   });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -176,6 +177,17 @@ export default function ContactContent() {
                 </p>
 
                 <form onSubmit={handleSubmit} className="space-y-5">
+                  {/* Honeypot — hidden from real users; bots auto-fill it and get dropped server-side */}
+                  <input
+                    type="text"
+                    name="hp_url"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                    value={form.hp_url}
+                    onChange={(e) => update("hp_url", e.target.value)}
+                    style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
+                  />
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <Input
                       label="Full Name"

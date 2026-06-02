@@ -74,17 +74,13 @@ function SidebarNav({ step, result }: { step: number; result: DPDPAScoreResult |
 
 function ProgressBar({ step, total }: { step: number; total: number }) {
   const pct = Math.round((step / total) * 100);
-  const labels = ["S1", "S2", "S3", "S4", "S5", "S6", "S7"];
+  const section = SIDEBAR_SECTIONS.find(s => s.steps.includes(step))?.label ?? "";
   return (
     <div className="mb-6">
       <div className="flex items-center justify-between text-xs text-slate-500 mb-2">
-        <span className="font-mono">
-          START:{" "}
-          {labels.map((l, i) => (
-            <span key={l} className={cn("mr-1", i < step - 1 ? "text-green-600 font-bold" : i === step - 1 ? "text-navy-900 font-bold" : "text-slate-400")}>
-              {l}
-            </span>
-          ))}
+        <span className="font-semibold text-navy-900">
+          Step {step} of {total}
+          {section ? <span className="text-slate-400 font-normal"> · {section}</span> : null}
         </span>
         <span className="text-green-600 font-semibold">{pct}% complete</span>
       </div>
@@ -575,6 +571,19 @@ export default function SurveyClient() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [reportToken, setReportToken] = useState("");
+  // Honeypot — hidden from real users; only bots fill it. Left empty by humans.
+  const [hpUrl, setHpUrl] = useState("");
+
+  // ── GA4 funnel events — fire once per milestone so we can measure PR drop-off ──
+  const firedSteps = useRef<Set<string>>(new Set());
+  useEffect(() => {
+    const fireOnce = (key: string, fn: () => void) => {
+      if (!firedSteps.current.has(key)) { firedSteps.current.add(key); fn(); }
+    };
+    if (step === 1) fireOnce("start", () => trackEvent.assessmentStart());
+    if (step === 3) fireOnce("step3", () => trackEvent.assessmentStep(3));
+    if (step === 6) fireOnce("step6", () => trackEvent.assessmentStep(6));
+  }, [step]);
 
   const setAnswer = <K extends keyof DPDPAAnswers>(key: K, val: DPDPAAnswers[K]) =>
     setAnswers(prev => ({ ...prev, [key]: val }));
@@ -625,26 +634,48 @@ export default function SurveyClient() {
   const handleSubmit = async () => {
     if (!contactEmail) { setStep(9); return; }
     setSubmitting(true);
-    try {
-      const res = await fetch("/api/assessment", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: contactEmail,
-          name: contactName,
-          business: contactBusiness,
-          mobile: contactMobile,
-          report_type: branch,
-          answers,
-          result,
-          consentReport,
-          consentNewsletter,
-          consentFollowup,
-        }),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (data.reportToken) setReportToken(data.reportToken);
-    } catch { /* non-blocking */ }
+    trackEvent.reportRequested({ band: result?.verdictBand, sector: answers.q1_sector });
+
+    const payload = JSON.stringify({
+      email: contactEmail,
+      name: contactName,
+      business: contactBusiness,
+      mobile: contactMobile,
+      report_type: branch,
+      answers,
+      result,
+      consentReport,
+      consentNewsletter,
+      consentFollowup,
+      hp_url: hpUrl, // honeypot — empty for real users
+    });
+
+    // Retry on transient failure so a momentary network/DB blip doesn't lose the
+    // lead. The user's answers stay in React state throughout, so nothing is lost.
+    let saved = false;
+    for (let attempt = 1; attempt <= 3 && !saved; attempt++) {
+      try {
+        const res = await fetch("/api/assessment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: payload,
+        });
+        if (res.ok) {
+          const data = await res.json().catch(() => ({}));
+          if (data.reportToken) setReportToken(data.reportToken);
+          saved = true;
+        } else if (res.status === 429) {
+          // Rate-limited — wait the suggested time, then retry.
+          const wait = Number(res.headers.get("Retry-After")) || 2;
+          await new Promise(r => setTimeout(r, Math.min(wait, 5) * 1000));
+        } else {
+          await new Promise(r => setTimeout(r, attempt * 800));
+        }
+      } catch {
+        await new Promise(r => setTimeout(r, attempt * 800));
+      }
+    }
+
     setSubmitting(false);
     setSubmitted(true);
     setStep(9);
@@ -668,20 +699,22 @@ export default function SurveyClient() {
               DPDPA READINESS ASSESSMENT
             </div>
             <h1 className="text-4xl sm:text-5xl font-bold text-navy-900 leading-tight mb-5">
-              Know your privacy gaps in 3–5 minutes
+              Find your DPDPA readiness gaps in 3–5 minutes
             </h1>
-            <p className="text-slate-600 text-lg leading-relaxed mb-8">
-              Built for Indian businesses working with customer, employee, or candidate data.
-              Get a clear readiness score, top risk areas, and practical next steps.
+            <p className="text-slate-600 text-lg leading-relaxed mb-7">
+              Check how your business handles personal data, consent, storage, data rights
+              requests, vendors, and privacy ownership — and get a plain-English readiness
+              score with practical next steps.
             </p>
-            <div className="grid grid-cols-2 gap-3">
+            {/* Trust row */}
+            <div className="grid grid-cols-2 gap-3 mb-8">
               {[
-                { icon: "✅", text: "Built for Indian businesses" },
-                { icon: "⚡", text: "DPDPA-ready practices" },
-                { icon: "📋", text: "Actionable report" },
-                { icon: "⏱", text: "3–5 min completion" },
+                { icon: "🇮🇳", text: "Built for Indian businesses" },
+                { icon: "🆓", text: "No payment required" },
                 { icon: "🚫", text: "No legal jargon" },
-                { icon: "🔒", text: "Encrypted session" },
+                { icon: "⏱", text: "Takes 3–5 minutes" },
+                { icon: "📋", text: "Practical score + next steps" },
+                { icon: "⚖️", text: "Educational, not legal advice" },
               ].map(item => (
                 <div key={item.text} className="flex items-center gap-2 text-sm text-slate-700">
                   <span>{item.icon}</span>
@@ -689,13 +722,50 @@ export default function SurveyClient() {
                 </div>
               ))}
             </div>
-            <div className="mt-8 text-xs text-slate-400 font-mono">SYSTEM STATUS: V.3.0 ACTIVE</div>
+
+            {/* What you'll get */}
+            <div className="bg-white rounded-xl border border-slate-200 p-5 mb-5">
+              <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">What you&apos;ll get</div>
+              <div className="grid sm:grid-cols-2 gap-x-5 gap-y-2">
+                {[
+                  "Your readiness score (0–100)",
+                  "Your top 3 privacy gaps",
+                  "Your risk category",
+                  "Recommended next steps",
+                  "A simple DPDPA checklist",
+                  "Option to email your full report",
+                ].map(t => (
+                  <div key={t} className="flex items-start gap-2 text-sm text-slate-700">
+                    <CheckCircle size={15} className="text-green-500 mt-0.5 shrink-0" />
+                    <span>{t}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* How it works */}
+            <div>
+              <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">How it works</div>
+              <div className="space-y-2">
+                {[
+                  "Answer 12 quick questions about your business",
+                  "Get your readiness score instantly",
+                  "See your biggest privacy gaps",
+                  "Receive recommended next actions",
+                ].map((t, i) => (
+                  <div key={t} className="flex items-center gap-3 text-sm text-slate-700">
+                    <span className="shrink-0 w-6 h-6 rounded-full bg-navy-900 text-white text-xs font-bold flex items-center justify-center">{i + 1}</span>
+                    <span>{t}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* Right — Authorization card */}
           <div className="bg-white rounded-2xl border border-slate-200 shadow-lg p-7">
-            <h2 className="text-xl font-bold text-navy-900 mb-1">Begin your expert diagnostic</h2>
-            <div className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-6">STEP 1: AUTHORIZATION & SCOPE</div>
+            <h2 className="text-xl font-bold text-navy-900 mb-1">Start your free DPDPA readiness check</h2>
+            <div className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-6">Before you begin</div>
 
             {/* Required consent */}
             <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
@@ -739,7 +809,7 @@ export default function SurveyClient() {
             >
               Take free assessment <ArrowRight size={18} />
             </button>
-            <div className="text-center text-xs text-slate-400 font-semibold mb-5">PROFESSIONAL GRADE</div>
+            <div className="text-center text-xs text-slate-400 mb-5">Free · No payment required</div>
 
             {/* Optional consents */}
             <div className="space-y-2.5 border-t border-slate-100 pt-4">
@@ -1129,6 +1199,18 @@ export default function SurveyClient() {
                   <Shield size={12} /> SECURE DELIVERY MODE
                 </div>
 
+                {/* Honeypot — hidden from real users; bots auto-fill it and get dropped server-side */}
+                <input
+                  type="text"
+                  name="hp_url"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  value={hpUrl}
+                  onChange={e => setHpUrl(e.target.value)}
+                  style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
+                />
+
                 <div className="grid grid-cols-2 gap-3 mb-4">
                   <div>
                     <label className="text-xs font-semibold text-slate-500 block mb-1">WORK EMAIL (REQUIRED)</label>
@@ -1335,8 +1417,8 @@ export default function SurveyClient() {
                     View Full Report →
                   </a>
                 )}
-                <Link href="/contact" className="px-6 py-3 bg-white/10 text-white font-bold rounded-xl text-sm hover:bg-white/20 transition-colors flex items-center justify-center gap-2">
-                  Book expert consultation
+                <Link href="/contact" onClick={() => trackEvent.callBookingClicked({ band: result?.verdictBand, location: "assessment_report" })} className="px-6 py-3 bg-white/10 text-white font-bold rounded-xl text-sm hover:bg-white/20 transition-colors flex items-center justify-center gap-2">
+                  Book a free 20-min call
                 </Link>
                 <Link href="/white-paper" className="px-6 py-3 bg-white/10 text-white font-bold rounded-xl text-sm hover:bg-white/20 transition-colors flex items-center justify-center gap-2">
                   Download White Paper
@@ -1474,6 +1556,23 @@ export default function SurveyClient() {
                 )}
               </div>
             </div>
+
+            {/* Consultation CTA — convert serious leads */}
+            <Link
+              href="/contact"
+              onClick={() => trackEvent.callBookingClicked({ band: result?.verdictBand, location: "assessment_result" })}
+              className="block mb-4 rounded-xl border border-green-200 bg-green-50 p-5 hover:bg-green-100 transition-colors group"
+            >
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <div className="font-bold text-navy-900 text-sm mb-0.5">Want help interpreting your score?</div>
+                  <div className="text-slate-600 text-sm">Book a free 20-minute DPDPA readiness call with our team.</div>
+                </div>
+                <span className="shrink-0 inline-flex items-center gap-1 text-green-700 font-semibold text-sm group-hover:gap-2 transition-all">
+                  Book a call <ArrowRight size={16} />
+                </span>
+              </div>
+            </Link>
 
             <button
               onClick={() => {

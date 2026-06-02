@@ -4,8 +4,11 @@ import { BookOpen, CheckCircle } from "lucide-react";
 import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 import { BriefingSubscribeCard } from "@/components/briefings/BriefingSubscribeCard";
 import BlogImage from "@/components/BlogImage";
+import { unstable_cache } from "next/cache";
 
-// Lane filtering via searchParams makes this dynamic — ISR intentionally disabled
+// Page stays dynamic (lane filtering reads searchParams), but the Appwrite query
+// itself is cached per-lane (see getPublishedPosts) so traffic spikes don't hit the
+// database on every request. Cache is busted instantly on publish via revalidateTag.
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
@@ -42,22 +45,31 @@ const LANE_CONFIG: Record<string, { label: string; color: string; bg: string }> 
   "governance-watch":    { label: "Governance Watch",    color: "text-red-700",    bg: "bg-red-100"    },
 };
 
-async function getPublishedPosts(lane?: string): Promise<BlogPost[]> {
-  try {
-    const filters = [
-      Query.equal("status", "published"),
-      Query.orderDesc("$createdAt"),
-      Query.limit(50),
-    ];
-    if (lane && lane !== "all") {
-      filters.push(Query.equal("lane", lane));
-    }
-    const result = await databases.listDocuments(DB_ID, COLLECTIONS.BLOG_POSTS, filters);
-    return result.documents as unknown as BlogPost[];
-  } catch (err) {
-    console.error("[blog/page] fetch error", err);
-    return [];
-  }
+function getPublishedPosts(lane?: string): Promise<BlogPost[]> {
+  const key = lane && lane !== "all" ? lane : "all";
+  // Cache the Appwrite query per-lane for 10 min. Protects the database under
+  // traffic spikes; busted immediately on publish via revalidateTag("blog-posts").
+  return unstable_cache(
+    async (): Promise<BlogPost[]> => {
+      try {
+        const filters = [
+          Query.equal("status", "published"),
+          Query.orderDesc("$createdAt"),
+          Query.limit(50),
+        ];
+        if (key !== "all") {
+          filters.push(Query.equal("lane", key));
+        }
+        const result = await databases.listDocuments(DB_ID, COLLECTIONS.BLOG_POSTS, filters);
+        return result.documents as unknown as BlogPost[];
+      } catch (err) {
+        console.error("[blog/page] fetch error", err);
+        return [];
+      }
+    },
+    ["blog-posts-list", key],
+    { revalidate: 600, tags: ["blog-posts"] }
+  )();
 }
 
 const LANE_FILTERS = [

@@ -37,7 +37,7 @@ export default function AssessmentPage() {
         <p>
           Built for founders, operations leads, compliance managers, HR teams, recruiters,
           CA firms, training businesses, and D2C teams that handle personal data but do not
-          yet have a formal privacy operating model. Takes 8–10 minutes.
+          yet have a formal privacy operating model. Takes 3–5 minutes.
         </p>
         <p>Last reviewed: March 2026. Legal baseline: DPDP Rules, 2025 notified on 14 November 2025, with phased commencement. This assessment is for educational purposes and does not constitute legal advice.</p>
       </div>

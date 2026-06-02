@@ -5,6 +5,7 @@ import { databases, DB_ID, COLLECTIONS, ID } from "@/lib/appwrite";
 import { sendAssessmentAlert, sendSurveyResultEmail } from "@/lib/email";
 import { upsertSubscriber } from "@/lib/subscribers";
 import { QUESTIONS } from "@/lib/data/dpdpa-assessment";
+import { getClientIp, rateLimit, isHoneypotTripped } from "@/lib/abuseGuard";
 
 function buildAnswerSummary(answers: Record<string, unknown>): Array<{ question: string; answer: string }> {
   const result: Array<{ question: string; answer: string }> = [];
@@ -25,8 +26,22 @@ function buildAnswerSummary(answers: Record<string, unknown>): Array<{ question:
 }
 
 export async function POST(request: NextRequest) {
+  // Abuse guard: cap submissions per IP (a real user submits once).
+  const rl = rateLimit(`assessment:${getClientIp(request)}`, 8, 60_000);
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: "Too many requests. Please wait a moment and try again." },
+      { status: 429, headers: { "Retry-After": String(rl.retryAfter) } }
+    );
+  }
+
   try {
     const body = await request.json();
+
+    // Honeypot: a hidden field only bots fill. Pretend success, store nothing.
+    if (isHoneypotTripped(body)) {
+      return NextResponse.json({ success: true });
+    }
 
     // Support both legacy industry assessment shape and new general assessment shape
     const {

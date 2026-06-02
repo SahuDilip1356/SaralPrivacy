@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { databases, DB_ID, COLLECTIONS, ID } from "@/lib/appwrite";
 
 /**
@@ -14,6 +14,7 @@ function safeRevalidateBlog(slug: string): void {
   try {
     if (slug) revalidatePath(`/blog/${slug}`);
     revalidatePath("/blog");
+    revalidateTag("blog-posts", "default"); // bust the cached /blog listing query immediately
   } catch (err) {
     console.error("[blog/save revalidate]", err);
   }

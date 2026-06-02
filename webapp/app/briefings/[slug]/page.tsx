@@ -796,7 +796,7 @@ export default async function BriefingDetailPage({ params }: Props) {
                   Is your business DPDPA-ready?
                 </h3>
                 <p className="text-slate-600 text-xs leading-relaxed mb-4">
-                  Take our free 10-minute industry assessment to find out your compliance risk level.
+                  Take our free 3–5 minute industry assessment to find out your compliance risk level.
                 </p>
                 <Link
                   href="/assessment"

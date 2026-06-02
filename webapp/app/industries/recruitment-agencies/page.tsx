@@ -121,7 +121,7 @@ export default function RecruitmentIndustryPage() {
           </div>
           <div className="inline-flex items-center gap-2 bg-green-700/40 border border-green-500/50 rounded-full px-3.5 py-1.5">
             <span className="text-green-300 text-xs font-semibold">
-              &ldquo;Find out whether your recruitment workflows create DPDPA exposure in 10 minutes.&rdquo;
+              &ldquo;Find out whether your recruitment workflows create DPDPA exposure in 3–5 minutes.&rdquo;
             </span>
           </div>
         </div>
@@ -187,7 +187,7 @@ export default function RecruitmentIndustryPage() {
             <div className="bg-green-500 rounded-xl p-5 text-white">
               <h3 className="font-bold text-base mb-2">Take the Free Assessment</h3>
               <p className="text-green-100 text-sm mb-4">
-                8 questions. 10 minutes. Get your personalised risk score and recommendations.
+                8 questions. 3–5 minutes. Get your personalised risk score and recommendations.
               </p>
               <Link
                 href="/assessment/recruitment"

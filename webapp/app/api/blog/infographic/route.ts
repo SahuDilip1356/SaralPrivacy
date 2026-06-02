@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { Resvg } from "@resvg/resvg-js";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -427,6 +427,7 @@ export async function POST(req: NextRequest) {
       ) as { slug?: string };
       if (post.slug) revalidatePath(`/blog/${post.slug}`);
       revalidatePath("/blog");
+      revalidateTag("blog-posts", "default"); // bust the cached /blog listing query immediately
     } catch (e) {
       console.warn("[blog/infographic] revalidatePath failed (non-fatal)", e);
     }

@@ -9,7 +9,7 @@ const audiences = [
     assessmentHref: "/assessment/recruitment",
     color: "teal",
     painPoints: ["CV databases & candidate data", "Client profile sharing", "Background check documents", "Cross-border data flows"],
-    promise: "Find out whether your recruitment workflows create DPDPA exposure in 10 minutes.",
+    promise: "Find out whether your recruitment workflows create DPDPA exposure in 3–5 minutes.",
     accentBg: "bg-teal-50",
     accentBorder: "border-teal-200",
     accentText: "text-teal-700",
