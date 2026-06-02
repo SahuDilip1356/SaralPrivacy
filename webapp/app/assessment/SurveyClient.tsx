@@ -574,6 +574,17 @@ export default function SurveyClient() {
   // Honeypot — hidden from real users; only bots fill it. Left empty by humans.
   const [hpUrl, setHpUrl] = useState("");
 
+  // ── GA4 funnel events — fire once per milestone so we can measure PR drop-off ──
+  const firedSteps = useRef<Set<string>>(new Set());
+  useEffect(() => {
+    const fireOnce = (key: string, fn: () => void) => {
+      if (!firedSteps.current.has(key)) { firedSteps.current.add(key); fn(); }
+    };
+    if (step === 1) fireOnce("start", () => trackEvent.assessmentStart());
+    if (step === 3) fireOnce("step3", () => trackEvent.assessmentStep(3));
+    if (step === 6) fireOnce("step6", () => trackEvent.assessmentStep(6));
+  }, [step]);
+
   const setAnswer = <K extends keyof DPDPAAnswers>(key: K, val: DPDPAAnswers[K]) =>
     setAnswers(prev => ({ ...prev, [key]: val }));
 
@@ -623,6 +634,7 @@ export default function SurveyClient() {
   const handleSubmit = async () => {
     if (!contactEmail) { setStep(9); return; }
     setSubmitting(true);
+    trackEvent.reportRequested({ band: result?.verdictBand, sector: answers.q1_sector });
 
     const payload = JSON.stringify({
       email: contactEmail,
@@ -1405,8 +1417,8 @@ export default function SurveyClient() {
                     View Full Report →
                   </a>
                 )}
-                <Link href="/contact" className="px-6 py-3 bg-white/10 text-white font-bold rounded-xl text-sm hover:bg-white/20 transition-colors flex items-center justify-center gap-2">
-                  Book expert consultation
+                <Link href="/contact" onClick={() => trackEvent.callBookingClicked({ band: result?.verdictBand, location: "assessment_report" })} className="px-6 py-3 bg-white/10 text-white font-bold rounded-xl text-sm hover:bg-white/20 transition-colors flex items-center justify-center gap-2">
+                  Book a free 20-min call
                 </Link>
                 <Link href="/white-paper" className="px-6 py-3 bg-white/10 text-white font-bold rounded-xl text-sm hover:bg-white/20 transition-colors flex items-center justify-center gap-2">
                   Download White Paper
@@ -1544,6 +1556,23 @@ export default function SurveyClient() {
                 )}
               </div>
             </div>
+
+            {/* Consultation CTA — convert serious leads */}
+            <Link
+              href="/contact"
+              onClick={() => trackEvent.callBookingClicked({ band: result?.verdictBand, location: "assessment_result" })}
+              className="block mb-4 rounded-xl border border-green-200 bg-green-50 p-5 hover:bg-green-100 transition-colors group"
+            >
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <div className="font-bold text-navy-900 text-sm mb-0.5">Want help interpreting your score?</div>
+                  <div className="text-slate-600 text-sm">Book a free 20-minute DPDPA readiness call with our team.</div>
+                </div>
+                <span className="shrink-0 inline-flex items-center gap-1 text-green-700 font-semibold text-sm group-hover:gap-2 transition-all">
+                  Book a call <ArrowRight size={16} />
+                </span>
+              </div>
+            </Link>
 
             <button
               onClick={() => {

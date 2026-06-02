@@ -100,4 +100,27 @@ export const trackEvent = {
     cta_label:       params.label,
     page_location:   params.location,
   }),
+
+  // ── Assessment funnel (PR-traffic measurement) ──────────────────────────
+  assessmentStart: () => gtag("assessment_start", {
+    event_category: "engagement",
+  }),
+
+  // Fires assessment_step_3 / assessment_step_6 so GA4 shows where people drop off
+  assessmentStep: (step: number) => gtag(`assessment_step_${step}`, {
+    event_category: "engagement",
+    step,
+  }),
+
+  reportRequested: (params: { band?: string; sector?: string }) => gtag("report_requested", {
+    event_category: "lead",
+    risk_band:      params.band   || "",
+    sector:         params.sector || "",
+  }),
+
+  callBookingClicked: (params: { band?: string; location?: string }) => gtag("call_booking_clicked", {
+    event_category: "lead",
+    risk_band:      params.band     || "",
+    page_location:  params.location || "assessment_result",
+  }),
 };
