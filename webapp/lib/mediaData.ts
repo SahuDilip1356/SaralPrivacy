@@ -14,6 +14,8 @@ export interface MediaPlacement {
   da?: number;
   /** Short descriptor shown on featured tiles. */
   meta?: string;
+  /** Estimated audience reach — shown on featured tiles where available. */
+  reach?: string;
 }
 
 export const mediaStats = {
@@ -35,11 +37,11 @@ export const tierLabels: Record<MediaTier, string> = {
 export const mediaPlacements: MediaPlacement[] = [
   { serial: 1, name: 'Google News', tier: 'aggregator', url: null, verified: false, da: 95, meta: 'Syndicated · 369M reach' },
   { serial: 2, name: 'Yahoo News', tier: 'aggregator', url: null, verified: false, da: 93, meta: 'Syndicated · 240M reach' },
-  { serial: 3, name: 'Business Standard', tier: 'tier1', url: 'https://www.business-standard.com/content/press-releases-ani/dpdpa-compliance-pressure-builds-saralprivacy-launches-free-readiness-assessment-to-help-indian-businesses-map-privacy-gaps-126060200614_1.html', verified: true, da: 90, meta: 'Business publication' },
-  { serial: 4, name: 'The Tribune', tier: 'tier1', url: 'https://www.tribuneindia.com/news/dpdpa/dpdpa-compliance-pressure-builds-saralprivacy-launches-free-readiness-assessment-to-help-indian-businesses-map-privacy-gaps', verified: true, da: 87, meta: 'National news publication' },
-  { serial: 5, name: 'ANI News', tier: 'tier1', url: 'https://www.aninews.in/news/business/dpdpa-compliance-pressure-builds-saralprivacy-launches-free-readiness-assessment-to-help-indian-businesses-map-privacy-gaps20260602133551/', verified: true, da: 79, meta: 'National wire syndication' },
+  { serial: 3, name: 'Business Standard', tier: 'tier1', url: 'https://www.business-standard.com/content/press-releases-ani/dpdpa-compliance-pressure-builds-saralprivacy-launches-free-readiness-assessment-to-help-indian-businesses-map-privacy-gaps-126060200614_1.html', verified: true, da: 90, meta: 'Business publication', reach: '39.7M' },
+  { serial: 4, name: 'The Tribune', tier: 'tier1', url: 'https://www.tribuneindia.com/news/dpdpa/dpdpa-compliance-pressure-builds-saralprivacy-launches-free-readiness-assessment-to-help-indian-businesses-map-privacy-gaps', verified: true, da: 87, meta: 'National news publication', reach: '13.6M' },
+  { serial: 5, name: 'ANI News', tier: 'tier1', url: 'https://www.aninews.in/news/business/dpdpa-compliance-pressure-builds-saralprivacy-launches-free-readiness-assessment-to-help-indian-businesses-map-privacy-gaps20260602133551/', verified: true, da: 79, meta: 'National wire syndication', reach: '2.2M' },
   { serial: 6, name: 'Lokmat English', tier: 'tier2', url: 'https://www.lokmattimes.com/business/dpdpa-compliance-pressure-builds-saralprivacy-launches-free-readiness-assessment-to-help-indian-businesses-map-privacy-gaps/', verified: false, da: 53, meta: 'Regional news publication' },
-  { serial: 7, name: 'Latestly', tier: 'tier2', url: 'https://www.latestly.com/agency-news/business-news-dpdpa-compliance-pressure-builds-saralprivacy-launches-free-readiness-assessment-to-help-indian-businesses-map-privacy-gaps-7455911.html', verified: false, da: 67, meta: 'Digital news publication' },
+  { serial: 7, name: 'Latestly', tier: 'tier2', url: 'https://www.latestly.com/agency-news/business-news-dpdpa-compliance-pressure-builds-saralprivacy-launches-free-readiness-assessment-to-help-indian-businesses-map-privacy-gaps-7455911.html', verified: false, da: 67, meta: 'Digital news publication', reach: '337.8K' },
   { serial: 8, name: 'World News Network', tier: 'tier3', url: 'https://www.worldnewsnetwork.net/news/dpdpa-compliance-pressure-builds-saralprivacy-launches-free-readiness-assessment-to-help-indian-businesses-map-privacy-gaps20260602133547/', verified: false, da: 25, meta: 'International news syndication' },
   { serial: 9, name: 'Wisconsin Journal', tier: 'tier3', url: 'https://www.wisconsinjournal.news/news/dpdpa-compliance-pressure-builds-saralprivacy-launches-free-readiness-assessment-to-help-indian-businesses-map-privacy-gaps20260602133547/', verified: false },
   { serial: 10, name: 'Karnataka News Network', tier: 'tier3', url: 'https://karnatakanewsnetwork.in/dpdpa-compliance-pressure-builds-saralprivacy-launches-free-readiness-assessment-to-help-indian-businesses-map-privacy-gaps/', verified: false, da: 28, meta: 'Regional news network' },

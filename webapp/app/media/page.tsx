@@ -93,6 +93,11 @@ export default function MediaPage() {
                       DA {p.da}
                     </span>
                   )}
+                  {p.reach != null && (
+                    <span className="text-[10px] text-slate-400">
+                      {p.reach} readers
+                    </span>
+                  )}
                 </>
               );
               const base =
