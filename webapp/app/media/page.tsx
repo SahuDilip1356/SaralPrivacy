@@ -96,10 +96,7 @@ export default function MediaPage() {
                 </>
               );
               const base =
-                "flex flex-col items-center justify-center text-center gap-1.5 p-5 rounded-2xl border transition-all";
-              const tone = p.verified
-                ? "border-green-200 bg-green-50/50 hover:border-green-500 hover:shadow-md"
-                : "border-slate-200 bg-cloud-50 hover:border-teal-400 hover:shadow-md";
+                "flex flex-col items-center justify-center text-center gap-1.5 p-5 rounded-2xl border border-slate-200 bg-white transition-all hover:border-teal-400 hover:shadow-md";
               return (
                 <li key={p.serial}>
                   {p.url ? (
@@ -107,12 +104,12 @@ export default function MediaPage() {
                       href={p.url}
                       target="_blank"
                       rel="nofollow noopener"
-                      className={`${base} ${tone} h-full`}
+                      className={`${base} h-full`}
                     >
                       {Tile}
                     </a>
                   ) : (
-                    <div className={`${base} ${tone} h-full`}>{Tile}</div>
+                    <div className={`${base} h-full`}>{Tile}</div>
                   )}
                 </li>
               );
@@ -128,16 +125,6 @@ export default function MediaPage() {
               See all {mediaStats.totalPlacements} placements
               <ArrowRight size={15} />
             </Link>
-          </div>
-
-          {/* Honesty note (publish-safe) */}
-          <div className="mt-7 bg-gold-50 border-l-4 border-gold-400 rounded-r-lg px-4 py-3">
-            <p className="text-xs text-slate-600 leading-relaxed">
-              <strong className="text-navy-700">About this coverage:</strong> These are syndicated
-              press-release placements distributed through the ANI / VMPL wire network — not
-              independent editorial reporting. Three placements (Business Standard, The Tribune, ANI)
-              are independently verified live as of {mediaStats.distributedOn}.
-            </p>
           </div>
 
           {/* Foot */}
