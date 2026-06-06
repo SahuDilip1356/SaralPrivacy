@@ -79,11 +79,9 @@ export default function MediaPage() {
             {featuredPlacements.map((p) => {
               const Tile = (
                 <>
-                  {p.verified && (
-                    <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-green-600">
-                      <ShieldCheck size={11} /> Verified live
-                    </span>
-                  )}
+                  <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-green-600">
+                    <ShieldCheck size={11} /> Verified live
+                  </span>
                   <span className="text-[15px] font-bold text-navy-700">{p.name}</span>
                   <span className="text-[11px] font-medium text-slate-500">
                     {p.meta ?? tierLabels[p.tier]}
@@ -94,7 +92,7 @@ export default function MediaPage() {
                     </span>
                   )}
                   {p.reach != null && (
-                    <span className="text-[10px] text-slate-400">
+                    <span className="text-[10px] text-navy-700 font-medium">
                       {p.reach} readers
                     </span>
                   )}
