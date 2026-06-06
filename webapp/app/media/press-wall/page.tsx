@@ -128,7 +128,7 @@ export default function PressWallPage() {
           </h1>
           <p className="mt-2 text-sm text-slate-600 max-w-xl">
             DPDPA readiness assessment coverage across India&apos;s national and
-            regional press — distributed via ANI&nbsp;/&nbsp;VMPL wire network.
+            regional press.
           </p>
 
           {/* Stats strip */}
@@ -183,8 +183,7 @@ export default function PressWallPage() {
         {/* Footer */}
         <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
           <p className="text-xs text-slate-400">
-            Last reviewed: {formatReviewDate(FRESHNESS.media)} · Syndicated
-            press-release placements via ANI&nbsp;/&nbsp;VMPL wire network.
+            Last reviewed: {formatReviewDate(FRESHNESS.media)}
           </p>
           <Link
             href="/media/coverage"
