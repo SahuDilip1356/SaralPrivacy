@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Play, Loader2 } from 'lucide-react'
 
 interface RunSummary {
@@ -9,8 +9,9 @@ interface RunSummary {
   cited: number
   mentioned: number
   errored: number
+  cleanTotal?: number   // optional for backwards compat with older summaries
   citeRate: number
-  byEngine: Record<string, { total: number; cited: number }>
+  byEngine: Record<string, { total: number; cited: number; errored?: number }>
 }
 
 interface RunResponse {
@@ -27,13 +28,20 @@ export default function RunButton() {
   const [state, setState] = useState<'idle' | 'running' | 'success' | 'error'>('idle')
   const [message, setMessage] = useState<string>('')
   const [elapsed, setElapsed] = useState(0)
+  // Ref-backed elapsed so the async error handlers below read the LIVE value.
+  // React state captured at function-entry would be stuck at 0 (stale closure).
+  const elapsedRef = useRef(0)
 
   async function triggerRun() {
     setState('running')
     setMessage('Starting 20 prompts across ChatGPT, Claude, Perplexity, Gemini…')
     setElapsed(0)
+    elapsedRef.current = 0
 
-    const tick = setInterval(() => setElapsed((s) => s + 1), 1000)
+    const tick = setInterval(() => {
+      elapsedRef.current += 1
+      setElapsed(elapsedRef.current)
+    }, 1000)
 
     try {
       const res = await fetch('/api/admin/aeo-panel-run', { method: 'POST' })
@@ -47,7 +55,11 @@ export default function RunButton() {
       } catch {
         setState('error')
         if (res.status === 504) {
-          setMessage(`Vercel function timed out (504, ${elapsed}s). The run exceeded the 300s ceiling. Tell Claude — the runner needs parallelization.`)
+          setMessage(
+            `Vercel function timed out at ${elapsedRef.current}s (300s ceiling). ` +
+            `One or more OpenRouter calls did not return within the runner's 75s hard ceiling — ` +
+            `check Vercel function logs for which engine stalled.`,
+          )
         } else {
           setMessage(`HTTP ${res.status} returned non-JSON: ${text.slice(0, 200)}`)
         }
@@ -61,10 +73,12 @@ export default function RunButton() {
       }
 
       const s = data.summary!
+      const denom = s.cleanTotal ?? s.total
       setState('success')
+      const erroredNote = s.errored > 0 ? ` · ${s.errored} errored` : ''
       setMessage(
-        `Done — ${s.cited} of ${s.total} prompts cited saralprivacy. ` +
-        `(${(s.citeRate * 100).toFixed(1)}% cite rate). ` +
+        `Done — ${s.cited} of ${denom} clean prompts cited saralprivacy ` +
+        `(${(s.citeRate * 100).toFixed(1)}% cite rate)${erroredNote}. ` +
         `Persisted ${data.persisted} rows. Refreshing in 2s…`
       )
       setTimeout(() => router.refresh(), 2000)

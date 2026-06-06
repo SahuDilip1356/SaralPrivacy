@@ -33,17 +33,65 @@ export interface CallResult {
 }
 
 /**
- * Calls an OpenRouter chat completion with web-search enabled and
- * normalizes citations across the three response shapes we've seen:
- *   1. Perplexity Sonar: top-level `citations: string[]`
- *   2. OpenAI/Anthropic via :online: `message.annotations[].url_citation`
- *   3. Some Gemini routes: `search_results[]`
+ * Race a promise against a hard timeout. Guarantees resolution within `ms`
+ * even if the inner promise hangs (e.g. AbortController failed to cancel a
+ * stalled response body read). The losing promise is discarded — its eventual
+ * resolution becomes a no-op.
+ */
+async function withHardCeiling<T>(p: Promise<T>, ms: number, label: string): Promise<T> {
+  let timer: ReturnType<typeof setTimeout> | undefined
+  const timeout = new Promise<never>((_, reject) => {
+    timer = setTimeout(
+      () => reject(new Error(`Hard ceiling ${ms / 1000}s exceeded for ${label}`)),
+      ms,
+    )
+  })
+  try {
+    return await Promise.race([p, timeout])
+  } finally {
+    if (timer) clearTimeout(timer)
+  }
+}
+
+/**
+ * Calls OpenRouter with TWO layers of timeout protection:
+ *   1. `timeoutMs` (inner, default 60s) — AbortController on the fetch.
+ *   2. `hardCeilingMs` (outer, default 75s) — Promise.race ceiling that fires
+ *      even if AbortController fails to cancel a stalled response body read.
+ *
+ * The outer race exists because the inner `clearTimeout` runs after fetch
+ * resolves the response object; once headers arrive, the AbortController no
+ * longer protects `res.json()` / `res.text()` from a stalled body. Without
+ * the outer race, a single hung body read can block `Promise.all` in the
+ * runner past Vercel's 300s function ceiling → 504. The hard ceiling makes
+ * that scenario impossible.
  */
 export async function callOpenRouter(
   model: string,
   prompt: string,
   apiKey: string,
-  timeoutMs = 90_000,
+  timeoutMs = 60_000,
+  hardCeilingMs = 75_000,
+): Promise<CallResult> {
+  return withHardCeiling(
+    callOpenRouterImpl(model, prompt, apiKey, timeoutMs),
+    hardCeilingMs,
+    model,
+  )
+}
+
+/**
+ * The actual fetch + parse implementation — internal. Call via callOpenRouter().
+ * Normalizes citations across the three response shapes we've seen:
+ *   1. Perplexity Sonar: top-level `citations: string[]`
+ *   2. OpenAI/Anthropic via :online: `message.annotations[].url_citation`
+ *   3. Some Gemini routes: `search_results[]`
+ */
+async function callOpenRouterImpl(
+  model: string,
+  prompt: string,
+  apiKey: string,
+  timeoutMs: number,
 ): Promise<CallResult> {
   // Per-call timeout — prevents one slow engine from blocking the whole batch
   const controller = new AbortController()
