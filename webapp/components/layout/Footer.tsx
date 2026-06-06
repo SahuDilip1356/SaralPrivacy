@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Mail } from "lucide-react";
+import { PressProofStrip } from "@/components/ui/PressProofStrip";
 
 const footerLinks = {
   platform: [
@@ -161,6 +162,11 @@ export function Footer() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Press proof strip */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-6 border-t border-navy-600 pt-5">
+        <PressProofStrip variant="compact" />
       </div>
 
       {/* Bottom bar */}

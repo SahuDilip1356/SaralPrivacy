@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { breadcrumbSchema } from "@/lib/schema";
 import SurveyClient from "./SurveyClient";
+import { PressProofStrip } from "@/components/ui/PressProofStrip";
 
 export const metadata: Metadata = {
   title: "Free DPDPA Readiness Assessment",
@@ -42,6 +43,7 @@ export default function AssessmentPage() {
         <p>Last reviewed: March 2026. Legal baseline: DPDP Rules, 2025 notified on 14 November 2025, with phased commencement. This assessment is for educational purposes and does not constitute legal advice.</p>
       </div>
 
+      <PressProofStrip />
       <SurveyClient />
     </>
   );

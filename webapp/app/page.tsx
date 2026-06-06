@@ -10,6 +10,7 @@ import { NewsletterSection } from "@/components/home/NewsletterSection";
 import { ConsultationCTA } from "@/components/home/ConsultationCTA";
 import { organizationSchema, websiteSchema, speakableSchema } from "@/lib/schema";
 import { AnswerBlock } from "@/components/seo/AnswerBlock";
+import { PressProofStrip } from "@/components/ui/PressProofStrip";
 
 export const metadata: Metadata = {
   title: "DPDPA Compliance for Indian Businesses",
@@ -33,6 +34,7 @@ export default function HomePage() {
         />
       </div>
       <TrustStrip />
+      <PressProofStrip />
       <AudienceCards />
       <BriefingsSection />
       <AssessmentCTA />

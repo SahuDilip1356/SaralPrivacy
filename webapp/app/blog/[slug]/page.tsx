@@ -10,6 +10,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 import { BriefingSubscribeCard } from "@/components/briefings/BriefingSubscribeCard";
+import { PressProofStrip } from "@/components/ui/PressProofStrip";
 import { articleSchema, breadcrumbSchema } from "@/lib/schema";
 import BlogImage from "@/components/BlogImage";
 
@@ -452,6 +453,9 @@ export default async function BlogDetailPage({ params }: Props) {
                 Take Free Assessment →
               </Link>
             </div>
+
+            {/* Press proof */}
+            <PressProofStrip variant="sidebar" />
 
             {/* Related posts */}
             {relatedPosts.length > 0 && (

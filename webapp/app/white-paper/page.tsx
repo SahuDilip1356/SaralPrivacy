@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import WhitePaperContent from "./WhitePaperContent";
 import { articleSchema } from "@/lib/schema";
+import { PressProofStrip } from "@/components/ui/PressProofStrip";
 
 export const metadata: Metadata = {
   title: "DPDPA White Paper Download",
@@ -32,6 +33,7 @@ export default function WhitePaperPage() {
           </p>
         </div>
       </div>
+      <PressProofStrip />
       <WhitePaperContent />
     </>
   );

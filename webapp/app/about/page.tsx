@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PressProofStrip } from "@/components/ui/PressProofStrip";
 
 export const metadata: Metadata = {
   title: "About SaralPrivacy",
@@ -100,6 +101,9 @@ export default function AboutPage() {
               ))}
             </div>
           </div>
+
+          {/* Press proof */}
+          <PressProofStrip />
 
           {/* Editorial Methodology */}
           <div className="bg-white rounded-xl border border-slate-200 p-7">
