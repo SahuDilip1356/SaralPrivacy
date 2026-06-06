@@ -10,6 +10,7 @@ const footerLinks = {
     { label: "FAQ", href: "/faq" },
     { label: "Glossary", href: "/glossary" },
     { label: "About", href: "/about" },
+    { label: "Media", href: "/media" },
   ],
   industries: [
     { label: "Recruitment Agencies", href: "/industries/recruitment-agencies" },

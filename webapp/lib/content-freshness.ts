@@ -11,6 +11,7 @@ export const FRESHNESS = {
   faq:           new Date('2026-03-01'),
   briefingsHub:  new Date('2026-03-28'),
   blogHub:       new Date('2026-03-29'),
+  media:         new Date('2026-06-06'),
   legal:         new Date('2026-03-01'),
 } as const
 
