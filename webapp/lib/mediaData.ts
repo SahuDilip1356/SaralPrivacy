@@ -27,11 +27,11 @@ export const mediaStats = {
 } as const;
 
 export const tierLabels: Record<MediaTier, string> = {
-  tier1: 'Tier 1 · National',
-  tier2: 'Tier 2 · Regional',
-  tier3: 'Tier 3 · Portal',
-  tier4: 'Tier 4 · Portal',
-  aggregator: 'Syndication aggregator',
+  tier1: 'National',
+  tier2: 'Regional',
+  tier3: 'Portal',
+  tier4: 'Portal',
+  aggregator: 'Syndication',
 };
 
 export const mediaPlacements: MediaPlacement[] = [

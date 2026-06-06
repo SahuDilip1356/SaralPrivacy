@@ -23,8 +23,8 @@ const counts = {
 
 const filters: { key: FilterKey; label: string }[] = [
   { key: "all", label: `All (${counts.all})` },
-  { key: "tier1", label: `Tier 1 — National (${counts.tier1})` },
-  { key: "tier2", label: `Tier 2 — Regional (${counts.tier2})` },
+  { key: "tier1", label: `National (${counts.tier1})` },
+  { key: "tier2", label: `Regional (${counts.tier2})` },
   { key: "verified", label: `✓ Verified (${counts.verified})` },
 ];
 
@@ -86,7 +86,7 @@ export function MediaCoverageList() {
                 Publisher
               </th>
               <th className="text-left px-4 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-300 hidden sm:table-cell">
-                Tier
+                Category
               </th>
               <th className="text-right px-4 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-300">
                 Link
