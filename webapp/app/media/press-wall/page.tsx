@@ -27,7 +27,7 @@ const EXCERPT =
 const PUBLISHED = "2 June 2026";
 
 const HERO_SERIALS = [3, 4];
-const SECONDARY_SERIALS = [5, 7, 6];
+const SECONDARY_SERIALS = [5, 7, 6, 8, 10, 11];
 
 const categoryPill: Record<MediaTier, string> = {
   tier1: "bg-green-500/20 text-green-400 border border-green-500/30",
