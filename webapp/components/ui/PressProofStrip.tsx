@@ -27,7 +27,7 @@ const PUBS = [
 ];
 
 export function PressProofStrip({ variant = "banner" }: { variant?: Variant }) {
-  /* ── Compact — used inside the footer (dark navy bg) ── */
+  /* ── Compact — used inside the footer (already on navy bg, stays minimal) ── */
   if (variant === "compact") {
     return (
       <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
@@ -58,11 +58,11 @@ export function PressProofStrip({ variant = "banner" }: { variant?: Variant }) {
     );
   }
 
-  /* ── Sidebar — compact card for blog sidebar (light bg) ── */
+  /* ── Sidebar — navy card for blog sidebar + assessment right column ── */
   if (variant === "sidebar") {
     return (
-      <div className="bg-white rounded-xl border border-slate-200 p-5">
-        <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 mb-3">
+      <div className="bg-navy-700 rounded-xl border border-navy-600 p-5">
+        <p className="text-[10px] font-semibold uppercase tracking-wider text-gold-400 mb-3">
           As seen in
         </p>
         <div className="flex flex-wrap gap-1.5 mb-4">
@@ -72,7 +72,7 @@ export function PressProofStrip({ variant = "banner" }: { variant?: Variant }) {
               href={p.url}
               target="_blank"
               rel="nofollow noopener"
-              className="inline-block text-[11px] font-medium text-navy-700 bg-cloud-50 border border-slate-200 rounded-md px-2 py-1 hover:border-teal-400 hover:text-teal-600 transition-colors"
+              className="inline-block text-[11px] font-medium text-slate-300 bg-navy-800 border border-navy-600 rounded-md px-2 py-1 hover:border-teal-400 hover:text-teal-300 transition-colors"
             >
               {p.name}
             </a>
@@ -80,7 +80,7 @@ export function PressProofStrip({ variant = "banner" }: { variant?: Variant }) {
         </div>
         <Link
           href="/media/press-wall"
-          className="inline-flex items-center gap-1 text-xs font-semibold text-teal-600 hover:text-teal-700"
+          className="inline-flex items-center gap-1 text-xs font-semibold text-teal-400 hover:text-teal-300 transition-colors"
         >
           View press coverage <ArrowRight size={11} />
         </Link>
@@ -88,11 +88,11 @@ export function PressProofStrip({ variant = "banner" }: { variant?: Variant }) {
     );
   }
 
-  /* ── Banner (default) — full-width proof section ── */
+  /* ── Banner (default) — full-width navy proof section ── */
   return (
-    <section aria-label="Press coverage proof" className="bg-cloud-50 border-y border-slate-200 py-8 sm:py-10">
+    <section aria-label="Press coverage proof" className="bg-navy-700 py-8 sm:py-10">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 text-center">
-        <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-4">
+        <p className="text-[11px] font-semibold uppercase tracking-wider text-gold-400 mb-4">
           As seen in
         </p>
 
@@ -104,15 +104,15 @@ export function PressProofStrip({ variant = "banner" }: { variant?: Variant }) {
               href={p.url}
               target="_blank"
               rel="nofollow noopener"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-navy-700 bg-white border border-slate-200 rounded-full px-4 py-1.5 hover:border-teal-400 hover:text-teal-600 hover:shadow-sm transition-all"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-white bg-navy-800 border border-navy-600 rounded-full px-4 py-1.5 hover:border-teal-400 hover:text-teal-300 hover:shadow-sm transition-all"
             >
               {p.name}
-              <ExternalLink size={10} className="text-slate-400" />
+              <ExternalLink size={10} className="text-slate-500" />
             </a>
           ))}
         </div>
 
-        <p className="text-sm text-slate-600 max-w-lg mx-auto mb-6">
+        <p className="text-sm text-slate-300 max-w-lg mx-auto mb-6">
           SaralPrivacy&apos;s DPDPA readiness assessment has been featured in ANI,
           Business Standard, The Tribune, Lokmat Times, and Latestly.
         </p>
@@ -126,7 +126,7 @@ export function PressProofStrip({ variant = "banner" }: { variant?: Variant }) {
           </Link>
           <Link
             href="/media/press-wall"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-teal-600 border border-teal-200 px-5 py-2.5 rounded-xl hover:bg-teal-50 transition-colors"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-teal-400 border border-teal-600 px-5 py-2.5 rounded-xl hover:bg-teal-900/40 transition-colors"
           >
             See press coverage
           </Link>
