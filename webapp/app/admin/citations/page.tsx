@@ -48,18 +48,22 @@ export default async function CitationsAdmin() {
   const latest = rows.filter((r) => r.run_id === latestRunId)
   const latestDate = latest[0]?.date
 
+  const erroredCount = latest.filter((r) => r.error_message).length
   const overall = {
     total: latest.length,
     cited: latest.filter((r) => r.cited === 'Yes').length,
     mentioned: latest.filter((r) => r.cited === 'Mentioned-no-link').length,
+    errored: erroredCount,
+    cleanTotal: latest.length - erroredCount,
   }
 
-  const byEngine: Record<string, { total: number; cited: number }> = {}
+  const byEngine: Record<string, { total: number; cited: number; errored: number }> = {}
   for (const r of latest) {
     const k = r.engine_label
-    byEngine[k] ??= { total: 0, cited: 0 }
+    byEngine[k] ??= { total: 0, cited: 0, errored: 0 }
     byEngine[k].total++
     if (r.cited === 'Yes') byEngine[k].cited++
+    if (r.error_message) byEngine[k].errored++
   }
 
   const byQuery: Record<string, { total: number; cited: number; topic: string }> = {}
@@ -96,8 +100,13 @@ export default async function CitationsAdmin() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
         <div className="bg-blue-50 border border-blue-200 rounded-xl p-5">
           <p className="text-xs text-blue-700 font-semibold uppercase tracking-wider">Overall Cite Rate</p>
-          <p className="text-3xl font-bold text-navy-700 mt-2">{pct(overall.cited, overall.total)}</p>
-          <p className="text-xs text-slate-500 mt-1">{overall.cited} of {overall.total} prompts</p>
+          <p className="text-3xl font-bold text-navy-700 mt-2">{pct(overall.cited, overall.cleanTotal)}</p>
+          <p className="text-xs text-slate-500 mt-1">
+            {overall.cited} of {overall.cleanTotal} clean prompts
+            {overall.errored > 0 && (
+              <span className="text-amber-600"> · {overall.errored} errored</span>
+            )}
+          </p>
         </div>
         <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-5">
           <p className="text-xs text-yellow-700 font-semibold uppercase tracking-wider">Mentioned (no link)</p>
@@ -114,13 +123,21 @@ export default async function CitationsAdmin() {
       {/* ── By Engine ────────────────────────────────────────────────────── */}
       <h2 className="text-lg font-semibold text-navy-700 mb-3">Cite Rate by Engine — Latest Run</h2>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-10">
-        {Object.entries(byEngine).map(([engine, v]) => (
-          <div key={engine} className="bg-white border border-slate-200 rounded-lg p-4">
-            <p className="text-xs text-slate-500">{engine}</p>
-            <p className="text-2xl font-bold text-navy-700 mt-1">{pct(v.cited, v.total)}</p>
-            <p className="text-xs text-slate-400">{v.cited}/{v.total}</p>
-          </div>
-        ))}
+        {Object.entries(byEngine).map(([engine, v]) => {
+          const cleanCount = v.total - v.errored
+          return (
+            <div key={engine} className="bg-white border border-slate-200 rounded-lg p-4">
+              <p className="text-xs text-slate-500">{engine}</p>
+              <p className="text-2xl font-bold text-navy-700 mt-1">{pct(v.cited, cleanCount)}</p>
+              <p className="text-xs text-slate-400">
+                {v.cited}/{cleanCount}
+                {v.errored > 0 && (
+                  <span className="text-amber-600 ml-1">· {v.errored} err</span>
+                )}
+              </p>
+            </div>
+          )
+        })}
       </div>
 
       {/* ── By Query ─────────────────────────────────────────────────────── */}

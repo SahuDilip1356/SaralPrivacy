@@ -91,19 +91,27 @@ export function summarizeRun(results: RunResult[]) {
   const cited      = results.filter((r) => r.cited === 'Yes').length
   const mentioned  = results.filter((r) => r.cited === 'Mentioned-no-link').length
   const errored    = results.filter((r) => r.errorMessage).length
-  const byEngine: Record<string, { total: number; cited: number }> = {}
+  // Cite rate is computed over CLEAN rows only. Errored rows (timeouts,
+  // upstream 5xx) are recorded as `cited: 'No'` by the runner's catch
+  // block, so counting them in the denominator silently deflates the rate.
+  // Exclude them; surface the errored count separately so operators can see
+  // when a run is contaminated.
+  const cleanTotal = total - errored
+  const byEngine: Record<string, { total: number; cited: number; errored: number }> = {}
   for (const r of results) {
     const k = r.engineLabel
-    byEngine[k] ??= { total: 0, cited: 0 }
+    byEngine[k] ??= { total: 0, cited: 0, errored: 0 }
     byEngine[k].total++
     if (r.cited === 'Yes') byEngine[k].cited++
+    if (r.errorMessage) byEngine[k].errored++
   }
   return {
     total,
     cited,
     mentioned,
     errored,
-    citeRate: total ? cited / total : 0,
+    cleanTotal,
+    citeRate: cleanTotal ? cited / cleanTotal : 0,
     byEngine,
   }
 }
