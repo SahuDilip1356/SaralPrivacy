@@ -84,15 +84,6 @@ export default function MediaCoveragePage() {
             <MediaCoverageList />
           </div>
 
-          {/* Honesty note */}
-          <div className="mt-7 bg-gold-50 border-l-4 border-gold-400 rounded-r-lg px-4 py-3">
-            <p className="text-xs text-slate-600 leading-relaxed">
-              <strong className="text-navy-700">About this coverage:</strong> These are syndicated
-              press-release placements distributed through the ANI / VMPL wire network — not
-              independent editorial reporting. Three placements (Business Standard, The Tribune, ANI)
-              are independently verified live. Links open the publisher&apos;s page in a new tab.
-            </p>
-          </div>
 
           <p className="mt-6 text-xs text-slate-400">
             Last reviewed: {formatReviewDate(FRESHNESS.media)} · For informational purposes; not legal advice.
