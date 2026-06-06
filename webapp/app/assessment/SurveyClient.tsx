@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowRight, ArrowLeft, CheckCircle, AlertTriangle, Shield, SkipForward, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { trackEvent } from "@/lib/analytics";
+import { PressProofStrip } from "@/components/ui/PressProofStrip";
 import {
   QUESTIONS,
   VERDICT_BANDS,
@@ -762,7 +763,8 @@ export default function SurveyClient() {
             </div>
           </div>
 
-          {/* Right — Authorization card */}
+          {/* Right — Authorization card + press proof */}
+          <div>
           <div className="bg-white rounded-2xl border border-slate-200 shadow-lg p-7">
             <h2 className="text-xl font-bold text-navy-900 mb-1">Start your free DPDPA readiness check</h2>
             <div className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-6">Before you begin</div>
@@ -828,6 +830,10 @@ export default function SurveyClient() {
                 </label>
               ))}
             </div>
+          </div>
+          <div className="mt-4">
+            <PressProofStrip variant="sidebar" />
+          </div>
           </div>
         </div>
       </div>
