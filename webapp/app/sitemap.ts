@@ -74,8 +74,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: BASE,                    lastModified: CORE_UPDATED,     changeFrequency: 'weekly',  priority: 1.0 },
     { url: `${BASE}/about`,         lastModified: CORE_UPDATED,     changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE}/contact`,       lastModified: CORE_UPDATED,     changeFrequency: 'monthly', priority: 0.5 },
-    { url: `${BASE}/media`,         lastModified: FRESHNESS.media,  changeFrequency: 'monthly', priority: 0.6 },
-    { url: `${BASE}/media/coverage`, lastModified: FRESHNESS.media, changeFrequency: 'monthly', priority: 0.4 },
+    { url: `${BASE}/media`,            lastModified: FRESHNESS.media, changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${BASE}/media/coverage`,   lastModified: FRESHNESS.media, changeFrequency: 'monthly', priority: 0.4 },
+    { url: `${BASE}/media/press-wall`, lastModified: FRESHNESS.media, changeFrequency: 'monthly', priority: 0.5 },
     { url: `${BASE}/white-paper`,   lastModified: CORE_UPDATED,     changeFrequency: 'monthly', priority: 0.8 },
     // /resources → 301 redirect to /blog; excluded from sitemap to avoid index pollution
 

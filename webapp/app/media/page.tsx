@@ -58,6 +58,13 @@ export default function MediaPage() {
               <br />
               <span className="text-green-500">seen across India&apos;s press</span>
             </h1>
+            <div className="flex flex-wrap items-center gap-5">
+            <Link
+              href="/media/press-wall"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-teal-600 border border-teal-200 rounded-lg px-4 py-2 hover:bg-teal-500 hover:text-white hover:border-teal-500 transition-colors whitespace-nowrap"
+            >
+              Press Wall <ArrowRight size={14} />
+            </Link>
             <div className="flex gap-8">
               <div>
                 <div className="text-3xl font-bold text-navy-700 leading-none">
@@ -71,6 +78,7 @@ export default function MediaPage() {
                 </div>
                 <div className="text-xs text-slate-500 mt-1.5">Potential reach</div>
               </div>
+            </div>
             </div>
           </div>
 
