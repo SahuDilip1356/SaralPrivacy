@@ -18,113 +18,88 @@ export const metadata: Metadata = {
   },
 };
 
-const HEADLINE =
-  "DPDPA Compliance Pressure Builds, SaralPrivacy Launches Free Readiness Assessment to Help Indian Businesses Map Privacy Gaps";
-
-const EXCERPT =
-  "As Indian businesses prepare for a new phase of data protection compliance under the Digital Personal Data Protection Act, 2023, SaralPrivacy has launched a free DPDPA readiness assessment to help organisations evaluate their current privacy preparedness.";
-
-const PUBLISHED = "2 June 2026";
-
 const HERO_SERIALS = [3, 4];
 const SECONDARY_SERIALS = [5, 7, 6, 8, 10, 11];
 
-const categoryPill: Record<MediaTier, string> = {
-  tier1: "bg-green-500/20 text-green-400 border border-green-500/30",
-  tier2: "bg-teal-500/20 text-teal-300 border border-teal-500/30",
-  tier3: "bg-slate-500/20 text-slate-300 border border-slate-500/30",
-  tier4: "bg-slate-500/20 text-slate-300 border border-slate-500/30",
-  aggregator: "bg-navy-500/20 text-navy-300 border border-navy-500/30",
+const SCREENSHOTS: Record<number, string> = {
+  3:  "/press/business-standard.png",
+  4:  "/press/the-tribune.png",
+  5:  "/press/ani-news.png",
+  6:  "/press/lokmat-english.jpg",
+  7:  "/press/latestly.jpg",
+  8:  "/press/world-news-network.jpg",
+  10: "/press/karnataka-news-network.jpg",
+  11: "/press/indian-economic-observer.jpg",
 };
 
-function PressCard({
-  serial,
-  size,
-}: {
-  serial: number;
-  size: "hero" | "secondary";
-}) {
+const categoryPill: Record<MediaTier, string> = {
+  tier1:      "bg-green-100 text-green-700",
+  tier2:      "bg-teal-100 text-teal-700",
+  tier3:      "bg-slate-100 text-slate-600",
+  tier4:      "bg-slate-100 text-slate-600",
+  aggregator: "bg-navy-100 text-navy-700",
+};
+
+function PressCard({ serial, size }: { serial: number; size: "hero" | "secondary" }) {
   const pub = mediaPlacements.find((p) => p.serial === serial)!;
   const isHero = size === "hero";
+  const imgSrc = SCREENSHOTS[serial];
 
   return (
-    <article className="flex flex-col rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-card hover:shadow-card-hover transition-shadow">
-      {/* Branded header strip */}
-      <div
-        className={`relative flex flex-col justify-between bg-gradient-to-br from-navy-700 to-navy-800 px-5 py-4 ${
-          isHero ? "min-h-[100px]" : "min-h-[80px]"
-        }`}
+    <article className="flex flex-col rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-card hover:shadow-card-hover transition-shadow group">
+      {/* Screenshot clipping */}
+      <a
+        href={pub.url ?? undefined}
+        target="_blank"
+        rel="nofollow noopener"
+        className={`relative block overflow-hidden bg-slate-100 ${isHero ? "h-52" : "h-40"}`}
+        tabIndex={-1}
+        aria-hidden="true"
       >
-        {/* Top row: category + DA */}
-        <div className="flex items-center justify-between">
-          <span
-            className={`inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full ${categoryPill[pub.tier]}`}
-          >
-            {tierLabels[pub.tier]}
-          </span>
-          {pub.da != null && (
-            <span className="text-[10px] font-medium text-teal-300 border border-teal-500/30 rounded-full px-2 py-0.5">
-              DA {pub.da}
-            </span>
-          )}
-        </div>
-        {/* Bottom row: verified badge */}
-        <div className="flex items-center gap-1 mt-3">
-          <ShieldCheck size={11} className="text-green-400" />
-          <span className="text-[10px] font-semibold text-green-400 uppercase tracking-wide">
-            Verified live
-          </span>
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="flex flex-col flex-1 p-5 gap-3">
-        {/* Publication name */}
-        <h2
-          className={`font-bold text-navy-700 leading-tight ${
-            isHero ? "text-lg" : "text-base"
-          }`}
-        >
-          {pub.name}
-        </h2>
-
-        {/* Headline */}
-        <p
-          className={`text-slate-600 leading-snug ${
-            isHero ? "text-sm line-clamp-3" : "text-xs line-clamp-2"
-          }`}
-        >
-          &ldquo;{HEADLINE}&rdquo;
-        </p>
-
-        {isHero && (
-          <p className="text-xs text-slate-500 line-clamp-2">{EXCERPT}</p>
+        {imgSrc && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={imgSrc}
+            alt={`${pub.name} — press coverage screenshot`}
+            className="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.02]"
+          />
         )}
+        {/* Verified badge overlay */}
+        <span className="absolute top-2 left-2 inline-flex items-center gap-1 text-[10px] font-semibold bg-green-500 text-white px-2 py-0.5 rounded-full shadow-sm">
+          <ShieldCheck size={9} /> Verified live
+        </span>
+      </a>
 
-        {/* Divider */}
-        <hr className="border-slate-100" />
-
-        {/* Footer row */}
-        <div className="flex items-center justify-between gap-2 mt-auto">
-          <div className="flex flex-col gap-0.5">
-            <span className="text-[11px] text-slate-400">{PUBLISHED}</span>
-            {pub.reach != null && (
-              <span className="text-[11px] font-medium text-navy-700">
-                {pub.reach} readers
+      {/* Info strip */}
+      <div className="flex items-center justify-between gap-3 px-4 py-3 border-t border-slate-100">
+        <div className="min-w-0">
+          <p className={`font-bold text-navy-700 truncate ${isHero ? "text-sm" : "text-xs"}`}>
+            {pub.name}
+          </p>
+          <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
+            <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${categoryPill[pub.tier]}`}>
+              {tierLabels[pub.tier]}
+            </span>
+            {pub.da != null && (
+              <span className="text-[10px] font-medium text-teal-600">
+                DA {pub.da}
               </span>
             )}
+            {pub.reach != null && (
+              <span className="text-[10px] text-slate-400">· {pub.reach}</span>
+            )}
           </div>
-          {pub.url ? (
-            <a
-              href={pub.url}
-              target="_blank"
-              rel="nofollow noopener"
-              className="inline-flex items-center gap-1 text-xs font-semibold text-teal-600 border border-teal-200 rounded-lg px-3 py-1.5 hover:bg-teal-500 hover:text-white hover:border-teal-500 transition-colors whitespace-nowrap"
-            >
-              Read article <ExternalLink size={10} />
-            </a>
-          ) : null}
         </div>
+        {pub.url && (
+          <a
+            href={pub.url}
+            target="_blank"
+            rel="nofollow noopener"
+            className="flex-shrink-0 inline-flex items-center gap-1 text-[11px] font-semibold text-teal-600 border border-teal-200 rounded-lg px-2.5 py-1.5 hover:bg-teal-500 hover:text-white hover:border-teal-500 transition-colors"
+          >
+            Open <ExternalLink size={10} />
+          </a>
+        )}
       </div>
     </article>
   );
@@ -152,13 +127,14 @@ export default function PressWallPage() {
             SaralPrivacy in the Press
           </h1>
           <p className="mt-2 text-sm text-slate-600 max-w-xl">
-            Our DPDPA readiness assessment has been covered across India&apos;s top national and regional publications via the ANI&nbsp;/&nbsp;VMPL wire network.
+            DPDPA readiness assessment coverage across India&apos;s national and
+            regional press — distributed via ANI&nbsp;/&nbsp;VMPL wire network.
           </p>
 
           {/* Stats strip */}
           <div className="flex flex-wrap gap-6 mt-5">
             <div>
-              <div className="text-2xl font-bold text-navy-700 leading-none">5</div>
+              <div className="text-2xl font-bold text-navy-700 leading-none">8</div>
               <div className="text-xs text-slate-500 mt-1">Featured publications</div>
             </div>
             <div>
@@ -166,20 +142,20 @@ export default function PressWallPage() {
               <div className="text-xs text-slate-500 mt-1">Total placements</div>
             </div>
             <div>
-              <div className="text-2xl font-bold text-navy-700 leading-none">53M+</div>
+              <div className="text-2xl font-bold text-navy-700 leading-none">56M+</div>
               <div className="text-xs text-slate-500 mt-1">Combined reach</div>
             </div>
           </div>
         </div>
 
-        {/* Hero cards — 2 column */}
+        {/* Hero row — 2 column */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
           {HERO_SERIALS.map((serial) => (
             <PressCard key={serial} serial={serial} size="hero" />
           ))}
         </div>
 
-        {/* Secondary cards — 3 column */}
+        {/* Secondary row — 3 column × 2 rows */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {SECONDARY_SERIALS.map((serial) => (
             <PressCard key={serial} serial={serial} size="secondary" />
@@ -207,7 +183,8 @@ export default function PressWallPage() {
         {/* Footer */}
         <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
           <p className="text-xs text-slate-400">
-            Last reviewed: {formatReviewDate(FRESHNESS.media)} · Syndicated press-release placements via ANI&nbsp;/&nbsp;VMPL wire network.
+            Last reviewed: {formatReviewDate(FRESHNESS.media)} · Syndicated
+            press-release placements via ANI&nbsp;/&nbsp;VMPL wire network.
           </p>
           <Link
             href="/media/coverage"
