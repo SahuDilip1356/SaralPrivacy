@@ -51,10 +51,10 @@ export const industryAssessmentCopy = {
   },
   "ca-firms": {
     eyebrow:  "Free · For CA Firms",
-    heading:  "Do your client files meet DPDPA standards?",
-    body:     "ITR data, GST records, PAN copies — check exactly what your firm needs to fix before the deadline.",
-    cta:      "Check CA Firm Readiness →",
-    href:     "/assessment",
+    heading:  "Is your client-document handling DPDPA-ready?",
+    body:     "PAN, Aadhaar, ITR, bank statements, payroll across WhatsApp, Drive and laptops — get your firm's readiness score in 3 minutes.",
+    cta:      "Start CA Firm Risk Scan →",
+    href:     "/assessment/ca-firms",
   },
   "training-institutes": {
     eyebrow:  "Free · For Training Institutes",
