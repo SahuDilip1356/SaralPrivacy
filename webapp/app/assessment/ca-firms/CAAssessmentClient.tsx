@@ -127,10 +127,12 @@ export default function CAAssessmentClient() {
   const [answers, setAnswers] = useState<IAAnswers>({});
   const [result, setResult] = useState<IAResult | null>(null);
 
-  // Lead capture (Phase 3 wires the POST; here it reveals the gated report).
+  // Lead capture
   const [reportUnlocked, setReportUnlocked] = useState(false);
   const [form, setForm] = useState({ name: "", firm: "", email: "", phone: "", consent: false });
   const [formError, setFormError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [hpUrl, setHpUrl] = useState(""); // honeypot — empty for real users
 
   const q = questions[qIndex];
   const isOptional = !!q?.optional;
@@ -183,8 +185,9 @@ export default function CAAssessmentClient() {
     else setQIndex((i) => i - 1);
   }
 
-  function unlockReport(e: FormEvent) {
+  async function unlockReport(e: FormEvent) {
     e.preventDefault();
+    if (!result || submitting) return;
     if (!form.name.trim() || !form.email.trim() || !form.phone.trim()) {
       setFormError("Please add your name, email and phone so we can send your report.");
       return;
@@ -194,9 +197,65 @@ export default function CAAssessmentClient() {
       return;
     }
     setFormError("");
-    // TODO (Phase 3): POST to /api/assessment with industry:"ca-firms" + result, then email report.
-    trackEvent.reportRequested({ band: result?.band, sector: "ca-firms" });
-    setReportUnlocked(true);
+    setSubmitting(true);
+    trackEvent.reportRequested({ band: result.band, sector: "ca-firms" });
+
+    const payload = JSON.stringify({
+      email: form.email.trim(),
+      name: form.name.trim(),
+      business: form.firm.trim(),
+      mobile: form.phone.trim(),
+      industry: "ca-firms",
+      report_type: "ca-firm",
+      answers,
+      result: {
+        finalScore: result.readinessScore,
+        rawScore: result.riskScore,
+        verdictBand: result.band,
+        verdictDescription: result.bandDescription,
+        dataExposure: result.dataExposure,
+        controlMaturity: result.controlMaturity,
+        operationalReadiness: 0,
+        categoryScores: result.bucketScores,
+        redFlagsTriggered: result.redFlags,
+        immediateActions: result.recommendations,
+        thirtyDayActions: [],
+      },
+      consentReport: true,
+      consentNewsletter: false,
+      consentFollowup: false,
+      hp_url: hpUrl,
+    });
+
+    // Retry transient failures so a network/DB blip doesn't lose the lead.
+    // Answers stay in React state throughout, so nothing is lost.
+    let saved = false;
+    for (let attempt = 1; attempt <= 3 && !saved; attempt++) {
+      try {
+        const res = await fetch("/api/assessment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: payload,
+        });
+        if (res.ok) {
+          saved = true;
+        } else if (res.status === 429) {
+          const wait = Number(res.headers.get("Retry-After")) || 2;
+          await new Promise((r) => setTimeout(r, Math.min(wait, 5) * 1000));
+        } else {
+          await new Promise((r) => setTimeout(r, attempt * 800));
+        }
+      } catch {
+        await new Promise((r) => setTimeout(r, attempt * 800));
+      }
+    }
+
+    setSubmitting(false);
+    if (saved) {
+      setReportUnlocked(true);
+    } else {
+      setFormError("We couldn't save your results just now. Please try again — your answers are safe.");
+    }
   }
 
   function retake() {
@@ -204,6 +263,9 @@ export default function CAAssessmentClient() {
     setResult(null);
     setReportUnlocked(false);
     setForm({ name: "", firm: "", email: "", phone: "", consent: false });
+    setFormError("");
+    setSubmitting(false);
+    setHpUrl("");
     setQIndex(0);
     setPhase("landing");
   }
@@ -339,9 +401,24 @@ export default function CAAssessmentClient() {
                   <Link href="/privacy" className="text-green-600 underline">Privacy Notice</Link>.
                 </span>
               </label>
+              {/* Honeypot — hidden from users, only bots fill it */}
+              <input
+                type="text"
+                name="hp_url"
+                value={hpUrl}
+                onChange={(e) => setHpUrl(e.target.value)}
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                className="hidden"
+              />
               {formError && <p className="mt-2 text-xs font-medium text-red-600">{formError}</p>}
-              <button type="submit" className="mt-4 w-full rounded-lg bg-green-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-green-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-300">
-                Show my priority fixes
+              <button
+                type="submit"
+                disabled={submitting}
+                className="mt-4 w-full rounded-lg bg-green-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-green-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-300 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {submitting ? "Saving your results…" : "Show my priority fixes"}
               </button>
             </form>
           ) : (
