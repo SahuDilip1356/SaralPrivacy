@@ -1,7 +1,8 @@
 "use client";
 
-import { useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   ArrowRight,
   ArrowLeft,
@@ -121,11 +122,18 @@ function MiniBar({ label, value, polarity }: { label: string; value: number; pol
 // ── Main client ───────────────────────────────────────────────────────────────
 
 export default function CAAssessmentClient() {
+  const router = useRouter();
   const questions = caFirmPack.questions;
-  const [phase, setPhase] = useState<"landing" | "quiz" | "result">("landing");
+  // The marketing page (/industries/ca-firms) is the landing — open directly on Q1.
+  const [phase, setPhase] = useState<"quiz" | "result">("quiz");
   const [qIndex, setQIndex] = useState(0);
   const [answers, setAnswers] = useState<IAAnswers>({});
   const [result, setResult] = useState<IAResult | null>(null);
+
+  // Fire the funnel "start" event on mount (no landing screen to gate it now).
+  useEffect(() => {
+    trackEvent.assessmentStart();
+  }, []);
 
   // Lead capture
   const [reportUnlocked, setReportUnlocked] = useState(false);
@@ -142,12 +150,6 @@ export default function CAAssessmentClient() {
   const hasAnswer = q ? selectedIds(answers[q.id]).length > 0 : false;
   const canAdvance = isOptional || hasAnswer;
   const isLast = qIndex === questions.length - 1;
-
-  function start() {
-    setPhase("quiz");
-    setQIndex(0);
-    trackEvent.assessmentStart();
-  }
 
   function pick(question: IAQuestion, optId: string) {
     setAnswers((prev) => {
@@ -181,7 +183,7 @@ export default function CAAssessmentClient() {
   }
 
   function back() {
-    if (qIndex === 0) setPhase("landing");
+    if (qIndex === 0) router.push("/industries/ca-firms");
     else setQIndex((i) => i - 1);
   }
 
@@ -267,7 +269,7 @@ export default function CAAssessmentClient() {
     setSubmitting(false);
     setHpUrl("");
     setQIndex(0);
-    setPhase("landing");
+    setPhase("quiz");
   }
 
   const servicePrefill = useMemo(() => {
@@ -277,38 +279,6 @@ export default function CAAssessmentClient() {
       .options.filter((o) => ids.includes(o.id) && o.id !== "not-sure")
       .map((o) => o.label);
   }, [answers]);
-
-  // ── Landing ────────────────────────────────────────────────────────────────
-  if (phase === "landing") {
-    const p = caFirmPack.positioning;
-    return (
-      <div className="min-h-screen bg-pearl-50">
-        <div className="bg-navy-700">
-          <div className="mx-auto max-w-3xl px-4 py-14 sm:px-6">
-            <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-teal-300">
-              <ShieldCheck size={18} /> CA Firm DPDPA Risk Scan
-            </div>
-            <h1 className="text-2xl font-bold leading-snug text-white sm:text-3xl">{p.hero}</h1>
-            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-slate-300">{p.sub}</p>
-            <button
-              onClick={start}
-              className="mt-7 inline-flex items-center gap-2 rounded-xl bg-green-500 px-6 py-3 font-semibold text-white transition-colors hover:bg-green-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-300 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-700"
-            >
-              {p.cta} <ArrowRight size={18} />
-            </button>
-            <p className="mt-3 text-xs text-slate-400">{p.microline}</p>
-            <div className="mt-7 flex flex-wrap gap-2">
-              {p.chips.map((chip) => (
-                <span key={chip} className="rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-medium text-slate-200">
-                  {chip}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   // ── Result ───────────────────────────────────────────────────────────────────
   if (phase === "result" && result) {
@@ -471,6 +441,12 @@ export default function CAAssessmentClient() {
   return (
     <div className="min-h-screen bg-pearl-50">
       <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6">
+        {/* Context strip — the marketing page is the landing; this just anchors the scan */}
+        <div className="mb-5 flex items-center gap-2 text-sm font-semibold text-teal-700">
+          <ShieldCheck size={16} /> {caFirmPack.positioning.title}
+          <span className="font-normal text-slate-400">· {caFirmPack.positioning.microline}</span>
+        </div>
+
         {/* Progress */}
         <div className="mb-7">
           <div className="mb-2 flex items-center justify-between text-sm text-slate-500">
