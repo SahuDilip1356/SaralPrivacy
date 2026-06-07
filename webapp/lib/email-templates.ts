@@ -342,6 +342,9 @@ export interface SurveyResultData {
   riskFlags: string[];
   answerSummary: Array<{ question: string; answer: string }>;
   reportToken?: string;
+  /** Optional industry lead-magnet (e.g. CA Firm DPDPA Starter Checklist) */
+  checklistUrl?: string;
+  checklistTitle?: string;
   categoryScores?: {
     noticeConsent: number;
     accessControl: number;
@@ -550,6 +553,20 @@ export function surveyResultEmailTemplate(data: SurveyResultData): { subject: st
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:24px;">
       ${stepsHtml}
     </table>
+
+    ${data.checklistUrl ? `
+    <!-- Block 6b: Industry checklist lead magnet -->
+    <div style="background-color:#E6FAF4;border:1px solid #87E9C8;border-radius:10px;padding:16px 20px;margin-bottom:24px;">
+      <p style="margin:0 0 4px;font-size:13px;font-weight:700;color:${NAV};">Your free download</p>
+      <p style="margin:0 0 12px;font-size:12px;color:${TEXT};line-height:1.6;">Use the ${data.checklistTitle || "Starter Checklist"} to turn these steps into action — tick what you do, fix the rest.</p>
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td style="background-color:#07B981;border-radius:8px;padding:11px 22px;">
+            <a href="${data.checklistUrl}" style="color:#FFFFFF;font-size:13px;font-weight:700;text-decoration:none;">Download the ${data.checklistTitle || "Checklist"} →</a>
+          </td>
+        </tr>
+      </table>
+    </div>` : ""}
 
     ${divider()}
 

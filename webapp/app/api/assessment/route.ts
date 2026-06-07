@@ -175,6 +175,8 @@ export async function POST(request: NextRequest) {
           // CA pack uses industry-specific bucket keys, not the general engine's 6
           // category keys, so skip the email scorecard for it (DB still stores them).
           categoryScores:  report_type === "ca-firm" ? undefined : result?.categoryScores,
+          checklistUrl:    report_type === "ca-firm" ? "https://saralprivacy.com/templates/ca-firm-dpdpa-starter-checklist.pdf" : undefined,
+          checklistTitle:  report_type === "ca-firm" ? "CA Firm DPDPA Starter Checklist" : undefined,
         });
         if (emailResult.success) {
           databases.updateDocument(DB_ID, COLLECTIONS.ASSESSMENTS, doc.$id, {

@@ -36,6 +36,16 @@
 
 ---
 
+## Build progress (2026-06-07) — branch `industry-assessment-engine`
+
+- ✅ **Phase 1** — engine + CA pack (`lib/data/industry-assessment/`), 33-assertion harness, strict typecheck.
+- ✅ **Phase 2** — `/assessment/ca-firms` accessible client (overrides legacy wizard) + reimagined `/industries/ca-firms`.
+- ✅ **Phase 3** — lead capture → `/api/assessment` (`report_type: ca-firm`) + report email; retry/honeypot; privacy-first consent.
+- ✅ **Infra** — lazy-init Appwrite client (`lib/appwrite.ts`); 13 env vars migrated to **all-branch Preview** (durable).
+- ✅ **Phase 4** — CA Firm DPDPA Starter Checklist as a **branded PDF** (`public/templates/ca-firm-dpdpa-starter-checklist.pdf`, generated via `tools/build-ca-checklist.mjs` + Playwright). Linked from the result page + report email.
+- ⏭️ **Phase 5** — analytics QA, then merge to `main` (PR open; not merged — awaiting approval).
+- Preview: `webapp-git-industry-assessment-engine-dilipsahu31s-projects.vercel.app`. Commits: engine `fd8db63`, appwrite `d2ef9b0`, lead-capture `5719cd2`, checklist `(this push)`.
+
 ## 1. Current state
 
 ### 1.1 Two engines exist; industries are on the weak one

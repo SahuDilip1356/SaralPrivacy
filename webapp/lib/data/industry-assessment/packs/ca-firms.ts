@@ -474,7 +474,7 @@ export const caFirmPack: IndustryPack = {
   recommend,
   leadMagnet: {
     title: "CA Firm DPDPA Starter Checklist",
-    href: "/resources",
+    href: "/templates/ca-firm-dpdpa-starter-checklist.pdf",
   },
 };
 

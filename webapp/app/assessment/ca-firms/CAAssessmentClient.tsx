@@ -432,9 +432,15 @@ export default function CAAssessmentClient() {
                   </li>
                 ))}
               </ul>
-              <Link href={caFirmPack.leadMagnet!.href} className="mt-4 inline-flex items-center gap-2 rounded-lg border border-navy-200 px-4 py-2.5 text-sm font-semibold text-navy-700 hover:bg-pearl-100">
+              <a
+                href={caFirmPack.leadMagnet!.href}
+                download
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 inline-flex items-center gap-2 rounded-lg border border-navy-200 px-4 py-2.5 text-sm font-semibold text-navy-700 hover:bg-pearl-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-400"
+              >
                 <FileCheck2 size={16} /> Download the {caFirmPack.leadMagnet!.title}
-              </Link>
+              </a>
             </div>
           )}
 
