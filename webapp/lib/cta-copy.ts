@@ -67,8 +67,8 @@ export const industryAssessmentCopy = {
     eyebrow:  "Free · For D2C Brands",
     heading:  "Is your customer data collection DPDPA-ready?",
     body:     "Cart abandonment, remarketing pixels, SMS/WhatsApp — see what needs fixing before you face a complaint.",
-    cta:      "Check D2C Readiness →",
-    href:     "/assessment",
+    cta:      "Start D2C Brand Risk Scan →",
+    href:     "/assessment/d2c-brands",
   },
 } as const;
 

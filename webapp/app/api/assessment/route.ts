@@ -176,7 +176,7 @@ export async function POST(request: NextRequest) {
           // Industry packs (CA, Training, …) use their own bucket keys, not the
           // general engine's 6 category keys, so skip the email scorecard for them
           // (DB still stores the buckets via category_scores_json).
-          categoryScores:  ["ca-firm", "training", "recruit"].includes(report_type) ? undefined : result?.categoryScores,
+          categoryScores:  ["ca-firm", "training", "recruit", "d2c"].includes(report_type) ? undefined : result?.categoryScores,
           checklistUrl:    report_type === "ca-firm" ? "https://saralprivacy.com/templates/ca-firm-dpdpa-starter-checklist.pdf"
                          : report_type === "recruit" ? "https://saralprivacy.com/templates/recruitment-agency-dpdpa-starter-checklist.pdf"
                          : undefined,

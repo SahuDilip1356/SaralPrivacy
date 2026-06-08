@@ -7,6 +7,7 @@ import { IndustryPack } from "./core";
 import { caFirmPack } from "./packs/ca-firms";
 import { trainingInstitutePack } from "./packs/training-institutes";
 import { recruitmentAgenciesPack } from "./packs/recruitment-agencies";
+import { d2cBrandsPack } from "./packs/d2c-brands";
 
 export * from "./core";
 export * from "./bands";
@@ -15,6 +16,7 @@ export const INDUSTRY_PACKS: Record<string, IndustryPack> = {
   "ca-firms": caFirmPack,
   "training-institutes": trainingInstitutePack,
   "recruitment-agencies": recruitmentAgenciesPack,
+  "d2c-brands": d2cBrandsPack,
 };
 
 export function getPack(industry: string): IndustryPack | undefined {
