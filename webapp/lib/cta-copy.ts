@@ -58,10 +58,10 @@ export const industryAssessmentCopy = {
   },
   "training-institutes": {
     eyebrow:  "Free · For Training Institutes",
-    heading:  "Is student data in your institute DPDPA-safe?",
-    body:     "Enrolment forms, parent consent, alumni records — find your compliance gaps in 10 minutes.",
-    cta:      "Check Institute Readiness →",
-    href:     "/assessment",
+    heading:  "Is your student-data handling DPDPA-ready?",
+    body:     "Admission forms, parent consent, minors, WhatsApp groups, student photos, LMS tools and placement data — get your institute's readiness score in 3 minutes.",
+    cta:      "Start Training Institute Risk Scan →",
+    href:     "/assessment/training-institutes",
   },
   "d2c-brands": {
     eyebrow:  "Free · For D2C Brands",

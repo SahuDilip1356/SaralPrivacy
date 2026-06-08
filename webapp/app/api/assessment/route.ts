@@ -172,9 +172,10 @@ export async function POST(request: NextRequest) {
           riskFlags:       result?.redFlagsTriggered ?? [],
           answerSummary:   buildAnswerSummary((answers as Record<string, unknown>) ?? {}),
           reportToken,
-          // CA pack uses industry-specific bucket keys, not the general engine's 6
-          // category keys, so skip the email scorecard for it (DB still stores them).
-          categoryScores:  report_type === "ca-firm" ? undefined : result?.categoryScores,
+          // Industry packs (CA, Training, …) use their own bucket keys, not the
+          // general engine's 6 category keys, so skip the email scorecard for them
+          // (DB still stores the buckets via category_scores_json).
+          categoryScores:  report_type === "ca-firm" || report_type === "training-institute" ? undefined : result?.categoryScores,
           checklistUrl:    report_type === "ca-firm" ? "https://saralprivacy.com/templates/ca-firm-dpdpa-starter-checklist.pdf" : undefined,
           checklistTitle:  report_type === "ca-firm" ? "CA Firm DPDPA Starter Checklist" : undefined,
         });
