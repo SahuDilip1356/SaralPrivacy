@@ -86,7 +86,7 @@ const BUCKET_DETAIL: Record<string, { icon: ReactNode; example: string; action: 
 const STEPS = [
   { n: 1, title: "Answer 10 quick questions", body: "About your store profile, customer data, marketing consent, tracking, vendors, access and retention. ~3 minutes." },
   { n: 2, title: "See your readiness score + risk map", body: "A 0–100 DPDPA readiness score, your risk band, and five D2C-specific risk areas." },
-  { n: 3, title: "Get your 5 priority fixes", body: "The five controls to start with, tailored to where your brand's exposure actually sits." },
+  { n: 3, title: "Get your priority fixes + checklist", body: "The five controls to start with, plus the D2C Brand DPDPA Starter Checklist." },
 ];
 
 const scanChecks = [

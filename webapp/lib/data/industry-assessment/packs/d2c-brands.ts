@@ -520,7 +520,10 @@ export const d2cBrandsPack: IndustryPack = {
   softFlags: SOFT_FLAGS,
   recommend,
   bandCopy: BAND_COPY,
-  // No leadMagnet — D2C Starter Checklist PDF is deferred (spec D8).
+  leadMagnet: {
+    title: "D2C Brand DPDPA Starter Checklist",
+    href: "/templates/d2c-brand-dpdpa-starter-checklist.pdf",
+  },
 };
 
 export default d2cBrandsPack;
