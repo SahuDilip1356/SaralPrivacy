@@ -44,10 +44,10 @@ export const ctaCopy = {
 export const industryAssessmentCopy = {
   "recruitment-agencies": {
     eyebrow:  "Free · For Recruitment Agencies",
-    heading:  "Is your candidate data DPDPA-compliant?",
-    body:     "CV collection, WhatsApp consent, reference checks — see your specific risks and what to fix first.",
-    cta:      "Check Recruiter Readiness →",
-    href:     "/assessment",
+    heading:  "Is your candidate-data handling DPDPA-ready?",
+    body:     "CV sharing, ATS access, PAN/Aadhaar/salary docs, WhatsApp/email forwarding, client folders and rejected-candidate retention — get your agency's readiness score in 3 minutes.",
+    cta:      "Start Recruitment Risk Scan →",
+    href:     "/assessment/recruitment",
   },
   "ca-firms": {
     eyebrow:  "Free · For CA Firms",
