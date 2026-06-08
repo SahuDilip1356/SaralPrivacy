@@ -300,7 +300,7 @@ export default function CAAssessmentClient() {
                 >
                   Risk Band: {result.band}
                 </div>
-                <p className="mt-3 text-sm leading-relaxed text-slate-600">{result.bandDescription}</p>
+                <p className="mt-3 text-sm leading-relaxed text-slate-600">{caFirmPack.bandCopy?.[result.band] ?? result.bandDescription}</p>
               </div>
             </div>
           </div>

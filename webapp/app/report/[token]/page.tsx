@@ -3,6 +3,14 @@ import { notFound } from "next/navigation";
 import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 import { QUESTIONS } from "@/lib/data/dpdpa-assessment";
 import TemplateGateModal, { type TemplateItem } from "@/components/TemplateGateModal";
+import {
+  getPackByReportType,
+  summarizeAnswers,
+  getBandByScore,
+  type BandLabel,
+  type IAAnswers,
+  type IndustryPack,
+} from "@/lib/data/industry-assessment";
 
 export const metadata: Metadata = {
   title: "DPDPA Readiness Report | SaralPrivacy",
@@ -73,6 +81,182 @@ function computeProjection(score: number, cats: Record<string, number>) {
   return { conservative, likely, bestCase };
 }
 
+// ── Industry report (pack-aware) ─────────────────────────────────────────────
+
+const INDUSTRY_BAND_UI: Record<BandLabel, { text: string; bg: string; bar: string }> = {
+  Controlled:      { text: "text-green-700",  bg: "bg-green-50 border-green-200",   bar: "#07B981" },
+  "Moderate Risk": { text: "text-amber-700",  bg: "bg-amber-50 border-amber-200",   bar: "#E8AB42" },
+  "High Risk":     { text: "text-orange-700", bg: "bg-orange-50 border-orange-200", bar: "#F97316" },
+  "Critical Risk": { text: "text-red-700",    bg: "bg-red-50 border-red-200",       bar: "#DC2626" },
+};
+
+function IndustryReport({
+  doc, pack, answers, categoryScores, redFlags, immediateActions,
+}: {
+  doc: Record<string, unknown>;
+  pack: IndustryPack;
+  answers: IAAnswers;
+  categoryScores: Record<string, number>;
+  redFlags: string[];
+  immediateActions: string[];
+}) {
+  const readiness    = (doc.final_score as number) ?? 0;
+  const band         = ((doc.verdict_band as string) || "High Risk") as BandLabel;
+  const ui           = INDUSTRY_BAND_UI[band] ?? INDUSTRY_BAND_UI["High Risk"];
+  const desc         = pack.bandCopy?.[band] ?? "";
+  const businessName = (doc.business_name as string) || "";
+  const name         = (doc.name as string) || "";
+  const responses    = summarizeAnswers(pack, answers);
+  const expiresAt    = doc.report_token_expires_at as string | undefined;
+  const expiryDate   = expiresAt
+    ? new Date(expiresAt).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })
+    : "";
+
+  return (
+    <div className="bg-slate-50 min-h-screen py-8 px-4">
+      <div className="max-w-2xl mx-auto">
+        {/* Header */}
+        <div className="mb-6">
+          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">{pack.positioning.title} — Your Report</p>
+          <h1 className="text-2xl font-bold text-[#1E3A5F]">
+            {businessName ? `${businessName}'s DPDPA Report` : "Your DPDPA Readiness Report"}
+          </h1>
+          {name && <p className="text-sm text-slate-500 mt-0.5">Prepared for {name}</p>}
+        </div>
+
+        {/* Executive summary */}
+        <Section title="Executive Summary">
+          <div className={`rounded-xl border px-5 py-4 mb-4 ${ui.bg}`}>
+            <div className="flex items-center justify-between mb-3">
+              <div>
+                <div className="text-5xl font-black" style={{ color: ui.bar }}>{readiness}</div>
+                <div className="text-sm text-slate-500">readiness / 100</div>
+              </div>
+              <span className={`text-sm font-bold px-3 py-1.5 rounded-full border ${ui.bg} ${ui.text}`}>
+                Risk Band: {band}
+              </span>
+            </div>
+            <div className="h-2.5 bg-white/60 rounded-full overflow-hidden mb-3">
+              <div className="h-full rounded-full opacity-80" style={{ width: `${readiness}%`, backgroundColor: ui.bar }} />
+            </div>
+            <p className="text-sm text-slate-700 leading-relaxed">{desc}</p>
+          </div>
+          {expiryDate && <p className="text-xs text-slate-400 text-right">Report valid until {expiryDate}</p>}
+        </Section>
+
+        {/* Risk by area (buckets) */}
+        {Object.keys(categoryScores).length > 0 && (
+          <Section title="Your Risk by Area">
+            <p className="text-sm text-slate-500 mb-2">These five areas explain your readiness score. Higher bars mean higher risk.</p>
+            {pack.buckets.map((b) => {
+              const s   = categoryScores[b.key] ?? 0;
+              const bl  = getBandByScore(s).label;
+              const bui = INDUSTRY_BAND_UI[bl];
+              return (
+                <div key={b.key} className="py-3 border-b border-slate-100 last:border-0">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-sm font-semibold text-slate-800">{b.label}</span>
+                    <span className={`text-xs font-semibold px-2 py-0.5 rounded-full border ${bui.bg} ${bui.text}`}>{bl.replace(" Risk", "")}</span>
+                  </div>
+                  <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+                    <div className="h-full rounded-full" style={{ width: `${s}%`, backgroundColor: bui.bar }} />
+                  </div>
+                  <p className="mt-1 text-xs text-slate-500">{b.meaning}</p>
+                </div>
+              );
+            })}
+          </Section>
+        )}
+
+        {/* Responses */}
+        {responses.length > 0 && (
+          <Section title="Your Responses">
+            <p className="text-sm text-slate-500 mb-4">These are the answers you provided during the scan.</p>
+            <div className="space-y-3">
+              {responses.map((row, i) => (
+                <div key={i} className="border border-slate-100 rounded-xl p-3.5">
+                  <p className="text-xs text-slate-400 font-semibold uppercase tracking-wide mb-1">Q{i + 1}</p>
+                  <p className="text-sm font-medium text-slate-700 mb-1">{row.question}</p>
+                  <p className="text-sm font-semibold text-[#E07B39]">{row.answer}</p>
+                </div>
+              ))}
+            </div>
+          </Section>
+        )}
+
+        {/* Red flags */}
+        {redFlags.length > 0 && (
+          <Section title="Risk Flags Detected">
+            <div className="bg-red-50 border border-red-200 rounded-xl p-4">
+              <ul className="space-y-2">
+                {redFlags.map((flag, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm text-red-700">
+                    <span className="mt-0.5 text-red-500 flex-shrink-0">⚠</span>
+                    <span>{flag}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Section>
+        )}
+
+        {/* Priority fixes */}
+        {immediateActions.length > 0 && (
+          <Section title="Your Priority Fixes">
+            <p className="text-sm text-slate-500 mb-4">Start with these — they address your biggest gaps first.</p>
+            <div className="space-y-3">
+              {immediateActions.map((action, i) => (
+                <div key={i} className="flex gap-3 p-3.5 bg-slate-50 rounded-xl border border-slate-100">
+                  <div className="w-7 h-7 rounded-full bg-[#1E3A5F] text-white text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">{i + 1}</div>
+                  <p className="text-sm text-slate-700 leading-relaxed">{action}</p>
+                </div>
+              ))}
+            </div>
+          </Section>
+        )}
+
+        {/* Lead magnet (if the pack has one, e.g. CA checklist) */}
+        {pack.leadMagnet && (
+          <Section title="Your Checklist">
+            <a href={pack.leadMagnet.href} target="_blank" rel="noopener noreferrer"
+              className="flex items-center justify-between p-4 border border-slate-200 rounded-xl hover:border-[#1E3A5F]/30 hover:bg-slate-50 transition-colors group">
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-slate-800 group-hover:text-[#1E3A5F]">{pack.leadMagnet.title}</p>
+                <p className="text-xs text-slate-500">Download and work through it to close the gaps above.</p>
+              </div>
+              <span className="text-[#E07B39] font-bold text-sm ml-4 flex-shrink-0">↓</span>
+            </a>
+          </Section>
+        )}
+
+        {/* Consultation + reassessment */}
+        <div className="bg-[#1E3A5F] rounded-2xl p-6 mb-5 text-center">
+          <h2 className="text-lg font-bold text-white mb-1">Move from diagnosis to execution</h2>
+          <p className="text-sm text-white/70 mb-4">Our experts help you close these gaps — consent, access, retention and vendor controls.</p>
+          <a href="https://saralprivacy.com/contact" className="inline-block bg-[#E07B39] text-white font-bold px-6 py-3 rounded-xl text-sm hover:bg-[#c96a2e] transition-colors">
+            Book Expert Consultation →
+          </a>
+        </div>
+        <div className="text-center mb-5">
+          <a href={pack.route} className="inline-block border-2 border-[#1E3A5F] text-[#1E3A5F] font-bold px-6 py-3 rounded-xl text-sm hover:bg-[#1E3A5F] hover:text-white transition-colors">
+            Retake the Scan →
+          </a>
+        </div>
+
+        {/* Footer */}
+        <div className="text-center pb-8">
+          <p className="text-xs text-slate-400 leading-relaxed max-w-lg mx-auto">
+            <strong className="text-slate-500">Disclaimer:</strong> This report is for educational purposes only and does not constitute formal legal advice. Consult a qualified professional for legal guidance.
+          </p>
+          <p className="text-xs text-slate-300 mt-2">
+            Generated by <a href="https://saralprivacy.com" className="underline">SaralPrivacy</a> · DPDPA Compliance Made Simple
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ── Page ─────────────────────────────────────────────────────────────────────
 
 export default async function ReportPage({ params }: { params: Promise<{ token: string }> }) {
@@ -125,6 +309,22 @@ export default async function ReportPage({ params }: { params: Promise<{ token: 
   const band        = (doc.verdict_band as string) || "Early Stage";
   const businessName = (doc.business_name as string) || "";
   const name        = (doc.name as string) || "";
+
+  // Industry assessments (CA, Training, …) render a pack-aware report.
+  const pack = getPackByReportType(doc.report_type as string | undefined);
+  if (pack) {
+    return (
+      <IndustryReport
+        doc={doc}
+        pack={pack}
+        answers={answers as IAAnswers}
+        categoryScores={categoryScores}
+        redFlags={redFlags}
+        immediateActions={immediateActions}
+      />
+    );
+  }
+
   const answerSummary = buildAnswerSummary(answers);
   const projection  = computeProjection(score, categoryScores);
 

@@ -1,6 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
 import { CheckCircle, Search, ShieldAlert, Send, Eye, X, AlertTriangle } from "lucide-react";
+import {
+  getPackByReportType,
+  summarizeAnswers,
+  getBandByScore,
+  INDUSTRY_PACKS,
+  type IAAnswers,
+} from "@/lib/data/industry-assessment";
 
 export const dynamic = "force-dynamic";
 
@@ -65,9 +72,12 @@ function RedFlagBadge({ json }: { json: string }) {
 }
 
 function ReportTypeBadge({ type }: { type: string }) {
-  if (!type || type === "quick") return <span className="text-xs text-slate-400">Quick</span>;
+  const label = kindLabel(type);
+  const isGeneral = label === "General";
   return (
-    <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-navy-50 text-navy-700 whitespace-nowrap">Full Report</span>
+    <span className={`px-2 py-0.5 rounded-full text-xs font-semibold whitespace-nowrap ${isGeneral ? "bg-slate-100 text-slate-500" : "bg-navy-50 text-navy-700"}`}>
+      {label}
+    </span>
   );
 }
 
@@ -79,6 +89,29 @@ const BANDS_ORDERED = [
   "Progressing Well",
   "Operationally Strong",
 ];
+
+// ── Industry (risk) band system — for the kind-aware distribution chart ───────
+const INDUSTRY_BAND_COLORS: Record<string, { bg: string; text: string; dot: string }> = {
+  "Controlled":     { bg: "bg-green-100",  text: "text-green-700",  dot: "bg-green-500"  },
+  "Moderate Risk":  { bg: "bg-amber-100",  text: "text-amber-700",  dot: "bg-amber-500"  },
+  "High Risk":      { bg: "bg-orange-100", text: "text-orange-700", dot: "bg-orange-500" },
+  "Critical Risk":  { bg: "bg-red-100",    text: "text-red-700",    dot: "bg-red-500"    },
+};
+const INDUSTRY_BANDS_ORDERED = ["Controlled", "Moderate Risk", "High Risk", "Critical Risk"];
+
+const KIND_LABELS: Record<string, string> = {
+  "ca-firms": "CA Firms",
+  "training-institutes": "Training Institutes",
+};
+function kindOf(reportType: string | undefined): string {
+  const pack = getPackByReportType(reportType);
+  return pack ? pack.industry : "general";
+}
+function kindLabel(reportType: string | undefined): string {
+  const pack = getPackByReportType(reportType);
+  if (!pack) return "General";
+  return KIND_LABELS[pack.industry] ?? pack.industry;
+}
 
 // ── Scorecard block for preview panel ──────────────────────────────────────
 const SCORECARD_BLOCKS = [
@@ -149,6 +182,8 @@ function PreviewPanel({
 
   const scores = computeScores(categoryScores);
   const hasCategoryData = Object.keys(categoryScores).length > 0;
+  const pack = getPackByReportType(assessment.report_type);
+  const responses = pack ? summarizeAnswers(pack, answers as IAAnswers) : [];
 
   const reportUrl = assessment.report_token
     ? `https://saralprivacy.com/report/${assessment.report_token}`
@@ -207,10 +242,29 @@ function PreviewPanel({
             </div>
           )}
 
-          {/* 5 Scoring blocks */}
+          {/* Category scores — pack-aware (industry buckets vs general scorecard) */}
           <div>
-            <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Category Scores</h3>
-            {hasCategoryData ? (
+            <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">{pack ? "Risk by Area" : "Category Scores"}</h3>
+            {pack ? (
+              <div className="bg-white border border-slate-200 rounded-xl p-4 space-y-3">
+                {pack.buckets.map((b) => {
+                  const s = categoryScores[b.key] ?? 0;
+                  const bl = getBandByScore(s).label;
+                  const c = INDUSTRY_BAND_COLORS[bl] || { bg: "bg-slate-100", text: "text-slate-500", dot: "bg-slate-300" };
+                  return (
+                    <div key={b.key}>
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-xs font-medium text-slate-700">{b.label}</span>
+                        <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded ${c.bg} ${c.text}`}>{bl.replace(" Risk", "")} · {s}</span>
+                      </div>
+                      <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+                        <div className={`h-full ${c.dot} rounded-full`} style={{ width: `${s}%` }} />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : hasCategoryData ? (
               <div className="bg-white border border-slate-200 rounded-xl p-4">
                 {SCORECARD_BLOCKS.map(({ label, key, ref }) => (
                   <ScorecardBar
@@ -225,6 +279,21 @@ function PreviewPanel({
               <p className="text-xs text-slate-400 italic">Category scores not available for this assessment.</p>
             )}
           </div>
+
+          {/* Responses — what the user selected (industry packs) */}
+          {responses.length > 0 && (
+            <div>
+              <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Responses</h3>
+              <div className="space-y-2">
+                {responses.map((r, i) => (
+                  <div key={i} className="border border-slate-100 rounded-lg p-2.5">
+                    <p className="text-[11px] text-slate-500 mb-0.5">{r.question}</p>
+                    <p className="text-xs font-semibold text-slate-700">{r.answer}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Quick Wins */}
           {immediateActions.length > 0 && (
@@ -319,6 +388,7 @@ export default function AssessmentsPage() {
   const [sendState, setSendState] = useState<Record<string, "idle" | "sending" | "sent" | "error">>({});
   const [sendError, setSendError] = useState<Record<string, string>>({});
   const [previewAssessment, setPreviewAssessment] = useState<any | null>(null);
+  const [kind, setKind] = useState<string>("all");
 
   const sendReport = async (assessmentId: string) => {
     setSendState(prev => ({ ...prev, [assessmentId]: "sending" }));
@@ -365,24 +435,38 @@ export default function AssessmentsPage() {
 
   const filtered = assessments.filter((a) => {
     const q = search.toLowerCase();
-    return (
+    const matchesSearch =
       !q ||
       a.email?.toLowerCase().includes(q) ||
       a.name?.toLowerCase().includes(q) ||
       a.industry?.toLowerCase().includes(q) ||
-      a.verdict_band?.toLowerCase().includes(q)
-    );
+      a.verdict_band?.toLowerCase().includes(q);
+    const matchesKind = kind === "all" || kindOf(a.report_type) === kind;
+    return matchesSearch && matchesKind;
   });
 
-  const total = filtered.length || 1;
   const newAssessments = filtered.filter((a) => a.final_score > 0);
   const avgScore = newAssessments.length
     ? Math.round(newAssessments.reduce((s, a) => s + (a.final_score || 0), 0) / newAssessments.length)
     : 0;
 
-  const bandDist = BANDS_ORDERED.map((band) => {
-    const count = filtered.filter((a) => a.verdict_band === band).length;
-    return { band, count, pct: Math.round((count / total) * 100) };
+  // Kind filter options: All · General · one per industry pack.
+  const kindOptions = [
+    { value: "all", label: "All" },
+    { value: "general", label: "General" },
+    ...Object.values(INDUSTRY_PACKS).map((p) => ({ value: p.industry, label: KIND_LABELS[p.industry] ?? p.industry })),
+  ];
+
+  // Band distribution adapts to the selected kind's band system.
+  const isIndustryKind = kind !== "all" && kind !== "general";
+  const chartBandList = isIndustryKind ? INDUSTRY_BANDS_ORDERED : BANDS_ORDERED;
+  const chartColors = isIndustryKind ? INDUSTRY_BAND_COLORS : BAND_COLORS;
+  // When viewing "All", chart the general rows (industry rows have their own band system — pick a kind to see them).
+  const chartRows = isIndustryKind ? filtered : filtered.filter((a) => kindOf(a.report_type) === "general");
+  const chartTotal = chartRows.length || 1;
+  const bandDist = chartBandList.map((band) => {
+    const count = chartRows.filter((a) => a.verdict_band === band).length;
+    return { band, count, pct: Math.round((count / chartTotal) * 100) };
   });
 
   return (
@@ -413,10 +497,14 @@ export default function AssessmentsPage() {
 
       {/* Band distribution */}
       <div className="bg-white rounded-xl border border-pearl-200 shadow-sm p-5 mb-5">
-        <h3 className="text-sm font-semibold text-brand-700 mb-4">Readiness Band Distribution</h3>
+        <h3 className="text-sm font-semibold text-brand-700 mb-1">Readiness Band Distribution</h3>
+        <p className="text-xs text-slate-400 mb-4">
+          {isIndustryKind ? `${KIND_LABELS[kind] ?? kind} — risk bands` : "General — maturity bands"}
+          {kind === "all" ? " · industry rows: pick a kind above to view their risk bands" : ""}
+        </p>
         <div className="space-y-3">
           {bandDist.map(({ band, count, pct }) => {
-            const c = BAND_COLORS[band] || { dot: "bg-slate-300" };
+            const c = chartColors[band] || { dot: "bg-slate-300" };
             return (
               <div key={band}>
                 <div className="flex justify-between text-xs text-slate-600 mb-1.5">
@@ -435,8 +523,23 @@ export default function AssessmentsPage() {
         </div>
       </div>
 
-      {/* Search */}
+      {/* Search + Kind filter */}
       <div className="bg-white rounded-xl border border-pearl-200 shadow-sm mb-5 p-4">
+        <div className="mb-3 flex flex-wrap gap-2">
+          {kindOptions.map((opt) => {
+            const active = kind === opt.value;
+            return (
+              <button
+                key={opt.value}
+                onClick={() => setKind(opt.value)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${active ? "text-white" : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50"}`}
+                style={active ? { backgroundColor: "#1E3A5F", borderColor: "#1E3A5F" } : undefined}
+              >
+                {opt.label}
+              </button>
+            );
+          })}
+        </div>
         <div className="relative max-w-sm">
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
           <input

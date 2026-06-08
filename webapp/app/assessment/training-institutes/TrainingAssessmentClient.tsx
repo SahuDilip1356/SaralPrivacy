@@ -27,17 +27,8 @@ import {
 
 const pack = trainingInstitutePack;
 
-// ── Result-page band copy (Training-specific; the shared bands.ts copy is CA-flavoured) ──
-const BAND_COPY: Record<BandLabel, string> = {
-  Controlled:
-    "Your training institute appears to have basic student-data controls in place. Your next step is to document these practices, review vendor tools, and ensure consent records are maintained for students, parents and marketing use.",
-  "Moderate Risk":
-    "Your training institute has some student-data controls, but several practices may be informal. Focus first on standardising admission data collection, documenting consent, reviewing WhatsApp groups, and defining retention rules for old student records.",
-  "High Risk":
-    "Your training institute may have significant DPDPA exposure across student data, minors, WhatsApp communication, marketing content, LMS tools or retention practices. Your first priority is to control student-data collection, parental consent, photos/testimonials, vendor access and old record retention.",
-  "Critical Risk":
-    "Your training institute may have serious DPDPA exposure. This usually happens when minors' data, WhatsApp groups, student photos, LMS tools, payment data, placement sharing and old records are managed informally — without documented consent, access control, retention or response processes.",
-};
+// Result-band copy now lives in the pack (shared by client, report and email).
+const BAND_COPY = pack.bandCopy!;
 
 // ── Contextual micro-feedback (UI layer) ─────────────────────────────────────
 const MICRO_NOTES: Record<string, string> = {

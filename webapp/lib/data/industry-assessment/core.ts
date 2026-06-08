@@ -93,6 +93,7 @@ export interface IndustryPack {
   overrides: IAOverride[];
   softFlags: IAFlagRule[];
   recommend: (r: IAResult, a: IAAnswers) => string[]; // dynamic remediation
+  bandCopy?: Record<BandLabel, string>; // per-pack result-band description (report + client + email share it)
   leadMagnet?: { title: string; href: string };
 }
 
@@ -135,6 +136,27 @@ export function questionRisk(q: IAQuestion, value: IAAnswerValue): number {
 
 function isAnswered(value: IAAnswerValue): boolean {
   return selectedIds(value).length > 0;
+}
+
+/**
+ * Rebuild a human-readable Q→A summary from stored answers, using the pack's
+ * own questions/options. Used by the public report page and the admin view so
+ * industry submissions show what the user actually selected.
+ */
+export function summarizeAnswers(
+  pack: IndustryPack,
+  answers: IAAnswers
+): Array<{ question: string; answer: string }> {
+  const out: Array<{ question: string; answer: string }> = [];
+  for (const q of pack.questions) {
+    const ids = selectedIds(answers[q.id]);
+    if (!ids.length) continue;
+    const labels = ids
+      .map((id) => q.options.find((o) => o.id === id)?.label)
+      .filter(Boolean) as string[];
+    if (labels.length) out.push({ question: q.question, answer: labels.join(", ") });
+  }
+  return out;
 }
 
 function bucketStatusFromScore(score: number): BucketStatus {

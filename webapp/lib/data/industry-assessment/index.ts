@@ -18,3 +18,13 @@ export const INDUSTRY_PACKS: Record<string, IndustryPack> = {
 export function getPack(industry: string): IndustryPack | undefined {
   return INDUSTRY_PACKS[industry];
 }
+
+/**
+ * Look up an industry pack by its `reportType` token (e.g. "ca-firm", "training").
+ * This is the reliable discriminator for "is this an industry assessment?" —
+ * general assessments use report_type "quick"/"deep", which match no pack.
+ */
+export function getPackByReportType(reportType: string | undefined): IndustryPack | undefined {
+  if (!reportType) return undefined;
+  return Object.values(INDUSTRY_PACKS).find((p) => p.reportType === reportType);
+}

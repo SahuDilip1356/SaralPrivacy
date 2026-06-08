@@ -14,6 +14,7 @@ import {
   IAAnswers,
   selectedIds,
 } from "../core";
+import type { BandLabel } from "../bands";
 
 // ── Buckets ──────────────────────────────────────────────────────────────────
 
@@ -443,6 +444,19 @@ function recommend(r: IAResult): string[] {
   return recs.slice(0, 4);
 }
 
+// ── Result-band copy (shared by client, report, email) ───────────────────────
+
+const BAND_COPY: Record<BandLabel, string> = {
+  Controlled:
+    "Your firm appears to have basic client-data controls in place. Keep them documented, review access periodically, and retain evidence of how client data is handled.",
+  "Moderate Risk":
+    "Your firm has some controls, but several practices are informal. Focus first on standardising document intake, access reviews, retention rules and a breach-response process.",
+  "High Risk":
+    "Your firm may have significant DPDPA exposure across client documents, staff access, retention or vendors. Prioritise the four core controls below.",
+  "Critical Risk":
+    "Your firm may have serious DPDPA exposure across client documents, staff access, retention and breach readiness. Start with the four core controls immediately.",
+};
+
 // ── Pack ──────────────────────────────────────────────────────────────────────
 
 export const caFirmPack: IndustryPack = {
@@ -472,6 +486,7 @@ export const caFirmPack: IndustryPack = {
   overrides: OVERRIDES,
   softFlags: SOFT_FLAGS,
   recommend,
+  bandCopy: BAND_COPY,
   leadMagnet: {
     title: "CA Firm DPDPA Starter Checklist",
     href: "/templates/ca-firm-dpdpa-starter-checklist.pdf",
