@@ -480,7 +480,7 @@ const BAND_COPY: Record<BandLabel, string> = {
 export const trainingInstitutePack: IndustryPack = {
   industry: "training-institutes",
   route: "/assessment/training-institutes",
-  reportType: "training-institute",
+  reportType: "training", // short token — Appwrite `report_type` attr is string(10)
   positioning: {
     title: "Training Institute DPDPA Risk Scan",
     hero: "Your institute does not just teach students. It collects, shares and stores student data every day.",

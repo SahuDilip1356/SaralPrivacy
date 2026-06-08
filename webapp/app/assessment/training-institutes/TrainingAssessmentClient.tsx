@@ -212,8 +212,7 @@ export default function TrainingAssessmentClient() {
       business: form.institute.trim(),
       mobile: form.phone.trim(),
       industry: "training-institutes",
-      // NOTE: Appwrite `report_type` attr is string(10) — keep the token short.
-      report_type: "training",
+      report_type: pack.reportType, // "training" — single source so client + pack never drift
       city: form.city.trim(),
       answers,
       result: {
