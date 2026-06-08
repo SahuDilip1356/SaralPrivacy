@@ -13,14 +13,23 @@ export const revalidate = 3600; // Re-fetch every 60 min — briefings are publi
 // Cache Appwrite response in Next.js data cache (survives across requests within revalidate window)
 const getCachedBriefings = unstable_cache(
   async () => {
-    const result = await databases.listDocuments(DB_ID, COLLECTIONS.BRIEFINGS, [
-      Query.equal("status", ["sent", "approved"]),
-      Query.orderDesc("$createdAt"),
-      Query.limit(30), // max 30 — we publish 1/day, 30 is a month of briefings
-    ]);
-    return result.documents;
+    // Fetch ALL published briefings (paginated) so the archive shows every one,
+    // not just the latest page. Cached hourly, so the loop runs at most 1x/hour.
+    const PAGE = 100;
+    const docs: any[] = [];
+    for (let offset = 0; ; offset += PAGE) {
+      const result = await databases.listDocuments(DB_ID, COLLECTIONS.BRIEFINGS, [
+        Query.equal("status", ["sent", "approved"]),
+        Query.orderDesc("$createdAt"),
+        Query.limit(PAGE),
+        Query.offset(offset),
+      ]);
+      docs.push(...result.documents);
+      if (result.documents.length < PAGE || docs.length >= result.total) break;
+    }
+    return docs;
   },
-  ["briefings-list-v2"],
+  ["briefings-list-v3"],
   { revalidate: 3600, tags: ["briefings"] }
 );
 
