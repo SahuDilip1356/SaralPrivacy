@@ -73,7 +73,7 @@ function ReadinessGauge({ readiness, color, band }: { readiness: number; color: 
   const offset = c * (1 - readiness / 100);
   return (
     <div
-      className="relative h-36 w-36"
+      className="relative h-36 w-36 shrink-0"
       role="img"
       aria-label={`DPDPA readiness ${readiness} out of 100. Risk band: ${band}.`}
     >

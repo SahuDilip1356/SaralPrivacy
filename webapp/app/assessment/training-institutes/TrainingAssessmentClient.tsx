@@ -90,7 +90,7 @@ function ReadinessGauge({ readiness, color, band }: { readiness: number; color: 
   const offset = c * (1 - readiness / 100);
   return (
     <div
-      className="relative h-36 w-36"
+      className="relative h-36 w-36 shrink-0"
       role="img"
       aria-label={`DPDPA readiness ${readiness} out of 100. Risk band: ${band}.`}
     >
@@ -221,9 +221,10 @@ export default function TrainingAssessmentClient() {
       business: form.institute.trim(),
       mobile: form.phone.trim(),
       industry: "training-institutes",
-      report_type: "training-institute",
-      // city isn't a first-class API field; persist it inside answers_json.
-      answers: { ...answers, _city: form.city.trim() },
+      // NOTE: Appwrite `report_type` attr is string(10) — keep the token short.
+      report_type: "training",
+      city: form.city.trim(),
+      answers,
       result: {
         finalScore: result.readinessScore,
         rawScore: result.riskScore,

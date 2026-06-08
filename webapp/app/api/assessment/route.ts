@@ -67,7 +67,8 @@ export async function POST(request: NextRequest) {
     }
 
     const ip      = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || request.headers.get("x-real-ip") || "";
-    const city    = decodeURIComponent(request.headers.get("x-vercel-ip-city") || "");
+    // Prefer a self-reported city from the form; fall back to Vercel geo header.
+    const city    = (typeof body.city === "string" && body.city.trim()) || decodeURIComponent(request.headers.get("x-vercel-ip-city") || "");
     const country = request.headers.get("x-vercel-ip-country") || "";
     const region  = request.headers.get("x-vercel-ip-country-region") || "";
     const userAgent = request.headers.get("user-agent") || "";
@@ -175,7 +176,7 @@ export async function POST(request: NextRequest) {
           // Industry packs (CA, Training, …) use their own bucket keys, not the
           // general engine's 6 category keys, so skip the email scorecard for them
           // (DB still stores the buckets via category_scores_json).
-          categoryScores:  report_type === "ca-firm" || report_type === "training-institute" ? undefined : result?.categoryScores,
+          categoryScores:  report_type === "ca-firm" || report_type === "training" ? undefined : result?.categoryScores,
           checklistUrl:    report_type === "ca-firm" ? "https://saralprivacy.com/templates/ca-firm-dpdpa-starter-checklist.pdf" : undefined,
           checklistTitle:  report_type === "ca-firm" ? "CA Firm DPDPA Starter Checklist" : undefined,
         });
