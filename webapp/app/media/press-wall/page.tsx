@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, ExternalLink, ShieldCheck } from "lucide-react";
 import { mediaPlacements, tierLabels, type MediaTier } from "@/lib/mediaData";
-import { FRESHNESS, formatReviewDate } from "@/lib/content-freshness";
 
 export const metadata: Metadata = {
   title: "Press Wall — SaralPrivacy Media Coverage",
@@ -181,10 +180,7 @@ export default function PressWallPage() {
         </div>
 
         {/* Footer */}
-        <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
-          <p className="text-xs text-slate-400">
-            Last reviewed: {formatReviewDate(FRESHNESS.media)}
-          </p>
+        <div className="mt-6 flex flex-wrap items-center justify-end gap-4">
           <Link
             href="/media/coverage"
             className="inline-flex items-center gap-1.5 text-xs font-semibold text-teal-600 hover:text-teal-700"

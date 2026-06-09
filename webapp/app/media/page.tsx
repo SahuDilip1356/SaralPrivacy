@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ShieldCheck, ArrowRight } from "lucide-react";
 import { featuredPlacements, mediaStats, tierLabels } from "@/lib/mediaData";
-import { FRESHNESS, formatReviewDate } from "@/lib/content-freshness";
 
 export const metadata: Metadata = {
   title: "SaralPrivacy in the Media",
@@ -154,7 +153,7 @@ export default function MediaPage() {
 
           {/* Reviewed */}
           <p className="mt-6 pt-5 border-t border-slate-100 text-xs text-slate-400">
-            Last reviewed: {formatReviewDate(FRESHNESS.media)} · For informational purposes; not legal advice.
+            For informational purposes; not legal advice.
           </p>
         </section>
       </div>

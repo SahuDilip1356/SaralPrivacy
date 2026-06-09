@@ -266,7 +266,6 @@ export default function TrainingInstitutesIndustryPage() {
           </div>
 
           <div data-nosnippet className="mt-10 space-y-1 border-t border-slate-200 pt-6 text-xs text-slate-400">
-            <p><strong>Last reviewed:</strong> March 2026</p>
             <p><strong>Legal baseline:</strong> DPDP Rules, 2025 notified on 14 November 2025, with phased commencement.</p>
             <p>This page is for educational purposes and does not constitute legal advice.</p>
           </div>

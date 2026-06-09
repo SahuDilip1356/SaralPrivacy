@@ -1,19 +1,18 @@
-// Byline — visible "By <author> · Last reviewed: <date>" line under page H1.
-// Single source of truth for the same fields written into Article JSON-LD,
-// so the date users see and the date LLMs read can never drift apart.
+// Byline — visible "By <author>" line under page H1.
+// (The review-date is intentionally not shown; structured-data dateModified
+// still lives in the page JSON-LD via the schema helpers.)
 
 import Link from 'next/link'
-import { formatReviewDate } from '@/lib/content-freshness'
 import { defaultAuthor, type Author } from '@/lib/data/authors'
 
 type Props = {
-  lastReviewed: Date | string
+  // Accepted for backwards-compat with callers; no longer rendered.
+  lastReviewed?: Date | string
   author?: Author
   className?: string
 }
 
-export function Byline({ lastReviewed, author = defaultAuthor, className = '' }: Props) {
-  const date = typeof lastReviewed === 'string' ? new Date(lastReviewed) : lastReviewed
+export function Byline({ author = defaultAuthor, className = '' }: Props) {
   return (
     <div
       className={`flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-slate-500 ${className}`.trim()}
@@ -26,11 +25,6 @@ export function Byline({ lastReviewed, author = defaultAuthor, className = '' }:
         >
           {author.name}
         </Link>
-      </span>
-      <span aria-hidden="true">·</span>
-      <span>
-        Last reviewed:{' '}
-        <time dateTime={date.toISOString()}>{formatReviewDate(date)}</time>
       </span>
     </div>
   )

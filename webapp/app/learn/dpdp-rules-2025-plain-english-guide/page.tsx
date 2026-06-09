@@ -933,7 +933,6 @@ export default function DpdpRules2025Page() {
                     Digital Personal Data Protection Rules, 2025 and should be read together with
                     the Digital Personal Data Protection Act, 2023.
                   </p>
-                  <p><strong>Last reviewed:</strong> March 2026</p>
                   <p>This page is for educational purposes and does not constitute legal advice.</p>
                 </div>
               </div>

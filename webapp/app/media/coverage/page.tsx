@@ -3,7 +3,6 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { MediaCoverageList } from "@/components/media/MediaCoverageList";
 import { mediaStats } from "@/lib/mediaData";
-import { FRESHNESS, formatReviewDate } from "@/lib/content-freshness";
 
 export const metadata: Metadata = {
   title: "Full Media Coverage — SaralPrivacy PR Placements",
@@ -86,7 +85,7 @@ export default function MediaCoveragePage() {
 
 
           <p className="mt-6 text-xs text-slate-400">
-            Last reviewed: {formatReviewDate(FRESHNESS.media)} · For informational purposes; not legal advice.
+            For informational purposes; not legal advice.
           </p>
         </div>
       </div>
