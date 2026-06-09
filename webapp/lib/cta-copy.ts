@@ -70,6 +70,13 @@ export const industryAssessmentCopy = {
     cta:      "Start D2C Brand Risk Scan →",
     href:     "/assessment/d2c-brands",
   },
+  "clinics-diagnostic-labs": {
+    eyebrow:  "Free · For Clinics & Diagnostic Labs",
+    heading:  "Is your patient-data handling DPDPA-ready?",
+    body:     "Prescriptions, lab reports, WhatsApp report sharing, reception access, home collection and old records — get your clinic or lab's readiness score in 3 minutes.",
+    cta:      "Start Clinic / Lab Risk Scan →",
+    href:     "/assessment/clinics-diagnostic-labs",
+  },
 } as const;
 
 export type IndustrySlug = keyof typeof industryAssessmentCopy;
