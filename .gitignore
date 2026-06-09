@@ -16,6 +16,8 @@ venv/
 # OS
 .DS_Store
 *.pem
+# MS Office owner/lock temp files (e.g. ~$Document.docx)
+~$*
 
 # Node / Next.js
 node_modules/
