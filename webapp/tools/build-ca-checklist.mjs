@@ -77,6 +77,17 @@ const SECTIONS = [
   },
   {
     n: 7,
+    title: "Client communication & consent",
+    items: [
+      "Get consent before adding clients to WhatsApp broadcast lists or marketing groups.",
+      "Keep service messages (deadline/compliance reminders) separate from promotions and festival greetings.",
+      "Give clients an easy way to opt out of newsletters and promotional messages.",
+      "Don't reuse a client list from one service to market unrelated services without consent.",
+      "Avoid exposing other clients' numbers — use broadcast, not open groups.",
+    ],
+  },
+  {
+    n: 8,
     title: "Old client file retention",
     items: [
       "Set retention periods by document type, based on tax, audit, legal and professional needs.",
@@ -87,7 +98,18 @@ const SECTIONS = [
     ],
   },
   {
-    n: 8,
+    n: 9,
+    title: "Client data rights (access / correction / deletion)",
+    items: [
+      "Be ready to tell a client what personal data you hold about them, on request.",
+      "Have a process to correct inaccurate client details.",
+      "Honour deletion/erasure requests for data you're not legally required to retain.",
+      "Verify the client's identity before acting on a rights request.",
+      "Log each request and your response as evidence of compliance.",
+    ],
+  },
+  {
+    n: 10,
     title: "Breach response",
     items: [
       "Write a one-page response plan: who to call and what to do first.",
@@ -145,9 +167,9 @@ const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><style>
   <div class="cover">
     <div class="brand"><span class="dot"></span>SaralPrivacy</div>
     <h1>CA Firm DPDPA Starter Checklist</h1>
-    <p>Most CA firms don't have a tax knowledge problem — they have a client-document control problem. Work through these eight areas to bring your PAN, Aadhaar, ITR, bank, payroll and audit records under DPDPA-ready control.</p>
+    <p>Most CA firms don't have a tax knowledge problem — they have a client-document control problem. Work through these ten areas to bring your PAN, Aadhaar, ITR, bank, payroll and audit records under DPDPA-ready control.</p>
     <div class="chips">
-      ${["PAN","Aadhaar","ITR","Bank Statements","Payroll","Google Drive","WhatsApp","Article-Staff Access","Old Files"].map((c)=>`<span class="chip">${c}</span>`).join("")}
+      ${["PAN","Aadhaar","ITR","Bank Statements","Payroll","Google Drive","WhatsApp","Article-Staff Access","Client Rights","Old Files"].map((c)=>`<span class="chip">${c}</span>`).join("")}
     </div>
   </div>
   <div class="lead"><strong>How to use this:</strong> tick what you already do, and turn the unticked boxes into your next actions. Start with intake, access and retention — they remove the most risk for the least effort.</div>
