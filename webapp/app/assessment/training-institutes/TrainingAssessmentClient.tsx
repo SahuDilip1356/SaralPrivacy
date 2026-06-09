@@ -10,6 +10,7 @@ import {
   AlertTriangle,
   CheckCircle2,
   Info,
+  FileCheck2,
   Lock,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -353,10 +354,10 @@ export default function TrainingAssessmentClient() {
             <form onSubmit={unlockReport} className="mt-5 rounded-xl border border-green-200 bg-green-50 p-6">
               <div className="mb-1 flex items-center gap-2">
                 <Lock size={16} className="text-green-600" />
-                <h3 className="text-sm font-bold text-navy-700">Unlock your priority fixes</h3>
+                <h3 className="text-sm font-bold text-navy-700">Unlock your priority fixes + Training Institute DPDPA Starter Checklist</h3>
               </div>
               <p className="mb-4 text-xs text-slate-600">
-                See your recommended next steps, emailed to you for your records.
+                See your recommended next steps and get the checklist emailed to you.
               </p>
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <input aria-label="Your name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Your name" className="rounded-lg border border-slate-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500" />
@@ -406,6 +407,14 @@ export default function TrainingAssessmentClient() {
                   </li>
                 ))}
               </ul>
+              {pack.leadMagnet && (
+                <a
+                  href={pack.leadMagnet.href} download target="_blank" rel="noopener noreferrer"
+                  className="mt-4 inline-flex items-center gap-2 rounded-lg border border-navy-200 px-4 py-2.5 text-sm font-semibold text-navy-700 hover:bg-pearl-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-400"
+                >
+                  <FileCheck2 size={16} /> Download the {pack.leadMagnet.title}
+                </a>
+              )}
             </div>
           )}
 

@@ -87,7 +87,7 @@ const BUCKET_DETAIL: Record<string, { icon: ReactNode; example: string; action: 
 const STEPS = [
   { n: 1, title: "Answer 10 quick questions", body: "About your student data, minors, intake channels, WhatsApp, marketing media, LMS/vendors, sharing and retention. ~3 minutes." },
   { n: 2, title: "See your readiness score + risk map", body: "A 0–100 DPDPA readiness score, your risk band, and five training-institute risk areas." },
-  { n: 3, title: "Get your priority fixes", body: "The five controls to start with, tailored to your institute's biggest gaps." },
+  { n: 3, title: "Get your priority fixes + checklist", body: "The five controls to start with, plus the Training Institute DPDPA Starter Checklist." },
 ];
 
 const scanChecks = [

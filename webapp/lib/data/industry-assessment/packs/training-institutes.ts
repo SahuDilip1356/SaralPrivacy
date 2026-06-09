@@ -506,6 +506,10 @@ export const trainingInstitutePack: IndustryPack = {
   softFlags: SOFT_FLAGS,
   recommend,
   bandCopy: BAND_COPY,
+  leadMagnet: {
+    title: "Training Institute DPDPA Starter Checklist",
+    href: "/templates/training-institute-dpdpa-starter-checklist.pdf",
+  },
 };
 
 export default trainingInstitutePack;
