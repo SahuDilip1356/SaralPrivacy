@@ -21,6 +21,7 @@ const footerLinks = {
     { label: "Clinics & Diagnostic Labs", href: "/industries/clinics-diagnostic-labs" },
     { label: "Schools & Colleges", href: "/industries/schools-colleges" },
     { label: "Law Firms & Legal Consultants", href: "/industries/law-firms" },
+    { label: "Real Estate & Property Firms", href: "/industries/real-estate" },
   ],
   assessment: [
     { label: "Take Free Assessment", href: "/assessment" },
@@ -31,6 +32,7 @@ const footerLinks = {
     { label: "Clinic & Diagnostic Lab", href: "/assessment/clinics-diagnostic-labs" },
     { label: "School & College", href: "/assessment/schools-colleges" },
     { label: "Law Firm & Legal", href: "/assessment/law-firms" },
+    { label: "Real Estate & Property", href: "/assessment/real-estate" },
   ],
   legal: [
     { label: "Privacy Notice", href: "/privacy" },

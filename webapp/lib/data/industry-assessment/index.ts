@@ -11,6 +11,7 @@ import { d2cBrandsPack } from "./packs/d2c-brands";
 import { clinicsDiagnosticLabsPack } from "./packs/clinics-diagnostic-labs";
 import { schoolsCollegesPack } from "./packs/schools-colleges";
 import { lawFirmsPack } from "./packs/law-firms";
+import { realEstatePack } from "./packs/real-estate";
 
 export * from "./core";
 export * from "./bands";
@@ -23,6 +24,7 @@ export const INDUSTRY_PACKS: Record<string, IndustryPack> = {
   "clinics-diagnostic-labs": clinicsDiagnosticLabsPack,
   "schools-colleges": schoolsCollegesPack,
   "law-firms": lawFirmsPack,
+  "real-estate": realEstatePack,
 };
 
 export function getPack(industry: string): IndustryPack | undefined {

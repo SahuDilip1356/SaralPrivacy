@@ -40,6 +40,7 @@ const navigation = [
       { label: "Clinics & Diagnostic Labs", href: "/industries/clinics-diagnostic-labs" },
       { label: "Schools & Colleges", href: "/industries/schools-colleges" },
       { label: "Law Firms & Legal Consultants", href: "/industries/law-firms" },
+      { label: "Real Estate & Property Firms", href: "/industries/real-estate" },
     ],
   },
   {

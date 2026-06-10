@@ -36,6 +36,7 @@ const assessments = [
   { label: "Clinics & Diagnostic Labs", href: "/assessment/clinics-diagnostic-labs", count: "10 questions" },
   { label: "Schools & Colleges", href: "/assessment/schools-colleges", count: "10 questions" },
   { label: "Law Firms & Legal Consultants", href: "/assessment/law-firms", count: "10 questions" },
+  { label: "Real Estate & Property Firms", href: "/assessment/real-estate", count: "10 questions" },
 ];
 
 export function AssessmentCTA() {

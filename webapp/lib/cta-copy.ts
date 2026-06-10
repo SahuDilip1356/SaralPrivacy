@@ -91,6 +91,13 @@ export const industryAssessmentCopy = {
     cta:      "Start Law Firm Risk Scan →",
     href:     "/assessment/law-firms",
   },
+  "real-estate": {
+    eyebrow:  "Free · For Real Estate Brokers & Property Firms",
+    heading:  "Is your buyer/tenant data handling DPDPA-ready?",
+    body:     "Buyer/tenant KYC, PAN/Aadhaar, rent agreements, sale deeds, WhatsApp lead sharing, broker networks, loan partners and old lead databases — get your firm's readiness score in 3 minutes.",
+    cta:      "Start Real Estate Risk Scan →",
+    href:     "/assessment/real-estate",
+  },
 } as const;
 
 export type IndustrySlug = keyof typeof industryAssessmentCopy;

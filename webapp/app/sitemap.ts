@@ -38,6 +38,7 @@ const industryPages = [
   'clinics-diagnostic-labs',
   'schools-colleges',
   'law-firms',
+  'real-estate',
 ]
 
 // Briefing slugs: add new slugs + real publish dates as briefings go live

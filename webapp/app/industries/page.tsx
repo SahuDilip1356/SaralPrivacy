@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Users, Calculator, GraduationCap, ShoppingBag, Stethoscope, School, Scale } from "lucide-react";
+import { ArrowRight, Users, Calculator, GraduationCap, ShoppingBag, Stethoscope, School, Scale, Building2 } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "DPDPA by Industry",
   description:
-    "See how DPDPA affects recruitment agencies, CA firms, training institutes, D2C brands, clinics & diagnostic labs, schools & colleges, and law firms, with sector risks, guides, and free assessments.",
+    "See how DPDPA affects recruitment agencies, CA firms, training institutes, D2C brands, clinics & diagnostic labs, schools & colleges, law firms, and real estate brokers, with sector risks, guides, and free assessments.",
   alternates: { canonical: 'https://saralprivacy.com/industries' },
 };
 
@@ -115,6 +115,21 @@ const industries = [
     iconColor: "text-violet-700",
     btn: "bg-violet-600 hover:bg-violet-700",
   },
+  {
+    icon: Building2,
+    title: "Real Estate Brokers & Property Firms",
+    href: "/industries/real-estate",
+    assessmentHref: "/assessment/real-estate",
+    tagline: "Buyer/tenant KYC, PAN/Aadhaar, agreements, WhatsApp lead sharing, broker networks, loan partners",
+    risks: ["PAN/Aadhaar shared over WhatsApp", "Leads in co-broker WhatsApp groups", "Ex-staff / old broker access", "Indefinite old-lead retention"],
+    stat: "Most firms keep old buyer/tenant databases indefinitely for future deals",
+    color: "emerald",
+    bg: "bg-emerald-50",
+    border: "border-emerald-200",
+    iconBg: "bg-emerald-100",
+    iconColor: "text-emerald-700",
+    btn: "bg-emerald-600 hover:bg-emerald-700",
+  },
 ];
 
 export default function IndustriesPage() {
@@ -201,6 +216,13 @@ export default function IndustriesPage() {
                 <td className="px-4 py-3 text-red-700 font-medium">Sensitive case files unrestricted and ex-staff/intern access lingering</td>
                 <td className="px-4 py-3 text-slate-600">Classify sensitive matters; move to matter-based, need-based access</td>
                 <td className="px-4 py-3"><a href="/assessment/law-firms" className="text-green-600 font-semibold hover:underline">Start →</a></td>
+              </tr>
+              <tr className="hover:bg-slate-50 transition-colors">
+                <td className="px-4 py-3 font-semibold text-navy-700">Real Estate Brokers &amp; Property Firms</td>
+                <td className="px-4 py-3 text-slate-600">Buyer/tenant KYC, PAN/Aadhaar, income/loan docs, rent &amp; sale agreements, property papers</td>
+                <td className="px-4 py-3 text-red-700 font-medium">KYC and leads forwarded through WhatsApp broker groups</td>
+                <td className="px-4 py-3 text-slate-600">Secure KYC intake; share leads only with instruction or documented purpose</td>
+                <td className="px-4 py-3"><a href="/assessment/real-estate" className="text-green-600 font-semibold hover:underline">Start →</a></td>
               </tr>
             </tbody>
           </table>

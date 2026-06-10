@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Users, Calculator, GraduationCap, ShoppingBag, Stethoscope, School, Scale, ArrowRight } from "lucide-react";
+import { Users, Calculator, GraduationCap, ShoppingBag, Stethoscope, School, Scale, Building2, ArrowRight } from "lucide-react";
 
 const audiences = [
   {
@@ -99,6 +99,20 @@ const audiences = [
     accentText: "text-violet-700",
     iconBg: "bg-violet-100",
     iconColor: "text-violet-700",
+  },
+  {
+    icon: Building2,
+    title: "Real Estate & Property Firms",
+    href: "/industries/real-estate",
+    assessmentHref: "/assessment/real-estate",
+    color: "emerald",
+    painPoints: ["Buyer/tenant KYC & PAN/Aadhaar", "WhatsApp lead & document sharing", "Broker networks & loan partners", "Old lead-database retention"],
+    promise: "Check whether your KYC handling, broker sharing and lead retention workflows are DPDPA-ready.",
+    accentBg: "bg-emerald-50",
+    accentBorder: "border-emerald-200",
+    accentText: "text-emerald-700",
+    iconBg: "bg-emerald-100",
+    iconColor: "text-emerald-700",
   },
 ];
 
