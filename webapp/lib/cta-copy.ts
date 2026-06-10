@@ -84,6 +84,13 @@ export const industryAssessmentCopy = {
     cta:      "Start School / College Risk Scan →",
     href:     "/assessment/schools-colleges",
   },
+  "law-firms": {
+    eyebrow:  "Free · For Law Firms & Legal Consultants",
+    heading:  "Is your client and matter-data handling DPDPA-ready?",
+    body:     "Client KYC, evidence files, affidavits, WhatsApp instructions, junior/intern access, external counsel, court filing and closed matter records — get your firm's readiness score in 3 minutes.",
+    cta:      "Start Law Firm Risk Scan →",
+    href:     "/assessment/law-firms",
+  },
 } as const;
 
 export type IndustrySlug = keyof typeof industryAssessmentCopy;

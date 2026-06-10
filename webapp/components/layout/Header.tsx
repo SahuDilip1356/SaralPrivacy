@@ -39,6 +39,7 @@ const navigation = [
       { label: "D2C Brands", href: "/industries/d2c-brands" },
       { label: "Clinics & Diagnostic Labs", href: "/industries/clinics-diagnostic-labs" },
       { label: "Schools & Colleges", href: "/industries/schools-colleges" },
+      { label: "Law Firms & Legal Consultants", href: "/industries/law-firms" },
     ],
   },
   {

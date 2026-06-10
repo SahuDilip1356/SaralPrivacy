@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Users, Calculator, GraduationCap, ShoppingBag, Stethoscope, School } from "lucide-react";
+import { ArrowRight, Users, Calculator, GraduationCap, ShoppingBag, Stethoscope, School, Scale } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "DPDPA by Industry",
   description:
-    "See how DPDPA affects recruitment agencies, CA firms, training institutes, D2C brands, clinics & diagnostic labs, and schools & colleges, with sector risks, guides, and free assessments.",
+    "See how DPDPA affects recruitment agencies, CA firms, training institutes, D2C brands, clinics & diagnostic labs, schools & colleges, and law firms, with sector risks, guides, and free assessments.",
   alternates: { canonical: 'https://saralprivacy.com/industries' },
 };
 
@@ -100,6 +100,21 @@ const industries = [
     iconColor: "text-sky-700",
     btn: "bg-sky-600 hover:bg-sky-700",
   },
+  {
+    icon: Scale,
+    title: "Law Firms & Legal Consultants",
+    href: "/industries/law-firms",
+    assessmentHref: "/assessment/law-firms",
+    tagline: "Client KYC, case files, evidence, junior/intern access, court & vendor sharing, closed matters",
+    risks: ["Sensitive files stored with regular matters", "Ex-staff / intern access lingering", "Evidence shared over WhatsApp/email", "Indefinite closed-matter retention"],
+    stat: "Most firms confuse client confidentiality with DPDPA readiness — they are not the same",
+    color: "violet",
+    bg: "bg-violet-50",
+    border: "border-violet-200",
+    iconBg: "bg-violet-100",
+    iconColor: "text-violet-700",
+    btn: "bg-violet-600 hover:bg-violet-700",
+  },
 ];
 
 export default function IndustriesPage() {
@@ -179,6 +194,13 @@ export default function IndustriesPage() {
                 <td className="px-4 py-3 text-red-700 font-medium">Minors&#39; data and public student photos without parental consent</td>
                 <td className="px-4 py-3 text-slate-600">Document parent/guardian consent and a photo-consent + removal process</td>
                 <td className="px-4 py-3"><a href="/assessment/schools-colleges" className="text-green-600 font-semibold hover:underline">Start →</a></td>
+              </tr>
+              <tr className="hover:bg-slate-50 transition-colors">
+                <td className="px-4 py-3 font-semibold text-navy-700">Law Firms &amp; Legal Consultants</td>
+                <td className="px-4 py-3 text-slate-600">Client KYC, PAN/Aadhaar, contracts, affidavits, evidence files, court and sensitive records</td>
+                <td className="px-4 py-3 text-red-700 font-medium">Sensitive case files unrestricted and ex-staff/intern access lingering</td>
+                <td className="px-4 py-3 text-slate-600">Classify sensitive matters; move to matter-based, need-based access</td>
+                <td className="px-4 py-3"><a href="/assessment/law-firms" className="text-green-600 font-semibold hover:underline">Start →</a></td>
               </tr>
             </tbody>
           </table>

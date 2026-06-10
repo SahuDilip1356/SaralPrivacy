@@ -20,6 +20,7 @@ const footerLinks = {
     { label: "D2C Brands", href: "/industries/d2c-brands" },
     { label: "Clinics & Diagnostic Labs", href: "/industries/clinics-diagnostic-labs" },
     { label: "Schools & Colleges", href: "/industries/schools-colleges" },
+    { label: "Law Firms & Legal Consultants", href: "/industries/law-firms" },
   ],
   assessment: [
     { label: "Take Free Assessment", href: "/assessment" },
@@ -29,6 +30,7 @@ const footerLinks = {
     { label: "D2C Brand Assessment", href: "/assessment/d2c-brands" },
     { label: "Clinic & Diagnostic Lab", href: "/assessment/clinics-diagnostic-labs" },
     { label: "School & College", href: "/assessment/schools-colleges" },
+    { label: "Law Firm & Legal", href: "/assessment/law-firms" },
   ],
   legal: [
     { label: "Privacy Notice", href: "/privacy" },

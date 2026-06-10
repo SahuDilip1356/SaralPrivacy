@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Users, Calculator, GraduationCap, ShoppingBag, Stethoscope, School, ArrowRight } from "lucide-react";
+import { Users, Calculator, GraduationCap, ShoppingBag, Stethoscope, School, Scale, ArrowRight } from "lucide-react";
 
 const audiences = [
   {
@@ -86,6 +86,20 @@ const audiences = [
     iconBg: "bg-sky-100",
     iconColor: "text-sky-700",
   },
+  {
+    icon: Scale,
+    title: "Law Firms & Legal Consultants",
+    href: "/industries/law-firms",
+    assessmentHref: "/assessment/law-firms",
+    color: "violet",
+    painPoints: ["Client KYC & evidence files", "Junior / intern / ex-staff access", "WhatsApp & email document sharing", "Closed matter-file retention"],
+    promise: "Check whether your matter intake, sensitive-file access and sharing workflows are DPDPA-ready.",
+    accentBg: "bg-violet-50",
+    accentBorder: "border-violet-200",
+    accentText: "text-violet-700",
+    iconBg: "bg-violet-100",
+    iconColor: "text-violet-700",
+  },
 ];
 
 export function AudienceCards() {
@@ -108,7 +122,10 @@ export function AudienceCards() {
         </div>
 
         {/* Cards grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {/* 7 cards: a lone trailing card (nth 3n+1 & last) centers in the middle
+            column at lg so the orphan row doesn't look broken. Self-deactivates
+            when the count fills the grid evenly. */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:[&>*:last-child:nth-child(3n+1)]:col-start-2">
           {audiences.map((audience) => (
             <div
               key={audience.title}
