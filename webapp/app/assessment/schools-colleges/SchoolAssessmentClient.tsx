@@ -465,7 +465,12 @@ export default function SchoolAssessmentClient() {
                       name={q.id} value={opt.id} checked={isSel}
                       onChange={() => pick(q, opt.id)} className="peer sr-only"
                     />
-                    <div className="flex items-start gap-3 rounded-xl border-2 border-slate-200 p-4 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 peer-checked:border-green-400 peer-checked:bg-green-50 peer-checked:text-green-800 peer-focus-visible:ring-2 peer-focus-visible:ring-green-500 peer-focus-visible:ring-offset-1">
+                    <div className={cn(
+                      "flex items-start gap-3 rounded-xl border-2 p-4 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 peer-checked:border-green-400 peer-checked:bg-green-50 peer-checked:text-green-800 peer-focus-visible:ring-2 peer-focus-visible:ring-green-500 peer-focus-visible:ring-offset-1",
+                      // Credit option (negative riskPoints): set apart so it reads as a
+                      // modifier that COMBINES with the systems above, not a standalone answer.
+                      opt.riskPoints < 0 ? "border-dashed border-green-300 bg-green-50/40" : "border-slate-200"
+                    )}>
                       <span
                         className={cn(
                           "mt-0.5 h-4 w-4 shrink-0 border-2 border-slate-300",
@@ -474,7 +479,14 @@ export default function SchoolAssessmentClient() {
                         )}
                         aria-hidden
                       />
-                      <span className="flex-1">{opt.label}</span>
+                      <span className="flex-1">
+                        {opt.label}
+                        {opt.riskPoints < 0 && (
+                          <span className="mt-0.5 block text-xs font-normal text-green-700">
+                            Lowers this section&apos;s risk — tick this in addition to the systems above if it applies.
+                          </span>
+                        )}
+                      </span>
                       {opt.badge && (
                         <span
                           className={cn(
