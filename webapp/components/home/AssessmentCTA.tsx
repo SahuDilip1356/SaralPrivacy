@@ -34,6 +34,7 @@ const assessments = [
   { label: "Training Institutes", href: "/assessment/training-institutes", count: "7 questions" },
   { label: "D2C Brands", href: "/assessment/d2c-brands", count: "8 questions" },
   { label: "Clinics & Diagnostic Labs", href: "/assessment/clinics-diagnostic-labs", count: "10 questions" },
+  { label: "Schools & Colleges", href: "/assessment/schools-colleges", count: "10 questions" },
 ];
 
 export function AssessmentCTA() {

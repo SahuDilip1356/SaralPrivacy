@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Users, Calculator, GraduationCap, ShoppingBag, Stethoscope } from "lucide-react";
+import { ArrowRight, Users, Calculator, GraduationCap, ShoppingBag, Stethoscope, School } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "DPDPA by Industry",
   description:
-    "See how DPDPA affects recruitment agencies, CA firms, training institutes, D2C brands, and clinics & diagnostic labs, with sector risks, guides, and free assessments.",
+    "See how DPDPA affects recruitment agencies, CA firms, training institutes, D2C brands, clinics & diagnostic labs, and schools & colleges, with sector risks, guides, and free assessments.",
   alternates: { canonical: 'https://saralprivacy.com/industries' },
 };
 
@@ -85,6 +85,21 @@ const industries = [
     iconColor: "text-cyan-700",
     btn: "bg-cyan-600 hover:bg-cyan-700",
   },
+  {
+    icon: School,
+    title: "Schools & Colleges",
+    href: "/industries/schools-colleges",
+    assessmentHref: "/assessment/schools-colleges",
+    tagline: "Children's data, parent consent, school apps, CCTV, attendance, transport and student photos",
+    risks: ["Minors without parent consent", "Student photos posted publicly", "CCTV / biometric / GPS monitoring", "Indefinite student-record retention"],
+    stat: "Most schools publish student photos and results without separate parental consent",
+    color: "sky",
+    bg: "bg-sky-50",
+    border: "border-sky-200",
+    iconBg: "bg-sky-100",
+    iconColor: "text-sky-700",
+    btn: "bg-sky-600 hover:bg-sky-700",
+  },
 ];
 
 export default function IndustriesPage() {
@@ -157,6 +172,13 @@ export default function IndustriesPage() {
                 <td className="px-4 py-3 text-red-700 font-medium">Sharing reports over WhatsApp without verifying the recipient</td>
                 <td className="px-4 py-3 text-slate-600">Verify recipient identity before sharing; control WhatsApp/email sharing</td>
                 <td className="px-4 py-3"><a href="/assessment/clinics-diagnostic-labs" className="text-green-600 font-semibold hover:underline">Start →</a></td>
+              </tr>
+              <tr className="hover:bg-slate-50 transition-colors">
+                <td className="px-4 py-3 font-semibold text-navy-700">Schools &amp; Colleges</td>
+                <td className="px-4 py-3 text-slate-600">Children&#39;s data, parent records, admission/ID docs, marks, photos, transport and CCTV</td>
+                <td className="px-4 py-3 text-red-700 font-medium">Minors&#39; data and public student photos without parental consent</td>
+                <td className="px-4 py-3 text-slate-600">Document parent/guardian consent and a photo-consent + removal process</td>
+                <td className="px-4 py-3"><a href="/assessment/schools-colleges" className="text-green-600 font-semibold hover:underline">Start →</a></td>
               </tr>
             </tbody>
           </table>

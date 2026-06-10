@@ -77,6 +77,13 @@ export const industryAssessmentCopy = {
     cta:      "Start Clinic / Lab Risk Scan →",
     href:     "/assessment/clinics-diagnostic-labs",
   },
+  "schools-colleges": {
+    eyebrow:  "Free · For Schools & Colleges",
+    heading:  "Is your student-data handling DPDPA-ready?",
+    body:     "Children's data, parent consent, school apps, WhatsApp groups, CCTV, attendance, transport GPS, student photos and old student files — get your institution's readiness score in 3 minutes.",
+    cta:      "Start School / College Risk Scan →",
+    href:     "/assessment/schools-colleges",
+  },
 } as const;
 
 export type IndustrySlug = keyof typeof industryAssessmentCopy;

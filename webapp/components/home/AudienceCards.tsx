@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Users, Calculator, GraduationCap, ShoppingBag, Stethoscope, ArrowRight } from "lucide-react";
+import { Users, Calculator, GraduationCap, ShoppingBag, Stethoscope, School, ArrowRight } from "lucide-react";
 
 const audiences = [
   {
@@ -71,6 +71,20 @@ const audiences = [
     accentText: "text-cyan-700",
     iconBg: "bg-cyan-100",
     iconColor: "text-cyan-700",
+  },
+  {
+    icon: School,
+    title: "Schools & Colleges",
+    href: "/industries/schools-colleges",
+    assessmentHref: "/assessment/schools-colleges",
+    color: "sky",
+    painPoints: ["Children's data & parent consent", "School apps, ERP & LMS", "CCTV, biometric & transport GPS", "Student photos & old records"],
+    promise: "Check whether your student-data, parent-consent and monitoring workflows are DPDPA-ready.",
+    accentBg: "bg-sky-50",
+    accentBorder: "border-sky-200",
+    accentText: "text-sky-700",
+    iconBg: "bg-sky-100",
+    iconColor: "text-sky-700",
   },
 ];
 

@@ -123,7 +123,13 @@ export function selectedIds(value: IAAnswerValue): string[] {
   return Array.isArray(value) ? value : [value];
 }
 
-/** Risk contributed by one question = capped sum of selected option points. */
+/**
+ * Risk contributed by one question = capped sum of selected option points,
+ * floored at 0. Flooring lets a pack offer "credit" options with negative
+ * riskPoints (e.g. "we use these systems with documented access controls")
+ * without a question ever going negative. No-op for packs that have no
+ * negative options.
+ */
 export function questionRisk(q: IAQuestion, value: IAAnswerValue): number {
   const ids = selectedIds(value);
   let sum = 0;
@@ -131,7 +137,7 @@ export function questionRisk(q: IAQuestion, value: IAAnswerValue): number {
     const opt = q.options.find((o) => o.id === id);
     if (opt) sum += opt.riskPoints;
   }
-  return Math.min(q.cap, sum);
+  return Math.max(0, Math.min(q.cap, sum));
 }
 
 function isAnswered(value: IAAnswerValue): boolean {

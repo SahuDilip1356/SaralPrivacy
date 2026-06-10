@@ -36,6 +36,7 @@ const industryPages = [
   'training-institutes',
   'd2c-brands',
   'clinics-diagnostic-labs',
+  'schools-colleges',
 ]
 
 // Briefing slugs: add new slugs + real publish dates as briefings go live
