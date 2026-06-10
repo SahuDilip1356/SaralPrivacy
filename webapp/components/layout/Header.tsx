@@ -37,6 +37,7 @@ const navigation = [
       { label: "CA Firms", href: "/industries/ca-firms" },
       { label: "Training Institutes", href: "/industries/training-institutes" },
       { label: "D2C Brands", href: "/industries/d2c-brands" },
+      { label: "Clinics & Diagnostic Labs", href: "/industries/clinics-diagnostic-labs" },
     ],
   },
   {

@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Users, Calculator, GraduationCap, ShoppingBag } from "lucide-react";
+import { ArrowRight, Users, Calculator, GraduationCap, ShoppingBag, Stethoscope } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "DPDPA by Industry",
   description:
-    "See how DPDPA affects recruitment agencies, CA firms, training institutes, and D2C brands, with sector risks, guides, and free assessments.",
+    "See how DPDPA affects recruitment agencies, CA firms, training institutes, D2C brands, and clinics & diagnostic labs, with sector risks, guides, and free assessments.",
   alternates: { canonical: 'https://saralprivacy.com/industries' },
 };
 
@@ -69,6 +69,21 @@ const industries = [
     iconBg: "bg-rose-100",
     iconColor: "text-rose-700",
     btn: "bg-rose-700 hover:bg-rose-800",
+  },
+  {
+    icon: Stethoscope,
+    title: "Clinics & Diagnostic Labs",
+    href: "/industries/clinics-diagnostic-labs",
+    assessmentHref: "/assessment/clinics-diagnostic-labs",
+    tagline: "Prescriptions, lab reports, WhatsApp sharing, home collection, and patient records",
+    risks: ["WhatsApp report sharing", "Family sharing without verification", "Shared logins / ex-staff access", "Indefinite patient-record retention"],
+    stat: "Most clinics and labs share reports over WhatsApp without verifying the recipient",
+    color: "cyan",
+    bg: "bg-cyan-50",
+    border: "border-cyan-200",
+    iconBg: "bg-cyan-100",
+    iconColor: "text-cyan-700",
+    btn: "bg-cyan-600 hover:bg-cyan-700",
   },
 ];
 
@@ -135,6 +150,13 @@ export default function IndustriesPage() {
                 <td className="px-4 py-3 text-red-700 font-medium">Bundled marketing consent at checkout</td>
                 <td className="px-4 py-3 text-slate-600">Separate marketing consent from purchase processing</td>
                 <td className="px-4 py-3"><a href="/assessment/d2c-brands" className="text-green-600 font-semibold hover:underline">Start →</a></td>
+              </tr>
+              <tr className="hover:bg-slate-50 transition-colors">
+                <td className="px-4 py-3 font-semibold text-navy-700">Clinics &amp; Diagnostic Labs</td>
+                <td className="px-4 py-3 text-slate-600">Prescriptions, lab reports, diagnostic images, patient and family contacts</td>
+                <td className="px-4 py-3 text-red-700 font-medium">Sharing reports over WhatsApp without verifying the recipient</td>
+                <td className="px-4 py-3 text-slate-600">Verify recipient identity before sharing; control WhatsApp/email sharing</td>
+                <td className="px-4 py-3"><a href="/assessment/clinics-diagnostic-labs" className="text-green-600 font-semibold hover:underline">Start →</a></td>
               </tr>
             </tbody>
           </table>

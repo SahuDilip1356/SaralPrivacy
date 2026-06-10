@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Users, Calculator, GraduationCap, ShoppingBag, ArrowRight } from "lucide-react";
+import { Users, Calculator, GraduationCap, ShoppingBag, Stethoscope, ArrowRight } from "lucide-react";
 
 const audiences = [
   {
@@ -58,6 +58,20 @@ const audiences = [
     iconBg: "bg-rose-100",
     iconColor: "text-rose-700",
   },
+  {
+    icon: Stethoscope,
+    title: "Clinics & Diagnostic Labs",
+    href: "/industries/clinics-diagnostic-labs",
+    assessmentHref: "/assessment/clinics-diagnostic-labs",
+    color: "cyan",
+    painPoints: ["Prescriptions & lab reports", "WhatsApp report sharing", "Reception & lab staff access", "Old patient-record retention"],
+    promise: "Check whether your patient-data and report-sharing workflows are DPDPA-ready.",
+    accentBg: "bg-cyan-50",
+    accentBorder: "border-cyan-200",
+    accentText: "text-cyan-700",
+    iconBg: "bg-cyan-100",
+    iconColor: "text-cyan-700",
+  },
 ];
 
 export function AudienceCards() {
@@ -74,13 +88,13 @@ export function AudienceCards() {
             <span className="block text-teal-600">in very different ways</span>
           </h2>
           <p className="text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            A recruitment agency, a CA firm, a training institute, and a D2C brand all collect personal
-            data — but their risks, obligations, and compliance paths are completely different.
+            A recruitment agency, a CA firm, a training institute, a D2C brand, and a clinic all collect
+            personal data — but their risks, obligations, and compliance paths are completely different.
           </p>
         </div>
 
         {/* Cards grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {audiences.map((audience) => (
             <div
               key={audience.title}
