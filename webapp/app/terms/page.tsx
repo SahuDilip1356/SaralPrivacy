@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Terms of Use",
+  title: "Terms of Use — Educational Content & Tools",
   description: "SaralPrivacy terms of use — educational platform for DPDPA compliance guidance.",
   alternates: { canonical: 'https://saralprivacy.com/terms' },
 };

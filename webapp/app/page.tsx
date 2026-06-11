@@ -13,7 +13,7 @@ import { AnswerBlock } from "@/components/seo/AnswerBlock";
 import { PressProofStrip } from "@/components/ui/PressProofStrip";
 
 export const metadata: Metadata = {
-  title: "DPDPA Compliance for Indian Businesses",
+  title: "DPDPA Compliance for Indian Businesses | SaralPrivacy",
   description:
     "Practical DPDPA guidance for Indian businesses: assessments, industry guides, white paper, briefings, and advisory aligned to the DPDP Rules, 2025.",
   alternates: { canonical: 'https://saralprivacy.com' },

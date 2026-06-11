@@ -5,7 +5,7 @@ import ConsentPreferencesContent from "./ConsentPreferencesContent";
 // noindex prevents it appearing in SERPs and being treated as
 // a canonical answer page by crawlers or AI systems.
 export const metadata: Metadata = {
-  title: "Consent Preferences",
+  title: "Manage Your Consent and Email Preferences",
   description: "Manage your SaralPrivacy consent and communication preferences.",
   alternates: { canonical: "https://saralprivacy.com/consent-preferences" },
   robots: {

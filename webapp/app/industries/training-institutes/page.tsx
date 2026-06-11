@@ -44,7 +44,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "DPDPA for Training Institutes",
+  title: "DPDPA for Training & Coaching Institutes",
   description:
     "Your institute doesn't just teach students — it collects, shares and stores student data every day. See where admissions, parental consent, WhatsApp, student photos, LMS tools and placement data create DPDPA exposure, and run a free 3-minute risk scan.",
   alternates: { canonical: "https://saralprivacy.com/industries/training-institutes" },
@@ -114,7 +114,7 @@ export default function TrainingInstitutesIndustryPage() {
         url: "https://saralprivacy.com/industries/training-institutes",
         dateModified: toISODate(FRESHNESS.industry),
       })}
-      {speakableSchema([".answer-block"], "https://saralprivacy.com/industries/training-institutes", "DPDPA for Training Institutes")}
+      {speakableSchema([".answer-block"], "https://saralprivacy.com/industries/training-institutes", "DPDPA for Training & Coaching Institutes")}
 
       <div className="min-h-screen bg-pearl-50">
         {/* Hero */}

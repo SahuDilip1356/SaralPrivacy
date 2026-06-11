@@ -11,6 +11,7 @@ export const metadata: Metadata = {
     description:
       "5 ready-to-use DPDPA templates for Indian businesses. Tell us about your business once and download all 5 instantly.",
     url: "https://saralprivacy.com/resources",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "SaralPrivacy — DPDPA Compliance" }],
   },
 };
 

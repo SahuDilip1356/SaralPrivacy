@@ -4,7 +4,7 @@ import { articleSchema } from "@/lib/schema";
 import { PressProofStrip } from "@/components/ui/PressProofStrip";
 
 export const metadata: Metadata = {
-  title: "DPDPA White Paper Download",
+  title: "Free DPDPA White Paper for Indian Businesses",
   description:
     "Download the practical DPDPA white paper updated for the DPDP Rules, 2025, with sector guidance, obligations, risks, and a 30-day action plan.",
   alternates: { canonical: 'https://saralprivacy.com/white-paper' },

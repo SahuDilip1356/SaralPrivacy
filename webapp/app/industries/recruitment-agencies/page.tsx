@@ -44,7 +44,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "DPDPA for Recruitment Agencies",
+  title: "DPDPA for Recruitment & Staffing Agencies",
   description:
     "Your recruitment agency doesn't just forward CVs — it moves candidate data across clients, tools and teams. See where sourcing, CV sharing, ATS access, BGV documents and rejected-candidate retention create DPDPA exposure, and run a free 3-minute risk scan.",
   alternates: { canonical: "https://saralprivacy.com/industries/recruitment-agencies" },
@@ -113,7 +113,7 @@ export default function RecruitmentIndustryPage() {
         url: "https://saralprivacy.com/industries/recruitment-agencies",
         dateModified: toISODate(FRESHNESS.industry),
       })}
-      {speakableSchema([".answer-block"], "https://saralprivacy.com/industries/recruitment-agencies", "DPDPA for Recruitment Agencies")}
+      {speakableSchema([".answer-block"], "https://saralprivacy.com/industries/recruitment-agencies", "DPDPA for Recruitment & Staffing Agencies")}
 
       <div className="min-h-screen bg-pearl-50">
         {/* Hero */}

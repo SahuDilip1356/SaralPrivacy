@@ -44,7 +44,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "DPDPA for CA Firms",
+  title: "DPDPA for CA Firms & Tax Consultants",
   description:
     "Most CA firms don't have a tax knowledge problem — they have a client-document control problem. See where PAN, Aadhaar, ITR, payroll, Google Drive and WhatsApp create DPDPA exposure, and run a free 3-minute risk scan.",
   alternates: { canonical: "https://saralprivacy.com/industries/ca-firms" },
@@ -111,7 +111,7 @@ export default function CAFirmsIndustryPage() {
         url: "https://saralprivacy.com/industries/ca-firms",
         dateModified: toISODate(FRESHNESS.industry),
       })}
-      {speakableSchema([".answer-block"], "https://saralprivacy.com/industries/ca-firms", "DPDPA for CA Firms")}
+      {speakableSchema([".answer-block"], "https://saralprivacy.com/industries/ca-firms", "DPDPA for CA Firms & Tax Consultants")}
 
       <div className="min-h-screen bg-pearl-50">
         {/* Hero */}

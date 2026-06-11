@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Shield, Mail } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Privacy Notice",
+  title: "Privacy Notice: How We Handle Your Data",
   description: "SaralPrivacy's Privacy Notice — how we collect, use, and protect your personal data.",
   alternates: { canonical: 'https://saralprivacy.com/privacy' },
 };

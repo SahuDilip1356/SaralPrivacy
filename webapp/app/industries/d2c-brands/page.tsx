@@ -44,7 +44,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "DPDPA for D2C Brands",
+  title: "DPDPA Compliance for D2C & E-commerce Brands",
   description:
     "Your D2C brand doesn't just sell products — it tracks, messages and retargets customers every day. See where marketing consent, WhatsApp/SMS opt-in, tracking pixels, vendors and customer-data retention create DPDPA exposure, and run a free 3-minute risk scan.",
   alternates: { canonical: "https://saralprivacy.com/industries/d2c-brands" },
@@ -113,7 +113,7 @@ export default function D2CBrandsPage() {
         url: "https://saralprivacy.com/industries/d2c-brands",
         dateModified: toISODate(FRESHNESS.industry),
       })}
-      {speakableSchema([".answer-block"], "https://saralprivacy.com/industries/d2c-brands", "DPDPA for D2C Brands")}
+      {speakableSchema([".answer-block"], "https://saralprivacy.com/industries/d2c-brands", "DPDPA Compliance for D2C & E-commerce Brands")}
 
       <div className="min-h-screen bg-pearl-50">
         {/* Hero */}

@@ -97,7 +97,7 @@ If you are new to DPDPA and do not know where to begin, start here:
     `,
   },
   "applicability": {
-    title: "Who Does DPDPA Apply To?",
+    title: "Who Does DPDPA Apply To? A Practical Guide",
     description: "DPDPA applies to any entity that processes personal data of Indian residents digitally — including MSMEs, recruiters, CA firms, D2C brands, and B2B operators. If you collect a name, email, or phone number, you are covered. This guide explains scope, exemptions, and what it means for your business today.",
     content: `
 The DPDPA applies broadly to any entity that processes personal data of Indian citizens. Understanding whether you are covered is the essential first step in your compliance journey.
@@ -183,7 +183,7 @@ Penalties for non-compliance can reach ₹250 crore per instance. The Data Prote
     `,
   },
   "consent": {
-    title: "Consent Under DPDPA",
+    title: "Consent Under DPDPA: A Practical Guide",
     description: "DPDPA requires valid, specific, informed, and unambiguous consent before processing personal data. Pre-ticked checkboxes, bundled T&C consent, and implied agreement are all invalid. This guide explains what valid consent looks like, how to design it, how to record it, and what happens when individuals withdraw it.",
     content: `
 Consent is the primary legal basis for processing personal data under the DPDPA. Getting consent right is one of the most urgent and practical compliance tasks for Indian businesses — and the area where most Indian websites and apps are currently non-compliant.
@@ -377,7 +377,7 @@ The cost of building this process is low. The cost of ignoring it — a Board co
     `,
   },
   "data-breach": {
-    title: "Data Breach Basics",
+    title: "DPDPA Data Breach Rules: Reporting Basics",
     description: "DPDPA requires businesses to notify the Data Protection Board and affected individuals when personal data is breached — without delay. This applies to all Data Fiduciaries regardless of size. This guide covers what counts as a breach, what you must report, the notification timeline, and the first practical steps to take.",
     content: `
 A personal data breach is any incident where personal data is accessed, disclosed, altered, lost, or destroyed without authorisation — whether by an external attacker, an insider, a third-party vendor, or an accidental human error. Under DPDPA, businesses have mandatory reporting obligations when a breach occurs. There is no de minimis threshold — even a single record is in scope if it involves personal data.
@@ -467,7 +467,7 @@ These penalties are per instance of non-compliance, not per data record. The act
     `,
   },
   "key-terms": {
-    title: "Key Terms in Simple Language",
+    title: "DPDPA Key Terms Explained in Simple Language",
     description: "DPDPA vocabulary explained plainly — Data Fiduciary, Data Principal, Consent, and more.",
     content: `
 Understanding DPDPA starts with knowing its vocabulary. These terms appear throughout the Act and in compliance guidance. Here is what each term means in practice.
@@ -611,7 +611,7 @@ While DPDPA does not prescribe a specific record-keeping format, good practice �
     `,
   },
   "notice": {
-    title: "Notice Requirements Under DPDPA",
+    title: "DPDPA Notice Requirements: What to Include",
     description: "What a DPDPA-compliant notice must include and how to implement it for your forms.",
     content: `
 Every time you collect personal data, you must provide a notice to the individual. Getting the notice right is one of the most practical and immediately implementable compliance tasks.
@@ -679,7 +679,7 @@ If you collected personal data before DPDPA enforcement and did not provide a co
     `,
   },
   "childrens-data": {
-    title: "Children's Data Under DPDPA",
+    title: "Children's Data Under DPDPA: Key Rules",
     description: "Special obligations for processing data of individuals under 18 years old.",
     content: `
 DPDPA has specific provisions for the personal data of children — defined as individuals under 18 years of age. If your business collects data from or about minors, these provisions apply to you.
@@ -893,7 +893,7 @@ Some categories of data may be subject to stronger localisation requirements und
     `,
   },
   "myths": {
-    title: "DPDPA Myth vs Fact",
+    title: "DPDPA Myths vs Facts for Indian Businesses",
     description: "Common misconceptions about DPDPA — debunked with the correct understanding.",
     content: `
 Misinformation about DPDPA is widespread — particularly among SMEs and non-legal professionals. Here are the most common myths, corrected.

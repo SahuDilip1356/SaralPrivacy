@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import TrainingAssessmentClient from "./TrainingAssessmentClient";
 
 export const metadata: Metadata = {
-  title: "Training Institute DPDPA Risk Scan",
+  title: "Free Training Institute DPDPA Risk Scan",
   description:
     "Free 3-minute DPDPA risk scan for training institutes and coaching centres. Check whether your student admissions, parental consent, minors' data, WhatsApp groups, LMS tools, student photos, attendance and placement workflows are DPDPA-ready.",
   alternates: { canonical: "https://saralprivacy.com/assessment" },

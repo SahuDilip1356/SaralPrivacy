@@ -3,7 +3,7 @@ import { breadcrumbSchema } from "@/lib/schema";
 import SurveyClient from "./SurveyClient";
 
 export const metadata: Metadata = {
-  title: "Free DPDPA Readiness Assessment",
+  title: "Free DPDPA Readiness Assessment — 3 Minutes",
   description:
     "Check your DPDPA readiness in minutes. Get a practical risk score, compliance gaps, and next-step recommendations tailored to your industry.",
   alternates: { canonical: "https://saralprivacy.com/assessment" },

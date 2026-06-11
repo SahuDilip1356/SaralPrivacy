@@ -7,7 +7,7 @@ import { Byline } from "@/components/seo/Byline";
 import { FRESHNESS, toISODate } from "@/lib/content-freshness";
 
 export const metadata: Metadata = {
-  title: "DPDPA FAQ for Indian Businesses",
+  title: "DPDPA FAQ — Common Questions Answered",
   description:
     "Clear answers to common DPDPA questions on applicability, consent, rights, penalties, children's data, cross-border transfers, and compliance priorities.",
   alternates: { canonical: 'https://saralprivacy.com/faq' },
@@ -31,7 +31,7 @@ export default function FAQPage() {
         url: 'https://saralprivacy.com/faq',
         dateModified: toISODate(FRESHNESS.faq),
       })}
-      {speakableSchema(['.answer-block'], 'https://saralprivacy.com/faq', 'DPDPA FAQ for Indian Businesses')}
+      {speakableSchema(['.answer-block'], 'https://saralprivacy.com/faq', 'DPDPA FAQ — Common Questions Answered')}
 
       {/* Interactive section: hero (H1 first in DOM), search, filters, accordion */}
       <FAQContent />

@@ -34,7 +34,7 @@ const getCachedBriefings = unstable_cache(
 );
 
 export const metadata: Metadata = {
-  title: "Daily DPDPA Compliance Briefings",
+  title: "Daily DPDPA Compliance Briefings for India",
   description:
     "Daily DPDPA briefings covering regulatory updates, consent requirements, enforcement signals, and sector-specific compliance guidance for Indian businesses.",
   alternates: { canonical: "https://saralprivacy.com/briefings" },
