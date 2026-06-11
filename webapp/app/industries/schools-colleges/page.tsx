@@ -112,7 +112,7 @@ export default function SchoolsCollegesPage() {
         url: "https://saralprivacy.com/industries/schools-colleges",
         dateModified: toISODate(FRESHNESS.industry),
       })}
-      {speakableSchema([".answer-block"], "https://saralprivacy.com/industries/schools-colleges")}
+      {speakableSchema([".answer-block"], "https://saralprivacy.com/industries/schools-colleges", "DPDPA for Schools & Colleges")}
 
       <div className="min-h-screen bg-pearl-50">
         {/* Hero */}

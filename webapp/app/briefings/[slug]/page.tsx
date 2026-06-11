@@ -284,7 +284,7 @@ export default async function BriefingDetailPage({ params }: Props) {
         `https://saralprivacy.com/briefings/${briefing.slug}`,
         briefing.date
       )}
-      {speakableSchema(['.answer-block'], `https://saralprivacy.com/briefings/${briefing.slug}`)}
+      {speakableSchema(['.answer-block'], `https://saralprivacy.com/briefings/${briefing.slug}`, briefing.title)}
       {breadcrumbSchema([
         { name: "Home",           url: "https://saralprivacy.com" },
         { name: "Daily Briefings",url: "https://saralprivacy.com/briefings" },

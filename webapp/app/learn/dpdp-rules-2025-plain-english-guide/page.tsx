@@ -185,7 +185,7 @@ export default function DpdpRules2025Page() {
           url: "https://saralprivacy.com/learn/dpdp-rules-2025-plain-english-guide",
         },
       ])}
-      {speakableSchema(['.answer-block'], 'https://saralprivacy.com/learn/dpdp-rules-2025-plain-english-guide')}
+      {speakableSchema(['.answer-block'], 'https://saralprivacy.com/learn/dpdp-rules-2025-plain-english-guide', 'DPDP Rules 2025: Plain-English Guide')}
       {faqPageSchema(faqs, {
         url: 'https://saralprivacy.com/learn/dpdp-rules-2025-plain-english-guide',
         dateModified: toISODate(FRESHNESS.learn),

@@ -31,7 +31,7 @@ export default function FAQPage() {
         url: 'https://saralprivacy.com/faq',
         dateModified: toISODate(FRESHNESS.faq),
       })}
-      {speakableSchema(['.answer-block'], 'https://saralprivacy.com/faq')}
+      {speakableSchema(['.answer-block'], 'https://saralprivacy.com/faq', 'DPDPA FAQ for Indian Businesses')}
 
       {/* Interactive section: hero (H1 first in DOM), search, filters, accordion */}
       <FAQContent />

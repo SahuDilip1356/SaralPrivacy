@@ -156,7 +156,7 @@ export default function DpdpAct2023Page() {
         "https://saralprivacy.com/learn/dpdp-act-2023",
         "2026-04-30"
       )}
-      {speakableSchema(['.answer-block'], 'https://saralprivacy.com/learn/dpdp-act-2023')}
+      {speakableSchema(['.answer-block'], 'https://saralprivacy.com/learn/dpdp-act-2023', 'DPDPA 2023: Full Act Text with Plain-English Guide — Section by Section')}
       {breadcrumbSchema([
         { name: "Home", url: "https://saralprivacy.com" },
         { name: "DPDPA Guide", url: "https://saralprivacy.com/learn" },

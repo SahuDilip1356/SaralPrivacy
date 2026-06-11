@@ -191,11 +191,12 @@ export function howToSchema(
   )
 }
 
-export function speakableSchema(cssSelectors: string[], url?: string) {
+export function speakableSchema(cssSelectors: string[], url: string, name: string) {
   const schema: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
-    ...(url ? { url } : {}),
+    name,
+    url,
     speakable: {
       '@type': 'SpeakableSpecification',
       cssSelector: cssSelectors,

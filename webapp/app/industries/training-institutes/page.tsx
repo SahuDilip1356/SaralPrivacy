@@ -114,7 +114,7 @@ export default function TrainingInstitutesIndustryPage() {
         url: "https://saralprivacy.com/industries/training-institutes",
         dateModified: toISODate(FRESHNESS.industry),
       })}
-      {speakableSchema([".answer-block"], "https://saralprivacy.com/industries/training-institutes")}
+      {speakableSchema([".answer-block"], "https://saralprivacy.com/industries/training-institutes", "DPDPA for Training Institutes")}
 
       <div className="min-h-screen bg-pearl-50">
         {/* Hero */}

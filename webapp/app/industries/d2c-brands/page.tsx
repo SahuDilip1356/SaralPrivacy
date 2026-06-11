@@ -113,7 +113,7 @@ export default function D2CBrandsPage() {
         url: "https://saralprivacy.com/industries/d2c-brands",
         dateModified: toISODate(FRESHNESS.industry),
       })}
-      {speakableSchema([".answer-block"], "https://saralprivacy.com/industries/d2c-brands")}
+      {speakableSchema([".answer-block"], "https://saralprivacy.com/industries/d2c-brands", "DPDPA for D2C Brands")}
 
       <div className="min-h-screen bg-pearl-50">
         {/* Hero */}

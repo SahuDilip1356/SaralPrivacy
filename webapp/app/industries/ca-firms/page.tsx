@@ -111,7 +111,7 @@ export default function CAFirmsIndustryPage() {
         url: "https://saralprivacy.com/industries/ca-firms",
         dateModified: toISODate(FRESHNESS.industry),
       })}
-      {speakableSchema([".answer-block"], "https://saralprivacy.com/industries/ca-firms")}
+      {speakableSchema([".answer-block"], "https://saralprivacy.com/industries/ca-firms", "DPDPA for CA Firms")}
 
       <div className="min-h-screen bg-pearl-50">
         {/* Hero */}

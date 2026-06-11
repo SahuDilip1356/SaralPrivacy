@@ -1066,7 +1066,7 @@ export default async function LearnTopicPage({ params }: Props) {
         '2025-03-01',
         toISODate(FRESHNESS.learn)
       )}
-      {speakableSchema(['.answer-block'], `https://saralprivacy.com/learn/${topic}`)}
+      {speakableSchema(['.answer-block'], `https://saralprivacy.com/learn/${topic}`, content.title)}
       {breadcrumbSchema([
         { name: 'Home', url: 'https://saralprivacy.com' },
         { name: 'DPDPA Guide', url: 'https://saralprivacy.com/learn' },

@@ -112,7 +112,7 @@ export default function ClinicsDiagnosticLabsPage() {
         url: "https://saralprivacy.com/industries/clinics-diagnostic-labs",
         dateModified: toISODate(FRESHNESS.industry),
       })}
-      {speakableSchema([".answer-block"], "https://saralprivacy.com/industries/clinics-diagnostic-labs")}
+      {speakableSchema([".answer-block"], "https://saralprivacy.com/industries/clinics-diagnostic-labs", "DPDPA for Clinics & Diagnostic Labs")}
 
       <div className="min-h-screen bg-pearl-50">
         {/* Hero */}

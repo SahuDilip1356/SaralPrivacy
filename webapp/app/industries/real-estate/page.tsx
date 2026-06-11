@@ -112,7 +112,7 @@ export default function RealEstatePage() {
         url: "https://saralprivacy.com/industries/real-estate",
         dateModified: toISODate(FRESHNESS.industry),
       })}
-      {speakableSchema([".answer-block"], "https://saralprivacy.com/industries/real-estate")}
+      {speakableSchema([".answer-block"], "https://saralprivacy.com/industries/real-estate", "DPDPA for Real Estate Brokers & Property Firms")}
 
       <div className="min-h-screen bg-pearl-50">
         {/* Hero */}

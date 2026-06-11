@@ -78,7 +78,7 @@ export default function PenaltyPage() {
         "2026-04-29",
         toISODate(FRESHNESS.tools)
       )}
-      {speakableSchema(['.answer-block'], `${BASE}/penalty-calculator`)}
+      {speakableSchema(['.answer-block'], `${BASE}/penalty-calculator`, 'DPDPA Penalties — Complete Guide to Section 33')}
 
       <div className="min-h-screen bg-slate-50">
 

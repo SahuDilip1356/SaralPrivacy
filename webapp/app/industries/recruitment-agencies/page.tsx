@@ -113,7 +113,7 @@ export default function RecruitmentIndustryPage() {
         url: "https://saralprivacy.com/industries/recruitment-agencies",
         dateModified: toISODate(FRESHNESS.industry),
       })}
-      {speakableSchema([".answer-block"], "https://saralprivacy.com/industries/recruitment-agencies")}
+      {speakableSchema([".answer-block"], "https://saralprivacy.com/industries/recruitment-agencies", "DPDPA for Recruitment Agencies")}
 
       <div className="min-h-screen bg-pearl-50">
         {/* Hero */}

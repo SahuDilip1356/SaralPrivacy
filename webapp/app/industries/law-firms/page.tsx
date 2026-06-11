@@ -112,7 +112,7 @@ export default function LawFirmsPage() {
         url: "https://saralprivacy.com/industries/law-firms",
         dateModified: toISODate(FRESHNESS.industry),
       })}
-      {speakableSchema([".answer-block"], "https://saralprivacy.com/industries/law-firms")}
+      {speakableSchema([".answer-block"], "https://saralprivacy.com/industries/law-firms", "DPDPA for Law Firms & Legal Consultants")}
 
       <div className="min-h-screen bg-pearl-50">
         {/* Hero */}

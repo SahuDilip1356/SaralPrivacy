@@ -24,7 +24,7 @@ export default function HomePage() {
     <>
       {organizationSchema()}
       {websiteSchema()}
-      {speakableSchema(['.answer-block'], 'https://saralprivacy.com')}
+      {speakableSchema(['.answer-block'], 'https://saralprivacy.com', 'DPDPA Compliance for Indian Businesses')}
       <HeroSection />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
         <AnswerBlock
