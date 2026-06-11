@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "Free DPDPA Templates | SaralPrivacy",
   description:
     "Download free DPDPA-aligned templates — Privacy Notice, Data Inventory Register, Consent Language, DSR SOP, and Vendor Register. Instantly usable for Indian businesses.",
+  alternates: { canonical: "https://saralprivacy.com/resources" },
   openGraph: {
     title: "Free DPDPA Compliance Templates | SaralPrivacy",
     description:

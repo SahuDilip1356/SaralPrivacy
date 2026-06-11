@@ -20,11 +20,12 @@ export const metadata: Metadata = {
   description: "India's practical DPDPA compliance platform. Free readiness assessments, daily briefings, industry guides, and expert consultation for recruitment agencies, CA firms, training institutes, and D2C brands.",
   keywords: ['DPDPA', 'Digital Personal Data Protection Act', 'India data protection', 'data privacy India', 'DPDPA compliance', 'data protection India', 'Indian privacy law', 'DPDPA for businesses', 'DPDPA assessment', 'SaralPrivacy'],
   authors: [{ name: 'SaralPrivacy Editorial Team' }],
-  alternates: { canonical: 'https://saralprivacy.com' },
+  // No site-wide canonical/og:url — a hardcoded homepage URL here is inherited
+  // by every page that doesn't override it, telling crawlers those pages are
+  // duplicates of the homepage. Each indexable page sets its own canonical.
   openGraph: {
     type: 'website',
     locale: 'en_IN',
-    url: 'https://saralprivacy.com',
     siteName: 'SaralPrivacy',
     title: 'SaralPrivacy — DPDPA Compliance for Indian Businesses',
     description: 'Free DPDPA readiness assessments, daily briefings, and practical compliance guides for Indian businesses.',

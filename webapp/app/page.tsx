@@ -17,6 +17,17 @@ export const metadata: Metadata = {
   description:
     "Practical DPDPA guidance for Indian businesses: assessments, industry guides, white paper, briefings, and advisory aligned to the DPDP Rules, 2025.",
   alternates: { canonical: 'https://saralprivacy.com' },
+  // Full block (not just url) — a child openGraph replaces the root layout's
+  // wholesale, so partial overrides drop the inherited title/description/image.
+  openGraph: {
+    type: 'website',
+    locale: 'en_IN',
+    url: 'https://saralprivacy.com',
+    siteName: 'SaralPrivacy',
+    title: 'SaralPrivacy — DPDPA Compliance for Indian Businesses',
+    description: 'Free DPDPA readiness assessments, daily briefings, and practical compliance guides for Indian businesses.',
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'SaralPrivacy — DPDPA Compliance' }],
+  },
 };
 
 export default function HomePage() {

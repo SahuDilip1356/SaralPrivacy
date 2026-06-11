@@ -82,7 +82,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE}/media/coverage`,   lastModified: FRESHNESS.media, changeFrequency: 'monthly', priority: 0.4 },
     { url: `${BASE}/media/press-wall`, lastModified: FRESHNESS.media, changeFrequency: 'monthly', priority: 0.5 },
     { url: `${BASE}/white-paper`,   lastModified: CORE_UPDATED,     changeFrequency: 'monthly', priority: 0.8 },
-    // /resources → 301 redirect to /blog; excluded from sitemap to avoid index pollution
+    { url: `${BASE}/resources`,     lastModified: CORE_UPDATED,     changeFrequency: 'monthly', priority: 0.8 },
 
     // ── Tools ──
     { url: `${BASE}/penalty-calculator`, lastModified: TOOLS_UPDATED, changeFrequency: 'monthly', priority: 0.8 },
@@ -141,7 +141,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE}/terms`,         lastModified: FRESHNESS.legal, changeFrequency: 'yearly', priority: 0.2 },
 
     // EXCLUDED — intentional:
-    // /resources            → 301 redirect to /blog
     // /consent-preferences  → utility page, noindex
     // /subscribe            → utility subscribe form, noindex
     // /unsubscribe          → redirect to /consent-preferences
