@@ -4,14 +4,14 @@
 
 export const ctaCopy = {
   assessment: {
-    eyebrow:  "Free · 10 minutes",
+    eyebrow:  "Free · 3–5 minutes",
     heading:  "Is your business DPDPA-ready?",
     body:     "Answer a few plain-English questions. Get your free Readiness Score with a prioritised action list.",
     cta:      "Check My Readiness →",
     href:     "/assessment",
   },
   assessmentCompact: {
-    heading:  "Know your DPDPA risk in 10 minutes",
+    heading:  "Know your DPDPA risk in 3–5 minutes",
     cta:      "Free Readiness Check →",
     href:     "/assessment",
   },
