@@ -10,7 +10,7 @@ import { TemplateDownloadModal } from "@/components/TemplateDownloadModal";
 
 const navigation = [
   {
-    label: "Daily Briefings",
+    label: "Briefings",
     href: "/briefings",
   },
   {
@@ -46,7 +46,6 @@ const navigation = [
   {
     label: "Data Discovery",
     href: "/discovery",
-    badge: "Free",
   },
   {
     label: "Assessment",
@@ -156,7 +155,7 @@ export function Header() {
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden lg:flex items-center gap-0.5">
+          <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1">
             {navigation.map((item) => (
               <div
                 key={item.label}
@@ -167,7 +166,7 @@ export function Header() {
                 <Link
                   href={item.href}
                   className={cn(
-                    "flex items-center gap-1 px-3.5 py-2 rounded-lg text-sm font-medium transition-colors",
+                    "flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
                     pathname === item.href || pathname.startsWith(item.href + "/")
                       ? "text-green-600 bg-green-50"
                       : "text-slate-700 hover:text-navy-700 hover:bg-cloud-50"
