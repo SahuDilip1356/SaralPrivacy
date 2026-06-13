@@ -1,10 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
 import { databases, DB_ID, COLLECTIONS, ID } from "@/lib/appwrite";
 import { upsertSubscriber } from "@/lib/subscribers";
+import { getClientIp, rateLimit, isHoneypotTripped } from "@/lib/abuseGuard";
+import { sendDiscoveryInventory, sendDiscoveryLeadAlert } from "@/lib/email";
 
 export async function POST(request: NextRequest) {
+  // Rate-limit per IP (also hardens the existing template downloads).
+  const rl = rateLimit(`tmpl:${getClientIp(request)}`, 8, 60_000);
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: "Too many requests. Please wait a moment and try again." },
+      { status: 429, headers: { "Retry-After": String(rl.retryAfter) } },
+    );
+  }
+
   try {
     const body = await request.json();
+
+    // Honeypot: bots fill the hidden field. Pretend success, store nothing.
+    if (isHoneypotTripped(body)) {
+      return NextResponse.json({ success: true });
+    }
+
     const {
       businessName,
       employees,
@@ -16,15 +33,18 @@ export async function POST(request: NextRequest) {
       reportToken,
       email,
       source,
+      inventoryCsv, // discovery only: data-inventory CSV to email the user
+      nicheName,    // discovery only: friendly business-type name
     } = body;
 
     if (!businessName || !contactName || !phone || !employees) {
       return NextResponse.json({ error: "Required fields missing." }, { status: 400 });
     }
 
-    const ip      = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "";
+    const ip      = getClientIp(request);
     const city    = decodeURIComponent(request.headers.get("x-vercel-ip-city") || "");
     const country = request.headers.get("x-vercel-ip-country") || "";
+    const isDiscovery = source === "discovery";
 
     await databases.createDocument(DB_ID, COLLECTIONS.TEMPLATE_DOWNLOADS, ID.unique(), {
       business_name:   businessName,
@@ -34,7 +54,7 @@ export async function POST(request: NextRequest) {
       email:           email || "",
       template_name:   templateName || "",
       consent_contact: consentContact ?? false,
-      report_token:    reportToken || "",
+      report_token:    reportToken || "", // discovery: stores the niche id
       source:          source || "report_page",
       ip_address:      ip,
       city,
@@ -52,6 +72,20 @@ export async function POST(request: NextRequest) {
         city,
         country,
       }).catch((err) => console.error("upsertSubscriber template:", err));
+    }
+
+    // Discovery: email the user their inventory + alert admin (fire-and-forget;
+    // the user already has the file via client-side download).
+    if (isDiscovery) {
+      const niceName = nicheName || "your business";
+      if (email && inventoryCsv) {
+        sendDiscoveryInventory({ to: email, name: contactName, nicheName: niceName, csv: inventoryCsv })
+          .catch((err) => console.error("sendDiscoveryInventory:", err));
+      }
+      sendDiscoveryLeadAlert({
+        name: contactName, businessName, email: email || "", phone,
+        employees, nicheName: niceName, city, country,
+      }).catch((err) => console.error("sendDiscoveryLeadAlert:", err));
     }
 
     return NextResponse.json({ success: true });

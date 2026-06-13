@@ -20,6 +20,29 @@ function gtag(event: string, params?: Record<string, any>) {
 
 export const trackEvent = {
 
+  // ── Personal Data Discovery (/discovery) ────────────────────────────────
+  // Fires when the snapshot renders — captures on-screen completions, not just
+  // the subset who download the CSV (lead capture).
+  discoveryComplete: (params: {
+    niche: string;
+    band: string;
+    score: number;
+    items: number;
+  }) => gtag("discovery_complete", {
+    event_category:  "engagement",
+    niche:           params.niche,
+    risk_band:       params.band,
+    score:           params.score,
+    items_confirmed: params.items,
+  }),
+
+  // Fires when the user downloads the data-inventory CSV (lead).
+  discoveryInventoryDownload: (params: { niche: string }) =>
+    gtag("discovery_inventory_download", {
+      event_category: "lead",
+      niche:          params.niche,
+    }),
+
   // ── Assessment (old /assessment route) ─────────────────────────────────
   assessmentComplete: (params: {
     score: number;
