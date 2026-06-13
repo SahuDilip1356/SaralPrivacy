@@ -107,7 +107,10 @@ interface Niche    { id: string; name: string; cat: string; aliases?: string[];
 type Obligation = 'Notice' | 'Consent' | 'Security safeguards'
                 | 'Retention & erasure' | 'Vendor controls' | 'Children (verifiable consent)';
 interface ItemDef  { item: string; examples: string; tags: string[];
-                     precaution: string; uiGroup: string; obligations: Obligation[] }
+                     precaution: string; uiGroup: string; obligations: Obligation[];
+                     // v1.1 — enrich for the Personal Data Map (RoPA view). Zero dedup
+                     // cost: still 182 unique defs. who/why/where, '; '-joined strings.
+                     dataSubjects: string; processingPurposes: string; sources: string }
 interface ResolvedItem extends ItemDef { id: string; seq: number; bucket: Bucket;
                      def: boolean; weight: number; uiShort: string }
 interface ScoreResult { role; raw; normalized; modifier; control; final;
@@ -286,3 +289,47 @@ lines stdlib; normalizer is a Node one-shot. No new libraries.
 5. Wire report → `/api/template-download` (`source:"discovery"`)
 6. Verify: unit tests green → preview workflow on `/discovery`
 ```
+
+---
+
+## 13. Personal Data Map (v1.1 — detailed report)
+
+**Why:** the snapshot answers "how exposed am I"; business users also need "what data
+am I actually dealing with." This turns the result into a usable **personal-data
+inventory / RoPA starter** — and pre-fills the existing `data-inventory-register.xlsx`.
+
+**Data:** carry 3 more master columns per item (`dataSubjects`, `processingPurposes`,
+`sources`) — verified **zero dedup cost** (still 182 unique defs; ~30 KB added).
+
+**On-screen map (free, in the result):** below the snapshot, a **"Your personal data
+map"** section listing the confirmed items grouped by Core / Operational / Hidden. Each
+row is a mini-RoPA entry:
+
+| Column | Source field |
+|---|---|
+| **Data item** (+ examples) | `item` / `examples` |
+| **Who** | `dataSubjects` |
+| **Why** | `processingPurposes` |
+| **Where it lives** | `sources` |
+| **Sensitivity** | `tags` → friendly (reuse TAG_GROUP) |
+| **DPDPA duty** | `obligations` |
+
+Responsive: table on desktop, stacked cards on mobile. Hidden-bucket rows get the
+orange accent (where exposure concentrates). Counts shown per group.
+
+**CSV download (email-gated):** "Download your data inventory (CSV)" — client-side
+generates a CSV of the confirmed items with all columns + a header row matching the
+inventory register. Gated via the existing `/api/template-download` lead flow
+(`source:"discovery"`). On success: download the CSV; for dedicated-pack niches, also
+deliver the industry checklist PDF. Every niche has a map, so the CSV is universal
+(replaces the dedicated-vs-generic CTA split — generic niches now get the CSV too,
+plus the assessment CTA in the sent state).
+
+**Data flow:** `DiscoveryClient` passes `selected` (Set) + `niche` to `ResultPanel`,
+which builds the map from `resolveGroups(niche)` filtered to `selected` (full item
+objects, now incl. who/why/where). Engine unchanged — no score impact.
+
+**Edge cases:** empty selection → no map (can't reach result anyway); CSV escaping
+(quote fields, escape `"`); API 429/500 on gated download → inline error, map stays.
+
+**Design-review:** run `/plan-design-review` on the map section before build.

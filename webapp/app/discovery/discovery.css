@@ -304,6 +304,43 @@
 .spd .exp-icon { color: var(--gold); font-size: 17px; flex-shrink: 0; margin-top: 1px; }
 .spd .result-exposure p { font-size: 14px; line-height: 1.55; color: #c3ccdb; }
 
+/* personal data map (RoPA inventory) */
+.spd .pdmap { margin: 4px 0 24px; }
+.spd .pdmap-lead { font-size: 14px; color: var(--slate-2); margin-bottom: 16px; max-width: 760px; line-height: 1.5; }
+.spd .pdmap-group { margin-bottom: 18px; }
+.spd .pdmap-grouphead { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.spd .pdmap-groupcount { font-size: 12px; color: var(--muted); font-weight: 600; }
+.spd .pdmap-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; }
+.spd .pdmap-scroll:focus-visible { box-shadow: var(--ring); }
+.spd .pdmap-group.g-hidden .pdmap-scroll { border-color: rgba(232, 112, 74, 0.35); }
+.spd .pdmap-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 720px; }
+.spd .pdmap-table th { text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.04em; color: var(--slate-2); background: var(--cloud); padding: 10px 13px;
+  border-bottom: 1px solid var(--line); white-space: nowrap; }
+.spd .pdmap-table td { padding: 11px 13px; border-bottom: 1px solid var(--line); color: var(--slate);
+  vertical-align: top; line-height: 1.4; }
+.spd .pdmap-table tr:last-child td { border-bottom: none; }
+.spd .pdmap-group.g-hidden .pdmap-table tbody tr { background: rgba(232, 112, 74, 0.04); }
+.spd .pdmap-item { display: block; font-weight: 600; color: var(--navy); }
+.spd .pdmap-ex { display: block; font-size: 12px; color: var(--muted); margin-top: 3px; }
+.spd .pdmap-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.spd .pdmap-chip { font-size: 11px; font-weight: 600; background: rgba(53, 182, 174, 0.1);
+  border: 1px solid rgba(53, 182, 174, 0.28); color: #1f8a82; padding: 3px 8px; border-radius: 6px; white-space: nowrap; }
+
+/* responsive: rows become labelled cards on mobile (table semantics preserved) */
+@media (max-width: 640px) {
+  .spd .pdmap-scroll { overflow-x: visible; }
+  .spd .pdmap-table { min-width: 0; }
+  .spd .pdmap-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .spd .pdmap-table tr { display: block; padding: 6px 0; border-bottom: 1px solid var(--line); }
+  .spd .pdmap-table tr:last-child { border-bottom: none; }
+  .spd .pdmap-table td { display: grid; grid-template-columns: 96px 1fr; gap: 10px; border: none; padding: 5px 13px; }
+  .spd .pdmap-table td::before { content: attr(data-label); font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.03em; color: var(--muted); }
+  .spd .pdmap-table td[data-label="Data point"] { grid-template-columns: 1fr; gap: 2px; padding-top: 10px; }
+  .spd .pdmap-table td[data-label="Data point"]::before { display: none; }
+}
+
 /* result CTA */
 .spd .result-cta { background: var(--cloud); border: 1px solid var(--line); border-radius: 16px;
   padding: 24px 26px; margin-bottom: 18px; }

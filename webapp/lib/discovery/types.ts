@@ -49,6 +49,10 @@ export interface ItemDef {
   precaution: string;
   uiGroup: string;
   obligations: Obligation[];
+  // v1.1 — Personal Data Map (RoPA) fields. "; "-joined strings.
+  dataSubjects: string; // who the data is about
+  processingPurposes: string; // why it's held
+  sources: string; // where it typically lives
 }
 
 // Per-niche reference into ITEM_DEFS plus the niche-local fields.

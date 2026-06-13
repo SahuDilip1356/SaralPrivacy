@@ -121,6 +121,10 @@ def main():
             "precaution": r[col["Recommended Precaution"]],
             "uiGroup": r[col["UI Group"]],
             "obligations": obls,
+            # v1.1 — Personal Data Map (RoPA) fields: who / why / where
+            "dataSubjects": r[col["Data Subjects"]] or "",
+            "processingPurposes": r[col["Processing Purposes"]] or "",
+            "sources": r[col["Typical Sources / Systems"]] or "",
         }
         sig = json.dumps(item, sort_keys=True, ensure_ascii=False)
         if sig not in defs:
