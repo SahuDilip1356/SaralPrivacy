@@ -19,6 +19,7 @@ function buildInventoryCsv(groups: ItemGroup[], nicheName: string): string {
     "Where it lives (sources/systems)",
     "Sensitivity",
     "DPDPA duty",
+    "Recommended precaution",
   ];
   const layer: Record<string, string> = { core: "Core", operational: "Operational", hidden: "Often-missed" };
   const rows = groups.flatMap((g) =>
@@ -32,6 +33,7 @@ function buildInventoryCsv(groups: ItemGroup[], nicheName: string): string {
         it.sources,
         (it.tags || []).map((t) => TAG_GROUP[t]).filter(Boolean).join("; "),
         it.obligations.join("; "),
+        it.precaution,
       ]
         .map(esc)
         .join(","),
