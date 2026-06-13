@@ -82,6 +82,86 @@ export async function sendDownloadAlert(download: DownloadData): Promise<EmailRe
 // ──────────────────────────────────────────────────────────────────────────────
 // 3. sendAssessmentAlert — notify admin of completed assessment
 // ──────────────────────────────────────────────────────────────────────────────
+// 2b. sendDiscoveryInventory — email the user their personal-data inventory (CSV)
+// ──────────────────────────────────────────────────────────────────────────────
+export async function sendDiscoveryInventory(p: {
+  to: string; name?: string; nicheName: string; csv: string;
+}): Promise<EmailResult> {
+  try {
+    const hi = p.name ? `Hi ${p.name},` : "Hi,";
+    const html = `
+      <div style="font-family:Inter,Arial,sans-serif;color:#334155;line-height:1.6;max-width:560px">
+        <p>${hi}</p>
+        <p>Attached is your <strong>DPDPA personal data inventory</strong> for
+        ${p.nicheName.toLowerCase()} — the data points you confirmed, with who they're about,
+        why you hold them, where they live, and a recommended precaution for each.</p>
+        <p>It's a practical starting "record of processing" you can keep working in. When you're
+        ready to score and prioritise the fixes for your business, take the full readiness assessment:</p>
+        <p><a href="https://saralprivacy.com/assessment"
+          style="display:inline-block;background:#07B981;color:#fff;font-weight:600;
+          text-decoration:none;padding:12px 22px;border-radius:8px">Take the full assessment →</a></p>
+        <p style="font-size:13px;color:#94A3B8">This inventory is an educational snapshot, not legal advice.</p>
+        <p style="font-size:13px;color:#94A3B8">— SaralPrivacy · Privacy made practical for India</p>
+      </div>`;
+    const { error } = await resend.emails.send({
+      from: FROM_NOREPLY,
+      to: p.to,
+      subject: `Your DPDPA personal data inventory — ${p.nicheName}`,
+      html,
+      attachments: [
+        { filename: "dpdpa-personal-data-inventory.csv", content: Buffer.from(p.csv, "utf8") },
+      ],
+    });
+    if (error) return { success: false, error: error.message };
+    return { success: true };
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error("[email] sendDiscoveryInventory failed:", msg);
+    return { success: false, error: msg };
+  }
+}
+
+// ──────────────────────────────────────────────────────────────────────────────
+// 2c. sendDiscoveryLeadAlert — notify admin of a new Personal Data Discovery lead
+// ──────────────────────────────────────────────────────────────────────────────
+export async function sendDiscoveryLeadAlert(lead: {
+  name: string; businessName: string; email: string; phone: string;
+  employees: string; nicheName: string; city?: string; country?: string;
+}): Promise<EmailResult> {
+  try {
+    const row = (k: string, v: string) =>
+      `<tr><td style="padding:4px 12px 4px 0;color:#64748B">${k}</td><td style="padding:4px 0;color:#121A2E"><strong>${v || "—"}</strong></td></tr>`;
+    const html = `
+      <div style="font-family:Inter,Arial,sans-serif;color:#334155;max-width:560px">
+        <p>New <strong>Personal Data Discovery</strong> lead — they downloaded their data inventory.</p>
+        <table style="font-size:14px;border-collapse:collapse">
+          ${row("Business", lead.businessName)}
+          ${row("Contact", lead.name)}
+          ${row("Email", lead.email)}
+          ${row("Phone", lead.phone)}
+          ${row("Team size", lead.employees)}
+          ${row("Business type", lead.nicheName)}
+          ${row("Location", [lead.city, lead.country].filter(Boolean).join(", "))}
+        </table>
+      </div>`;
+    const { error } = await resend.emails.send({
+      from: FROM_NOREPLY,
+      to: ADMIN_EMAIL,
+      subject: `New Data Discovery lead — ${lead.businessName}`,
+      html,
+    });
+    if (error) return { success: false, error: error.message };
+    return { success: true };
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error("[email] sendDiscoveryLeadAlert failed:", msg);
+    return { success: false, error: msg };
+  }
+}
+
+// ──────────────────────────────────────────────────────────────────────────────
+// 3. sendAssessmentAlert — notify admin of completed assessment
+// ──────────────────────────────────────────────────────────────────────────────
 export async function sendAssessmentAlert(assessment: AssessmentData): Promise<EmailResult> {
   try {
     const { subject, html } = assessmentAlertTemplate(assessment);

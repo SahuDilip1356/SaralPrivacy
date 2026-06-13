@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
-import { BarChart2, Users, Mail, Download, CheckCircle, Shield, Clock, LogOut, FileText, ClipboardList, BookOpen, UserPlus, Send, TrendingUp } from "lucide-react";
+import { BarChart2, Users, Mail, Download, CheckCircle, Shield, Clock, LogOut, FileText, ClipboardList, BookOpen, UserPlus, Send, TrendingUp, Compass } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Admin | SaralPrivacy",
@@ -23,6 +23,7 @@ const adminNav = [
   { label: "Leads",            href: "/admin/leads",            icon: Users,         adminOnly: true  },
   { label: "Subscribers",      href: "/admin/subscribers",      icon: Mail,          adminOnly: true  },
   { label: "Downloads",        href: "/admin/downloads",        icon: Download,      adminOnly: true  },
+  { label: "Data Discovery",   href: "/admin/discovery",        icon: Compass,       adminOnly: true  },
   { label: "Assessments",      href: "/admin/assessments",      icon: CheckCircle,   adminOnly: true  },
   { label: "Survey Responses", href: "/admin/survey-responses", icon: ClipboardList, adminOnly: true  },
   { label: "Consent Log",      href: "/admin/consent",          icon: Shield,        adminOnly: true  },

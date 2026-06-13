@@ -1,10 +1,11 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Gauge from "./Gauge";
 import PersonalDataMap from "./PersonalDataMap";
 import { bandColor, resolveGroups, TAG_GROUP } from "@/lib/discovery/engine";
 import { getNiche } from "@/lib/discovery/data";
 import { checklistFor } from "@/lib/discovery/checklist-map";
+import { trackEvent } from "@/lib/analytics";
 import type { ItemGroup, ResolvedItem, ScoreResult } from "@/lib/discovery/types";
 
 // Build a CSV data-inventory (RoPA starter) from the confirmed items.
@@ -110,6 +111,12 @@ export default function ResultPanel({
   const [emailErr, setEmailErr] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
+  const [hp, setHp] = useState(""); // honeypot — empty for real users
+
+  // Capture on-screen completions (not just CSV downloaders). Fires once per result.
+  useEffect(() => {
+    trackEvent.discoveryComplete({ niche: nicheId, band: r.riskBand, score: r.final, items: r.selectedCount });
+  }, [nicheId, r.riskBand, r.final, r.selectedCount]);
 
   function set<K extends keyof typeof form>(k: K, v: (typeof form)[K]) {
     setForm((f) => ({ ...f, [k]: v }));
@@ -124,6 +131,7 @@ export default function ResultPanel({
     }
     setEmailErr(false);
     setSubmitting(true);
+    const csv = buildInventoryCsv(mapGroups, nicheName);
     try {
       const res = await fetch("/api/template-download", {
         method: "POST",
@@ -138,12 +146,16 @@ export default function ResultPanel({
           consentBriefings: form.consentBriefings,
           templateName: checklist.templateName,
           source: "discovery",
+          reportToken: nicheId, // stores the niche id on the lead
+          nicheName,
+          inventoryCsv: csv, // emailed back to the user as an attachment
+          hp_url: hp,
         }),
       });
       const data = await res.json().catch(() => ({}));
       if (res.ok && data.success) {
+        trackEvent.discoveryInventoryDownload({ niche: nicheId });
         // Primary deliverable: the personal-data inventory as a CSV (client-side).
-        const csv = buildInventoryCsv(mapGroups, nicheName);
         const blob = new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8;" });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
@@ -373,6 +385,17 @@ export default function ResultPanel({
               />
               <span>Also send me SaralPrivacy’s practical DPDPA briefings (optional, unsubscribe anytime).</span>
             </label>
+            {/* honeypot — hidden from humans; bots fill it and get silently dropped */}
+            <input
+              type="text"
+              name="hp_url"
+              value={hp}
+              onChange={(e) => setHp(e.target.value)}
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
+            />
             {apiError && <div className="form-error" role="alert">{apiError}</div>}
             <div>
               <button type="submit" className="btn-primary" disabled={submitting}>
