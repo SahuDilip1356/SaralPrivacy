@@ -5,6 +5,7 @@ import { PressProofStrip } from "@/components/ui/PressProofStrip";
 
 const footerLinks = {
   platform: [
+    { label: "Personal Data Discovery", href: "/discovery" },
     { label: "Daily Briefings", href: "/briefings" },
     { label: "DPDPA Guide", href: "/learn" },
     { label: "Insights", href: "/blog" },
