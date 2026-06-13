@@ -3,6 +3,7 @@ import { HeroSection } from "@/components/home/HeroSection";
 import { TrustStrip } from "@/components/home/TrustStrip";
 import { AudienceCards } from "@/components/home/AudienceCards";
 import { BriefingsSection } from "@/components/home/BriefingsSection";
+import { DiscoveryCTA } from "@/components/home/DiscoveryCTA";
 import { AssessmentCTA } from "@/components/home/AssessmentCTA";
 import { WhitePaperSection } from "@/components/home/WhitePaperSection";
 import { FAQPreview } from "@/components/home/FAQPreview";
@@ -48,6 +49,7 @@ export default function HomePage() {
       <PressProofStrip />
       <AudienceCards />
       <BriefingsSection />
+      <DiscoveryCTA />
       <AssessmentCTA />
       <WhitePaperSection />
       <FAQPreview />

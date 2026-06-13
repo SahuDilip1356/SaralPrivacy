@@ -47,3 +47,6 @@ yarn-error.log*
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
+
+# discovery tool: regenerable test fixture (rebuild via tools/build-discovery-data.py)
+tools/data/niche-items.golden.json

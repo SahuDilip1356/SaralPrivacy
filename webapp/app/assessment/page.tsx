@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { breadcrumbSchema } from "@/lib/schema";
+import { DiscoveryCrossLink } from "@/components/DiscoveryCrossLink";
 import SurveyClient from "./SurveyClient";
 
 export const metadata: Metadata = {
@@ -40,6 +41,10 @@ export default function AssessmentPage() {
           yet have a formal privacy operating model. Takes 3–5 minutes.
         </p>
         <p>Legal baseline: DPDP Rules, 2025 notified on 14 November 2025, with phased commencement. This assessment is for educational purposes and does not constitute legal advice.</p>
+      </div>
+
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-8">
+        <DiscoveryCrossLink />
       </div>
 
       <SurveyClient />

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Users, Calculator, GraduationCap, ShoppingBag, Stethoscope, School, Scale, Building2 } from "lucide-react";
+import { DiscoveryCrossLink } from "@/components/DiscoveryCrossLink";
 
 export const metadata: Metadata = {
   title: "DPDPA Compliance Guides for Indian Industries",
@@ -154,6 +155,8 @@ export default function IndustriesPage() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+
+        <DiscoveryCrossLink className="mb-10" />
 
         {/* Comparison table — crawlable SSR content for snippet extraction and AI retrieval */}
         <div className="overflow-x-auto mb-10">

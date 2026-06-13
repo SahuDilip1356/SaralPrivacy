@@ -86,6 +86,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     // ── Tools ──
     { url: `${BASE}/penalty-calculator`, lastModified: TOOLS_UPDATED, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${BASE}/discovery`,          lastModified: TOOLS_UPDATED, changeFrequency: 'monthly', priority: 0.9 },
 
     // ── Assessment hub (crawlable intro text) ──
     { url: `${BASE}/assessment`,    lastModified: CORE_UPDATED,     changeFrequency: 'monthly', priority: 0.8 },
