@@ -2,11 +2,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { Mail } from "lucide-react";
 import { PressProofStrip } from "@/components/ui/PressProofStrip";
-import { sectorNavLinks, sectorAssessmentLinks } from "@/lib/data/sectors";
+import { sectorNavLinks } from "@/lib/data/sectors";
 
 const footerLinks = {
   platform: [
-    { label: "Personal Data Discovery", href: "/discovery" },
     { label: "Daily Briefings", href: "/briefings" },
     { label: "DPDPA Guide", href: "/learn" },
     { label: "Insights", href: "/blog" },
@@ -17,8 +16,8 @@ const footerLinks = {
   ],
   industries: sectorNavLinks,
   assessment: [
-    { label: "Take Free Assessment", href: "/assessment" },
-    ...sectorAssessmentLinks,
+    { label: "DPDPA Readiness Assessment", href: "/assessment" },
+    { label: "Personal Data Discovery", href: "/discovery" },
   ],
   legal: [
     { label: "Privacy Notice", href: "/privacy" },
