@@ -22,8 +22,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: true, message: "Subscription successful." });
     }
 
-    if (!name || !email || !consentEmail) {
-      return NextResponse.json({ error: "Name, email, and email consent are required." }, { status: 400 });
+    if (!email || !consentEmail) {
+      return NextResponse.json({ error: "Email and email consent are required." }, { status: 400 });
     }
     if (!/\S+@\S+\.\S+/.test(email)) {
       return NextResponse.json({ error: "Invalid email address." }, { status: 400 });
@@ -35,18 +35,19 @@ export async function POST(request: NextRequest) {
     const region  = request.headers.get("x-vercel-ip-country-region") || "";
     const userAgent = request.headers.get("user-agent") || "";
 
+    // Name is optional on the form; the `subscribers.name` attribute is required,
+    // so fall back to the email local-part. Only the 7 attributes that exist on the
+    // collection are written — sending ip/city/country/region (which aren't defined
+    // on `subscribers`) is what made every signup fail with "Invalid document
+    // structure". Geo/IP for the consent audit trail lives on `consent_log` below.
     const subscriberData = {
-      name,
+      name:             (name && name.trim()) || email.split("@")[0],
       email,
       industry:         industry || "",
       frequency:        frequency || "daily",
       consent_version:  PRIVACY_NOTICE_VERSION,
       user_agent:       userAgent,
       created_at:       new Date().toISOString(),
-      ip_address:       ip,
-      city,
-      country,
-      region,
     };
 
     await databases.createDocument(DB_ID, COLLECTIONS.SUBSCRIBERS, ID.unique(), subscriberData);

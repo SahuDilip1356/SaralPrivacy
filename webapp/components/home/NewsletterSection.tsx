@@ -10,7 +10,6 @@ import { trackEvent } from "@/lib/analytics";
 export function NewsletterSection() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const [frequency, setFrequency] = useState<"daily" | "weekly">("daily");
   const [consentEmail, setConsentEmail] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -26,11 +25,11 @@ export function NewsletterSection() {
       const res = await fetch("/api/subscribe", {
         method:  "POST",
         headers: { "Content-Type": "application/json" },
-        body:    JSON.stringify({ name, email, frequency, consentEmail }),
+        body:    JSON.stringify({ name, email, frequency: "daily", consentEmail }),
       });
       const data = await res.json();
       if (res.ok) {
-        trackEvent.subscribe({ frequency });
+        trackEvent.subscribe({ frequency: "daily" });
         setSubmitted(true);
       } else {
         setError(data.error || "Something went wrong. Please try again.");
@@ -55,8 +54,8 @@ export function NewsletterSection() {
             DPDPA briefings, delivered to your inbox
           </h2>
           <p className="text-slate-600 mb-8 leading-relaxed">
-            Get practical DPDPA updates, compliance tips, and regulatory developments
-            delivered weekly (or daily). Written for business owners, not lawyers.
+            Get practical DPDPA updates, compliance tips, and regulatory developments —
+            a short daily briefing, written for business owners, not lawyers.
           </p>
 
           {submitted ? (
@@ -75,11 +74,10 @@ export function NewsletterSection() {
             >
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                 <Input
-                  label="Your Name"
+                  label="Your Name (optional)"
                   placeholder="Priya Sharma"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  required
                 />
                 <Input
                   label="Work Email"
@@ -89,29 +87,6 @@ export function NewsletterSection() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
-              </div>
-
-              {/* Frequency toggle */}
-              <div className="mb-4">
-                <label className="block text-sm font-semibold text-slate-700 mb-2">
-                  How often?
-                </label>
-                <div className="flex gap-2">
-                  {(["daily", "weekly"] as const).map((freq) => (
-                    <button
-                      key={freq}
-                      type="button"
-                      onClick={() => setFrequency(freq)}
-                      className={`flex-1 py-2.5 rounded-lg border text-sm font-semibold transition-colors capitalize ${
-                        frequency === freq
-                          ? "border-navy-500 bg-cloud-50 text-navy-700"
-                          : "border-slate-200 text-slate-600 hover:border-slate-300"
-                      }`}
-                    >
-                      {freq === "weekly" ? "Weekly digest" : "Daily briefing"}
-                    </button>
-                  ))}
-                </div>
               </div>
 
               {/* Consent */}
