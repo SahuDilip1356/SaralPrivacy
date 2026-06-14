@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Users, Calculator, GraduationCap, ShoppingBag, Stethoscope, School, Scale, Building2 } from "lucide-react";
+import { ArrowRight, Users, Calculator, GraduationCap, ShoppingBag, Stethoscope, School, Scale, Building2, Hotel, Pill } from "lucide-react";
 import { DiscoveryCrossLink } from "@/components/DiscoveryCrossLink";
 
 export const metadata: Metadata = {
@@ -131,6 +131,36 @@ const industries = [
     iconColor: "text-emerald-700",
     btn: "bg-emerald-600 hover:bg-emerald-700",
   },
+  {
+    icon: Hotel,
+    title: "Hotels, Hospitality & Travel",
+    href: "/industries/hotels-travel",
+    assessmentHref: "/assessment/hotels-travel",
+    tagline: "Guest IDs, passport copies, booking records, OTA sharing, WhatsApp confirmations, travel documents, CCTV",
+    risks: ["Passport copies over WhatsApp/email", "OTA & travel-vendor sharing", "Ex-staff / shared PMS logins", "Indefinite guest-record retention"],
+    stat: "Hotels and travel agencies often keep ID and passport copies long after checkout",
+    color: "orange",
+    bg: "bg-orange-50",
+    border: "border-orange-200",
+    iconBg: "bg-orange-100",
+    iconColor: "text-orange-700",
+    btn: "bg-orange-600 hover:bg-orange-700",
+  },
+  {
+    icon: Pill,
+    title: "Pharmacies & Online Pharmacies",
+    href: "/industries/pharmacies",
+    assessmentHref: "/assessment/pharmacies",
+    tagline: "Prescriptions, medicine history, health indicators, WhatsApp orders, refill reminders, delivery partners",
+    risks: ["Prescription images over WhatsApp", "Medicine-history reveals health data", "Delivery-staff over-access", "Indefinite prescription retention"],
+    stat: "Medicine history can reveal health conditions even without a diagnosis field",
+    color: "purple",
+    bg: "bg-purple-50",
+    border: "border-purple-200",
+    iconBg: "bg-purple-100",
+    iconColor: "text-purple-700",
+    btn: "bg-purple-600 hover:bg-purple-700",
+  },
 ];
 
 export default function IndustriesPage() {
@@ -226,6 +256,20 @@ export default function IndustriesPage() {
                 <td className="px-4 py-3 text-red-700 font-medium">KYC and leads forwarded through WhatsApp broker groups</td>
                 <td className="px-4 py-3 text-slate-600">Secure KYC intake; share leads only with instruction or documented purpose</td>
                 <td className="px-4 py-3"><a href="/assessment/real-estate" className="text-green-600 font-semibold hover:underline">Start →</a></td>
+              </tr>
+              <tr className="hover:bg-slate-50 transition-colors">
+                <td className="px-4 py-3 font-semibold text-navy-700">Hotels, Hospitality &amp; Travel</td>
+                <td className="px-4 py-3 text-slate-600">Guest IDs, passport/visa copies, booking records, itineraries, C-Form data, CCTV and access logs</td>
+                <td className="px-4 py-3 text-red-700 font-medium">Passport copies over WhatsApp and indefinite guest-record retention</td>
+                <td className="px-4 py-3 text-slate-600">Secure ID/passport intake; set retention &amp; deletion rules for guest records and CCTV</td>
+                <td className="px-4 py-3"><a href="/assessment/hotels-travel" className="text-green-600 font-semibold hover:underline">Start →</a></td>
+              </tr>
+              <tr className="hover:bg-slate-50 transition-colors">
+                <td className="px-4 py-3 font-semibold text-navy-700">Pharmacies &amp; Online Pharmacies</td>
+                <td className="px-4 py-3 text-slate-600">Prescriptions, medicine history, doctor details, delivery addresses, health indicators</td>
+                <td className="px-4 py-3 text-red-700 font-medium">Prescription images on WhatsApp and medicine-history used without consent</td>
+                <td className="px-4 py-3 text-slate-600">Secure prescription intake; limit delivery/vendor access; consent for refill messaging</td>
+                <td className="px-4 py-3"><a href="/assessment/pharmacies" className="text-green-600 font-semibold hover:underline">Start →</a></td>
               </tr>
             </tbody>
           </table>

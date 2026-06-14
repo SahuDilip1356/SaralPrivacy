@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Users, Calculator, GraduationCap, ShoppingBag, Stethoscope, School, Scale, Building2, ArrowRight } from "lucide-react";
+import { Users, Calculator, GraduationCap, ShoppingBag, Stethoscope, School, Scale, Building2, Hotel, Pill, ArrowRight } from "lucide-react";
 
 const audiences = [
   {
@@ -114,6 +114,34 @@ const audiences = [
     iconBg: "bg-emerald-100",
     iconColor: "text-emerald-700",
   },
+  {
+    icon: Hotel,
+    title: "Hotels, Hospitality & Travel",
+    href: "/industries/hotels-travel",
+    assessmentHref: "/assessment/hotels-travel",
+    color: "orange",
+    painPoints: ["Guest IDs & passport copies", "OTA & travel-vendor sharing", "WhatsApp confirmations & CCTV", "Old guest-record retention"],
+    promise: "See whether your guest IDs, OTA sharing, travel documents and record retention are DPDPA-ready.",
+    accentBg: "bg-orange-50",
+    accentBorder: "border-orange-200",
+    accentText: "text-orange-700",
+    iconBg: "bg-orange-100",
+    iconColor: "text-orange-700",
+  },
+  {
+    icon: Pill,
+    title: "Pharmacies & Online Pharmacies",
+    href: "/industries/pharmacies",
+    assessmentHref: "/assessment/pharmacies",
+    color: "purple",
+    painPoints: ["Prescriptions & medicine history", "WhatsApp orders & health indicators", "Delivery-partner data sharing", "Old prescription retention"],
+    promise: "Check whether your prescriptions, medicine-history handling and vendor sharing are DPDPA-ready.",
+    accentBg: "bg-purple-50",
+    accentBorder: "border-purple-200",
+    accentText: "text-purple-700",
+    iconBg: "bg-purple-100",
+    iconColor: "text-purple-700",
+  },
 ];
 
 export function AudienceCards() {
@@ -136,7 +164,7 @@ export function AudienceCards() {
         </div>
 
         {/* Cards grid */}
-        {/* 7 cards: a lone trailing card (nth 3n+1 & last) centers in the middle
+        {/* 10 cards: a lone trailing card (nth 3n+1 & last) centers in the middle
             column at lg so the orphan row doesn't look broken. Self-deactivates
             when the count fills the grid evenly. */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:[&>*:last-child:nth-child(3n+1)]:col-start-2">

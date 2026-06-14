@@ -41,6 +41,8 @@ const navigation = [
       { label: "Schools & Colleges", href: "/industries/schools-colleges" },
       { label: "Law Firms & Legal Consultants", href: "/industries/law-firms" },
       { label: "Real Estate & Property Firms", href: "/industries/real-estate" },
+      { label: "Hotels, Hospitality & Travel", href: "/industries/hotels-travel" },
+      { label: "Pharmacies & Online Pharmacies", href: "/industries/pharmacies" },
     ],
   },
   {

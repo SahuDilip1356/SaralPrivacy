@@ -6,7 +6,7 @@ import { ArrowRight, FileText, CheckCircle, Clock, TrendingUp } from "lucide-rea
 const stats = [
   { icon: Clock, label: "3–5 minute assessment", value: "Free" },
   { icon: TrendingUp, label: "Briefings published", value: "200+" },
-  { icon: CheckCircle, label: "Industries covered", value: "4" },
+  { icon: CheckCircle, label: "Sector assessments", value: "10" },
   { icon: FileText, label: "Resources available", value: "50+" },
 ];
 

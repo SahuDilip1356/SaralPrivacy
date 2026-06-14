@@ -23,6 +23,8 @@ const footerLinks = {
     { label: "Schools & Colleges", href: "/industries/schools-colleges" },
     { label: "Law Firms & Legal Consultants", href: "/industries/law-firms" },
     { label: "Real Estate & Property Firms", href: "/industries/real-estate" },
+    { label: "Hotels, Hospitality & Travel", href: "/industries/hotels-travel" },
+    { label: "Pharmacies & Online Pharmacies", href: "/industries/pharmacies" },
   ],
   assessment: [
     { label: "Take Free Assessment", href: "/assessment" },
@@ -34,6 +36,8 @@ const footerLinks = {
     { label: "School & College", href: "/assessment/schools-colleges" },
     { label: "Law Firm & Legal", href: "/assessment/law-firms" },
     { label: "Real Estate & Property", href: "/assessment/real-estate" },
+    { label: "Hotels & Travel", href: "/assessment/hotels-travel" },
+    { label: "Pharmacy & Online Pharmacy", href: "/assessment/pharmacies" },
   ],
   legal: [
     { label: "Privacy Notice", href: "/privacy" },
