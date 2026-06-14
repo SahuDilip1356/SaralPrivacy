@@ -69,10 +69,10 @@ Contact for privacy matters: privacy@saralprivacy.com`,
 - Issue description
 - Preferred contact method and time
 
-**From Website Usage:**
-- IP address (anonymised for analytics)
-- Device type and browser (aggregated)
-- Pages visited and time on page (aggregated)
+**From Website Usage & Form Submissions:**
+- IP address and approximate location (city, region and country, derived from your IP) — recorded when you subscribe to our briefings or submit a form, as part of your consent record, to evidence when and where consent was given. This is retained with your subscription or request and is not anonymised.
+- Device type and browser
+- Pages visited and time on page — aggregated for general website analytics, where IP is anonymised.
 
 We do not collect sensitive personal data (Aadhaar, PAN, financial data, health data, or biometric data) through this platform.`,
             },
