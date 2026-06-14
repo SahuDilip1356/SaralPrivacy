@@ -80,6 +80,12 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error("Subscribe error:", error);
-    return NextResponse.json({ error: "An unexpected error occurred. Please try again." }, { status: 500 });
+    return NextResponse.json(
+      {
+        error: "An unexpected error occurred. Please try again.",
+        _debug: error instanceof Error ? error.message : String(error),
+      },
+      { status: 500 }
+    );
   }
 }
