@@ -66,7 +66,7 @@ export default function AboutPage() {
               </li>
               <li className="flex items-start gap-3">
                 <span className="w-2 h-2 rounded-full bg-green-500 mt-1.5 shrink-0" />
-                <span><strong className="text-navy-700">Industry guides</strong> — Sector-specific compliance guidance for recruitment agencies, CA firms, training institutes, and D2C brands, covering the specific risks and workflows that matter in each sector.</span>
+                <span><strong className="text-navy-700">Industry guides</strong> — Sector-specific compliance guidance across every industry we assess — from recruitment, CA firms and clinics to fintech, real estate and wellness — covering the specific risks and workflows that matter in each sector.</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="w-2 h-2 rounded-full bg-green-500 mt-1.5 shrink-0" />
@@ -87,10 +87,10 @@ export default function AboutPage() {
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {[
-                "Recruitment and staffing agencies",
-                "CA firms and accounting practices",
-                "Training institutes and coaching centres",
-                "D2C brands and e-commerce businesses",
+                "Recruitment, CA firms and training institutes",
+                "D2C, clinics, pharmacies and hospitality",
+                "Schools, law firms and real estate",
+                "Fintech, NBFCs and wellness businesses",
                 "MSMEs across sectors processing customer or employee data",
                 "Founders and operations leads who need clarity, not commentary",
               ].map((item) => (

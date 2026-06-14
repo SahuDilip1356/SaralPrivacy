@@ -749,7 +749,7 @@ export default function SurveyClient() {
               <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">How it works</div>
               <div className="space-y-2">
                 {[
-                  "Answer 12 quick questions about your business",
+                  "Answer a short, sector-specific diagnostic",
                   "Get your readiness score instantly",
                   "See your biggest privacy gaps",
                   "Receive recommended next actions",

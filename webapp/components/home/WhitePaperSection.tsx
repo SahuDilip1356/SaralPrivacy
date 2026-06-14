@@ -4,7 +4,7 @@ import { Download, FileText, CheckCircle } from "lucide-react";
 const whitePaperContents = [
   "What DPDPA is and who it applies to — in plain English",
   "Obligations for Data Fiduciaries: consent, notice, security, breach",
-  "Sector-by-sector breakdown: recruitment, CA firms, training, D2C",
+  "Sector deep-dives for recruitment, CA firms, training & D2C — plus a universal readiness framework",
   "Rights of individuals and how businesses must respond",
   "Enforcement timeline and penalty structure",
   "Your 30-day privacy readiness action plan",

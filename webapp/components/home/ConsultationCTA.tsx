@@ -30,8 +30,8 @@ export function ConsultationCTA() {
               </h2>
 
               <p className="text-slate-300 text-lg leading-relaxed mb-6">
-                Our advisory team works with Indian businesses across recruitment, accounting, training,
-                and D2C. Tell us where you are and we&apos;ll tell you what to prioritise.
+                We help Indian businesses turn sector-specific DPDPA risk into practical controls, templates
+                and operating steps. Tell us where you are and we&apos;ll tell you what to prioritise.
               </p>
 
               <div className="space-y-3 mb-8">

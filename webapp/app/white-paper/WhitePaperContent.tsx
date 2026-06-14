@@ -9,11 +9,17 @@ import { PRIVACY_NOTICE_VERSION } from "@/lib/utils";
 
 const industryOptions = [
   { value: "recruitment", label: "Recruitment & Staffing" },
-  { value: "ca-firms", label: "CA / Accounting Firm" },
-  { value: "training-institutes", label: "Training / Coaching Institute" },
-  { value: "d2c-brands", label: "D2C / E-commerce Brand" },
-  { value: "healthcare", label: "Healthcare" },
-  { value: "fintech", label: "Fintech / Financial Services" },
+  { value: "ca-firms", label: "CA & Accounting Firm" },
+  { value: "training-institutes", label: "Training & Coaching Institute" },
+  { value: "d2c-brands", label: "D2C & E-commerce Brand" },
+  { value: "clinics-diagnostic-labs", label: "Clinic & Diagnostic Lab" },
+  { value: "schools-colleges", label: "School & College" },
+  { value: "law-firms", label: "Law Firm & Legal Consultant" },
+  { value: "real-estate", label: "Real Estate & Property Firm" },
+  { value: "hotels-travel", label: "Hotel, Hospitality & Travel" },
+  { value: "pharmacies", label: "Pharmacy & Online Pharmacy" },
+  { value: "fintech-nbfc", label: "Fintech, NBFC & Digital Payments" },
+  { value: "gyms-salons-spas", label: "Gym, Salon & Spa" },
   { value: "general", label: "Other / General Business" },
 ];
 
@@ -33,7 +39,7 @@ const whitePaperSections = [
   "Notice requirements — what you must tell individuals before collecting data",
   "Rights of individuals — access, correction, erasure, and grievance",
   "Data breach obligations — notification timelines and scope",
-  "Sector breakdown — recruitment, CA firms, training institutes, D2C",
+  "Sector deep-dives — recruitment, CA firms, training institutes & D2C — plus a framework any Indian business can apply",
   "Penalty structure — what violations attract what penalties",
   "30-day compliance action plan — prioritised steps for each sector",
 ];
