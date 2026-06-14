@@ -42,6 +42,8 @@ export async function POST(request: NextRequest) {
         industry:        contact.industry || "",
         frequency:       "daily",
         consent_version: PRIVACY_NOTICE_VERSION,
+        consent_source:  "intro_email_one_click", // enum: manual|assessment_form|intro_email_one_click|report_email_cta|admin_added
+        status:          "active",                // enum: active|unsubscribed|bounced|complained
         created_at:      now,
         ip_address:      "",
         city:            "",
