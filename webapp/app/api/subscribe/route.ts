@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
       frequency:        frequency || "daily",
       consent_version:  PRIVACY_NOTICE_VERSION,
       consent_source:   "manual", // enum on the collection: manual|assessment_form|intro_email_one_click|report_email_cta|admin_added
-      status:           "subscribed",
+      status:           "active", // enum on the collection: active|unsubscribed|bounced|complained
       user_agent:       userAgent,
       created_at:       new Date().toISOString(),
     };
