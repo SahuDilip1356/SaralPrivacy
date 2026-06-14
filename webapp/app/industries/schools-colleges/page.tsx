@@ -224,7 +224,7 @@ export default function SchoolsCollegesPage() {
               </div>
               <div className="rounded-xl border border-slate-200 bg-white p-5">
                 <h3 className="mb-2 text-sm font-bold text-navy-700">Free White Paper</h3>
-                <p className="mb-3 text-xs text-slate-600">45-page DPDPA compliance guide for Indian businesses.</p>
+                <p className="mb-3 text-xs text-slate-600">59-page DPDPA compliance guide for Indian businesses.</p>
                 <Link href="/white-paper" className="block rounded-lg bg-navy-700 py-2.5 text-center text-sm font-semibold text-white transition-colors hover:bg-navy-800">
                   Download White Paper →
                 </Link>

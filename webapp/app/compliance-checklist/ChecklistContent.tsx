@@ -324,7 +324,7 @@ function RelatedResources() {
     {
       icon: FileText,
       label: "Download White Paper",
-      desc: "45-page DPDPA guide — Act 2023 + Rules 2025",
+      desc: "59-page DPDPA guide — Act 2023 + Rules 2025",
       href: "/white-paper",
       accent: "text-navy-600",
       bg: "bg-navy-50",
