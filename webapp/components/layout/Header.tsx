@@ -43,6 +43,8 @@ const navigation = [
       { label: "Real Estate & Property Firms", href: "/industries/real-estate" },
       { label: "Hotels, Hospitality & Travel", href: "/industries/hotels-travel" },
       { label: "Pharmacies & Online Pharmacies", href: "/industries/pharmacies" },
+      { label: "Fintech, NBFC & Digital Payments", href: "/industries/fintech-nbfc" },
+      { label: "Gyms, Salons & Spas", href: "/industries/gyms-salons-spas" },
     ],
   },
   {

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Users, Calculator, GraduationCap, ShoppingBag, Stethoscope, School, Scale, Building2, Hotel, Pill } from "lucide-react";
+import { ArrowRight, Users, Calculator, GraduationCap, ShoppingBag, Stethoscope, School, Scale, Building2, Hotel, Pill, Landmark, Sparkles } from "lucide-react";
 import { DiscoveryCrossLink } from "@/components/DiscoveryCrossLink";
 
 export const metadata: Metadata = {
@@ -161,6 +161,36 @@ const industries = [
     iconColor: "text-purple-700",
     btn: "bg-purple-600 hover:bg-purple-700",
   },
+  {
+    icon: Landmark,
+    title: "Fintech, NBFC & Digital Payments",
+    href: "/industries/fintech-nbfc",
+    assessmentHref: "/assessment/fintech-nbfc",
+    tagline: "KYC, PAN/Aadhaar, bank & bureau data, UPI, credit profiling, DSAs, collection agents, vendor platforms",
+    risks: ["Bank/bureau data over WhatsApp/DSAs", "Profiling with bundled consent", "Agents exporting customer lists", "Indefinite KYC & rejected-lead retention"],
+    stat: "Fintech data moves across a large partner and agent ecosystem — the biggest practical risk",
+    color: "blue",
+    bg: "bg-blue-50",
+    border: "border-blue-200",
+    iconBg: "bg-blue-100",
+    iconColor: "text-blue-700",
+    btn: "bg-blue-600 hover:bg-blue-700",
+  },
+  {
+    icon: Sparkles,
+    title: "Gyms, Salons & Spas",
+    href: "/industries/gyms-salons-spas",
+    assessmentHref: "/assessment/gyms-salons-spas",
+    tagline: "Membership data, health/body measurements, consultation notes, customer photos, WhatsApp campaigns, staff phones",
+    risks: ["Customer photos used without consent", "Health/body data in WhatsApp/staff notes", "Staff personal phones & shared logins", "Indefinite photo & record retention"],
+    stat: "Before-after photos and health/body data are high-impact, even though it isn't a clinic",
+    color: "fuchsia",
+    bg: "bg-fuchsia-50",
+    border: "border-fuchsia-200",
+    iconBg: "bg-fuchsia-100",
+    iconColor: "text-fuchsia-700",
+    btn: "bg-fuchsia-600 hover:bg-fuchsia-700",
+  },
 ];
 
 export default function IndustriesPage() {
@@ -270,6 +300,20 @@ export default function IndustriesPage() {
                 <td className="px-4 py-3 text-red-700 font-medium">Prescription images on WhatsApp and medicine-history used without consent</td>
                 <td className="px-4 py-3 text-slate-600">Secure prescription intake; limit delivery/vendor access; consent for refill messaging</td>
                 <td className="px-4 py-3"><a href="/assessment/pharmacies" className="text-green-600 font-semibold hover:underline">Start →</a></td>
+              </tr>
+              <tr className="hover:bg-slate-50 transition-colors">
+                <td className="px-4 py-3 font-semibold text-navy-700">Fintech, NBFC &amp; Digital Payments</td>
+                <td className="px-4 py-3 text-slate-600">KYC, PAN/Aadhaar, bank statements, bureau data, UPI, repayment history, collection notes</td>
+                <td className="px-4 py-3 text-red-700 font-medium">Bank/bureau data via WhatsApp/DSAs and profiling on bundled consent</td>
+                <td className="px-4 py-3 text-slate-600">Secure KYC intake; traceable consent; role-based, monitored agent access</td>
+                <td className="px-4 py-3"><a href="/assessment/fintech-nbfc" className="text-green-600 font-semibold hover:underline">Start →</a></td>
+              </tr>
+              <tr className="hover:bg-slate-50 transition-colors">
+                <td className="px-4 py-3 font-semibold text-navy-700">Gyms, Salons &amp; Spas</td>
+                <td className="px-4 py-3 text-slate-600">Membership data, fitness/body measurements, health declarations, consultation notes, customer photos</td>
+                <td className="px-4 py-3 text-red-700 font-medium">Customer photos used without consent and health/body data without access control</td>
+                <td className="px-4 py-3 text-slate-600">Photo consent + removal process; restrict health-data access; control staff phones</td>
+                <td className="px-4 py-3"><a href="/assessment/gyms-salons-spas" className="text-green-600 font-semibold hover:underline">Start →</a></td>
               </tr>
             </tbody>
           </table>

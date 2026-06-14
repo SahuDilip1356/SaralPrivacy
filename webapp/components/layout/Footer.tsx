@@ -25,6 +25,8 @@ const footerLinks = {
     { label: "Real Estate & Property Firms", href: "/industries/real-estate" },
     { label: "Hotels, Hospitality & Travel", href: "/industries/hotels-travel" },
     { label: "Pharmacies & Online Pharmacies", href: "/industries/pharmacies" },
+    { label: "Fintech, NBFC & Digital Payments", href: "/industries/fintech-nbfc" },
+    { label: "Gyms, Salons & Spas", href: "/industries/gyms-salons-spas" },
   ],
   assessment: [
     { label: "Take Free Assessment", href: "/assessment" },
@@ -38,6 +40,8 @@ const footerLinks = {
     { label: "Real Estate & Property", href: "/assessment/real-estate" },
     { label: "Hotels & Travel", href: "/assessment/hotels-travel" },
     { label: "Pharmacy & Online Pharmacy", href: "/assessment/pharmacies" },
+    { label: "Fintech & NBFC", href: "/assessment/fintech-nbfc" },
+    { label: "Gym, Salon & Spa", href: "/assessment/gyms-salons-spas" },
   ],
   legal: [
     { label: "Privacy Notice", href: "/privacy" },

@@ -41,6 +41,8 @@ const industryPages = [
   'real-estate',
   'hotels-travel',
   'pharmacies',
+  'fintech-nbfc',
+  'gyms-salons-spas',
 ]
 
 // Briefing slugs: add new slugs + real publish dates as briefings go live

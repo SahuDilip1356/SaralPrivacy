@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Users, Calculator, GraduationCap, ShoppingBag, Stethoscope, School, Scale, Building2, Hotel, Pill, ArrowRight } from "lucide-react";
+import { Users, Calculator, GraduationCap, ShoppingBag, Stethoscope, School, Scale, Building2, Hotel, Pill, Landmark, Sparkles, ArrowRight } from "lucide-react";
 
 const audiences = [
   {
@@ -142,6 +142,34 @@ const audiences = [
     iconBg: "bg-purple-100",
     iconColor: "text-purple-700",
   },
+  {
+    icon: Landmark,
+    title: "Fintech, NBFC & Digital Payments",
+    href: "/industries/fintech-nbfc",
+    assessmentHref: "/assessment/fintech-nbfc",
+    color: "blue",
+    painPoints: ["KYC, PAN/Aadhaar & bank data", "Bureau checks & credit profiling", "DSAs & collection-agent access", "Old application & KYC retention"],
+    promise: "See whether your KYC, profiling, partner sharing and agent access are DPDPA-ready.",
+    accentBg: "bg-blue-50",
+    accentBorder: "border-blue-200",
+    accentText: "text-blue-700",
+    iconBg: "bg-blue-100",
+    iconColor: "text-blue-700",
+  },
+  {
+    icon: Sparkles,
+    title: "Gyms, Salons & Spas",
+    href: "/industries/gyms-salons-spas",
+    assessmentHref: "/assessment/gyms-salons-spas",
+    color: "fuchsia",
+    painPoints: ["Health & body measurements", "Customer & before-after photos", "WhatsApp campaigns & staff phones", "Old member-record retention"],
+    promise: "Check whether your photo consent, health-data handling and staff access are DPDPA-ready.",
+    accentBg: "bg-fuchsia-50",
+    accentBorder: "border-fuchsia-200",
+    accentText: "text-fuchsia-700",
+    iconBg: "bg-fuchsia-100",
+    iconColor: "text-fuchsia-700",
+  },
 ];
 
 export function AudienceCards() {
@@ -164,7 +192,7 @@ export function AudienceCards() {
         </div>
 
         {/* Cards grid */}
-        {/* 10 cards: a lone trailing card (nth 3n+1 & last) centers in the middle
+        {/* 12 cards: clean 4×3 at lg (no orphan). The lone-trailing-card centering
             column at lg so the orphan row doesn't look broken. Self-deactivates
             when the count fills the grid evenly. */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:[&>*:last-child:nth-child(3n+1)]:col-start-2">
