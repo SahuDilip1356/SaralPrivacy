@@ -2,9 +2,11 @@ import type { Metadata } from "next";
 import { PressProofStrip } from "@/components/ui/PressProofStrip";
 
 export const metadata: Metadata = {
-  title: "About SaralPrivacy",
+  title: {
+    absolute: "About SaralPrivacy | Practical DPDPA Readiness for Indian Businesses",
+  },
   description:
-    "Learn what SaralPrivacy is, who it serves, how its guidance is produced, and why Indian businesses use it for practical DPDPA understanding.",
+    "SaralPrivacy helps Indian businesses understand, assess, and act on DPDPA obligations — plain-English guidance, personal data discovery, sector-specific assessments, and advisory support.",
   alternates: { canonical: "https://saralprivacy.com/about" },
 };
 
@@ -52,6 +54,27 @@ export default function AboutPage() {
             </p>
           </div>
 
+          {/* How it works — 4-stage strip */}
+          <div className="bg-white rounded-xl border border-slate-200 p-7">
+            <h2 className="text-xl font-bold text-navy-700 mb-5">How SaralPrivacy Works</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {[
+                { step: "1", title: "Understand", body: "What DPDPA means for your business — in plain English, not legalese." },
+                { step: "2", title: "Discover", body: "The personal data your business actually holds, across people and systems." },
+                { step: "3", title: "Assess", body: "Your readiness through a free, sector-specific assessment." },
+                { step: "4", title: "Act", body: "Prioritise consent, notices, access, vendors, retention, and breach readiness." },
+              ].map((s) => (
+                <div key={s.step} className="rounded-lg bg-slate-50 border border-slate-200 p-4">
+                  <div className="flex items-center justify-center w-8 h-8 rounded-full bg-green-500 text-white text-sm font-bold mb-3">
+                    {s.step}
+                  </div>
+                  <p className="font-semibold text-navy-700 text-sm mb-1">{s.title}</p>
+                  <p className="text-xs text-slate-600 leading-relaxed">{s.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
           {/* What SaralPrivacy Does */}
           <div className="bg-white rounded-xl border border-slate-200 p-7">
             <h2 className="text-xl font-bold text-navy-700 mb-4">What SaralPrivacy Does</h2>
@@ -70,7 +93,7 @@ export default function AboutPage() {
               </li>
               <li className="flex items-start gap-3">
                 <span className="w-2 h-2 rounded-full bg-green-500 mt-1.5 shrink-0" />
-                <span><strong className="text-navy-700">White paper</strong> — A 45-page practitioner guide updated for the DPDP Rules, 2025, covering applicability, consent, notices, rights, breach response, sector risks, and a 30-day action plan.</span>
+                <span><strong className="text-navy-700">White paper</strong> — A 59-page practitioner guide updated for the DPDP Rules, 2025, covering applicability, consent, notices, rights, breach response, sector risks, and a 30-day action plan.</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="w-2 h-2 rounded-full bg-green-500 mt-1.5 shrink-0" />
@@ -100,6 +123,14 @@ export default function AboutPage() {
                 </div>
               ))}
             </div>
+          </div>
+
+          {/* Built with a practitioner's lens */}
+          <div className="bg-white rounded-xl border border-slate-200 p-7">
+            <h2 className="text-xl font-bold text-navy-700 mb-4">Built With a Practitioner&apos;s Lens</h2>
+            <p className="text-sm text-slate-600 leading-relaxed">
+              SaralPrivacy is built with a practitioner&apos;s lens — by a digital-transformation and enterprise-applications leader with two decades across ERP, finance systems, workflow automation, governance, and system integration. The conviction behind it is simple: DPDPA readiness isn&apos;t only about reading the law — it&apos;s about translating it into the systems, workflows, access controls, vendor handoffs, and retention practices where personal data actually lives.
+            </p>
           </div>
 
           {/* Press proof */}
@@ -134,6 +165,25 @@ export default function AboutPage() {
                 <strong>Important:</strong> SaralPrivacy content is for educational purposes and does not constitute legal advice. Businesses should consult a qualified data protection professional for formal legal opinions specific to their situation.
               </p>
             </div>
+          </div>
+
+          {/* What SaralPrivacy Is Not */}
+          <div className="bg-slate-100 rounded-xl border border-slate-200 p-7">
+            <h2 className="text-xl font-bold text-navy-700 mb-4">What SaralPrivacy Is Not</h2>
+            <ul className="space-y-2 text-sm text-slate-600">
+              <li className="flex items-start gap-3">
+                <span className="w-2 h-2 rounded-full bg-slate-400 mt-1.5 shrink-0" />
+                Not a substitute for formal legal advice.
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="w-2 h-2 rounded-full bg-slate-400 mt-1.5 shrink-0" />
+                Not fear-driven compliance panic.
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="w-2 h-2 rounded-full bg-slate-400 mt-1.5 shrink-0" />
+                Not a one-size-fits-all checklist — DPDPA risk differs by sector.
+              </li>
+            </ul>
           </div>
 
           {/* Contact */}
