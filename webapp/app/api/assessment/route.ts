@@ -176,7 +176,7 @@ export async function POST(request: NextRequest) {
           // Industry packs (CA, Training, …) use their own bucket keys, not the
           // general engine's 6 category keys, so skip the email scorecard for them
           // (DB still stores the buckets via category_scores_json).
-          categoryScores:  ["ca-firm", "training", "recruit", "d2c", "clinic", "school", "law-firm", "realty"].includes(report_type) ? undefined : result?.categoryScores,
+          categoryScores:  ["ca-firm", "training", "recruit", "d2c", "clinic", "school", "law-firm", "realty", "hotel", "pharmacy", "fintech", "wellness"].includes(report_type) ? undefined : result?.categoryScores,
           checklistUrl:    report_type === "ca-firm" ? "https://saralprivacy.com/templates/ca-firm-dpdpa-starter-checklist.pdf"
                          : report_type === "recruit" ? "https://saralprivacy.com/templates/recruitment-agency-dpdpa-starter-checklist.pdf"
                          : report_type === "d2c" ? "https://saralprivacy.com/templates/d2c-brand-dpdpa-starter-checklist.pdf"
@@ -185,6 +185,10 @@ export async function POST(request: NextRequest) {
                          : report_type === "school" ? "https://saralprivacy.com/templates/school-college-dpdpa-starter-checklist.pdf"
                          : report_type === "law-firm" ? "https://saralprivacy.com/templates/law-firm-dpdpa-starter-checklist.pdf"
                          : report_type === "realty" ? "https://saralprivacy.com/templates/real-estate-dpdpa-starter-checklist.pdf"
+                         : report_type === "hotel" ? "https://saralprivacy.com/templates/hotels-travel-dpdpa-starter-checklist.pdf"
+                         : report_type === "pharmacy" ? "https://saralprivacy.com/templates/pharmacy-dpdpa-starter-checklist.pdf"
+                         : report_type === "fintech" ? "https://saralprivacy.com/templates/fintech-nbfc-dpdpa-starter-checklist.pdf"
+                         : report_type === "wellness" ? "https://saralprivacy.com/templates/gyms-salons-spas-dpdpa-starter-checklist.pdf"
                          : undefined,
           checklistTitle:  report_type === "ca-firm" ? "CA Firm DPDPA Starter Checklist"
                          : report_type === "recruit" ? "Recruitment Agency DPDPA Starter Checklist"
@@ -194,6 +198,10 @@ export async function POST(request: NextRequest) {
                          : report_type === "school" ? "School & College DPDPA Starter Checklist"
                          : report_type === "law-firm" ? "Law Firm DPDPA Starter Checklist"
                          : report_type === "realty" ? "Real Estate DPDPA Starter Checklist"
+                         : report_type === "hotel" ? "Hotels & Travel DPDPA Starter Checklist"
+                         : report_type === "pharmacy" ? "Pharmacy DPDPA Starter Checklist"
+                         : report_type === "fintech" ? "Fintech / NBFC DPDPA Starter Checklist"
+                         : report_type === "wellness" ? "Gym / Salon / Spa DPDPA Starter Checklist"
                          : undefined,
         });
         if (emailResult.success) {
