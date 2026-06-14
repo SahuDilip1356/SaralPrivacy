@@ -47,6 +47,7 @@ export async function POST(request: NextRequest) {
       frequency:        frequency || "daily",
       consent_version:  PRIVACY_NOTICE_VERSION,
       consent_source:   "newsletter_subscribe",
+      status:           "subscribed",
       user_agent:       userAgent,
       created_at:       new Date().toISOString(),
     };
