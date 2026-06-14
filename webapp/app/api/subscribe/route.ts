@@ -46,6 +46,7 @@ export async function POST(request: NextRequest) {
       industry:         industry || "",
       frequency:        frequency || "daily",
       consent_version:  PRIVACY_NOTICE_VERSION,
+      consent_source:   "newsletter_subscribe",
       user_agent:       userAgent,
       created_at:       new Date().toISOString(),
     };
