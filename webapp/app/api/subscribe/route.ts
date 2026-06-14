@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
       industry:         industry || "",
       frequency:        frequency || "daily",
       consent_version:  PRIVACY_NOTICE_VERSION,
-      consent_source:   "newsletter_subscribe",
+      consent_source:   "manual", // enum on the collection: manual|assessment_form|intro_email_one_click|report_email_cta|admin_added
       status:           "subscribed",
       user_agent:       userAgent,
       created_at:       new Date().toISOString(),
