@@ -29,9 +29,9 @@ const whitePaperSections = [
   "Notice requirements — what you must tell individuals before collecting data",
   "Rights of individuals — access, correction, erasure, and grievance",
   "Data breach obligations — notification timelines and scope",
-  "Sector deep-dives — recruitment, CA firms, training institutes & D2C — plus a framework any Indian business can apply",
+  "12 industry risk snapshots — plus the OPERATE framework and rights & breach handling",
   "Penalty structure — what violations attract what penalties",
-  "30-day compliance action plan — prioritised steps for each sector",
+  "90-day compliance action plan — prioritised steps for each sector",
 ];
 
 export default function WhitePaperContent() {
@@ -102,7 +102,7 @@ export default function WhitePaperContent() {
           <div className="max-w-2xl">
             <div className="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/20 rounded-full px-3.5 py-1.5 mb-4">
               <FileText size={12} className="text-amber-400" />
-              <span className="text-amber-400 text-xs font-semibold">45-page practitioner guide · Free</span>
+              <span className="text-amber-400 text-xs font-semibold">59-page practitioner guide · Free</span>
             </div>
             <p className="text-amber-300 text-xs font-semibold mb-2 uppercase tracking-wide">2026 Edition · Updated for the DPDP Rules, 2025</p>
             <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PRIVACY_NOTICE_VERSION } from "@/lib/utils";
-import { databases, DB_ID, COLLECTIONS, ID, getFileDownloadUrl } from "@/lib/appwrite";
+import { databases, DB_ID, COLLECTIONS, ID } from "@/lib/appwrite";
 import { sendDownloadAlert } from "@/lib/email";
 import { upsertSubscriber } from "@/lib/subscribers";
 
@@ -120,11 +120,8 @@ export async function POST(request: NextRequest) {
       }).catch((err) => console.error("upsertSubscriber whitepaper:", err));
     }
 
-    // Use Appwrite Storage URL when file has been uploaded, else fallback to public asset
-    const fileId      = (process.env.APPWRITE_WHITE_PAPER_FILE_ID || "").trim();
-    const downloadUrl = fileId
-      ? getFileDownloadUrl(fileId)
-      : "/assets/dpdpa-white-paper-2025.pdf";
+    // Served from the repo (public/assets) — v6.1 "India's DPDPA readiness whitepaper 2026-2027".
+    const downloadUrl = "/assets/dpdpa-white-paper-2025.pdf";
 
     return NextResponse.json({
       success: true,

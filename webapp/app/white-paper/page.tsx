@@ -15,7 +15,7 @@ export default function WhitePaperPage() {
     <>
       {articleSchema(
         "DPDPA White Paper — Practical Compliance Guide for Indian Businesses",
-        "Free 45-page white paper covering DPDPA obligations, sector risks, consent framework, rights handling, breach response, and a 30-day action plan. Updated for the DPDP Rules, 2025.",
+        "Free 59-page white paper covering DPDPA obligations, sector risks, consent framework, rights handling, breach response, and a 90-day action plan. Updated for the DPDP Rules, 2025.",
         "https://saralprivacy.com/white-paper",
         "2025-11-14",
         "2026-03-29",
