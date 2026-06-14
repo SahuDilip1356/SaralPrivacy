@@ -50,6 +50,12 @@ export async function POST(request: NextRequest) {
       status:           "active", // enum on the collection: active|unsubscribed|bounced|complained
       user_agent:       userAgent,
       created_at:       new Date().toISOString(),
+      // Approximate location from Vercel edge IP-geolocation (city-level), captured
+      // at the moment of consent for the audit trail. Disclosed in the Privacy Notice.
+      ip_address:       ip,
+      city,
+      country,
+      region,
     };
 
     await databases.createDocument(DB_ID, COLLECTIONS.SUBSCRIBERS, ID.unique(), subscriberData);
