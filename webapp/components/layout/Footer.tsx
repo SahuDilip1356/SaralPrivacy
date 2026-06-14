@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Mail } from "lucide-react";
 import { PressProofStrip } from "@/components/ui/PressProofStrip";
+import { sectorNavLinks, sectorAssessmentLinks } from "@/lib/data/sectors";
 
 const footerLinks = {
   platform: [
@@ -14,34 +15,10 @@ const footerLinks = {
     { label: "About", href: "/about" },
     { label: "Media", href: "/media" },
   ],
-  industries: [
-    { label: "Recruitment Agencies", href: "/industries/recruitment-agencies" },
-    { label: "CA Firms", href: "/industries/ca-firms" },
-    { label: "Training Institutes", href: "/industries/training-institutes" },
-    { label: "D2C Brands", href: "/industries/d2c-brands" },
-    { label: "Clinics & Diagnostic Labs", href: "/industries/clinics-diagnostic-labs" },
-    { label: "Schools & Colleges", href: "/industries/schools-colleges" },
-    { label: "Law Firms & Legal Consultants", href: "/industries/law-firms" },
-    { label: "Real Estate & Property Firms", href: "/industries/real-estate" },
-    { label: "Hotels, Hospitality & Travel", href: "/industries/hotels-travel" },
-    { label: "Pharmacies & Online Pharmacies", href: "/industries/pharmacies" },
-    { label: "Fintech, NBFC & Digital Payments", href: "/industries/fintech-nbfc" },
-    { label: "Gyms, Salons & Spas", href: "/industries/gyms-salons-spas" },
-  ],
+  industries: sectorNavLinks,
   assessment: [
     { label: "Take Free Assessment", href: "/assessment" },
-    { label: "Recruitment Assessment", href: "/assessment/recruitment" },
-    { label: "CA Firm Assessment", href: "/assessment/ca-firms" },
-    { label: "Training Institute", href: "/assessment/training-institutes" },
-    { label: "D2C Brand Assessment", href: "/assessment/d2c-brands" },
-    { label: "Clinic & Diagnostic Lab", href: "/assessment/clinics-diagnostic-labs" },
-    { label: "School & College", href: "/assessment/schools-colleges" },
-    { label: "Law Firm & Legal", href: "/assessment/law-firms" },
-    { label: "Real Estate & Property", href: "/assessment/real-estate" },
-    { label: "Hotels & Travel", href: "/assessment/hotels-travel" },
-    { label: "Pharmacy & Online Pharmacy", href: "/assessment/pharmacies" },
-    { label: "Fintech & NBFC", href: "/assessment/fintech-nbfc" },
-    { label: "Gym, Salon & Spa", href: "/assessment/gyms-salons-spas" },
+    ...sectorAssessmentLinks,
   ],
   legal: [
     { label: "Privacy Notice", href: "/privacy" },

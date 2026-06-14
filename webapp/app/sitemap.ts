@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next'
 import { databases, DB_ID, COLLECTIONS, Query } from '@/lib/appwrite'
 import { FRESHNESS } from '@/lib/content-freshness'
+import { sectorSlugs } from '@/lib/data/sectors'
 
 const BASE = 'https://saralprivacy.com'
 
@@ -30,20 +31,7 @@ const learnTopics = [
   'myths',
 ]
 
-const industryPages = [
-  'recruitment-agencies',
-  'ca-firms',
-  'training-institutes',
-  'd2c-brands',
-  'clinics-diagnostic-labs',
-  'schools-colleges',
-  'law-firms',
-  'real-estate',
-  'hotels-travel',
-  'pharmacies',
-  'fintech-nbfc',
-  'gyms-salons-spas',
-]
+const industryPages = sectorSlugs
 
 // Briefing slugs: add new slugs + real publish dates as briefings go live
 const briefingSlugs: Array<{ slug: string; updated: Date }> = [

@@ -6,20 +6,10 @@ import { Input, Select, Checkbox } from "@/components/ui/Input";
 import { trackEvent } from "@/lib/analytics";
 import { Button } from "@/components/ui/Button";
 import { PRIVACY_NOTICE_VERSION } from "@/lib/utils";
+import { sectorDropdownOptions } from "@/lib/data/sectors";
 
 const industryOptions = [
-  { value: "recruitment", label: "Recruitment & Staffing" },
-  { value: "ca-firms", label: "CA & Accounting Firm" },
-  { value: "training-institutes", label: "Training & Coaching Institute" },
-  { value: "d2c-brands", label: "D2C & E-commerce Brand" },
-  { value: "clinics-diagnostic-labs", label: "Clinic & Diagnostic Lab" },
-  { value: "schools-colleges", label: "School & College" },
-  { value: "law-firms", label: "Law Firm & Legal Consultant" },
-  { value: "real-estate", label: "Real Estate & Property Firm" },
-  { value: "hotels-travel", label: "Hotel, Hospitality & Travel" },
-  { value: "pharmacies", label: "Pharmacy & Online Pharmacy" },
-  { value: "fintech-nbfc", label: "Fintech, NBFC & Digital Payments" },
-  { value: "gyms-salons-spas", label: "Gym, Salon & Spa" },
+  ...sectorDropdownOptions,
   { value: "general", label: "Other / General Business" },
 ];
 

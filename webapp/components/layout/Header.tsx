@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Menu, X, ChevronDown, Download } from "lucide-react";
 import { TemplateDownloadModal } from "@/components/TemplateDownloadModal";
+import { sectorNavLinks } from "@/lib/data/sectors";
 
 const navigation = [
   {
@@ -32,20 +33,7 @@ const navigation = [
   {
     label: "Industries",
     href: "/industries",
-    children: [
-      { label: "Recruitment Agencies", href: "/industries/recruitment-agencies" },
-      { label: "CA Firms", href: "/industries/ca-firms" },
-      { label: "Training Institutes", href: "/industries/training-institutes" },
-      { label: "D2C Brands", href: "/industries/d2c-brands" },
-      { label: "Clinics & Diagnostic Labs", href: "/industries/clinics-diagnostic-labs" },
-      { label: "Schools & Colleges", href: "/industries/schools-colleges" },
-      { label: "Law Firms & Legal Consultants", href: "/industries/law-firms" },
-      { label: "Real Estate & Property Firms", href: "/industries/real-estate" },
-      { label: "Hotels, Hospitality & Travel", href: "/industries/hotels-travel" },
-      { label: "Pharmacies & Online Pharmacies", href: "/industries/pharmacies" },
-      { label: "Fintech, NBFC & Digital Payments", href: "/industries/fintech-nbfc" },
-      { label: "Gyms, Salons & Spas", href: "/industries/gyms-salons-spas" },
-    ],
+    children: sectorNavLinks,
   },
   {
     label: "Data Discovery",

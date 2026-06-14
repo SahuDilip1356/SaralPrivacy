@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { ArrowRight, FileText, CheckCircle, Clock, TrendingUp } from "lucide-react";
+import { SECTOR_COUNT } from "@/lib/data/sectors";
 
 const stats = [
   { icon: Clock, label: "3–5 minute assessment", value: "Free" },
   { icon: TrendingUp, label: "Briefings published", value: "200+" },
-  { icon: CheckCircle, label: "Sector assessments", value: "12" },
+  { icon: CheckCircle, label: "Sector assessments", value: String(SECTOR_COUNT) },
   { icon: FileText, label: "Resources available", value: "50+" },
 ];
 
