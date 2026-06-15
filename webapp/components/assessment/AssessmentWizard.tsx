@@ -143,7 +143,7 @@ export function AssessmentWizard({ title, industry, questions }: Props) {
               href="/white-paper"
               className="flex-1 text-center py-2.5 px-5 bg-white/10 hover:bg-white/15 text-white font-semibold rounded-lg text-sm border border-white/20 transition-colors"
             >
-              Download White Paper
+              Download the Guide
             </Link>
           </div>
         </div>

@@ -93,7 +93,7 @@ export default function AboutPage() {
               </li>
               <li className="flex items-start gap-3">
                 <span className="w-2 h-2 rounded-full bg-green-500 mt-1.5 shrink-0" />
-                <span><strong className="text-navy-700">White paper</strong> — A 59-page practitioner guide updated for the DPDP Rules, 2025, covering applicability, consent, notices, rights, breach response, sector risks, and a 30-day action plan.</span>
+                <span><strong className="text-navy-700">Guide</strong> — A practitioner guide updated for the DPDP Rules, 2025, covering applicability, consent, notices, rights, breach response, sector risks, and a 30-day action plan.</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="w-2 h-2 rounded-full bg-green-500 mt-1.5 shrink-0" />

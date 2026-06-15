@@ -17,9 +17,9 @@ export const resources: Resource[] = [
   {
     id: "res002",
     slug: "dpdpa-white-paper-2025",
-    title: "DPDPA: The Complete Guide for Indian Businesses — White Paper",
+    title: "DPDPA: The Complete Guide for Indian Businesses",
     description:
-      "Our comprehensive white paper covering DPDPA applicability, obligations, key definitions, enforcement timelines, and a sector-by-sector breakdown. 45-page practitioner-grade guide.",
+      "Our comprehensive guide covering DPDPA applicability, obligations, key definitions, enforcement timelines, and a sector-by-sector breakdown. Practitioner-grade and available in 7 Indian languages.",
     type: "white-paper",
     industries: ["recruitment", "ca-firms", "training-institutes", "d2c-brands", "general"],
     tags: ["white-paper", "comprehensive", "guide", "enforcement"],

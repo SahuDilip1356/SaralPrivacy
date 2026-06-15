@@ -63,7 +63,7 @@ export function HeroSection() {
               className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white/10 hover:bg-white/15 text-white font-semibold rounded-xl border border-white/20 transition-colors text-base backdrop-blur-sm"
             >
               <FileText size={18} />
-              Download White Paper
+              Download the Guide
             </Link>
           </div>
 

@@ -99,7 +99,7 @@ export default function ResourcesPage() {
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-0.5">
                 <p className="text-sm font-semibold text-slate-800 group-hover:text-[#1E3A5F]">
-                  DPDPA White Paper
+                  DPDPA Guide
                 </p>
                 <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-slate-100 text-slate-500">
                   PDF Guide

@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { FileText, CheckCircle, Download, Shield, Lock } from "lucide-react";
+import { FileText, CheckCircle, Download, Shield, Lock, BookOpen } from "lucide-react";
 import { Input, Select, Checkbox } from "@/components/ui/Input";
 import { trackEvent } from "@/lib/analytics";
 import { Button } from "@/components/ui/Button";
 import { PRIVACY_NOTICE_VERSION } from "@/lib/utils";
 import { sectorDropdownOptions } from "@/lib/data/sectors";
+import { GUIDE_LANGUAGES, getLanguage, isLive, DEFAULT_LANG_CODE } from "@/lib/data/guide-languages";
 
 const industryOptions = [
   ...sectorDropdownOptions,
@@ -42,10 +43,12 @@ export default function WhitePaperContent() {
     companyName: "",
     industry: "",
     companySize: "",
+    language: DEFAULT_LANG_CODE,
     consentEmail: false,
     consentPhone: false,
     consentWebinars: false,
   });
+  const selectedLang = getLanguage(form.language);
   const [submitted, setSubmitted]     = useState(false);
   const [downloadUrl, setDownloadUrl] = useState("");
   const [loading, setLoading]         = useState(false);
@@ -78,7 +81,7 @@ export default function WhitePaperContent() {
       if (res.ok && data.downloadUrl) {
         setDownloadUrl(data.downloadUrl);
         setSubmitted(true);
-        trackEvent.download({ industry: form.industry, company_size: form.companySize });
+        trackEvent.download({ industry: form.industry, company_size: form.companySize, language: form.language });
       } else {
         setServerError(data.error || "Something went wrong. Please try again.");
       }
@@ -102,7 +105,7 @@ export default function WhitePaperContent() {
           <div className="max-w-2xl">
             <div className="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/20 rounded-full px-3.5 py-1.5 mb-4">
               <FileText size={12} className="text-amber-400" />
-              <span className="text-amber-400 text-xs font-semibold">59-page practitioner guide · Free</span>
+              <span className="text-amber-400 text-xs font-semibold">Practitioner guide · Free</span>
             </div>
             <p className="text-amber-300 text-xs font-semibold mb-2 uppercase tracking-wide">2026 Edition · Updated for the DPDP Rules, 2025</p>
             <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">
@@ -113,7 +116,7 @@ export default function WhitePaperContent() {
               from applicability to enforcement — in plain English, with sector-specific guidance.
             </p>
             <div className="mt-4 bg-white/10 border border-white/20 rounded-xl px-5 py-4">
-              <p className="text-slate-200 text-sm leading-relaxed">Download a practical DPDPA white paper built for Indian businesses that need clarity, not commentary. This edition is updated for the DPDP Rules, 2025 and explains applicability, obligations, consent, notices, rights, breach response, sector risks, and implementation priorities.</p>
+              <p className="text-slate-200 text-sm leading-relaxed">Download a practical DPDPA guide built for Indian businesses that need clarity, not commentary — now available in 7 languages. This edition is updated for the DPDP Rules, 2025 and explains applicability, obligations, consent, notices, rights, breach response, sector risks, and implementation priorities.</p>
             </div>
           </div>
         </div>
@@ -121,10 +124,34 @@ export default function WhitePaperContent() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-          {/* Left: about the white paper */}
+          {/* Left: about the Guide */}
           <div>
+            {/* Ungated reading — the front door. No form, opens the full Guide. */}
+            <div className="bg-white rounded-xl border border-slate-200 p-6 mb-6">
+              <div className="flex items-center gap-2 mb-1">
+                <BookOpen size={16} className="text-green-600" />
+                <h2 className="text-base font-bold text-navy-700">Read online in your language</h2>
+              </div>
+              <p className="text-slate-500 text-sm mb-4">Free, no sign-up — opens the complete Guide.</p>
+              <div className="flex flex-wrap gap-2">
+                {GUIDE_LANGUAGES.filter((l) => l.htmlUrl).map((lang) => (
+                  <a
+                    key={lang.code}
+                    href={lang.htmlUrl!}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    lang={lang.code}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-white px-3.5 py-1.5 text-sm font-medium text-slate-700 hover:border-green-500 hover:text-green-700 hover:bg-green-50 transition-colors"
+                  >
+                    {lang.native}
+                    <span className="text-slate-400">→</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+
             <h2 className="text-2xl font-bold text-navy-700 mb-5">
-              What&apos;s inside the white paper
+              What&apos;s inside the Guide
             </h2>
 
             <div className="bg-white rounded-xl border border-slate-200 p-6 mb-6">
@@ -166,33 +193,97 @@ export default function WhitePaperContent() {
             {submitted ? (
               <div className="bg-green-50 border border-green-200 rounded-2xl p-8 text-center">
                 <div className="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Download size={28} className="text-green-600" />
+                  <CheckCircle size={28} className="text-green-600" />
                 </div>
-                <h3 className="font-bold text-green-800 text-xl mb-2">Your download is ready</h3>
-                <p className="text-green-700 text-sm mb-5">
-                  We&apos;ve sent a download link to your email. The white paper is also available below.
+                <h3 className="font-bold text-green-800 text-xl mb-2">
+                  Your Guide is ready{selectedLang.code !== "en" ? ` — ${selectedLang.roman}` : ""}
+                </h3>
+                <p className="text-green-700 text-sm mb-2">
+                  Your copy is ready — read it online or download the PDF below.
                 </p>
-                <a
-                  href={downloadUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-green-700 text-white font-semibold rounded-lg text-sm hover:bg-green-800 transition-colors"
-                >
-                  <Download size={16} />
-                  Download PDF
-                </a>
+                {!selectedLang.pdfUrl && (
+                  <p className="text-amber-700 text-xs bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mb-4">
+                    The {selectedLang.roman} edition is being finalised — we&apos;ve given you the English PDF for now and will email the {selectedLang.roman} copy as soon as it&apos;s ready.
+                  </p>
+                )}
+                <div className="flex flex-wrap items-center justify-center gap-3 mt-5">
+                  {selectedLang.htmlUrl && (
+                    <a
+                      href={selectedLang.htmlUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-5 py-3 bg-white border border-green-300 text-green-800 font-semibold rounded-lg text-sm hover:bg-green-100 transition-colors"
+                    >
+                      <BookOpen size={16} />
+                      Read online
+                    </a>
+                  )}
+                  <a
+                    href={downloadUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-green-700 text-white font-semibold rounded-lg text-sm hover:bg-green-800 transition-colors"
+                  >
+                    <Download size={16} />
+                    Download PDF
+                  </a>
+                </div>
               </div>
             ) : (
               <div className="bg-white border border-slate-200 rounded-2xl p-7 shadow-sm">
                 <h2 className="font-bold text-navy-700 text-lg mb-1">
-                  Get the white paper — free
+                  Get the Guide — free
                 </h2>
                 <p className="text-slate-500 text-sm mb-6">
-                  Fill in your details to download. We use this to understand who reads our content
-                  and to send you relevant follow-ups (only if you opt in).
+                  Pick your language, then fill in your details to download. We use this to understand
+                  who reads our content and to send you relevant follow-ups (only if you opt in).
                 </p>
 
                 <form onSubmit={handleSubmit} noValidate className="space-y-4">
+                  {/* Language selector — single-select radiogroup, locked while submitting */}
+                  <div>
+                    <p className="text-xs font-semibold text-slate-600 uppercase tracking-wide mb-2">
+                      Language
+                    </p>
+                    <div
+                      role="radiogroup"
+                      aria-label="Choose the language of your Guide"
+                      className="flex flex-wrap gap-2"
+                    >
+                      {GUIDE_LANGUAGES.map((lang) => {
+                        const active   = form.language === lang.code;
+                        const live     = isLive(lang);
+                        return (
+                          <button
+                            key={lang.code}
+                            type="button"
+                            role="radio"
+                            aria-checked={active}
+                            lang={lang.code}
+                            disabled={loading}
+                            onClick={() => update("language", lang.code)}
+                            className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-1 ${
+                              active
+                                ? "border-2 border-green-600 bg-green-50 text-green-800 font-semibold"
+                                : "border border-slate-300 bg-white text-slate-600 font-medium hover:border-slate-400 hover:bg-slate-50"
+                            }`}
+                          >
+                            {active && <CheckCircle size={13} className="text-green-600" />}
+                            {lang.native}
+                            {!live && (
+                              <span className="text-[10px] font-normal text-slate-400">soon</span>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                    {!selectedLang.pdfUrl && (
+                      <p className="text-xs text-slate-500 mt-2">
+                        {selectedLang.roman} is coming soon — you&apos;ll get the English PDF now and the {selectedLang.roman} copy by email when it&apos;s ready.
+                      </p>
+                    )}
+                  </div>
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <Input
                       label="Full Name"
@@ -314,7 +405,7 @@ export default function WhitePaperContent() {
                     loading={loading}
                   >
                     <Download size={18} />
-                    Download White Paper
+                    Download the Guide{form.language !== "en" ? ` — ${selectedLang.roman}` : ""}
                   </Button>
                 </form>
               </div>

@@ -1123,7 +1123,7 @@ export default async function LearnTopicPage({ params }: Props) {
                   className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-teal-100 hover:text-teal-700 transition-colors"
                 >
                   <CheckSquare size={14} className="text-teal-500 shrink-0" />
-                  White Paper
+                  Guide
                 </Link>
               </nav>
             </div>

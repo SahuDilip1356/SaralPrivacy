@@ -16,7 +16,7 @@ import { PressProofStrip } from "@/components/ui/PressProofStrip";
 export const metadata: Metadata = {
   title: "DPDPA Compliance for Indian Businesses | SaralPrivacy",
   description:
-    "Practical DPDPA guidance for Indian businesses: assessments, industry guides, white paper, briefings, and advisory aligned to the DPDP Rules, 2025.",
+    "Practical DPDPA guidance for Indian businesses: assessments, industry guides, the DPDPA guide, briefings, and advisory aligned to the DPDP Rules, 2025.",
   alternates: { canonical: 'https://saralprivacy.com' },
   // Full block (not just url) — a child openGraph replaces the root layout's
   // wholesale, so partial overrides drop the inherited title/description/image.

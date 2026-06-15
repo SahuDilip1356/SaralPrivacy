@@ -1,0 +1,2794 @@
+<!DOCTYPE html>
+<html lang="hi-IN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>भारत का DPDPA तैयारी श्वेतपत्र 2026-2027 | SaralPrivacy संस्करण 3</title>
+<meta name="description" content="भारतीय व्यवसायों के लिए व्यावहारिक DPDPA तैयारी मार्गदर्शिका। SaralPrivacy सत्यापित डिजिटल विश्वास।">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #121A2E;
+  --green: #07B981;
+  --teal: #35B6AE;
+  --gold: #E8AB42;
+  --slate: #334155;
+  --cloud: #F7F9FC;
+  --white: #FFFFFF;
+  --muted: #94A3B8;
+  --border: #EEF0F4;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Noto Sans Devanagari', 'Inter', system-ui, sans-serif;
+  background: var(--cloud);
+  color: var(--slate);
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+.cover {
+  background: var(--navy);
+  color: var(--white);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 48px 56px 40px;
+  page: cover;
+  page-break-after: always;
+  border-bottom: 3px solid rgba(7,185,129,.35);
+}
+
+.cover-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 32px; }
+.cover-brand { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+.logo-link { display: block; line-height: 0; }
+.logo-cover {
+  height: 108px; width: auto; display: block;
+  background: var(--white); border-radius: 12px;
+  padding: 14px 18px; box-shadow: 0 4px 24px rgba(0,0,0,.18);
+}
+.promise-pill {
+  display: inline-block; margin-top: 16px;
+  background: rgba(7,185,129,.15); border: 1px solid var(--green);
+  color: var(--green); font-size: 11px; font-weight: 600;
+  padding: 5px 14px; border-radius: 100px; letter-spacing: .5px; text-transform: uppercase;
+}
+.cover-meta { text-align: right; }
+.cover-meta .label { font-size: 10px; color: #64748B; text-transform: uppercase; letter-spacing: 1px; }
+.cover-meta .ver { font-size: 20px; font-weight: 700; color: var(--gold); margin-top: 6px; }
+.cover-meta .date { font-size: 12px; color: #94A3B8; margin-top: 8px; }
+
+.cover-main { flex: 1; display: flex; flex-direction: column; justify-content: center; max-width: 820px; padding: 48px 0; }
+.cover-title { font-size: 42px; font-weight: 700; line-height: 1.15; letter-spacing: -0.5px; margin-bottom: 20px; }
+.cover-subtitle { font-size: 18px; color: #CBD5E1; line-height: 1.5; max-width: 680px; }
+.cover-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 28px; }
+.badge { font-size: 10px; font-weight: 600; padding: 4px 12px; border-radius: 100px; border: 1px solid; }
+.badge-green { background: rgba(7,185,129,.12); border-color: rgba(7,185,129,.45); color: #6EE7B7; }
+.badge-teal { background: rgba(53,182,174,.1); border-color: rgba(53,182,174,.4); color: #99F6E4; }
+.badge-gold { background: rgba(232,171,66,.1); border-color: rgba(232,171,66,.4); color: #FDE68A; }
+.cover-footer-line { font-size: 12px; color: #64748B; }
+
+.doc-wrap { max-width: 900px; margin: 0 auto; background: var(--white); box-shadow: 0 4px 40px rgba(0,0,0,.08); position: relative; }
+
+.watermarked { position: relative; isolation: isolate; }
+.watermarked::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url('SaralPrivacyLogo1.png') center 42% / 52% auto no-repeat;
+  opacity: 0.055;
+  pointer-events: none;
+  z-index: 0;
+}
+.watermarked > * { position: relative; z-index: 1; }
+
+.toc {
+  padding: 40px 56px;
+  background: var(--cloud);
+  border-bottom: 1px solid var(--border);
+  page-break-after: always;
+}
+.toc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+.logo-toc { height: 56px; width: auto; display: block; }
+.toc h2 { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--teal); margin-bottom: 20px; }
+.toc ol { columns: 2; column-gap: 40px; padding-left: 20px; font-size: 14px; }
+.toc li { margin-bottom: 8px; break-inside: avoid; }
+.toc a { color: var(--navy); text-decoration: none; font-weight: 500; }
+.toc a:hover { color: var(--green); }
+
+.reader-guide {
+  padding: 44px 56px 48px;
+  background: var(--white);
+  page-break-before: always;
+  page-break-after: always;
+  border-bottom: 1px solid var(--border);
+}
+.reader-guide h2 {
+  font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--teal); margin-bottom: 12px;
+}
+.reader-guide h3 {
+  font-size: 26px; font-weight: 700; color: var(--navy);
+  margin-bottom: 20px; line-height: 1.25;
+}
+.reader-guide p { margin-bottom: 14px; font-size: 15px; }
+.reader-guide ul { margin: 0 0 18px 22px; font-size: 14px; }
+.reader-guide li { margin-bottom: 8px; }
+.reader-guide .guide-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; margin-top: 20px;
+}
+.reader-guide .guide-card {
+  background: var(--cloud); border-radius: 8px; padding: 12px 14px;
+  border-left: 3px solid var(--green);
+}
+.reader-guide .guide-card h4 {
+  font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 6px;
+}
+.reader-guide .guide-card p { font-size: 13px; margin: 0; color: var(--slate); }
+.reader-guide .doc-meta {
+  margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--border);
+  font-size: 12px; color: var(--muted);
+}
+
+.content { padding: 48px 56px 64px; }
+
+.content h1 {
+  font-size: 28px; font-weight: 700; color: var(--navy);
+  margin: 48px 0 16px; padding-top: 8px;
+  border-top: 3px solid var(--green);
+  page-break-before: always;
+}
+.content h1:first-child { border-top: none; margin-top: 0; page-break-before: auto; }
+
+.content h2 {
+  font-size: 22px; font-weight: 700; color: var(--navy);
+  margin: 36px 0 14px;
+}
+.content h3 {
+  font-size: 11px; font-weight: 700; letter-spacing: 1.2px;
+  text-transform: uppercase; color: var(--teal);
+  margin: 28px 0 12px;
+}
+.content h4 { font-size: 16px; font-weight: 600; color: var(--navy); margin: 20px 0 8px; }
+
+.content p { margin-bottom: 14px; }
+.content ul, .content ol { margin: 0 0 16px 24px; }
+.content li { margin-bottom: 6px; }
+.content strong { color: var(--navy); font-weight: 600; }
+.content em { font-style: italic; }
+.content hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+.content a { color: var(--teal); font-weight: 500; }
+.content a:hover { color: var(--green); }
+
+.content table {
+  width: 100%; border-collapse: collapse; font-size: 13px;
+  margin: 16px 0 24px; table-layout: fixed;
+}
+.content thead { background: var(--navy); color: var(--white); }
+.content th {
+  padding: 10px 12px; text-align: left; font-weight: 600; font-size: 12px;
+  word-wrap: break-word; overflow-wrap: anywhere;
+}
+.content td {
+  padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top;
+  word-wrap: break-word; overflow-wrap: anywhere;
+}
+.content tr:nth-child(even) td { background: var(--cloud); }
+
+.content pre {
+  background: var(--navy); color: #CBD5E1; padding: 16px 20px;
+  border-radius: 8px; border-left: 3px solid var(--green);
+  font-size: 11px; line-height: 1.5; overflow-x: auto; margin: 16px 0 24px;
+  white-space: pre-wrap;
+}
+.content code { font-family: ui-monospace, monospace; font-size: 12px; }
+
+.brand-line {
+  padding: 12px 16px; border-left: 3px solid var(--green);
+  margin: 20px 0; font-style: italic; font-size: 15px;
+  color: var(--navy); background: rgba(7,185,129,.06);
+  border-radius: 0 8px 8px 0;
+}
+
+.figure { margin: 16px 0 28px; text-align: center; page-break-inside: avoid; break-inside: avoid; }
+.figure img {
+  display: block; margin: 0 auto; max-width: 100%; width: 100%;
+  max-height: 9.2in; height: auto; object-fit: contain;
+  border-radius: 4px; border: 1px solid var(--border);
+}
+.figure figcaption { font-size: 12px; color: var(--muted); margin-top: 10px; font-style: italic; }
+
+.mermaid-note {
+  font-size: 12px; color: var(--muted); font-style: italic;
+  margin: -12px 0 20px; padding: 8px 12px; background: var(--cloud); border-radius: 6px;
+}
+
+.cta-block {
+  background: var(--navy); border-radius: 12px; padding: 40px 48px;
+  margin: 48px 0 32px; text-align: center; page-break-inside: avoid;
+}
+.cta-block h2 { color: var(--white) !important; font-size: 24px !important; margin: 0 0 12px !important; border: none !important; }
+.cta-block p { color: #CBD5E1; margin-bottom: 24px; font-size: 15px; }
+.btn-primary {
+  display: inline-block; background: var(--green); color: var(--white) !important;
+  font-size: 16px; font-weight: 600; padding: 14px 32px; border-radius: 8px;
+  text-decoration: none !important; letter-spacing: 0.2px;
+}
+.btn-primary:hover { background: #059669; }
+
+.doc-footer {
+  background: var(--navy); padding: 24px 56px;
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+}
+.doc-footer .footer-brand-block { display: flex; align-items: center; gap: 14px; }
+.logo-footer {
+  height: 44px; width: auto; display: block;
+  background: var(--white); border-radius: 8px; padding: 6px 10px;
+}
+.doc-footer .brand { font-size: 15px; font-weight: 700; color: var(--white); }
+.doc-footer .brand span { color: var(--green); }
+.doc-footer .meta { font-size: 11px; color: #64748B; }
+.doc-footer .handle { font-size: 12px; color: var(--teal); font-weight: 500; }
+
+@media print {
+  @page {
+    size: A4;
+    margin: 22mm 16mm 24mm 16mm;
+    @top-center {
+      content: "SaralPrivacy";
+      font-family: 'Noto Sans Devanagari', 'Inter', system-ui, sans-serif;
+      font-size: 9pt;
+      font-weight: 600;
+      color: #121A2E;
+      letter-spacing: 0.3px;
+    }
+    @bottom-center {
+      content: counter(page);
+      font-family: 'Noto Sans Devanagari', 'Inter', system-ui, sans-serif;
+      font-size: 9pt;
+      color: #64748B;
+    }
+  }
+  @page cover {
+    margin: 0;
+    @top-center { content: none; }
+    @bottom-center { content: none; }
+  }
+  body { background: white; font-size: 11pt; }
+  .doc-wrap { box-shadow: none; max-width: 100%; }
+  .cover { min-height: auto; height: 100vh; }
+  .content { padding: 32px 40px; }
+  .content h1 { page-break-before: always; }
+  .content table {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    font-size: 8pt;
+    page-break-inside: auto;
+  }
+  .content th, .content td {
+    padding: 4px 5px;
+    font-size: 7.5pt;
+    line-height: 1.35;
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+    hyphens: auto;
+  }
+  .no-print { display: none; }
+  a { color: var(--slate) !important; text-decoration: none; }
+  .btn-primary { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  thead { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .cover, .doc-footer, .cta-block { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .watermarked::before {
+    position: fixed;
+    top: 42%;
+    left: 50%;
+    width: 68vw;
+    height: 68vw;
+    transform: translate(-50%, -50%);
+    opacity: 0.05;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+</style>
+<!-- saral:hreflang:start -->
+<link rel="canonical" href="https://saralprivacy.com/guides/dpdpa-guide-hi.html">
+<link rel="alternate" hreflang="en-IN" href="https://saralprivacy.com/guides/dpdpa-guide-en.html">
+<link rel="alternate" hreflang="hi-IN" href="https://saralprivacy.com/guides/dpdpa-guide-hi.html">
+<link rel="alternate" hreflang="gu-IN" href="https://saralprivacy.com/guides/dpdpa-guide-gu.html">
+<link rel="alternate" hreflang="mr-IN" href="https://saralprivacy.com/guides/dpdpa-guide-mr.html">
+<link rel="alternate" hreflang="kn-IN" href="https://saralprivacy.com/guides/dpdpa-guide-kn.html">
+<link rel="alternate" hreflang="ta-IN" href="https://saralprivacy.com/guides/dpdpa-guide-ta.html">
+<link rel="alternate" hreflang="te-IN" href="https://saralprivacy.com/guides/dpdpa-guide-te.html">
+<link rel="alternate" hreflang="x-default" href="https://saralprivacy.com/white-paper">
+<!-- saral:hreflang:end -->
+</head>
+<body>
+<div class="doc-wrap">
+
+<header class="cover">
+  <div class="cover-top">
+    <div class="cover-brand">
+      <a href="https://saralprivacy.com" class="logo-link" aria-label="SaralPrivacy होम">
+        <img src="SaralPrivacyLogo1.png" alt="SaralPrivacy — भारत के लिए व्यावहारिक गोपनीयता" class="logo-cover" />
+      </a>
+      <div class="promise-pill">सत्यापित डिजिटल विश्वास</div>
+    </div>
+    <div class="cover-meta">
+      <div class="label">श्वेतपत्र</div>
+      <div class="ver">संस्करण 3</div>
+      <div class="date">जून 2026</div>
+    </div>
+  </div>
+  <div class="cover-main">
+    <h1 class="cover-title">भारत का DPDPA तैयारी श्वेतपत्र 2026-2027</h1>
+    <p class="cover-subtitle">भारतीय व्यवसायों के लिए एक व्यावहारिक मार्गदर्शिका — सूचना, सहमति, सुरक्षा, अधिकार, विक्रेता, बच्चों का डेटा, उल्लंघन प्रतिक्रिया और क्षेत्र-विशिष्ट जोखिम की तैयारी।</p>
+    <div class="cover-badges">
+      <span class="badge badge-green">गोपनीयता मूल्यांकन</span>
+      <span class="badge badge-teal">OPERATE ढांचा</span>
+      <span class="badge badge-gold">12 उद्योग स्नैपशॉट</span>
+    </div>
+  </div>
+  <div class="cover-footer-line">saralprivacy.com · @saralprivacy · सूचनात्मक मार्गदर्शिका, कानूनी सलाह नहीं</div>
+</header>
+
+
+<nav class="toc watermarked" aria-label="विषय सूची">
+  <div class="toc-header">
+    <a href="https://saralprivacy.com"><img src="SaralPrivacyLogo1.png" alt="SaralPrivacy" class="logo-toc" /></a>
+    <div class="promise-pill" style="margin-top:0">सत्यापित डिजिटल विश्वास</div>
+  </div>
+  <h2>विषय सूची</h2>
+  <ol><li><a href="#section-1">आवरण</a></li>
+<li><a href="#section-2">यह श्वेतपत्र किसके लिए है</a></li>
+<li><a href="#section-3">कार्यकारी सारांश</a></li>
+<li><a href="#section-4">सीईओ और बोर्ड प्राथमिकता पृष्ठ</a></li>
+<li><a href="#section-5">कानूनी स्थिति स्नैपशॉट</a></li>
+<li><a href="#section-6">2026-2027 में DPDPA क्यों महत्वपूर्ण</a></li>
+<li><a href="#section-7">अधिनियम क्या कवर करता है</a></li>
+<li><a href="#section-8">वैध प्रसंस्करण</a></li>
+<li><a href="#section-9">मुख्य दायित्व</a></li>
+<li><a href="#section-10">OPERATE मॉडल</a></li>
+<li><a href="#section-11">व्यक्तिगत डेटा का निरीक्षण</a></li>
+<li><a href="#section-12">अनुमति और वैध आधार</a></li>
+<li><a href="#section-13">साक्ष्य और रिकॉर्ड</a></li>
+<li><a href="#section-14">अधिकार और शिकायत</a></li>
+<li><a href="#section-15">जवाबदेही और शासन</a></li>
+<li><a href="#section-16">तृतीय-पक्ष और विक्रेता नियंत्रण</a></li>
+<li><a href="#section-17">घटना और उल्लंघन तैयारी</a></li>
+<li><a href="#section-18">कार्यान्वयन किट</a></li>
+<li><a href="#section-19">12 उद्योग जोखिम स्नैपशॉट</a></li>
+<li><a href="#section-20">अधिनियम अनुभाग मानचित्र</a></li>
+<li><a href="#section-21">अदालती मामले ट्रैकर</a></li>
+<li><a href="#section-22">ट्रैक करने योग्य खुले बिंदु</a></li>
+<li><a href="#section-23">90-दिवसीय कार्य योजना</a></li>
+<li><a href="#section-24">अस्वीकरण और उत्पाद पुल</a></li>
+<li><a href="#glossary">शब्दावली</a></li>
+<li><a href="#sources">स्रोत रजिस्टर</a></li></ol>
+</nav>
+
+
+<section class="reader-guide watermarked" aria-label="इस मार्गदर्शिका का उपयोग कैसे करें">
+  <h2>उपयोगकर्ता मार्गदर्शिका</h2>
+  <h3>इस श्वेतपत्र को कैसे पढ़ें</h3>
+  <p>यह दस्तावेज़ भारतीय व्यवसायों के लिए <strong>64-पृष्ठ की व्यावहारिक मार्गदर्शिका</strong> है, जो Digital Personal Data Protection Act, 2023 (DPDPA) की तैयारी के लिए बनाई गई है। यह संस्थापकों, बोर्ड और ऑपरेटरों के लिए है — वकीलों के लिए नहीं।</p>
+  <p><strong>सुझाई गई पढ़ने की राहें</strong></p>
+  <ul>
+    <li><strong>15 मिनट (नेतृत्व):</strong> अनुभाग 4 सीईओ पृष्ठ, इन्फोग्राफिक 1, अनुभाग 23 की 90-दिवसीय योजना।</li>
+    <li><strong>1 घंटा (अनुपालन प्रमुख):</strong> अनुभाग 5-9, फिर अनुभाग 10-17 (OPERATE)।</li>
+    <li><strong>आधा दिन (कार्यान्वयन):</strong> अनुभाग 18 किट, अनुभाग 19 में आपका उद्योग, स्रोत रजिस्टर।</li>
+  </ul>
+  <div class="guide-grid">
+    <div class="guide-card">
+      <h4>8 इन्फोग्राफिक</h4>
+      <p>अनुभाग 4, 7, 8, 10, 17, 18, 19 और 23 — क्रम से इन्फोग्राफिक 1 से 8। बोर्ड-सामना करने वाले पाठकों के लिए इन्फोग्राफिक 1 से शुरू करें। (चित्र अंग्रेज़ी में — पाठ हिंदी में।)</p>
+    </div>
+    <div class="guide-card">
+      <h4>OPERATE v6.1</h4>
+      <p>अनुभाग 11-17: Observe, Permission, Evidence, Rights, Accountability, Third-party, Event।</p>
+    </div>
+    <div class="guide-card">
+      <h4>12 उद्योग</h4>
+      <p>अनुभाग 19 जोखिम स्नैपशॉट — अपना क्षेत्र चुनें, दो प्रवाह ठीक करें, फिर अनुभाग 23 का उपयोग करें।</p>
+    </div>
+    <div class="guide-card">
+      <h4>कानूनी परिशिष्ट</h4>
+      <p>अनुभाग 20-22: अधिनियम मानचित्र, मुकदमेबाज़ी निगरानी, खुले बिंदु। तिथियों को लागू / प्रस्तावित के रूप में लेबल करें।</p>
+    </div>
+  </div>
+  <p class="doc-meta">संस्करण 3 · जून 2026 · SaralPrivacy · सूचनात्मक मार्गदर्शिका, कानूनी सलाह नहीं · saralprivacy.com</p>
+</section>
+
+<main class="content watermarked">
+<h2>अनुभाग 1: आवरण</h2>
+<p><a id="section-1"></a></p>
+<p>भारत का डिजिटल व्यक्तिगत डेटा संरक्षण अधिनियम अब अब किसी शेल्फ पर रखा भविष्य का कानून नहीं है। नियम अधिसूचित हो चुके हैं, Data Protection Board of India (DPBI) का गठन हो रहा है, और परिचालन अनुपालन की तिथियाँ 2026 और 2027 के कैलेंडर पर हैं। यह श्वेतपत्र उस कानूनी मशीनरी को ऐसे निर्णयों में बदलता है जिन पर संस्थापक, बोर्ड और ऑपरेटर इसी तिमाही में कार्रवाई कर सकते हैं।</p>
+<p><strong>यहाँ आपको क्या मिलेगा:</strong></p>
+<ul>
+<li>अधिनियम क्या माँगता है और क्या अभी भी खुला कानून है — इसका सरल हिंदी/अंग्रेज़ी नक्शा</li>
+<li>SaralPrivacy <strong>OPERATE v6.1</strong> ढाँचा: सात व्यावसायिक क्षमताएँ, सात कानूनी अध्याय नहीं</li>
+<li>कार्यान्वयन किट, उद्योग जोखिम स्नैपशॉट, और 90-दिवसीय कार्य योजना</li>
+<li>अधिनियम और नियमों की तालिकाओं, केस वॉचलिस्ट, शब्दकोश और स्रोतों के साथ कानूनी परिशिष्ट</li>
+</ul>
+<p><strong>कानूनी स्थिति — एक पंक्ति (14 जून 2026):</strong> Sec 3-17 के तहत मुख्य परिचालन कर्तव्य और अधिकांश Rules <strong>13 मई 2027</strong> को प्रभावी होंगे, जब तक राजपत्र संशोधन समयसीमा को तेज़ न कर दें; Consent Manager के कर्तव्य <strong>13 नवंबर 2026</strong> से शुरू होते हैं। किसी भी छोटी समयसीमा को <strong>अधिसूचित होने तक प्रस्तावित</strong> मानें।</p>
+<hr />
+<h2>अनुभाग 2: यह श्वेतपत्र किसके लिए है</h2>
+<p><a id="section-2"></a></p>
+<h3>यह किसके लिए है</h3>
+<ul>
+<li>भारतीय व्यवसायों के संस्थापक और ऑपरेटर जो ग्राहक, कर्मचारी या विक्रेता का डेटा डिजिटल रूप से एकत्र करते हैं</li>
+<li>अनुपालन प्रमुख, CFO, HR प्रमुख, और प्रोडक्ट मैनेजर जिन्हें कानून की किताब नहीं, सरल मार्गदर्शन चाहिए</li>
+<li>सलाहकार (CA, सलाहकार, कानूनी ऑप्स) जो SMEs को समयसीमा से पहले DPDPA-तैयार करने में मदद करते हैं</li>
+<li>अंतरराष्ट्रीय टीमें जो भारतीय उपयोगकर्ताओं की सेवा करती हैं और GDPR की कॉपी-पेस्ट नहीं, भारत-विशिष्ट यांत्रिकी चाहती हैं</li>
+<li>बोर्ड सदस्य और CXO जिन्हें बजट और स्वामित्व मंज़ूर करने से पहले एक-पृष्ठ जोखिम दृश्य चाहिए</li>
+</ul>
+<h3>यह किसके लिए नहीं है</h3>
+<ul>
+<li>वकील जो खंड-दर-खंड टिप्पणी चाहते हैं (इसके बजाय अनुभाग 20-22 और शब्दकोश का उपयोग करें)</li>
+<li>संगठन जो परिचालन परिवर्तन के बिना एक-पृष्ठ चेकबॉक्स चाहते हैं</li>
+<li>पाठक जो अभी अधिसूचित नहीं हुए नियमों पर निश्चितता चाहते हैं (SDF सूची, प्रतिबंधित देश, Board पोर्टल विवरण)</li>
+</ul>
+<h3>अनुभाग 19 में समर्पित स्नैपशॉट वाले क्षेत्र</h3>
+<p>CA फर्म, भर्ती एजेंसियाँ, प्रशिक्षण संस्थान, D2C ब्रांड, क्लिनिक और डायग्नोस्टिक लैब, स्कूल और कॉलेज, लॉ फर्म, रियल एस्टेट, होटल और यात्रा, फार्मेसी, fintech और NBFC, जिम, सैलून और स्पा।</p>
+<hr />
+<h2>अनुभाग 3: कार्यकारी सारांश</h2>
+<p><a id="section-3"></a>
+<blockquote class="brand-line">अपने अंतराल जानें। जो मायने रखता है उसे ठीक करें। विश्वास दिखाएँ।</blockquote></p>
+<p>भारत का DPDPA व्यवसायों के व्यक्तिगत डेटा के व्यवहार को पहले संग्रह से उल्लंघन प्रतिक्रिया तक बदल देता है। अधिनियम डेटा उपयोग पर प्रतिबंध नहीं लगाता। यह <strong>वैध उद्देश्य</strong>, <strong>स्पष्ट सूचना</strong>, <strong>बचाव योग्य सहमति या संकीर्ण वैध उपयोग</strong>, <strong>उचित सुरक्षा</strong>, <strong>समय पर उल्लंघन प्रतिक्रिया</strong>, <strong>कार्यशील अधिकार चैनल</strong>, और <strong>प्रोसेसर नियंत्रण</strong> माँगता है — साथ ही प्रमाण कि प्रत्येक नियंत्रण मौजूद है। अधिकांश भारतीय ऑपरेटरों के लिए बदलाव अनौपचारिक आदतों (WhatsApp इनटेक, साझा फ़ोल्डर, बंडल सहमति, अनिश्चितकालीन प्रतिधारण) से <strong>दस्तावेज़ित, स्वामित्व वाले कार्यक्रमों</strong> की ओर है जो नियामक या एंटरप्राइज़ ग्राहक के "दिखाओ" पूछने पर टिके रहें।</p>
+<p><strong>CEO को अभी क्यों परवाह करनी चाहिए।</strong> तीन घड़ियाँ चल रही हैं: Board सक्रिय है; Consent Manager बुनियादी ढाँचा नवंबर 2026 से वास्तविक होगा; परिचालन अनुपालन 13 मई 2027 के लिए निर्धारित है लेकिन MeitY रनवे छोटा करे तो तेज़ हो सकता है। जुर्माना Rs 250 करोड़ तक पहुँचता है, लेकिन निकट-अवधि जोखिम <strong>विश्वास, खरीद, और मुकदमeb की शक्ल</strong> है — साझेदार और ग्राहक पहले से डेटा मैप और उल्लंघन प्लेबुक माँगते हैं। अंतिम राजपत्र तिथि तक इंतज़ार करने का मतलब दबाव में पुनर्निर्माण है।</p>
+<p><strong>इस तिमाही शुरू करने योग्य पाँच बातें:</strong></p>
+<ol>
+<li><strong>DPDPA तैयारी के लिए एक जवाबदेह स्वामी नामित करें</strong> (बिना चालक की समिति नहीं)।</li>
+<li><strong>प्रसंस्करण गतिविधि रजिस्टर बनाएँ</strong> — कौन सा डेटा, क्यों, कहाँ, कौन एक्सेस करता है, कितने समय तक रहता है।</li>
+<li><strong>प्रमुख संग्रह बिंदुओं पर स्वतंत्र सूचनाएँ ठीक करें</strong>; वैकल्पिक मार्केटिंग सहमति अलग रखें।</li>
+<li><strong>प्रोसेसर अनुबंध अपग्रेड करें</strong> और cross-border प्रवाह मैप करें।</li>
+<li><strong>उल्लंघन टेबलटॉप चलाएँ</strong> और 90-दिवसीय SLA ट्रैकर के साथ अधिकार/शिकायत इनबॉक्स खोलें।</li>
+</ol>
+<p><strong>क्या खुला कानून है।</strong> प्रतिबंधित-देश सूचियाँ, Significant Data Fiduciary (SDF) पदनाम, निर्दिष्ट स्थानीयकरण श्रेणियाँ, Consent Manager परिचालन विवरण, और समयसीमा संपीड़न <strong>राजपत्र पुष्टि तक वॉच आइटम</strong> हैं। यह श्वेतपत्र प्रत्येक आइटम को प्रभाव में, अधिसूचित चरण, प्रस्तावित, या लंबित मुकदमeb के रूप में लेबल करता है — कभी मिलाता नहीं।</p>
+<p><strong>इस दस्तावेज़ का बाकी हिस्सा कैसे पढ़ें।</strong> अनुभाग 5-9 कानूनी आधार देते हैं। अनुभाग 10-17 OPERATE v6.1 अध्याय-दर-अध्याय चलते हैं। अनुभाग 18 किट देता है; अनुभाग 19 उद्योग के अनुसार जोखिम कहाँ केंद्रित है दिखाता है। अनुभाग 20-22 कानूनी परिशिष्ट सामग्री हैं। अनुभाग 23 आपकी 90-दिवसीय शुरुआती योजना है। अनुभाग 24 दायरा और SaralPrivacy उपकरण कैसे फिट होते हैं बताता है — वकील की जगह नहीं लेते।</p>
+<p><strong>नेतृत्व के लिए निष्कर्ष:</strong> DPDPA तैयारी एक परिचालन क्षमता है — इन्वेंटरी, अनुमति, प्रमाण, अधिकार, शासन, विक्रेता, और घटना प्रतिक्रिया — नीति PDF नहीं। 2026 में प्रमाण बनाने वाले संगठन साझेदारी की बातचीत, शिकायतें, और नियामक प्रश्नों का स्पष्ट स्थिति से सामना करेंगे। अंतिम हेडलाइन तिथि का इंतज़ार करने वाले दबाव में पुनर्निर्माण का जोखिम उठाते हैं।</p>
+<hr />
+<h2>अनुभाग 4: CEO और बोर्ड प्राथमिकता पृष्ठ</h2>
+<p><a id="section-4"></a></p>
+<p>बोर्ड को पूरा अधिनियम पढ़ने की ज़रूरत नहीं। उन्हें पाँच निर्णय, पाँच जोखिम, पाँच प्रमाण आइटम, और कानून स्थिर होने से पहले <strong>क्या न overbuild</strong> करें — इसकी स्पष्टता चाहिए।</p>
+<h3>पाँच नेतृत्व निर्णय</h3>
+<ol>
+<li><strong>एक जवाबदेह स्वामी नामित करें</strong> — प्रोडक्ट, कानूनी, या ऑप्स — बोर्ड दृश्यता के साथ, "सभी की गोपनीयता" नहीं।</li>
+<li><strong>तय करें कौन सा प्रसंस्करण सहमति बनाम वैध उपयोग है</strong> और निर्णय दस्तावेज़ करें; सभी HR या KYC प्रवाह छूट न मानें।</li>
+<li><strong>इस तिमाही विक्रेता और cross-border समीक्षा मंज़ूर करें</strong> — क्लाउड, पेरोल, CRM, ad-tech, BGV, भुगतान साझेदार।</li>
+<li><strong>घटना से पहले उल्लंघन एस्केलेशन पथ तय करें</strong> — कानूनी, सुरक्षा, संचार, और Board सूचना भूमिकाएँ।</li>
+<li><strong>पहले ठीक करने के लिए दो उद्योग-विशिष्ट प्रवाह चुनें</strong> (अनुभाग 19 से) जहाँ आज वास्तविक डेटा लीक होता है।</li>
+</ol>
+<h3>पाँच परिचालन जोखिम</h3>
+<ol>
+<li><strong>WhatsApp और व्यक्तिगत फ़ोन</strong> PAN, स्वास्थ्य, प्रिस्क्रिप्शन, CV, या अतिथि ID के लिए डिफ़ॉल्ट चैनल।</li>
+<li><strong>साझा क्लाउड फ़ोल्डर और पुरानी एक्सेस</strong> — पूर्व कर्मचारी, इंटर्न, फ्रीलांसर, पुराने ब्रोकर साझेदार।</li>
+<li><strong>अलग सहमति के बिना मार्केटिंग और एनालिटिक्स</strong> — पिक्सेल, कार्ट अभियान, WhatsApp प्रोमो।</li>
+<li><strong>पुराने ग्राहक, उम्मीदवार, रोगी, या कर्मचारी रिकॉर्ड का अनिश्चितकालीन प्रतिधारण</strong>।</li>
+<li><strong>बिना अनुबंध या सुरक्षा और उल्लंघन-सहयोग खंडों के प्रोसेसर</strong>।</li>
+</ol>
+<h3>बनाए रखने योग्य पाँच प्रमाण आइटम</h3>
+<ol>
+<li>प्रसंस्करण गतिविधि रजिस्टर (दिनांकित, स्वामित्व, त्रैमासिक समीक्षा)।</li>
+<li>सूचना और सहमति संस्करण लॉग (उपयोगकर्ता ने क्या देखा, कब, किस चैनल पर)।</li>
+<li>DPDPA-संरेखित खंडों वाला प्रोसेसर और विक्रेता अनुबंध रजिस्टर।</li>
+<li>समापन तिथियों के साथ अधिकार और शिकायत अनुरोध लॉग।</li>
+<li>उल्लंघन और घटना रिकॉर्ड — टेबलटॉप अभ्यास सहित।</li>
+</ol>
+<h3>अभी overbuild न करने योग्य पाँच बातें</h3>
+<ol>
+<li>पदनाम मानदंड और सूचियाँ अंतिम होने से पहले पूर्ण SDF कार्यक्रम।</li>
+<li>नवंबर 2026 ढाँचा आपके क्षेत्र में परिचालन होने से पहले Consent Manager एकीकरण।</li>
+<li>सरकारी अधिसूचनाएँ प्रकाशित होने से पहले देश-स्तर स्थानांतरण ब्लॉकलिस्ट।</li>
+<li>बुनियादी इन्वेंटरी, सूचनाएँ, और विक्रेता अनुबंध होने से पहले एंटरप्राइज़ GRC प्लेटफ़ॉर्म।</li>
+<li>मुकदमeb और चरण तिथियाँ अभी भी बदल रही हों तब "पूर्ण अनुपालन" का दावा।</li>
+</ol>
+<h3>एक नज़र में प्रमाण पैक</h3>
+<p><em>Diagram: see figure below.</em></p>
+<figure class="figure"><img src="../infographics/infographic-08-evidence-pack.png" alt="इन्फोग्राफिक 1: Evidence Pack Checklist" /><figcaption>इन्फोग्राफिक 1: Evidence Pack Checklist</figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>प्रमाण आइटम</th>
+<th>स्वामी</th>
+<th>समीक्षा अंतराल</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>प्रसंस्करण गतिविधि रजिस्टर</td>
+<td>Ops / Product</td>
+<td>त्रैमासिक</td>
+</tr>
+<tr>
+<td>2</td>
+<td>सूचना और सहमति संस्करण</td>
+<td>Legal / Product</td>
+<td>हर बदलाव पर</td>
+</tr>
+<tr>
+<td>3</td>
+<td>DPDPA खंडों वाले विक्रेता अनुबंध</td>
+<td>Procurement / Legal</td>
+<td>ऑनबोर्डिंग पर</td>
+</tr>
+<tr>
+<td>4</td>
+<td>अधिकार और शिकायत लॉग</td>
+<td>Support / Legal</td>
+<td>मासिक</td>
+</tr>
+<tr>
+<td>5</td>
+<td>उल्लंघन और घटना लॉग</td>
+<td>Security / Legal</td>
+<td>हर घटना + वार्षिक अभ्यास</td>
+</tr>
+<tr>
+<td>6</td>
+<td>एक्सेस समीक्षा रिकॉर्ड</td>
+<td>IT / HR</td>
+<td>त्रैमासिक</td>
+</tr>
+<tr>
+<td>7</td>
+<td>प्रतिधारण अनुसूची + विलोपन प्रमाण</td>
+<td>Ops / IT</td>
+<td>अर्ध-वार्षिक</td>
+</tr>
+<tr>
+<td>8</td>
+<td>नियामक वॉच लॉग</td>
+<td>Compliance</td>
+<td>मासिक</td>
+</tr>
+</tbody>
+</table>
+<p><strong>CEO निष्कर्ष:</strong> अनुपालन <strong>रिकॉर्ड</strong> से सिद्ध होता है, इरादों से नहीं।</p>
+<hr />
+<h2>अनुभाग 5: कानूनी स्थिति स्नैपशॉट (जून 2026)</h2>
+<p><a id="section-5"></a></p>
+<table>
+<thead>
+<tr>
+<th>क्षेत्र</th>
+<th>वर्तमान कानूनी स्थिति</th>
+<th>व्यावहारिक परिणाम</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>अभी प्रभाव में</strong></td>
+<td>Sec 1(2), Sec 2, Sec 18-26, 35, 38-43, और Sec 44(1),(3); Rules 1, 2, 17-21।</td>
+<td>परिभाषाएँ, DPBI गठन, नियम-निर्माण, कुछ संशोधन और Board ढाँचा सक्रिय हैं।</td>
+</tr>
+<tr>
+<td><strong>13 नवं 2026</strong></td>
+<td>Sec 6(9) और Sec 27(1)(d); Rule 4।</td>
+<td>Consent Manager ढाँचा और संबंधित कर्तव्य शुरू।</td>
+</tr>
+<tr>
+<td><strong>13 मई 2027</strong></td>
+<td>Sec 3-17, Sec 6 का अधिकांश, Sec 27-34, 36, 37, Sec 44(2); Rules 3, 5-16, 22, 23।</td>
+<td>सूचना, सहमति, उल्लंघन, अधिकार, बच्चे, प्रतिधारण, SDF, अपील और सरकारी सूचना शक्तियों के लिए परिचालन अनुपालन समयसीमा।</td>
+</tr>
+<tr>
+<td><strong>अभी स्पष्ट नहीं</strong></td>
+<td>प्रतिबंधित देश सूची, SDF पदनाम, निर्दिष्ट SDF स्थानीयकरण डेटा श्रेणियाँ, Board पोर्टल प्रक्रियाएँ व्यवहार में।</td>
+<td>निश्चित दावों से पहले MeitY/DPBI अधिसूचनाएँ ट्रैक करें।</td>
+</tr>
+<tr>
+<td><strong>प्रवर्तन तैयारी</strong></td>
+<td>DPBI स्थापना अधिसूचित; Rules 17-21 में डिजिटल कार्यवाही ढाँचा; चरणबद्ध परिचालन तिथियाँ।</td>
+<td>अभी प्रमाण पैक बनाएँ — परिचालन समयसीमा से पहले प्रवर्तन बुनियादी ढाँचा बन रहा है।</td>
+</tr>
+</tbody>
+</table>
+<h3>नीति क्षितिज चेतावनी</h3>
+<p><strong>नीचे दिए आइटमों को राजपत्र संशोधन पुष्टि होने तक वॉच आइटम मानें। ये प्रस्तावित या चर्चित हैं — 14 जून 2026 तक अधिसूचित कानून नहीं।</strong></p>
+<table>
+<thead>
+<tr>
+<th>संकेत</th>
+<th>क्या चर्चा हुई</th>
+<th>व्यवसाय प्रभाव</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>जन 2026 हितधारक बैठक (रिपोर्ट)</td>
+<td>18-माह रनवे को 12 महीने में संपीड़ित; SDF सूची fast-track; Rule 8(3) प्रतिधारण संशोधन के 90 दिनों के भीतर</td>
+<td>परिचालन समयसीमा <strong>13 मई 2027</strong> से <strong>13 नवं 2026</strong> की ओर जा सकती है</td>
+</tr>
+<tr>
+<td>फर 2026 (रिपोर्ट)</td>
+<td>समयसीमा संपीड़न पर उद्योग प्रतिक्रिया विंडो</td>
+<td>परिणाम राजपत्र लंबित</td>
+</tr>
+<tr>
+<td>जून 2026 (रिपोर्ट, ET Telecom)</td>
+<td>MeitY सचिव समयसीमा पर उद्योग इनपुट की प्रतीक्षा</td>
+<td>अभी अंतिम निर्णय नहीं — तेज़ तिथि को कानून मानकर योजना न बनाएँ</td>
+</tr>
+<tr>
+<td>Karnataka (रिपोर्ट, 2026)</td>
+<td>16 वर्ष से कम के लिए सोशल मीडिया प्रतिबंध प्रस्ताव</td>
+<td>राष्ट्रीय बनाम राज्य क्षमता अस्पष्ट — केवल नीति बहस</td>
+</tr>
+<tr>
+<td>लंबित मुकदमeb</td>
+<td>RTI इंटरफ़ेस, छूट, Board संरचना पर Supreme Court / Delhi HC चुनौतियाँ</td>
+<td>केवल जागरूकता — इस तिथि तक अधिनियम स्थगित नहीं</td>
+</tr>
+</tbody>
+</table>
+<p><strong>लेखक नियम:</strong> हमेशा आइटमों को <strong>प्रभाव में</strong>, <strong>अधिसूचित चरण</strong>, <strong>प्रस्तावित</strong>, या <strong>लंबित मुकदमeb</strong> लेबल करें। कभी मिलाएँ नहीं।</p>
+<h3>संख्या पट्टी</h3>
+<table>
+<thead>
+<tr>
+<th>18 महीने</th>
+<th>4+1 अधिकार</th>
+<th>72 घंटे</th>
+<th>90 दिन</th>
+<th>Rs 250 Cr</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rules अधिसूचना (13 नवं 2025) से चरणबद्ध अनुपालन विंडो</td>
+<td>पहुँच, सुधार, विलोपन, शिकायत, और नामांकन</td>
+<td>सूचना के बाद DPBI को विस्तृत उल्लंघन रिपोर्ट (Rule 7)</td>
+<td>अधिकतम शिकायत प्रतिक्रिया समय (Rule 14)</td>
+<td>अधिनियम के तहत स्तरीय अधिकतम जुर्माना छत</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>अनुभाग 6: 2026-2027 में DPDPA क्यों महत्वपूर्ण है</h2>
+<p><a id="section-6"></a></p>
+<h3>भारत का डिजिटल स्टैक — विश्वास की परत के रूप में गोपनीयता</h3>
+<p>भारत ने एक डिजिटल सार्वजनिक बुनियादी ढाँचा बनाया जिसकी अधिकांश देश केवल बात करते हैं: पहचान (Aadhaar), भुगतान (UPI), दस्तावेज़ (DigiLocker), और सहमति रेल (Account Aggregator)। इसे आधुनिक हाईवे प्रणाली की तरह समझें — वाणिज्य के लिए फास्ट लेन, सत्यापन के लिए टोल प्लाज़ा, और सड़क पर लाखों वाहन (ऐप और व्यवसाय)।</p>
+<p>हाल तक, हाईवे पर गति सीमा थी लेकिन व्यक्तिगत डेटा के लिए कोई एकसमान ट्रैफ़िक पुलिस नहीं थी। DPDPA वह ट्रैफ़िक प्रणाली है: यह व्यवसायों को बताता है <strong>कौन सा डेटा ले जा सकते हैं</strong>, <strong>कैसे सुरक्षित करना है</strong>, और <strong>दुर्घटना होने पर क्या होता है</strong>।</p>
+<p><strong>गैर-तकनीकी पाठकों के लिए उपमा:</strong> आपकी दुकान में हमेशा ग्राहक रजिस्टर रहा। DPDPA पूछता है (1) ग्राहकों को बताएँ रजिस्टर में क्या लिखते हैं, (2) केवल ज़रूरी लिखें, (3) रजिस्टर ताला लगाएँ, (4) ग्राहकों को अपना पृष्ठ देखने या मिटाने दें, और (5) रजिस्टर चोरी हो तो तुरंत अधिकारियों को बताएँ। रजिस्टर गैरकानूनी नहीं हुआ — लापरवाह संभाल गैरकानूनी हुई।</p>
+<h3>सहमति अकेली काफ़ी नहीं</h3>
+<p>कई टीमें "DPDPA" सुनकर सीधे सहमति बैनर पर कूदती हैं। कई प्रवाहों के लिए सहमति ज़रूरी है, लेकिन अधिनियम <strong>सुरक्षा</strong>, <strong>उल्लंघन सूचना</strong>, <strong>प्रतिधारण अनुशासन</strong>, <strong>अधिकार संभाल</strong>, <strong>प्रोसेसर अनुबंध</strong>, और <strong>जवाबदेही प्रमाण</strong> भी माँगता है। परफ़ेक्ट सहमति लॉग लेकिन साझा WhatsApp फ़ोल्डर, कोई उल्लंघन प्लेबुक नहीं, और अनिश्चितकालीन CV भंडारण वाला व्यवसाय अभी भी जोखिम में है। OPERATE v6.1 इसलिए <strong>Permission</strong> (वैध आधार) को <strong>Evidence</strong> (प्रमाण) और <strong>Accountability</strong> (शासन) से अलग करता है।</p>
+<h3>सार्वभौमिक गोपनीयता सिद्धांत (OECD / APEC आधार)</h3>
+<p>160+ अधिकार क्षेत्रों में वही विषय दोहराते हैं। भारत इनसे संरेखित है, यांत्रिकी अलग हो:</p>
+<ol>
+<li><strong>पारदर्शिता</strong> — लोगों को बताएँ क्या एकत्र करते हैं और क्यों  </li>
+<li><strong>उद्देश्य सीमा</strong> — डेटा केवल बताए गए कारण के लिए  </li>
+<li><strong>डेटा न्यूनीकरण</strong> — काम चलाने के लिए सबसे छोटी मात्रा  </li>
+<li><strong>सुरक्षा</strong> — उचित सुरक्षा से डेटा की रक्षा  </li>
+<li><strong>व्यक्तिगत अधिकार</strong> — पहुँच, सुधार, विलोपन, शिकायत मार्ग  </li>
+<li><strong>जवाबदेही</strong> — ऊपर का प्रमाण, विशेषकर डिजिटल नियामक के तहत  </li>
+<li><strong>Cross-border जिम्मेदारी</strong> — डेटा कहाँ जाता है और कौन जवाब देता है  </li>
+</ol>
+<p>DPDPA इन आदतों का भारतीय संस्करण है, भारतीय लेटरहेड वाला विदेशी आयात नहीं।</p>
+<h3>वैश्विक तुलना — व्यवसाय दृष्टि</h3>
+<table>
+<thead>
+<tr>
+<th>आयाम</th>
+<th>GDPR (EU/UK)</th>
+<th>CCPA/CPRA (US)</th>
+<th>LGPD (Brazil)</th>
+<th>DPDPA (India)</th>
+<th>व्यवसाय निष्कर्ष</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>दर्शन</strong></td>
+<td>अधिकार-प्रथम</td>
+<td>उपभोक्ता opt-out / सूचना</td>
+<td>अधिकार + वैध हित</td>
+<td>निष्पादन-प्रथम, विश्वास-पैमाने पर</td>
+<td>भारत <strong>बनी प्रणालियों</strong> को पुरस्कृत करता है, कागज़ नीतियों को नहीं</td>
+</tr>
+<tr>
+<td><strong>वैध प्रसंस्करण</strong></td>
+<td>6 आधार (Art 6)</td>
+<td>सूचना + opt-out; सीमित आधार</td>
+<td>10 कानूनी आधार</td>
+<td>सहमति <strong>या</strong> संकीर्ण Sec 7 वैध उपयोग</td>
+<td>GDPR से कम गैर-सहमति मार्ग — <strong>Sec 7 न खींचें</strong></td>
+</tr>
+<tr>
+<td><strong>सहमति मानक</strong></td>
+<td>स्वेच्छा, विशिष्ट, सूचित</td>
+<td>बिक्री/साझा के लिए opt-out; नाबालिगों के लिए opt-in</td>
+<td>GDPR जैसा</td>
+<td>स्वतंत्र, विशिष्ट, सूचित, बिना शर्त, <strong>अस्पष्ट नहीं</strong></td>
+<td>pre-ticked बॉक्स हर जगह फेल; भारत स्पष्ट है</td>
+</tr>
+<tr>
+<td><strong>संवेदनशील डेटा</strong></td>
+<td>विशेष श्रेणियाँ (Art 9)</td>
+<td>CPRA के तहत Sensitive PI</td>
+<td>Sensitive data</td>
+<td><strong>अलग श्रेणी नहीं</strong> — लेकिन प्रकार अभी भी जोखिम, जुर्माना, SDF चलाता है</td>
+<td>स्वास्थ्य, बायोमेट्रिक, बच्चों के डेटा को <strong>उच्च-देखभाल</strong> मानें, "गैर-संवेदनशील" नहीं</td>
+</tr>
+<tr>
+<td><strong>बच्चे</strong></td>
+<td>13-16 स्तरीय (सदस्य राज्य)</td>
+<td>16 से कम opt-in</td>
+<td>अभिभावक सहमति</td>
+<td><strong>18 से कम एकसमान</strong></td>
+<td>सख्त एकल सीमा</td>
+</tr>
+<tr>
+<td><strong>Cross-border</strong></td>
+<td>SCCs, adequacy, TIA</td>
+<td>क्षेत्र/राज्य patchwork</td>
+<td>ANPD मार्गदर्शन</td>
+<td>अनुमेय डिफ़ॉल्ट; <strong>सरकार प्रतिबंध</strong> सूची + Rule 15</td>
+<td>प्रवाह मैप करें; <strong>MeitY अधिसूचनाएँ मॉनिटर करें</strong></td>
+</tr>
+<tr>
+<td><strong>नियामक</strong></td>
+<td>राष्ट्रीय DPAs</td>
+<td>AG + CPPA</td>
+<td>ANPD</td>
+<td><strong>DPBI</strong> (डिजिटल-प्रथम)</td>
+<td>प्रमाण पैक महत्वपूर्ण</td>
+</tr>
+<tr>
+<td><strong>अद्वितीय विशेषता</strong></td>
+<td>DPO अनिवार्यता (कुछ controllers)</td>
+<td>Do Not Sell/Share</td>
+<td>DPO-जैसी भूमिकाएँ</td>
+<td><strong>Consent Manager</strong> (पंजीकृत मध्यस्थ)</td>
+<td>भारत-विशिष्ट बुनियादी ढाँचा</td>
+</tr>
+<tr>
+<td><strong>अधिकतम जुर्माना</strong></td>
+<td>EUR 20M / 4% turnover</td>
+<td>$7,500/उल्लंघन (भिन्न)</td>
+<td>2% revenue / 50M BRL</td>
+<td><strong>Rs 250 Cr</strong> छत (स्तरीय)</td>
+<td>सुरक्षा + उल्लंघन सूचना प्राथमिकता</td>
+</tr>
+<tr>
+<td><strong>प्रवर्तन शैली</strong></td>
+<td>परिपक्व, उच्च मात्रा</td>
+<td>बढ़ती, खंडित</td>
+<td>बढ़ती</td>
+<td><strong>चरणबद्ध</strong> — Board सक्रिय; ops तिथियाँ 2026-2027</td>
+<td>अभी शुरू करें; तिथियाँ <strong>तेज़</strong> हो सकती हैं</td>
+</tr>
+</tbody>
+</table>
+<h3>भारत बनाम GDPR — मिथक बनाम तथ्य</h3>
+<table>
+<thead>
+<tr>
+<th>मिथक</th>
+<th>तथ्य (DPDPA)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"GDPR compliant = DPDPA ready"</td>
+<td>अलग वैध आधार, कोई SCC regime नहीं, Consent Manager, चरणबद्ध प्रारंभ</td>
+</tr>
+<tr>
+<td>"कोई sensitive श्रेणी = कम जोखिम स्वास्थ्य डेटा"</td>
+<td>स्वास्थ्य/बच्चे/वित्तीय डेटा अभी भी जांच और क्षेत्र नियम आकर्षित करता है</td>
+</tr>
+<tr>
+<td>"13 मई 2027 तक समय है"</td>
+<td>MeitY <strong>12-माह</strong> त्वरण पर चर्चा; SDF/cross-border तेज़ हो सकता है</td>
+</tr>
+<tr>
+<td>"उल्लंघन = हमेशा Rs 250 Cr जुर्माना"</td>
+<td>जुर्माना <strong>उचित सुरक्षा उपाय लागू न करने</strong> (Sec 8(5)) से जुड़ा</td>
+</tr>
+<tr>
+<td>"एक गोपनीयता नीति काफ़ी"</td>
+<td>Rule 3: सूचना प्रत्येक संग्रह बिंदु पर <strong>स्वतंत्र रूप से समझने योग्य</strong> हो</td>
+</tr>
+</tbody>
+</table>
+<h3>2026 वास्तविक शुरुआती रेखा क्यों है</h3>
+<p>तीन घड़ियाँ एक साथ चल रही हैं:</p>
+<ol>
+<li><strong>Board घड़ी (सक्रिय):</strong> DPBI मौजूद। प्रमाण-आधारित डिजिटल प्रवर्तन अभी बन रहा है।  </li>
+<li><strong>Consent Manager घड़ी (13 नवं 2026):</strong> पंजीकृत मध्यस्थ और एकीकरण वास्तविक होते हैं।  </li>
+<li><strong>परिचालन घड़ी (13 मई 2027, संभवतः जल्दी):</strong> सूचना, सहमति, सुरक्षा, उल्लंघन, अधिकार, बच्चे, प्रोसेसर — जो अधिकांश व्यवसाय महसूस करते हैं।</li>
+</ol>
+<p><strong>2026 वह समय है जब कार्यक्रम "बाद में किसी को रखेंगे" से "आज डेटा मैप और उल्लंघन प्लेबुक दिखा सकते हैं" में बदलें।</strong> गोपनीयता को ग्राहक विश्वास मानने वाले व्यवसाय तेज़ी से आगे बढ़ेंगे जब खरीद, साझेदारी, और नियामक प्रमाण माँगें।</p>
+<hr />
+<h2>अनुभाग 7: अधिनियम क्या कवर करता है</h2>
+<p><a id="section-7"></a></p>
+<p>नियंत्रण बनाने से पहले, नेताओं को साझा शब्दावली चाहिए। DPDPA परिभाषित भूमिकाएँ और डिजिटल-प्रथम दायरा उपयोग करता है। यह अनुभाग सरल हिंदी/अंग्रेज़ी नक्शा है।</p>
+<h3>मुख्य परिभाषाएँ</h3>
+<table>
+<thead>
+<tr>
+<th>शब्द</th>
+<th>कौन / क्या</th>
+<th>सरल अर्थ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Digital personal data</strong></td>
+<td>डेटा स्वयं</td>
+<td>डिजिटल रूप में व्यक्तिगत डेटा, और ऑफ़लाइन व्यक्तिगत डेटा जो बाद में digitised हो</td>
+</tr>
+<tr>
+<td><strong>Data Principal (DP)</strong></td>
+<td>व्यक्ति</td>
+<td>ग्राहक, कर्मचारी, छात्र, रोगी, अतिथि, उम्मीदवार — जिसका डेटा आप process करते हैं</td>
+</tr>
+<tr>
+<td><strong>Data Fiduciary (DF)</strong></td>
+<td>आमतौर पर आपकी कंपनी</td>
+<td>वह इकाई जो तय करती है <strong>क्यों</strong> और <strong>कैसे</strong> व्यक्तिगत डेटा process हो</td>
+</tr>
+<tr>
+<td><strong>Data Processor</strong></td>
+<td>विक्रेता</td>
+<td>क्लाउड होस्ट, payroll SaaS, ATS, payment gateway, analytics tool — आपके निर्देश पर process करता है</td>
+</tr>
+<tr>
+<td><strong>Consent Manager (CM)</strong></td>
+<td>पंजीकृत मध्यस्थ</td>
+<td>भारत-विशिष्ट परत जो लोगों को सेवाओं में सहमति देने, प्रबंधित करने, वापस लेने में मदद करती है (नवं 2026 से)</td>
+</tr>
+<tr>
+<td><strong>Significant Data Fiduciary (SDF)</strong></td>
+<td>अधिसूचित बड़ा/उच्च-जोखिम DF</td>
+<td>अतिरिक्त कर्तव्य: DPIA, audit, algorithmic diligence, संभव स्थानीयकरण — केवल यदि सरकार designate करे</td>
+</tr>
+</tbody>
+</table>
+<h3>लागूता — अधिनियम आपके व्यवसाय को कब छूता है</h3>
+<p><strong>Sec 3</strong> लागू होता है जब आप digital personal data process करते हैं:</p>
+<ul>
+<li><strong>भारत में</strong> — ग्राहक, कर्मचारी, विक्रेता, वेबसाइट उपयोगकर्ता</li>
+<li><strong>बाद में digitised ऑफ़लाइन डेटा</strong> — कागज़ फ़ॉर्म सिस्टम में स्कैन</li>
+<li><strong>भारत के बाहर</strong> — यदि processing भारत में लोगों को वस्तुएँ या सेवाएँ देने से जुड़ी हो</li>
+</ul>
+<p><strong>Sec 17 और Rule अनुसूचियों</strong> में कुछ राज्य, अनुसंधान, कानूनी, और सुरक्षा संदर्भों के लिए <strong>अपवाद और carve-out</strong> हैं। वकील के बिना व्यापक छूट self-certify न करें। टीमों को भ्रमित करने वाले उदाहरण: कानूनी दावे के लिए सख्ती से आवश्यक processing, कुछ अदालत-निर्देशित प्रकटीकरण, और Rule 16 मानकों को पूरा करने वाला अनुसंधान/सांख्यिकी बिना व्यक्तिगत निर्णयन के। छूट लागू हो भी सकती है, <strong>दस्तावेज़ीकरण</strong> कानूनी आधार और संकीर्ण दायरे का जवाबदेही के लिए महत्वपूर्ण।</p>
+<h3>व्यवहार में व्यक्तिगत डेटा — टीमें क्या गिनना भूलती हैं</h3>
+<p>ऑपरेटर अक्सर व्यक्तिगत डेटा कम गिनते हैं क्योंकि यह ग्राहक डेटाबेस नहीं, परिचालन उपकरणों में छिपा है। अक्सर overlooked स्रोत: recruiter Excel trackers, WhatsApp Business chat exports, पहचान योग्य व्यक्तियों वाली CCTV फुटेज, attendance और GPS logs, कार्य उपकरणों पर कर्मचारी monitoring, पुराने backup tapes, production copies वाले test environments, और customer support tickets से बने AI training sets। Observe का मतलब केवल CRM rows नहीं, इन्हें ईमानदारी से गिनना है।</p>
+<hr />
+<p>GDPR के विपरीत, भारत statutory special category label नहीं करता। इसका मतलब <strong>नहीं</strong> कि स्वास्थ्य, वित्तीय, बच्चों का, या बायोमेट्रिक डेटा कम जोखिम है। क्षेत्र नियम, SDF जांच, और ग्राहक विश्वास अभी भी इन्हें <strong>उच्च-देखभाल</strong> डेटा मानते हैं — मजबूत सूचना, सुरक्षा, प्रतिधारण, और अधिकार संभाल की ज़रूरत।</p>
+<h3>भूमिका पारिस्थितिकी</h3>
+<p><em>Diagram: see figure below.</em></p>
+<figure class="figure"><img src="../infographics/infographic-01-role-ecosystem.png" alt="इन्फोग्राफिक 2: DPDPA Role Ecosystem" /><figcaption>इन्फोग्राफिक 2: DPDPA Role Ecosystem</figcaption></figure>
+<p><strong>सरल भाषा:</strong> व्यवसाय आमतौर पर <strong>Data Fiduciary</strong> है। आपके विक्रेता <strong>Processors</strong> हैं। व्यक्ति <strong>Data Principal</strong> है। Consent Managers भारत-विशिष्ट परत हैं। SDF केवल यदि सरकार आपके संगठन को notify करे।</p>
+<hr />
+<h2>अनुभाग 8: वैध प्रसंस्करण — सहमति और वैध उपयोग</h2>
+<p><a id="section-8"></a></p>
+<p>हर संग्रह और उपयोग को वैध मार्ग चाहिए: <strong>Sec 6</strong> के तहत <strong>सहमति</strong> या <strong>Sec 7</strong> के तहत संकीर्ण <strong>वैध उपयोग</strong>। यह अनुभाग OPERATE अध्याय परिचालन से पहले कानूनी आधार समेटता है।</p>
+<h3>सहमति आवश्यकताएँ (Sec 6)</h3>
+<p>सहमति होनी चाहिए:</p>
+<ul>
+<li><strong>स्वतंत्र</strong> — वैकल्पिक processing से इनकार पर मुख्य सेवा नहीं रोकें</li>
+<li><strong>विशिष्ट</strong> — मार्केटिंग, analytics, photos, referrals मुख्य delivery से अलग</li>
+<li><strong>सूचित</strong> — स्वतंत्र सूचना (Sec 5, Rule 3) द्वारा समर्थित</li>
+<li><strong>बिना शर्त</strong> — असंबंधित शर्तों से बंडल नहीं</li>
+<li><strong>अस्पष्ट नहीं</strong> — स्पष्ट सकारात्मक कार्रवाई; pre-ticked बॉक्स नहीं</li>
+<li><strong>वापस लेने योग्य</strong> — देने जितना आसान</li>
+</ul>
+<p><strong>बच्चे (Sec 9):</strong> <strong>18 से कम</strong> एकसमान सीमा। सत्यापन योग्य अभिभावक सहमति; बच्चों पर tracking, behavioural monitoring, या targeted advertising नहीं।</p>
+<h3>वैध उपयोग (Sec 7) — संकीर्ण सूची, सुविधा का दरवाज़ा नहीं</h3>
+<p>उदाहरण: Data Principal द्वारा निर्दिष्ट उद्देश्य के लिए स्वैच्छिक डेटा, राज्य कार्य, कानून अनुपालन, अदालत आदेश, चिकित्सा आपात, आपदा/सार्वजनिक व्यवस्था, और कुछ रोज़गार सुरक्षा। <strong>GDPR "legitimate interests" को सीधे Sec 7 पर map न करें।</strong> अनिश्चित हो तो सूचना + सहमति और निर्णय दस्तावेज़ करें।</p>
+<h3>सूचना संरेखण (Sec 5, Rule 3)</h3>
+<p>सूचना <strong>स्वतंत्र रूप से समझने योग्य</strong>, सरल, itemised, और संग्रह बिंदु पर उपलब्ध — Terms and Conditions में दबी नहीं। एकत्र डेटा, उद्देश्य, अधिकार, withdrawal, शिकायत संपर्क, और Board शिकायत मार्ग समझाना चाहिए।</p>
+<h3>सहमति और वैध-उपयोग निर्णय प्रवाह</h3>
+<p><em>Diagram: see figure below.</em></p>
+<figure class="figure"><img src="../infographics/infographic-02-consent-flow.png" alt="इन्फोग्राफिक 3: Consent and Legitimate-Use Flow" /><figcaption>इन्फोग्राफिक 3: Consent and Legitimate-Use Flow</figcaption></figure>
+<p><strong>निर्णय नियम:</strong> हर व्यवसाय सुविधा को वैध उपयोग default न करें। संदेह हो तो <strong>सूचना + सहमति</strong> और प्रमाण रखें।</p>
+<h3>रोज़गार, राज्य, और कानूनी संदर्भ</h3>
+<p>HR payroll, attendance, और statutory filings अक्सर legitimate-use या contractual necessity patterns में फिट — लेकिन सूचना, सुरक्षा, प्रतिधारण सीमा, और अधिकार चैनल अभी भी चाहिए। सरकार-जुड़े लाभ कार्यक्रम Schedule 2 मानक समीक्षा करें। कानूनी कार्यवाही और नियामक अनुरोध documented कानूनी आधार और counsel escalation चाहते हैं।</p>
+<hr />
+<h2>अनुभाग 9: DPDPA के तहत मुख्य दायित्व</h2>
+<p><a id="section-9"></a></p>
+<p>यह तालिका वैधानिक कर्तव्यों को OPERATE v6.1 और नेताओं को अपेक्षित प्रमाण से map करती है।</p>
+<table>
+<thead>
+<tr>
+<th>दायित्व</th>
+<th>Act / Rule anchor</th>
+<th>OPERATE अक्षर</th>
+<th>प्रमाण प्रकार</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>अपना डेटा जानें</td>
+<td>Sec 3, 8; Rule 6</td>
+<td><strong>Observe</strong></td>
+<td>प्रसंस्करण गतिविधि रजिस्टर, प्रवाह मैप</td>
+</tr>
+<tr>
+<td>वैध आधार</td>
+<td>Sec 4, 6, 7</td>
+<td><strong>Permission</strong></td>
+<td>आधार tags, सहमति logs, Sec 7 memos</td>
+</tr>
+<tr>
+<td>सूचना</td>
+<td>Sec 5; Rule 3</td>
+<td><strong>Permission</strong></td>
+<td>प्रति चैनल दिनांकित सूचनाएँ, change log</td>
+</tr>
+<tr>
+<td>सहमति / withdrawal</td>
+<td>Sec 6</td>
+<td><strong>Permission</strong></td>
+<td>timestamped सहमति, withdrawal records</td>
+</tr>
+<tr>
+<td>सुरक्षा उपाय</td>
+<td>Sec 8(5); Rule 6</td>
+<td><strong>Event</strong> (prevent) + <strong>Accountability</strong></td>
+<td>सुरक्षा baseline, access reviews, logs</td>
+</tr>
+<tr>
+<td>उल्लंघन सूचना</td>
+<td>Sec 8(6)-(7); Rule 7</td>
+<td><strong>Event</strong></td>
+<td>घटना timeline, user/Board notices, 72-घंटे रिपोर्ट</td>
+</tr>
+<tr>
+<td>प्रतिधारण / विलोपन</td>
+<td>Sec 8(7); Rule 8</td>
+<td><strong>Evidence</strong> + <strong>Event</strong></td>
+<td>प्रतिधारण अनुसूची, विलोपन प्रमाण</td>
+</tr>
+<tr>
+<td>अधिकार + शिकायत</td>
+<td>Sec 11-14; Rule 14</td>
+<td><strong>Rights</strong></td>
+<td>अनुरोध रजिस्टर, SLA tracker, समापन</td>
+</tr>
+<tr>
+<td>बच्चों का डेटा</td>
+<td>Sec 9; Rules 10-12</td>
+<td><strong>Permission</strong> + kits</td>
+<td>age gate, अभिभावक सहमति, बच्चों के ads नहीं</td>
+</tr>
+<tr>
+<td>प्रोसेसर नियंत्रण</td>
+<td>Sec 8; Rule 6</td>
+<td><strong>Third-party</strong></td>
+<td>अनुबंध, vendor register, audits</td>
+</tr>
+<tr>
+<td>Cross-border transfer</td>
+<td>Sec 16; Rule 15</td>
+<td><strong>Third-party</strong></td>
+<td>transfer map, restriction watch log</td>
+</tr>
+<tr>
+<td>शासन / संपर्क</td>
+<td>Rule 9; Sec 10 (SDF)</td>
+<td><strong>Accountability</strong></td>
+<td>नामित स्वामी, DPO contact, board reviews</td>
+</tr>
+<tr>
+<td>कार्यक्रम प्रमाण</td>
+<td>Sec 8 accountability</td>
+<td><strong>Evidence</strong></td>
+<td>पूर्ण evidence pack (अनुभाग 4, 13)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>नेतृत्व पढ़ना:</strong> यदि किसी पंक्ति के लिए evidence कॉलम नहीं दिखा सकते, मानें दायित्व अभी चल नहीं रहा।</p>
+<h3>वास्तविक परिचालन में दायित्व कैसे जुड़ते हैं</h3>
+<p>क few businesses एक missing checkbox पर fail होते हैं। failure patterns आमतौर <strong>compound</strong> हैं: सूचना के बिना WhatsApp intake, अनिश्चितकालीन प्रतिधारण, कोई उल्लंघन प्लेबुक नहीं, बिना अनुबंध vendor। ऊपर की तालिका diagnostic grid है। प्रवाह audit करते समय — उदाहरण clinic report sharing या fintech KYC — पंक्ति ऊपर से नीचे चलें और mark करें कौन सा evidence आज मौजूद है। वह compound view DPBI proceedings और enterprise procurement diligence जैसा बढ़ रहा है।</p>
+<hr />
+<h2>अनुभाग 10: SaralPrivacy OPERATE मॉडल (v6.1)</h2>
+<p><a id="section-10"></a></p>
+<p>SaralPrivacy <strong>OPERATE</strong> मॉडल DPDPA को statute sections से सात व्यावसायिक क्षमताओं में बदलता है। v6.1 अक्षरों को reframe करता है जैसे operators वास्तव में कार्यक्रम बनाते हैं: डेटा observe करें, permission अर्जित करें, evidence रखें, rights सम्मान करें, accountability दिखाएँ, third parties नियंत्रित करें, और events (विशेषकर breaches) rehearse करें।</p>
+<pre><code>O  OBSERVE        - जानें कौन सा डेटा है और कहाँ बहता है
+P  PERMISSION     - वैध आधार, सूचना, सहमति, वैध उपयोग
+E  EVIDENCE       - logs, contracts, versions, proof packs
+R  RIGHTS         - पहुँच, सुधार, विलोपन, शिकायत, नामांकन
+A  ACCOUNTABILITY - स्वामी, नीतियाँ, प्रशिक्षण, board reporting
+T  THIRD-PARTY    - processors, vendors, cross-border
+E  EVENT          - उल्लंघन detection, 72-घंटे clock, escalation
+</code></pre>
+<p><em>Diagram: see figure below.</em></p>
+<figure class="figure"><img src="../infographics/infographic-03-operate-wheel.png" alt="इन्फोग्राफिक 4: OPERATE v6.1 Model" /><figcaption>इन्फोग्राफिक 4: OPERATE v6.1 Model</figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>अक्षर</th>
+<th>हर नेता को पूछना चाहिए</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>O</strong></td>
+<td>हम वास्तव में कौन सा डेटा एकत्र करते हैं और कहाँ रहता है?</td>
+</tr>
+<tr>
+<td><strong>P</strong></td>
+<td>इसे उपयोग करने की अनुमति क्यों — सहमति या वैध उपयोग?</td>
+</tr>
+<tr>
+<td><strong>E</strong></td>
+<td>सूचनाएँ, सहमति, अनुबंध सिद्ध कर सकते हैं?</td>
+</tr>
+<tr>
+<td><strong>R</strong></td>
+<td>लोग आसानी से पहुँच, सुधार, मिटा, शिकायत कर सकते हैं?</td>
+</tr>
+<tr>
+<td><strong>A</strong></td>
+<td>इस कार्यक्रम का स्वामी कौन और अंतिम समीक्षा कब?</td>
+</tr>
+<tr>
+<td><strong>T</strong></td>
+<td>vendors और processors अनुबंध और नियंत्रण में?</td>
+</tr>
+<tr>
+<td><strong>E</strong></td>
+<td>leak के पहले 72 घंटों में क्या होता है?</td>
+</tr>
+</tbody>
+</table>
+<p>नीचे प्रत्येक अध्याय वही six-block recipe: hook, outcomes, actions, India anchors, GDPR comparison, evidence checklist।</p>
+<hr />
+<h2>अनुभाग 11: OPERATE अध्याय 1 — व्यक्तिगत डेटा Observe करें</h2>
+<p><a id="section-11"></a></p>
+<h4>1. व्यवसाय hook</h4>
+<p>जो नाम नहीं दे सकते, उसकी रक्षा नहीं कर सकते। अधिकांश DPDPA failures एक ही तरह शुरू: नेतृत्व सोचता है कंपनी के पास "बुनियादी ग्राहक जानकारी" है, जबकि engineers, HR, vendors चुपचाप PAN copies, health records, और वर्षों के WhatsApp exports रखते हैं। <strong>Observe</strong> का मतलब व्यक्तिगत डेटा का जीवंत नक्शा — गोदाम में inventory की तरह, one-time Excel dump नहीं।</p>
+<p><strong>उपमा:</strong> DPDPA तैयारी tax audit की तैयारी जैसी। notice का इंतज़ार नहीं करते कि कौन सी drawers में पुराने receipts हैं। अभी drawers label करें।</p>
+<h4>2. अच्छा कैसा दिखता है</h4>
+<ul>
+<li>प्रसंस्करण गतिविधि रजिस्टर (PAR) <strong>क्या</strong> डेटा, <strong>क्यों</strong>, <strong>कौन</strong> एक्सेस, <strong>कहाँ</strong> stored, <strong>कितने समय</strong> रहता है  </li>
+<li>प्रत्येक गतिविधि के लिए स्वामी (marketing, HR, finance, product)  </li>
+<li>भारत और cross-border systems के लिए data flows documented  </li>
+<li>red-flag flows early flagged: WhatsApp intake, shared drives, ex-employee access, shadow IT  </li>
+<li>features, vendors, या नए collection points launch पर updates  </li>
+</ul>
+<h4>3. अभी करें</h4>
+<ol>
+<li>हर जगह सूची बनाएँ जहाँ व्यक्तिगत डेटा enters: website forms, apps, WhatsApp, email, paper, CCTV, HR tools, payment gateways।  </li>
+<li>प्रत्येक entry point पर data categories record करें (name, phone, PAN, health, photos, location, etc.)।  </li>
+<li>प्रत्येक flow customer, employee, vendor, या lead data purpose tag के साथ mark करें।  </li>
+<li>processors (cloud, payroll, ATS, CRM, ad-tech) identify करें और activities से link करें।  </li>
+<li>"sensitive" label के बिना भी high-care data highlight: children, health, financial, biometric।  </li>
+<li>activity owner और review calendar (न्यूनतम त्रैमासिक) assign करें।  </li>
+<li>register वहाँ store करें जहाँ legal, security, product सभी access कर सकें।  </li>
+</ol>
+<h4>4. India anchor box</h4>
+<table>
+<thead>
+<tr>
+<th>Anchor</th>
+<th>आवश्यकता</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sec 3</strong></td>
+<td>अधिनियम भारत में digital personal data, बाद में digitised offline data, और भारत में goods/services से जुड़े foreign processing पर लागू</td>
+</tr>
+<tr>
+<td><strong>Sec 8</strong></td>
+<td>Data Fiduciary lawful processing और processor control के लिए जवाबदेह रहता है</td>
+</tr>
+<tr>
+<td><strong>Rule 6</strong></td>
+<td>सुरक्षा में access control, logs, monitoring — किसने क्या छुआ जानना चाहिए</td>
+</tr>
+</tbody>
+</table>
+<h4>5. यदि GDPR जानते हैं</h4>
+<p>GDPR Art 30 कई controllers के लिए Records of Processing Activities (ROPA) माँगता है। भारत का approach व्यवहार में similar लेकिन form identical नहीं: वही inventory habit, लेकिन lawful basis <strong>Sec 4 + 6/7</strong> के तहत tag, GDPR Art 6 labels नहीं।</p>
+<h4>6. Evidence checklist</h4>
+<ul>
+<li>[ ] प्रसंस्करण गतिविधि रजिस्टर (version dated)  </li>
+<li>[ ] Data flow diagram या table (internal + cross-border)  </li>
+<li>[ ] activities से linked processor/vendor list  </li>
+<li>[ ] High-care data classification notes  </li>
+<li>[ ] named owner के साथ quarterly review log  </li>
+</ul>
+<hr />
+<h2>अनुभाग 12: OPERATE अध्याय 2 — Permission और वैध आधार</h2>
+<p><a id="section-12"></a></p>
+<p>Permission v6 में <strong>Permit</strong> और <strong>Explain</strong> को जोड़ता है: lawful basis discipline <strong>और</strong> collection moment पर समझने योग्य notices।</p>
+<h4>1. व्यवसाय hook</h4>
+<p>डेटा collect करना आसान। <strong>उपयोग की अनुमति</strong> कानून है। Permission lawful-processing plus notice discipline: हर use को <strong>सहमति</strong> या संकीर्ण <strong>Sec 7 legitimate use</strong> चाहिए — "हमेशा ऐसे करते थे" नहीं। और users collection point पर समझें क्या agreed — policy PDF page 47 पर नहीं।</p>
+<p><strong>उपमा:</strong> सहमति शादी की guest list जैसी। Legitimate use caterer को kitchen में बिना अलग invite — लेकिन specific job के लिए, wander in नहीं। invite पर notice दोनों legitimate बनाता है।</p>
+<h4>2. अच्छा कैसा दिखता है</h4>
+<ul>
+<li>हर processing activity tagged: <strong>consent</strong> या <strong>legitimate use</strong> (Sec 7 subsection cited)  </li>
+<li>Marketing, profiling, photos, referrals, optional analytics <strong>अलग consent</strong>  </li>
+<li>Consent records show क्या agreed, कब, withdrawal कैसे  </li>
+<li>Pre-ticked boxes नहीं; clear affirmative action  </li>
+<li>प्रत्येक collection point पर standalone notice — Terms and Conditions में hidden नहीं  </li>
+<li>Plain language, itemised: क्या data, क्यों, rights, withdrawal, grievance contact, Board complaint route  </li>
+<li>Consent Manager strategy documented यदि registered intermediaries integrate (13 नवं 2026 से)  </li>
+<li>Children's flows verifiable parental consent; बच्चों को targeted ads नहीं  </li>
+</ul>
+<h4>3. अभी करें</h4>
+<ol>
+<li>Current consents audit: website, app, WhatsApp, paper forms, contracts — specific या bundled?  </li>
+<li><strong>Necessary</strong> processing (order fulfilment, payroll) <strong>optional</strong> (ads, testimonials, talent pools) से split।  </li>
+<li>हर collection point inventory: web, app, offline form, WhatsApp bot, reception desk।  </li>
+<li>major flow के लिए <strong>short notice template</strong> (200-400 words) draft।  </li>
+<li>Core notice T&amp;Cs से हटाएँ; notice separately link/embed।  </li>
+<li>product और sales teams के लिए one-page <strong>lawful processing decision tree</strong>।  </li>
+<li>Sec 7 uses narrowly document (employment safeguards, legal compliance, medical emergency — "business convenience" नहीं)।  </li>
+<li>Opt-in जितना आसान withdrawal implement।  </li>
+<li>Under-18 users: behavioural ads और tracking block; parent verification plan (Rule 10)।  </li>
+<li>Withdrawal, rights request, grievance paths working contact details के साथ add।  </li>
+</ol>
+<h4>4. India anchor box</h4>
+<table>
+<thead>
+<tr>
+<th>Anchor</th>
+<th>आवश्यकता</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sec 4</strong></td>
+<td>सहमति या legitimate uses के साथ lawful purpose के लिए processing</td>
+</tr>
+<tr>
+<td><strong>Sec 5</strong></td>
+<td>Notice data, purpose, rights, withdrawal, complaint route cover</td>
+</tr>
+<tr>
+<td><strong>Sec 6</strong></td>
+<td>Consent free, specific, informed, unconditional, unambiguous; easy withdrawal</td>
+</tr>
+<tr>
+<td><strong>Sec 7</strong></td>
+<td>सीमित non-consent grounds — interpretation से expand न करें</td>
+</tr>
+<tr>
+<td><strong>Sec 9</strong></td>
+<td>बच्चे: verifiable parental consent; बच्चों पर tracking/behavioural ads नहीं</td>
+</tr>
+<tr>
+<td><strong>Rule 3</strong></td>
+<td>Independently understandable, plain, itemised; withdrawal, rights, Board complaint links</td>
+</tr>
+<tr>
+<td><strong>Rule 4 + Schedule 1</strong></td>
+<td>Consent Manager requirements (13 नवं 2026 से)</td>
+</tr>
+</tbody>
+</table>
+<h4>5. यदि GDPR जानते हैं</h4>
+<p>GDPR six lawful bases और Arts 13/14 transparency देता है। भारत essentially दो routes और Rule 3 explicitly notices <strong>independently understandable</strong> — T&amp;C bundling के खिलाफ direct strike। <strong>GDPR "legitimate interests" को सीधे Sec 7 पर map न करें।</strong></p>
+<h4>6. Evidence checklist</h4>
+<ul>
+<li>[ ] प्रति processing activity lawful basis tag  </li>
+<li>[ ] Consent logs (timestamp, scope, channel)  </li>
+<li>[ ] Withdrawal mechanism screenshots या workflow  </li>
+<li>[ ] Sec 7 justification memos जहाँ used  </li>
+<li>[ ] प्रति collection channel notice copies (dated versions)  </li>
+<li>[ ] In-product notice placement screenshots  </li>
+<li>[ ] Child-facing flow assessment और parent consent design  </li>
+<li>[ ] Consent Manager integration plan (यदि applicable)  </li>
+</ul>
+<hr />
+<h2>अनुभाग 13: OPERATE अध्याय 3 — प्रमाण और रिकॉर्ड</h2>
+<p><a id="section-13"></a></p>
+<p>प्रमाण वह proof layer है। DPBI की कार्यवाही डिजिटल और दस्तावेज़-आधारित है। जब कोई ग्राहक शिकायत करता है, विक्रेता लीक करता है, या बोर्ड पूछता है "हम तैयार हैं?", संगठन <strong>रिकॉर्ड</strong> पर जीतते या हारते हैं, इरादों पर नहीं।</p>
+<h4>1. व्यवसाय हुक</h4>
+<p>स्लाइड डेक में नीतियाँ जांच में नहीं टिकती। <strong>प्रमाण</strong> का मतलब है कि आप दिखा सकें कि उपयोगकर्ता कौन सी सूचना देखा, कौन सी सहमति दी, कौन सा अनुबंध विक्रेता को नियंत्रित करता था, शिकायत कैसे बंद हुई, और उल्लंघन अभ्यास में घंटे-दर-घंटे क्या हुआ। इसे GST के लिए इनवॉइस रखने जैसा सोचें — कानून प्रक्रिया के proof की परवाह करता है।</p>
+<p><strong>उपमा:</strong> पायलट की लॉगबुक विमान नहीं उड़ाती, लेकिन कोई एयरलाइन बिना इसके पायलट certify नहीं करती। DPDPA प्रमाण उसी तरह काम करता है।</p>
+<h4>2. अच्छा क्या दिखता है</h4>
+<ul>
+<li>समय-मुहरा वाली सूचनाएँ और सहमति प्रवाह  </li>
+<li>सूचना संस्करण, चैनल, और दायरे से जुड़े consent logs  </li>
+<li>हस्ताक्षरित अनुबंध और समीक्षा तिथियों वाला processor register  </li>
+<li>पहचान सत्यापन चरण और बंद होने के proof के साथ अधिकार और शिकायत register  </li>
+<li>टेबलटॉप अभ्यास सहित उल्लंघन और घटना log  </li>
+<li>विलोपन रिकॉर्ड और दस्तावेज़ित अपवादों के साथ प्रतिधारण अनुसूची  </li>
+<li>सुरक्षा baseline दस्तावेज़ीकरण और त्रैमासिक access reviews  </li>
+<li><strong>अधिसूचित</strong> और <strong>प्रस्तावित</strong> परिवर्तनों को अलग करने वाला policy horizon log  </li>
+</ul>
+<h4>3. अभी यह करें</h4>
+<ol>
+<li>स्वामियों और समीक्षा cadence के साथ एक <strong>evidence pack index</strong> बनाएँ (इन्फोग्राफिक 1 देखें)।  </li>
+<li><strong>सूचना और सहमति संस्करण log</strong> शुरू करें — तिथि, चैनल, screenshot या URL, approver।  </li>
+<li>DPDPA सुरक्षा, उल्लंघन, विलोपन, और audit खंडों के साथ <strong>विक्रेता अनुबंध</strong> केंद्रीकृत करें।  </li>
+<li><strong>अधिकार/शिकायत register</strong> खोलें — ticket ID, प्राप्ति तिथि, कार्रवाई, बंद होने की तिथि।  </li>
+<li>डेटा हटाए जाने या मानक अवधि से आगे बढ़ाए जाने पर <strong>प्रतिधारण निर्णय</strong> log करें।  </li>
+<li>वास्तविक घटनाओं जैसे <strong>उल्लंघन अभ्यास रिकॉर्ड</strong> फाइल करें — timeline, roles, उपयोग किए टेम्पलेट।  </li>
+<li>प्रमाण आइटम को अपने processing activity register की entries से जोड़ें।  </li>
+</ol>
+<h4>4. भारत एंकर बॉक्स</h4>
+<table>
+<thead>
+<tr>
+<th>Anchor</th>
+<th>आवश्यकता</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Section 8</strong></td>
+<td>वैध प्रसंस्करण और safeguards के लिए Data Fiduciary जवाबदेही</td>
+</tr>
+<tr>
+<td><strong>Section 6</strong></td>
+<td>सहमति और withdrawal प्रदर्शित करने की क्षमता</td>
+</tr>
+<tr>
+<td><strong>Rule 3</strong></td>
+<td>संग्रह पर सूचना सामग्री और पहुँच योग्यता provable होनी चाहिए</td>
+</tr>
+<tr>
+<td><strong>Rule 6</strong></td>
+<td>सुरक्षा उपाय और processor खंड दस्तावेज़ित होने चाहिए</td>
+</tr>
+<tr>
+<td><strong>Rule 7</strong></td>
+<td>उल्लंघन तथ्य, सूचनाएँ, और 72-घंटे रिपोर्ट रखी जानी चाहिए</td>
+</tr>
+<tr>
+<td><strong>Rule 14</strong></td>
+<td>अधिकार और शिकायत संचालन 90-दिवसीय छत के भीतर traceable होना चाहिए</td>
+</tr>
+</tbody>
+</table>
+<h4>5. यदि आप GDPR जानते हैं</h4>
+<p>GDPR accountability (Article 5(2)) और record-keeping इस अध्याय को mirror करते हैं। भारत का phased commencement का मतलब है कि कई फर्में पूर्ण प्रवर्तन <strong>पहले</strong> प्रमाण बना रही हैं — paper-only अनुपालन से बचने के लिए runway का उपयोग करें।</p>
+<h4>6. प्रमाण चेकलिस्ट</h4>
+<ul>
+<li>[ ] स्वामियों के साथ evidence pack index  </li>
+<li>[ ] सूचना और सहमति संस्करण log  </li>
+<li>[ ] सहमति और withdrawal रिकॉर्ड  </li>
+<li>[ ] Processor अनुबंध register  </li>
+<li>[ ] अधिकार/शिकायत register  </li>
+<li>[ ] उल्लंघन/घटना log (अभ्यास सहित)  </li>
+<li>[ ] प्रतिधारण अनुसूची और विलोपन proof  </li>
+<li>[ ] सुरक्षा baseline और access review रिकॉर्ड  </li>
+<li>[ ] नियामक watch log  </li>
+</ul>
+<hr />
+<h2>अनुभाग 14: OPERATE अध्याय 4 — अधिकार और शिकायत संचालन</h2>
+<p><a id="section-14"></a></p>
+<p>गोपनीयता कानून केवल बुरी बातें रोकने के बारे में नहीं है। लोगों को <strong>पूछने</strong> का अधिकार होना चाहिए — अपना डेटा देखें, ठीक करें, मिटाएँ, शिकायत करें, और किसी को उनकी जगह कार्य करने के लिए nominate करें। <strong>अधिकार</strong> डेटा अनुरोधों के लिए आपका customer service lane है, <strong>90-दिवसीय शिकायत छत</strong> के साथ।</p>
+<h4>1. व्यवसाय हुक</h4>
+<p>यदि बैंक खाताधारक अनुरोध पर statement नहीं पा सकता, बैंक बिना fraud के भी विश्वास खो देता है। डेटा अधिकार उसी तरह काम करते हैं।</p>
+<p><strong>उपमा:</strong> Returns desk मौजूद हैं क्योंकि commerce को fair correction path चाहिए। अधिकार अनुरोध व्यक्तिगत डेटा के लिए वही desk हैं।</p>
+<h4>2. अच्छा क्या दिखता है</h4>
+<ul>
+<li>access, correction, erasure, grievance, और nomination अनुरोधों के लिए प्रकाशित चैनल  </li>
+<li>निष्पक्ष और दस्तावेज़ित पहचान सत्यापन चरण  </li>
+<li>स्वामी, SLA tracker, और closure evidence के साथ ticket queue  </li>
+<li><strong>90 दिन अधिकतम</strong> के भीतर शिकायत प्रतिक्रियाएँ (Rule 14)  </li>
+<li>Data Principal कर्तव्यों के लिए fair-use भाषा (कोई झूठी शिकायत नहीं, कोई impersonation नहीं)  </li>
+<li>सूचना में DPBI तक escalation path दस्तावेज़ित  </li>
+</ul>
+<h4>3. अभी यह करें</h4>
+<ol>
+<li>वेबसाइट/ऐप पर "अपने अधिकारों का प्रयोग करें" निर्देश प्रकाशित करें — email या फॉर्म के साथ।  </li>
+<li>शिकायत स्वामी नियुक्त करें (सभी फर्मों के लिए full-time DPO ज़रूरी नहीं)।  </li>
+<li>अनुरोध टेम्पलेट बनाएँ: access, correction, erasure, nomination।  </li>
+<li>पहचान सत्यापन परिभाषित करें (जोखिम के अनुपात में)।  </li>
+<li>तिथियों और परिणामों के साथ सरल register में अनुरोध ट्रैक करें।  </li>
+<li>90 दिन से काफ़ी कम internal SLA सेट करें; दिन 60 पर escalate करें।  </li>
+<li>सपोर्ट स्टाफ को प्रशिक्षित करें कि अनुरोध "केवल IT" के रूप में dismiss न करें।  </li>
+</ol>
+<h4>4. भारत एंकर बॉक्स</h4>
+<table>
+<thead>
+<tr>
+<th>Anchor</th>
+<th>आवश्यकता</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sections 11-14</strong></td>
+<td>Access, correction, completion, updating, erasure, grievance, nomination</td>
+</tr>
+<tr>
+<td><strong>Section 15</strong></td>
+<td>Data Principal कर्तव्य — आपके workflow में fair use</td>
+</tr>
+<tr>
+<td><strong>Rule 14</strong></td>
+<td>अनुरोध विधियाँ प्रकाशित करें; अधिकतम 90 दिन के भीतर शिकायत प्रतिक्रिया</td>
+</tr>
+</tbody>
+</table>
+<h4>5. यदि आप GDPR जानते हैं</h4>
+<p>GDPR Chapter III अधिकार case law volume में व्यापक हैं लेकिन आकार में समान हैं। भारत की <strong>90-दिवसीय शिकायत cap</strong> एक स्पष्ट संख्या है — informal email threads के लिए नहीं, ops को इस पर बनाएँ।</p>
+<h4>6. प्रमाण चेकलिस्ट</h4>
+<ul>
+<li>[ ] प्रकाशित अधिकार और शिकायत प्रक्रिया  </li>
+<li>[ ] समय-मुहरा वाला अनुरोध register  </li>
+<li>[ ] पहचान सत्यापन प्रक्रिया  </li>
+<li>[ ] बंद अनुरोध नमूने (redacted)  </li>
+<li>[ ] SLA dashboard या मासिक रिपोर्ट  </li>
+<li>[ ] Nomination संचालन नोट्स  </li>
+</ul>
+<hr />
+<h2>अनुभाग 15: OPERATE अध्याय 5 — जवाबदेही और शासन</h2>
+<p><a id="section-15"></a></p>
+<p>जवाबदेही गोपनीयता को project से managed business function में बदल देती है। किसी को programme का स्वामित्व होना चाहिए, बोर्ड को material risk दिखनी चाहिए, और स्टाफ को नियम पता होना चाहिए।</p>
+<h4>1. व्यवसाय हुक</h4>
+<p>शासन के बिना, गोपनीयता annual policy PDF और भूली vendor spreadsheet बन जाती है। <strong>जवाबदेही</strong> स्वामी नामित करती है, समीक्षा cadence सेट करती है, टीमों को प्रशिक्षित करती है, और ऊपर रिपोर्ट करती है — जैसे finance में CFO और monthly closes होते हैं।</p>
+<p><strong>उपमा:</strong> workplace safety को fire marshal और drills चाहिए, केवल poster नहीं। गोपनीयता शासन वही operating layer है।</p>
+<h4>2. अच्छा क्या दिखता है</h4>
+<ul>
+<li>executive sponsor के साथ नामित DPDPA programme स्वामी  </li>
+<li>वेबसाइट, ऐप, और सूचनाओं पर प्रकाशित DPO या authorised contact (Rule 9)  </li>
+<li>मुख्य policy set: privacy notice framework, retention, security baseline, vendor standard, rights SOP, breach playbook  </li>
+<li>व्यक्तिगत डेटा छूने वाले स्टाफ के लिए onboarding और वार्षिक refresher प्रशिक्षण  </li>
+<li>उच्च-देखभाल सिस्टमों के लिए त्रैमासिक access reviews  </li>
+<li>वर्ष में कम से कम दो बार बोर्ड या leadership summary: top risks, open items, evidence maturity  </li>
+<li>SDF readiness track केवल यदि designation plausible है  </li>
+</ul>
+<h4>3. अभी यह करें</h4>
+<ol>
+<li>एक accountable स्वामी नियुक्त करें और ज़िम्मेदारियाँ दस्तावेज़ करें।  </li>
+<li>सूचनाओं और वेबसाइट footer में grievance/DPO contact प्रकाशित करें।  </li>
+<li>OPERATE letters से mapped minimal policy set approve करें।  </li>
+<li>frontline टीमों (WhatsApp, HR, support) के लिए 60-मिनट DPDPA awareness session चलाएँ।  </li>
+<li>legal, security, product, और ops के साथ त्रैमासिक programme reviews schedule करें।  </li>
+<li>एक-पृष्ठ बोर्ड summary प्रस्तुत करें: पाँच risks, पाँच evidence gaps, 90-दिवसीय योजना स्थिति।  </li>
+<li>मासिक scan स्वामी के साथ policy horizon log (अनुभाग 22) बनाए रखें।  </li>
+</ol>
+<h4>4. भारत एंकर बॉक्स</h4>
+<table>
+<thead>
+<tr>
+<th>Anchor</th>
+<th>आवश्यकता</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Section 8</strong></td>
+<td>Data Fiduciary ज़िम्मेदारी और समग्र जवाबदेही</td>
+</tr>
+<tr>
+<td><strong>Rule 9</strong></td>
+<td>DPO या authorised व्यक्ति का contact प्रकाशित करें</td>
+</tr>
+<tr>
+<td><strong>Section 10 + Rule 13</strong></td>
+<td>Significant Data Fiduciaries के लिए enhanced governance (यदि designated)</td>
+</tr>
+<tr>
+<td><strong>Sections 18-34</strong></td>
+<td>DPBI डिजिटल कार्यवाही में दस्तावेज़ित अनुपालन अपेक्षित करता है</td>
+</tr>
+</tbody>
+</table>
+<h4>5. यदि आप GDPR जानते हैं</h4>
+<p>GDPR DPO आवश्यकताएँ controllers के subsets पर लागू होती हैं। भारत Rule 9 के माध्यम से <strong>प्रकाशित contact</strong> व्यापक रूप से माँगता है; SDFs पर भारी कर्तव्य। Processors और ग्राहक upstream audit करते बढ़ रहे हैं, इसलिए SMEs के लिए भी governance maturity मायने रखती है।</p>
+<h4>6. प्रमाण चेकलिस्ट</h4>
+<ul>
+<li>[ ] नामित programme स्वामी और executive sponsor  </li>
+<li>[ ] प्रकाशित DPO/authorised contact  </li>
+<li>[ ] संस्करण तिथियों के साथ approved policy set  </li>
+<li>[ ] प्रशिक्षण attendance या completion रिकॉर्ड  </li>
+<li>[ ] त्रैमासिक समीक्षा minutes  </li>
+<li>[ ] बोर्ड या leadership summary नमूने  </li>
+<li>[ ] Access review रिकॉर्ड  </li>
+</ul>
+<hr />
+<h2>अनुभाग 16: OPERATE अध्याय 6 — तृतीय-पक्ष और विक्रेता नियंत्रण</h2>
+<p><a id="section-16"></a></p>
+<p>आपके विक्रेता की गलती भी आपकी ग्राहक समस्या है। <strong>तृतीय-पक्ष</strong> vendor governance और cross-border discipline है — अनुबंध, audits, और transfer registers ताकि partners आपका weakest shutter न बनें।</p>
+<p><strong>उपमा:</strong> यदि आप delivery outsource करते हैं, रास्ते में package खुलने पर भी आप जवाब देते हैं। Processors डेटा के लिए वही delivery chain हैं।</p>
+<h4>1. अच्छा क्या दिखता है</h4>
+<ul>
+<li>purpose, साझा डेटा, और location के साथ processor register  </li>
+<li>अनुबंधों में DPDPA-संरेखित सुरक्षा, उल्लंघन सहयोग, विलोपन, और audit खंड (Rule 6)  </li>
+<li>destination countries और <strong>Rule 15</strong> पर legal watch के साथ cross-border transfer register  </li>
+<li>HR, cloud, payment, ad-tech, BGV vendors onboard करने से पहले due diligence  </li>
+<li>SDF-designated फर्म algorithmic tools पर due diligence extend करती हैं (Rule 13)  </li>
+<li>सरकारी सूचना अनुरोध legal leadership तक escalate (Rules 23/Schedule 7)  </li>
+</ul>
+<h4>2. अभी यह करें</h4>
+<ol>
+<li>सभी processors सूचीबद्ध करें: cloud, email, CRM, payroll, payments, analytics, support tools।  </li>
+<li>processor obligations और breach notification cooperation के साथ अनुबंध अपग्रेड करें।  </li>
+<li>cross-border flows मैप करें (US, EU, Singapore, आदि); MeitY restricted-country अधिसूचनाएँ monitor करें।  </li>
+<li>least privilege से vendor access block करें; त्रैमासिक समीक्षा करें।  </li>
+<li>critical vendors के लिए subprocessors list बनाए रखें।  </li>
+<li>सरकारी सूचना demands के लिए legal escalation path बनाएँ।  </li>
+<li>यदि SDF-scale, algorithmic due diligence और audit cadence तैयार करें।  </li>
+</ol>
+<h4>3. भारत एंकर बॉक्स</h4>
+<table>
+<thead>
+<tr>
+<th>Anchor</th>
+<th>आवश्यकता</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Section 8</strong></td>
+<td>Processor नियंत्रण के लिए Data Fiduciary ज़िम्मेदार</td>
+</tr>
+<tr>
+<td><strong>Section 16</strong></td>
+<td>सरकार notified countries में transfers प्रतिबंधित कर सकती है</td>
+</tr>
+<tr>
+<td><strong>Rule 6</strong></td>
+<td>सुरक्षा उपायों के लिए processor अनुबंध खंड</td>
+</tr>
+<tr>
+<td><strong>Rule 15</strong></td>
+<td>Central Government निर्दिष्ट कर सकती है transfer conditions</td>
+</tr>
+<tr>
+<td><strong>Rule 13</strong></td>
+<td>SDF algorithms/tools के लिए due diligence; localisation watch</td>
+</tr>
+</tbody>
+</table>
+<h4>4. यदि आप GDPR जानते हैं</h4>
+<p>GDPR Article 28 processor terms और SCCs reference point हैं। भारत में <strong>उसी रूप में SCC regime नहीं</strong>; इसके बजाय <strong>सरकारी प्रतिबंध</strong> और Rule 15 conditions watch करें। अभी flows मैप करें; केवल GDPR transfer tools पर्याप्त मानें नहीं।</p>
+<h4>5. प्रमाण चेकलिस्ट</h4>
+<ul>
+<li>[ ] Processor/vendor register  </li>
+<li>[ ] privacy/security खंडों वाले हस्ताक्षरित अनुबंध  </li>
+<li>[ ] Cross-border transfer map  </li>
+<li>[ ] Vendor समीक्षा या audit trail  </li>
+<li>[ ] Subprocessor disclosures  </li>
+<li>[ ] सरकारी अनुरोध escalation log (यदि लागू)  </li>
+</ul>
+<hr />
+<h2>अनुभाग 17: OPERATE अध्याय 7 — घटना और उल्लंघन तैयारी</h2>
+<p><a id="section-17"></a></p>
+<p><strong>घटना</strong> security incidents और breach clock को कवर करती है — detection, containment, notification, और recovery। प्रतिधारण और preventive security यहाँ और Evidence में बैठती है; यह अध्याय <strong>जब कुछ गलत हो</strong> पर केंद्रित है।</p>
+<h4>1. व्यवसाय हुक</h4>
+<p>विश्वास दो कृत्यों में टूटता है: leak, और धीमी प्रतिक्रिया। घटना आपकी immune response है — केवल firewalls नहीं, users, Board, और अपनी टीम के लिए अभ्यासित timelines।</p>
+<p><strong>उपमा:</strong> दुकानदार रात shutter बंद करता है, expired stock फेंकता है, और break-in के तुरंत बाद पुलिस बुलाता है। घटना break-in response playbook है।</p>
+<h4>2. अच्छा क्या दिखता है</h4>
+<ul>
+<li>दस्तावेज़ित security baseline: जहाँ उचित encryption, access control, logging, backups, monitoring (Rule 6)  </li>
+<li>विलोपन workflows और दस्तावेज़ित अपवादों के साथ प्रतिधारण अनुसूची  </li>
+<li>roles, templates, और timers के साथ incident response playbook  </li>
+<li>प्रभावित users को undue delay के बिना सूचित; Board को undue delay के बिना; <strong>72 घंटे</strong> के भीतर detailed Board report (Rule 7)  </li>
+<li>Rule 6 लागू होने पर security events के लिए एक-वर्ष log retention  </li>
+<li>बड़े e-commerce/social/gaming entities Rule 8/Schedule 3 inactivity erasure track करें यदि लागू  </li>
+</ul>
+<h4>3. अभी यह करें</h4>
+<ol>
+<li>Rule 6 से aligned minimum security baseline checklist अपनाएँ।  </li>
+<li>उच्च-देखभाल डेटा कौन access कर सकता है मैप करें; shared logins और stale accounts हटाएँ।  </li>
+<li>डेटा प्रकार के अनुसार retention rules लिखें; जहाँ possible deletion automate करें।  </li>
+<li>breach playbooks बनाएँ: contain, assess, users notify, Board notify, 72-घंटे report।  </li>
+<li>"गलत WhatsApp report" और laptop-loss scenarios पर frontline staff प्रशिक्षित करें।  </li>
+<li>त्रैमासिक backups और ex-employees के लिए access removal test करें।  </li>
+<li>वार्षिक tabletop breach drill चलाएँ और evidence pack में record फाइल करें।  </li>
+</ol>
+<h4>4. उल्लंघन प्रतिक्रिया घड़ी</h4>
+<p><em>Diagram: see figure below.</em></p>
+<figure class="figure"><img src="../infographics/infographic-04-breach-clock.png" alt="इन्फोग्राफिक 5: Breach Response Clock" /><figcaption>इन्फोग्राफिक 5: Breach Response Clock</figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>घड़ी</th>
+<th>कार्रवाई</th>
+<th>सहेजने योग्य प्रमाण</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>तत्काल</td>
+<td>Contain + स्वामी नियुक्त करें</td>
+<td>Timeline, प्रभावित सिस्टम</td>
+</tr>
+<tr>
+<td>Undue delay के बिना</td>
+<td>User notice draft</td>
+<td>ज्ञात तथ्य, दी गई remediation</td>
+</tr>
+<tr>
+<td>Undue delay के बिना</td>
+<td>DPBI notification</td>
+<td>प्रारंभिक तथ्य log</td>
+</tr>
+<tr>
+<td>72 घंटे</td>
+<td>Detailed report</td>
+<td>पूर्ण incident record, root cause, fixes</td>
+</tr>
+</tbody>
+</table>
+<p><strong>उपमा:</strong> Fire drill जैसा — आप आग के दौरान plan नहीं बनाते।</p>
+<h4>5. भारत एंकर बॉक्स</h4>
+<table>
+<thead>
+<tr>
+<th>Anchor</th>
+<th>आवश्यकता</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Section 8(5)-(7)</strong></td>
+<td>उचित सुरक्षा safeguards; breach intimation कर्तव्य</td>
+</tr>
+<tr>
+<td><strong>Rule 6</strong></td>
+<td>Encryption/masking, access control, logs, monitoring, backups, processor खंड</td>
+</tr>
+<tr>
+<td><strong>Rule 7</strong></td>
+<td>Users को undue delay के बिना सूचना; Board को undue delay के बिना; 72 घंटे के भीतर detailed report</td>
+</tr>
+<tr>
+<td><strong>Rule 8 + Schedule 3</strong></td>
+<td>निर्दिष्ट entities के लिए inactivity के बाद erasure; 48-घंटे warning; logs</td>
+</tr>
+</tbody>
+</table>
+<h4>6. यदि आप GDPR जानते हैं</h4>
+<p>GDPR Articles 32-33 सुरक्षा और breach notification माँगते हैं। भारत का Rule 7 Board notification के बाद <strong>72-घंटे detailed report</strong> सेट करता है — इसे hard operational SLA मानें, "best efforts" email नहीं।</p>
+<h4>7. प्रमाण चेकलिस्ट</h4>
+<ul>
+<li>[ ] Security baseline दस्तावेज़ और implementation evidence  </li>
+<li>[ ] Access control matrix और offboarding रिकॉर्ड  </li>
+<li>[ ] प्रतिधारण अनुसूची + deletion logs  </li>
+<li>[ ] Incident response plan और tabletop exercise नोट्स  </li>
+<li>[ ] उल्लंघन notification templates (user + Board)  </li>
+<li>[ ] Security log retention policy (जहाँ आवश्यक minimum एक वर्ष)  </li>
+</ul>
+<hr />
+<h2>अनुभाग 18: कार्यान्वयन किट</h2>
+<p><a id="section-18"></a></p>
+<p>ये किट OPERATE v6.1 को इस महीने चलाई जा सकने वाली checklists में अनुवाद करती हैं। maturity score करें, notices ठीक करें, और v6 में आंशिक coverage के स्थान पर children's data और retention जोड़ें।</p>
+<h3>DPDPA तैयारी चेकलिस्ट (OPERATE v6.1 से mapped)</h3>
+<p>प्रत्येक पंक्ति score करें: <strong>0</strong> = शुरू नहीं, <strong>1</strong> = आंशिक, <strong>2</strong> = दस्तावेज़ित और operating।</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>नियंत्रण</th>
+<th>O</th>
+<th>P</th>
+<th>E</th>
+<th>R</th>
+<th>A</th>
+<th>T</th>
+<th>E</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Processing activity register</td>
+<td>*</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>प्रति feature lawful basis tagged</td>
+<td></td>
+<td>*</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Standalone product notice</td>
+<td></td>
+<td>*</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Consent और notice संस्करण log</td>
+<td></td>
+<td></td>
+<td>*</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>Security baseline + access control</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>*</td>
+</tr>
+<tr>
+<td>6</td>
+<td>72-घंटे timer के साथ breach playbook</td>
+<td></td>
+<td></td>
+<td>*</td>
+<td></td>
+<td></td>
+<td></td>
+<td>*</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Rights request inbox + स्वामी</td>
+<td></td>
+<td></td>
+<td></td>
+<td>*</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>8</td>
+<td>नामित programme स्वामी + board review</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>*</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>9</td>
+<td>Processor अनुबंध अपडेट</td>
+<td></td>
+<td></td>
+<td>*</td>
+<td></td>
+<td></td>
+<td>*</td>
+<td></td>
+</tr>
+<tr>
+<td>10</td>
+<td>Cross-border flow map</td>
+<td></td>
+<td></td>
+<td>*</td>
+<td></td>
+<td></td>
+<td>*</td>
+<td></td>
+</tr>
+<tr>
+<td>11</td>
+<td>त्रैमासिक horizon review</td>
+<td></td>
+<td></td>
+<td>*</td>
+<td></td>
+<td>*</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>12</td>
+<td>Child/minor flow assessment (यदि लागू)</td>
+<td></td>
+<td>*</td>
+<td>*</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Maturity bands:</strong> 0-7 = Ad hoc | 8-14 = Repeatable | 15-20 = Defined | 21-24 = Managed</p>
+<h3>डेटा इन्वेंटरी टेम्पलेट (standalone)</h3>
+<table>
+<thead>
+<tr>
+<th>फ़ील्ड</th>
+<th>उदाहरण</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Activity name</td>
+<td>Customer checkout</td>
+</tr>
+<tr>
+<td>Data categories</td>
+<td>Name, phone, address, payment ref</td>
+</tr>
+<tr>
+<td>Lawful basis</td>
+<td>Consent + contract</td>
+</tr>
+<tr>
+<td>Source / channel</td>
+<td>Website form</td>
+</tr>
+<tr>
+<td>Storage location</td>
+<td>Shopify + payment gateway (US)</td>
+</tr>
+<tr>
+<td>Processors</td>
+<td>Shopify, Razorpay, Shiprocket</td>
+</tr>
+<tr>
+<td>Retention period</td>
+<td>7 years tax; marketing until withdraw</td>
+</tr>
+<tr>
+<td>Owner</td>
+<td>Head of E-commerce</td>
+</tr>
+<tr>
+<td>Last reviewed</td>
+<td>14 Jun 2026</td>
+</tr>
+</tbody>
+</table>
+<h3>सूचना लेखन किट (5 bullets)</h3>
+<ol>
+<li><strong>Purpose से शुरू करें</strong> — पहली screen या paragraph में "हम X collect करते हैं Y करने के लिए"।  </li>
+<li><strong>डेटा itemise करें</strong> — phone, email, payment reference, device ID — "personal information" नहीं।  </li>
+<li><strong>वैकल्पिक उपयोग अलग रखें</strong> — marketing, analytics, testimonials अपनी पंक्तियों पर।  </li>
+<li><strong>अधिकार paths दिखाएँ</strong> — access, correction, erasure, grievance, Board complaint links के साथ।  </li>
+<li><strong>Standalone रखें</strong> — core notice Terms and Conditions में कभी bury न करें (Rule 3)।  </li>
+</ol>
+<h3>सहमति प्रवाह किट (5 चरण)</h3>
+<ol>
+<li><strong>क्षण पहचानें</strong> — checkout, signup, form, WhatsApp opt-in।  </li>
+<li><strong>आवश्यक बनाम वैकल्पिक अलग करें</strong> — वैकल्पिक processing के लिए केवल वैकल्पिक boxes।  </li>
+<li><strong>स्पष्ट affirmative action</strong> — button या unchecked tick; pre-ticked marketing नहीं।  </li>
+<li><strong>प्रमाण log करें</strong> — क्या, कब, चैनल, दिखाई गई notice का संस्करण।  </li>
+<li><strong>Withdrawal mirror करें</strong> — समान या आसान channels; withdrawal user को confirm करें।  </li>
+</ol>
+<h3>विक्रेता शासन किट (5 bullets)</h3>
+<ol>
+<li>अपने data map से जुड़ा <strong>processor register</strong> बनाए रखें।  </li>
+<li>अनुबंधों में <strong>security, breach, deletion, और audit</strong> खंड आवश्यक (Rule 6)।  </li>
+<li>Cloud और ad-tech के लिए <strong>data location</strong> और subprocessors मैप करें।  </li>
+<li><strong>Vendors offboard</strong> करें access removal और return/deletion certificates के साथ।  </li>
+<li><strong>वार्षिक समीक्षा</strong> — या vendor incident news आने पर।  </li>
+</ol>
+<h3>उल्लंघन प्रतिक्रिया चेकलिस्ट</h3>
+<ol>
+<li><strong>Contain</strong> — spread रोकें, logs संरक्षित करें, incident lead नियुक्त करें।  </li>
+<li><strong>Assess</strong> — डेटा प्रकार, volume, harm likelihood।  </li>
+<li><strong>Users notify</strong> undue delay के बिना ज्ञात तथ्य और remediation steps के साथ।  </li>
+<li><strong>DPBI notify</strong> undue delay के बिना; 72-घंटे detailed report तैयार करें।  </li>
+<li><strong>Record</strong> timeline, decisions, templates, root cause, और fixes evidence pack में।  </li>
+<li><strong>Review</strong> access controls और vendor खंड जो fail हुए।  </li>
+</ol>
+<h3>बच्चों के डेटा चेकलिस्ट</h3>
+<p><em>Diagram: see figure below.</em></p>
+<figure class="figure"><img src="../infographics/infographic-05-children-tree.png" alt="इन्फोग्राफिक 6: Children's Data Decision Tree" /><figcaption>इन्फोग्राफिक 6: Children's Data Decision Tree</figcaption></figure>
+<p><strong>भारत-विशिष्ट:</strong> Uniform age threshold <strong>18 से कम</strong> है (कई global कानूनों से सख्त)।</p>
+<p>व्यावहारिक चरण:</p>
+<ol>
+<li>पहचानें कहाँ users 18 से कम हो सकते हैं (education, gaming, family apps)।  </li>
+<li>जहाँ उचित age gate या account type declaration लागू करें।  </li>
+<li>वैकल्पिक processing से पहले verifiable parental consent capture करें।  </li>
+<li>child-directed services पर behavioural ads और tracking block करें।  </li>
+<li>Schedule 4 exemptions संकीर्ण दस्तावेज़ करें यदि लागू (schools, clinics)।  </li>
+</ol>
+<h3>प्रतिधारण चेकलिस्ट</h3>
+<ol>
+<li>purpose से जुड़ा प्रति data category retention period परिभाषित करें (tax, contract, dispute)।  </li>
+<li>अपवाद दस्तावेज़ करें (legal hold, active grievance, regulatory request)।  </li>
+<li>जहाँ systems अनुमति दें deletion या anonymisation automate करें।  </li>
+<li>बड़े e-commerce/social/gaming के लिए Schedule 3 inactivity erasure कर्तव्य assess करें।  </li>
+<li>evidence pack में deletions और periodic retention reviews log करें।  </li>
+</ol>
+<h3>SDF तैयारी पैक (सशर्त)</h3>
+<p>केवल यदि scale, sector sensitivity, या systemic risk Significant Data Fiduciary designation plausible बनाता है:</p>
+<ul>
+<li><strong>Data Protection Officer</strong> contact नियुक्त या designate करें (Rule 9)  </li>
+<li>वार्षिक <strong>Data Protection Impact Assessment</strong> और audit (Rule 13)  </li>
+<li>आवश्यकतानुसार Board को significant audit observations furnish करें  </li>
+<li>व्यक्तियों पर scale पर प्रभाव डालने वाले tools के लिए <strong>algorithmic due diligence</strong>  </li>
+<li>सरकार निर्दिष्ट कर सकती है श्रेणियों के लिए <strong>localisation watch</strong>  </li>
+<li>Board-facing evidence pack और executive sponsor  </li>
+<li>Enhanced processor और transfer governance  </li>
+</ul>
+<h3>तैयारी scorecard (OPERATE v6.1 से mapped 10 प्रश्न)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>प्रश्न</th>
+<th>Domain</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>सरल अंग्रेज़ी में हर प्रकार का व्यक्तिगत डेटा सूचीबद्ध कर सकते हैं?</td>
+<td>Observe</td>
+</tr>
+<tr>
+<td>2</td>
+<td>हर major system डेटा किस country में store करता है पता है?</td>
+<td>Observe</td>
+</tr>
+<tr>
+<td>3</td>
+<td>हर उपयोग consent या specific Section 7 ground से tagged है?</td>
+<td>Permission</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Users वैकल्पिक consent उतनी आसानी से withdraw कर सकते हैं जितनी दी?</td>
+<td>Permission</td>
+</tr>
+<tr>
+<td>5</td>
+<td>हर major collection point पर notice standalone है?</td>
+<td>Permission</td>
+</tr>
+<tr>
+<td>6</td>
+<td>sample user के लिए consent और notice version logs produce कर सकते हैं?</td>
+<td>Evidence</td>
+</tr>
+<tr>
+<td>7</td>
+<td>72-घंटे Board report step के साथ breach playbook है?</td>
+<td>Event</td>
+</tr>
+<tr>
+<td>8</td>
+<td>ग्राहक आज rights request submit कर सकता है और tracked response पा सकता है?</td>
+<td>Rights</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Processor अनुबंध security और breach cooperation माँगते हैं?</td>
+<td>Third-party</td>
+</tr>
+<tr>
+<td>10</td>
+<td>leadership ने पिछले 90 दिन में DPDPA risk review किया?</td>
+<td>Accountability</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Scoring:</strong> 8-10 yes = strong runway | 5-7 = 2027 से पहले बंद करने योग्य gaps | 0-4 = Observe + Permission से शुरू करें</p>
+<hr />
+<h2>अनुभाग 19: 12 उद्योग जोखिम स्नैपशॉट</h2>
+<p><a id="section-19"></a></p>
+<p>पूर्ण 12-block उद्योग playbooks SaralPrivacy वेबसाइट पर हैं। यह अनुभाग PDF readers के लिए <strong>compact snapshots</strong> देता है — पहले ठीक करने के लिए दो flows prioritise करने के लिए पर्याप्त (CEO page, अनुभाग 4)।</p>
+<h3>जोखिम heatmap</h3>
+<p><em>Diagram: see figure below.</em></p>
+<figure class="figure"><img src="../infographics/infographic-06-industry-heatmap.png" alt="इन्फोग्राफिक 7: Industry Risk Heatmap" /><figcaption>इन्फोग्राफिक 7: Industry Risk Heatmap</figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>प्राथमिकता</th>
+<th>उद्योग</th>
+<th>Scan route</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Critical</strong></td>
+<td>Clinics, Schools, Fintech</td>
+<td>Sector scan पहले</td>
+</tr>
+<tr>
+<td><strong>High</strong></td>
+<td>CA, Pharmacy, Law, Training</td>
+<td>Sector scan + generic assessment</td>
+</tr>
+<tr>
+<td><strong>Medium</strong></td>
+<td>D2C, Recruitment, Hotels, Real Estate, Gyms</td>
+<td>जब relevant sector scan</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>CA फर्म</h3>
+<p><strong>प्राथमिक जोखिम थीम:</strong> Client-document control — tax knowledge नहीं।</p>
+<p><strong>कौन:</strong> Solo CA और partnerships, GST/payroll/advisory फर्म, article assistants और shared cloud folders उपयोग करने वाली टीमें।</p>
+<p><strong>सामान्य व्यक्तिगत डेटा:</strong> PAN, Aadhaar, ITR files, bank statements, payroll, Google Drive, WhatsApp, article staff access, old client files</p>
+<p><strong>उच्च-जोखिम flows:</strong><br />
+1. Clients बिना standard intake के WhatsApp या email से PAN और bank statements भेजते हैं<br />
+2. ex-articles और interns के लिए stale access के साथ shared Drive folders<br />
+3. deletion rules के बिना indefinitely रखे old ITR और KYC copies</p>
+<p><strong>DPDPA कर्तव्य triggered:</strong> Notice (R3) | Security (R6) | Breach (R7) | Rights (R14) | Sections 4, 5, 6/7, 8</p>
+<p><strong>तत्काल कार्रवाई:</strong><br />
+1. Clients PAN, Aadhaar, ITR और bank documents upload करने का तरीका standardise करें<br />
+2. Google Drive, email folders और client files पर access restrict और review करें<br />
+3. old ITR files, PAN copies, bank statements और payroll data के retention rules परिभाषित करें</p>
+<p><strong>Scan:</strong> saralprivacy.com/assessment/ca-firms - 10 questions - ~3 min</p>
+<hr />
+<h3>भर्ती एजेंसियाँ</h3>
+<p><strong>प्राथमिक जोखिम थीम:</strong> CV movement clients, tools, और teams के पार — केवल resumes forward करना नहीं।</p>
+<p><strong>कौन:</strong> Recruitment और staffing agencies, executive search, email या portals के माध्यम से CVs साझा करने वाली RPO टीमें।</p>
+<p><strong>सामान्य व्यक्तिगत डेटा:</strong> CVs, candidate consent, job portals, LinkedIn, ATS, WhatsApp, client sharing, BGV, salary slips, rejected profiles, AI screening</p>
+<p><strong>उच्च-जोखिम flows:</strong><br />
+1. Offer stage से पहले PAN, Aadhaar, salary slips की early collection<br />
+2. WhatsApp या email attachments के माध्यम से clients के साथ bulk CV folders साझा<br />
+3. deletion process के बिना indefinitely रखे rejected candidate profiles</p>
+<p><strong>DPDPA कर्तव्य triggered:</strong> Notice (R3) | Consent (Sec 6) | Security (R6) | Breach (R7) | Rights (R14)</p>
+<p><strong>तत्काल कार्रवाई:</strong><br />
+1. Candidate sourcing और consent/notice भाषा standardise करें<br />
+2. PAN, Aadhaar, salary slips और BGV files की early collection कम करें<br />
+3. Clients के साथ CV sharing control करें और bulk folders से बचें</p>
+<p><strong>Scan:</strong> saralprivacy.com/assessment/recruitment - 10 questions - ~3 min</p>
+<hr />
+<h3>प्रशिक्षण संस्थान</h3>
+<p><strong>प्राथमिक जोखिम थीम:</strong> Minors, parents, WhatsApp groups, और LMS data — केवल classroom delivery नहीं।</p>
+<p><strong>कौन:</strong> Coaching centres, test-prep brands, live classes और LMS वाली EdTech, parent WhatsApp groups वाले institutes।</p>
+<p><strong>सामान्य व्यक्तिगत डेटा:</strong> Student data, parent details, minors, WhatsApp groups, LMS tools, student photos, testimonials, attendance, fee records, placement data</p>
+<p><strong>उच्च-जोखिम flows:</strong><br />
+1. 18 से कम students बिना documented parent/guardian consent के<br />
+2. Marketing के लिए बिना separate consent photos, testimonials, और demo-class recordings का उपयोग<br />
+3. clear rules के बिना रखे old leads और admission records</p>
+<p><strong>DPDPA कर्तव्य triggered:</strong> Notice (R3) | Children (Sec 9, R10) | Security (R6) | Rights (R14)</p>
+<p><strong>तत्काल कार्रवाई:</strong><br />
+1. Record करें students 18 से कम हैं या नहीं और parent/guardian consent capture करें<br />
+2. Student और parent data intake informal channels से दूर standardise करें<br />
+3. WhatsApp groups, photos, testimonials और demo-class recordings review करें</p>
+<p><strong>Scan:</strong> saralprivacy.com/assessment/training-institutes - 10 questions - ~3 min</p>
+<hr />
+<h3>D2C ब्रांड</h3>
+<p><strong>प्राथमिक जोखिम थीम:</strong> हर order के पीछे marketing और ad-tech engine — केवल product sales नहीं।</p>
+<p><strong>कौन:</strong> Shopify/Woo D2C brands, beauty/wellness/food lifestyle labels, Meta ads और WhatsApp campaigns चलाने वाली टीमें।</p>
+<p><strong>सामान्य व्यक्तिगत डेटा:</strong> WhatsApp marketing, Meta Pixel, cart abandonment, Shopify, SMS opt-in, logistics vendors, loyalty, unsubscribe, customer data, marketplace</p>
+<p><strong>उच्च-जोखिम flows:</strong><br />
+1. Provable opt-in के बिना promotional WhatsApp/SMS<br />
+2. Cookie/notice disclosure के बिना Meta Pixel और retargeting<br />
+3. Mapped contracts के बिना customer data पाने वाले logistics और ad vendors</p>
+<p><strong>DPDPA कर्तव्य triggered:</strong> Notice (R3) | Consent (Sec 6) | Security (R6) | Vendors (R6, R15) | Rights (R14)</p>
+<p><strong>तत्काल कार्रवाई:</strong><br />
+1. WhatsApp/SMS/email promotions के लिए separate opt-in capture और prove करें<br />
+2. Privacy/cookie notice में Meta Pixel, GA और retargeting tools disclose करें<br />
+3. सभी channels पर unsubscribe और preference management enable करें</p>
+<p><strong>Scan:</strong> saralprivacy.com/assessment/d2c - 10 questions - ~3 min</p>
+<hr />
+<h3>क्लिनिक और डायग्नोस्टिक लैब</h3>
+<p><strong>प्राथमिक जोखिम थीम:</strong> Health reports, WhatsApp sharing, और access control — उच्चतम sensitivity band।</p>
+<p><strong>कौन:</strong> Single और multi-speciality clinics, pathology और radiology labs, home sample collection chains।</p>
+<p><strong>सामान्य व्यक्तिगत डेटा:</strong> Patient reports, prescriptions, health data, WhatsApp sharing, lab software, reception access, home collection, doctor referrals, insurance/TPA, old reports</p>
+<p><strong>उच्च-जोखिम flows:</strong><br />
+1. Lab reports patients या family को recipient verification के बिना WhatsApp पर साझा<br />
+2. Clinic/HIS systems पर shared logins या ex-staff access<br />
+3. Vendor register के बिना outsourced labs और home collection partners</p>
+<p><strong>DPDPA कर्तव्य triggered:</strong> Notice (R3) | Security (R6) | Breach (R7) | Rights (R14) | Rule 12/Schedule 4 (child health)</p>
+<p><strong>तत्काल कार्रवाई:</strong><br />
+1. Patient intake channels standardise करें — scattered WhatsApp और paper intake कम करें<br />
+2. WhatsApp या email से reports साझा करने से पहले recipients verify करें<br />
+3. Reception, billing, lab और support staff access role-based controls से restrict करें</p>
+<p><strong>Scan:</strong> saralprivacy.com/assessment/clinics-diagnostic-labs - 10 questions - ~3 min</p>
+<hr />
+<h3>स्कूल और कॉलेज</h3>
+<p><strong>प्राथमिक जोखिम थीम:</strong> Children's data, CCTV, apps, और transport monitoring — critical priority।</p>
+<p><strong>कौन:</strong> K-12 schools, colleges, ERP apps, CCTV, transport GPS, और fee systems वाले institutions।</p>
+<p><strong>सामान्य व्यक्तिगत डेटा:</strong> Children's data, parent records, school apps, CCTV, attendance, transport GPS, student photos, fee records, LMS, old student files</p>
+<p><strong>उच्च-जोखिम flows:</strong><br />
+1. 18 से कम students बिना specific parent notice और consent process के<br />
+2. बिना separate consent public photos, videos, और results<br />
+3. Governance और retention rules के बिना CCTV, biometric, RFID, और transport GPS</p>
+<p><strong>DPDPA कर्तव्य triggered:</strong> Notice (R3) | Children (Sec 9, R10-12) | Security (R6) | Breach (R7) | Rights (R14)</p>
+<p><strong>तत्काल कार्रवाई:</strong><br />
+1. Map करें student और parent data कहाँ collect और store होता है<br />
+2. 18 से कम students के लिए parent/guardian notice और consent मजबूत करें<br />
+3. CCTV, biometric, RFID, transport GPS और hostel monitoring govern करें</p>
+<p><strong>Scan:</strong> saralprivacy.com/assessment/schools-colleges - 10 questions - ~3 min</p>
+<hr />
+<h3>लॉ फर्म</h3>
+<p><strong>प्राथमिक जोखिम थीम:</strong> Matter files, evidence, और junior access — confidentiality plus DPDPA evidence।</p>
+<p><strong>कौन:</strong> Litigation और corporate practices, boutiques, juniors, interns, और matter folders वाली टीमें।</p>
+<p><strong>सामान्य व्यक्तिगत डेटा:</strong> Client KYC, PAN/Aadhaar, case files, evidence records, affidavits, WhatsApp instructions, court filing, junior access, external counsel, closed matters</p>
+<p><strong>उच्च-जोखिम flows:</strong><br />
+1. Matter-team restriction के बिना shared drives पर sensitive case files<br />
+2. WhatsApp या informal email exports के माध्यम से प्राप्त evidence<br />
+3. Ex-staff, interns, या associates cloud या device access बनाए रखते हैं</p>
+<p><strong>DPDPA कर्तव्य triggered:</strong> Notice (R3) | Security (R6) | Breach (R7) | Rights (R14) | Cross-border (Sec 16)</p>
+<p><strong>तत्काल कार्रवाई:</strong><br />
+1. Client documents और matter-data flows मैप करें<br />
+2. Sensitive case files matter team पर restrict करें<br />
+3. Client documents के लिए WhatsApp/email/shared-folder usage standardise करें</p>
+<p><strong>Scan:</strong> saralprivacy.com/assessment/law-firms - 10 questions - ~3 min</p>
+<hr />
+<h3>रियल एस्टेट</h3>
+<p><strong>प्राथमिक जोखिम थीम:</strong> KYC और broker networks property और identity data move करते हैं।</p>
+<p><strong>कौन:</strong> Brokers, property consultants, developer sales desks, rental और resale teams।</p>
+<p><strong>सामान्य व्यक्तिगत डेटा:</strong> Buyer leads, tenant KYC, PAN/Aadhaar, rent agreements, sale deeds, property papers, WhatsApp groups, broker networks, loan partners, old leads</p>
+<p><strong>उच्च-जोखिम flows:</strong><br />
+1. PAN/Aadhaar/property docs WhatsApp से प्राप्त और forward<br />
+2. Client notice के बिना broker WhatsApp groups में lead sheets<br />
+3. Ex-staff या old broker partners CRM या cloud access बनाए रखते हैं</p>
+<p><strong>DPDPA कर्तव्य triggered:</strong> Notice (R3) | Security (R6) | Breach (R7) | Rights (R14)</p>
+<p><strong>तत्काल कार्रवाई:</strong><br />
+1. KYC और property-document collection standardise करें<br />
+2. PAN, Aadhaar और agreement documents की WhatsApp forwarding कम करें<br />
+3. Co-brokers, builders, landlords और loan partners के साथ lead sharing control करें</p>
+<p><strong>Scan:</strong> saralprivacy.com/assessment/real-estate - 10 questions - ~3 min</p>
+<hr />
+<h3>होटल और यात्रा</h3>
+<p><strong>प्राथमिक जोखिम थीम:</strong> Guest IDs, passport copies, और OTA data sharing।</p>
+<p><strong>कौन:</strong> Hotels, resorts, homestays, travel agencies, corporate travel desks।</p>
+<p><strong>सामान्य व्यक्तिगत डेटा:</strong> Guest IDs, passport copies, booking history, OTA sharing, travel documents, WhatsApp confirmations, CCTV, PMS access, transport vendors, old guest records</p>
+<p><strong>उच्च-जोखिम flows:</strong><br />
+1. WhatsApp या personal email के माध्यम से collect passport और visa documents<br />
+2. Foreign guest और C-Form data indefinitely रखा<br />
+3. Shared PMS/OTA logins और guest systems पर ex-staff access</p>
+<p><strong>DPDPA कर्तव्य triggered:</strong> Notice (R3) | Security (R6) | Breach (R7) | Rights (R14) | Cross-border (R15)</p>
+<p><strong>तत्काल कार्रवाई:</strong><br />
+1. ID, passport और travel-document collection standardise करें<br />
+2. Guest IDs और passport copies की WhatsApp/email sharing कम करें<br />
+3. PMS, CRM, OTA dashboard, CCTV और staff device access restrict करें</p>
+<p><strong>Scan:</strong> saralprivacy.com/assessment/hotels-travel - 10 questions - ~3 min</p>
+<hr />
+<h3>फार्मेसी</h3>
+<p><strong>प्राथमिक जोखिम थीम:</strong> Prescriptions, medicine history, और refill campaigns।</p>
+<p><strong>कौन:</strong> Retail और chain pharmacies, online pharmacy fulfilment, WhatsApp पर prescriptions पाने वाली टीमें।</p>
+<p><strong>सामान्य व्यक्तिगत डेटा:</strong> Prescriptions, medicine history, WhatsApp orders, refill reminders, delivery partners, billing software, health indicators, staff access, old records</p>
+<p><strong>उच्च-जोखिम flows:</strong><br />
+1. WhatsApp या staff phones के माध्यम से प्राप्त prescription images<br />
+2. Sensitive medicine categories के लिए बिना separate consent refill या promotional messages<br />
+3. Shared pharmacy software logins और uncleared ex-staff access</p>
+<p><strong>DPDPA कर्तव्य triggered:</strong> Notice (R3) | Security (R6) | Breach (R7) | Children (R10-12) | Rights (R14)</p>
+<p><strong>तत्काल कार्रवाई:</strong><br />
+1. Prescription collection और storage standardise करें<br />
+2. Prescription images की WhatsApp और staff-phone handling कम करें<br />
+3. Medicine-history data के retention और refill-message rules परिभाषित करें</p>
+<p><strong>Scan:</strong> saralprivacy.com/assessment/pharmacies - 10 questions - ~3 min</p>
+<hr />
+<h3>Fintech और NBFC</h3>
+<p><strong>प्राथमिक जोखिम थीम:</strong> KYC, profiling, DSAs, और cross-border analytics — critical complexity।</p>
+<p><strong>कौन:</strong> NBFCs, digital lenders, payment apps, UPI/wallet/BNPL, collections businesses।</p>
+<p><strong>सामान्य व्यक्तिगत डेटा:</strong> KYC, PAN/Aadhaar, bank data, UPI, credit bureau, profiling, DSAs, collection agents, payment partners, old records</p>
+<p><strong>उच्च-जोखिम flows:</strong><br />
+1. Consent evidence के बिना WhatsApp या field agents के माध्यम से KYC और bureau data<br />
+2. Limited customer-facing explanation के साथ automated decisioning<br />
+3. Customer lists download/export access वाले DSAs और collection agents</p>
+<p><strong>DPDPA कर्तव्य triggered:</strong> Notice (R3) | Consent (Sec 6) | Security (R6) | Breach (R7) | SDF watch (R13) | Rights (R14) | RBI sector rules</p>
+<p><strong>तत्काल कार्रवाई:</strong><br />
+1. KYC, bank, bureau, UPI और repayment data flows मैप करें<br />
+2. Verification, profiling और sharing के लिए timestamped consent मजबूत करें<br />
+3. DSA, collection-agent, call-centre और vendor access control करें</p>
+<p><strong>Scan:</strong> saralprivacy.com/assessment/fintech-nbfc - 10 questions - ~3 min</p>
+<hr />
+<h3>जिम, सैलून और स्पा</h3>
+<p><strong>प्राथमिक जोखिम थीम:</strong> Health-adjacent body data, photos, और WhatsApp campaigns।</p>
+<p><strong>कौन:</strong> Gyms, fitness studios, salons, spas, membership और appointment apps वाली wellness chains।</p>
+<p><strong>सामान्य व्यक्तिगत डेटा:</strong> Membership data, health details, body measurements, customer photos, before-after images, WhatsApp campaigns, appointment apps, staff phones, old records</p>
+<p><strong>उच्च-जोखिम flows:</strong><br />
+1. बिना separate consent customer photos social media या ads के लिए<br />
+2. Staff phones या WhatsApp पर recorded health और body data<br />
+3. Trainers और therapists के पार shared CRM या appointment app logins</p>
+<p><strong>DPDPA कर्तव्य triggered:</strong> Notice (R3) | Consent (Sec 6) | Security (R6) | Breach (R7) | Rights (R14)</p>
+<p><strong>तत्काल कार्रवाई:</strong><br />
+1. Forms, apps, WhatsApp, DMs और staff notes के पार customer data मैप करें<br />
+2. Customer photos, before-after images या testimonials उपयोग से पहले consent capture करें<br />
+3. Health, body, consultation और transformation data पर access restrict करें</p>
+<p><strong>Scan:</strong> saralprivacy.com/assessment/gyms-salons-spas - 10 questions - ~3 min</p>
+<hr />
+<h2>अनुभाग 20: अधिनियम Section Map</h2>
+<p><a id="section-20"></a></p>
+<table>
+<thead>
+<tr>
+<th>Sec.</th>
+<th>विषय</th>
+<th>सरल अर्थ</th>
+<th>संगठनों के लिए कार्रवाई</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3</td>
+<td>Application</td>
+<td>भारत में digital personal data; बाद में digitised offline data; भारत में goods/services offer से जुड़ी foreign processing।</td>
+<td>Customers, employees, vendors, leads, website/app users और India-facing services मैप करें।</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Grounds</td>
+<td>Processing lawful purpose के लिए और consent या certain legitimate uses के लिए होना चाहिए।</td>
+<td>हर processing activity consent-based या legitimate-use based tag करें।</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Notice</td>
+<td>Notice Data Principal को बताए कौन सा डेटा process होता है, purpose, rights, withdrawal और complaint route।</td>
+<td>Standalone notices उपयोग करें; core notice long T&amp;Cs में bury न करें।</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Consent</td>
+<td>Consent free, specific, informed, unconditional और clear affirmative action होनी चाहिए; withdrawal आसान होना चाहिए।</td>
+<td>Marketing, profiling, photos, या referrals जैसे वैकल्पिक उपयोगों के लिए separate consent।</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Legitimate uses</td>
+<td>Limited non-consent grounds जैसे specified purpose के लिए voluntary data, State functions, legal compliance, court orders, medical emergency, disaster/public order, employment safeguards।</td>
+<td>हर business convenience legitimate use न कहें।</td>
+</tr>
+<tr>
+<td>8</td>
+<td>DF obligations</td>
+<td>Data Fiduciary lawful processing, security, breach notice, deletion, grievance, processor control के लिए ज़िम्मेदार रहता है।</td>
+<td>Owner, records, breach process, retention schedule और processor contracts बनाएँ।</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Children</td>
+<td>Verifiable parental consent; children पर directed tracking, behavioural monitoring या targeted ads नहीं; harmful processing नहीं।</td>
+<td>Child-facing flows classify करें; children को targeted advertising बंद करें।</td>
+</tr>
+<tr>
+<td>10</td>
+<td>SDF</td>
+<td>Notified Significant Data Fiduciaries के अतिरिक्त कर्तव्य।</td>
+<td>केवल यदि scale/risk/sector designation plausible बनाता है तैयार करें।</td>
+</tr>
+<tr>
+<td>11-14</td>
+<td>Rights</td>
+<td>Access, correction, completion, updating, erasure, grievance, nomination।</td>
+<td>Identity checks और response ownership के साथ request process बनाएँ।</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Duties of Data Principal</td>
+<td>Impersonation, false complaint, material information suppression या correction/erasure के लिए unverifiable information नहीं।</td>
+<td>Rights workflow में fair-use भाषा प्रकाशित करें।</td>
+</tr>
+<tr>
+<td>16</td>
+<td>Cross-border</td>
+<td>सरकार notified countries/territories में transfer प्रतिबंधित कर सकती है; stricter sectoral laws लागू रहती हैं।</td>
+<td>Cross-border register बनाए रखें और अधिसूचनाएँ monitor करें।</td>
+</tr>
+<tr>
+<td>17</td>
+<td>Exemptions</td>
+<td>Legal rights, courts, prevention/investigation/prosecution, mergers, defaults, State security/public order, research/statistics के लिए कुछ processing exempt हो सकती है।</td>
+<td>Exemptions संकीर्ण लागू करें और legal basis दस्तावेज़ करें।</td>
+</tr>
+<tr>
+<td>18-34</td>
+<td>DPBI</td>
+<td>Digital Data Protection Board, proceedings, orders, mediation, voluntary undertakings, penalties।</td>
+<td>प्रवर्तन digital और document-led है, इसलिए evidence रखें।</td>
+</tr>
+<tr>
+<td>36-37</td>
+<td>Government powers</td>
+<td>Government information request powers; repeat penalties और non-compliance के बाद blocking recommendation।</td>
+<td>Government notices legal leadership तक escalate करें।</td>
+</tr>
+<tr>
+<td>44</td>
+<td>Amendments</td>
+<td>TDSAT framework, IT Act और RTI Act Section 8(1)(j) संशोधित करता है।</td>
+<td>Firm public-sector guidance से पहले pending RTI/privacy litigation track करें।</td>
+</tr>
+</tbody>
+</table>
+<h3>Rules और schedules map</h3>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>विषय</th>
+<th>Rule क्या कहता है</th>
+<th>यह नियंत्रण बनाएँ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1-2</td>
+<td>Commencement/definitions</td>
+<td>Commencement, user account, techno-legal measures और verifiable consent परिभाषित करता है।</td>
+<td>Policy और product specs में rule definitions उपयोग करें।</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Notice</td>
+<td>Notice independently understandable, plain, itemised होनी चाहिए, और withdrawal, rights और Board complaint के links दे।</td>
+<td>T&amp;Cs से notice अलग रखें और language-accessible रखें।</td>
+</tr>
+<tr>
+<td>4 + Sch. 1</td>
+<td>Consent Managers</td>
+<td>India-incorporated company, minimum INR 2 crore net worth, interoperable platform, independence, auditability, no misuse।</td>
+<td>केवल Consent Manager operate/register करने या integrate करने पर relevant।</td>
+</tr>
+<tr>
+<td>5 + Sch. 2</td>
+<td>State processing</td>
+<td>Subsidy, benefit, service, certificate, licence या permit के लिए State या instrumentalities के data processing के मानक।</td>
+<td>Government-linked projects Schedule 2 compliance review चाहते हैं।</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Security safeguards</td>
+<td>Encryption/obfuscation/masking/tokenisation, access control, logs, monitoring, backup, processor contract clauses, organisational measures।</td>
+<td>Minimum security baseline और एक-वर्ष log retention बनाएँ।</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Breach notice</td>
+<td>प्रभावित Data Principals को delay के बिना notify; Board को delay के बिना; 72 घंटे के भीतर detailed Board report।</td>
+<td>Incident clock, facts log, user notice template और Board report template बनाए रखें।</td>
+</tr>
+<tr>
+<td>8 + Sch. 3</td>
+<td>Erasure/retention</td>
+<td>कुछ बड़े e-commerce, social media और online gaming entities निर्दिष्ट inactivity अवधि के बाद erase करें; 48-घंटे warning; कम से कम एक वर्ष logs।</td>
+<td>Retention schedule + automated deletion और exception handling।</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Contact point</td>
+<td>Data Principal प्रश्नों के लिए DPO या authorised व्यक्ति का contact प्रकाशित करें।</td>
+<td>Website/app और notices में contact रखें।</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Child consent</td>
+<td>Existing reliable details, voluntary identity/age details, या authorised entity से virtual token से parent/adult verify करें।</td>
+<td>Child data के लिए age gate और parent verification जोड़ें।</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Persons with disability</td>
+<td>जहाँ आवश्यक applicable disability laws के तहत lawful guardian verify करें।</td>
+<td>सभी disability guardian consent की माँग न मानें।</td>
+</tr>
+<tr>
+<td>12 + Sch. 4</td>
+<td>Children exemptions</td>
+<td>Clinical establishments, mental health establishments, educational institutions, childcare, transport, creches जैसी specified classes listed purposes के लिए process कर सकती हैं।</td>
+<td>केवल listed purpose और class के लिए; advertising या profiling के लिए नहीं।</td>
+</tr>
+<tr>
+<td>13</td>
+<td>SDF obligations</td>
+<td>वार्षिक DPIA और audit; significant observations Board को furnish; algorithms/tools के लिए due diligence; specified data का possible localisation।</td>
+<td>SDF readiness pack: DPO, DPIA, audit, algorithmic risk review, localisation watch।</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Rights requests</td>
+<td>Data Principals rights और nomination requests कैसे कर सकते हैं प्रकाशित करें; grievance response अधिकतम 90 दिन के भीतर।</td>
+<td>Rights SOP, identity verification, queue tracking और closure evidence।</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Transfer outside India</td>
+<td>Transfers Central Government निर्दिष्ट requirements पूरे करें foreign state या controlled entities को personal data availability के लिए।</td>
+<td>Cross-border register और government access risk के contract clauses।</td>
+</tr>
+<tr>
+<td>16</td>
+<td>Research/statistics</td>
+<td>Research, archiving या statistical processing exempt केवल यदि Data Principal-specific decisions के लिए उपयोग नहीं और standards पूरे करें।</td>
+<td>Analytics/research decisioning से अलग करें।</td>
+</tr>
+<tr>
+<td>17-21 + Sch. 5-6</td>
+<td>DPBI</td>
+<td>Board chair/members, salary, meetings, digital office और staff के रूप में functioning।</td>
+<td>Digital filings के लिए evidence तैयार करें।</td>
+</tr>
+<tr>
+<td>22</td>
+<td>Appeals</td>
+<td>Fee और techno-legal measures के साथ TDSAT में digitally appeal।</td>
+<td>Appeal timelines और records track करें।</td>
+</tr>
+<tr>
+<td>23 + Sch. 7</td>
+<td>Government info powers</td>
+<td>Government listed purposes के लिए information माँग सकती है और disclosure restrict कर सकती है।</td>
+<td>Government information requests के लिए legal review workflow बनाएँ।</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>अनुभाग 21: अदालत के मामले और मुकदमeb ट्रैकर</h2>
+<p><a id="section-21"></a></p>
+<p><strong>चेतावनी:</strong> Pending cases केवल awareness items हैं। 14 जून 2026 तक कोई अदालत DPDPA stay या strike down नहीं की है।</p>
+<table>
+<thead>
+<tr>
+<th>मामला</th>
+<th>स्थिति</th>
+<th>व्यवसाय पाठक को क्यों परवाह करना चाहिए</th>
+<th>Anchor उपयोग</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Justice K.S. Puttaswamy v Union of India, 2017</td>
+<td>Final</td>
+<td>Privacy मौलिक अधिकार है; State action के लिए proportionality test</td>
+<td>केवल संवैधानिक framing</td>
+</tr>
+<tr>
+<td>K.S. Puttaswamy Aadhaar judgment, 2018/2019</td>
+<td>Final</td>
+<td>ID/KYC minimisation और proportionality</td>
+<td>Aadhaar/PAN-heavy sectors के लिए industry risk context</td>
+</tr>
+<tr>
+<td>CPIO, Supreme Court v Subhash Chandra Agarwal, 2019/2020</td>
+<td>Final</td>
+<td>RTI में privacy vs public interest; DPDPA RTI Section 8(1)(j) संशोधित</td>
+<td>RTI/privacy interface</td>
+</tr>
+<tr>
+<td>Venkatesh Nayak v Union of India, W.P.(C) No. 177/2026</td>
+<td>Pending</td>
+<td>RTI amendment, State exemptions, surveillance-related provisions को challenge</td>
+<td>Horizon / legal watch — Act stayed नहीं</td>
+</tr>
+<tr>
+<td>The Reporters' Collective Trust and Nitin Sethi v Union of India</td>
+<td>Pending/tagged</td>
+<td>Press freedom और public-interest reporting</td>
+<td>Media और public-sector disclosures</td>
+</tr>
+<tr>
+<td>Geeta Seshu/SFLC petition, W.P.(C) No. 275/2026</td>
+<td>Pending/tagged</td>
+<td>Public vs private data definitions और government powers</td>
+<td>Government data handling watch</td>
+</tr>
+<tr>
+<td>Anjali Bhardwaj/Amrita Johri and NCPRI-related petitions, 2026</td>
+<td>Pending/tagged</td>
+<td>Section 44(3) और RTI-sourced personal data की republication</td>
+<td>Civil society और research uses</td>
+</tr>
+<tr>
+<td>Chandresh Jain v Union of India, Delhi HC</td>
+<td>Notice issued Feb 2026</td>
+<td>Board structure, State exemptions, blocking powers</td>
+<td>Institutional design watch</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>अनुभाग 22: ट्रैक करने योग्य वर्तमान खुले आइटम</h2>
+<p><a id="section-22"></a></p>
+<p>इस tracker को मासिक governance reviews में उपयोग करें। प्रत्येक पंक्ति label करें: <strong>in force</strong>, <strong>notified phase</strong>, <strong>proposed</strong>, या <strong>pending litigation</strong>।</p>
+<table>
+<thead>
+<tr>
+<th>तिथि</th>
+<th>स्रोत</th>
+<th>क्या चर्चा हुई</th>
+<th>व्यवसाय प्रभाव</th>
+<th>Treatment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>13 Nov 2025</td>
+<td>MeitY G.S.R. 846(E)</td>
+<td>Rules notified</td>
+<td>Phased clock शुरू</td>
+<td>सभी timelines के लिए anchor date</td>
+</tr>
+<tr>
+<td>14 Nov 2025</td>
+<td>PIB</td>
+<td>Rules press release</td>
+<td>सार्वजनिक पुष्टि</td>
+<td>Status snapshot में cite करें</td>
+</tr>
+<tr>
+<td>17 Nov 2025</td>
+<td>MeitY (reported)</td>
+<td>Faster enforcement for large/global-compliant firms</td>
+<td>Runway छोटा हो सकता है</td>
+<td>Horizon alert</td>
+</tr>
+<tr>
+<td>23 Jan 2026</td>
+<td>MeitY stakeholder meeting</td>
+<td>Proposal: 18 to 12 month compliance; SDF list fast-track; Rule 8(3) in 90 days post-amendment</td>
+<td><strong>Deadline 13 Nov 2026 हो सकती है</strong></td>
+<td><em>proposed, not notified</em> के रूप में flag करें</td>
+</tr>
+<tr>
+<td>Feb 2026</td>
+<td>MeitY</td>
+<td>Industry feedback window (reported deadline 4 Feb 2026)</td>
+<td>परिणाम pending</td>
+<td>Gazette publish होने पर update करें</td>
+</tr>
+<tr>
+<td>Jun 2026</td>
+<td>MeitY Secretary (ET Telecom)</td>
+<td>Timeline compression पर industry input की प्रतीक्षा</td>
+<td>अभी final call नहीं</td>
+<td>Accelerated date कानून के रूप में न कहें</td>
+</tr>
+<tr>
+<td>2026</td>
+<td>Karnataka (reported)</td>
+<td>Under-16 के लिए social media ban proposal</td>
+<td>National vs state competence unclear</td>
+<td>Policy debate नोट करें, DPDPA text नहीं</td>
+</tr>
+<tr>
+<td>Pending</td>
+<td>Supreme Court / Delhi HC</td>
+<td>Constitutionality, RTI interface, Board structure</td>
+<td>Litigation risk</td>
+<td>Court table; "Act struck down" भाषा नहीं</td>
+</tr>
+<tr>
+<td>Open</td>
+<td>MeitY / DPBI</td>
+<td>Transfers के लिए restricted country list</td>
+<td>Cross-border contract और mapping decisions</td>
+<td>अधिसूचनाएँ monitor करें</td>
+</tr>
+<tr>
+<td>Open</td>
+<td>MeitY / DPBI</td>
+<td>SDF designation list और localisation categories</td>
+<td>SDF programme scope</td>
+<td>सशर्त तैयार करें</td>
+</tr>
+<tr>
+<td>Open</td>
+<td>DPBI</td>
+<td>Consent Manager operational framework</td>
+<td>Product और integration roadmap</td>
+<td>Nov 2026 phase से watch करें</td>
+</tr>
+<tr>
+<td>Open</td>
+<td>DPBI</td>
+<td>Board portal filing procedures in practice</td>
+<td>Breach और proceedings के लिए evidence format</td>
+<td>Portal live होने पर pilot करें</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Evolve discipline (v6 से):</strong> 30-मिनट मासिक scan स्वामी नियुक्त करें; internal "what changed this quarter" memo प्रकाशित करें; वर्ष में दो बार breach tabletop refresh करें; major product या vendor changes के बाद data inventory re-run करें।</p>
+<hr />
+<h2>अनुभाग 23: 90-दिवसीय DPDPA कार्य योजना</h2>
+<p><a id="section-23"></a></p>
+<p>यह योजना mid-market operator के लिए है जिसमें अभी dedicated privacy team नहीं है। Owners अपने org chart में adjust करें। लक्ष्य: दिन 90 पर board-ready evidence pack v1, perfection नहीं।</p>
+<p><em>Diagram: see figure below.</em></p>
+<figure class="figure"><img src="../infographics/infographic-07-90-day-roadmap.png" alt="इन्फोग्राफिक 8: 90-Day Roadmap" /><figcaption>इन्फोग्राफिक 8: 90-Day Roadmap</figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>चरण</th>
+<th>सप्ताह</th>
+<th>फोकस</th>
+<th>Outputs</th>
+<th>स्वामी</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Discover</strong></td>
+<td>1-2</td>
+<td>स्वामी नियुक्त करें; systems scope करें; data map शुरू करें</td>
+<td>नामित DPDPA owner; processing activity register v0.1</td>
+<td>CEO + ops lead</td>
+</tr>
+<tr>
+<td><strong>Permission</strong></td>
+<td>3-4</td>
+<td>Notices ठीक करें; lawful basis tag करें; marketing consent अलग करें</td>
+<td>Updated notices; वैकल्पिक उपयोगों के लिए consent flow</td>
+<td>Legal + product</td>
+</tr>
+<tr>
+<td><strong>Control</strong></td>
+<td>5-8</td>
+<td>Vendors, rights inbox, retention, access controls</td>
+<td>Processor review log; rights SOP; retention schedule</td>
+<td>IT + procurement + HR</td>
+</tr>
+<tr>
+<td><strong>Prove</strong></td>
+<td>9-12</td>
+<td>Breach drill; governance review; executive sign-off</td>
+<td>Tabletop breach record; board summary; evidence pack v1</td>
+<td>Security + CEO</td>
+</tr>
+</tbody>
+</table>
+<h3>सप्ताह-दर-सप्ताह विवरण</h3>
+<p><strong>सप्ताह 1-2 (Discover):</strong> Accountable owner नामित करें। Systems सूचीबद्ध करें: CRM, HRMS, website, WhatsApp Business, cloud drives, payment tools। Top 10 flows के साथ processing register draft करें। अनुभाग 19 से दो industry-specific risks flag करें।</p>
+<p><strong>सप्ताह 3-4 (Permission):</strong> Website, app, और top offline form के लिए standalone notices प्रकाशित करें। Marketing consent अलग करें। Payroll और legal compliance के लिए Section 7 uses दस्तावेज़ करें केवल जहाँ counsel सहमत। Consent/version log शुरू करें।</p>
+<p><strong>सप्ताह 5-6 (Control - vendors और rights):</strong> Processor register पूरा करें। Top five vendor contracts अपग्रेड करें। rights@grievance inbox खोलें। Rights instructions प्रकाशित करें। 60-दिवसीय internal SLA परिभाषित करें।</p>
+<p><strong>सप्ताह 7-8 (Control - retention और access):</strong> Retention schedule approve करें। Ex-employee और vendor access हटाएँ। Shared folders और admin panels पर access review चलाएँ।</p>
+<p><strong>सप्ताह 9-10 (Prove):</strong> Tabletop breach scenario (WhatsApp mis-send या vendor leak)। 72-घंटे report draft का समय लें। Drill के लिए भी incident record फाइल करें।</p>
+<p><strong>सप्ताह 11-12 (Prove):</strong> Readiness scorecard के विरुद्ध leadership review। एक-पृष्ठ board summary: पाँच risks, पाँच evidence items, open law watchlist। 90-दिवसीय योजना wave 2 पर executive sign-off।</p>
+<h3>दिन 90 पर सफलता मानदंड</h3>
+<p>आप <strong>हिचकिचाहट के बिना</strong> इन पर <strong>हाँ</strong> कह सकें:</p>
+<ul>
+<li>नामित owner 15-मिनट walkthrough में processing activity register प्रस्तुत कर सकता है।</li>
+<li>कम से कम तीन collection points standalone notices दिखाते हैं जो पिछले 30 दिनों के भीतर dated हैं।</li>
+<li>Top five vendors के signed या amended contracts security और breach clauses के साथ हैं, या upgrade करने की documented plan है।</li>
+<li>Test rights request log, assign, और evidence pack में redacted sample के साथ close हुआ।</li>
+<li>Breach tabletop exercise window के भीतर timeline, draft user notice, और draft Board notification produce किया।</li>
+<li>Leadership अनुभाग 19 से priority one और two industry flows समझा सकती है।</li>
+</ul>
+<p>यदि कोई उत्तर नहीं है, readiness declare करने के बजाय gap को अगले 90-दिवसीय wave में ले जाएँ। DPDPA programmes compound — हर quarter evidence depth जोड़ता है, नया project नहीं।</p>
+<hr />
+<h2>अनुभाग 24: अस्वीकरण और SaralPrivacy Product Bridge</h2>
+<p><a id="section-24"></a></p>
+<h3>अस्वीकरण</h3>
+<p>यह श्वेतपत्र SaralPrivacy द्वारा <strong>सूचनात्मक और शैक्षिक उद्देश्यों</strong> के लिए प्रकाशित है। यह legal advice नहीं है, भारतीय कानून में qualified counsel का substitute नहीं है, और compliance या regulatory outcome की guarantee नहीं है। Law, Rules, अधिसूचनाएँ, और court decisions status date (14 जून 2026) के बाद बदल सकते हैं। Operational decisions पर rely करने से पहले सभी deadlines, exemptions, और sectoral obligations अपने advisors और official Gazette sources से verify करें। SaralPrivacy इस दस्तावेज़ के आधार पर solely की गई कार्रवाइयों के लिए कोई liability स्वीकार नहीं करता।</p>
+<h3>SaralPrivacy product bridge (संयमित)</h3>
+<p>SaralPrivacy भारतीय operators को <strong>discover</strong> करने में मदद करता है कि वे वास्तव में कौन सा व्यक्तिगत डेटा process करते हैं और deep legal spend से पहले <strong>assess</strong> readiness। यह श्वेतपत्र map है; tools compass check हैं।</p>
+<table>
+<thead>
+<tr>
+<th>चरण</th>
+<th>Route</th>
+<th>यह क्या करता है</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Discover</td>
+<td><a href="https://saralprivacy.com/discovery">saralprivacy.com/discovery</a></td>
+<td>पूर्ण compliance work बनाने से पहले channels के पार business कौन सा personal-data types collect करता है मैप करें</td>
+</tr>
+<tr>
+<td>2. Assess</td>
+<td><a href="https://saralprivacy.com/assessment">saralprivacy.com/assessment</a></td>
+<td>Generic 10-प्रश्न readiness scan (~3 मिनट)</td>
+</tr>
+<tr>
+<td>3. Sector scan</td>
+<td>अनुभाग 19 routes</td>
+<td>Industry-specific 10-प्रश्न snapshot; प्रारंभिक परिणाम के बाद deeper diagnostic</td>
+</tr>
+</tbody>
+</table>
+<p><strong>इस path का उपयोग कैसे करें:</strong> अनुभाग 3-5 और अपना industry snapshot पढ़ें। Discovery चलाएँ यदि plain English में data types सूचीबद्ध नहीं कर सकते। Generic या sector Assessment चलाएँ gaps prioritise करने के लिए। Outputs counsel और 90-दिवसीय योजना owner को ले जाएँ — दूसरे क्रम में नहीं।</p>
+<p>कोई product feature law की माँग notice, security, breach response, या rights operations replace नहीं करता। Tools <strong>कहाँ शुरू करें</strong> narrow करते हैं ताकि teams real flows पर legal और engineering time खर्च करें, generic anxiety पर नहीं।</p>
+<p><strong>पहली बार पाठक के लिए suggested sequence:</strong></p>
+<ol>
+<li>CEO या founder: अनुभाग 3, 4, 5, और 19 (आपका industry) — 20 मिनट।</li>
+<li>Programme owner: अनुभाग 7-18 plus अनुभाग 23 — एक working session।</li>
+<li>Legal counsel: अनुभाग 8, 9, 20-22 और glossary — validation pass।</li>
+<li>Board packet: इन्फोग्राफिक 1, अनुभाग 9 obligation table, अनुभाग 23 gantt, अनुभाग 18 से readiness scorecard।</li>
+</ol>
+<p>यह श्वेतपत्र update होगा जब Gazette अधिसूचनाएँ dates बदलें या SaralPrivacy नए industry scan versions प्रकाशित करे। Externally deadlines cite करने से पहले cover पर status date check करें।</p>
+<p><strong>प्रकाशक नोट:</strong> SaralPrivacy भारतीय operators के लिए discovery और assessment tools बनाता है। यह दस्तावेज़ OPERATE v6.1 और जून 2026 legal status snapshot से aligned public reference edition है। SaralPrivacy support channels के माध्यम से feedback और corrections welcome हैं।</p>
+<hr />
+<h2>शब्दकोश (25 शब्द)</h2>
+<p><a id="glossary"></a></p>
+<table>
+<thead>
+<tr>
+<th>शब्द</th>
+<th>सरल अंग्रेज़ी</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Data Fiduciary</strong></td>
+<td>संगठन जो तय करता है व्यक्तिगत डेटा क्यों और कैसे process हो — आमतौर पर आपकी कंपनी।</td>
+</tr>
+<tr>
+<td><strong>Data Principal</strong></td>
+<td>जिस व्यक्ति का डेटा process होता है — customer, employee, student, patient, आदि।</td>
+</tr>
+<tr>
+<td><strong>Data Processor</strong></td>
+<td>Vendor जो आपके निर्देश पर व्यक्तिगत डेटा process करता है — cloud host, payroll provider, ATS।</td>
+</tr>
+<tr>
+<td><strong>Personal data</strong></td>
+<td>identifiable व्यक्ति के बारे में कोई भी डेटा — name, phone, PAN, health record, photo।</td>
+</tr>
+<tr>
+<td><strong>Processing</strong></td>
+<td>डेटा के साथ कुछ भी: collect, store, use, share, analyse, delete।</td>
+</tr>
+<tr>
+<td><strong>Consent</strong></td>
+<td>Freely दी गई clear, specific permission affirmative action के साथ; withdraw आसान होना चाहिए।</td>
+</tr>
+<tr>
+<td><strong>Legitimate uses</strong></td>
+<td>Section 7 के संकीर्ण grounds consent के बिना processing की अनुमति — general business exemption नहीं।</td>
+</tr>
+<tr>
+<td><strong>Notice</strong></td>
+<td>Collection पर plain-language explanation — data, purpose, rights, और complaints के बारे में।</td>
+</tr>
+<tr>
+<td><strong>Significant Data Fiduciary (SDF)</strong></td>
+<td>Government-notified बड़े/उच्च-प्रभाव fiduciaries अतिरिक्त कर्तव्यों के साथ (DPIA, audit, आदि)।</td>
+</tr>
+<tr>
+<td><strong>Consent Manager</strong></td>
+<td>Registered intermediary जो लोगों को services में consent देने, manage करने, withdraw करने में मदद करता है।</td>
+</tr>
+<tr>
+<td><strong>DPBI</strong></td>
+<td>Digital Data Protection Board of India — DPDPA प्रवर्तन के लिए regulator।</td>
+</tr>
+<tr>
+<td><strong>Grievance</strong></td>
+<td>Data Principal की formal complaint जिसे अधिकतम 90 दिन के भीतर address करना होगा।</td>
+</tr>
+<tr>
+<td><strong>Nomination</strong></td>
+<td>Data Principal का अधिकार किसी को death/incapacity के बाद rights exercise करने के लिए नामित करने का।</td>
+</tr>
+<tr>
+<td><strong>Breach</strong></td>
+<td>व्यक्तिगत डेटा expose करने वाली security incident — user और Board notification कर्तव्य trigger करती है।</td>
+</tr>
+<tr>
+<td><strong>72-hour report</strong></td>
+<td>Board notification के 72 घंटे के भीतर DPBI को detailed breach report (Rule 7)।</td>
+</tr>
+<tr>
+<td><strong>Reasonable security safeguards</strong></td>
+<td>Encryption, access control, logs, backups, monitoring — Section 8(5) baseline।</td>
+</tr>
+<tr>
+<td><strong>Cross-border transfer</strong></td>
+<td>भारत के बाहर personal data भेजना या access करना — future restrictions के अधीन।</td>
+</tr>
+<tr>
+<td><strong>Rule 15 conditions</strong></td>
+<td>Foreign states या controlled entities को transfers के लिए Government-specified requirements।</td>
+</tr>
+<tr>
+<td><strong>Processing activity register</strong></td>
+<td>आपकी inventory — कौन सा डेटा process करते हैं, क्यों, कहाँ, कितने समय तक।</td>
+</tr>
+<tr>
+<td><strong>Purpose limitation</strong></td>
+<td>डेटा केवल collection के समय stated purpose के लिए उपयोग करना।</td>
+</tr>
+<tr>
+<td><strong>Data minimisation</strong></td>
+<td>Stated purpose के लिए केवल ज़रूरत की बात collect करना।</td>
+</tr>
+<tr>
+<td><strong>Retention schedule</strong></td>
+<td>डेटा कितने समय रखा जाता है और कब delete होता है के documented rules।</td>
+</tr>
+<tr>
+<td><strong>Verifiable consent (children)</strong></td>
+<td>Rule 10 methods के तहत check की जा सकने वाली parent/guardian consent।</td>
+</tr>
+<tr>
+<td><strong>Techno-legal measures</strong></td>
+<td>Technology और legal process combine करने वाली Board/digital compliance requirements।</td>
+</tr>
+<tr>
+<td><strong>Phased commencement</strong></td>
+<td>अलग Act/Rules sections अलग Gazette dates पर enforceable होते हैं।</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>स्रोत रजिस्टर</h2>
+<p><a id="sources"></a></p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>स्रोत</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S1</td>
+<td>Digital Personal Data Protection Act, 2023, Act No. 22 of 2023, MeitY/Gazette.</td>
+<td>https://www.meity.gov.in/static/uploads/2024/02/Digital-Personal-Data-Protection-Act-2023.pdf</td>
+</tr>
+<tr>
+<td>S2</td>
+<td>Digital Personal Data Protection Rules, 2025, G.S.R. 846(E), Gazette dated 13 Nov 2025.</td>
+<td>https://www.meity.gov.in/static/uploads/2025/11/53450e6e5dc0bfa85ebd78686cadad39.pdf</td>
+</tr>
+<tr>
+<td>S3</td>
+<td>Enforcement Timeline for the DPDP Act, G.S.R. 843(E), Gazette dated 13 Nov 2025.</td>
+<td>https://www.meity.gov.in/static/uploads/2025/11/c56ceae6c383460ca69577428d36828b.pdf</td>
+</tr>
+<tr>
+<td>S4</td>
+<td>Establishment of Data Protection Board of India, G.S.R. 844(E), Gazette dated 13 Nov 2025.</td>
+<td>https://www.meity.gov.in/static/uploads/2025/11/cc217843dc3bcb37b2b05bcc3b4e031f.pdf</td>
+</tr>
+<tr>
+<td>S5</td>
+<td>PIB release: Government notifies DPDP Rules, 14 Nov 2025.</td>
+<td>https://www.pib.gov.in/PressReleaseIframePage.aspx?PRID=2190014</td>
+</tr>
+<tr>
+<td>S6</td>
+<td>Supreme Court Observer: Constitutionality of the DPDPA, Venkatesh Nayak v Union of India.</td>
+<td>https://www.scobserver.in/cases/constitutionality-of-the-digital-personal-data-protection-act-2023/amp/</td>
+</tr>
+<tr>
+<td>S7</td>
+<td>Moneycontrol: Supreme Court refers RTI amendment challenge to larger bench, 19 Feb 2026.</td>
+<td>https://www.moneycontrol.com/news/india/supreme-court-refers-data-protection-law-amendment-of-rti-act-challenge-to-larger-bench-no-question-of-stay-13830233.html</td>
+</tr>
+<tr>
+<td>S8</td>
+<td>Medianama: Supreme Court notice in DPDP Act challenge, 13 Mar 2026.</td>
+<td>https://www.medianama.com/2026/03/223-supreme-court-dpdp-act-challenge/</td>
+</tr>
+<tr>
+<td>S9</td>
+<td>LawBeat: Delhi HC notice on DPDP state exemptions and blocking powers, 19 Feb 2026.</td>
+<td>https://lawbeat.in/news-updates/delhi-hc-issues-notice-on-plea-against-state-exemptions-blocking-powers-under-dpdp-act-1566615</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><em>India's DPDPA Readiness Whitepaper 2026-2027 v6.1 - SaralPrivacy - 14 June 2026 - OPERATE model - Informational structure, not legal advice.</em></p>
+
+<div class="cta-block" id="cta">
+  <h2>अपने अंतराल जानें। जो मायने रखता है उसे ठीक करें।</h2>
+  <p>मुफ़्त 3-मिनट की गोपनीयता तैयारी स्कैन से शुरू करें — फिर अनुभाग 19 से अपना उद्योग स्नैपशॉट लें।</p>
+  <a class="btn-primary" href="https://saralprivacy.com/assessment">मुफ़्त मूल्यांकन शुरू करें →</a>
+</div>
+
+</main>
+
+<footer class="doc-footer">
+  <div class="footer-brand-block">
+    <img src="SaralPrivacyLogo1.png" alt="SaralPrivacy" class="logo-footer" />
+    <div class="brand">Saral<span>Privacy</span></div>
+  </div>
+  <div class="meta">DPDPA तैयारी श्वेतपत्र · संस्करण 3 · जून 2026 · SaralPrivacy</div>
+  <div class="handle">@saralprivacy · saralprivacy.com</div>
+</footer>
+
+</div>
+</body>
+</html>

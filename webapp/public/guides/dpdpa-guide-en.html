@@ -1,0 +1,2794 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>India's DPDPA readiness whitepaper 2026-2027 | SaralPrivacy Version 3</title>
+<meta name="description" content="Practical DPDPA readiness guide for Indian businesses. SaralPrivacy Verified Digital Trust.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #121A2E;
+  --green: #07B981;
+  --teal: #35B6AE;
+  --gold: #E8AB42;
+  --slate: #334155;
+  --cloud: #F7F9FC;
+  --white: #FFFFFF;
+  --muted: #94A3B8;
+  --border: #EEF0F4;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--cloud);
+  color: var(--slate);
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+.cover {
+  background: var(--navy);
+  color: var(--white);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 48px 56px 40px;
+  page: cover;
+  page-break-after: always;
+  border-bottom: 3px solid rgba(7,185,129,.35);
+}
+
+.cover-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 32px; }
+.cover-brand { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+.logo-link { display: block; line-height: 0; }
+.logo-cover {
+  height: 108px; width: auto; display: block;
+  background: var(--white); border-radius: 12px;
+  padding: 14px 18px; box-shadow: 0 4px 24px rgba(0,0,0,.18);
+}
+.promise-pill {
+  display: inline-block; margin-top: 16px;
+  background: rgba(7,185,129,.15); border: 1px solid var(--green);
+  color: var(--green); font-size: 11px; font-weight: 600;
+  padding: 5px 14px; border-radius: 100px; letter-spacing: .5px; text-transform: uppercase;
+}
+.cover-meta { text-align: right; }
+.cover-meta .label { font-size: 10px; color: #64748B; text-transform: uppercase; letter-spacing: 1px; }
+.cover-meta .ver { font-size: 20px; font-weight: 700; color: var(--gold); margin-top: 6px; }
+.cover-meta .date { font-size: 12px; color: #94A3B8; margin-top: 8px; }
+
+.cover-main { flex: 1; display: flex; flex-direction: column; justify-content: center; max-width: 820px; padding: 48px 0; }
+.cover-title { font-size: 42px; font-weight: 700; line-height: 1.15; letter-spacing: -0.5px; margin-bottom: 20px; }
+.cover-subtitle { font-size: 18px; color: #CBD5E1; line-height: 1.5; max-width: 680px; }
+.cover-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 28px; }
+.badge { font-size: 10px; font-weight: 600; padding: 4px 12px; border-radius: 100px; border: 1px solid; }
+.badge-green { background: rgba(7,185,129,.12); border-color: rgba(7,185,129,.45); color: #6EE7B7; }
+.badge-teal { background: rgba(53,182,174,.1); border-color: rgba(53,182,174,.4); color: #99F6E4; }
+.badge-gold { background: rgba(232,171,66,.1); border-color: rgba(232,171,66,.4); color: #FDE68A; }
+.cover-footer-line { font-size: 12px; color: #64748B; }
+
+.doc-wrap { max-width: 900px; margin: 0 auto; background: var(--white); box-shadow: 0 4px 40px rgba(0,0,0,.08); position: relative; }
+
+.watermarked { position: relative; isolation: isolate; }
+.watermarked::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url('SaralPrivacyLogo1.png') center 42% / 52% auto no-repeat;
+  opacity: 0.055;
+  pointer-events: none;
+  z-index: 0;
+}
+.watermarked > * { position: relative; z-index: 1; }
+
+.toc {
+  padding: 40px 56px;
+  background: var(--cloud);
+  border-bottom: 1px solid var(--border);
+  page-break-after: always;
+}
+.toc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+.logo-toc { height: 56px; width: auto; display: block; }
+.toc h2 { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--teal); margin-bottom: 20px; }
+.toc ol { columns: 2; column-gap: 40px; padding-left: 20px; font-size: 14px; }
+.toc li { margin-bottom: 8px; break-inside: avoid; }
+.toc a { color: var(--navy); text-decoration: none; font-weight: 500; }
+.toc a:hover { color: var(--green); }
+
+.reader-guide {
+  padding: 44px 56px 48px;
+  background: var(--white);
+  page-break-before: always;
+  page-break-after: always;
+  border-bottom: 1px solid var(--border);
+}
+.reader-guide h2 {
+  font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--teal); margin-bottom: 12px;
+}
+.reader-guide h3 {
+  font-size: 26px; font-weight: 700; color: var(--navy);
+  margin-bottom: 20px; line-height: 1.25;
+}
+.reader-guide p { margin-bottom: 14px; font-size: 15px; }
+.reader-guide ul { margin: 0 0 18px 22px; font-size: 14px; }
+.reader-guide li { margin-bottom: 8px; }
+.reader-guide .guide-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; margin-top: 20px;
+}
+.reader-guide .guide-card {
+  background: var(--cloud); border-radius: 8px; padding: 12px 14px;
+  border-left: 3px solid var(--green);
+}
+.reader-guide .guide-card h4 {
+  font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 6px;
+}
+.reader-guide .guide-card p { font-size: 13px; margin: 0; color: var(--slate); }
+.reader-guide .doc-meta {
+  margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--border);
+  font-size: 12px; color: var(--muted);
+}
+
+.content { padding: 48px 56px 64px; }
+
+.content h1 {
+  font-size: 28px; font-weight: 700; color: var(--navy);
+  margin: 48px 0 16px; padding-top: 8px;
+  border-top: 3px solid var(--green);
+  page-break-before: always;
+}
+.content h1:first-child { border-top: none; margin-top: 0; page-break-before: auto; }
+
+.content h2 {
+  font-size: 22px; font-weight: 700; color: var(--navy);
+  margin: 36px 0 14px;
+}
+.content h3 {
+  font-size: 11px; font-weight: 700; letter-spacing: 1.2px;
+  text-transform: uppercase; color: var(--teal);
+  margin: 28px 0 12px;
+}
+.content h4 { font-size: 16px; font-weight: 600; color: var(--navy); margin: 20px 0 8px; }
+
+.content p { margin-bottom: 14px; }
+.content ul, .content ol { margin: 0 0 16px 24px; }
+.content li { margin-bottom: 6px; }
+.content strong { color: var(--navy); font-weight: 600; }
+.content em { font-style: italic; }
+.content hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+.content a { color: var(--teal); font-weight: 500; }
+.content a:hover { color: var(--green); }
+
+.content table {
+  width: 100%; border-collapse: collapse; font-size: 13px;
+  margin: 16px 0 24px; table-layout: fixed;
+}
+.content thead { background: var(--navy); color: var(--white); }
+.content th {
+  padding: 10px 12px; text-align: left; font-weight: 600; font-size: 12px;
+  word-wrap: break-word; overflow-wrap: anywhere;
+}
+.content td {
+  padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top;
+  word-wrap: break-word; overflow-wrap: anywhere;
+}
+.content tr:nth-child(even) td { background: var(--cloud); }
+
+.content pre {
+  background: var(--navy); color: #CBD5E1; padding: 16px 20px;
+  border-radius: 8px; border-left: 3px solid var(--green);
+  font-size: 11px; line-height: 1.5; overflow-x: auto; margin: 16px 0 24px;
+  white-space: pre-wrap;
+}
+.content code { font-family: ui-monospace, monospace; font-size: 12px; }
+
+.brand-line {
+  padding: 12px 16px; border-left: 3px solid var(--green);
+  margin: 20px 0; font-style: italic; font-size: 15px;
+  color: var(--navy); background: rgba(7,185,129,.06);
+  border-radius: 0 8px 8px 0;
+}
+
+.figure { margin: 16px 0 28px; text-align: center; page-break-inside: avoid; break-inside: avoid; }
+.figure img {
+  display: block; margin: 0 auto; max-width: 100%; width: 100%;
+  max-height: 9.2in; height: auto; object-fit: contain;
+  border-radius: 4px; border: 1px solid var(--border);
+}
+.figure figcaption { font-size: 12px; color: var(--muted); margin-top: 10px; font-style: italic; }
+
+.mermaid-note {
+  font-size: 12px; color: var(--muted); font-style: italic;
+  margin: -12px 0 20px; padding: 8px 12px; background: var(--cloud); border-radius: 6px;
+}
+
+.cta-block {
+  background: var(--navy); border-radius: 12px; padding: 40px 48px;
+  margin: 48px 0 32px; text-align: center; page-break-inside: avoid;
+}
+.cta-block h2 { color: var(--white) !important; font-size: 24px !important; margin: 0 0 12px !important; border: none !important; }
+.cta-block p { color: #CBD5E1; margin-bottom: 24px; font-size: 15px; }
+.btn-primary {
+  display: inline-block; background: var(--green); color: var(--white) !important;
+  font-size: 16px; font-weight: 600; padding: 14px 32px; border-radius: 8px;
+  text-decoration: none !important; letter-spacing: 0.2px;
+}
+.btn-primary:hover { background: #059669; }
+
+.doc-footer {
+  background: var(--navy); padding: 24px 56px;
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+}
+.doc-footer .footer-brand-block { display: flex; align-items: center; gap: 14px; }
+.logo-footer {
+  height: 44px; width: auto; display: block;
+  background: var(--white); border-radius: 8px; padding: 6px 10px;
+}
+.doc-footer .brand { font-size: 15px; font-weight: 700; color: var(--white); }
+.doc-footer .brand span { color: var(--green); }
+.doc-footer .meta { font-size: 11px; color: #64748B; }
+.doc-footer .handle { font-size: 12px; color: var(--teal); font-weight: 500; }
+
+@media print {
+  @page {
+    size: A4;
+    margin: 22mm 16mm 24mm 16mm;
+    @top-center {
+      content: "SaralPrivacy";
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-size: 9pt;
+      font-weight: 600;
+      color: #121A2E;
+      letter-spacing: 0.3px;
+    }
+    @bottom-center {
+      content: counter(page);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-size: 9pt;
+      color: #64748B;
+    }
+  }
+  @page cover {
+    margin: 0;
+    @top-center { content: none; }
+    @bottom-center { content: none; }
+  }
+  body { background: white; font-size: 11pt; }
+  .doc-wrap { box-shadow: none; max-width: 100%; }
+  .cover { min-height: auto; height: 100vh; }
+  .content { padding: 32px 40px; }
+  .content h1 { page-break-before: always; }
+  .content table {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    font-size: 8pt;
+    page-break-inside: auto;
+  }
+  .content th, .content td {
+    padding: 4px 5px;
+    font-size: 7.5pt;
+    line-height: 1.35;
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+    hyphens: auto;
+  }
+  .no-print { display: none; }
+  a { color: var(--slate) !important; text-decoration: none; }
+  .btn-primary { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  thead { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .cover, .doc-footer, .cta-block { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .watermarked::before {
+    position: fixed;
+    top: 42%;
+    left: 50%;
+    width: 68vw;
+    height: 68vw;
+    transform: translate(-50%, -50%);
+    opacity: 0.05;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+</style>
+<!-- saral:hreflang:start -->
+<link rel="canonical" href="https://saralprivacy.com/guides/dpdpa-guide-en.html">
+<link rel="alternate" hreflang="en-IN" href="https://saralprivacy.com/guides/dpdpa-guide-en.html">
+<link rel="alternate" hreflang="hi-IN" href="https://saralprivacy.com/guides/dpdpa-guide-hi.html">
+<link rel="alternate" hreflang="gu-IN" href="https://saralprivacy.com/guides/dpdpa-guide-gu.html">
+<link rel="alternate" hreflang="mr-IN" href="https://saralprivacy.com/guides/dpdpa-guide-mr.html">
+<link rel="alternate" hreflang="kn-IN" href="https://saralprivacy.com/guides/dpdpa-guide-kn.html">
+<link rel="alternate" hreflang="ta-IN" href="https://saralprivacy.com/guides/dpdpa-guide-ta.html">
+<link rel="alternate" hreflang="te-IN" href="https://saralprivacy.com/guides/dpdpa-guide-te.html">
+<link rel="alternate" hreflang="x-default" href="https://saralprivacy.com/white-paper">
+<!-- saral:hreflang:end -->
+</head>
+<body>
+<div class="doc-wrap">
+
+<header class="cover">
+  <div class="cover-top">
+    <div class="cover-brand">
+      <a href="https://saralprivacy.com" class="logo-link" aria-label="SaralPrivacy home">
+        <img src="SaralPrivacyLogo1.png" alt="SaralPrivacy — Privacy made practical for India" class="logo-cover" />
+      </a>
+      <div class="promise-pill">Verified Digital Trust</div>
+    </div>
+    <div class="cover-meta">
+      <div class="label">Whitepaper</div>
+      <div class="ver">Version 3</div>
+      <div class="date">June 2026</div>
+    </div>
+  </div>
+  <div class="cover-main">
+    <h1 class="cover-title">India's DPDPA readiness whitepaper 2026-2027</h1>
+    <p class="cover-subtitle">A practical guide for Indian businesses to prepare for notice, consent, security, rights, vendors, children's data, breach response, and sector-specific risk.</p>
+    <div class="cover-badges">
+      <span class="badge badge-green">Privacy assessment</span>
+      <span class="badge badge-teal">OPERATE framework</span>
+      <span class="badge badge-gold">12 industry snapshots</span>
+    </div>
+  </div>
+  <div class="cover-footer-line">saralprivacy.com · @saralprivacy · Informational guide, not legal advice</div>
+</header>
+
+
+<nav class="toc watermarked" aria-label="Table of contents">
+  <div class="toc-header">
+    <a href="https://saralprivacy.com"><img src="SaralPrivacyLogo1.png" alt="SaralPrivacy" class="logo-toc" /></a>
+    <div class="promise-pill" style="margin-top:0">Verified Digital Trust</div>
+  </div>
+  <h2>Contents</h2>
+  <ol><li><a href="#section-1">Cover</a></li>
+<li><a href="#section-2">Who this whitepaper is for</a></li>
+<li><a href="#section-3">Executive summary</a></li>
+<li><a href="#section-4">CEO and board priority page</a></li>
+<li><a href="#section-5">Legal status snapshot</a></li>
+<li><a href="#section-6">Why DPDPA matters in 2026-2027</a></li>
+<li><a href="#section-7">What the Act covers</a></li>
+<li><a href="#section-8">Lawful processing</a></li>
+<li><a href="#section-9">Core obligations</a></li>
+<li><a href="#section-10">OPERATE model</a></li>
+<li><a href="#section-11">Observe personal data</a></li>
+<li><a href="#section-12">Permission and lawful basis</a></li>
+<li><a href="#section-13">Evidence and records</a></li>
+<li><a href="#section-14">Rights and grievance</a></li>
+<li><a href="#section-15">Accountability and governance</a></li>
+<li><a href="#section-16">Third-party and vendor control</a></li>
+<li><a href="#section-17">Event and breach readiness</a></li>
+<li><a href="#section-18">Implementation kits</a></li>
+<li><a href="#section-19">12 industry risk snapshots</a></li>
+<li><a href="#section-20">Act section map</a></li>
+<li><a href="#section-21">Court cases tracker</a></li>
+<li><a href="#section-22">Open items to track</a></li>
+<li><a href="#section-23">90-day action plan</a></li>
+<li><a href="#section-24">Disclaimer and product bridge</a></li>
+<li><a href="#glossary">Glossary</a></li>
+<li><a href="#sources">Source register</a></li></ol>
+</nav>
+
+
+<section class="reader-guide watermarked" aria-label="How to use this guide">
+  <h2>User guide</h2>
+  <h3>How to read this whitepaper</h3>
+  <p>This document is a <strong>64-page practical guide</strong> for Indian businesses preparing for the Digital Personal Data Protection Act, 2023 (DPDPA). It is written for founders, boards, and operators — not lawyers.</p>
+  <p><strong>Suggested reading paths</strong></p>
+  <ul>
+    <li><strong>15 minutes (leadership):</strong> Section 4 CEO page, Infographic 1, Section 23 90-day plan.</li>
+    <li><strong>1 hour (compliance lead):</strong> Sections 5-9, then Sections 10-17 (OPERATE).</li>
+    <li><strong>Half day (implementation):</strong> Section 18 kits, your industry in Section 19, source register.</li>
+  </ul>
+  <div class="guide-grid">
+    <div class="guide-card">
+      <h4>8 infographics</h4>
+      <p>Sections 4, 7, 8, 10, 17, 18, 19, and 23 — Infographic 1 through 8 in reading order. Board-facing readers should start with Infographic 1.</p>
+    </div>
+    <div class="guide-card">
+      <h4>OPERATE v6.1</h4>
+      <p>Sections 11-17: Observe, Permission, Evidence, Rights, Accountability, Third-party, Event.</p>
+    </div>
+    <div class="guide-card">
+      <h4>12 industries</h4>
+      <p>Section 19 risk snapshots — pick your sector, fix two flows, then use Section 23.</p>
+    </div>
+    <div class="guide-card">
+      <h4>Legal appendix</h4>
+      <p>Sections 20-22: Act maps, litigation watch, open items. Label dates as in force or proposed.</p>
+    </div>
+  </div>
+  <p class="doc-meta">Version 3 · June 2026 · SaralPrivacy · Informational guide, not legal advice · saralprivacy.com</p>
+</section>
+
+<main class="content watermarked">
+<h2>Section 1: Cover</h2>
+<p><a id="section-1"></a></p>
+<p>India's Digital Personal Data Protection Act is no longer a future law on a shelf. Rules are notified, the Data Protection Board of India is being constituted, and operational compliance dates sit on the calendar for 2026 and 2027. This whitepaper translates that legal machinery into decisions founders, boards, and operators can act on this quarter.</p>
+<p><strong>What you will find here:</strong></p>
+<ul>
+<li>A plain-English map of what the Act requires and what is still open law</li>
+<li>The SaralPrivacy <strong>OPERATE v6.1</strong> framework: seven business capabilities, not seven legal chapters</li>
+<li>Implementation kits, industry risk snapshots, and a 90-day action plan</li>
+<li>A legal appendix with Act and Rules tables, case watchlist, glossary, and sources</li>
+</ul>
+<p><strong>Legal status one-liner (14 June 2026):</strong> Core operational duties under Sections 3-17 and most Rules take effect on <strong>13 May 2027</strong> unless Gazette amendments accelerate the timeline; Consent Manager duties begin <strong>13 November 2026</strong>. Treat any shorter deadline as <strong>proposed until notified</strong>.</p>
+<hr />
+<h2>Section 2: Who This Whitepaper Is For</h2>
+<p><a id="section-2"></a></p>
+<h3>Who this is for</h3>
+<ul>
+<li>Founders and operators of Indian businesses that collect customer, employee, or vendor data digitally</li>
+<li>Compliance leads, CFOs, HR heads, and product managers who need plain-English guidance, not a law textbook</li>
+<li>Advisors (CAs, consultants, legal ops) who help SMEs get DPDPA-ready before deadlines hit</li>
+<li>International teams serving Indian users who need India-specific mechanics, not a GDPR copy-paste</li>
+<li>Board members and CXOs who need a one-page risk view before approving budget and ownership</li>
+</ul>
+<h3>Who this is not for</h3>
+<ul>
+<li>Lawyers seeking clause-by-clause commentary (use Sections 20-22 and the glossary instead)</li>
+<li>Organisations looking for a one-page checkbox without operational change</li>
+<li>Readers who want certainty on rules not yet notified (SDF list, restricted countries, Board portal details)</li>
+</ul>
+<h3>Sectors with dedicated snapshots in Section 19</h3>
+<p>CA firms, recruitment agencies, training institutes, D2C brands, clinics and diagnostic labs, schools and colleges, law firms, real estate, hotels and travel, pharmacies, fintech and NBFCs, gyms, salons and spas.</p>
+<hr />
+<h2>Section 3: Executive Summary</h2>
+<p><a id="section-3"></a>
+<blockquote class="brand-line">Know your gaps. Fix what matters. Signal trust.</blockquote></p>
+<p>India's DPDPA changes how businesses treat personal data from first collection to breach response. The Act does not ban data use. It requires <strong>lawful purpose</strong>, <strong>clear notice</strong>, <strong>defensible consent or narrow legitimate use</strong>, <strong>reasonable security</strong>, <strong>timely breach response</strong>, <strong>working rights channels</strong>, and <strong>processor control</strong> - with evidence that each control exists. For most Indian operators, the shift is from informal habits (WhatsApp intake, shared folders, bundled consents, indefinite retention) to <strong>documented, owned programmes</strong> that survive a regulator or enterprise customer asking "show me."</p>
+<p><strong>Why CEOs should care now.</strong> Three clocks are running: the Board is live; Consent Manager infrastructure becomes real from November 2026; operational compliance is scheduled for May 2027 but may accelerate if MeitY shortens the runway. Penalties reach Rs 250 crore in tiered ceilings, but the nearer-term risk is <strong>trust, procurement, and litigation shape</strong> - partners and customers already ask for data maps and breach playbooks. Waiting until the final Gazette date means rebuilding under pressure.</p>
+<p><strong>Five things to start this quarter:</strong></p>
+<ol>
+<li><strong>Name one accountable owner</strong> for DPDPA readiness (not a committee without a driver).</li>
+<li><strong>Build a processing activity register</strong> - what data, why, where, who accesses it, how long it stays.</li>
+<li><strong>Fix standalone notices</strong> at major collection points; separate optional marketing consent.</li>
+<li><strong>Upgrade processor contracts</strong> and map cross-border flows.</li>
+<li><strong>Run a breach tabletop</strong> and open a rights/grievance inbox with a 90-day SLA tracker.</li>
+</ol>
+<p><strong>What remains open law.</strong> Restricted-country lists, Significant Data Fiduciary designations, specified localisation categories, Consent Manager operational details, and timeline compression are <strong>watch items</strong> until Gazette confirmation. This whitepaper labels each item as in force, notified phase, proposed, or pending litigation - never merged.</p>
+<p><strong>How to read the rest of this document.</strong> Sections 5-9 give legal foundation. Sections 10-17 walk OPERATE v6.1 chapter by chapter. Section 18 provides kits; Section 19 shows where risk concentrates by industry. Sections 20-22 are legal appendix material. Section 23 is your 90-day starter plan. Section 24 explains scope and how SaralPrivacy tools fit without replacing counsel.</p>
+<p><strong>Bottom line for leadership:</strong> DPDPA readiness is an operating capability - inventory, permission, proof, rights, governance, vendors, and incident response - not a policy PDF. Organisations that build evidence in 2026 will negotiate partnerships, handle complaints, and face regulatory questions from a position of clarity. Those that wait for a final headline date risk rebuilding under pressure.</p>
+<hr />
+<h2>Section 4: CEO and Board Priority Page</h2>
+<p><a id="section-4"></a></p>
+<p>Boards do not need to read the entire Act. They need five decisions, five risks, five evidence items, and clarity on what <strong>not</strong> to overbuild before the law settles.</p>
+<h3>Five leadership decisions</h3>
+<ol>
+<li><strong>Name a single accountable owner</strong> - product, legal, or ops - with board visibility, not "everyone owns privacy."</li>
+<li><strong>Decide which processing is consent vs legitimate use</strong> and document the call; do not assume all HR or KYC flows are exempt.</li>
+<li><strong>Approve a vendor and cross-border review this quarter</strong> - cloud, payroll, CRM, ad-tech, BGV, payment partners.</li>
+<li><strong>Set a breach escalation path before an incident</strong> - legal, security, communications, and Board notification roles.</li>
+<li><strong>Choose two industry-specific flows to fix first</strong> (from Section 19) where your real data leaks today.</li>
+</ol>
+<h3>Five operational risks</h3>
+<ol>
+<li><strong>WhatsApp and personal phones</strong> as default channels for PAN, health, prescriptions, CVs, or guest IDs.</li>
+<li><strong>Shared cloud folders and stale access</strong> - ex-staff, interns, freelancers, old broker partners.</li>
+<li><strong>Marketing and analytics without separate consent</strong> - pixels, cart campaigns, WhatsApp promos.</li>
+<li><strong>Indefinite retention</strong> of old customer, candidate, patient, or employee records.</li>
+<li><strong>Processors used without contracts</strong> or without security and breach-cooperation clauses.</li>
+</ol>
+<h3>Five evidence items to maintain</h3>
+<ol>
+<li>Processing activity register (dated, owned, reviewed quarterly).</li>
+<li>Notice and consent version log (what users saw, when, on which channel).</li>
+<li>Processor and vendor contract register with DPDPA-aligned clauses.</li>
+<li>Rights and grievance request log with closure dates.</li>
+<li>Breach and incident record - including tabletop drills.</li>
+</ol>
+<h3>Five things not to overbuild yet</h3>
+<ol>
+<li>Full Significant Data Fiduciary programme before designation criteria and lists are final.</li>
+<li>Consent Manager integration before the November 2026 framework is operational in your sector.</li>
+<li>Country-level transfer blocklists before government notifications publish.</li>
+<li>Enterprise GRC platform before basic inventory, notices, and vendor contracts exist.</li>
+<li>Claiming "fully compliant" while litigation and phase dates are still moving.</li>
+</ol>
+<h3>Evidence pack at a glance</h3>
+<p><em>Diagram: see figure below.</em></p>
+<figure class="figure"><img src="../infographics/infographic-08-evidence-pack.png" alt="Infographic 1: Evidence Pack Checklist" /><figcaption>Infographic 1: Evidence Pack Checklist</figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Evidence item</th>
+<th>Owner</th>
+<th>Review cadence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Processing activity register</td>
+<td>Ops / Product</td>
+<td>Quarterly</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Notice and consent versions</td>
+<td>Legal / Product</td>
+<td>On every change</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Vendor contracts with DPDPA clauses</td>
+<td>Procurement / Legal</td>
+<td>On onboarding</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Rights and grievance log</td>
+<td>Support / Legal</td>
+<td>Monthly</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Breach and incident log</td>
+<td>Security / Legal</td>
+<td>After every event + annual drill</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Access review records</td>
+<td>IT / HR</td>
+<td>Quarterly</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Retention schedule + deletion proof</td>
+<td>Ops / IT</td>
+<td>Semi-annual</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Regulatory watch log</td>
+<td>Compliance</td>
+<td>Monthly</td>
+</tr>
+</tbody>
+</table>
+<p><strong>CEO takeaway:</strong> Compliance is proven with <strong>records</strong>, not intentions.</p>
+<hr />
+<h2>Section 5: Legal Status Snapshot (June 2026)</h2>
+<p><a id="section-5"></a></p>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Current legal position</th>
+<th>Practical consequence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>In force now</strong></td>
+<td>Section 1(2), Section 2, Sections 18-26, 35, 38-43, and Section 44(1),(3); Rules 1, 2, 17-21.</td>
+<td>Definitions, DPBI constitution, rule-making, certain amendments and Board framework are active.</td>
+</tr>
+<tr>
+<td><strong>13 Nov 2026</strong></td>
+<td>Section 6(9) and Section 27(1)(d); Rule 4.</td>
+<td>Consent Manager framework and related duties begin.</td>
+</tr>
+<tr>
+<td><strong>13 May 2027</strong></td>
+<td>Sections 3-17, most of Section 6, Sections 27-34, 36, 37, Section 44(2); Rules 3, 5-16, 22, 23.</td>
+<td>Operational readiness deadline for notice, consent, breach, rights, children, retention, SDF, appeals and government information powers.</td>
+</tr>
+<tr>
+<td><strong>Not yet clear</strong></td>
+<td>Restricted country list, SDF designations, specified SDF localisation data categories, Board portal procedures in practice.</td>
+<td>Track MeitY/DPBI notifications before making absolute claims.</td>
+</tr>
+<tr>
+<td><strong>Enforcement readiness</strong></td>
+<td>DPBI establishment notified; digital proceedings framework in Rules 17-21; phased operational dates.</td>
+<td>Build evidence packs now - enforcement infrastructure is forming before operational deadlines.</td>
+</tr>
+</tbody>
+</table>
+<h3>Policy horizon alert</h3>
+<p><strong>Treat the items below as watch items until a Gazette amendment confirms them. They are proposed or discussed - not notified law as of 14 June 2026.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>What was discussed</th>
+<th>Business impact</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Jan 2026 stakeholder meeting (reported)</td>
+<td>Compress 18-month runway to 12 months; fast-track SDF list; Rule 8(3) retention within 90 days post-amendment</td>
+<td>Operational deadline <strong>may</strong> move from 13 May 2027 toward 13 Nov 2026</td>
+</tr>
+<tr>
+<td>Feb 2026 (reported)</td>
+<td>Industry feedback window on timeline compression</td>
+<td>Outcome pending Gazette</td>
+</tr>
+<tr>
+<td>Jun 2026 (reported, ET Telecom)</td>
+<td>MeitY Secretary awaiting industry input on timeline</td>
+<td>No final call yet - do not plan on an accelerated date as law</td>
+</tr>
+<tr>
+<td>Karnataka (reported, 2026)</td>
+<td>Social media ban proposal for under-16</td>
+<td>National vs state competence unclear - policy debate only</td>
+</tr>
+<tr>
+<td>Pending litigation</td>
+<td>Supreme Court / Delhi HC challenges on RTI interface, exemptions, Board structure</td>
+<td>Awareness only - Act not stayed as of this date</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Author rule:</strong> Always label items as <strong>in force</strong>, <strong>notified phase</strong>, <strong>proposed</strong>, or <strong>pending litigation</strong>. Never merge them.</p>
+<h3>Numbers strip</h3>
+<table>
+<thead>
+<tr>
+<th>18 months</th>
+<th>4+1 rights</th>
+<th>72 hr</th>
+<th>90 days</th>
+<th>Rs 250 Cr</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Phased compliance window from Rules notification (13 Nov 2025)</td>
+<td>Access, correction, erasure, grievance, plus nomination</td>
+<td>Detailed breach report to DPBI after notification (Rule 7)</td>
+<td>Maximum grievance response time (Rule 14)</td>
+<td>Tiered maximum penalty ceiling under the Act</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Section 6: Why DPDPA Matters in 2026-2027</h2>
+<p><a id="section-6"></a></p>
+<h3>India's digital stack - privacy as the trust layer</h3>
+<p>India built a digital public infrastructure that most countries only talk about: identity (Aadhaar), payments (UPI), documents (DigiLocker), and consent rails (Account Aggregator). Think of it like a modern highway system - fast lanes for commerce, toll plazas for verification, and millions of vehicles (apps and businesses) on the road.</p>
+<p>Until recently, the highway had speed limits but no uniform traffic police for personal data. The DPDPA is that traffic system: it tells businesses <strong>what data they may carry</strong>, <strong>how they must protect it</strong>, and <strong>what happens when they crash</strong>.</p>
+<p><strong>Analogy for non-technical readers:</strong> Your shop has always kept a customer register. DPDPA asks you to (1) tell customers what you write in the register, (2) only write what you need, (3) lock the register, (4) let customers see or erase their page, and (5) call the authorities quickly if the register is stolen. The register did not become illegal - careless handling did.</p>
+<h3>Consent alone is not enough</h3>
+<p>Many teams hear "DPDPA" and jump straight to consent banners. Consent is necessary for many flows, but the Act also demands <strong>security</strong>, <strong>breach notification</strong>, <strong>retention discipline</strong>, <strong>rights handling</strong>, <strong>processor contracts</strong>, and <strong>accountability evidence</strong>. A business with perfect consent logs but shared WhatsApp folders, no breach playbook, and indefinite CV storage is still exposed. OPERATE v6.1 separates <strong>Permission</strong> (lawful basis) from <strong>Evidence</strong> (proof) and <strong>Accountability</strong> (governance) for this reason.</p>
+<h3>Universal privacy principles (OECD / APEC baseline)</h3>
+<p>Across 160+ jurisdictions, the same themes repeat. India aligns with these even where mechanics differ:</p>
+<ol>
+<li><strong>Transparency</strong> - tell people what you collect and why  </li>
+<li><strong>Purpose limitation</strong> - use data only for the stated reason  </li>
+<li><strong>Data minimisation</strong> - collect the smallest amount that works  </li>
+<li><strong>Security</strong> - protect data with reasonable safeguards  </li>
+<li><strong>Individual rights</strong> - access, correction, deletion, complaint routes  </li>
+<li><strong>Accountability</strong> - prove you did the above, especially under a digital regulator  </li>
+<li><strong>Cross-border responsibility</strong> - know where data travels and who answers for it  </li>
+</ol>
+<p>The DPDPA is India's version of these habits, not a foreign import with Indian letterhead.</p>
+<h3>Global comparison - business lens</h3>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>GDPR (EU/UK)</th>
+<th>CCPA/CPRA (US)</th>
+<th>LGPD (Brazil)</th>
+<th>DPDPA (India)</th>
+<th>Business takeaway</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Philosophy</strong></td>
+<td>Rights-first</td>
+<td>Consumer opt-out / notice</td>
+<td>Rights + legitimate interest</td>
+<td>Execution-first, trust-at-scale</td>
+<td>India rewards <strong>built systems</strong>, not paper policies</td>
+</tr>
+<tr>
+<td><strong>Lawful processing</strong></td>
+<td>6 bases (Art 6)</td>
+<td>Notice + opt-out; limited bases</td>
+<td>10 legal bases</td>
+<td>Consent <strong>or</strong> narrow Section 7 legitimate uses</td>
+<td>Fewer non-consent routes than GDPR - <strong>do not stretch Section 7</strong></td>
+</tr>
+<tr>
+<td><strong>Consent standard</strong></td>
+<td>Freely given, specific, informed</td>
+<td>Opt-out for sale/share; opt-in for minors</td>
+<td>Similar to GDPR</td>
+<td>Free, specific, informed, unconditional, <strong>unambiguous</strong></td>
+<td>Pre-ticked boxes fail everywhere; India is explicit</td>
+</tr>
+<tr>
+<td><strong>Sensitive data</strong></td>
+<td>Special categories (Art 9)</td>
+<td>Sensitive PI under CPRA</td>
+<td>Sensitive data</td>
+<td><strong>No separate category</strong> - but type still drives risk, penalties, SDF</td>
+<td>Treat health, biometric, children's data as <strong>high-care</strong>, not "non-sensitive"</td>
+</tr>
+<tr>
+<td><strong>Children</strong></td>
+<td>13-16 tiered (member state)</td>
+<td>Under 16 opt-in</td>
+<td>Parental consent</td>
+<td><strong>Uniform under 18</strong></td>
+<td>Stricter single threshold</td>
+</tr>
+<tr>
+<td><strong>Cross-border</strong></td>
+<td>SCCs, adequacy, TIA</td>
+<td>Sector/state patchwork</td>
+<td>ANPD guidance</td>
+<td>Permissive default; <strong>government may restrict</strong> list + Rule 15</td>
+<td>Map flows; <strong>monitor MeitY notifications</strong></td>
+</tr>
+<tr>
+<td><strong>Regulator</strong></td>
+<td>National DPAs</td>
+<td>AG + CPPA</td>
+<td>ANPD</td>
+<td><strong>DPBI</strong> (digital-first)</td>
+<td>Evidence packs matter</td>
+</tr>
+<tr>
+<td><strong>Unique feature</strong></td>
+<td>DPO mandate (some controllers)</td>
+<td>Do Not Sell/Share</td>
+<td>DPO-like roles</td>
+<td><strong>Consent Manager</strong> (registered intermediary)</td>
+<td>India-only infrastructure play</td>
+</tr>
+<tr>
+<td><strong>Max penalty</strong></td>
+<td>EUR 20M / 4% turnover</td>
+<td>$7,500/violation (varies)</td>
+<td>2% revenue / 50M BRL</td>
+<td><strong>Rs 250 Cr</strong> ceilings (tiered)</td>
+<td>Prioritise security + breach notification</td>
+</tr>
+<tr>
+<td><strong>Enforcement style</strong></td>
+<td>Mature, high volume</td>
+<td>Growing, fragmented</td>
+<td>Growing</td>
+<td><strong>Phased</strong> - Board live; ops dates 2026-2027</td>
+<td>Start now; dates may <strong>accelerate</strong></td>
+</tr>
+</tbody>
+</table>
+<h3>India vs GDPR - myths vs facts</h3>
+<table>
+<thead>
+<tr>
+<th>Myth</th>
+<th>Fact (DPDPA)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"GDPR compliant = DPDPA ready"</td>
+<td>Different lawful bases, no SCC regime, Consent Manager, phased commencement</td>
+</tr>
+<tr>
+<td>"No sensitive category = low risk health data"</td>
+<td>Health/children/financial data still attract scrutiny and sector rules</td>
+</tr>
+<tr>
+<td>"We have until May 2027"</td>
+<td>MeitY discussing <strong>12-month</strong> acceleration; SDF/cross-border may move faster</td>
+</tr>
+<tr>
+<td>"Breach always means Rs 250 Cr fine"</td>
+<td>Penalty tied to <strong>failure to implement reasonable security safeguards</strong> (Sec 8(5))</td>
+</tr>
+<tr>
+<td>"One privacy policy is enough"</td>
+<td>Rule 3: notice must be <strong>independently understandable</strong> at each collection point</td>
+</tr>
+</tbody>
+</table>
+<h3>Why 2026 is the real start line</h3>
+<p>Three clocks are running at once:</p>
+<ol>
+<li><strong>Board clock (live):</strong> DPBI exists. Evidence-led digital enforcement is being built now.  </li>
+<li><strong>Consent Manager clock (13 Nov 2026):</strong> Registered intermediaries and integrations become real.  </li>
+<li><strong>Operations clock (13 May 2027, possibly sooner):</strong> Notice, consent, security, breach, rights, children, processors - the work most businesses feel.</li>
+</ol>
+<p><strong>2026 is when programmes must shift from "we will hire someone later" to "we can show our data map and breach playbook today."</strong> The businesses that treat privacy as customer trust - not a legal footer - will move faster when procurement, partnerships, and regulators ask for proof.</p>
+<hr />
+<h2>Section 7: What the Act Covers</h2>
+<p><a id="section-7"></a></p>
+<p>Before building controls, leaders need a shared vocabulary. DPDPA uses defined roles and a digital-first scope. This section is the plain-English map.</p>
+<h3>Key definitions</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Who / what</th>
+<th>Plain meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Digital personal data</strong></td>
+<td>The data itself</td>
+<td>Personal data in digital form, plus offline personal data that is later digitised</td>
+</tr>
+<tr>
+<td><strong>Data Principal (DP)</strong></td>
+<td>The person</td>
+<td>Customer, employee, student, patient, guest, candidate - anyone whose data you process</td>
+</tr>
+<tr>
+<td><strong>Data Fiduciary (DF)</strong></td>
+<td>Usually your company</td>
+<td>The entity that decides <strong>why</strong> and <strong>how</strong> personal data is processed</td>
+</tr>
+<tr>
+<td><strong>Data Processor</strong></td>
+<td>Vendors</td>
+<td>Cloud host, payroll SaaS, ATS, payment gateway, analytics tool - processes data on your instruction</td>
+</tr>
+<tr>
+<td><strong>Consent Manager (CM)</strong></td>
+<td>Registered intermediary</td>
+<td>India-specific layer helping people give, manage, and withdraw consent across services (from Nov 2026)</td>
+</tr>
+<tr>
+<td><strong>Significant Data Fiduciary (SDF)</strong></td>
+<td>Notified large/high-risk DF</td>
+<td>Extra duties: DPIA, audit, algorithmic diligence, possible localisation - only if government designates you</td>
+</tr>
+</tbody>
+</table>
+<h3>Applicability - when the Act touches your business</h3>
+<p><strong>Section 3</strong> applies when you process digital personal data:</p>
+<ul>
+<li><strong>In India</strong> - customers, employees, vendors, website users</li>
+<li><strong>Offline data later digitised</strong> - paper forms scanned into a system</li>
+<li><strong>Outside India</strong> - if processing connects to offering goods or services to people in India</li>
+</ul>
+<p><strong>Exclusions and carve-outs</strong> exist (Section 17 and Rule schedules) for certain State, research, legal, and security contexts. Do not self-certify broad exemptions without counsel. Examples that sometimes confuse teams: processing strictly necessary for a legal claim, certain court-directed disclosures, and research/statistics that meet Rule 16 standards without individual decisioning. Even where an exemption may apply, <strong>documentation</strong> of the legal basis and narrow scope still matters for accountability.</p>
+<h3>Personal data in practice - what teams forget to count</h3>
+<p>Operators often under-count personal data because it hides in operational tools rather than customer databases. Common overlooked sources include: recruiter Excel trackers, WhatsApp Business chat exports, CCTV footage with identifiable individuals, attendance and GPS logs, employee monitoring on work devices, old backup tapes, test environments with production copies, and AI training sets built from customer support tickets. Observe means counting these honestly, not only CRM rows.</p>
+<hr />
+<p>Unlike GDPR, India does not label a statutory special category. That does <strong>not</strong> mean health, financial, children's, or biometric data is low risk. Sector rules, SDF scrutiny, and customer trust still treat these as <strong>high-care</strong> data requiring stronger notice, security, retention, and rights handling.</p>
+<h3>Role ecosystem</h3>
+<p><em>Diagram: see figure below.</em></p>
+<figure class="figure"><img src="../infographics/infographic-01-role-ecosystem.png" alt="Infographic 2: DPDPA Role Ecosystem" /><figcaption>Infographic 2: DPDPA Role Ecosystem</figcaption></figure>
+<p><strong>Plain English:</strong> The business is usually the <strong>Data Fiduciary</strong>. Your vendors are <strong>Processors</strong>. The person is the <strong>Data Principal</strong>. Consent Managers are an India-only layer. SDF applies only if government notifies your organisation.</p>
+<hr />
+<h2>Section 8: Lawful Processing - Consent and Legitimate Uses</h2>
+<p><a id="section-8"></a></p>
+<p>Every collection and use needs a lawful route: <strong>consent</strong> under Section 6 or a narrow <strong>legitimate use</strong> under Section 7. This section rolls up the legal foundation before OPERATE chapters go operational.</p>
+<h3>Consent requirements (Section 6)</h3>
+<p>Consent must be:</p>
+<ul>
+<li><strong>Free</strong> - no denial of core service for refusing optional processing</li>
+<li><strong>Specific</strong> - marketing, analytics, photos, and referrals separated from core delivery</li>
+<li><strong>Informed</strong> - backed by standalone notice (Section 5, Rule 3)</li>
+<li><strong>Unconditional</strong> - not bundled with unrelated terms</li>
+<li><strong>Unambiguous</strong> - clear affirmative action; no pre-ticked boxes</li>
+<li><strong>Withdrawable</strong> - at least as easy as giving consent</li>
+</ul>
+<p><strong>Children (Section 9):</strong> Uniform threshold <strong>under 18</strong>. Verifiable parental consent; no tracking, behavioural monitoring, or targeted advertising directed at children.</p>
+<h3>Legitimate uses (Section 7) - narrow list, not a convenience hatch</h3>
+<p>Examples include voluntary data provided by the Data Principal for a specified purpose, State functions, compliance with law, court orders, medical emergency, disaster/public order, and certain employment safeguards. <strong>Do not map GDPR "legitimate interests" directly to Section 7.</strong> When uncertain, use notice plus consent and document the decision.</p>
+<h3>Notice alignment (Section 5, Rule 3)</h3>
+<p>Notice must be <strong>independently understandable</strong>, plain, itemised, and available at the collection point - not buried in Terms and Conditions. It must explain data collected, purpose, rights, withdrawal, grievance contact, and Board complaint route.</p>
+<h3>Consent and legitimate-use decision flow</h3>
+<p><em>Diagram: see figure below.</em></p>
+<figure class="figure"><img src="../infographics/infographic-02-consent-flow.png" alt="Infographic 3: Consent and Legitimate-Use Flow" /><figcaption>Infographic 3: Consent and Legitimate-Use Flow</figcaption></figure>
+<p><strong>Decision rule:</strong> Do not default every business convenience to legitimate use. When in doubt, use <strong>notice + consent</strong> and keep evidence.</p>
+<h3>Employment, State, and legal contexts</h3>
+<p>HR payroll, attendance, and statutory filings often fit legitimate-use or contractual necessity patterns - but still need notice, security, retention limits, and rights channels. Government-linked benefit programmes must review Schedule 2 standards. Legal proceedings and regulatory requests need documented legal basis and escalation to counsel.</p>
+<hr />
+<h2>Section 9: Core Obligations Under DPDPA</h2>
+<p><a id="section-9"></a></p>
+<p>This table maps statutory duties to OPERATE v6.1 and the evidence leaders should expect.</p>
+<table>
+<thead>
+<tr>
+<th>Obligation</th>
+<th>Act / Rule anchor</th>
+<th>OPERATE letter</th>
+<th>Evidence type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Know your data</td>
+<td>Sec 3, 8; Rule 6</td>
+<td><strong>Observe</strong></td>
+<td>Processing activity register, flow map</td>
+</tr>
+<tr>
+<td>Lawful basis</td>
+<td>Sec 4, 6, 7</td>
+<td><strong>Permission</strong></td>
+<td>Basis tags, consent logs, Section 7 memos</td>
+</tr>
+<tr>
+<td>Notice</td>
+<td>Sec 5; Rule 3</td>
+<td><strong>Permission</strong></td>
+<td>Dated notices per channel, change log</td>
+</tr>
+<tr>
+<td>Consent / withdrawal</td>
+<td>Sec 6</td>
+<td><strong>Permission</strong></td>
+<td>Timestamped consent, withdrawal records</td>
+</tr>
+<tr>
+<td>Security safeguards</td>
+<td>Sec 8(5); Rule 6</td>
+<td><strong>Event</strong> (prevent) + <strong>Accountability</strong></td>
+<td>Security baseline, access reviews, logs</td>
+</tr>
+<tr>
+<td>Breach notification</td>
+<td>Sec 8(6)-(7); Rule 7</td>
+<td><strong>Event</strong></td>
+<td>Incident timeline, user/Board notices, 72-hour report</td>
+</tr>
+<tr>
+<td>Retention / erasure</td>
+<td>Sec 8(7); Rule 8</td>
+<td><strong>Evidence</strong> + <strong>Event</strong></td>
+<td>Retention schedule, deletion proof</td>
+</tr>
+<tr>
+<td>Rights + grievance</td>
+<td>Sec 11-14; Rule 14</td>
+<td><strong>Rights</strong></td>
+<td>Request register, SLA tracker, closures</td>
+</tr>
+<tr>
+<td>Children's data</td>
+<td>Sec 9; Rules 10-12</td>
+<td><strong>Permission</strong> + kits</td>
+<td>Age gate, parental consent, no child ads</td>
+</tr>
+<tr>
+<td>Processor control</td>
+<td>Sec 8; Rule 6</td>
+<td><strong>Third-party</strong></td>
+<td>Contracts, vendor register, audits</td>
+</tr>
+<tr>
+<td>Cross-border transfer</td>
+<td>Sec 16; Rule 15</td>
+<td><strong>Third-party</strong></td>
+<td>Transfer map, restriction watch log</td>
+</tr>
+<tr>
+<td>Governance / contact</td>
+<td>Rule 9; Sec 10 (SDF)</td>
+<td><strong>Accountability</strong></td>
+<td>Named owner, DPO contact, board reviews</td>
+</tr>
+<tr>
+<td>Programme proof</td>
+<td>Sec 8 accountability</td>
+<td><strong>Evidence</strong></td>
+<td>Full evidence pack (Section 4, 13)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Leadership read:</strong> If you cannot point to the evidence column for a row, assume the obligation is not operating yet.</p>
+<h3>How obligations interact in real operations</h3>
+<p>Few businesses fail on a single missing checkbox. Failure patterns are usually <strong>compound</strong>: WhatsApp intake without notice, plus indefinite retention, plus no breach playbook, plus vendor without contract. The table above is a diagnostic grid. When auditing a flow - for example clinic report sharing or fintech KYC - walk the row top to bottom and mark which evidence exists today. That compound view is what DPBI proceedings and enterprise procurement diligence increasingly resemble.</p>
+<hr />
+<h2>Section 10: The SaralPrivacy OPERATE Model (v6.1)</h2>
+<p><a id="section-10"></a></p>
+<p>The SaralPrivacy <strong>OPERATE</strong> model turns DPDPA from statute sections into seven business capabilities. v6.1 reframes letters to match how operators actually build programmes: observe data, earn permission, keep evidence, honour rights, show accountability, control third parties, and rehearse events (especially breaches).</p>
+<pre><code>O  OBSERVE        - Know what data you have and where it flows
+P  PERMISSION     - Lawful basis, notice, consent, legitimate use
+E  EVIDENCE       - Logs, contracts, versions, proof packs
+R  RIGHTS         - Access, correction, erasure, grievance, nomination
+A  ACCOUNTABILITY - Owners, policies, training, board reporting
+T  THIRD-PARTY    - Processors, vendors, cross-border
+E  EVENT          - Breach detection, 72-hour clock, escalation
+</code></pre>
+<p><em>Diagram: see figure below.</em></p>
+<figure class="figure"><img src="../infographics/infographic-03-operate-wheel.png" alt="Infographic 4: OPERATE v6.1 Model" /><figcaption>Infographic 4: OPERATE v6.1 Model</figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>Letter</th>
+<th>Question every leader should ask</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>O</strong></td>
+<td>What data do we actually collect and where does it live?</td>
+</tr>
+<tr>
+<td><strong>P</strong></td>
+<td>Why are we allowed to use it - consent or legitimate use?</td>
+</tr>
+<tr>
+<td><strong>E</strong></td>
+<td>Can we prove notices, consents, and contracts?</td>
+</tr>
+<tr>
+<td><strong>R</strong></td>
+<td>Can people access, correct, erase, and complain easily?</td>
+</tr>
+<tr>
+<td><strong>A</strong></td>
+<td>Who owns this programme and when was it last reviewed?</td>
+</tr>
+<tr>
+<td><strong>T</strong></td>
+<td>Are vendors and processors under contract and control?</td>
+</tr>
+<tr>
+<td><strong>E</strong></td>
+<td>What happens in the first 72 hours after a leak?</td>
+</tr>
+</tbody>
+</table>
+<p>Each chapter below uses the same six-block recipe: hook, outcomes, actions, India anchors, GDPR comparison, evidence checklist.</p>
+<hr />
+<h2>Section 11: OPERATE Chapter 1 - Observe Personal Data</h2>
+<p><a id="section-11"></a></p>
+<h4>1. Business hook</h4>
+<p>You cannot protect what you cannot name. Most DPDPA failures start the same way: leadership thinks the company holds "basic customer info," while engineers, HR, and vendors quietly hold PAN copies, health records, and years of WhatsApp exports. <strong>Observe</strong> means building a living map of personal data - like inventory in a warehouse, not a one-time Excel dump.</p>
+<p><strong>Analogy:</strong> DPDPA readiness is like preparing for a tax audit. You do not wait for the notice to discover which drawers hold old receipts. You label drawers now.</p>
+<h4>2. What good looks like</h4>
+<ul>
+<li>A processing activity register (PAR) listing <strong>what</strong> data, <strong>why</strong>, <strong>who</strong> accesses it, <strong>where</strong> it is stored, and <strong>how long</strong> it stays  </li>
+<li>Owner named for each activity (marketing, HR, finance, product)  </li>
+<li>Data flows documented for India and cross-border systems  </li>
+<li>Red-flag flows flagged early: WhatsApp intake, shared drives, ex-employee access, shadow IT  </li>
+<li>Updates triggered when you launch features, vendors, or new collection points  </li>
+</ul>
+<h4>3. Do this now</h4>
+<ol>
+<li>List every place personal data enters your business: website forms, apps, WhatsApp, email, paper, CCTV, HR tools, payment gateways.  </li>
+<li>For each entry point, record data categories (name, phone, PAN, health, photos, location, etc.).  </li>
+<li>Mark each flow as customer, employee, vendor, or lead data with a business purpose tag.  </li>
+<li>Identify processors (cloud, payroll, ATS, CRM, ad-tech) and link them to activities.  </li>
+<li>Highlight high-care data even without a "sensitive" label: children, health, financial, biometric.  </li>
+<li>Assign an activity owner and review calendar (quarterly minimum).  </li>
+<li>Store the register where legal, security, and product can all access it.  </li>
+</ol>
+<h4>4. India anchor box</h4>
+<table>
+<thead>
+<tr>
+<th>Anchor</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Section 3</strong></td>
+<td>Act applies to digital personal data in India, offline data later digitised, and foreign processing tied to offering goods/services in India</td>
+</tr>
+<tr>
+<td><strong>Section 8</strong></td>
+<td>Data Fiduciary remains accountable for lawful processing and processor control</td>
+</tr>
+<tr>
+<td><strong>Rule 6</strong></td>
+<td>Security includes access control, logs, monitoring - you need to know who touched what</td>
+</tr>
+</tbody>
+</table>
+<h4>5. If you know GDPR</h4>
+<p>GDPR Article 30 requires Records of Processing Activities (ROPA) for many controllers. India's approach is similar in practice but not identical in form: build the same inventory habit, but tag lawful basis under <strong>Section 4 + 6/7</strong>, not GDPR Article 6 labels.</p>
+<h4>6. Evidence checklist</h4>
+<ul>
+<li>[ ] Processing activity register (version dated)  </li>
+<li>[ ] Data flow diagram or table (internal + cross-border)  </li>
+<li>[ ] Processor/vendor list linked to activities  </li>
+<li>[ ] High-care data classification notes  </li>
+<li>[ ] Quarterly review log with named owner  </li>
+</ul>
+<hr />
+<h2>Section 12: OPERATE Chapter 2 - Permission and Lawful Basis</h2>
+<p><a id="section-12"></a></p>
+<p>Permission combines what v6 split across <strong>Permit</strong> and <strong>Explain</strong>: lawful basis discipline <strong>and</strong> notices people actually understand at the moment of collection.</p>
+<h4>1. Business hook</h4>
+<p>Collecting data is easy. <strong>Being allowed</strong> to use it is the law. Permission is your lawful-processing plus notice discipline: every use needs either <strong>consent</strong> or a narrow <strong>Section 7 legitimate use</strong> - not "we always did it this way." And users must understand what they agreed to <strong>at the collection point</strong>, not on page 47 of a policy PDF.</p>
+<p><strong>Analogy:</strong> Consent is like a guest list at a wedding. Legitimate use is like letting the caterer into the kitchen without a separate invitation - but only because they have a specific job, not because they wandered in. The notice on the invitation is what makes both legitimate.</p>
+<h4>2. What good looks like</h4>
+<ul>
+<li>Every processing activity tagged: <strong>consent</strong> or <strong>legitimate use</strong> (with Section 7 subsection cited)  </li>
+<li>Marketing, profiling, photos, referrals, and optional analytics on <strong>separate consent</strong>  </li>
+<li>Consent records show what was agreed, when, and how withdrawal works  </li>
+<li>No pre-ticked boxes; clear affirmative action  </li>
+<li>Standalone notice at each collection point - not hidden inside Terms and Conditions  </li>
+<li>Plain language, itemised: what data, why, rights, withdrawal, grievance contact, Board complaint route  </li>
+<li>Consent Manager strategy documented if you integrate with registered intermediaries (from 13 Nov 2026)  </li>
+<li>Children's flows use verifiable parental consent; no targeted ads to children  </li>
+</ul>
+<h4>3. Do this now</h4>
+<ol>
+<li>Audit current consents: website, app, WhatsApp, paper forms, contracts - are they specific or bundled?  </li>
+<li>Split <strong>necessary</strong> processing (order fulfilment, payroll) from <strong>optional</strong> processing (ads, testimonials, talent pools).  </li>
+<li>Inventory every collection point: web, app, offline form, WhatsApp bot, reception desk.  </li>
+<li>Draft a <strong>short notice template</strong> (200-400 words) per major flow.  </li>
+<li>Remove core notice from T&Cs; link or embed notice separately.  </li>
+<li>Build a one-page <strong>lawful processing decision tree</strong> for product and sales teams.  </li>
+<li>Document Section 7 uses narrowly (employment safeguards, legal compliance, medical emergency - not "business convenience").  </li>
+<li>Implement easy withdrawal at least as easy as opt-in.  </li>
+<li>For under-18 users, block behavioural ads and tracking; plan parent verification (Rule 10).  </li>
+<li>Add withdrawal, rights request, and grievance paths with working contact details.  </li>
+</ol>
+<h4>4. India anchor box</h4>
+<table>
+<thead>
+<tr>
+<th>Anchor</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Section 4</strong></td>
+<td>Processing for lawful purpose with consent or legitimate uses</td>
+</tr>
+<tr>
+<td><strong>Section 5</strong></td>
+<td>Notice covers data, purpose, rights, withdrawal, complaint route</td>
+</tr>
+<tr>
+<td><strong>Section 6</strong></td>
+<td>Consent must be free, specific, informed, unconditional, unambiguous; easy withdrawal</td>
+</tr>
+<tr>
+<td><strong>Section 7</strong></td>
+<td>Limited non-consent grounds - do not expand by interpretation</td>
+</tr>
+<tr>
+<td><strong>Section 9</strong></td>
+<td>Children: verifiable parental consent; no tracking/behavioural ads directed at children</td>
+</tr>
+<tr>
+<td><strong>Rule 3</strong></td>
+<td>Independently understandable, plain, itemised; links for withdrawal, rights, Board complaint</td>
+</tr>
+<tr>
+<td><strong>Rule 4 + Schedule 1</strong></td>
+<td>Consent Manager requirements (from 13 Nov 2026)</td>
+</tr>
+</tbody>
+</table>
+<h4>5. If you know GDPR</h4>
+<p>GDPR offers six lawful bases and Articles 13/14 transparency. India offers essentially two routes and Rule 3 explicitly requires notices to be <strong>independently understandable</strong> - a direct strike against T&amp;C bundling. <strong>Do not map GDPR "legitimate interests" directly to Section 7.</strong></p>
+<h4>6. Evidence checklist</h4>
+<ul>
+<li>[ ] Lawful basis tag per processing activity  </li>
+<li>[ ] Consent logs (timestamp, scope, channel)  </li>
+<li>[ ] Withdrawal mechanism screenshots or workflow  </li>
+<li>[ ] Section 7 justification memos where used  </li>
+<li>[ ] Notice copies per collection channel (dated versions)  </li>
+<li>[ ] Screenshots of in-product notice placement  </li>
+<li>[ ] Child-facing flow assessment and parent consent design  </li>
+<li>[ ] Consent Manager integration plan (if applicable)  </li>
+</ul>
+<hr />
+<h2>Section 13: OPERATE Chapter 3 - Evidence and Records</h2>
+<p><a id="section-13"></a></p>
+<p>Evidence is the proof layer. DPBI proceedings are digital and document-led. When a customer complains, a vendor leaks, or a board asks "are we ready?", organisations win or lose on <strong>records</strong>, not intentions.</p>
+<h4>1. Business hook</h4>
+<p>Policies in slide decks do not survive scrutiny. <strong>Evidence</strong> means you can show what notice a user saw, what consent they gave, which contract governed a vendor, how a grievance closed, and what happened hour-by-hour in a breach drill. Think of it like keeping invoices for GST - the law cares about proof of process.</p>
+<p><strong>Analogy:</strong> A pilot's logbook does not fly the plane, but no airline certifies a pilot without it. DPDPA evidence works the same way.</p>
+<h4>2. What good looks like</h4>
+<ul>
+<li>Version-controlled notices and consent flows with timestamps  </li>
+<li>Consent logs tied to notice version, channel, and scope  </li>
+<li>Processor register with signed contracts and review dates  </li>
+<li>Rights and grievance register with identity verification steps and closure proof  </li>
+<li>Breach and incident log including tabletop exercises  </li>
+<li>Retention schedule with deletion records and documented exceptions  </li>
+<li>Security baseline documentation and quarterly access reviews  </li>
+<li>Policy horizon log separating <strong>notified</strong> from <strong>proposed</strong> changes  </li>
+</ul>
+<h4>3. Do this now</h4>
+<ol>
+<li>Create a single <strong>evidence pack index</strong> (see Section 4 infographic) with owners and review cadence.  </li>
+<li>Start a <strong>notice and consent version log</strong> - date, channel, screenshot or URL, approver.  </li>
+<li>Centralise <strong>vendor contracts</strong> with DPDPA security, breach, deletion, and audit clauses.  </li>
+<li>Open a <strong>rights/grievance register</strong> - ticket ID, date received, action, date closed.  </li>
+<li>Log <strong>retention decisions</strong> when data is deleted or extended past standard period.  </li>
+<li>File <strong>breach drill records</strong> like real incidents - timeline, roles, templates used.  </li>
+<li>Link evidence items to entries in your processing activity register.  </li>
+</ol>
+<h4>4. India anchor box</h4>
+<table>
+<thead>
+<tr>
+<th>Anchor</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Section 8</strong></td>
+<td>Data Fiduciary accountability for lawful processing and safeguards</td>
+</tr>
+<tr>
+<td><strong>Section 6</strong></td>
+<td>Ability to demonstrate consent and withdrawal</td>
+</tr>
+<tr>
+<td><strong>Rule 3</strong></td>
+<td>Notice content and accessibility must be provable at collection</td>
+</tr>
+<tr>
+<td><strong>Rule 6</strong></td>
+<td>Security measures and processor clauses must be documented</td>
+</tr>
+<tr>
+<td><strong>Rule 7</strong></td>
+<td>Breach facts, notifications, and 72-hour reports must be retained</td>
+</tr>
+<tr>
+<td><strong>Rule 14</strong></td>
+<td>Rights and grievance handling must be traceable within 90-day ceiling</td>
+</tr>
+</tbody>
+</table>
+<h4>5. If you know GDPR</h4>
+<p>GDPR accountability (Article 5(2)) and record-keeping mirror this chapter. India's phased commencement means many firms are building evidence <strong>before</strong> full enforcement - use the runway to avoid paper-only compliance.</p>
+<h4>6. Evidence checklist</h4>
+<ul>
+<li>[ ] Evidence pack index with owners  </li>
+<li>[ ] Notice and consent version log  </li>
+<li>[ ] Consent and withdrawal records  </li>
+<li>[ ] Processor contract register  </li>
+<li>[ ] Rights/grievance register  </li>
+<li>[ ] Breach/incident log (including drills)  </li>
+<li>[ ] Retention schedule and deletion proof  </li>
+<li>[ ] Security baseline and access review records  </li>
+<li>[ ] Regulatory watch log  </li>
+</ul>
+<hr />
+<h2>Section 14: OPERATE Chapter 4 - Rights and Grievance Handling</h2>
+<p><a id="section-14"></a></p>
+<p>Privacy law is not only about stopping bad things. People must be able to <strong>ask</strong> - see their data, fix it, erase it, complain, and nominate someone to act for them. <strong>Rights</strong> is your customer service lane for data requests, with a <strong>90-day grievance ceiling</strong>.</p>
+<h4>1. Business hook</h4>
+<p>If a bank account holder cannot get a statement on request, the bank loses trust even without fraud. Data rights work the same way.</p>
+<p><strong>Analogy:</strong> Returns desks exist because commerce needs a fair correction path. Rights requests are that desk for personal data.</p>
+<h4>2. What good looks like</h4>
+<ul>
+<li>Published channel for access, correction, erasure, grievance, and nomination requests  </li>
+<li>Identity verification steps that are fair and documented  </li>
+<li>Ticket queue with owner, SLA tracker, and closure evidence  </li>
+<li>Grievance responses within <strong>90 days maximum</strong> (Rule 14)  </li>
+<li>Fair-use language for Data Principal duties (no false complaints, no impersonation)  </li>
+<li>Escalation path to DPBI documented in notice  </li>
+</ul>
+<h4>3. Do this now</h4>
+<ol>
+<li>Publish "Exercise your rights" instructions on website/app with email or form.  </li>
+<li>Assign a grievance owner (need not be full-time DPO for all firms).  </li>
+<li>Create request templates: access, correction, erasure, nomination.  </li>
+<li>Define identity verification (proportionate to risk).  </li>
+<li>Track requests in a simple register with dates and outcomes.  </li>
+<li>Set internal SLA well under 90 days; escalate at day 60.  </li>
+<li>Train support staff not to dismiss requests as "IT only."  </li>
+</ol>
+<h4>4. India anchor box</h4>
+<table>
+<thead>
+<tr>
+<th>Anchor</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sections 11-14</strong></td>
+<td>Access, correction, completion, updating, erasure, grievance, nomination</td>
+</tr>
+<tr>
+<td><strong>Section 15</strong></td>
+<td>Data Principal duties - fair use in your workflow</td>
+</tr>
+<tr>
+<td><strong>Rule 14</strong></td>
+<td>Publish request methods; grievance response within maximum 90 days</td>
+</tr>
+</tbody>
+</table>
+<h4>5. If you know GDPR</h4>
+<p>GDPR Chapter III rights are broader in case law volume but similar in shape. India's <strong>90-day grievance cap</strong> is a clear number - build ops to it, not to informal email threads.</p>
+<h4>6. Evidence checklist</h4>
+<ul>
+<li>[ ] Published rights and grievance process  </li>
+<li>[ ] Request register with timestamps  </li>
+<li>[ ] Identity verification procedure  </li>
+<li>[ ] Closed request samples (redacted)  </li>
+<li>[ ] SLA dashboard or monthly report  </li>
+<li>[ ] Nomination handling notes  </li>
+</ul>
+<hr />
+<h2>Section 15: OPERATE Chapter 5 - Accountability and Governance</h2>
+<p><a id="section-15"></a></p>
+<p>Accountability turns privacy from a project into a managed business function. Someone must own the programme, the board must see material risk, and staff must know the rules.</p>
+<h4>1. Business hook</h4>
+<p>Without governance, privacy becomes a annual policy PDF and a forgotten vendor spreadsheet. <strong>Accountability</strong> names owners, sets review cadence, trains teams, and reports upward - the same way finance has a CFO and monthly closes.</p>
+<p><strong>Analogy:</strong> Workplace safety needs a fire marshal and drills, not just a poster. Privacy governance is that operating layer.</p>
+<h4>2. What good looks like</h4>
+<ul>
+<li>Named DPDPA programme owner with executive sponsor  </li>
+<li>Published DPO or authorised contact (Rule 9) on website, app, and notices  </li>
+<li>Core policy set: privacy notice framework, retention, security baseline, vendor standard, rights SOP, breach playbook  </li>
+<li>Onboarding and annual refresher training for staff who touch personal data  </li>
+<li>Quarterly access reviews for high-care systems  </li>
+<li>Board or leadership summary at least twice a year: top risks, open items, evidence maturity  </li>
+<li>SDF readiness track only if designation is plausible  </li>
+</ul>
+<h4>3. Do this now</h4>
+<ol>
+<li>Appoint a single accountable owner and document responsibilities.  </li>
+<li>Publish grievance/DPO contact in notices and website footer.  </li>
+<li>Approve a minimal policy set mapped to OPERATE letters.  </li>
+<li>Run a 60-minute DPDPA awareness session for frontline teams (WhatsApp, HR, support).  </li>
+<li>Schedule quarterly programme reviews with legal, security, product, and ops.  </li>
+<li>Present a one-page board summary: five risks, five evidence gaps, 90-day plan status.  </li>
+<li>Maintain policy horizon log (Section 22) with monthly scan owner.  </li>
+</ol>
+<h4>4. India anchor box</h4>
+<table>
+<thead>
+<tr>
+<th>Anchor</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Section 8</strong></td>
+<td>Data Fiduciary responsibility and overall accountability</td>
+</tr>
+<tr>
+<td><strong>Rule 9</strong></td>
+<td>Publish contact of DPO or authorised person</td>
+</tr>
+<tr>
+<td><strong>Section 10 + Rule 13</strong></td>
+<td>Enhanced governance for Significant Data Fiduciaries (if designated)</td>
+</tr>
+<tr>
+<td><strong>Sections 18-34</strong></td>
+<td>DPBI expects documented compliance in digital proceedings</td>
+</tr>
+</tbody>
+</table>
+<h4>5. If you know GDPR</h4>
+<p>GDPR DPO requirements apply to subsets of controllers. India requires a <strong>published contact</strong> broadly via Rule 9; SDFs face heavier duties. Governance maturity matters even for SMEs because processors and customers increasingly audit upstream.</p>
+<h4>6. Evidence checklist</h4>
+<ul>
+<li>[ ] Named programme owner and executive sponsor  </li>
+<li>[ ] Published DPO/authorised contact  </li>
+<li>[ ] Approved policy set with version dates  </li>
+<li>[ ] Training attendance or completion records  </li>
+<li>[ ] Quarterly review minutes  </li>
+<li>[ ] Board or leadership summary samples  </li>
+<li>[ ] Access review records  </li>
+</ul>
+<hr />
+<h2>Section 16: OPERATE Chapter 6 - Third-Party and Vendor Control</h2>
+<p><a id="section-16"></a></p>
+<p>Your vendor's mistake is still your customer problem. <strong>Third-party</strong> is vendor governance and cross-border discipline - contracts, audits, and transfer registers so partners do not become your weakest shutter.</p>
+<p><strong>Analogy:</strong> If you outsource delivery, you still answer when the package is opened en route. Processors are that delivery chain for data.</p>
+<h4>1. What good looks like</h4>
+<ul>
+<li>Processor register with purpose, data shared, and location  </li>
+<li>Contracts include DPDPA-aligned security, breach cooperation, deletion, and audit clauses (Rule 6)  </li>
+<li>Cross-border transfer register with destination countries and legal watch on <strong>Rule 15</strong>  </li>
+<li>Due diligence before onboarding HR, cloud, payment, ad-tech, BGV vendors  </li>
+<li>SDF-designated firms extend due diligence to algorithmic tools (Rule 13)  </li>
+<li>Government information requests escalated to legal leadership (Rules 23/Schedule 7)  </li>
+</ul>
+<h4>2. Do this now</h4>
+<ol>
+<li>List all processors: cloud, email, CRM, payroll, payments, analytics, support tools.  </li>
+<li>Upgrade contracts with processor obligations and breach notification cooperation.  </li>
+<li>Map cross-border flows (US, EU, Singapore, etc.); monitor MeitY restricted-country notifications.  </li>
+<li>Block vendor access by least privilege; review quarterly.  </li>
+<li>Maintain subprocessors list for critical vendors.  </li>
+<li>Create legal escalation path for government information demands.  </li>
+<li>If SDF-scale, prepare algorithmic due diligence and audit cadence.  </li>
+</ol>
+<h4>3. India anchor box</h4>
+<table>
+<thead>
+<tr>
+<th>Anchor</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Section 8</strong></td>
+<td>Data Fiduciary responsible for processor control</td>
+</tr>
+<tr>
+<td><strong>Section 16</strong></td>
+<td>Government may restrict transfers to notified countries</td>
+</tr>
+<tr>
+<td><strong>Rule 6</strong></td>
+<td>Processor contract clauses for security measures</td>
+</tr>
+<tr>
+<td><strong>Rule 15</strong></td>
+<td>Transfer conditions as Central Government may specify</td>
+</tr>
+<tr>
+<td><strong>Rule 13</strong></td>
+<td>SDF due diligence for algorithms/tools; localisation watch</td>
+</tr>
+</tbody>
+</table>
+<h4>4. If you know GDPR</h4>
+<p>GDPR Article 28 processor terms and SCCs are the reference point. India has <strong>no SCC regime</strong> in the same form; instead, watch <strong>government restrictions</strong> and Rule 15 conditions. Map flows now; do not assume GDPR transfer tools alone suffice.</p>
+<h4>5. Evidence checklist</h4>
+<ul>
+<li>[ ] Processor/vendor register  </li>
+<li>[ ] Signed contracts with privacy/security clauses  </li>
+<li>[ ] Cross-border transfer map  </li>
+<li>[ ] Vendor review or audit trail  </li>
+<li>[ ] Subprocessor disclosures  </li>
+<li>[ ] Government request escalation log (if applicable)  </li>
+</ul>
+<hr />
+<h2>Section 17: OPERATE Chapter 7 - Event and Breach Readiness</h2>
+<p><a id="section-17"></a></p>
+<p><strong>Event</strong> covers security incidents and the breach clock - detection, containment, notification, and recovery. Retention and preventive security sit here and in Evidence; this chapter focuses on <strong>what happens when something goes wrong</strong>.</p>
+<h4>1. Business hook</h4>
+<p>Trust breaks in two acts: the leak, and the slow response. Event is your immune response - not only firewalls, but rehearsed timelines for users, the Board, and your own team.</p>
+<p><strong>Analogy:</strong> A shopkeeper locks the shutter at night, throws away expired stock, and calls the police immediately after a break-in. Event is the break-in response playbook.</p>
+<h4>2. What good looks like</h4>
+<ul>
+<li>Documented security baseline: encryption where appropriate, access control, logging, backups, monitoring (Rule 6)  </li>
+<li>Retention schedule with deletion workflows and exceptions documented  </li>
+<li>Incident response playbook with roles, templates, and timers  </li>
+<li>Affected users notified without undue delay; Board notified without undue delay; detailed Board report within <strong>72 hours</strong> (Rule 7)  </li>
+<li>One-year log retention for security events where Rule 6 applies  </li>
+<li>Large e-commerce/social/gaming entities track Rule 8/Schedule 3 inactivity erasure if applicable  </li>
+</ul>
+<h4>3. Do this now</h4>
+<ol>
+<li>Adopt a minimum security baseline checklist aligned to Rule 6.  </li>
+<li>Map who can access high-care data; remove shared logins and stale accounts.  </li>
+<li>Write retention rules by data type; automate deletion where possible.  </li>
+<li>Create breach playbooks: contain, assess, notify users, notify Board, 72-hour report.  </li>
+<li>Train frontline staff on "wrong WhatsApp report" and laptop-loss scenarios.  </li>
+<li>Test backups and access removal for ex-employees quarterly.  </li>
+<li>Run an annual tabletop breach drill and file the record in your evidence pack.  </li>
+</ol>
+<h4>4. Breach response clock</h4>
+<p><em>Diagram: see figure below.</em></p>
+<figure class="figure"><img src="../infographics/infographic-04-breach-clock.png" alt="Infographic 5: Breach Response Clock" /><figcaption>Infographic 5: Breach Response Clock</figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>Clock</th>
+<th>Action</th>
+<th>Evidence to save</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Immediate</td>
+<td>Contain + assign owner</td>
+<td>Timeline, systems affected</td>
+</tr>
+<tr>
+<td>Without undue delay</td>
+<td>User notice draft</td>
+<td>Facts known, remediation offered</td>
+</tr>
+<tr>
+<td>Without undue delay</td>
+<td>DPBI notification</td>
+<td>Initial facts log</td>
+</tr>
+<tr>
+<td>72 hours</td>
+<td>Detailed report</td>
+<td>Full incident record, root cause, fixes</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Analogy:</strong> Like a fire drill - you do not invent the plan during the fire.</p>
+<h4>5. India anchor box</h4>
+<table>
+<thead>
+<tr>
+<th>Anchor</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Section 8(5)-(7)</strong></td>
+<td>Reasonable security safeguards; breach intimation duties</td>
+</tr>
+<tr>
+<td><strong>Rule 6</strong></td>
+<td>Encryption/masking, access control, logs, monitoring, backups, processor clauses</td>
+</tr>
+<tr>
+<td><strong>Rule 7</strong></td>
+<td>User notice without undue delay; Board notice without undue delay; detailed report within 72 hours</td>
+</tr>
+<tr>
+<td><strong>Rule 8 + Schedule 3</strong></td>
+<td>Erasure after inactivity for specified entities; 48-hour warning; logs</td>
+</tr>
+</tbody>
+</table>
+<h4>6. If you know GDPR</h4>
+<p>GDPR Articles 32-33 require security and breach notification. India's Rule 7 sets a <strong>72-hour detailed report</strong> to the Board after notification - treat this as a hard operational SLA, not a "best efforts" email.</p>
+<h4>7. Evidence checklist</h4>
+<ul>
+<li>[ ] Security baseline document and implementation evidence  </li>
+<li>[ ] Access control matrix and offboarding records  </li>
+<li>[ ] Retention schedule + deletion logs  </li>
+<li>[ ] Incident response plan and tabletop exercise notes  </li>
+<li>[ ] Breach notification templates (user + Board)  </li>
+<li>[ ] Security log retention policy (minimum one year where required)  </li>
+</ul>
+<hr />
+<h2>Section 18: Implementation Kits</h2>
+<p><a id="section-18"></a></p>
+<p>These kits translate OPERATE v6.1 into checklists teams can run this month. Score maturity, fix notices, and add children's data and retention where v6 only had partial coverage.</p>
+<h3>DPDPA readiness checklist (mapped to OPERATE v6.1)</h3>
+<p>Score each row: <strong>0</strong> = not started, <strong>1</strong> = partial, <strong>2</strong> = documented and operating.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Control</th>
+<th>O</th>
+<th>P</th>
+<th>E</th>
+<th>R</th>
+<th>A</th>
+<th>T</th>
+<th>E</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Processing activity register</td>
+<td>*</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Lawful basis tagged per feature</td>
+<td></td>
+<td>*</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Standalone product notice</td>
+<td></td>
+<td>*</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Consent and notice version log</td>
+<td></td>
+<td></td>
+<td>*</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>Security baseline + access control</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>*</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Breach playbook with 72-hour timer</td>
+<td></td>
+<td></td>
+<td>*</td>
+<td></td>
+<td></td>
+<td></td>
+<td>*</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Rights request inbox + owner</td>
+<td></td>
+<td></td>
+<td></td>
+<td>*</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>8</td>
+<td>Named programme owner + board review</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>*</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>9</td>
+<td>Processor contracts updated</td>
+<td></td>
+<td></td>
+<td>*</td>
+<td></td>
+<td></td>
+<td>*</td>
+<td></td>
+</tr>
+<tr>
+<td>10</td>
+<td>Cross-border flow map</td>
+<td></td>
+<td></td>
+<td>*</td>
+<td></td>
+<td></td>
+<td>*</td>
+<td></td>
+</tr>
+<tr>
+<td>11</td>
+<td>Quarterly horizon review</td>
+<td></td>
+<td></td>
+<td>*</td>
+<td></td>
+<td>*</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>12</td>
+<td>Child/minor flow assessment (if applicable)</td>
+<td></td>
+<td>*</td>
+<td>*</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Maturity bands:</strong> 0-7 = Ad hoc | 8-14 = Repeatable | 15-20 = Defined | 21-24 = Managed</p>
+<h3>Data inventory template (standalone)</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Activity name</td>
+<td>Customer checkout</td>
+</tr>
+<tr>
+<td>Data categories</td>
+<td>Name, phone, address, payment ref</td>
+</tr>
+<tr>
+<td>Lawful basis</td>
+<td>Consent + contract</td>
+</tr>
+<tr>
+<td>Source / channel</td>
+<td>Website form</td>
+</tr>
+<tr>
+<td>Storage location</td>
+<td>Shopify + payment gateway (US)</td>
+</tr>
+<tr>
+<td>Processors</td>
+<td>Shopify, Razorpay, Shiprocket</td>
+</tr>
+<tr>
+<td>Retention period</td>
+<td>7 years tax; marketing until withdraw</td>
+</tr>
+<tr>
+<td>Owner</td>
+<td>Head of E-commerce</td>
+</tr>
+<tr>
+<td>Last reviewed</td>
+<td>14 Jun 2026</td>
+</tr>
+</tbody>
+</table>
+<h3>Notice writing kit (5 bullets)</h3>
+<ol>
+<li><strong>Lead with purpose</strong> - "We collect X to do Y" in the first screen or paragraph.  </li>
+<li><strong>Itemise data</strong> - phone, email, payment reference, device ID - not "personal information."  </li>
+<li><strong>Separate optional uses</strong> - marketing, analytics, testimonials on their own lines.  </li>
+<li><strong>Show rights paths</strong> - access, correction, erasure, grievance, Board complaint with links.  </li>
+<li><strong>Keep it standalone</strong> - never bury core notice inside Terms and Conditions (Rule 3).  </li>
+</ol>
+<h3>Consent flow kit (5 steps)</h3>
+<ol>
+<li><strong>Identify the moment</strong> - checkout, signup, form, WhatsApp opt-in.  </li>
+<li><strong>Split necessary vs optional</strong> - only optional boxes for optional processing.  </li>
+<li><strong>Use clear affirmative action</strong> - button or unchecked tick; no pre-ticked marketing.  </li>
+<li><strong>Log evidence</strong> - what, when, channel, version of notice shown.  </li>
+<li><strong>Mirror withdrawal</strong> - same channels or easier; confirm withdrawal to user.  </li>
+</ol>
+<h3>Vendor governance kit (5 bullets)</h3>
+<ol>
+<li>Maintain a <strong>processor register</strong> linked to your data map.  </li>
+<li>Require <strong>security, breach, deletion, and audit</strong> clauses in contracts (Rule 6).  </li>
+<li>Map <strong>data location</strong> and subprocessors for cloud and ad-tech.  </li>
+<li><strong>Offboard vendors</strong> with access removal and return/deletion certificates.  </li>
+<li><strong>Review annually</strong> - or when vendor incident news breaks.  </li>
+</ol>
+<h3>Breach response checklist</h3>
+<ol>
+<li><strong>Contain</strong> - stop spread, preserve logs, assign incident lead.  </li>
+<li><strong>Assess</strong> - data types, volume, harm likelihood.  </li>
+<li><strong>Notify users</strong> without undue delay with facts known and remediation steps.  </li>
+<li><strong>Notify DPBI</strong> without undue delay; prepare 72-hour detailed report.  </li>
+<li><strong>Record</strong> timeline, decisions, templates, root cause, and fixes in evidence pack.  </li>
+<li><strong>Review</strong> access controls and vendor clauses that failed.  </li>
+</ol>
+<h3>Children's data checklist</h3>
+<p><em>Diagram: see figure below.</em></p>
+<figure class="figure"><img src="../infographics/infographic-05-children-tree.png" alt="Infographic 6: Children's Data Decision Tree" /><figcaption>Infographic 6: Children's Data Decision Tree</figcaption></figure>
+<p><strong>India-specific:</strong> Uniform age threshold is <strong>under 18</strong> (stricter than many global laws).</p>
+<p>Practical steps:</p>
+<ol>
+<li>Identify flows where users may be under 18 (education, gaming, family apps).  </li>
+<li>Implement age gate or account type declaration where appropriate.  </li>
+<li>Capture verifiable parental consent before optional processing.  </li>
+<li>Block behavioural ads and tracking on child-directed services.  </li>
+<li>Document Schedule 4 exemptions narrowly if applicable (schools, clinics).  </li>
+</ol>
+<h3>Retention checklist</h3>
+<ol>
+<li>Define retention period per data category tied to purpose (tax, contract, dispute).  </li>
+<li>Document exceptions (legal hold, active grievance, regulatory request).  </li>
+<li>Automate deletion or anonymisation where systems allow.  </li>
+<li>For large e-commerce/social/gaming, assess Schedule 3 inactivity erasure duties.  </li>
+<li>Log deletions and periodic retention reviews in evidence pack.  </li>
+</ol>
+<h3>SDF readiness pack (conditional)</h3>
+<p>Apply only if scale, sector sensitivity, or systemic risk makes Significant Data Fiduciary designation plausible:</p>
+<ul>
+<li>Appoint or designate <strong>Data Protection Officer</strong> contact (Rule 9)  </li>
+<li>Annual <strong>Data Protection Impact Assessment</strong> and audit (Rule 13)  </li>
+<li>Furnish significant audit observations to Board as required  </li>
+<li><strong>Algorithmic due diligence</strong> for tools affecting individuals at scale  </li>
+<li><strong>Localisation watch</strong> for categories Government may specify  </li>
+<li>Board-facing evidence pack and executive sponsor  </li>
+<li>Enhanced processor and transfer governance  </li>
+</ul>
+<h3>Readiness scorecard (10 questions mapped to OPERATE v6.1)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Question</th>
+<th>Domain</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Can you list every type of personal data you collect in plain English?</td>
+<td>Observe</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Do you know which country each major system stores data in?</td>
+<td>Observe</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Is every use tagged consent or a specific Section 7 ground?</td>
+<td>Permission</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Can users withdraw optional consent as easily as they gave it?</td>
+<td>Permission</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Is notice standalone at each major collection point?</td>
+<td>Permission</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Can you produce consent and notice version logs for a sample user?</td>
+<td>Evidence</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Do you have a breach playbook with a 72-hour Board report step?</td>
+<td>Event</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Can a customer submit a rights request today and get a tracked response?</td>
+<td>Rights</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Do processor contracts require security and breach cooperation?</td>
+<td>Third-party</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Did leadership review DPDPA risk in the last 90 days?</td>
+<td>Accountability</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Scoring:</strong> 8-10 yes = strong runway | 5-7 = gaps to close before 2027 | 0-4 = start with Observe + Permission immediately</p>
+<hr />
+<h2>Section 19: 12 Industry Risk Snapshots</h2>
+<p><a id="section-19"></a></p>
+<p>Full 12-block industry playbooks live on the SaralPrivacy website. This section gives <strong>compact snapshots</strong> for PDF readers - enough to prioritise two flows to fix first (CEO page, Section 4).</p>
+<h3>Risk heatmap</h3>
+<p><em>Diagram: see figure below.</em></p>
+<figure class="figure"><img src="../infographics/infographic-06-industry-heatmap.png" alt="Infographic 7: Industry Risk Heatmap" /><figcaption>Infographic 7: Industry Risk Heatmap</figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>Priority</th>
+<th>Industries</th>
+<th>Scan route</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Critical</strong></td>
+<td>Clinics, Schools, Fintech</td>
+<td>Sector scan first</td>
+</tr>
+<tr>
+<td><strong>High</strong></td>
+<td>CA, Pharmacy, Law, Training</td>
+<td>Sector scan + generic assessment</td>
+</tr>
+<tr>
+<td><strong>Medium</strong></td>
+<td>D2C, Recruitment, Hotels, Real Estate, Gyms</td>
+<td>Sector scan when relevant</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>CA Firms</h3>
+<p><strong>Primary risk theme:</strong> Client-document control - not tax knowledge.</p>
+<p><strong>Who:</strong> Solo CA and partnerships, GST/payroll/advisory firms, teams using article assistants and shared cloud folders.</p>
+<p><strong>Common personal data:</strong> PAN, Aadhaar, ITR files, bank statements, payroll, Google Drive, WhatsApp, article staff access, old client files</p>
+<p><strong>High-risk flows:</strong><br />
+1. Clients send PAN and bank statements via WhatsApp or email without standard intake<br />
+2. Shared Drive folders with stale access for ex-articles and interns<br />
+3. Old ITR and KYC copies retained indefinitely without deletion rules</p>
+<p><strong>DPDPA obligations triggered:</strong> Notice (R3) | Security (R6) | Breach (R7) | Rights (R14) | Sections 4, 5, 6/7, 8</p>
+<p><strong>Immediate actions:</strong><br />
+1. Standardise how clients upload PAN, Aadhaar, ITR and bank documents<br />
+2. Restrict and review access to Google Drive, email folders and client files<br />
+3. Define retention rules for old ITR files, PAN copies, bank statements and payroll data</p>
+<p><strong>Scan:</strong> saralprivacy.com/assessment/ca-firms - 10 questions - ~3 min</p>
+<hr />
+<h3>Recruitment Agencies</h3>
+<p><strong>Primary risk theme:</strong> CV movement across clients, tools, and teams - not just forwarding resumes.</p>
+<p><strong>Who:</strong> Recruitment and staffing agencies, executive search, RPO teams sharing CVs via email or portals.</p>
+<p><strong>Common personal data:</strong> CVs, candidate consent, job portals, LinkedIn, ATS, WhatsApp, client sharing, BGV, salary slips, rejected profiles, AI screening</p>
+<p><strong>High-risk flows:</strong><br />
+1. Early collection of PAN, Aadhaar, salary slips before offer stage<br />
+2. Bulk CV folders shared with clients via WhatsApp or email attachments<br />
+3. Rejected candidate profiles kept indefinitely without deletion process</p>
+<p><strong>DPDPA obligations triggered:</strong> Notice (R3) | Consent (Sec 6) | Security (R6) | Breach (R7) | Rights (R14)</p>
+<p><strong>Immediate actions:</strong><br />
+1. Standardise candidate sourcing and consent/notice language<br />
+2. Reduce early collection of PAN, Aadhaar, salary slips and BGV files<br />
+3. Control CV sharing with clients and avoid bulk folders</p>
+<p><strong>Scan:</strong> saralprivacy.com/assessment/recruitment - 10 questions - ~3 min</p>
+<hr />
+<h3>Training Institutes</h3>
+<p><strong>Primary risk theme:</strong> Minors, parents, WhatsApp groups, and LMS data - not just classroom delivery.</p>
+<p><strong>Who:</strong> Coaching centres, test-prep brands, EdTech with live classes and LMS, institutes with parent WhatsApp groups.</p>
+<p><strong>Common personal data:</strong> Student data, parent details, minors, WhatsApp groups, LMS tools, student photos, testimonials, attendance, fee records, placement data</p>
+<p><strong>High-risk flows:</strong><br />
+1. Students below 18 without documented parent/guardian consent<br />
+2. Photos, testimonials, and demo-class recordings used for marketing without separate consent<br />
+3. Old leads and admission records retained without clear rules</p>
+<p><strong>DPDPA obligations triggered:</strong> Notice (R3) | Children (Sec 9, R10) | Security (R6) | Rights (R14)</p>
+<p><strong>Immediate actions:</strong><br />
+1. Record whether students are below 18 and capture parent/guardian consent<br />
+2. Standardise student and parent data intake away from informal channels<br />
+3. Review WhatsApp groups, photos, testimonials and demo-class recordings</p>
+<p><strong>Scan:</strong> saralprivacy.com/assessment/training-institutes - 10 questions - ~3 min</p>
+<hr />
+<h3>D2C Brands</h3>
+<p><strong>Primary risk theme:</strong> Marketing and ad-tech engine behind every order - not just product sales.</p>
+<p><strong>Who:</strong> Shopify/Woo D2C brands, beauty/wellness/food lifestyle labels, teams running Meta ads and WhatsApp campaigns.</p>
+<p><strong>Common personal data:</strong> WhatsApp marketing, Meta Pixel, cart abandonment, Shopify, SMS opt-in, logistics vendors, loyalty, unsubscribe, customer data, marketplace</p>
+<p><strong>High-risk flows:</strong><br />
+1. Promotional WhatsApp/SMS without provable opt-in<br />
+2. Meta Pixel and retargeting without cookie/notice disclosure<br />
+3. Logistics and ad vendors receiving customer data without mapped contracts</p>
+<p><strong>DPDPA obligations triggered:</strong> Notice (R3) | Consent (Sec 6) | Security (R6) | Vendors (R6, R15) | Rights (R14)</p>
+<p><strong>Immediate actions:</strong><br />
+1. Capture and prove separate opt-in for WhatsApp/SMS/email promotions<br />
+2. Disclose Meta Pixel, GA and retargeting tools in privacy/cookie notice<br />
+3. Enable unsubscribe and preference management across all channels</p>
+<p><strong>Scan:</strong> saralprivacy.com/assessment/d2c - 10 questions - ~3 min</p>
+<hr />
+<h3>Clinics and Diagnostic Labs</h3>
+<p><strong>Primary risk theme:</strong> Health reports, WhatsApp sharing, and access control - highest sensitivity band.</p>
+<p><strong>Who:</strong> Single and multi-speciality clinics, pathology and radiology labs, home sample collection chains.</p>
+<p><strong>Common personal data:</strong> Patient reports, prescriptions, health data, WhatsApp sharing, lab software, reception access, home collection, doctor referrals, insurance/TPA, old reports</p>
+<p><strong>High-risk flows:</strong><br />
+1. Lab reports shared on WhatsApp to patients or family without recipient verification<br />
+2. Shared logins or ex-staff access to clinic/HIS systems<br />
+3. Outsourced labs and home collection partners without vendor register</p>
+<p><strong>DPDPA obligations triggered:</strong> Notice (R3) | Security (R6) | Breach (R7) | Rights (R14) | Rule 12/Schedule 4 (child health)</p>
+<p><strong>Immediate actions:</strong><br />
+1. Standardise patient intake channels - reduce scattered WhatsApp and paper intake<br />
+2. Verify recipients before sharing reports by WhatsApp or email<br />
+3. Restrict reception, billing, lab and support staff access with role-based controls</p>
+<p><strong>Scan:</strong> saralprivacy.com/assessment/clinics-diagnostic-labs - 10 questions - ~3 min</p>
+<hr />
+<h3>Schools and Colleges</h3>
+<p><strong>Primary risk theme:</strong> Children's data, CCTV, apps, and transport monitoring - critical priority.</p>
+<p><strong>Who:</strong> K-12 schools, colleges, institutions with ERP apps, CCTV, transport GPS, and fee systems.</p>
+<p><strong>Common personal data:</strong> Children's data, parent records, school apps, CCTV, attendance, transport GPS, student photos, fee records, LMS, old student files</p>
+<p><strong>High-risk flows:</strong><br />
+1. Students below 18 without specific parent notice and consent process<br />
+2. Public photos, videos, and results without separate consent<br />
+3. CCTV, biometric, RFID, and transport GPS without governance and retention rules</p>
+<p><strong>DPDPA obligations triggered:</strong> Notice (R3) | Children (Sec 9, R10-12) | Security (R6) | Breach (R7) | Rights (R14)</p>
+<p><strong>Immediate actions:</strong><br />
+1. Map where student and parent data is collected and stored<br />
+2. Strengthen parent/guardian notice and consent for students below 18<br />
+3. Govern CCTV, biometric, RFID, transport GPS and hostel monitoring</p>
+<p><strong>Scan:</strong> saralprivacy.com/assessment/schools-colleges - 10 questions - ~3 min</p>
+<hr />
+<h3>Law Firms</h3>
+<p><strong>Primary risk theme:</strong> Matter files, evidence, and junior access - confidentiality plus DPDPA evidence.</p>
+<p><strong>Who:</strong> Litigation and corporate practices, boutiques, teams with juniors, interns, and matter folders.</p>
+<p><strong>Common personal data:</strong> Client KYC, PAN/Aadhaar, case files, evidence records, affidavits, WhatsApp instructions, court filing, junior access, external counsel, closed matters</p>
+<p><strong>High-risk flows:</strong><br />
+1. Sensitive case files on shared drives without matter-team restriction<br />
+2. Evidence received via WhatsApp or informal email exports<br />
+3. Ex-staff, interns, or associates retaining cloud or device access</p>
+<p><strong>DPDPA obligations triggered:</strong> Notice (R3) | Security (R6) | Breach (R7) | Rights (R14) | Cross-border (Sec 16)</p>
+<p><strong>Immediate actions:</strong><br />
+1. Map client documents and matter-data flows<br />
+2. Restrict sensitive case files to the matter team<br />
+3. Standardise WhatsApp/email/shared-folder usage for client documents</p>
+<p><strong>Scan:</strong> saralprivacy.com/assessment/law-firms - 10 questions - ~3 min</p>
+<hr />
+<h3>Real Estate</h3>
+<p><strong>Primary risk theme:</strong> KYC and broker networks moving property and identity data.</p>
+<p><strong>Who:</strong> Brokers, property consultants, developer sales desks, rental and resale teams.</p>
+<p><strong>Common personal data:</strong> Buyer leads, tenant KYC, PAN/Aadhaar, rent agreements, sale deeds, property papers, WhatsApp groups, broker networks, loan partners, old leads</p>
+<p><strong>High-risk flows:</strong><br />
+1. PAN/Aadhaar/property docs received and forwarded via WhatsApp<br />
+2. Lead sheets in broker WhatsApp groups without client notice<br />
+3. Ex-staff or old broker partners retaining CRM or cloud access</p>
+<p><strong>DPDPA obligations triggered:</strong> Notice (R3) | Security (R6) | Breach (R7) | Rights (R14)</p>
+<p><strong>Immediate actions:</strong><br />
+1. Standardise KYC and property-document collection<br />
+2. Reduce WhatsApp forwarding of PAN, Aadhaar and agreement documents<br />
+3. Control lead sharing with co-brokers, builders, landlords and loan partners</p>
+<p><strong>Scan:</strong> saralprivacy.com/assessment/real-estate - 10 questions - ~3 min</p>
+<hr />
+<h3>Hotels and Travel</h3>
+<p><strong>Primary risk theme:</strong> Guest IDs, passport copies, and OTA data sharing.</p>
+<p><strong>Who:</strong> Hotels, resorts, homestays, travel agencies, corporate travel desks.</p>
+<p><strong>Common personal data:</strong> Guest IDs, passport copies, booking history, OTA sharing, travel documents, WhatsApp confirmations, CCTV, PMS access, transport vendors, old guest records</p>
+<p><strong>High-risk flows:</strong><br />
+1. Passport and visa documents collected through WhatsApp or personal email<br />
+2. Foreign guest and C-Form data retained indefinitely<br />
+3. Shared PMS/OTA logins and ex-staff access to guest systems</p>
+<p><strong>DPDPA obligations triggered:</strong> Notice (R3) | Security (R6) | Breach (R7) | Rights (R14) | Cross-border (R15)</p>
+<p><strong>Immediate actions:</strong><br />
+1. Standardise ID, passport and travel-document collection<br />
+2. Reduce WhatsApp/email sharing of guest IDs and passport copies<br />
+3. Restrict PMS, CRM, OTA dashboard, CCTV and staff device access</p>
+<p><strong>Scan:</strong> saralprivacy.com/assessment/hotels-travel - 10 questions - ~3 min</p>
+<hr />
+<h3>Pharmacies</h3>
+<p><strong>Primary risk theme:</strong> Prescriptions, medicine history, and refill campaigns.</p>
+<p><strong>Who:</strong> Retail and chain pharmacies, online pharmacy fulfilment, teams receiving prescriptions on WhatsApp.</p>
+<p><strong>Common personal data:</strong> Prescriptions, medicine history, WhatsApp orders, refill reminders, delivery partners, billing software, health indicators, staff access, old records</p>
+<p><strong>High-risk flows:</strong><br />
+1. Prescription images received through WhatsApp or staff phones<br />
+2. Refill or promotional messages for sensitive medicine categories without separate consent<br />
+3. Shared pharmacy software logins and uncleared ex-staff access</p>
+<p><strong>DPDPA obligations triggered:</strong> Notice (R3) | Security (R6) | Breach (R7) | Children (R10-12) | Rights (R14)</p>
+<p><strong>Immediate actions:</strong><br />
+1. Standardise prescription collection and storage<br />
+2. Reduce WhatsApp and staff-phone handling of prescription images<br />
+3. Define retention and refill-message rules for medicine-history data</p>
+<p><strong>Scan:</strong> saralprivacy.com/assessment/pharmacies - 10 questions - ~3 min</p>
+<hr />
+<h3>Fintech and NBFC</h3>
+<p><strong>Primary risk theme:</strong> KYC, profiling, DSAs, and cross-border analytics - critical complexity.</p>
+<p><strong>Who:</strong> NBFCs, digital lenders, payment apps, UPI/wallet/BNPL, collections businesses.</p>
+<p><strong>Common personal data:</strong> KYC, PAN/Aadhaar, bank data, UPI, credit bureau, profiling, DSAs, collection agents, payment partners, old records</p>
+<p><strong>High-risk flows:</strong><br />
+1. KYC and bureau data collected via WhatsApp or field agents without consent evidence<br />
+2. Automated decisioning with limited customer-facing explanation<br />
+3. DSAs and collection agents with download/export access to customer lists</p>
+<p><strong>DPDPA obligations triggered:</strong> Notice (R3) | Consent (Sec 6) | Security (R6) | Breach (R7) | SDF watch (R13) | Rights (R14) | RBI sector rules</p>
+<p><strong>Immediate actions:</strong><br />
+1. Map KYC, bank, bureau, UPI and repayment data flows<br />
+2. Strengthen timestamped consent for verification, profiling and sharing<br />
+3. Control DSA, collection-agent, call-centre and vendor access</p>
+<p><strong>Scan:</strong> saralprivacy.com/assessment/fintech-nbfc - 10 questions - ~3 min</p>
+<hr />
+<h3>Gyms, Salons and Spas</h3>
+<p><strong>Primary risk theme:</strong> Health-adjacent body data, photos, and WhatsApp campaigns.</p>
+<p><strong>Who:</strong> Gyms, fitness studios, salons, spas, wellness chains with membership and appointment apps.</p>
+<p><strong>Common personal data:</strong> Membership data, health details, body measurements, customer photos, before-after images, WhatsApp campaigns, appointment apps, staff phones, old records</p>
+<p><strong>High-risk flows:</strong><br />
+1. Customer photos used for social media or ads without separate consent<br />
+2. Health and body data recorded on staff phones or WhatsApp<br />
+3. Shared CRM or appointment app logins across trainers and therapists</p>
+<p><strong>DPDPA obligations triggered:</strong> Notice (R3) | Consent (Sec 6) | Security (R6) | Breach (R7) | Rights (R14)</p>
+<p><strong>Immediate actions:</strong><br />
+1. Map customer data across forms, apps, WhatsApp, DMs and staff notes<br />
+2. Capture consent before using customer photos, before-after images or testimonials<br />
+3. Restrict access to health, body, consultation and transformation data</p>
+<p><strong>Scan:</strong> saralprivacy.com/assessment/gyms-salons-spas - 10 questions - ~3 min</p>
+<hr />
+<h2>Section 20: Act Section Map</h2>
+<p><a id="section-20"></a></p>
+<table>
+<thead>
+<tr>
+<th>Sec.</th>
+<th>Topic</th>
+<th>Plain meaning</th>
+<th>Action for organisations</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3</td>
+<td>Application</td>
+<td>Digital personal data in India; offline data later digitised; foreign processing tied to offering goods/services in India.</td>
+<td>Map customers, employees, vendors, leads, website/app users and India-facing services.</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Grounds</td>
+<td>Processing must be for a lawful purpose and either consent or certain legitimate uses.</td>
+<td>Tag every processing activity as consent-based or legitimate-use based.</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Notice</td>
+<td>Notice must tell the Data Principal what data is processed, purpose, rights, withdrawal and complaint route.</td>
+<td>Use standalone notices; do not hide core notice inside long T&amp;Cs.</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Consent</td>
+<td>Consent must be free, specific, informed, unconditional and clear affirmative action; withdrawal must be easy.</td>
+<td>Separate consent for optional uses such as marketing, profiling, photos, or referrals.</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Legitimate uses</td>
+<td>Limited non-consent grounds such as voluntary data for specified purpose, State functions, legal compliance, court orders, medical emergency, disaster/public order, employment safeguards.</td>
+<td>Do not call every business convenience a legitimate use.</td>
+</tr>
+<tr>
+<td>8</td>
+<td>DF obligations</td>
+<td>Data Fiduciary remains responsible for lawful processing, security, breach notice, deletion, grievance, processor control.</td>
+<td>Create owner, records, breach process, retention schedule and processor contracts.</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Children</td>
+<td>Verifiable parental consent; no tracking, behavioural monitoring or targeted ads directed at children; no harmful processing.</td>
+<td>Classify child-facing flows and stop targeted advertising to children.</td>
+</tr>
+<tr>
+<td>10</td>
+<td>SDF</td>
+<td>Extra obligations for notified Significant Data Fiduciaries.</td>
+<td>Prepare only if scale/risk/sector makes designation plausible.</td>
+</tr>
+<tr>
+<td>11-14</td>
+<td>Rights</td>
+<td>Access, correction, completion, updating, erasure, grievance, nomination.</td>
+<td>Build a request process with identity checks and response ownership.</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Duties of Data Principal</td>
+<td>No impersonation, false complaint, suppression of material information or unverifiable information for correction/erasure.</td>
+<td>Publish fair-use language in rights workflow.</td>
+</tr>
+<tr>
+<td>16</td>
+<td>Cross-border</td>
+<td>Government may restrict transfer to notified countries/territories; stricter sectoral laws still apply.</td>
+<td>Maintain a cross-border register and monitor notifications.</td>
+</tr>
+<tr>
+<td>17</td>
+<td>Exemptions</td>
+<td>Certain processing for legal rights, courts, prevention/investigation/prosecution, mergers, defaults, State security/public order, research/statistics may be exempted.</td>
+<td>Apply exemptions narrowly and document the legal basis.</td>
+</tr>
+<tr>
+<td>18-34</td>
+<td>DPBI</td>
+<td>Digital Data Protection Board, proceedings, orders, mediation, voluntary undertakings, penalties.</td>
+<td>Keep evidence because enforcement is digital and document-led.</td>
+</tr>
+<tr>
+<td>36-37</td>
+<td>Government powers</td>
+<td>Government information request powers; blocking recommendation after repeat penalties and non-compliance.</td>
+<td>Escalate government notices to legal leadership.</td>
+</tr>
+<tr>
+<td>44</td>
+<td>Amendments</td>
+<td>Amends TDSAT framework, IT Act and RTI Act Section 8(1)(j).</td>
+<td>Track pending RTI/privacy litigation before firm public-sector guidance.</td>
+</tr>
+</tbody>
+</table>
+<h3>Rules and schedules map</h3>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Topic</th>
+<th>What the Rule says</th>
+<th>Build this control</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1-2</td>
+<td>Commencement/definitions</td>
+<td>Defines commencement, user account, techno-legal measures and verifiable consent.</td>
+<td>Use rule definitions in policy and product specs.</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Notice</td>
+<td>Notice must be independently understandable, plain, itemised, and provide links for withdrawal, rights and Board complaint.</td>
+<td>Separate notice from T&amp;Cs and keep it language-accessible.</td>
+</tr>
+<tr>
+<td>4 + Sch. 1</td>
+<td>Consent Managers</td>
+<td>India-incorporated company, minimum INR 2 crore net worth, interoperable platform, independence, auditability, no misuse.</td>
+<td>Only relevant if operating/registering as Consent Manager or integrating with one.</td>
+</tr>
+<tr>
+<td>5 + Sch. 2</td>
+<td>State processing</td>
+<td>Standards for State or instrumentalities processing data for subsidy, benefit, service, certificate, licence or permit.</td>
+<td>Government-linked projects need Schedule 2 compliance review.</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Security safeguards</td>
+<td>Encryption/obfuscation/masking/tokenisation, access control, logs, monitoring, backup, processor contract clauses, organisational measures.</td>
+<td>Create minimum security baseline and one-year log retention.</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Breach notice</td>
+<td>Notify affected Data Principals without delay; notify Board without delay; detailed Board report within 72 hours.</td>
+<td>Maintain incident clock, facts log, user notice template and Board report template.</td>
+</tr>
+<tr>
+<td>8 + Sch. 3</td>
+<td>Erasure/retention</td>
+<td>Certain large e-commerce, social media and online gaming entities must erase after specified inactivity period; 48-hour warning; logs for at least one year.</td>
+<td>Retention schedule plus automated deletion and exception handling.</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Contact point</td>
+<td>Publish contact of DPO or authorised person for Data Principal questions.</td>
+<td>Put contact in website/app and notices.</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Child consent</td>
+<td>Verify parent/adult using existing reliable details, voluntary identity/age details, or virtual token from authorised entity.</td>
+<td>Add age gate and parent verification for child data.</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Persons with disability</td>
+<td>Verify lawful guardian under applicable disability laws where required.</td>
+<td>Do not assume all disability requires guardian consent.</td>
+</tr>
+<tr>
+<td>12 + Sch. 4</td>
+<td>Children exemptions</td>
+<td>Specified classes such as clinical establishments, mental health establishments, educational institutions, childcare, transport, creches may process for listed purposes.</td>
+<td>Use only for listed purpose and class; not for advertising or profiling.</td>
+</tr>
+<tr>
+<td>13</td>
+<td>SDF obligations</td>
+<td>Annual DPIA and audit; significant observations furnished to Board; due diligence for algorithmic/tools; possible localisation of specified data.</td>
+<td>SDF readiness pack: DPO, DPIA, audit, algorithmic risk review, localisation watch.</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Rights requests</td>
+<td>Publish how Data Principals can make rights and nomination requests; grievance response within maximum 90 days.</td>
+<td>Rights SOP, identity verification, queue tracking and closure evidence.</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Transfer outside India</td>
+<td>Transfers must meet requirements the Central Government may specify for availability of personal data to foreign state or controlled entities.</td>
+<td>Cross-border register and contract clauses for government access risk.</td>
+</tr>
+<tr>
+<td>16</td>
+<td>Research/statistics</td>
+<td>Research, archiving or statistical processing exempt only if not used for decisions specific to a Data Principal and meets standards.</td>
+<td>Separate analytics/research from decisioning.</td>
+</tr>
+<tr>
+<td>17-21 + Sch. 5-6</td>
+<td>DPBI</td>
+<td>Board chair/members, salary, meetings, functioning as digital office and staff.</td>
+<td>Prepare evidence for digital filings.</td>
+</tr>
+<tr>
+<td>22</td>
+<td>Appeals</td>
+<td>Appeal to TDSAT digitally with fee and techno-legal measures.</td>
+<td>Track appeal timelines and records.</td>
+</tr>
+<tr>
+<td>23 + Sch. 7</td>
+<td>Government info powers</td>
+<td>Government may require information for listed purposes and restrict disclosure.</td>
+<td>Create legal review workflow for government information requests.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Section 21: Court Cases and Litigation Tracker</h2>
+<p><a id="section-21"></a></p>
+<p><strong>Caveat:</strong> Pending cases are awareness items only. No court has stayed or struck down the DPDPA as of 14 June 2026.</p>
+<table>
+<thead>
+<tr>
+<th>Case</th>
+<th>Status</th>
+<th>Why a business reader should care</th>
+<th>Anchor use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Justice K.S. Puttaswamy v Union of India, 2017</td>
+<td>Final</td>
+<td>Privacy is a fundamental right; proportionality test for State action</td>
+<td>Constitutional framing only</td>
+</tr>
+<tr>
+<td>K.S. Puttaswamy Aadhaar judgment, 2018/2019</td>
+<td>Final</td>
+<td>ID/KYC minimisation and proportionality</td>
+<td>Industry risk context for Aadhaar/PAN-heavy sectors</td>
+</tr>
+<tr>
+<td>CPIO, Supreme Court v Subhash Chandra Agarwal, 2019/2020</td>
+<td>Final</td>
+<td>Privacy vs public interest in RTI; DPDPA amended RTI Section 8(1)(j)</td>
+<td>RTI/privacy interface</td>
+</tr>
+<tr>
+<td>Venkatesh Nayak v Union of India, W.P.(C) No. 177/2026</td>
+<td>Pending</td>
+<td>Challenges RTI amendment, State exemptions, surveillance-related provisions</td>
+<td>Horizon / legal watch - Act not stayed</td>
+</tr>
+<tr>
+<td>The Reporters' Collective Trust and Nitin Sethi v Union of India</td>
+<td>Pending/tagged</td>
+<td>Press freedom and public-interest reporting</td>
+<td>Media and public-sector disclosures</td>
+</tr>
+<tr>
+<td>Geeta Seshu/SFLC petition, W.P.(C) No. 275/2026</td>
+<td>Pending/tagged</td>
+<td>Public vs private data definitions and government powers</td>
+<td>Government data handling watch</td>
+</tr>
+<tr>
+<td>Anjali Bhardwaj/Amrita Johri and NCPRI-related petitions, 2026</td>
+<td>Pending/tagged</td>
+<td>Section 44(3) and republication of RTI-sourced personal data</td>
+<td>Civil society and research uses</td>
+</tr>
+<tr>
+<td>Chandresh Jain v Union of India, Delhi HC</td>
+<td>Notice issued Feb 2026</td>
+<td>Board structure, State exemptions, blocking powers</td>
+<td>Institutional design watch</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Section 22: Current Open Items to Track</h2>
+<p><a id="section-22"></a></p>
+<p>Use this tracker in monthly governance reviews. Label each row: <strong>in force</strong>, <strong>notified phase</strong>, <strong>proposed</strong>, or <strong>pending litigation</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Source</th>
+<th>What was discussed</th>
+<th>Business impact</th>
+<th>Treatment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>13 Nov 2025</td>
+<td>MeitY G.S.R. 846(E)</td>
+<td>Rules notified</td>
+<td>Starts phased clock</td>
+<td>Anchor date for all timelines</td>
+</tr>
+<tr>
+<td>14 Nov 2025</td>
+<td>PIB</td>
+<td>Rules press release</td>
+<td>Public confirmation</td>
+<td>Cite in status snapshot</td>
+</tr>
+<tr>
+<td>17 Nov 2025</td>
+<td>MeitY (reported)</td>
+<td>Faster enforcement for large/global-compliant firms</td>
+<td>May shorten runway</td>
+<td>Horizon alert</td>
+</tr>
+<tr>
+<td>23 Jan 2026</td>
+<td>MeitY stakeholder meeting</td>
+<td>Proposal: 18 to 12 month compliance; SDF list fast-track; Rule 8(3) in 90 days post-amendment</td>
+<td><strong>May move deadline to 13 Nov 2026</strong></td>
+<td>Flag as <em>proposed, not notified</em></td>
+</tr>
+<tr>
+<td>Feb 2026</td>
+<td>MeitY</td>
+<td>Industry feedback window (reported deadline 4 Feb 2026)</td>
+<td>Outcome pending</td>
+<td>Update when Gazette publishes</td>
+</tr>
+<tr>
+<td>Jun 2026</td>
+<td>MeitY Secretary (ET Telecom)</td>
+<td>Awaiting industry input on timeline compression</td>
+<td>No final call yet</td>
+<td>Do not state accelerated date as law</td>
+</tr>
+<tr>
+<td>2026</td>
+<td>Karnataka (reported)</td>
+<td>Social media ban proposal for under-16</td>
+<td>National vs state competence unclear</td>
+<td>Note as policy debate, not DPDPA text</td>
+</tr>
+<tr>
+<td>Pending</td>
+<td>Supreme Court / Delhi HC</td>
+<td>Constitutionality, RTI interface, Board structure</td>
+<td>Litigation risk</td>
+<td>Court table; no "Act struck down" language</td>
+</tr>
+<tr>
+<td>Open</td>
+<td>MeitY / DPBI</td>
+<td>Restricted country list for transfers</td>
+<td>Cross-border contract and mapping decisions</td>
+<td>Monitor notifications</td>
+</tr>
+<tr>
+<td>Open</td>
+<td>MeitY / DPBI</td>
+<td>SDF designation list and localisation categories</td>
+<td>SDF programme scope</td>
+<td>Prepare conditionally</td>
+</tr>
+<tr>
+<td>Open</td>
+<td>DPBI</td>
+<td>Consent Manager operational framework</td>
+<td>Product and integration roadmap</td>
+<td>Watch from Nov 2026 phase</td>
+</tr>
+<tr>
+<td>Open</td>
+<td>DPBI</td>
+<td>Board portal filing procedures in practice</td>
+<td>Evidence format for breach and proceedings</td>
+<td>Pilot when portal live</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Evolve discipline (from v6):</strong> Assign a 30-minute monthly scan owner; publish internal "what changed this quarter" memo; refresh breach tabletop twice a year; re-run data inventory after major product or vendor changes.</p>
+<hr />
+<h2>Section 23: 90-Day DPDPA Action Plan</h2>
+<p><a id="section-23"></a></p>
+<p>This plan assumes a mid-market operator with no dedicated privacy team yet. Adjust owners to your org chart. Goal: exit day 90 with a board-ready evidence pack v1, not perfection.</p>
+<p><em>Diagram: see figure below.</em></p>
+<figure class="figure"><img src="../infographics/infographic-07-90-day-roadmap.png" alt="Infographic 8: 90-Day Roadmap" /><figcaption>Infographic 8: 90-Day Roadmap</figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Weeks</th>
+<th>Focus</th>
+<th>Outputs</th>
+<th>Owner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Discover</strong></td>
+<td>1-2</td>
+<td>Appoint owner; scope systems; start data map</td>
+<td>Named DPDPA owner; processing activity register v0.1</td>
+<td>CEO + ops lead</td>
+</tr>
+<tr>
+<td><strong>Permission</strong></td>
+<td>3-4</td>
+<td>Fix notices; tag lawful basis; separate marketing consent</td>
+<td>Updated notices; consent flow for optional uses</td>
+<td>Legal + product</td>
+</tr>
+<tr>
+<td><strong>Control</strong></td>
+<td>5-8</td>
+<td>Vendors, rights inbox, retention, access controls</td>
+<td>Processor review log; rights SOP; retention schedule</td>
+<td>IT + procurement + HR</td>
+</tr>
+<tr>
+<td><strong>Prove</strong></td>
+<td>9-12</td>
+<td>Breach drill; governance review; executive sign-off</td>
+<td>Tabletop breach record; board summary; evidence pack v1</td>
+<td>Security + CEO</td>
+</tr>
+</tbody>
+</table>
+<h3>Week-by-week detail</h3>
+<p><strong>Weeks 1-2 (Discover):</strong> Name accountable owner. List systems: CRM, HRMS, website, WhatsApp Business, cloud drives, payment tools. Draft processing register with top 10 flows. Flag two industry-specific risks from Section 19.</p>
+<p><strong>Weeks 3-4 (Permission):</strong> Publish standalone notices for website, app, and top offline form. Split marketing consent. Document Section 7 uses for payroll and legal compliance only where counsel agrees. Start consent/version log.</p>
+<p><strong>Weeks 5-6 (Control - vendors and rights):</strong> Complete processor register. Upgrade top five vendor contracts. Open rights@grievance inbox. Publish rights instructions. Define 60-day internal SLA.</p>
+<p><strong>Weeks 7-8 (Control - retention and access):</strong> Approve retention schedule. Remove ex-employee and vendor access. Run access review on shared folders and admin panels.</p>
+<p><strong>Weeks 9-10 (Prove):</strong> Tabletop breach scenario (WhatsApp mis-send or vendor leak). Time the 72-hour report draft. File incident record even for drill.</p>
+<p><strong>Weeks 11-12 (Prove):</strong> Leadership review against readiness scorecard. One-page board summary: five risks, five evidence items, open law watchlist. Executive sign-off on 90-day plan wave 2.</p>
+<h3>Success criteria at day 90</h3>
+<p>You should be able to answer <strong>yes</strong> to these without hesitation:</p>
+<ul>
+<li>A named owner can present the processing activity register in a 15-minute walkthrough.</li>
+<li>At least three collection points show standalone notices dated within the last 30 days.</li>
+<li>Top five vendors have signed or amended contracts with security and breach clauses, or a documented plan to upgrade them.</li>
+<li>A test rights request was logged, assigned, and closed with a redacted sample in the evidence pack.</li>
+<li>A breach tabletop produced a timeline, draft user notice, and draft Board notification within the exercise window.</li>
+<li>Leadership can explain which industry flows from Section 19 are priority one and two.</li>
+</ul>
+<p>If any answer is no, carry that gap into the next 90-day wave rather than declaring readiness. DPDPA programmes compound - each quarter adds evidence depth, not a new project.</p>
+<hr />
+<h2>Section 24: Disclaimer and SaralPrivacy Product Bridge</h2>
+<p><a id="section-24"></a></p>
+<h3>Disclaimer</h3>
+<p>This whitepaper is published by SaralPrivacy for <strong>informational and educational purposes only</strong>. It is not legal advice, not a substitute for counsel qualified in Indian law, and not a guarantee of compliance or regulatory outcome. Law, Rules, notifications, and court decisions may change after the status date (14 June 2026). Verify all deadlines, exemptions, and sectoral obligations with your advisors and official Gazette sources before relying on operational decisions. SaralPrivacy accepts no liability for actions taken solely on the basis of this document.</p>
+<h3>SaralPrivacy product bridge (restrained)</h3>
+<p>SaralPrivacy helps Indian operators <strong>discover</strong> what personal data they actually process and <strong>assess</strong> readiness before deep legal spend. This whitepaper is the map; the tools are the compass check.</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Route</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Discover</td>
+<td><a href="https://saralprivacy.com/discovery">saralprivacy.com/discovery</a></td>
+<td>Map which personal-data types your business collects across channels before building full compliance work</td>
+</tr>
+<tr>
+<td>2. Assess</td>
+<td><a href="https://saralprivacy.com/assessment">saralprivacy.com/assessment</a></td>
+<td>Generic 10-question readiness scan (~3 minutes)</td>
+</tr>
+<tr>
+<td>3. Sector scan</td>
+<td>Section 19 routes</td>
+<td>Industry-specific 10-question snapshot; deeper diagnostic after initial result</td>
+</tr>
+</tbody>
+</table>
+<p><strong>How to use this path:</strong> Read Sections 3-5 and your industry snapshot. Run Discovery if you cannot list your data types in plain English. Run the generic or sector Assessment to prioritise gaps. Take outputs to counsel and your 90-day plan owner - not the other way around.</p>
+<p>No product feature replaces notice, security, breach response, or rights operations required by law. The tools narrow <strong>where to start</strong> so teams spend legal and engineering time on real flows, not generic anxiety.</p>
+<p><strong>Suggested sequence for a first-time reader:</strong></p>
+<ol>
+<li>CEO or founder: Sections 3, 4, 5, and 19 (your industry) - 20 minutes.</li>
+<li>Programme owner: Sections 7-18 plus Section 23 - one working session.</li>
+<li>Legal counsel: Sections 8, 9, 20-22 and glossary - validation pass.</li>
+<li>Board packet: Section 4 infographic, Section 9 obligation table, Section 23 gantt, readiness scorecard from Section 18.</li>
+</ol>
+<p>This whitepaper will be updated when Gazette notifications change dates or when SaralPrivacy publishes new industry scan versions. Check the status date on the cover before citing deadlines externally.</p>
+<p><strong>Publisher note:</strong> SaralPrivacy builds discovery and assessment tools for Indian operators. This document is the public reference edition aligned to OPERATE v6.1 and the June 2026 legal status snapshot. Feedback and corrections welcome via SaralPrivacy support channels.</p>
+<hr />
+<h2>Glossary (25 terms)</h2>
+<p><a id="glossary"></a></p>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Plain English</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Data Fiduciary</strong></td>
+<td>The organisation that decides why and how personal data is processed - usually your company.</td>
+</tr>
+<tr>
+<td><strong>Data Principal</strong></td>
+<td>The person whose data is processed - customer, employee, student, patient, etc.</td>
+</tr>
+<tr>
+<td><strong>Data Processor</strong></td>
+<td>A vendor that processes personal data on your instructions - cloud host, payroll provider, ATS.</td>
+</tr>
+<tr>
+<td><strong>Personal data</strong></td>
+<td>Any data about an identifiable person - name, phone, PAN, health record, photo.</td>
+</tr>
+<tr>
+<td><strong>Processing</strong></td>
+<td>Anything done with data: collect, store, use, share, analyse, delete.</td>
+</tr>
+<tr>
+<td><strong>Consent</strong></td>
+<td>Clear, specific permission given freely with affirmative action; must be easy to withdraw.</td>
+</tr>
+<tr>
+<td><strong>Legitimate uses</strong></td>
+<td>Narrow Section 7 grounds allowing processing without consent - not a general business exemption.</td>
+</tr>
+<tr>
+<td><strong>Notice</strong></td>
+<td>Plain-language explanation at collection about data, purpose, rights, and complaints.</td>
+</tr>
+<tr>
+<td><strong>Significant Data Fiduciary (SDF)</strong></td>
+<td>Large/high-impact fiduciaries notified by Government with extra duties (DPIA, audit, etc.).</td>
+</tr>
+<tr>
+<td><strong>Consent Manager</strong></td>
+<td>Registered intermediary helping people give, manage, and withdraw consent across services.</td>
+</tr>
+<tr>
+<td><strong>DPBI</strong></td>
+<td>Digital Data Protection Board of India - the regulator for DPDPA enforcement.</td>
+</tr>
+<tr>
+<td><strong>Grievance</strong></td>
+<td>A formal complaint by a Data Principal that you must address within 90 days maximum.</td>
+</tr>
+<tr>
+<td><strong>Nomination</strong></td>
+<td>Right of a Data Principal to name someone to exercise rights on their behalf after death/incapacity.</td>
+</tr>
+<tr>
+<td><strong>Breach</strong></td>
+<td>Security incident exposing personal data - triggers user and Board notification duties.</td>
+</tr>
+<tr>
+<td><strong>72-hour report</strong></td>
+<td>Detailed breach report to DPBI within 72 hours of Board notification (Rule 7).</td>
+</tr>
+<tr>
+<td><strong>Reasonable security safeguards</strong></td>
+<td>Encryption, access control, logs, backups, monitoring - Section 8(5) baseline.</td>
+</tr>
+<tr>
+<td><strong>Cross-border transfer</strong></td>
+<td>Sending or accessing personal data outside India - subject to future restrictions.</td>
+</tr>
+<tr>
+<td><strong>Rule 15 conditions</strong></td>
+<td>Government-specified requirements for transfers to foreign states or controlled entities.</td>
+</tr>
+<tr>
+<td><strong>Processing activity register</strong></td>
+<td>Your inventory of what data you process, why, where, and how long.</td>
+</tr>
+<tr>
+<td><strong>Purpose limitation</strong></td>
+<td>Using data only for the purpose you stated when collecting it.</td>
+</tr>
+<tr>
+<td><strong>Data minimisation</strong></td>
+<td>Collecting only what you need for the stated purpose.</td>
+</tr>
+<tr>
+<td><strong>Retention schedule</strong></td>
+<td>Documented rules for how long data is kept and when it is deleted.</td>
+</tr>
+<tr>
+<td><strong>Verifiable consent (children)</strong></td>
+<td>Parent/guardian consent that can be checked under Rule 10 methods.</td>
+</tr>
+<tr>
+<td><strong>Techno-legal measures</strong></td>
+<td>Board/digital compliance requirements combining technology and legal process.</td>
+</tr>
+<tr>
+<td><strong>Phased commencement</strong></td>
+<td>Different Act/Rules sections become enforceable on different Gazette dates.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Source Register</h2>
+<p><a id="sources"></a></p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Source</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S1</td>
+<td>Digital Personal Data Protection Act, 2023, Act No. 22 of 2023, MeitY/Gazette.</td>
+<td>https://www.meity.gov.in/static/uploads/2024/02/Digital-Personal-Data-Protection-Act-2023.pdf</td>
+</tr>
+<tr>
+<td>S2</td>
+<td>Digital Personal Data Protection Rules, 2025, G.S.R. 846(E), Gazette dated 13 Nov 2025.</td>
+<td>https://www.meity.gov.in/static/uploads/2025/11/53450e6e5dc0bfa85ebd78686cadad39.pdf</td>
+</tr>
+<tr>
+<td>S3</td>
+<td>Enforcement Timeline for the DPDP Act, G.S.R. 843(E), Gazette dated 13 Nov 2025.</td>
+<td>https://www.meity.gov.in/static/uploads/2025/11/c56ceae6c383460ca69577428d36828b.pdf</td>
+</tr>
+<tr>
+<td>S4</td>
+<td>Establishment of Data Protection Board of India, G.S.R. 844(E), Gazette dated 13 Nov 2025.</td>
+<td>https://www.meity.gov.in/static/uploads/2025/11/cc217843dc3bcb37b2b05bcc3b4e031f.pdf</td>
+</tr>
+<tr>
+<td>S5</td>
+<td>PIB release: Government notifies DPDP Rules, 14 Nov 2025.</td>
+<td>https://www.pib.gov.in/PressReleaseIframePage.aspx?PRID=2190014</td>
+</tr>
+<tr>
+<td>S6</td>
+<td>Supreme Court Observer: Constitutionality of the DPDPA, Venkatesh Nayak v Union of India.</td>
+<td>https://www.scobserver.in/cases/constitutionality-of-the-digital-personal-data-protection-act-2023/amp/</td>
+</tr>
+<tr>
+<td>S7</td>
+<td>Moneycontrol: Supreme Court refers RTI amendment challenge to larger bench, 19 Feb 2026.</td>
+<td>https://www.moneycontrol.com/news/india/supreme-court-refers-data-protection-law-amendment-of-rti-act-challenge-to-larger-bench-no-question-of-stay-13830233.html</td>
+</tr>
+<tr>
+<td>S8</td>
+<td>Medianama: Supreme Court notice in DPDP Act challenge, 13 Mar 2026.</td>
+<td>https://www.medianama.com/2026/03/223-supreme-court-dpdp-act-challenge/</td>
+</tr>
+<tr>
+<td>S9</td>
+<td>LawBeat: Delhi HC notice on DPDP state exemptions and blocking powers, 19 Feb 2026.</td>
+<td>https://lawbeat.in/news-updates/delhi-hc-issues-notice-on-plea-against-state-exemptions-blocking-powers-under-dpdp-act-1566615</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><em>India's DPDPA Readiness Whitepaper 2026-2027 v6.1 - SaralPrivacy - 14 June 2026 - OPERATE model - Informational structure, not legal advice.</em></p>
+
+<div class="cta-block" id="cta">
+  <h2>Know your gaps. Fix what matters.</h2>
+  <p>Start with a free 3-minute privacy readiness scan — then take your industry snapshot from Section 19.</p>
+  <a class="btn-primary" href="https://saralprivacy.com/assessment">Take free assessment →</a>
+</div>
+
+</main>
+
+<footer class="doc-footer">
+  <div class="footer-brand-block">
+    <img src="SaralPrivacyLogo1.png" alt="SaralPrivacy" class="logo-footer" />
+    <div class="brand">Saral<span>Privacy</span></div>
+  </div>
+  <div class="meta">DPDPA readiness whitepaper · Version 3 · June 2026 · SaralPrivacy</div>
+  <div class="handle">@saralprivacy · saralprivacy.com</div>
+</footer>
+
+</div>
+</body>
+</html>

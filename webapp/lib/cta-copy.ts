@@ -18,8 +18,8 @@ export const ctaCopy = {
   whitepaper: {
     eyebrow:  "Free Download",
     heading:  "The Complete DPDPA Compliance Guide",
-    body:     "35 pages. Plain English. Everything your business needs to understand the DPDP Rules 2025 — written for founders, not lawyers.",
-    cta:      "Download White Paper →",
+    body:     "Plain English. Everything your business needs to understand the DPDP Rules 2025 — written for founders, not lawyers. Now in 7 Indian languages.",
+    cta:      "Download the Guide →",
     href:     "/white-paper#download",
   },
   whitepaperCompact: {

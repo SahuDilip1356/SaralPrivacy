@@ -22,7 +22,7 @@ export function WhitePaperSection() {
           <div>
             <div className="inline-flex items-center gap-2 bg-gold-400/10 border border-gold-400/30 rounded-full px-3.5 py-1.5 mb-5">
               <FileText size={12} className="text-gold-400" />
-              <span className="text-gold-400 text-xs font-semibold">45-page practitioner guide · Free download</span>
+              <span className="text-gold-400 text-xs font-semibold">Practitioner guide · Free download</span>
             </div>
 
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
@@ -31,8 +31,8 @@ export function WhitePaperSection() {
             </h2>
 
             <p className="text-slate-300 text-lg leading-relaxed mb-7">
-              A practitioner-grade white paper that covers everything your business needs to know
-              about DPDPA — from applicability to enforcement — without the legalese.
+              A practitioner-grade guide — now in 7 Indian languages — that covers everything your
+              business needs to know about DPDPA, from applicability to enforcement, without the legalese.
             </p>
 
             {/* Contents */}
@@ -50,7 +50,7 @@ export function WhitePaperSection() {
               className="inline-flex items-center gap-2 px-7 py-3.5 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl transition-colors text-base"
             >
               <Download size={18} />
-              Download Free White Paper
+              Download the Free Guide
             </Link>
             <p className="text-slate-500 text-xs mt-3">
               Requires name, work email, and industry. Separate consent options for follow-up.
@@ -69,7 +69,7 @@ export function WhitePaperSection() {
                   <div className="font-bold text-navy-700 text-base leading-snug">
                     DPDPA: The Complete Guide for Indian Businesses
                   </div>
-                  <div className="text-slate-500 text-xs mt-0.5">2026 Edition · 45 pages</div>
+                  <div className="text-slate-500 text-xs mt-0.5">2026 Edition · 7 languages</div>
                 </div>
               </div>
 

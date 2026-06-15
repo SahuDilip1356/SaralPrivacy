@@ -48,10 +48,6 @@ const navigation = [
     label: "Insights",
     href: "/blog",
   },
-  {
-    label: "FAQ",
-    href: "/faq",
-  },
 ];
 
 export function Header() {
@@ -216,7 +212,7 @@ export function Header() {
               href="/white-paper#download"
               className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold whitespace-nowrap bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
             >
-              White Paper
+              Guide
             </Link>
             <button
               className="lg:hidden p-2 text-slate-600 hover:text-slate-900"
@@ -276,7 +272,7 @@ export function Header() {
               href="/white-paper#download"
               className="block w-full text-center px-4 py-2.5 text-sm font-semibold bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
             >
-              Download White Paper
+              Download the Guide
             </Link>
             <Link
               href="/contact"

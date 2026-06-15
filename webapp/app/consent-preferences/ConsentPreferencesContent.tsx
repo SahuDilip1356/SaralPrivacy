@@ -106,7 +106,7 @@ export default function ConsentPreferencesContent() {
             <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-5">
               <p className="text-xs text-amber-800">
                 Unchecking any option withdraws your consent for that purpose. This does not affect
-                our ability to deliver the white paper or consultation you requested.
+                our ability to deliver the Guide or consultation you requested.
               </p>
             </div>
 

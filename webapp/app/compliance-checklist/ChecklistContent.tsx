@@ -230,9 +230,9 @@ function MidPageCTA() {
         <Link
           href="/white-paper"
           className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors whitespace-nowrap"
-          aria-label="Download the DPDPA white paper"
+          aria-label="Download the DPDPA guide"
         >
-          Download White Paper <FileText size={14} />
+          Download the Guide <FileText size={14} />
         </Link>
       </div>
     </div>
@@ -323,8 +323,8 @@ function RelatedResources() {
     },
     {
       icon: FileText,
-      label: "Download White Paper",
-      desc: "59-page DPDPA guide — Act 2023 + Rules 2025",
+      label: "Download the Guide",
+      desc: "DPDPA guide — Act 2023 + Rules 2025",
       href: "/white-paper",
       accent: "text-navy-600",
       bg: "bg-navy-50",

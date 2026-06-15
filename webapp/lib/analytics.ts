@@ -75,11 +75,13 @@ export const trackEvent = {
   download: (params: {
     industry?: string;
     company_size?: string;
+    language?: string;
   }) => gtag("file_download", {
     event_category:  "lead",
     file_name:       "DPDPA_Visual_Guide",
     industry:        params.industry     || "",
     company_size:    params.company_size || "",
+    language:        params.language     || "en",
   }),
 
   // ── Newsletter subscribe ────────────────────────────────────────────────

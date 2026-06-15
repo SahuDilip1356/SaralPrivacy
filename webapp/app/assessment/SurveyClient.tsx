@@ -1427,7 +1427,7 @@ export default function SurveyClient() {
                   Book a free 20-min call
                 </Link>
                 <Link href="/white-paper" className="px-6 py-3 bg-white/10 text-white font-bold rounded-xl text-sm hover:bg-white/20 transition-colors flex items-center justify-center gap-2">
-                  Download White Paper
+                  Download the Guide
                 </Link>
               </div>
             </div>

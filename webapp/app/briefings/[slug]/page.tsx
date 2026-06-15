@@ -712,9 +712,9 @@ export default async function BriefingDetailPage({ params }: Props) {
                       className="flex flex-col p-5 bg-white border border-slate-200 rounded-xl hover:border-green-300 hover:shadow-sm transition-all"
                     >
                       <span className="text-slate-500 text-xs font-semibold mb-1">Free resource</span>
-                      <span className="font-bold text-base text-navy-700">Download white paper</span>
+                      <span className="font-bold text-base text-navy-700">Download the Guide</span>
                       <span className="text-slate-500 text-sm mt-1">
-                        Complete DPDPA guide — 45 pages →
+                        Complete DPDPA guide →
                       </span>
                     </Link>
                   </div>

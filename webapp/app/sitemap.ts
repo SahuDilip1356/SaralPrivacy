@@ -2,6 +2,7 @@ import { MetadataRoute } from 'next'
 import { databases, DB_ID, COLLECTIONS, Query } from '@/lib/appwrite'
 import { FRESHNESS } from '@/lib/content-freshness'
 import { sectorSlugs } from '@/lib/data/sectors'
+import { READING_LANGS } from '@/lib/data/guide-languages'
 
 const BASE = 'https://saralprivacy.com'
 
@@ -74,6 +75,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE}/media/coverage`,   lastModified: FRESHNESS.media, changeFrequency: 'monthly', priority: 0.4 },
     { url: `${BASE}/media/press-wall`, lastModified: FRESHNESS.media, changeFrequency: 'monthly', priority: 0.5 },
     { url: `${BASE}/white-paper`,   lastModified: CORE_UPDATED,     changeFrequency: 'monthly', priority: 0.8 },
+    // Per-language Guide reading pages (static HTML in /public/guides)
+    ...READING_LANGS.map((l) => ({
+      url: `${BASE}${l.htmlUrl}`,
+      lastModified: CORE_UPDATED,
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    })),
     { url: `${BASE}/resources`,     lastModified: CORE_UPDATED,     changeFrequency: 'monthly', priority: 0.8 },
 
     // ── Tools ──

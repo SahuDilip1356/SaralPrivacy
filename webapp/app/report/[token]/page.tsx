@@ -549,7 +549,7 @@ export default async function ReportPage({ params }: { params: Promise<{ token: 
               className="flex items-center justify-between p-4 border border-slate-200 rounded-xl hover:border-[#1E3A5F]/30 hover:bg-slate-50 transition-colors group">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-0.5">
-                  <p className="text-sm font-semibold text-slate-800 group-hover:text-[#1E3A5F]">DPDPA White Paper</p>
+                  <p className="text-sm font-semibold text-slate-800 group-hover:text-[#1E3A5F]">DPDPA Guide</p>
                   <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-slate-100 text-slate-500">PDF Guide</span>
                 </div>
                 <p className="text-xs text-slate-500">Comprehensive plain-English guide to the Digital Personal Data Protection Act for Indian businesses</p>

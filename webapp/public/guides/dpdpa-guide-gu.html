@@ -1,0 +1,2802 @@
+<!DOCTYPE html>
+<html lang="gu-IN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ભારતનું DPDPA તૈયારી વ્હાઇટપેપર 2026-2027 | SaralPrivacy સંસ્કરણ 3</title>
+<meta name="description" content="ભારતીય વ્યવસાયો માટે વ્યવહારુ DPDPA તૈયારી માર્ગદર્શિકા. SaralPrivacy ચકાસાયેલ ડિજિટલ વિશ્વાસ.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Gujarati:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #121A2E;
+  --green: #07B981;
+  --teal: #35B6AE;
+  --gold: #E8AB42;
+  --slate: #334155;
+  --cloud: #F7F9FC;
+  --white: #FFFFFF;
+  --muted: #94A3B8;
+  --border: #EEF0F4;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Noto Sans Gujarati', 'Inter', system-ui, sans-serif;
+  background: var(--cloud);
+  color: var(--slate);
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+.cover {
+  background: var(--navy);
+  color: var(--white);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 48px 56px 40px;
+  page: cover;
+  page-break-after: always;
+  border-bottom: 3px solid rgba(7,185,129,.35);
+}
+
+.cover-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 32px; }
+.cover-brand { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+.logo-link { display: block; line-height: 0; }
+.logo-cover {
+  height: 108px; width: auto; display: block;
+  background: var(--white); border-radius: 12px;
+  padding: 14px 18px; box-shadow: 0 4px 24px rgba(0,0,0,.18);
+}
+.promise-pill {
+  display: inline-block; margin-top: 16px;
+  background: rgba(7,185,129,.15); border: 1px solid var(--green);
+  color: var(--green); font-size: 11px; font-weight: 600;
+  padding: 5px 14px; border-radius: 100px; letter-spacing: .5px; text-transform: uppercase;
+}
+.cover-meta { text-align: right; }
+.cover-meta .label { font-size: 10px; color: #64748B; text-transform: uppercase; letter-spacing: 1px; }
+.cover-meta .ver { font-size: 20px; font-weight: 700; color: var(--gold); margin-top: 6px; }
+.cover-meta .date { font-size: 12px; color: #94A3B8; margin-top: 8px; }
+
+.cover-main { flex: 1; display: flex; flex-direction: column; justify-content: center; max-width: 820px; padding: 48px 0; }
+.cover-title { font-size: 42px; font-weight: 700; line-height: 1.15; letter-spacing: -0.5px; margin-bottom: 20px; }
+.cover-subtitle { font-size: 18px; color: #CBD5E1; line-height: 1.5; max-width: 680px; }
+.cover-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 28px; }
+.badge { font-size: 10px; font-weight: 600; padding: 4px 12px; border-radius: 100px; border: 1px solid; }
+.badge-green { background: rgba(7,185,129,.12); border-color: rgba(7,185,129,.45); color: #6EE7B7; }
+.badge-teal { background: rgba(53,182,174,.1); border-color: rgba(53,182,174,.4); color: #99F6E4; }
+.badge-gold { background: rgba(232,171,66,.1); border-color: rgba(232,171,66,.4); color: #FDE68A; }
+.cover-footer-line { font-size: 12px; color: #64748B; }
+
+.doc-wrap { max-width: 900px; margin: 0 auto; background: var(--white); box-shadow: 0 4px 40px rgba(0,0,0,.08); position: relative; }
+
+.watermarked { position: relative; isolation: isolate; }
+.watermarked::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url('SaralPrivacyLogo1.png') center 42% / 52% auto no-repeat;
+  opacity: 0.055;
+  pointer-events: none;
+  z-index: 0;
+}
+.watermarked > * { position: relative; z-index: 1; }
+
+.toc {
+  padding: 40px 56px;
+  background: var(--cloud);
+  border-bottom: 1px solid var(--border);
+  page-break-after: always;
+}
+.toc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+.logo-toc { height: 56px; width: auto; display: block; }
+.toc h2 { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--teal); margin-bottom: 20px; }
+.toc ol { columns: 2; column-gap: 40px; padding-left: 20px; font-size: 14px; }
+.toc li { margin-bottom: 8px; break-inside: avoid; }
+.toc a { color: var(--navy); text-decoration: none; font-weight: 500; }
+.toc a:hover { color: var(--green); }
+
+.reader-guide {
+  padding: 44px 56px 48px;
+  background: var(--white);
+  page-break-before: always;
+  page-break-after: always;
+  border-bottom: 1px solid var(--border);
+}
+.reader-guide h2 {
+  font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--teal); margin-bottom: 12px;
+}
+.reader-guide h3 {
+  font-size: 26px; font-weight: 700; color: var(--navy);
+  margin-bottom: 20px; line-height: 1.25;
+}
+.reader-guide p { margin-bottom: 14px; font-size: 15px; }
+.reader-guide ul { margin: 0 0 18px 22px; font-size: 14px; }
+.reader-guide li { margin-bottom: 8px; }
+.reader-guide .guide-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; margin-top: 20px;
+}
+.reader-guide .guide-card {
+  background: var(--cloud); border-radius: 8px; padding: 12px 14px;
+  border-left: 3px solid var(--green);
+}
+.reader-guide .guide-card h4 {
+  font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 6px;
+}
+.reader-guide .guide-card p { font-size: 13px; margin: 0; color: var(--slate); }
+.reader-guide .doc-meta {
+  margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--border);
+  font-size: 12px; color: var(--muted);
+}
+
+.content { padding: 48px 56px 64px; }
+
+.content h1 {
+  font-size: 28px; font-weight: 700; color: var(--navy);
+  margin: 48px 0 16px; padding-top: 8px;
+  border-top: 3px solid var(--green);
+  page-break-before: always;
+}
+.content h1:first-child { border-top: none; margin-top: 0; page-break-before: auto; }
+
+.content h2 {
+  font-size: 22px; font-weight: 700; color: var(--navy);
+  margin: 36px 0 14px;
+}
+.content h3 {
+  font-size: 11px; font-weight: 700; letter-spacing: 1.2px;
+  text-transform: uppercase; color: var(--teal);
+  margin: 28px 0 12px;
+}
+.content h4 { font-size: 16px; font-weight: 600; color: var(--navy); margin: 20px 0 8px; }
+
+.content p { margin-bottom: 14px; }
+.content ul, .content ol { margin: 0 0 16px 24px; }
+.content li { margin-bottom: 6px; }
+.content strong { color: var(--navy); font-weight: 600; }
+.content em { font-style: italic; }
+.content hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+.content a { color: var(--teal); font-weight: 500; }
+.content a:hover { color: var(--green); }
+
+.content table {
+  width: 100%; border-collapse: collapse; font-size: 13px;
+  margin: 16px 0 24px; table-layout: fixed;
+}
+.content thead { background: var(--navy); color: var(--white); }
+.content th {
+  padding: 10px 12px; text-align: left; font-weight: 600; font-size: 12px;
+  word-wrap: break-word; overflow-wrap: anywhere;
+}
+.content td {
+  padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top;
+  word-wrap: break-word; overflow-wrap: anywhere;
+}
+.content tr:nth-child(even) td { background: var(--cloud); }
+
+.content pre {
+  background: var(--navy); color: #CBD5E1; padding: 16px 20px;
+  border-radius: 8px; border-left: 3px solid var(--green);
+  font-size: 11px; line-height: 1.5; overflow-x: auto; margin: 16px 0 24px;
+  white-space: pre-wrap;
+}
+.content code { font-family: ui-monospace, monospace; font-size: 12px; }
+
+.brand-line {
+  padding: 12px 16px; border-left: 3px solid var(--green);
+  margin: 20px 0; font-style: italic; font-size: 15px;
+  color: var(--navy); background: rgba(7,185,129,.06);
+  border-radius: 0 8px 8px 0;
+}
+
+.figure { margin: 16px 0 28px; text-align: center; page-break-inside: avoid; break-inside: avoid; }
+.figure img {
+  display: block; margin: 0 auto; max-width: 100%; width: 100%;
+  max-height: 9.2in; height: auto; object-fit: contain;
+  border-radius: 4px; border: 1px solid var(--border);
+}
+.figure figcaption { font-size: 12px; color: var(--muted); margin-top: 10px; font-style: italic; }
+
+.mermaid-note {
+  font-size: 12px; color: var(--muted); font-style: italic;
+  margin: -12px 0 20px; padding: 8px 12px; background: var(--cloud); border-radius: 6px;
+}
+
+.cta-block {
+  background: var(--navy); border-radius: 12px; padding: 40px 48px;
+  margin: 48px 0 32px; text-align: center; page-break-inside: avoid;
+}
+.cta-block h2 { color: var(--white) !important; font-size: 24px !important; margin: 0 0 12px !important; border: none !important; }
+.cta-block p { color: #CBD5E1; margin-bottom: 24px; font-size: 15px; }
+.btn-primary {
+  display: inline-block; background: var(--green); color: var(--white) !important;
+  font-size: 16px; font-weight: 600; padding: 14px 32px; border-radius: 8px;
+  text-decoration: none !important; letter-spacing: 0.2px;
+}
+.btn-primary:hover { background: #059669; }
+
+.doc-footer {
+  background: var(--navy); padding: 24px 56px;
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+}
+.doc-footer .footer-brand-block { display: flex; align-items: center; gap: 14px; }
+.logo-footer {
+  height: 44px; width: auto; display: block;
+  background: var(--white); border-radius: 8px; padding: 6px 10px;
+}
+.doc-footer .brand { font-size: 15px; font-weight: 700; color: var(--white); }
+.doc-footer .brand span { color: var(--green); }
+.doc-footer .meta { font-size: 11px; color: #64748B; }
+.doc-footer .handle { font-size: 12px; color: var(--teal); font-weight: 500; }
+
+@media print {
+  @page {
+    size: A4;
+    margin: 22mm 16mm 24mm 16mm;
+    @top-center {
+      content: "SaralPrivacy";
+      font-family: 'Noto Sans Gujarati', 'Inter', system-ui, sans-serif;
+      font-size: 9pt;
+      font-weight: 600;
+      color: #121A2E;
+      letter-spacing: 0.3px;
+    }
+    @bottom-center {
+      content: counter(page);
+      font-family: 'Noto Sans Gujarati', 'Inter', system-ui, sans-serif;
+      font-size: 9pt;
+      color: #64748B;
+    }
+  }
+  @page cover {
+    margin: 0;
+    @top-center { content: none; }
+    @bottom-center { content: none; }
+  }
+  body { background: white; font-size: 11pt; }
+  .doc-wrap { box-shadow: none; max-width: 100%; }
+  .cover { min-height: auto; height: 100vh; }
+  .content { padding: 32px 40px; }
+  .content h1 { page-break-before: always; }
+  .content table {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    font-size: 8pt;
+    page-break-inside: auto;
+  }
+  .content th, .content td {
+    padding: 4px 5px;
+    font-size: 7.5pt;
+    line-height: 1.35;
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+    hyphens: auto;
+  }
+  .no-print { display: none; }
+  a { color: var(--slate) !important; text-decoration: none; }
+  .btn-primary { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  thead { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .cover, .doc-footer, .cta-block { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .watermarked::before {
+    position: fixed;
+    top: 42%;
+    left: 50%;
+    width: 68vw;
+    height: 68vw;
+    transform: translate(-50%, -50%);
+    opacity: 0.05;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+</style>
+<!-- saral:hreflang:start -->
+<link rel="canonical" href="https://saralprivacy.com/guides/dpdpa-guide-gu.html">
+<link rel="alternate" hreflang="en-IN" href="https://saralprivacy.com/guides/dpdpa-guide-en.html">
+<link rel="alternate" hreflang="hi-IN" href="https://saralprivacy.com/guides/dpdpa-guide-hi.html">
+<link rel="alternate" hreflang="gu-IN" href="https://saralprivacy.com/guides/dpdpa-guide-gu.html">
+<link rel="alternate" hreflang="mr-IN" href="https://saralprivacy.com/guides/dpdpa-guide-mr.html">
+<link rel="alternate" hreflang="kn-IN" href="https://saralprivacy.com/guides/dpdpa-guide-kn.html">
+<link rel="alternate" hreflang="ta-IN" href="https://saralprivacy.com/guides/dpdpa-guide-ta.html">
+<link rel="alternate" hreflang="te-IN" href="https://saralprivacy.com/guides/dpdpa-guide-te.html">
+<link rel="alternate" hreflang="x-default" href="https://saralprivacy.com/white-paper">
+<!-- saral:hreflang:end -->
+</head>
+<body>
+<div class="doc-wrap">
+
+<header class="cover">
+  <div class="cover-top">
+    <div class="cover-brand">
+      <a href="https://saralprivacy.com" class="logo-link" aria-label="SaralPrivacy હોમ">
+        <img src="SaralPrivacyLogo1.png" alt="SaralPrivacy — ભારત માટે વ્યવહારુ ગોપનીયતા" class="logo-cover" />
+      </a>
+      <div class="promise-pill">ચકાસાયેલ ડિજિટલ વિશ્વાસ</div>
+    </div>
+    <div class="cover-meta">
+      <div class="label">વ્હાઇટપેપર</div>
+      <div class="ver">સંસ્કરણ 3</div>
+      <div class="date">જૂન 2026</div>
+    </div>
+  </div>
+  <div class="cover-main">
+    <h1 class="cover-title">ભારતનું DPDPA તૈયારી વ્હાઇટપેપર 2026-2027</h1>
+    <p class="cover-subtitle">ભારતીય વ્યવસાયો માટે નોટિસ, સંમતિ, સુરક્ષા, અધિકારો, વિક્રેતાઓ, બાળકોનો ડેટા, ઉલ્લંઘન પ્રતિસાદ અને ક્ષેત્ર-વિશિષ્ટ જોખમ તૈયારી માટે વ્યવહારુ માર્ગદર્શિકા.</p>
+    <div class="cover-badges">
+      <span class="badge badge-green">ગોપનીયતા મૂલ્યાંકન</span>
+      <span class="badge badge-teal">OPERATE ફ્રેમવર્ક</span>
+      <span class="badge badge-gold">12 ઉદ્યોગ સ્નેપશોટ</span>
+    </div>
+  </div>
+  <div class="cover-footer-line">saralprivacy.com · @saralprivacy · માહિતીપૂર્ણ માર્ગદર્શિકા, કાનૂની સલાહ નહીં</div>
+</header>
+
+
+<nav class="toc watermarked" aria-label="વિષય સૂચિ">
+  <div class="toc-header">
+    <a href="https://saralprivacy.com"><img src="SaralPrivacyLogo1.png" alt="SaralPrivacy" class="logo-toc" /></a>
+    <div class="promise-pill" style="margin-top:0">ચકાસાયેલ ડિજિટલ વિશ્વાસ</div>
+  </div>
+  <h2>વિષય સૂચિ</h2>
+  <ol><li><a href="#section-1">આવરણ</a></li>
+<li><a href="#section-2">આ વ્હાઇટપેપર કોના માટે</a></li>
+<li><a href="#section-3">કાર્યકારી સારાંશ</a></li>
+<li><a href="#section-4">CEO અને બોર્ડ પ્રાથમિકતા પૃષ્ઠ</a></li>
+<li><a href="#section-5">કાનૂની સ્થિતિ સ્નેપશોટ</a></li>
+<li><a href="#section-6">2026-2027 માં DPDPA શા માટે મહત્વનું</a></li>
+<li><a href="#section-7">અધિનિયમ શું કવર કરે છે</a></li>
+<li><a href="#section-8">વૈધ પ્રક્રિયા</a></li>
+<li><a href="#section-9">મુખ્ય ફરજો</a></li>
+<li><a href="#section-10">OPERATE મોડેલ</a></li>
+<li><a href="#section-11">વ્યક્તિગત ડેટા નિરીક્ષણ</a></li>
+<li><a href="#section-12">પરવાનગી અને વૈધ આધાર</a></li>
+<li><a href="#section-13">પુરાવો અને રેકોર્ડ</a></li>
+<li><a href="#section-14">અધિકારો અને ફરિયાદ</a></li>
+<li><a href="#section-15">જવાબદારી અને શાસન</a></li>
+<li><a href="#section-16">તૃતીય-પક્ષ અને વિક્રેતા નિયંત્રણ</a></li>
+<li><a href="#section-17">ઘટના અને ઉલ્લંઘન તૈયારી</a></li>
+<li><a href="#section-18">અમલીકરણ કિટ</a></li>
+<li><a href="#section-19">12 ઉદ્યોગ જોખમ સ્નેપશોટ</a></li>
+<li><a href="#section-20">અધિનિયમ વિભાગ નકશો</a></li>
+<li><a href="#section-21">કોર્ટ કેસ ટ્રેકર</a></li>
+<li><a href="#section-22">ટ્રેક કરવા યોગ્ય ખુલ્લા મુદ્દા</a></li>
+<li><a href="#section-23">90-દિવસની ક્રિયા યોજના</a></li>
+<li><a href="#section-24">નિરાકરણ અને ઉત્પાદન પુલ</a></li>
+<li><a href="#glossary">શબ્દકોશ</a></li>
+<li><a href="#sources">સ્રોત રજિસ્ટર</a></li></ol>
+</nav>
+
+
+<section class="reader-guide watermarked" aria-label="આ માર્ગદર્શિકા કેવી રીતે વાપરવી">
+  <h2>વપરાશકર્તા માર્ગદર્શિકા</h2>
+  <h3>આ વ્હાઇટપેપર કેવી રીતે વાંચવું</h3>
+  <p>આ દસ્તાવેજ ભારતીય વ્યવસાયો માટે <strong>64-પૃષ્ઠની વ્યવહારુ માર્ગદર્શિકા</strong> છે, Digital Personal Data Protection Act, 2023 (DPDPA) તૈયારી માટે. સ્થાપકો, બોર્ડ અને ઓપરેટરો માટે — વકીલો માટે નહીં.</p>
+  <p><strong>સૂચવેલ વાંચન માર્ગો</strong></p>
+  <ul>
+    <li><strong>15 મિનિટ (નેતૃત્વ):</strong> વિભાગ 4 CEO પૃષ્ઠ, ઇન્ફોગ્રાફિક 1, વિભાગ 23 ની 90-દિવસની યોજના.</li>
+    <li><strong>1 કલાક (કમ્પ્લાયન્સ લીડ):</strong> વિભાગ 5-9, પછી 10-17 (OPERATE).</li>
+    <li><strong>અર્ધો દિવસ (અમલીકરણ):</strong> વિભાગ 18 કિટ, વિભાગ 19 માં તમારો ઉદ્યોગ, સ્રોત રજિસ્ટર.</li>
+  </ul>
+  <div class="guide-grid">
+    <div class="guide-card">
+      <h4>8 ઇન્ફોગ્રાફિક</h4>
+      <p>વિભાગ 4, 7, 8, 10, 17, 18, 19 અને 23 — ક્રમમાં ઇન્ફોગ્રાફિક 1 થી 8. બોર્ડ-સામનાના વાચકો માટે ઇન્ફોગ્રાફિક 1 થી શરૂ કરો. (ચિત્રો અંગ્રેજીમાં — લખાણ ગુજરાતીમાં.)</p>
+    </div>
+    <div class="guide-card">
+      <h4>OPERATE v6.1</h4>
+      <p>વિભાગ 11-17: Observe, Permission, Evidence, Rights, Accountability, Third-party, Event.</p>
+    </div>
+    <div class="guide-card">
+      <h4>12 ઉદ્યોગ</h4>
+      <p>વિભાગ 19 જોખમ સ્નેપશોટ — ક્ષેત્ર પસંદ કરો, બે ફ્લો ઠીક કરો, પછી વિભાગ 23 વાપરો.</p>
+    </div>
+    <div class="guide-card">
+      <h4>કાનૂની પરિશિષ્ટ</h4>
+      <p>વિભાગ 20-22: અધિનિયમ નકશા, મુકદમા વૉચ, ખુલ્લા મુદ્દા. તારીખો લાગુ / પ્રસ્તાવિત તરીકે લેબલ કરો.</p>
+    </div>
+  </div>
+  <p class="doc-meta">સંસ્કરણ 3 · જૂન 2026 · SaralPrivacy · માહિતીપૂર્ણ માર્ગદર્શિકા · saralprivacy.com</p>
+</section>
+
+<main class="content watermarked">
+<h2>વિભાગ 1: કવર</h2>
+<p><a id="1"></a></p>
+<p>ભારતનો ડિજિટલ પર્સનલ ડેટા પ્રોટેક્શન એક્ટ હવે ભવિષ્યનો કાયદો નથી. નિયમો સૂચિત કરવામાં આવે છે, ડેટા પ્રોટેક્શન બોર્ડ ઓફ ઈન્ડિયાની રચના કરવામાં આવી રહી છે, અને ઓપરેશનલ કમ્પ્લાયન્સ તારીખો 2026 અને 2027 માટે કેલેન્ડર પર છે. આ વ્હાઇટપેપર અનુવાદ કરે છે કે કાનૂની મશીનરી આ ત્રિમાસિક ગાળામાં નિર્ણયો સ્થાપકો, બોર્ડ અને ઓપરેટરોમાં કામ કરી શકે છે.</p>
+<p><strong>તમને અહીં શું મળશે:</strong></p>
+<ul>
+<li>અધિનિયમ માટે શું જરૂરી છે અને હજુ પણ ખુલ્લો કાયદો શું છે તેનો સાદો-અંગ્રેજી નકશો</li>
+<li>SaralPrivacy <strong>OPERATE v6.1</strong> ફ્રેમવર્ક: સાત વ્યવસાયિક ક્ષમતાઓ, સાત કાયદાકીય પ્રકરણો નહીં</li>
+<li>અમલીકરણ કિટ્સ, ઉદ્યોગના જોખમના સ્નેપશોટ અને 90-દિવસની ક્રિયા યોજના</li>
+<li>અધિનિયમ અને નિયમો કોષ્ટકો, કેસ વોચલિસ્ટ, શબ્દાવલિ અને સ્ત્રોતો સાથેનું કાનૂની પરિશિષ્ટ</li>
+</ul>
+<p><strong>કાનૂની સ્થિતિ વન-લાઇનર (14 જૂન 2026):</strong> કલમ 3-17 હેઠળ મુખ્ય ઓપરેશનલ ફરજો અને મોટાભાગના નિયમો <strong>13 મે 2027</strong> ના રોજથી પ્રભાવી થશે સિવાય કે ગેઝેટ સુધારા સમયરેખાને વેગ આપે; સંમતિ મેનેજરની ફરજો <strong>13 નવેમ્બર 2026</strong>થી શરૂ થાય છે. કોઈપણ ટૂંકી સમયમર્યાદાને <strong>સૂચિત ન થાય ત્યાં સુધી સૂચિત</strong> તરીકે માની લો.</p>
+<hr />
+<h2>વિભાગ 2: આ વ્હાઇટપેપર કો માટે છે</h2>
+<p><a id="2"></a></p>
+<h3>આ કોના માટે છે</h3>
+<ul>
+<li>ભારતીય વ્યવસાયોના સ્થાપકો અને સંચાલકો કે જેઓ ગ્રાહક, કર્મચારી અથવા વિક્રેતાનો ડેટા ડિજિટલ રીતે એકત્રિત કરે છે</li>
+<li>અનુપાલન લીડ્સ, CFOs, HR હેડ્સ અને પ્રોડક્ટ મેનેજર કે જેમને કાયદાની પાઠ્યપુસ્તકની નહીં પણ સાદા-અંગ્રેજી માર્ગદર્શનની જરૂર હોય છે</li>
+<li>સલાહકારો (CAs, કન્સલ્ટન્ટ્સ, લીગલ ઑપ્સ) જે SME ને DPDPA મેળવવામાં મદદ કરે છે - સમયમર્યાદા પહેલા તૈયાર</li>
+<li>ભારતીય વપરાશકર્તાઓને સેવા આપતી આંતરરાષ્ટ્રીય ટીમો જેમને ભારત-વિશિષ્ટ મિકેનિક્સની જરૂર છે, GDPR કોપી-પેસ્ટની નહીં</li>
+<li>બોર્ડના સભ્યો અને CXO જેમને બજેટ અને માલિકી મંજૂર કરતા પહેલા એક-પૃષ્ઠનું જોખમ જોવાની જરૂર છે</li>
+</ul>
+<h3>આ કોના માટે નથી</h3>
+<ul>
+<li>કલમ-બાય-ક્લોઝ કોમેન્ટ્રી માંગતા વકીલો (તેના બદલે વિભાગો 20-22 અને શબ્દકોષનો ઉપયોગ કરો)</li>
+<li>ઑપરેશનલ ફેરફાર વિના એક-પૃષ્ઠના ચેકબૉક્સની શોધ કરતી સંસ્થાઓ</li>
+<li>જે વાચકો નિયમો પર નિશ્ચિતતા ઇચ્છે છે તે હજુ સુધી સૂચિત નથી (SDF સૂચિ, પ્રતિબંધિત દેશો, બોર્ડ પોર્ટલ વિગતો)</li>
+</ul>
+<h3>Section 19 માં સમર્પિત સ્નેપશોટ સાથેના ક્ષેત્રો</h3>
+<p>CA ફર્મ્સ, ભરતી એજન્સીઓ, તાલીમ સંસ્થાઓ, D2C બ્રાન્ડ્સ, ક્લિનિક્સ અને ડાયગ્નોસ્ટિક લેબ્સ, શાળાઓ અને કોલેજો, કાયદાકીય સંસ્થાઓ, રિયલ એસ્ટેટ, હોટેલ્સ અને મુસાફરી, ફાર્મસીઓ, ફિનટેક અને NBFCs, જિમ, સલુન્સ અને સ્પા.</p>
+<hr />
+<h2>વિભાગ 3: કાર્યકારી સારાંશ</h2>
+<p><a id="3"></a></p>
+<p>ભારતનું DPDPA વ્યવસાયો વ્યક્તિગત ડેટાને પ્રથમ સંગ્રહથી લઈને ઉલ્લંઘન પ્રતિભાવ સુધી કેવી રીતે વર્તે છે તે બદલાય છે. આ કાયદો ડેટાના ઉપયોગ પર પ્રતિબંધ મૂકતો નથી. તેના માટે <strong>કાયદેસર હેતુ</strong>, <strong>સ્પષ્ટ સૂચના</strong>, <strong>સંરક્ષણક્ષમ સંમતિ અથવા સંકુચિત કાયદેસર ઉપયોગ</strong>, <strong>વાજબી સુરક્ષા</strong>, <strong>સમયસર ઉલ્લંઘન પ્રતિભાવ</strong>, <strong>કાર્યકારી અધિકાર ચેનલો</strong>, અને <strong>પ્રોસેસર નિયંત્રણ</strong> જરૂરી છે - પુરાવા સાથે કે દરેક નિયંત્રણ અસ્તિત્વમાં છે. મોટાભાગના ભારતીય ઓપરેટરો માટે, અનૌપચારિક આદતો (WhatsApp ઇન્ટેક, શેર કરેલ ફોલ્ડર્સ, બંડલ સંમતિ, અનિશ્ચિત રીટેન્શન) થી <strong>દસ્તાવેજીકૃત, માલિકીના પ્રોગ્રામ્સ</strong>માં બદલાય છે જે નિયમનકાર અથવા એન્ટરપ્રાઇઝ ગ્રાહકને "મને બતાવો" પૂછતા બચી જાય છે.</p>
+<p><strong>શા માટે CEOએ હવે કાળજી લેવી જોઈએ.</strong> ત્રણ ઘડિયાળો ચાલી રહી છે: બોર્ડ જીવંત છે; નવેમ્બર 2026 થી સંમતિ મેનેજર ઈન્ફ્રાસ્ટ્રક્ચર વાસ્તવિક બનશે; ઓપરેશનલ કમ્પ્લાયન્સ મે 2027 માટે સુનિશ્ચિત થયેલ છે પરંતુ જો MeitY રનવે ટૂંકાવે તો તે ઝડપી બની શકે છે. ટાયર્ડ સીલીંગમાં દંડ રૂ. 250 કરોડ સુધી પહોંચે છે, પરંતુ નજીકના ગાળાનું જોખમ <strong>વિશ્વાસ, પ્રાપ્તિ અને મુકદ્દમાનો આકાર</strong> છે - ભાગીદારો અને ગ્રાહકો પહેલેથી જ ડેટા નકશા અને ભંગ પ્લેબુક માંગે છે. ગેઝેટની અંતિમ તારીખ સુધી રાહ જોવાનો અર્થ દબાણ હેઠળ પુનઃનિર્માણ થાય છે.</p>
+<p><strong>આ ક્વાર્ટર શરૂ કરવા માટેની પાંચ બાબતો:</strong></p>
+<ol>
+<li>DPDPA તત્પરતા માટે <strong>એક જવાબદાર માલિકનું નામ આપો</strong> (ડ્રાઇવર વિનાની સમિતિ નહીં).</li>
+<li><strong>એક પ્રોસેસિંગ પ્રવૃત્તિ રજીસ્ટર બનાવો</strong> - કયો ડેટા, શા માટે, ક્યાં, કોણ તેને એક્સેસ કરે છે, તે કેટલો સમય રહે છે.</li>
+<li>મુખ્ય કલેક્શન પોઈન્ટ પર <strong>સ્ટેન્ડઅલોન નોટિસને ઠીક કરો</strong>; અલગ વૈકલ્પિક માર્કેટિંગ સંમતિ.</li>
+<li><strong>પ્રોસેસર કોન્ટ્રાક્ટ અપગ્રેડ કરો</strong> અને ક્રોસ-બોર્ડર ફ્લો મેપ કરો.</li>
+<li><strong>બ્રીચ ટેબલટૉપ ચલાવો</strong> અને 90-દિવસના SLA ટ્રેકર સાથે અધિકાર/ફરિયાદ ઇનબોક્સ ખોલો.</li>
+</ol>
+<p><strong>ખુલ્લો કાયદો શું રહે છે.</strong> પ્રતિબંધિત-દેશોની સૂચિ, નોંધપાત્ર ડેટા ફિડ્યુસિયરી હોદ્દો, ઉલ્લેખિત સ્થાનિકીકરણ કેટેગરીઝ, સંમતિ મેનેજર ઓપરેશનલ વિગતો અને સમયરેખા સંકોચન ગેઝેટની પુષ્ટિ થાય ત્યાં સુધી <strong>ઘડિયાળની વસ્તુઓ</strong> છે. આ વ્હાઇટપેપર દરેક આઇટમને અમલમાં, સૂચિત તબક્કો, સૂચિત, અથવા પેન્ડિંગ મુકદ્દમા તરીકે લેબલ કરે છે - ક્યારેય મર્જ કરવામાં આવતી નથી.</p>
+<p><strong>આ દસ્તાવેજનો બાકીનો ભાગ કેવી રીતે વાંચવો.</strong> કલમ 5-9 કાયદાકીય પાયો આપે છે. વિભાગો 10-17 વૉક OPERATE v6.1 પ્રકરણ દ્વારા પ્રકરણ. Section 18 કિટ્સ પ્રદાન કરે છે; Section 19 બતાવે છે કે ઉદ્યોગ દ્વારા જોખમ ક્યાં કેન્દ્રિત છે. વિભાગો 20-22 કાનૂની પરિશિષ્ટ સામગ્રી છે. Section 23 એ તમારો 90-દિવસનો સ્ટાર્ટર પ્લાન છે. Section 24 સ્કોપ અને સલાહને બદલ્યા વિના SaralPrivacy સાધનો કેવી રીતે ફિટ થાય છે તે સમજાવે છે.</p>
+<p><strong>નેતૃત્ત્વ માટે બોટમ લાઇન:</strong> DPDPA તૈયારી એ ઓપરેટિંગ ક્ષમતા છે - ઇન્વેન્ટરી, પરવાનગી, પુરાવો, અધિકારો, શાસન, વિક્રેતાઓ અને ઘટના પ્રતિસાદ - નીતિ PDF નથી. 2026 માં પુરાવાઓ બનાવતી સંસ્થાઓ ભાગીદારીની વાટાઘાટ કરશે, ફરિયાદોનું સંચાલન કરશે અને સ્પષ્ટતાની સ્થિતિમાંથી નિયમનકારી પ્રશ્નોનો સામનો કરશે. જેઓ અંતિમ હેડલાઇન તારીખની રાહ જુએ છે તેઓ દબાણ હેઠળ પુનઃનિર્માણનું જોખમ લે છે.</p>
+<hr />
+<h2>વિભાગ 4: CEO અને બોર્ડ પ્રાથમિકતા પૃષ્ઠ</h2>
+<p><a id="4-ceo"></a></p>
+<p>બોર્ડે આખો કાયદો વાંચવાની જરૂર નથી. તેઓને પાંચ નિર્ણયો, પાંચ જોખમો, પાંચ પુરાવાની વસ્તુઓ અને કાયદો સ્થાયી થાય તે પહેલાં વધુ ** શું નહીં** કરવું તેની સ્પષ્ટતાની જરૂર છે.</p>
+<h3>પાંચ નેતૃત્વ નિર્ણયો</h3>
+<ol>
+<li><strong>એક જ જવાબદાર માલિકનું નામ આપો</strong> - ઉત્પાદન, કાનૂની, અથવા ઑપ્સ - બોર્ડ દૃશ્યતા સાથે, "દરેક વ્યક્તિ ગોપનીયતા ધરાવે છે" નહીં.</li>
+<li><strong>નક્કી કરો કે કઇ પ્રક્રિયા સંમતિ વિરુદ્ધ કાયદેસર ઉપયોગની છે</strong> અને કૉલનું દસ્તાવેજીકરણ કરો; બધા HR અથવા KYC પ્રવાહોને મુક્તિ આપવામાં આવી છે એમ માનશો નહીં.</li>
+<li><strong>આ ક્વાર્ટરમાં વિક્રેતા અને ક્રોસ-બોર્ડર સમીક્ષાને મંજૂર કરો</strong> - ક્લાઉડ, પેરોલ, CRM, એડ-ટેક, BGV, ચુકવણી ભાગીદારો.</li>
+<li><strong>એક ઘટના પહેલા ઉલ્લંઘન વધારવાનો માર્ગ સેટ કરો</strong> - કાનૂની, સુરક્ષા, સંચાર અને બોર્ડ સૂચના ભૂમિકાઓ.</li>
+<li><strong>પ્રથમ ફિક્સ કરવા માટે બે ઉદ્યોગ-વિશિષ્ટ પ્રવાહ પસંદ કરો</strong> (Section 19 થી) જ્યાં આજે તમારો વાસ્તવિક ડેટા લીક થાય છે.</li>
+</ol>
+<h3>પાંચ ઓપરેશનલ જોખમો</h3>
+<ol>
+<li><strong>WhatsApp અને વ્યક્તિગત ફોન</strong> PAN, આરોગ્ય, પ્રિસ્ક્રિપ્શન્સ, CVs અથવા અતિથિ IDs માટે ડિફોલ્ટ ચેનલ તરીકે.</li>
+<li><strong>શેર કરેલ ક્લાઉડ ફોલ્ડર્સ અને વાસી ઍક્સેસ</strong> - ભૂતપૂર્વ સ્ટાફ, ઈન્ટર્ન, ફ્રીલાન્સર્સ, જૂના બ્રોકર ભાગીદારો.</li>
+<li><strong>અલગ સંમતિ વિના માર્કેટિંગ અને એનાલિટિક્સ</strong> - પિક્સેલ્સ, કાર્ટ ઝુંબેશ, WhatsApp પ્રોમો.</li>
+<li>જૂના ગ્રાહક, ઉમેદવાર, દર્દી અથવા કર્મચારીના રેકોર્ડની <strong>અનિશ્ચિત રીટેન્શન</strong>.</li>
+<li>**કોન્ટ્રેક્ટ વિના અથવા સુરક્ષા અને ભંગ-સહકારની કલમો વિના ઉપયોગમાં લેવાતા પ્રોસેસર્સ.</li>
+</ol>
+<h3>જાળવણી માટે પાંચ પુરાવા વસ્તુઓ</h3>
+<ol>
+<li>પ્રક્રિયા પ્રવૃત્તિ રજીસ્ટર (તારીખ, માલિકીની, ત્રિમાસિક સમીક્ષા).</li>
+<li>સૂચના અને સંમતિ સંસ્કરણ લોગ (વપરાશકર્તાઓએ શું જોયું, ક્યારે, કઈ ચેનલ પર).</li>
+<li>DPDPA-સંરેખિત કલમો સાથે પ્રોસેસર અને વેન્ડર કોન્ટ્રાક્ટ રજીસ્ટર.</li>
+<li>બંધ થવાની તારીખો સાથે અધિકારો અને ફરિયાદની વિનંતીનો લોગ.</li>
+<li>ઉલ્લંઘન અને ઘટના રેકોર્ડ - ટેબલટોપ ડ્રીલ્સ સહિત.</li>
+</ol>
+<h3>પાંચ વસ્તુઓ હજુ વધારે ન બાંધવી</h3>
+<ol>
+<li>હોદ્દો માપદંડો અને યાદીઓ ફાઇનલ થાય તે પહેલાં સંપૂર્ણ નોંધપાત્ર ડેટા ફિડ્યુસિયરી પ્રોગ્રામ.</li>
+<li>નવેમ્બર 2026 ફ્રેમવર્ક તમારા ક્ષેત્રમાં કાર્યરત થાય તે પહેલાં સંમતિ મેનેજર એકીકરણ.</li>
+<li>સરકારી સૂચનાઓ પ્રકાશિત થાય તે પહેલાં દેશ-સ્તરની ટ્રાન્સફર બ્લોકલિસ્ટ.</li>
+<li>મૂળભૂત ઇન્વેન્ટરી, નોટિસ અને વેન્ડર કોન્ટ્રાક્ટ અસ્તિત્વમાં છે તે પહેલાં એન્ટરપ્રાઇઝ GRC પ્લેટફોર્મ.</li>
+<li>દાવા અને તબક્કાની તારીખો હજી આગળ વધી રહી હોય ત્યારે "સંપૂર્ણપણે સુસંગત" હોવાનો દાવો કરવો.</li>
+</ol>
+<h3>એક નજરમાં પુરાવા પેક</h3>
+<p><em>Diagram: see figure below.</em></p>
+<figure class="figure"><img src="../infographics/infographic-08-evidence-pack.png" alt="ઇન્ફોગ્રાફિક 1: Evidence Pack Checklist" /></figure>
+<p><em>આકૃતિ: ઇન્ફોગ્રાફિક 1: એવિડન્સ પેક ચેકલિસ્ટ</em></p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>પુરાવા આઇટમ</th>
+<th>માલિક</th>
+<th>કેડન્સની સમીક્ષા કરો</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>પ્રક્રિયા પ્રવૃત્તિ રજીસ્ટર</td>
+<td>ઓપ્સ / ઉત્પાદન</td>
+<td>ત્રિમાસિક</td>
+</tr>
+<tr>
+<td>2</td>
+<td>સૂચના અને સંમતિ આવૃત્તિઓ</td>
+<td>કાનૂની / ઉત્પાદન</td>
+<td>દરેક ફેરફાર પર</td>
+</tr>
+<tr>
+<td>3</td>
+<td>વિક્રેતા DPDPA કલમો સાથે કરાર કરે છે</td>
+<td>પ્રાપ્તિ / કાનૂની</td>
+<td>ઓનબોર્ડિંગ પર</td>
+</tr>
+<tr>
+<td>4</td>
+<td>અધિકારો અને ફરિયાદ લોગ</td>
+<td>આધાર / કાનૂની</td>
+<td>માસિક</td>
+</tr>
+<tr>
+<td>5</td>
+<td>ભંગ અને ઘટના લોગ</td>
+<td>સુરક્ષા / કાનૂની</td>
+<td>દરેક ઇવેન્ટ પછી + વાર્ષિક કવાયત</td>
+</tr>
+<tr>
+<td>6</td>
+<td>સમીક્ષા રેકોર્ડ્સ ઍક્સેસ કરો</td>
+<td>IT / HR</td>
+<td>ત્રિમાસિક</td>
+</tr>
+<tr>
+<td>7</td>
+<td>રીટેન્શન શેડ્યૂલ + કાઢી નાખવાનો પુરાવો</td>
+<td>ઑપ્સ / IT</td>
+<td>અર્ધ-વાર્ષિક</td>
+</tr>
+<tr>
+<td>8</td>
+<td>નિયમનકારી ઘડિયાળ લોગ</td>
+<td>અનુપાલન</td>
+<td>માસિક</td>
+</tr>
+</tbody>
+</table>
+<p><strong>CEO ટેકઅવે:</strong> અનુપાલન <strong>રેકોર્ડ</strong> સાથે સાબિત થાય છે, ઇરાદાઓથી નહીં.</p>
+<hr />
+<h2>વિભાગ 5: કાનૂની સ્થિતિ સ્નેપશોટ (જૂન 2026)</h2>
+<p><a id="5-2026"></a></p>
+<table>
+<thead>
+<tr>
+<th>વિસ્તાર</th>
+<th>વર્તમાન કાનૂની સ્થિતિ</th>
+<th>વ્યવહારુ પરિણામ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>હવે અમલમાં છે</strong></td>
+<td>Section 1(2), Section 2, વિભાગો 18-26, 35, 38-43, અને Section 44(1),(3); નિયમો 1, 2, 17-21.</td>
+<td>વ્યાખ્યાઓ, DPBI બંધારણ, નિયમ-નિર્માણ, અમુક સુધારાઓ અને બોર્ડ ફ્રેમવર્ક સક્રિય છે.</td>
+</tr>
+<tr>
+<td><strong>13 નવેમ્બર 2026</strong></td>
+<td>Section 6(9) અને Section 27(1)(d); Rule 4.</td>
+<td>સંમતિ મેનેજર ફ્રેમવર્ક અને સંબંધિત ફરજો શરૂ થાય છે.</td>
+</tr>
+<tr>
+<td><strong>13 મે 2027</strong></td>
+<td>વિભાગો 3-17, મોટાભાગના Section 6, વિભાગો 27-34, 36, 37, Section 44(2); નિયમો 3, 5-16, 22, 23.</td>
+<td>સૂચના, સંમતિ, ભંગ, અધિકારો, બાળકો, જાળવણી, SDF, અપીલ અને સરકારી માહિતી સત્તાઓ માટે ઓપરેશનલ અનુપાલન સમયમર્યાદા.</td>
+</tr>
+<tr>
+<td><strong>હજી સ્પષ્ટ નથી</strong></td>
+<td>પ્રતિબંધિત દેશની સૂચિ, SDF હોદ્દો, ઉલ્લેખિત SDF સ્થાનિકીકરણ ડેટા કેટેગરીઝ, વ્યવહારમાં બોર્ડ પોર્ટલ પ્રક્રિયાઓ.</td>
+<td>સંપૂર્ણ દાવા કરતા પહેલા MeitY/DPBI સૂચનાઓને ટ્રૅક કરો.</td>
+</tr>
+<tr>
+<td><strong>અમલીકરણની તૈયારી</strong></td>
+<td>DPBI સ્થાપના સૂચિત; નિયમો 17-21 માં ડિજિટલ કાર્યવાહીનું માળખું; તબક્કાવાર ઓપરેશનલ તારીખો.</td>
+<td>હવે પુરાવા પેક બનાવો - અમલીકરણ ઈન્ફ્રાસ્ટ્રક્ચર ઓપરેશનલ સમયમર્યાદા પહેલા રચાઈ રહ્યું છે.</td>
+</tr>
+</tbody>
+</table>
+<h3>નીતિ ક્ષિતિજ ચેતવણી</h3>
+<p><strong>નીચેની વસ્તુઓને જ્યાં સુધી ગેઝેટ સુધારો તેની પુષ્ટિ ન કરે ત્યાં સુધી તેને ઘડિયાળની વસ્તુઓ તરીકે ગણો. તેઓની દરખાસ્ત અથવા ચર્ચા કરવામાં આવી છે - 14 જૂન 2026 ના રોજ સૂચિત કાયદો નથી.</strong></p>
+<table>
+<thead>
+<tr>
+<th>સિગ્નલ</th>
+<th>જે અંગે ચર્ચા કરવામાં આવી હતી</th>
+<th>વ્યાપાર અસર</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>જાન્યુ 2026 હિતધારક મીટિંગ (અહેવાલ)</td>
+<td>18-મહિનાના રનવેને 12 મહિના સુધી સંકુચિત કરો; ફાસ્ટ-ટ્રેક SDF યાદી; સુધારા પછીના 90 દિવસની અંદર Rule 8(3) રીટેન્શન</td>
+<td>ઓપરેશનલ ડેડલાઇન <strong>મે</strong> 13 મે 2027 થી 13 નવેમ્બર 2026 તરફ આગળ વધી શકે છે</td>
+</tr>
+<tr>
+<td>ફેબ્રુઆરી 2026 (અહેવાલ)</td>
+<td>ટાઈમલાઈન કમ્પ્રેશન પર ઈન્ડસ્ટ્રી ફીડબેક વિન્ડો</td>
+<td>ગેઝેટમાં પરિણામ બાકી છે</td>
+</tr>
+<tr>
+<td>જૂન 2026 (અહેવાલ, ET Telecom)</td>
+<td>MeitY સેક્રેટરી સમયરેખા પર ઉદ્યોગના ઇનપુટની રાહ જોઈ રહ્યા છે</td>
+<td>હજી સુધી કોઈ અંતિમ કૉલ નથી - કાયદા તરીકે ત્વરિત તારીખે આયોજન કરશો નહીં</td>
+</tr>
+<tr>
+<td>કર્ણાટક (અહેવાલ, 2026)</td>
+<td>અંડર-16 માટે સોશિયલ મીડિયા પર પ્રતિબંધનો પ્રસ્તાવ</td>
+<td>રાષ્ટ્રીય વિ રાજ્ય સક્ષમતા અસ્પષ્ટ - માત્ર નીતિ વિષયક ચર્ચા</td>
+</tr>
+<tr>
+<td>બાકી મુકદ્દમા</td>
+<td>સુપ્રીમ કોર્ટ/દિલ્હી હાઈકોર્ટે RTI ઈન્ટરફેસ, મુક્તિ, બોર્ડ માળખું પર પડકાર ફેંક્યો</td>
+<td>માત્ર જાગૃતિ - આ તારીખથી અધિનિયમ રોકાયેલ નથી</td>
+</tr>
+</tbody>
+</table>
+<p><strong>લેખકનો નિયમ:</strong> આઇટમને હંમેશા <strong>અમલમાં</strong>, <strong>સૂચિત તબક્કો</strong>, <strong>સૂચિત</strong> અથવા <strong>પેન્ડિંગ લિટીગેશન</strong> તરીકે લેબલ કરો. તેમને ક્યારેય મર્જ કરશો નહીં.</p>
+<h3>નંબરોની પટ્ટી</h3>
+<table>
+<thead>
+<tr>
+<th>18 મહિના</th>
+<th>4+1 અધિકારો</th>
+<th>72 કલાક</th>
+<th>90 દિવસ</th>
+<th>રૂ. 250 કરોડ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>નિયમોની સૂચનાથી તબક્કાવાર પાલન વિન્ડો (13 નવેમ્બર 2025)</td>
+<td>ઍક્સેસ, કરેક્શન, ઇરેઝર, ફરિયાદ, વત્તા નોમિનેશન</td>
+<td>સૂચના પછી DPBI ને વિગતવાર ઉલ્લંઘનનો અહેવાલ (Rule 7)</td>
+<td>મહત્તમ ફરિયાદ પ્રતિભાવ સમય (Rule 14)</td>
+<td>અધિનિયમ હેઠળ દંડની મહત્તમ મર્યાદા બાંધી</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>વિભાગ 6: 2026-2027 માં DPDPA શા માટે મહત્વપૂર્ણ છે</h2>
+<p><a id="6-2026-2027-dpdpa"></a></p>
+<h3>ભારતનો ડિજિટલ સ્ટેક - વિશ્વાસ સ્તર તરીકે ગોપનીયતા</h3>
+<p>ભારતે એક ડિજિટલ પબ્લિક ઈન્ફ્રાસ્ટ્રક્ચર બનાવ્યું જેના વિશે મોટાભાગના દેશો માત્ર વાત કરે છે: ઓળખ (Aadhaar), ચૂકવણી (UPI), દસ્તાવેજો (DigiLocker), અને સંમતિ રેલ (Account Aggregator). તેને આધુનિક હાઇવે સિસ્ટમની જેમ વિચારો - વાણિજ્ય માટે ઝડપી લેન, ચકાસણી માટે ટોલ પ્લાઝા અને રસ્તા પર લાખો વાહનો (એપ્સ અને વ્યવસાયો)</p>
+<p>તાજેતરમાં સુધી, હાઇવે પર ગતિ મર્યાદા હતી પરંતુ વ્યક્તિગત ડેટા માટે એક સમાન ટ્રાફિક પોલીસ નથી. DPDPA એ ટ્રાફિક સિસ્ટમ છે: તે વ્યવસાયોને જણાવે છે કે તેઓ કયો ડેટા લઈ શકે છે<strong>, </strong>તેઓએ તેનું રક્ષણ કેવી રીતે કરવું જોઈએ<strong>, અને </strong>જ્યારે તેઓ ક્રેશ થાય છે ત્યારે શું થાય છે**.</p>
+<p><strong>બિન-તકનીકી વાચકો માટે સમાનતા:</strong> તમારી દુકાને હંમેશા ગ્રાહક રજીસ્ટર રાખ્યું છે. DPDPA તમને પૂછે છે કે તમે (1) ગ્રાહકોને જણાવો કે તમે રજિસ્ટરમાં શું લખો છો, (2) તમને જે જોઈએ છે તે જ લખો, (3) રજિસ્ટરને લૉક કરો, (4) ગ્રાહકોને તેમનું પૃષ્ઠ જોવા દો અથવા ભૂંસી નાખો, અને (5) જો રજિસ્ટર ચોરાઈ જાય તો અધિકારીઓને ઝડપથી કૉલ કરો. રજિસ્ટર ગેરકાયદેસર બન્યું ન હતું - બેદરકારીથી હેન્ડલિંગ કર્યું.</p>
+<h3>માત્ર સંમતિ પૂરતી નથી</h3>
+<p>ઘણી ટીમો "DPDPA" સાંભળે છે અને સીધા સંમતિ બેનરો પર જાય છે. ઘણા પ્રવાહો માટે સંમતિ જરૂરી છે, પરંતુ અધિનિયમ <strong>સુરક્ષા</strong>, <strong>ભંગ સૂચના</strong>, <strong>જાળવણી શિસ્ત</strong>, <strong>રાઈટ્સ હેન્ડલિંગ</strong>, <strong>પ્રોસેસર કોન્ટ્રાક્ટ</strong> અને <strong>જવાબદારી પુરાવા</strong>ની પણ માંગણી કરે છે. સંપૂર્ણ સંમતિ લોગ સાથેનો વ્યવસાય પરંતુ શેર કરેલ WhatsApp ફોલ્ડર્સ, કોઈ ઉલ્લંઘન પ્લેબુક અને અનિશ્ચિત સીવી સ્ટોરેજ હજુ પણ ખુલ્લા છે. OPERATE v6.1 આ કારણોસર <strong>પરવાનગી</strong> (કાયદેસર આધાર) ને <strong>પુરાવા</strong> (સાબિતી) અને <strong>જવાબદારી</strong> (ગવર્નન્સ) થી અલગ કરે છે.</p>
+<h3>સાર્વત્રિક ગોપનીયતા સિદ્ધાંતો (OECD / APEC આધારરેખા)</h3>
+<p>160+ અધિકારક્ષેત્રોમાં, સમાન થીમ્સનું પુનરાવર્તન થાય છે. જ્યાં મિકેનિક્સ અલગ હોય ત્યાં પણ ભારત આ સાથે સંરેખિત થાય છે:</p>
+<ol>
+<li><strong>પારદર્શિતા</strong> - લોકોને કહો કે તમે શું એકત્રિત કરો છો અને શા માટે  </li>
+<li><strong>હેતુ મર્યાદા</strong> - માત્ર જણાવેલા કારણસર જ ડેટાનો ઉપયોગ કરો  </li>
+<li><strong>ડેટા મિનિમાઇઝેશન</strong> - સૌથી નાની રકમ એકત્રિત કરો જે કામ કરે છે  </li>
+<li><strong>સુરક્ષા</strong> - વાજબી સલામતી સાથે ડેટાને સુરક્ષિત કરો  </li>
+<li><strong>વ્યક્તિગત અધિકાર</strong> - ઍક્સેસ, કરેક્શન, ડિલીટ, ફરિયાદ માર્ગો  </li>
+<li><strong>જવાબદારી</strong> - સાબિત કરો કે તમે ઉપરોક્ત કર્યું છે, ખાસ કરીને ડિજિટલ રેગ્યુલેટર હેઠળ  </li>
+<li><strong>સીમા પાર જવાબદારી</strong> - ડેટા ક્યાં મુસાફરી કરે છે અને તેના માટે કોણ જવાબ આપે છે તે જાણો</li>
+</ol>
+<p>DPDPA આ આદતોનું ભારતનું સંસ્કરણ છે, ભારતીય લેટરહેડ સાથેની વિદેશી આયાત નથી.</p>
+<h3>વૈશ્વિક સરખામણી - બિઝનેસ લેન્સ</h3>
+<table>
+<thead>
+<tr>
+<th>પરિમાણ</th>
+<th>GDPR (EU/UK)</th>
+<th>CCPA/CPRA (યુએસ)</th>
+<th>LGPD (બ્રાઝિલ)</th>
+<th>DPDPA (ભારત)</th>
+<th>બિઝનેસ ટેકઅવે</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ફિલોસોફી</strong></td>
+<td>અધિકારો-પ્રથમ</td>
+<td>ઉપભોક્તા નાપસંદ / સૂચના</td>
+<td>અધિકારો + કાયદેસર વ્યાજ</td>
+<td>અમલ-પ્રથમ, ટ્રસ્ટ-એટ-સ્કેલ</td>
+<td>ભારત <strong>બિલ્ટ સિસ્ટમ્સ</strong> પુરસ્કાર આપે છે, કાગળની નીતિઓને નહીં</td>
+</tr>
+<tr>
+<td><strong>કાયદેસર પ્રક્રિયા</strong></td>
+<td>6 પાયા (કલા 6)</td>
+<td>સૂચના + નાપસંદ; મર્યાદિત પાયા</td>
+<td>10 કાનૂની પાયા</td>
+<td>સંમતિ <strong>અથવા</strong> સાંકડી Section 7 કાયદેસર ઉપયોગો</td>
+<td>GDPR કરતાં ઓછા બિન-સંમતિ રૂટ - <strong>લંબાવશો નહીં Section 7</strong></td>
+</tr>
+<tr>
+<td><strong>સંમતિ ધોરણ</strong></td>
+<td>મુક્તપણે આપવામાં આવેલ, ચોક્કસ, જાણકાર</td>
+<td>વેચાણ/શેર માટે નાપસંદ કરો; સગીરો માટે પસંદ કરો</td>
+<td>GDPR જેવું જ</td>
+<td>મફત, ચોક્કસ, જાણકાર, બિનશરતી, <strong>અસંદિગ્ધ</strong></td>
+<td>પ્રી-ટિક્ડ બોક્સ દરેક જગ્યાએ નિષ્ફળ જાય છે; ભારત સ્પષ્ટ છે</td>
+</tr>
+<tr>
+<td><strong>સંવેદનશીલ ડેટા</strong></td>
+<td>વિશેષ શ્રેણીઓ (કલા 9)</td>
+<td>CPRA હેઠળ સંવેદનશીલ પી.આઇ.</td>
+<td>સંવેદનશીલ ડેટા</td>
+<td><strong>કોઈ અલગ કેટેગરી નથી</strong> - પરંતુ પ્રકાર હજુ પણ જોખમ, દંડ, SDF</td>
+<td>આરોગ્ય, બાયોમેટ્રિક, બાળકોના ડેટાને <strong>ઉચ્ચ કાળજી</strong> તરીકે માનો, "બિન-સંવેદનશીલ" તરીકે નહીં</td>
+</tr>
+<tr>
+<td><strong>બાળકો</strong></td>
+<td>13-16 ટાયર્ડ (સદસ્ય રાજ્ય)</td>
+<td>16 હેઠળ પસંદ કરો</td>
+<td>માતાપિતાની સંમતિ</td>
+<td><strong>18 વર્ષથી ઓછી ઉંમરનો યુનિફોર્મ</strong></td>
+<td>સખત સિંગલ થ્રેશોલ્ડ</td>
+</tr>
+<tr>
+<td><strong>સીમા પાર</strong></td>
+<td>SCCs, પર્યાપ્તતા, TIA</td>
+<td>ક્ષેત્ર/રાજ્ય પેચવર્ક</td>
+<td>ANPD માર્ગદર્શન</td>
+<td>અનુમતિશીલ મૂળભૂત; <strong>સરકાર પ્રતિબંધિત કરી શકે છે</strong> સૂચિ + Rule 15</td>
+<td>નકશો વહે છે; <strong>મોનિટર MeitY સૂચનાઓ</strong></td>
+</tr>
+<tr>
+<td><strong>નિયમનકર્તા</strong></td>
+<td>રાષ્ટ્રીય ડીપીએ</td>
+<td>AG + CPPA</td>
+<td>ANPD</td>
+<td><strong>DPBI</strong> (ડિજિટલ-પ્રથમ)</td>
+<td>પુરાવા પેક મહત્વ ધરાવે છે</td>
+</tr>
+<tr>
+<td><strong>અનોખી વિશેષતા</strong></td>
+<td>DPO આદેશ (કેટલાક નિયંત્રકો)</td>
+<td>વેચાણ/શેર કરશો નહીં</td>
+<td>ડીપીઓ જેવી ભૂમિકાઓ</td>
+<td><strong>સંમતિ મેનેજર</strong> (નોંધાયેલ મધ્યસ્થી)</td>
+<td>ભારત-માત્ર ઈન્ફ્રાસ્ટ્રક્ચર પ્લે</td>
+</tr>
+<tr>
+<td><strong>મહત્તમ દંડ</strong></td>
+<td>EUR 20M / 4% ટર્નઓવર</td>
+<td>$7,500/ઉલ્લંઘન (ભિન્ન હોય છે)</td>
+<td>2% આવક / 50M BRL</td>
+<td><strong>રૂ. 250 કરોડ</strong> છત (ટાયર્ડ)</td>
+<td>સુરક્ષા + ઉલ્લંઘન સૂચનાને પ્રાથમિકતા આપો</td>
+</tr>
+<tr>
+<td><strong>અમલીકરણ શૈલી</strong></td>
+<td>પરિપક્વ, ઉચ્ચ વોલ્યુમ</td>
+<td>વધતું, ખંડિત</td>
+<td>વધતી જતી</td>
+<td><strong>તબક્કાવાર</strong> - બોર્ડ લાઇવ; ops તારીખો 2026-2027</td>
+<td>હવે શરૂ કરો; તારીખો <strong>વેગ કરી શકે છે</strong></td>
+</tr>
+</tbody>
+</table>
+<h3>ભારત વિ GDPR - દંતકથાઓ વિ તથ્યો</h3>
+<table>
+<thead>
+<tr>
+<th>દંતકથા</th>
+<th>હકીકત (DPDPA)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"GDPR સુસંગત = DPDPA તૈયાર"</td>
+<td>વિભિન્ન કાયદેસર આધારો, કોઈ SCC શાસન, સંમતિ મેનેજર, તબક્કાવાર પ્રારંભ</td>
+</tr>
+<tr>
+<td>"કોઈ સંવેદનશીલ શ્રેણી નથી = ઓછા જોખમી સ્વાસ્થ્ય ડેટા"</td>
+<td>આરોગ્ય/બાળકો/નાણાકીય ડેટા હજુ પણ ચકાસણી અને ક્ષેત્રના નિયમોને આકર્ષે છે</td>
+</tr>
+<tr>
+<td>"અમારી પાસે મે 2027 સુધીનો સમય છે"</td>
+<td>MeitY ચર્ચા <strong>12-મહિના</strong> પ્રવેગક; SDF/ક્રોસ-બોર્ડર ઝડપથી આગળ વધી શકે છે</td>
+</tr>
+<tr>
+<td>"ભંગનો અર્થ હંમેશા રૂ. 250 કરોડનો દંડ"</td>
+<td>દંડ <strong>વાજબી સુરક્ષા રક્ષકોનો અમલ કરવામાં નિષ્ફળતા સાથે જોડાયેલો છે</strong> (Sec 8(5))</td>
+</tr>
+<tr>
+<td>"એક ગોપનીયતા નીતિ પૂરતી છે"</td>
+<td>Rule 3: દરેક કલેક્શન પોઈન્ટ પર નોટિસ <strong>સ્વતંત્ર રીતે સમજી શકાય તેવી</strong> હોવી જોઈએ</td>
+</tr>
+</tbody>
+</table>
+<h3>શા માટે 2026 એ વાસ્તવિક શરૂઆતની રેખા છે</h3>
+<p>એક સાથે ત્રણ ઘડિયાળો ચાલે છે:</p>
+<ol>
+<li><strong>બોર્ડ ઘડિયાળ (લાઇવ):</strong> DPBI અસ્તિત્વમાં છે. પુરાવા આધારિત ડિજિટલ અમલીકરણ હવે બનાવવામાં આવી રહ્યું છે.  </li>
+<li><strong>કન્સેન્ટ મેનેજર ઘડિયાળ (13 નવેમ્બર 2026):</strong> નોંધાયેલ મધ્યસ્થીઓ અને એકીકરણ વાસ્તવિક બને છે.  </li>
+<li><strong>ઓપરેશન ઘડિયાળ (13 મે 2027, સંભવતઃ વહેલા):</strong> સૂચના, સંમતિ, સુરક્ષા, ભંગ, અધિકારો, બાળકો, પ્રોસેસર્સ - મોટાભાગના વ્યવસાયો અનુભવે છે.</li>
+</ol>
+<p><strong>2026 એ છે કે જ્યારે પ્રોગ્રામ્સ "અમે પછીથી કોઈને નોકરીએ રાખીશું" થી "અમે અમારો ડેટા નકશો બતાવી શકીએ છીએ અને પ્લેબુકનો ભંગ કરી શકીએ છીએ" માં સ્થાનાંતરિત થવું આવશ્યક છે.</strong> વ્યવસાયો કે જે ગોપનીયતાને ગ્રાહકના વિશ્વાસ તરીકે માને છે - કાનૂની ફૂટર નહીં - જ્યારે પ્રાપ્તિ, ભાગીદારી અને નિયમનકારો પુરાવા માંગશે ત્યારે વધુ ઝડપથી આગળ વધશે.</p>
+<hr />
+<h2>વિભાગ 7: અધિનિયમ શું આવે છે</h2>
+<p><a id="7"></a></p>
+<p>નિયંત્રણો બાંધતા પહેલા, નેતાઓને વહેંચાયેલ શબ્દભંડોળની જરૂર હોય છે. DPDPA નિર્ધારિત ભૂમિકાઓ અને ડિજિટલ-પ્રથમ અવકાશનો ઉપયોગ કરે છે. આ વિભાગ સાદો-અંગ્રેજી નકશો છે.</p>
+<h3>મુખ્ય વ્યાખ્યાઓ</h3>
+<table>
+<thead>
+<tr>
+<th>મુદત</th>
+<th>કોણ / શું</th>
+<th>સાદો અર્થ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ડિજિટલ વ્યક્તિગત ડેટા</strong></td>
+<td>ડેટા પોતે</td>
+<td>ડિજિટલ સ્વરૂપમાં વ્યક્તિગત ડેટા, ઉપરાંત ઑફલાઇન વ્યક્તિગત ડેટા કે જે પછીથી ડિજિટાઇઝ્ડ થાય છે</td>
+</tr>
+<tr>
+<td><strong>ડેટા પ્રિન્સિપાલ (ડીપી)</strong></td>
+<td>વ્યક્તિ</td>
+<td>ગ્રાહક, કર્મચારી, વિદ્યાર્થી, દર્દી, અતિથિ, ઉમેદવાર - કોઈપણ જેના ડેટા પર તમે પ્રક્રિયા કરો છો</td>
+</tr>
+<tr>
+<td><strong>ડેટા ફિડ્યુસિયરી (DF)</strong></td>
+<td>સામાન્ય રીતે તમારી કંપની</td>
+<td><strong>શા માટે</strong> અને <strong>કેવી રીતે</strong> વ્યક્તિગત ડેટા પર પ્રક્રિયા કરવામાં આવે છે તે નક્કી કરતી એન્ટિટી</td>
+</tr>
+<tr>
+<td><strong>ડેટા પ્રોસેસર</strong></td>
+<td>વિક્રેતાઓ</td>
+<td>ક્લાઉડ હોસ્ટ, પેરોલ SaaS, ATS, પેમેન્ટ ગેટવે, એનાલિટિક્સ ટૂલ - તમારી સૂચના પર ડેટાની પ્રક્રિયા કરે છે</td>
+</tr>
+<tr>
+<td><strong>સંમતિ મેનેજર (CM)</strong></td>
+<td>નોંધાયેલ મધ્યસ્થી</td>
+<td>ભારત-વિશિષ્ટ સ્તર લોકોને સેવાઓમાં સંમતિ આપવા, સંચાલિત કરવા અને પાછી ખેંચવામાં મદદ કરે છે (નવેમ્બર 2026 થી)</td>
+</tr>
+<tr>
+<td><strong>નોંધપાત્ર ડેટા ફિડ્યુસિયરી (SDF)</strong></td>
+<td>સૂચિત મોટા/ઉચ્ચ-જોખમ DF</td>
+<td>વધારાની ફરજો: DPIA, ઓડિટ, અલ્ગોરિધમિક ખંત, શક્ય સ્થાનિકીકરણ - જો સરકાર તમને નિયુક્ત કરે તો જ</td>
+</tr>
+</tbody>
+</table>
+<h3>લાગુ - જ્યારે કાયદો તમારા વ્યવસાયને સ્પર્શે છે</h3>
+<p><strong>Section 3</strong> લાગુ થાય છે જ્યારે તમે ડિજિટલ વ્યક્તિગત ડેટા પર પ્રક્રિયા કરો છો:</p>
+<ul>
+<li><strong>ભારતમાં</strong> - ગ્રાહકો, કર્મચારીઓ, વિક્રેતાઓ, વેબસાઇટ વપરાશકર્તાઓ</li>
+<li><strong>ઑફલાઇન ડેટા પછીથી ડિજિટાઇઝ્ડ</strong> - પેપર ફોર્મ સિસ્ટમમાં સ્કેન કરવામાં આવે છે</li>
+<li><strong>ભારતની બહાર</strong> - જો પ્રક્રિયા ભારતમાં લોકોને સામાન અથવા સેવાઓ ઓફર કરવા સાથે જોડાયેલ હોય</li>
+</ul>
+<p>ચોક્કસ રાજ્ય, સંશોધન, કાનૂની અને સુરક્ષા સંદર્ભો માટે <strong>બાકાત અને કોતરણી ** અસ્તિત્વમાં છે (Section 17 અને Rule  શેડ્યુલ્સ). સલાહ વિના વ્યાપક મુક્તિને સ્વ-પ્રમાણિત કરશો નહીં. ઉદાહરણો કે જે ક્યારેક ટીમોને મૂંઝવણમાં મૂકે છે: કાનૂની દાવા માટે સખત રીતે જરૂરી પ્રક્રિયા કરવી, અમુક કોર્ટ-નિર્દેશિત જાહેરાતો અને સંશોધન/આંકડાઓ કે જે વ્યક્તિગત નિર્ણય લીધા વિના Rule 16 ધોરણોને પૂર્ણ કરે છે. જ્યાં પણ મુક્તિ લાગુ થઈ શકે છે, કાનૂની આધાર અને સાંકડા અવકાશનું </strong>દસ્તાવેજીકરણ** હજુ પણ જવાબદારી માટે મહત્ત્વપૂર્ણ છે.</p>
+<h3>વ્યવહારમાં વ્યક્તિગત ડેટા - જે ટીમો ગણવાનું ભૂલી જાય છે</h3>
+<p>ઓપરેટરો ઘણીવાર વ્યક્તિગત ડેટાની ગણતરી કરતા ઓછા હોય છે કારણ કે તે ગ્રાહક ડેટાબેઝને બદલે ઓપરેશનલ ટૂલ્સમાં છુપાવે છે. સામાન્ય અવગણવામાં આવતા સ્ત્રોતોમાં શામેલ છે: ભરતી કરનાર એક્સેલ ટ્રેકર્સ, WhatsApp બિઝનેસ ચેટ નિકાસ, CCTV ઓળખી શકાય તેવી વ્યક્તિઓ સાથે ફૂટેજ, હાજરી અને GPS લૉગ્સ, કામના ઉપકરણો પર કર્મચારીની દેખરેખ, જૂની બેકઅપ ટેપ, ઉત્પાદન નકલો સાથે પરીક્ષણ વાતાવરણ અને ગ્રાહક સપોર્ટ ટિકિટોમાંથી બનેલ AI પ્રશિક્ષણ સેટ. અવલોકન કરવાનો અર્થ છે કે આ પ્રમાણિકપણે ગણવું, માત્ર CRM પંક્તિઓ જ નહીં.</p>
+<hr />
+<p>GDPR થી વિપરીત, ભારત વૈધાનિક વિશેષ શ્રેણી લેબલ કરતું નથી. તેનો અર્થ એ નથી કે આરોગ્ય, નાણાકીય, બાળકોનો અથવા બાયોમેટ્રિક ડેટા ઓછું જોખમ છે. સેક્ટર નિયમો, SDF સ્ક્રુટિની, અને ગ્રાહક ટ્રસ્ટ હજુ પણ આને <strong>ઉચ્ચ-સંભાળ</strong> ડેટા તરીકે વર્તે છે જેમાં મજબૂત સૂચના, સુરક્ષા, જાળવણી અને અધિકારોનું સંચાલન જરૂરી છે.</p>
+<h3>ભૂમિકા ઇકોસિસ્ટમ</h3>
+<p><em>Diagram: see figure below.</em></p>
+<figure class="figure"><img src="../infographics/infographic-01-role-ecosystem.png" alt="ઇન્ફોગ્રાફિક 2: DPDPA Role Ecosystem" /></figure>
+<p><em>આકૃતિ: ઇન્ફોગ્રાફિક 2: DPDPA ભૂમિકા ઇકોસિસ્ટમ</em></p>
+<p><strong>સાદા અંગ્રેજી:</strong> વ્યવસાય સામાન્ય રીતે <strong>ડેટા ફિડ્યુસિયરી</strong> હોય છે. તમારા વિક્રેતાઓ <strong>પ્રોસેસર્સ</strong> છે. વ્યક્તિ <strong>ડેટા પ્રિન્સિપાલ</strong> છે. સંમતિ મેનેજર્સ એ માત્ર ભારત માટેનું સ્તર છે. જો સરકાર તમારી સંસ્થાને સૂચિત કરે તો જ SDF લાગુ થાય છે.</p>
+<hr />
+<h2>વિભાગ 8: કાયદેસર પ્રોસેસિંગ - સંમતિ અને કાયદેસર ઉપયોગો</h2>
+<p><a id="8"></a></p>
+<p>દરેક સંગ્રહ અને ઉપયોગ માટે કાયદેસર માર્ગની જરૂર છે: Section 6 હેઠળ <strong>સંમતિ</strong> અથવા Section 7 હેઠળ સાંકડી <strong>કાયદેસર ઉપયોગ</strong>. OPERATE પ્રકરણો કાર્યરત થાય તે પહેલાં આ વિભાગ કાનૂની પાયાને રોલ અપ કરે છે.</p>
+<h3>સંમતિ આવશ્યકતાઓ (Section 6)</h3>
+<p>સંમતિ હોવી જોઈએ:</p>
+<ul>
+<li><strong>મફત</strong> - વૈકલ્પિક પ્રક્રિયાને નકારવા માટે મુખ્ય સેવાનો ઇનકાર નહીં</li>
+<li><strong>વિશિષ્ટ</strong> - માર્કેટિંગ, એનાલિટિક્સ, ફોટા અને રેફરલ્સ કોર ડિલિવરીથી અલગ</li>
+<li><strong>જાણકારી</strong> - એકલ સૂચના દ્વારા સમર્થિત (Section 5, Rule 3)</li>
+<li><strong>બિનશરતી</strong> - અસંબંધિત શરતો સાથે બંડલ કરેલ નથી</li>
+<li><strong>અસંદિગ્ધ</strong> - સ્પષ્ટ હકારાત્મક ક્રિયા; કોઈ પ્રી-ટિકેડ બોક્સ નથી</li>
+<li><strong>ઉપસી શકાય તેવું</strong> - ઓછામાં ઓછું સંમતિ આપવા જેટલું સરળ</li>
+</ul>
+<p><strong>બાળકો (Section 9):</strong> યુનિફોર્મ થ્રેશોલ્ડ <strong>18 વર્ષથી ઓછી </strong>. ચકાસણીપાત્ર માતાપિતાની સંમતિ; કોઈ ટ્રેકિંગ, વર્તણૂકીય દેખરેખ અથવા બાળકો પર નિર્દેશિત લક્ષિત જાહેરાતો નહીં.</p>
+<h3>કાયદેસર ઉપયોગો (Section 7) - સાંકડી સૂચિ, સગવડતા હેચ નથી</h3>
+<p>ઉદાહરણોમાં ડેટા પ્રિન્સિપલ દ્વારા ચોક્કસ હેતુ માટે આપવામાં આવેલ સ્વૈચ્છિક ડેટા, રાજ્યના કાર્યો, કાયદાનું પાલન, કોર્ટના આદેશો, તબીબી કટોકટી, આપત્તિ/જાહેર હુકમ અને ચોક્કસ રોજગાર સુરક્ષાનો સમાવેશ થાય છે. ** GDPR "કાયદેસર હિત" ને સીધા Section 7 પર મેપ કરશો નહીં.** જ્યારે અનિશ્ચિત હોય, ત્યારે નોટિસ વત્તા સંમતિનો ઉપયોગ કરો અને નિર્ણયને દસ્તાવેજ કરો.</p>
+<h3>સૂચના સંરેખણ (Section 5, Rule 3)</h3>
+<p>સૂચના <strong>સ્વતંત્ર રીતે સમજી શકાય તેવી</strong>, સાદી, આઇટમાઇઝ્ડ અને કલેક્શન પોઈન્ટ પર ઉપલબ્ધ હોવી જોઈએ - નિયમો અને શરતોમાં દફનાવવામાં આવેલ નથી. તેમાં એકત્રિત કરવામાં આવેલ ડેટા, હેતુ, અધિકારો, ઉપાડ, ફરિયાદ સંપર્ક અને બોર્ડ ફરિયાદનો માર્ગ સમજાવવો આવશ્યક છે.</p>
+<h3>સંમતિ અને કાયદેસર-ઉપયોગ નિર્ણય પ્રવાહ</h3>
+<p><em>Diagram: see figure below.</em></p>
+<figure class="figure"><img src="../infographics/infographic-02-consent-flow.png" alt="ઇન્ફોગ્રાફિક 3: Consent and Legitimate-Use Flow" /></figure>
+<p><em>આકૃતિ: ઇન્ફોગ્રાફિક 3: સંમતિ અને કાયદેસર-ઉપયોગ પ્રવાહ</em></p>
+<p><strong>નિર્ણયનો નિયમ:</strong> દરેક વ્યવસાયિક સગવડને કાયદેસર ઉપયોગ માટે ડિફોલ્ટ કરશો નહીં. જ્યારે શંકા હોય, ત્યારે <strong>નોટિસ + સંમતિ</strong> નો ઉપયોગ કરો અને પુરાવા રાખો.</p>
+<h3>રોજગાર, રાજ્ય અને કાનૂની સંદર્ભો</h3>
+<p>HR પગારપત્રક, હાજરી અને વૈધાનિક ફાઇલિંગ ઘણીવાર કાયદેસર-ઉપયોગ અથવા કરારની આવશ્યકતાના દાખલાઓ સાથે બંધબેસે છે - પરંતુ હજુ પણ સૂચના, સુરક્ષા, જાળવણી મર્યાદા અને અધિકાર ચેનલોની જરૂર છે. સરકાર સાથે જોડાયેલા લાભ કાર્યક્રમોએ Schedule 2 ધોરણોની સમીક્ષા કરવી આવશ્યક છે. કાનૂની કાર્યવાહી અને નિયમનકારી વિનંતીઓને દસ્તાવેજી કાનૂની આધાર અને સલાહકારની વૃદ્ધિની જરૂર છે.</p>
+<hr />
+<h2>વિભાગ 9: DPDPA અંતર્ગત મુખ્ય ભાગો</h2>
+<p><a id="9-dpdpa"></a></p>
+<p>આ કોષ્ટક OPERATE v6.1 માટે વૈધાનિક ફરજોને નકશા કરે છે અને પુરાવા નેતાઓએ અપેક્ષા રાખવી જોઈએ.</p>
+<table>
+<thead>
+<tr>
+<th>જવાબદારી</th>
+<th>એક્ટ / Rule anchor</th>
+<th>OPERATE પત્ર</th>
+<th>પુરાવા પ્રકાર</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>તમારો ડેટા જાણો</td>
+<td>Sec 3, 8; Rule 6</td>
+<td><strong>અવલોકન કરો</strong></td>
+<td>પ્રક્રિયા પ્રવૃત્તિ રજીસ્ટર, પ્રવાહ નકશો</td>
+</tr>
+<tr>
+<td>કાયદેસરનો આધાર</td>
+<td>Sec 4, 6, 7</td>
+<td><strong>પરવાનગી</strong></td>
+<td>આધાર ટૅગ્સ, સંમતિ લૉગ્સ, Section 7 મેમો</td>
+</tr>
+<tr>
+<td>નોટિસ</td>
+<td>Sec 5; Rule 3</td>
+<td><strong>પરવાનગી</strong></td>
+<td>ચેનલ દીઠ તારીખની સૂચનાઓ, લોગ બદલો</td>
+</tr>
+<tr>
+<td>સંમતિ / ઉપાડ</td>
+<td>Sec 6</td>
+<td><strong>પરવાનગી</strong></td>
+<td>ટાઇમસ્ટેમ્પ્ડ સંમતિ, ઉપાડના રેકોર્ડ્સ</td>
+</tr>
+<tr>
+<td>સુરક્ષા સુરક્ષા</td>
+<td>Sec 8(5); Rule 6</td>
+<td><strong>ઇવેન્ટ</strong> (નિવારણ) + <strong>જવાબદારી</strong></td>
+<td>સુરક્ષા આધારરેખા, ઍક્સેસ સમીક્ષાઓ, લોગ</td>
+</tr>
+<tr>
+<td>ભંગ સૂચના</td>
+<td>Sec 8(6)-(7); Rule 7</td>
+<td><strong>ઇવેન્ટ</strong></td>
+<td>ઘટનાની સમયરેખા, વપરાશકર્તા/બોર્ડ સૂચનાઓ, 72-કલાકનો અહેવાલ</td>
+</tr>
+<tr>
+<td>રીટેન્શન / ઇરેઝર</td>
+<td>Sec 8(7); Rule 8</td>
+<td><strong>પુરાવા</strong> + <strong>ઇવેન્ટ</strong></td>
+<td>રીટેન્શન શેડ્યૂલ, કાઢી નાખવાનો પુરાવો</td>
+</tr>
+<tr>
+<td>અધિકારો + ફરિયાદ</td>
+<td>Sec 11-14; Rule 14</td>
+<td><strong>અધિકારો</strong></td>
+<td>વિનંતી રજીસ્ટર, SLA ટ્રેકર, બંધ</td>
+</tr>
+<tr>
+<td>બાળકોનો ડેટા</td>
+<td>Sec 9; નિયમો 10-12</td>
+<td><strong>પરવાનગી</strong> + કિટ્સ</td>
+<td>ઉંમર દરવાજો, માતાપિતાની સંમતિ, કોઈ બાળ જાહેરાતો નહીં</td>
+</tr>
+<tr>
+<td>પ્રોસેસર નિયંત્રણ</td>
+<td>Sec 8; Rule 6</td>
+<td><strong>તૃતીય-પક્ષ</strong></td>
+<td>કોન્ટ્રાક્ટ, વેન્ડર રજિસ્ટર, ઓડિટ</td>
+</tr>
+<tr>
+<td>ક્રોસ બોર્ડર ટ્રાન્સફર</td>
+<td>Sec 16; Rule 15</td>
+<td><strong>તૃતીય-પક્ષ</strong></td>
+<td>સ્થાનાંતરિત નકશો, પ્રતિબંધ ઘડિયાળ લોગ</td>
+</tr>
+<tr>
+<td>શાસન / સંપર્ક</td>
+<td>Rule 9; Sec 10 (SDF)</td>
+<td><strong>જવાબદારી</strong></td>
+<td>નામના માલિક, DPO સંપર્ક, બોર્ડ સમીક્ષાઓ</td>
+</tr>
+<tr>
+<td>પ્રોગ્રામનો પુરાવો</td>
+<td>Sec 8 જવાબદારી</td>
+<td><strong>પુરાવા</strong></td>
+<td>સંપૂર્ણ પુરાવા પેક (Section 4, 13)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>લીડરશીપ રીડ:</strong> જો તમે એક પંક્તિ માટે પુરાવા કૉલમ તરફ નિર્દેશ કરી શકતા નથી, તો ધારો કે જવાબદારી હજી કાર્યરત નથી.</p>
+<h3>વાસ્તવિક કામગીરીમાં જવાબદારીઓ કેવી રીતે ક્રિયાપ્રતિક્રિયા કરે છે</h3>
+<p>એક ખૂટતા ચેકબોક્સ પર થોડા વ્યવસાયો નિષ્ફળ જાય છે. નિષ્ફળતાના દાખલાઓ સામાન્ય રીતે <strong>કમ્પાઉન્ડ</strong> હોય છે: WhatsApp નોટિસ વિના ઇન્ટેક, વત્તા અનિશ્ચિત રીટેન્શન, વત્તા કોઈ ઉલ્લંઘન પ્લેબુક, વત્તા કરાર વિના વિક્રેતા. ઉપરનું કોષ્ટક ડાયગ્નોસ્ટિક ગ્રીડ નાભાવ Indian Rupee છે. ફ્લો ઓડિટ કરતી વખતે - ઉદાહરણ તરીકે ક્લિનિક રિપોર્ટ શેરિંગ અથવા ફિનટેક KYC - પંક્તિ ઉપરથી નીચે સુધી ચાલો અને આજે કયા પુરાવા અસ્તિત્વમાં છે તે ચિહ્નિત કરો. તે સંયોજન દૃશ્ય તે છે જે DPBI કાર્યવાહી અને એન્ટરપ્રાઇઝ પ્રાપ્તિ ખંત વધુને વધુ સામ્યતા ધરાવે છે.</p>
+<hr />
+<h2>વિભાગ 10: SaralPrivacy OPERATE મોડેલ (v6.1)</h2>
+<p><a id="10-saralprivacy-operate-v61"></a></p>
+<p>SaralPrivacy <strong>OPERATE</strong> મોડલ DPDPA ને કાયદાના વિભાગોમાંથી સાત વ્યવસાય ક્ષમતાઓમાં ફેરવે છે. v6.1 ઓપરેટરો વાસ્તવમાં પ્રોગ્રામ્સ કેવી રીતે બનાવે છે તે મેચ કરવા માટે પત્રોને ફરીથી ફ્રેમ કરે છે: ડેટાનું અવલોકન કરો, પરવાનગી મેળવો, પુરાવા રાખો, અધિકારોનું સન્માન કરો, જવાબદારી દર્શાવો, તૃતીય પક્ષોને નિયંત્રિત કરો અને ઇવેન્ટ્સ (ખાસ કરીને ભંગ) રિહર્સલ કરો.</p>
+<pre><code>O  OBSERVE        - Know what data you have and where it flows
+P  PERMISSION     - Lawful basis, notice, consent, legitimate use
+E  EVIDENCE       - Logs, contracts, versions, proof packs
+R  RIGHTS         - Access, correction, erasure, grievance, nomination
+A  ACCOUNTABILITY - Owners, policies, training, board reporting
+T  THIRD-PARTY    - Processors, vendors, cross-border
+E  EVENT          - Breach detection, 72-hour clock, escalation
+</code></pre>
+<p><em>Diagram: see figure below.</em></p>
+<figure class="figure"><img src="../infographics/infographic-03-operate-wheel.png" alt="ઇન્ફોગ્રાફિક 4: OPERATE v6.1 Model" /></figure>
+<p><em>આકૃતિ: ઇન્ફોગ્રાફિક 4: OPERATE v6.1 મોડલ</em></p>
+<table>
+<thead>
+<tr>
+<th>પત્ર</th>
+<th>પ્રશ્ન દરેક નેતાએ પૂછવો જોઈએ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ઓ</strong></td>
+<td>આપણે ખરેખર કયો ડેટા એકત્રિત કરીએ છીએ અને તે ક્યાં રહે છે?</td>
+</tr>
+<tr>
+<td><strong>પી</strong></td>
+<td>શા માટે અમને તેનો ઉપયોગ કરવાની મંજૂરી છે - સંમતિ અથવા કાયદેસર ઉપયોગ?</td>
+</tr>
+<tr>
+<td><strong>ઇ</strong></td>
+<td>શું આપણે નોટિસ, સંમતિ અને કરાર સાબિત કરી શકીએ?</td>
+</tr>
+<tr>
+<td><strong>આર</strong></td>
+<td>શું લોકો સરળતાથી ઍક્સેસ કરી શકે છે, સુધારી શકે છે, ભૂંસી શકે છે અને ફરિયાદ કરી શકે છે?</td>
+</tr>
+<tr>
+<td><strong>A</strong></td>
+<td>આ પ્રોગ્રામની માલિકી કોની છે અને તેની છેલ્લે ક્યારે સમીક્ષા કરવામાં આવી હતી?</td>
+</tr>
+<tr>
+<td><strong>ટી</strong></td>
+<td>શું વિક્રેતાઓ અને પ્રોસેસર્સ કરાર અને નિયંત્રણ હેઠળ છે?</td>
+</tr>
+<tr>
+<td><strong>ઇ</strong></td>
+<td>લીક થયા પછી પ્રથમ 72 કલાકમાં શું થાય છે?</td>
+</tr>
+</tbody>
+</table>
+<p>નીચેનો દરેક પ્રકરણ સમાન છ-બ્લોક રેસીપીનો ઉપયોગ કરે છે: હૂક, પરિણામો, ક્રિયાઓ, ભારત એન્કર, GDPR સરખામણી, પુરાવા ચેકલિસ્ટ.</p>
+<hr />
+<h2>વિભાગ 11: OPERATE અય્યાય 1 - વ્યક્તિગત ડેટાનું અવલોકન કરો</h2>
+<p><a id="11-operate-1"></a></p>
+<h4>1. બિઝનેસ હૂક</h4>
+<p>તમે જેને નામ આપી શકતા નથી તેનું તમે રક્ષણ કરી શકતા નથી. મોટાભાગની DPDPA નિષ્ફળતાઓ એ જ રીતે શરૂ થાય છે: નેતૃત્વ વિચારે છે કે કંપની "મૂળભૂત ગ્રાહક માહિતી" ધરાવે છે, જ્યારે ઇજનેરો, HR, અને વિક્રેતાઓ શાંતિથી PAN નકલો, આરોગ્ય રેકોર્ડ્સ અને WhatsApp નિકાસના વર્ષો ધરાવે છે. <strong>અવલોકન</strong>નો અર્થ છે વ્યક્તિગત ડેટાનો જીવંત નકશો બનાવવો - જેમ કે વેરહાઉસમાં ઇન્વેન્ટરી, વન-ટાઇમ એક્સેલ ડમ્પ નહીં.</p>
+<p><strong>સાદ્રશ્ય:</strong> DPDPA તૈયારી એ ટેક્સ ઓડિટ માટે તૈયારી કરવા જેવી છે. કયા ડ્રોઅરમાં જૂની રસીદો છે તે જાણવા માટે તમે નોટિસની રાહ જોતા નથી. તમે હવે ડ્રોઅર્સને લેબલ કરો.</p>
+<h4>2. કેવું સારું દેખાય છે</h4>
+<ul>
+<li>પ્રોસેસિંગ એક્ટિવિટી રજિસ્ટર (PAR) સૂચિ <strong>શું</strong> ડેટા, <strong>કેમ</strong>, <strong>કોણ</strong> તેને ઍક્સેસ કરે છે, <strong>ક્યાં</strong> સંગ્રહિત થાય છે, અને <strong>કેટલો સમય</strong> રહે છે  </li>
+<li>દરેક પ્રવૃત્તિ માટે નામ આપવામાં આવેલ માલિક (માર્કેટિંગ, HR, ફાઇનાન્સ, ઉત્પાદન)  </li>
+<li>ભારત અને ક્રોસ બોર્ડર સિસ્ટમ્સ માટે દસ્તાવેજીકૃત ડેટા પ્રવાહ  </li>
+<li>રેડ-ફ્લેગ ફ્લોઝ વહેલા ધ્વજાંકિત: WhatsApp ઇન્ટેક, શેર કરેલી ડ્રાઇવ, ભૂતપૂર્વ કર્મચારીની ઍક્સેસ, શેડો IT  </li>
+<li>જ્યારે તમે સુવિધાઓ, વિક્રેતાઓ અથવા નવા સંગ્રહ બિંદુઓ લોંચ કરો છો ત્યારે અપડેટ્સ ટ્રિગર થાય છે</li>
+</ul>
+<h4>3. હવે આ કરો</h4>
+<ol>
+<li>વ્યક્તિગત ડેટા તમારા વ્યવસાયમાં પ્રવેશે છે તે દરેક સ્થાનની સૂચિ બનાવો: વેબસાઇટ ફોર્મ્સ, એપ્લિકેશન્સ, WhatsApp, ઇમેઇલ, કાગળ, CCTV, HR સાધનો, ચુકવણી ગેટવે.  </li>
+<li>દરેક એન્ટ્રી પોઈન્ટ માટે, ડેટા કેટેગરીઝ રેકોર્ડ કરો (નામ, ફોન, PAN, આરોગ્ય, ફોટા, સ્થાન, વગેરે).  </li>
+<li>દરેક પ્રવાહને ગ્રાહક, કર્મચારી, વિક્રેતા અથવા લીડ ડેટા તરીકે વ્યવસાય હેતુ ટેગ સાથે ચિહ્નિત કરો.  </li>
+<li>પ્રોસેસર્સને ઓળખો (ક્લાઉડ, પેરોલ, ATS, CRM, એડ-ટેક) અને તેમને પ્રવૃત્તિઓ સાથે લિંક કરો.  </li>
+<li>"સંવેદનશીલ" લેબલ વિના પણ ઉચ્ચ-સંભાળ ડેટાને હાઇલાઇટ કરો: બાળકો, આરોગ્ય, નાણાકીય, બાયોમેટ્રિક.  </li>
+<li>પ્રવૃત્તિના માલિકને સોંપો અને કૅલેન્ડરની સમીક્ષા કરો (ત્રિમાસિક લઘુત્તમ).  </li>
+<li>રજિસ્ટરને સ્ટોર કરો જ્યાં કાનૂની, સુરક્ષા અને ઉત્પાદન બધા તેને ઍક્સેસ કરી શકે.</li>
+</ol>
+<h4>4. ભારત એન્કર બોક્સ</h4>
+<table>
+<thead>
+<tr>
+<th>એન્કર</th>
+<th>જરૂરિયાત</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>__કીપ10__3</strong></td>
+<td>અધિનિયમ ભારતમાં ડિજિટલ વ્યક્તિગત ડેટા, ઑફલાઇન ડેટાને પછીથી ડિજિટાઇઝ્ડ કરવામાં આવે છે અને ભારતમાં માલ/સેવાઓ ઓફર કરવા સાથે જોડાયેલ વિદેશી પ્રક્રિયાને લાગુ પડે છે.</td>
+</tr>
+<tr>
+<td><strong>__કીપ10__8</strong></td>
+<td>ડેટા ફિડ્યુસિયરી કાયદેસર પ્રક્રિયા અને પ્રોસેસર નિયંત્રણ માટે જવાબદાર રહે છે</td>
+</tr>
+<tr>
+<td><strong>__કીપ20__6</strong></td>
+<td>સુરક્ષામાં એક્સેસ કંટ્રોલ, લૉગ્સ, મોનિટરિંગનો સમાવેશ થાય છે - તમારે જાણવાની જરૂર છે કે કોણે શું સ્પર્શ કર્યો</td>
+</tr>
+</tbody>
+</table>
+<h4>5. જો તમે જાણો છો GDPR</h4>
+<p>GDPR કલમ 30 માં ઘણા નિયંત્રકો માટે પ્રોસેસિંગ એક્ટિવિટીઝ (ROPA) ના રેકોર્ડની જરૂર છે. ભારતનો અભિગમ વ્યવહારમાં સમાન છે પરંતુ સ્વરૂપમાં સમાન નથી: સમાન ઇન્વેન્ટરી આદત બનાવો, પરંતુ <strong>Section 4 + 6/7</strong> હેઠળ કાયદેસરના આધારને ટેગ કરો, GDPR કલમ 6 લેબલ્સ હેઠળ નહીં.</p>
+<h4>6. પુરાવા ચેકલિસ્ટ</h4>
+<ul>
+<li>[ ] પ્રક્રિયા પ્રવૃત્તિ રજીસ્ટર (સંસ્કરણ તારીખ)  </li>
+<li>[ ] ડેટા ફ્લો ડાયાગ્રામ અથવા ટેબલ (આંતરિક + ક્રોસ-બોર્ડર)  </li>
+<li>[ ] પ્રોસેસર/વેન્ડર લિસ્ટ પ્રવૃત્તિઓ સાથે જોડાયેલ  </li>
+<li>[ ] હાઇ-કેર ડેટા વર્ગીકરણ નોંધો  </li>
+<li>[ ] નામના માલિક સાથે ત્રિમાસિક સમીક્ષા લોગ</li>
+</ul>
+<hr />
+<h2>વિભાગ 12: OPERATE અય્યાય 2 - પરવાનગી અને કાયદેસરનો આધાર</h2>
+<p><a id="12-operate-2"></a></p>
+<p>પરવાનગી એ <strong>પરમિટ</strong> અને <strong>સમજાવો</strong> વચ્ચે શું વિભાજિત થાય છે તે સંયોજિત કરે છે: કાયદેસરના આધાર પર શિસ્ત <strong>અને</strong> નોંધો કે જે લોકો સંગ્રહની ક્ષણે ખરેખર સમજે છે.</p>
+<h4>1. બિઝનેસ હૂક</h4>
+<p>ડેટા એકત્રિત કરવો સરળ છે. <strong>તેનો ઉપયોગ કરવાની છૂટ આપવી</strong> એ કાયદો છે. પરવાનગી એ તમારી કાયદેસર-પ્રક્રિયા વત્તા સૂચના શિસ્ત છે: દરેક ઉપયોગને કાં તો <strong>સંમતિ</strong> અથવા સંકુચિત <strong>Section 7 કાયદેસર ઉપયોગ</strong>ની જરૂર છે - "અમે હંમેશા આ રીતે કર્યું છે." અને વપરાશકર્તાઓએ સમજવું જોઈએ કે તેઓ <strong>કલેક્શન પોઈન્ટ પર</strong> શું માટે સંમત થયા હતા, પોલિસી PDF ના પેજ 47 પર નહીં.</p>
+<p><strong>સાદ્રશ્ય:</strong> સંમતિ એ લગ્નમાં મહેમાનોની સૂચિ જેવી છે. કાયદેસરનો ઉપયોગ એ કેટરરને અલગ આમંત્રણ વિના રસોડામાં જવા દેવા જેવું છે - પરંતુ માત્ર એટલા માટે કે તેમની પાસે ચોક્કસ કામ છે, કારણ કે તેઓ અંદર ભટક્યા નથી. આમંત્રણ પરની સૂચના એ બંનેને કાયદેસર બનાવે છે.</p>
+<h4>2. કેવું સારું દેખાય છે</h4>
+<ul>
+<li>દરેક પ્રોસેસિંગ પ્રવૃત્તિને ટૅગ કરેલ છે: <strong>સંમતિ</strong> અથવા <strong>કાયદેસર ઉપયોગ</strong> (Section 7 પેટાવિભાગ ટાંકેલ સાથે)  </li>
+<li><strong>અલગ સંમતિ</strong> પર માર્કેટિંગ, પ્રોફાઇલિંગ, ફોટા, રેફરલ્સ અને વૈકલ્પિક વિશ્લેષણ  </li>
+<li>સંમતિ રેકોર્ડ દર્શાવે છે કે શું સંમત થયા હતા, ક્યારે અને કેવી રીતે ઉપાડ કામ કરે છે  </li>
+<li>કોઈ પ્રી-ટિક્ડ બોક્સ નથી; સ્પષ્ટ હકારાત્મક ક્રિયા  </li>
+<li>દરેક કલેક્શન પોઈન્ટ પર એકલ નોટિસ - નિયમો અને શરતોની અંદર છુપાયેલ નથી  </li>
+<li>સાદી ભાષા, આઇટમાઇઝ્ડ: શું ડેટા, શા માટે, અધિકારો, ઉપાડ, ફરિયાદ સંપર્ક, બોર્ડ ફરિયાદ માર્ગ  </li>
+<li>જો તમે રજિસ્ટર્ડ મધ્યસ્થીઓ સાથે સંકલન કરો છો તો સંમતિ મેનેજર વ્યૂહરચના દસ્તાવેજીકૃત કરવામાં આવી છે (13 નવેમ્બર 2026થી)  </li>
+<li>બાળકોના પ્રવાહો ચકાસણીપાત્ર માતાપિતાની સંમતિનો ઉપયોગ કરે છે; બાળકો માટે કોઈ લક્ષિત જાહેરાતો નથી</li>
+</ul>
+<h4>3. હવે આ કરો</h4>
+<ol>
+<li>વર્તમાન સંમતિઓનું ઓડિટ કરો: વેબસાઈટ, એપ, WhatsApp, પેપર ફોર્મ્સ, કોન્ટ્રાક્ટ્સ - શું તે ચોક્કસ છે કે બંડલ છે?  </li>
+<li><strong>વૈકલ્પિક</strong> પ્રક્રિયા (જાહેરાતો, પ્રશંસાપત્રો, ટેલેન્ટ પુલ)માંથી <strong>જરૂરી</strong> પ્રક્રિયા (ઓર્ડર પરિપૂર્ણતા, પગારપત્રક) વિભાજિત કરો.  </li>
+<li>દરેક કલેક્શન પોઈન્ટની ઈન્વેન્ટરી: વેબ, એપ, ઓફલાઈન ફોર્મ, WhatsApp બોટ, રિસેપ્શન ડેસ્ક.  </li>
+<li>મુખ્ય પ્રવાહ દીઠ <strong>શોર્ટ નોટિસ ટેમ્પલેટ</strong> (200-400 શબ્દો) ડ્રાફ્ટ કરો.  </li>
+<li>T&amp;Cs માંથી મુખ્ય સૂચના દૂર કરો; લિંક અથવા એમ્બેડ નોટિસ અલગથી.  </li>
+<li>ઉત્પાદન અને વેચાણ ટીમો માટે એક પૃષ્ઠ <strong>કાયદેસર પ્રક્રિયા નિર્ણય વૃક્ષ</strong> બનાવો.  </li>
+<li>દસ્તાવેજ Section 7 સંકુચિત રીતે વાપરે છે (રોજગાર સુરક્ષા, કાનૂની પાલન, તબીબી કટોકટી - "વ્યવસાયની સુવિધા" નહીં).  </li>
+<li>સરળ ઉપાડને ઓછામાં ઓછું પસંદ કરવા જેટલું સરળ બનાવો.  </li>
+<li>18 વર્ષથી ઓછી ઉંમરના વપરાશકર્તાઓ માટે, વર્તણૂકીય જાહેરાતો અને ટ્રેકિંગને અવરોધિત કરો; પેરેન્ટ વેરિફિકેશનની યોજના બનાવો (Rule 10).  </li>
+<li>કાર્યકારી સંપર્ક વિગતો સાથે ઉપાડ, અધિકારોની વિનંતી અને ફરિયાદના માર્ગો ઉમેરો.</li>
+</ol>
+<h4>4. ભારત એન્કર બોક્સ</h4>
+<table>
+<thead>
+<tr>
+<th>એન્કર</th>
+<th>જરૂરિયાત</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>__કીપ10__4</strong></td>
+<td>સંમતિ અથવા કાયદેસર ઉપયોગ સાથે કાયદેસર હેતુ માટે પ્રક્રિયા</td>
+</tr>
+<tr>
+<td><strong>__કીપ10__5</strong></td>
+<td>સૂચનામાં ડેટા, હેતુ, અધિકારો, ઉપાડ, ફરિયાદનો માર્ગ આવરી લેવામાં આવ્યો છે</td>
+</tr>
+<tr>
+<td><strong>__કીપ10__6</strong></td>
+<td>સંમતિ મફત, ચોક્કસ, જાણકાર, બિનશરતી, અસ્પષ્ટ હોવી જોઈએ; સરળ ઉપાડ</td>
+</tr>
+<tr>
+<td><strong>__કીપ10__7</strong></td>
+<td>મર્યાદિત બિન-સંમતિ આધારો - અર્થઘટન દ્વારા વિસ્તૃત કરશો નહીં</td>
+</tr>
+<tr>
+<td><strong>__કીપ10__9</strong></td>
+<td>બાળકો: ચકાસણીપાત્ર માતાપિતાની સંમતિ; બાળકો પર નિર્દેશિત કોઈ ટ્રેકિંગ/વર્તણૂકલક્ષી જાહેરાતો નથી</td>
+</tr>
+<tr>
+<td><strong>__કીપ20__3</strong></td>
+<td>સ્વતંત્ર રીતે સમજી શકાય તેવું, સાદા, આઇટમાઇઝ્ડ; ઉપાડ, અધિકારો, બોર્ડ ફરિયાદ માટેની લિંક્સ</td>
+</tr>
+<tr>
+<td><strong>Rule 4 + Schedule 1</strong></td>
+<td>સંમતિ મેનેજરની આવશ્યકતાઓ (13 નવેમ્બર 2026થી)</td>
+</tr>
+</tbody>
+</table>
+<h4>5. જો તમે જાણો છો GDPR</h4>
+<p>GDPR offers six lawful bases and Articles 13/14 transparency. India offers essentially two routes and Rule 3 explicitly requires notices to be <strong>independently understandable</strong> - a direct strike against T&amp;C bundling. <strong>Do not map GDPR "legitimate interests" directly to Section 7.</strong></p>
+<h4>6. Evidence checklist</h4>
+<ul>
+<li>[ ] Lawful basis tag per processing activity  </li>
+<li>[ ] Consent logs (timestamp, scope, channel)  </li>
+<li>[ ] Withdrawal mechanism screenshots or workflow  </li>
+<li>[ ] Section 7 justification memos where used  </li>
+<li>[ ] Notice copies per collection channel (dated versions)  </li>
+<li>[ ] Screenshots of in-product notice placement  </li>
+<li>[ ] Child-facing flow assessment and parent consent design  </li>
+<li>[ ] Consent Manager integration plan (if applicable)  </li>
+</ul>
+<hr />
+<h2>વિભાગ 13: OPERATE પ્રકરણ 3 - પુરાવા અને રેકોર્ડ્સ</h2>
+<p><a id="13-operate-3"></a></p>
+<p>Evidence is the proof layer. DPBI proceedings are digital and document-led. When a customer complains, a vendor leaks, or a board asks "are we ready?", organisations win or lose on <strong>records</strong>, not intentions.</p>
+<h4>1. Business hook</h4>
+<p>Policies in slide decks do not survive scrutiny. <strong>Evidence</strong> means you can show what notice a user saw, what consent they gave, which contract governed a vendor, how a grievance closed, and what happened hour-by-hour in a breach drill. Think of it like keeping invoices for GST - the law cares about proof of process.</p>
+<p><strong>Analogy:</strong> A pilot's logbook does not fly the plane, but no airline certifies a pilot without it. DPDPA evidence works the same way.</p>
+<h4>2. What good looks like</h4>
+<ul>
+<li>Version-controlled notices and consent flows with timestamps  </li>
+<li>Consent logs tied to notice version, channel, and scope  </li>
+<li>Processor register with signed contracts and review dates  </li>
+<li>Rights and grievance register with identity verification steps and closure proof  </li>
+<li>Breach and incident log including tabletop exercises  </li>
+<li>Retention schedule with deletion records and documented exceptions  </li>
+<li>Security baseline documentation and quarterly access reviews  </li>
+<li>Policy horizon log separating <strong>notified</strong> from <strong>proposed</strong> changes  </li>
+</ul>
+<h4>3. Do this now</h4>
+<ol>
+<li>Create a single <strong>evidence pack index</strong> (see Section 4 infographic) with owners and review cadence.  </li>
+<li>Start a <strong>notice and consent version log</strong> - date, channel, screenshot or URL, approver.  </li>
+<li>Centralise <strong>vendor contracts</strong> with DPDPA security, breach, deletion, and audit clauses.  </li>
+<li>Open a <strong>rights/grievance register</strong> - ticket ID, date received, action, date closed.  </li>
+<li>Log <strong>retention decisions</strong> when data is deleted or extended past standard period.  </li>
+<li>File <strong>breach drill records</strong> like real incidents - timeline, roles, templates used.  </li>
+<li>Link evidence items to entries in your processing activity register.  </li>
+</ol>
+<h4>4. India anchor box</h4>
+<table>
+<thead>
+<tr>
+<th>Anchor</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Section 8</strong></td>
+<td>Data Fiduciary accountability for lawful processing and safeguards</td>
+</tr>
+<tr>
+<td><strong>Section 6</strong></td>
+<td>સંમતિ અને ઉપાડ દર્શાવવાની ક્ષમતા</td>
+</tr>
+<tr>
+<td><strong>__કીપ22__3</strong></td>
+<td>નોટિસ સામગ્રી અને સુલભતા સંગ્રહ પર સાબિત કરી શકાય તેવી હોવી જોઈએ</td>
+</tr>
+<tr>
+<td><strong>__કીપ22__6</strong></td>
+<td>સુરક્ષા પગલાં અને પ્રોસેસર કલમો દસ્તાવેજીકૃત હોવા આવશ્યક છે</td>
+</tr>
+<tr>
+<td><strong>__કીપ22__7</strong></td>
+<td>ભંગની હકીકતો, સૂચનાઓ અને 72-કલાકના અહેવાલો જાળવી રાખવા જોઈએ</td>
+</tr>
+<tr>
+<td><strong>__કીપ22__14</strong></td>
+<td>અધિકારો અને ફરિયાદનું સંચાલન 90-દિવસની મર્યાદામાં શોધી શકાય તેવું હોવું જોઈએ</td>
+</tr>
+</tbody>
+</table>
+<h4>5. જો તમે જાણો છો GDPR</h4>
+<p>GDPR જવાબદારી (કલમ 5(2)) અને રેકોર્ડ-કીપિંગ આ પ્રકરણને પ્રતિબિંબિત કરે છે. ભારતની તબક્કાવાર શરૂઆતનો અર્થ એ છે કે ઘણી કંપનીઓ <strong>સંપૂર્ણ અમલીકરણ પહેલાં</strong> પુરાવા તૈયાર કરી રહી છે - માત્ર કાગળ પરના પાલનને ટાળવા માટે રનવેનો ઉપયોગ કરો.</p>
+<h4>6. પુરાવા ચેકલિસ્ટ</h4>
+<ul>
+<li>[ ] માલિકો સાથે પુરાવા પેક ઇન્ડેક્સ  </li>
+<li>[ ] સૂચના અને સંમતિ સંસ્કરણ લોગ  </li>
+<li>[ ] સંમતિ અને ઉપાડના રેકોર્ડ્સ  </li>
+<li>[ ] પ્રોસેસર કોન્ટ્રાક્ટ રજીસ્ટર  </li>
+<li>[ ] અધિકાર/ફરિયાદ રજીસ્ટર  </li>
+<li>[ ] ભંગ/ઘટના લોગ (કવાયત સહિત)  </li>
+<li>[] રીટેન્શન શેડ્યૂલ અને કાઢી નાખવાનો પુરાવો  </li>
+<li>[ ] સુરક્ષા આધારરેખા અને ઍક્સેસ સમીક્ષા રેકોર્ડ્સ  </li>
+<li>[ ] નિયમનકારી ઘડિયાળ લોગ</li>
+</ul>
+<hr />
+<h2>વિભાગ 14: OPERATE પ્રકરણ 4 - અધિકારો અને ફરિયાદનું સંચાલન</h2>
+<p><a id="14-operate-4"></a></p>
+<p>ગોપનીયતા કાયદો માત્ર ખરાબ વસ્તુઓને રોકવા માટે જ નથી. લોકો <strong>પૂછવા</strong> માટે સક્ષમ હોવા જોઈએ - તેમનો ડેટા જોવા, તેને ઠીક કરવા, ભૂંસી નાખવા, ફરિયાદ કરવા અને તેમના માટે કાર્ય કરવા માટે કોઈને નોમિનેટ કરવા. <strong>અધિકારો</strong> એ <strong>90-દિવસની ફરિયાદની ટોચમર્યાદા</strong> સાથે, ડેટા વિનંતીઓ માટે તમારી ગ્રાહક સેવા માર્ગ છે.</p>
+<h4>1. બિઝનેસ હૂક</h4>
+<p>જો બેંક એકાઉન્ટ ધારક વિનંતી પર સ્ટેટમેન્ટ મેળવી શકતો નથી, તો બેંક છેતરપિંડી કર્યા વિના પણ વિશ્વાસ ગુમાવે છે. ડેટા અધિકારો એ જ રીતે કાર્ય કરે છે.</p>
+<p><strong>સાદ્રશ્ય:</strong> રીટર્ન ડેસ્ક અસ્તિત્વમાં છે કારણ કે વાણિજ્યને યોગ્ય કરેક્શન પાથની જરૂર છે. અધિકારોની વિનંતીઓ એ વ્યક્તિગત ડેટા માટેનું ડેસ્ક છે.</p>
+<h4>2. કેવું સારું દેખાય છે</h4>
+<ul>
+<li>એક્સેસ, કરેક્શન, ઇરેઝર, ફરિયાદ અને નોમિનેશન વિનંતીઓ માટે પ્રકાશિત ચેનલ  </li>
+<li>ઓળખ ચકાસણીના પગલાં જે વાજબી અને દસ્તાવેજીકૃત છે  </li>
+<li>માલિક, SLA ટ્રેકર અને ક્લોઝર પુરાવા સાથે ટિકિટની કતાર  </li>
+<li>ફરિયાદના જવાબો <strong>90 દિવસની અંદર મહત્તમ</strong> (Rule 14)  </li>
+<li>ડેટા પ્રિન્સિપલ ફરજો માટે યોગ્ય-ઉપયોગની ભાષા (કોઈ ખોટી ફરિયાદ નહીં, કોઈ ઢોંગ નહીં)  </li>
+<li>નોટિસમાં દસ્તાવેજીકૃત DPBI નો એસ્કેલેશન પાથ</li>
+</ul>
+<h4>3. હવે આ કરો</h4>
+<ol>
+<li>વેબસાઈટ/એપ પર ઈમેલ અથવા ફોર્મ વડે "તમારા અધિકારોનો ઉપયોગ કરો" સૂચનાઓ પ્રકાશિત કરો.  </li>
+<li>ફરિયાદ માલિકને સોંપો (બધી પેઢીઓ માટે પૂર્ણ-સમયના DPO હોવું જરૂરી નથી).  </li>
+<li>વિનંતી નમૂનાઓ બનાવો: ઍક્સેસ, કરેક્શન, ઇરેઝર, નોમિનેશન.  </li>
+<li>ઓળખની ચકાસણી વ્યાખ્યાયિત કરો (જોખમના પ્રમાણમાં).  </li>
+<li>તારીખો અને પરિણામો સાથે સરળ રજિસ્ટરમાં વિનંતીઓને ટ્રૅક કરો.  </li>
+<li>90 દિવસની અંદર આંતરિક SLA સારી રીતે સેટ કરો; 60મા દિવસે વધારો.  </li>
+<li>સહાયક સ્ટાફને વિનંતીઓને "IT માત્ર" તરીકે નકારવા માટે તાલીમ આપો.</li>
+</ol>
+<h4>4. ભારત એન્કર બોક્સ</h4>
+<table>
+<thead>
+<tr>
+<th>એન્કર</th>
+<th>જરૂરિયાત</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>વિભાગ 11-14</strong></td>
+<td>પ્રવેશ, સુધારણા, પૂર્ણતા, અપડેટ, ભૂંસી નાખવું, ફરિયાદ, નામાંકન</td>
+</tr>
+<tr>
+<td><strong>__KEP9__15</strong></td>
+<td>ડેટાની મુખ્ય ફરજો - તમારા વર્કફ્લોમાં યોગ્ય ઉપયોગ</td>
+</tr>
+<tr>
+<td><strong>__કીપ22__14</strong></td>
+<td>વિનંતી પદ્ધતિઓ પ્રકાશિત કરો; મહત્તમ 90 દિવસમાં ફરિયાદનો જવાબ</td>
+</tr>
+</tbody>
+</table>
+<h4>5. જો તમે જાણો છો GDPR</h4>
+<p>GDPR પ્રકરણ III ના અધિકારો કેસ કાયદાની માત્રામાં વ્યાપક છે પરંતુ આકારમાં સમાન છે. ભારતની <strong>90-દિવસની ફરિયાદ કેપ</strong> એક સ્પષ્ટ સંખ્યા છે - તેના માટે ઓપ્સ બનાવો, અનૌપચારિક ઈમેલ થ્રેડ માટે નહીં.</p>
+<h4>6. પુરાવા ચેકલિસ્ટ</h4>
+<ul>
+<li>[ ] પ્રકાશિત અધિકારો અને ફરિયાદ પ્રક્રિયા  </li>
+<li>[ ] ટાઇમસ્ટેમ્પ સાથે નોંધણીની વિનંતી કરો  </li>
+<li>[ ] ઓળખ ચકાસણી પ્રક્રિયા  </li>
+<li>[ ] બંધ વિનંતીના નમૂનાઓ (સુધારેલ)  </li>
+<li>[ ] SLA ડેશબોર્ડ અથવા માસિક રિપોર્ટ  </li>
+<li>[ ] નોમિનેશન હેન્ડલિંગ નોંધો</li>
+</ul>
+<hr />
+<h2>વિભાગ 15: OPERATE પ્રકરણ 5 - જવાબદારી અને શાસન</h2>
+<p><a id="15-operate-5"></a></p>
+<p>જવાબદારી પ્રોજેક્ટમાંથી ગોપનીયતાને સંચાલિત વ્યવસાય કાર્યમાં ફેરવે છે. પ્રોગ્રામની માલિકી કોઈની પાસે હોવી જોઈએ, બોર્ડે ભૌતિક જોખમ જોવું જોઈએ, અને સ્ટાફને નિયમો જાણવા જોઈએ.</p>
+<h4>1. બિઝનેસ હૂક</h4>
+<p>શાસન વિના, ગોપનીયતા વાર્ષિક નીતિ PDF અને ભૂલી ગયેલી વિક્રેતા સ્પ્રેડશીટ બની જાય છે. <strong>જવાબદારી</strong> માલિકોને નામ આપે છે, રિવ્યુ કેડેન્સ સેટ કરે છે, ટીમોને ટ્રેન કરે છે અને ઉપરની તરફ રિપોર્ટ કરે છે - તેવી જ રીતે ફાઇનાન્સમાં CFO અને માસિક બંધ થાય છે.</p>
+<p><strong>સાદ્રશ્ય:</strong> કાર્યસ્થળની સલામતી માટે ફાયર માર્શલ અને કવાયતની જરૂર છે, માત્ર પોસ્ટરની જ નહીં. ગોપનીયતા શાસન એ ઓપરેટિંગ સ્તર છે.</p>
+<h4>2. કેવું સારું દેખાય છે</h4>
+<ul>
+<li>એક્ઝિક્યુટિવ સ્પોન્સર સાથે DPDPA પ્રોગ્રામ માલિકનું નામ  </li>
+<li>વેબસાઇટ, એપ્લિકેશન અને સૂચનાઓ પર પ્રકાશિત DPO અથવા અધિકૃત સંપર્ક (Rule 9)  </li>
+<li>કોર પોલિસી સેટ: ગોપનીયતા સૂચના ફ્રેમવર્ક, રીટેન્શન, સુરક્ષા બેઝલાઇન, વેન્ડર સ્ટાન્ડર્ડ, રાઇટ્સ એસઓપી, ભંગ પ્લેબુક  </li>
+<li>વ્યક્તિગત ડેટાને સ્પર્શ કરતા સ્ટાફ માટે ઓનબોર્ડિંગ અને વાર્ષિક રિફ્રેશર તાલીમ  </li>
+<li>ઉચ્ચ સંભાળ સિસ્ટમો માટે ત્રિમાસિક ઍક્સેસ સમીક્ષાઓ  </li>
+<li>બોર્ડ અથવા નેતૃત્વ સારાંશ વર્ષમાં ઓછામાં ઓછા બે વાર: ટોચના જોખમો, ખુલ્લી વસ્તુઓ, પુરાવા પરિપક્વતા  </li>
+<li>જો હોદ્દો બુદ્ધિગમ્ય હોય તો જ SDF રેડીનેસ ટ્રૅક</li>
+</ul>
+<h4>3. હવે આ કરો</h4>
+<ol>
+<li>એક જવાબદાર માલિક અને દસ્તાવેજની જવાબદારીઓની નિમણૂક કરો.  </li>
+<li>નોટિસ અને વેબસાઇટ ફૂટરમાં ફરિયાદ/DPO સંપર્ક પ્રકાશિત કરો.  </li>
+<li>OPERATE અક્ષરો પર મેપ કરેલ ન્યૂનતમ નીતિ સેટને મંજૂરી આપો.  </li>
+<li>ફ્રન્ટલાઈન ટીમો (WhatsApp, HR, સપોર્ટ) માટે 60-મિનિટનું DPDPA જાગૃતિ સત્ર ચલાવો.  </li>
+<li>Schedule  કાનૂની, સુરક્ષા, ઉત્પાદન અને ઑપ્સ સાથે ત્રિમાસિક પ્રોગ્રામ સમીક્ષાઓ.  </li>
+<li>એક પાનાનો બોર્ડ સારાંશ પ્રસ્તુત કરો: પાંચ જોખમો, પાંચ પુરાવાના અંતર, 90-દિવસની યોજનાની સ્થિતિ.  </li>
+<li>માસિક સ્કેન માલિક સાથે પોલિસી હોરિઝોન લોગ (Section 22) જાળવો.</li>
+</ol>
+<h4>4. ભારત એન્કર બોક્સ</h4>
+<table>
+<thead>
+<tr>
+<th>એન્કર</th>
+<th>જરૂરિયાત</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>__KEP9__8</strong></td>
+<td>ડેટા વિશ્વાસુ જવાબદારી અને એકંદર જવાબદારી</td>
+</tr>
+<tr>
+<td><strong>__કીપ22__9</strong></td>
+<td>ડીપીઓ અથવા અધિકૃત વ્યક્તિનો સંપર્ક પ્રકાશિત કરો</td>
+</tr>
+<tr>
+<td><strong>Section 10 + Rule 13</strong></td>
+<td>નોંધપાત્ર ડેટા ફિડ્યુસિયર્સ માટે ઉન્નત શાસન (જો નિયુક્ત હોય તો)</td>
+</tr>
+<tr>
+<td><strong>વિભાગો 18-34</strong></td>
+<td>DPBI ડિજિટલ કાર્યવાહીમાં દસ્તાવેજીકૃત પાલનની અપેક્ષા રાખે છે</td>
+</tr>
+</tbody>
+</table>
+<h4>5. જો તમે જાણો છો GDPR</h4>
+<p>GDPR DPO આવશ્યકતાઓ નિયંત્રકોના સબસેટ્સ પર લાગુ થાય છે. ભારતને વ્યાપકપણે Rule 9 મારફતે <strong>પ્રકાશિત સંપર્ક</strong>ની જરૂર છે; SDF ને ભારે ફરજોનો સામનો કરવો પડે છે. એસએમઈ માટે પણ ગવર્નન્સ પરિપક્વતા મહત્વની છે કારણ કે પ્રોસેસર્સ અને ગ્રાહકો વધુને વધુ અપસ્ટ્રીમ ઓડિટ કરે છે.</p>
+<h4>6. પુરાવા ચેકલિસ્ટ</h4>
+<ul>
+<li>[ ] નામિત પ્રોગ્રામ માલિક અને એક્ઝિક્યુટિવ સ્પોન્સર  </li>
+<li>[ ] પ્રકાશિત DPO/અધિકૃત સંપર્ક  </li>
+<li>[ ] સંસ્કરણ તારીખો સાથે મંજૂર નીતિ સેટ  </li>
+<li>[ ] તાલીમ હાજરી અથવા પૂર્ણતા રેકોર્ડ  </li>
+<li>[ ] ત્રિમાસિક સમીક્ષા મિનિટ  </li>
+<li>[] બોર્ડ અથવા નેતૃત્વ સારાંશ નમૂનાઓ  </li>
+<li>[ ] સમીક્ષા રેકોર્ડ્સ ઍક્સેસ કરો</li>
+</ul>
+<hr />
+<h2>વિભાગ 16: OPERATE પ્રકરણ 6 - તૃતીય-પક્ષ અને વિક્રેતા નિયંત્રણ</h2>
+<p><a id="16-operate-6"></a></p>
+<p>તમારા વિક્રેતાની ભૂલ હજુ પણ તમારી ગ્રાહક સમસ્યા છે. <strong>તૃતીય-પક્ષ</strong> એ વેન્ડર ગવર્નન્સ અને ક્રોસ-બોર્ડર શિસ્ત છે - કોન્ટ્રાક્ટ, ઓડિટ અને ટ્રાન્સફર રજિસ્ટર જેથી ભાગીદારો તમારા સૌથી નબળા શટર ન બને.</p>
+<p><strong>સાદ્રશ્ય:</strong> જો તમે ડિલિવરીનું આઉટસોર્સ કરો છો, તો પણ જ્યારે પૅકેજ રસ્તામાં ખોલવામાં આવે ત્યારે તમે જવાબ આપો છો. પ્રોસેસર્સ એ ડેટા માટે ડિલિવરી ચેઇન છે.</p>
+<h4>1. કેવું સારું દેખાય છે</h4>
+<ul>
+<li>હેતુ, શેર કરેલ ડેટા અને સ્થાન સાથે પ્રોસેસર રજીસ્ટર  </li>
+<li>કોન્ટ્રાક્ટમાં DPDPA-સંરેખિત સુરક્ષા, ભંગ સહકાર, કાઢી નાખવા અને ઓડિટ કલમો (Rule 6) નો સમાવેશ થાય છે.  </li>
+<li>ગંતવ્ય દેશો સાથે ક્રોસ-બોર્ડર ટ્રાન્સફર રજિસ્ટર અને <strong>Rule 15</strong> પર કાનૂની વોચ  </li>
+<li>HR, ક્લાઉડ, પેમેન્ટ, એડ-ટેક, BGV વિક્રેતાઓ ઓનબોર્ડિંગ પહેલાં યોગ્ય ખંત  </li>
+<li>SDF-નિયુક્ત કંપનીઓ એલ્ગોરિધમિક ટૂલ્સ (Rule 13) માટે યોગ્ય ખંતનો વિસ્તાર કરે છે.  </li>
+<li>સરકારી માહિતી વિનંતિઓ કાનૂની નેતૃત્વ તરફ આગળ વધે છે (નિયમો 23/Schedule 7)</li>
+</ul>
+<h4>2. હવે આ કરો</h4>
+<ol>
+<li>બધા પ્રોસેસર્સની સૂચિ બનાવો: ક્લાઉડ, ઇમેઇલ, CRM, પગારપત્રક, ચૂકવણી, વિશ્લેષણ, સહાયક સાધનો.  </li>
+<li>પ્રોસેસરની જવાબદારીઓ અને ઉલ્લંઘન સૂચના સહકાર સાથેના કરારને અપગ્રેડ કરો.  </li>
+<li>નકશો ક્રોસ-બોર્ડર ફ્લો (યુએસ, ઇયુ, સિંગાપોર, વગેરે); મોનિટર MeitY પ્રતિબંધિત-દેશ સૂચનાઓ.  </li>
+<li>ઓછામાં ઓછા વિશેષાધિકાર દ્વારા વિક્રેતાની ઍક્સેસને અવરોધિત કરો; ત્રિમાસિક સમીક્ષા.  </li>
+<li>નિર્ણાયક વિક્રેતાઓ માટે સબપ્રોસેસરોની સૂચિ જાળવો.  </li>
+<li>સરકારી માહિતી માંગણીઓ માટે કાનૂની વૃદ્ધિનો માર્ગ બનાવો.  </li>
+<li>જો SDF-સ્કેલ હોય, તો અલ્ગોરિધમિક ડ્યુ ડિલિજન્સ અને ઓડિટ કેડન્સ તૈયાર કરો.</li>
+</ol>
+<h4>3. ભારત એન્કર બોક્સ</h4>
+<table>
+<thead>
+<tr>
+<th>એન્કર</th>
+<th>જરૂરિયાત</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>__KEP9__8</strong></td>
+<td>પ્રોસેસર નિયંત્રણ માટે જવાબદાર ડેટા ફિડ્યુસિયરી</td>
+</tr>
+<tr>
+<td><strong>__KEP9__16</strong></td>
+<td>સરકાર સૂચિત દેશોમાં ટ્રાન્સફરને પ્રતિબંધિત કરી શકે છે</td>
+</tr>
+<tr>
+<td><strong>__કીપ22__6</strong></td>
+<td>સુરક્ષા પગલાં માટે પ્રોસેસર કરાર કલમો</td>
+</tr>
+<tr>
+<td><strong>__કીપ22__15</strong></td>
+<td>ટ્રાન્સફર શરતો કેન્દ્ર સરકાર સ્પષ્ટ કરી શકે છે</td>
+</tr>
+<tr>
+<td><strong>__કીપ22__13</strong></td>
+<td>SDF એલ્ગોરિધમ્સ/ટૂલ્સ માટે યોગ્ય ખંત; સ્થાનિકીકરણ ઘડિયાળ</td>
+</tr>
+</tbody>
+</table>
+<h4>4. જો તમે જાણો છો GDPR</h4>
+<p>GDPR કલમ 28 પ્રોસેસર શરતો અને SCC એ સંદર્ભ બિંદુ છે. ભારત પાસે સમાન સ્વરૂપમાં <strong>કોઈ SCC શાસન</strong> નથી; તેના બદલે, <strong>સરકારી પ્રતિબંધો</strong> અને Rule 15 શરતો જુઓ. નકશો હવે વહે છે; એકલા GDPR ટ્રાન્સફર ટૂલ્સ પૂરતા છે એમ માનશો નહીં.</p>
+<h4>5. પુરાવા ચેકલિસ્ટ</h4>
+<ul>
+<li>[ ] પ્રોસેસર/વેન્ડર રજીસ્ટર  </li>
+<li>[ ] ગોપનીયતા/સુરક્ષા કલમો સાથે કરાર પર હસ્તાક્ષર કર્યા  </li>
+<li>[ ] ક્રોસ બોર્ડર ટ્રાન્સફર મેપ  </li>
+<li>[ ] વિક્રેતા સમીક્ષા અથવા ઓડિટ ટ્રેલ  </li>
+<li>[ ] સબપ્રોસેસર જાહેરાતો  </li>
+<li>[ ] સરકારી વિનંતી એસ્કેલેશન લોગ (જો લાગુ હોય તો)</li>
+</ul>
+<hr />
+<h2>વિભાગ 17: OPERATE પ્રકરણ 7 - ઘટના અને ભંગની તૈયારી</h2>
+<p><a id="17-operate-7"></a></p>
+<p><strong>ઇવેન્ટ</strong> સુરક્ષા ઘટનાઓ અને ઉલ્લંઘનની ઘડિયાળને આવરી લે છે - શોધ, નિયંત્રણ, સૂચના અને પુનઃપ્રાપ્તિ. રીટેન્શન અને નિવારક સુરક્ષા અહીં અને પુરાવામાં બેસે છે; આ પ્રકરણ <strong>જ્યારે કંઈક ખોટું થાય ત્યારે શું થાય છે</strong> પર ધ્યાન કેન્દ્રિત કરે છે.</p>
+<h4>1. બિઝનેસ હૂક</h4>
+<p>વિશ્વાસ બે કાર્યોમાં તૂટી જાય છે: લીક અને ધીમો પ્રતિભાવ. ઇવેન્ટ એ તમારો રોગપ્રતિકારક પ્રતિભાવ છે - માત્ર ફાયરવોલ જ નહીં, પરંતુ વપરાશકર્તાઓ, બોર્ડ અને તમારી પોતાની ટીમ માટે રિહર્સલ કરેલ સમયરેખા.</p>
+<p><strong>સાદ્રશ્ય:</strong> એક દુકાનદાર રાત્રે શટરને તાળું મારે છે, સમયસીમા સમાપ્ત થયેલો સ્ટોક ફેંકી દે છે અને બ્રેક-ઈન પછી તરત જ પોલીસને બોલાવે છે. ઇવેન્ટ એ બ્રેક-ઇન રિસ્પોન્સ પ્લેબુક છે.</p>
+<h4>2. કેવું સારું દેખાય છે</h4>
+<ul>
+<li>દસ્તાવેજીકૃત સુરક્ષા આધારરેખા: જ્યાં યોગ્ય હોય ત્યાં એન્ક્રિપ્શન, એક્સેસ કંટ્રોલ, લોગીંગ, બેકઅપ, મોનીટરીંગ (Rule 6)  </li>
+<li>કાઢી નાખવાના વર્કફ્લો અને અપવાદો દસ્તાવેજીકૃત સાથે રીટેન્શન શેડ્યૂલ  </li>
+<li>ભૂમિકાઓ, નમૂનાઓ અને ટાઈમર સાથે ઘટના પ્રતિભાવ પ્લેબુક  </li>
+<li>અસરગ્રસ્ત વપરાશકર્તાઓને અયોગ્ય વિલંબ કર્યા વિના સૂચિત; બોર્ડને અનુચિત વિલંબ કર્યા વિના સૂચિત; વિગતવાર બોર્ડ રિપોર્ટ <strong>72 કલાકમાં</strong> (Rule 7)  </li>
+<li>જ્યાં Rule 6 લાગુ થાય છે ત્યાં સુરક્ષા ઇવેન્ટ્સ માટે એક વર્ષનો લોગ રીટેન્શન  </li>
+<li>જો લાગુ હોય તો મોટી ઈ-કોમર્સ/સામાજિક/ગેમિંગ એન્ટિટી ટ્રૅક Rule 8/Schedule 3 નિષ્ક્રિયતા ઇરેઝર</li>
+</ul>
+<h4>3. હવે આ કરો</h4>
+<ol>
+<li>Rule 6 સાથે સંરેખિત લઘુત્તમ સુરક્ષા બેઝલાઇન ચેકલિસ્ટ અપનાવો.  </li>
+<li>નકશો જે ઉચ્ચ-સંભાળ ડેટાને ઍક્સેસ કરી શકે છે; શેર કરેલ લૉગિન અને જૂના એકાઉન્ટ્સ દૂર કરો.  </li>
+<li>ડેટા પ્રકાર દ્વારા રીટેન્શન નિયમો લખો; શક્ય હોય ત્યાં સ્વચાલિત કાઢી નાખવું.  </li>
+<li>ઉલ્લંઘનની પ્લેબુક બનાવો: સમાવિષ્ટ કરો, મૂલ્યાંકન કરો, વપરાશકર્તાઓને સૂચિત કરો, બોર્ડને સૂચિત કરો, 72-કલાકનો અહેવાલ.  </li>
+<li>ફ્રન્ટલાઈન સ્ટાફને "ખોટા WhatsApp રિપોર્ટ" અને લેપટોપ-નુકસાનના સંજોગો પર તાલીમ આપો.  </li>
+<li>ત્રિમાસિક ધોરણે ભૂતપૂર્વ કર્મચારીઓ માટે ટેસ્ટ બેકઅપ અને એક્સેસ દૂર કરવાની પ્રક્રિયા.  </li>
+<li>વાર્ષિક ટેબલટોપ ભંગ કવાયત ચલાવો અને તમારા પુરાવા પેકમાં રેકોર્ડ ફાઇલ કરો.</li>
+</ol>
+<h4>4. પ્રતિભાવ ઘડિયાળનો ભંગ</h4>
+<p><em>Diagram: see figure below.</em></p>
+<figure class="figure"><img src="../infographics/infographic-04-breach-clock.png" alt="ઇન્ફોગ્રાફિક 5: Breach Response Clock" /></figure>
+<p><em>આકૃતિ: ઇન્ફોગ્રાફિક 5: ભંગ પ્રતિસાદ ઘડિયાળ</em></p>
+<table>
+<thead>
+<tr>
+<th>ઘડિયાળ</th>
+<th>ક્રિયા</th>
+<th>સાચવવાના પુરાવા</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>તાત્કાલિક</td>
+<td>સમાવવું + માલિક સોંપો</td>
+<td>સમયરેખા, સિસ્ટમો પ્રભાવિત</td>
+</tr>
+<tr>
+<td>અયોગ્ય વિલંબ કર્યા વિના</td>
+<td>વપરાશકર્તા સૂચના ડ્રાફ્ટ</td>
+<td>હકીકતો જાણીતી છે, ઉપાય ઓફર કરે છે</td>
+</tr>
+<tr>
+<td>અયોગ્ય વિલંબ કર્યા વિના</td>
+<td>DPBI સૂચના</td>
+<td>પ્રારંભિક તથ્યો લોગ</td>
+</tr>
+<tr>
+<td>72 કલાક</td>
+<td>વિગતવાર અહેવાલ</td>
+<td>સંપૂર્ણ ઘટના રેકોર્ડ, મૂળ કારણ, સુધારાઓ</td>
+</tr>
+</tbody>
+</table>
+<p><strong>સાદ્રશ્ય:</strong> ફાયર ડ્રિલની જેમ - તમે આગ દરમિયાન યોજનાની શોધ કરતા નથી.</p>
+<h4>5. ભારત એન્કર બોક્સ</h4>
+<table>
+<thead>
+<tr>
+<th>એન્કર</th>
+<th>જરૂરિયાત</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Section 8(5)-(7)</strong></td>
+<td>વાજબી સુરક્ષા રક્ષણો; સૂચના ફરજોનો ભંગ</td>
+</tr>
+<tr>
+<td><strong>__કીપ22__6</strong></td>
+<td>એન્ક્રિપ્શન/માસ્કિંગ, એક્સેસ કંટ્રોલ, લોગ્સ, મોનિટરિંગ, બેકઅપ્સ, પ્રોસેસર કલમો</td>
+</tr>
+<tr>
+<td><strong>__કીપ22__7</strong></td>
+<td>અયોગ્ય વિલંબ વિના વપરાશકર્તા સૂચના; અયોગ્ય વિલંબ વિના બોર્ડની સૂચના; 72 કલાકમાં વિગતવાર અહેવાલ</td>
+</tr>
+<tr>
+<td><strong>Rule 8 + Schedule 3</strong></td>
+<td>ઉલ્લેખિત સંસ્થાઓ માટે નિષ્ક્રિયતા પછી ભૂંસી નાખવું; 48-કલાકની ચેતવણી; લોગ</td>
+</tr>
+</tbody>
+</table>
+<h4>6. જો તમે જાણો છો GDPR</h4>
+<p>GDPR લેખ 32-33 ને સુરક્ષા અને ભંગ સૂચનાની જરૂર છે. ભારતનું Rule 7 નોટિફિકેશન પછી બોર્ડને <strong>72-કલાકનો વિગતવાર અહેવાલ</strong> સેટ કરે છે - આને "શ્રેષ્ઠ પ્રયાસો" ઇમેઇલ નહીં, પરંતુ સખત ઓપરેશનલ SLA તરીકે માનો.</p>
+<h4>7. પુરાવા ચેકલિસ્ટ</h4>
+<ul>
+<li>[ ] સુરક્ષા આધારરેખા દસ્તાવેજ અને અમલીકરણ પુરાવા  </li>
+<li>[ ] એક્સેસ કંટ્રોલ મેટ્રિક્સ અને ઓફબોર્ડિંગ રેકોર્ડ્સ  </li>
+<li>[ ] રીટેન્શન શેડ્યૂલ + કાઢી નાખવાના લૉગ્સ  </li>
+<li>[ ] ઘટના પ્રતિભાવ યોજના અને ટેબલટૉપ કસરત નોંધો  </li>
+<li>[ ] ઉલ્લંઘન સૂચના નમૂનાઓ (વપરાશકર્તા + બોર્ડ)  </li>
+<li>[ ] સુરક્ષા લોગ રીટેન્શન પોલિસી (જ્યાં જરૂરી હોય ત્યાં ઓછામાં ઓછું એક વર્ષ)</li>
+</ul>
+<hr />
+<h2>વિભાગ 18: અમલીકરણ કિટ્સ</h2>
+<p><a id="18"></a></p>
+<p>આ કિટ્સ OPERATE v6.1 ને ચેકલિસ્ટ ટીમમાં અનુવાદિત કરે છે જે આ મહિને ચલાવી શકે છે. સ્કોર મેચ્યોરિટી, ફિક્સ નોટિસ, અને બાળકોનો ડેટા અને રીટેન્શન ઉમેરો જ્યાં v6 માત્ર આંશિક કવરેજ ધરાવે છે.</p>
+<h3>DPDPA રેડીનેસ ચેકલિસ્ટ (OPERATE v6.1 પર મેપ કરેલ)</h3>
+<p>દરેક પંક્તિનો સ્કોર કરો: <strong>0</strong> = શરૂ નથી, <strong>1</strong> = આંશિક, <strong>2</strong> = દસ્તાવેજીકૃત અને સંચાલન.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>નિયંત્રણ</th>
+<th>ઓ</th>
+<th>પી</th>
+<th>ઇ</th>
+<th>આર</th>
+<th>એ</th>
+<th>ટી</th>
+<th>ઇ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>પ્રક્રિયા પ્રવૃત્તિ રજીસ્ટર</td>
+<td>*</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>કાયદેસર આધાર પ્રતિ લક્ષણ ટૅગ કરેલ</td>
+<td></td>
+<td>*</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>એકલ ઉત્પાદન સૂચના</td>
+<td></td>
+<td>*</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>સંમતિ અને નોટિસ વર્ઝન લોગ</td>
+<td></td>
+<td></td>
+<td>*</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>સુરક્ષા આધારરેખા + ઍક્સેસ નિયંત્રણ</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>*</td>
+</tr>
+<tr>
+<td>6</td>
+<td>72-કલાકના ટાઈમર સાથે પ્લેબુકનો ભંગ કરો</td>
+<td></td>
+<td></td>
+<td>*</td>
+<td></td>
+<td></td>
+<td></td>
+<td>*</td>
+</tr>
+<tr>
+<td>7</td>
+<td>અધિકારોની વિનંતી ઇનબૉક્સ + માલિક</td>
+<td></td>
+<td></td>
+<td></td>
+<td>*</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>8</td>
+<td>નામિત પ્રોગ્રામ માલિક + બોર્ડ સમીક્ષા</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>*</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>9</td>
+<td>પ્રોસેસર કોન્ટ્રાક્ટ અપડેટ કર્યા</td>
+<td></td>
+<td></td>
+<td>*</td>
+<td></td>
+<td></td>
+<td>*</td>
+<td></td>
+</tr>
+<tr>
+<td>10</td>
+<td>ક્રોસ બોર્ડર ફ્લો નકશો</td>
+<td></td>
+<td></td>
+<td>*</td>
+<td></td>
+<td></td>
+<td>*</td>
+<td></td>
+</tr>
+<tr>
+<td>11</td>
+<td>ત્રિમાસિક ક્ષિતિજ સમીક્ષા</td>
+<td></td>
+<td></td>
+<td>*</td>
+<td></td>
+<td>*</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>12</td>
+<td>બાળક/નાના પ્રવાહનું મૂલ્યાંકન (જો લાગુ હોય તો)</td>
+<td></td>
+<td>*</td>
+<td>*</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>પરિપક્વતા બેન્ડ:</strong> 0-7 = તદર્થ | 8-14 = પુનરાવર્તિત | 15-20 = વ્યાખ્યાયિત | 21-24 = વ્યવસ્થાપિત</p>
+<h3>ડેટા ઇન્વેન્ટરી ટેમ્પલેટ (એકલોન)</h3>
+<table>
+<thead>
+<tr>
+<th>ક્ષેત્ર</th>
+<th>ઉદાહરણ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>પ્રવૃત્તિનું નામ</td>
+<td>ગ્રાહક ચેકઆઉટ</td>
+</tr>
+<tr>
+<td>ડેટા શ્રેણીઓ</td>
+<td>નામ, ફોન, સરનામું, ચુકવણી સંદર્ભ</td>
+</tr>
+<tr>
+<td>કાયદેસરનો આધાર</td>
+<td>સંમતિ + કરાર</td>
+</tr>
+<tr>
+<td>સ્ત્રોત / ચેનલ</td>
+<td>વેબસાઇટ ફોર્મ</td>
+</tr>
+<tr>
+<td>સંગ્રહ સ્થાન</td>
+<td>Shopify + પેમેન્ટ ગેટવે (યુએસ)</td>
+</tr>
+<tr>
+<td>પ્રોસેસર્સ</td>
+<td>Shopify, Razorpay, Shiprocket</td>
+</tr>
+<tr>
+<td>રીટેન્શન અવધિ</td>
+<td>7 વર્ષ કર; ઉપાડ સુધી માર્કેટિંગ</td>
+</tr>
+<tr>
+<td>માલિક</td>
+<td>ઈ-કોમર્સ હેડ</td>
+</tr>
+<tr>
+<td>છેલ્લી સમીક્ષા કરી</td>
+<td>14 જૂન 2026</td>
+</tr>
+</tbody>
+</table>
+<h3>નોટિસ લખવાની કીટ (5 બુલેટ)</h3>
+<ol>
+<li><strong>હેતુ સાથે લીડ</strong> - પ્રથમ સ્ક્રીન અથવા ફકરામાં "અમે Y કરવા માટે X એકત્રિત કરીએ છીએ".  </li>
+<li><strong>આઇટમાઇઝ ડેટા</strong> - ફોન, ઇમેઇલ, ચુકવણી સંદર્ભ, ઉપકરણ ID - "વ્યક્તિગત માહિતી" નહીં.  </li>
+<li><strong>અલગ વૈકલ્પિક ઉપયોગો</strong> - માર્કેટિંગ, એનાલિટિક્સ, તેમની પોતાની લાઇન પર પ્રશંસાપત્રો.  </li>
+<li><strong>અધિકાર માર્ગો બતાવો</strong> - ઍક્સેસ, કરેક્શન, ઇરેઝર, ફરિયાદ, લિંક્સ સાથે બોર્ડ ફરિયાદ.  </li>
+<li><strong>તેને એકલો રાખો</strong> - નિયમો અને શરતો (Rule 3) ની અંદર મુખ્ય સૂચનાને ક્યારેય દફનાવશો નહીં.</li>
+</ol>
+<h3>સંમતિ પ્રવાહ કીટ (5 પગલાં)</h3>
+<ol>
+<li><strong>ક્ષણને ઓળખો</strong> - ચેકઆઉટ, સાઇનઅપ, ફોર્મ, WhatsApp પસંદ કરો.  </li>
+<li><strong>જરૂરી વિભાજિત કરો વિ વૈકલ્પિક</strong> - વૈકલ્પિક પ્રક્રિયા માટે માત્ર વૈકલ્પિક બોક્સ.  </li>
+<li><strong>સ્પષ્ટ હકારાત્મક ક્રિયાનો ઉપયોગ કરો</strong> - બટન અથવા અનચેક કરેલ ટિક; કોઈ પ્રી-ટિક માર્કેટિંગ નથી.  </li>
+<li><strong>લોગ પુરાવા</strong> - શું, ક્યારે, ચેનલ, નોટિસનું સંસ્કરણ બતાવવામાં આવ્યું છે.  </li>
+<li><strong>મિરર ઉપાડ</strong> - સમાન ચેનલો અથવા સરળ; વપરાશકર્તાને ઉપાડની પુષ્ટિ કરો.</li>
+</ol>
+<h3>વેન્ડર ગવર્નન્સ કીટ (5 બુલેટ)</h3>
+<ol>
+<li>તમારા ડેટા મેપ સાથે લિંક કરેલ <strong>પ્રોસેસર રજીસ્ટર</strong> જાળવી રાખો.  </li>
+<li>કરારમાં <strong>સુરક્ષા, ભંગ, કાઢી નાખવા અને ઓડિટ</strong> કલમોની જરૂર છે (Rule 6).  </li>
+<li>ક્લાઉડ અને એડ-ટેક માટે <strong>ડેટા સ્થાન</strong> અને સબપ્રોસેસર્સનો નકશો.  </li>
+<li><strong>ઓફબોર્ડ વિક્રેતાઓ</strong> ઍક્સેસ દૂર કરવા અને પરત/કાઢી નાખવાના પ્રમાણપત્રો સાથે.  </li>
+<li><strong>વાર્ષિક સમીક્ષા</strong> - અથવા જ્યારે વિક્રેતાની ઘટનાના સમાચાર બ્રેક થાય છે.</li>
+</ol>
+<h3>ઉલ્લંઘન પ્રતિસાદ ચેકલિસ્ટ</h3>
+<ol>
+<li>** સમાવિષ્ટ છે** - ફેલાવો રોકો, લોગ સાચવો, ઘટના લીડ સોંપો.  </li>
+<li><strong>મૂલ્યાંકન</strong> - ડેટા પ્રકારો, વોલ્યુમ, નુકસાનની સંભાવના.  </li>
+<li><strong>વપરાશકર્તાઓને સૂચિત કરો</strong> અયોગ્ય વિલંબ વિના જાણીતા તથ્યો અને ઉપાયના પગલાં.  </li>
+<li><strong>અનુચિત વિલંબ કર્યા વિના DPBI</strong>ને સૂચિત કરો; 72-કલાકનો વિગતવાર અહેવાલ તૈયાર કરો.  </li>
+<li><strong>રેકોર્ડ</strong> સમયરેખા, નિર્ણયો, નમૂનાઓ, મૂળ કારણ અને પુરાવા પેકમાં સુધારાઓ.  </li>
+<li><strong>સમીક્ષા</strong> ઍક્સેસ નિયંત્રણો અને વિક્રેતા કલમો કે જે નિષ્ફળ ગયા.</li>
+</ol>
+<h3>ચિલ્ડ્રન્સ ડેટા ચેકલિસ્ટ</h3>
+<p><em>Diagram: see figure below.</em></p>
+<figure class="figure"><img src="../infographics/infographic-05-children-tree.png" alt="ઇન્ફોગ્રાફિક 6: Children's Data Decision Tree" /></figure>
+<p><em>આકૃતિ: ઇન્ફોગ્રાફિક 6: ચિલ્ડ્રન્સ ડેટા ડિસીઝન ટ્રી</em></p>
+<p><strong>ભારત-વિશિષ્ટ:</strong> સમાન વય મર્યાદા <strong>18 વર્ષથી ઓછી છે</strong> (ઘણા વૈશ્વિક કાયદાઓ કરતાં વધુ કડક).</p>
+<p>વ્યવહારુ પગલાં:</p>
+<ol>
+<li>પ્રવાહોને ઓળખો જ્યાં વપરાશકર્તાઓ 18 વર્ષથી ઓછી ઉંમરના હોઈ શકે છે (શિક્ષણ, ગેમિંગ, કૌટુંબિક એપ્લિકેશનો).  </li>
+<li>જ્યાં યોગ્ય હોય ત્યાં વય દરવાજો અથવા એકાઉન્ટ પ્રકાર ઘોષણા લાગુ કરો.  </li>
+<li>વૈકલ્પિક પ્રક્રિયા કરતા પહેલા ચકાસણીપાત્ર માતાપિતાની સંમતિ કેપ્ચર કરો.  </li>
+<li>વર્તણૂકલક્ષી જાહેરાતોને અવરોધિત કરો અને બાળ-નિર્દેશિત સેવાઓ પર ટ્રેકિંગ કરો.  </li>
+<li>દસ્તાવેજ Schedule 4 જો લાગુ હોય તો સંકુચિત રીતે મુક્તિ આપો (શાળાઓ, ક્લિનિક્સ).</li>
+</ol>
+<h3>રીટેન્શન ચેકલિસ્ટ</h3>
+<ol>
+<li>હેતુ (કર, કરાર, વિવાદ) સાથે જોડાયેલ ડેટા કેટેગરી દીઠ રીટેન્શન અવધિ વ્યાખ્યાયિત કરો.  </li>
+<li>દસ્તાવેજ અપવાદો (કાનૂની પકડ, સક્રિય ફરિયાદ, નિયમનકારી વિનંતી).  </li>
+<li>જ્યાં સિસ્ટમ પરવાનગી આપે છે ત્યાં સ્વચાલિત કાઢી નાખવા અથવા અનામીકરણ.  </li>
+<li>મોટા ઇ-કોમર્સ/સામાજિક/ગેમિંગ માટે, Schedule 3 નિષ્ક્રિયતા ઇરેઝર ફરજોનું મૂલ્યાંકન કરો.  </li>
+<li>પુરાવા પેકમાં લોગ કાઢી નાખવા અને સામયિક રીટેન્શન સમીક્ષાઓ.</li>
+</ol>
+<h3>SDF રેડીનેસ પેક (શરતી)</h3>
+<p>જો સ્કેલ, સેક્ટરની સંવેદનશીલતા અથવા પ્રણાલીગત જોખમ નોંધપાત્ર ડેટા ફિડ્યુસિયરી હોદ્દો બુદ્ધિગમ્ય બનાવે તો જ લાગુ કરો:</p>
+<ul>
+<li><strong>ડેટા પ્રોટેક્શન ઓફિસર</strong> સંપર્ક (Rule 9) નિમણૂક અથવા નિયુક્ત કરો  </li>
+<li>વાર્ષિક <strong>ડેટા પ્રોટેક્શન ઈમ્પેક્ટ એસેસમેન્ટ</strong> અને ઓડિટ (Rule 13)  </li>
+<li>જરૂરીયાત મુજબ બોર્ડને નોંધપાત્ર ઓડિટ અવલોકનો રજૂ કરો  </li>
+<li>સ્કેલ પર વ્યક્તિઓને અસર કરતા સાધનો માટે <strong>એલ્ગોરિધમિક ડ્યુ ડિલિજન્સ</strong>  </li>
+<li>સરકાર સ્પષ્ટ કરી શકે તેવી શ્રેણીઓ માટે <strong>સ્થાનિકીકરણ ઘડિયાળ</strong>  </li>
+<li>બોર્ડ-ફેસિંગ એવિડન્સ પેક અને એક્ઝિક્યુટિવ સ્પોન્સર  </li>
+<li>ઉન્નત પ્રોસેસર અને ટ્રાન્સફર ગવર્નન્સ</li>
+</ul>
+<h3>રેડીનેસ સ્કોરકાર્ડ (10 પ્રશ્નો OPERATE v6.1 પર મેપ કરેલા)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>પ્રશ્ન</th>
+<th>ડોમેન</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>શું તમે સાદા અંગ્રેજીમાં એકત્રિત કરેલા દરેક પ્રકારના વ્યક્તિગત ડેટાની યાદી બનાવી શકો છો?</td>
+<td>અવલોકન કરો</td>
+</tr>
+<tr>
+<td>2</td>
+<td>શું તમે જાણો છો કે દરેક મુખ્ય સિસ્ટમ કયા દેશમાં ડેટા સ્ટોર કરે છે?</td>
+<td>અવલોકન કરો</td>
+</tr>
+<tr>
+<td>3</td>
+<td>શું દરેક ઉપયોગ ટેગ કરેલ સંમતિ અથવા ચોક્કસ Section 7 આધાર છે?</td>
+<td>પરવાનગી</td>
+</tr>
+<tr>
+<td>4</td>
+<td>શું વપરાશકર્તાઓ વૈકલ્પિક સંમતિ આપે તેટલી સરળતાથી પાછી ખેંચી શકે?</td>
+<td>પરવાનગી</td>
+</tr>
+<tr>
+<td>5</td>
+<td>શું દરેક મુખ્ય સંગ્રહ બિંદુ પર નોટિસ એકલ છે?</td>
+<td>પરવાનગી</td>
+</tr>
+<tr>
+<td>6</td>
+<td>શું તમે સેમ્પલ યુઝર માટે સંમતિ અને નોટિસ વર્ઝન લોગ બનાવી શકો છો?</td>
+<td>પુરાવા</td>
+</tr>
+<tr>
+<td>7</td>
+<td>શું તમારી પાસે 72-કલાકના બોર્ડ રિપોર્ટ સ્ટેપ સાથે ઉલ્લંઘન પ્લેબુક છે?</td>
+<td>ઘટના</td>
+</tr>
+<tr>
+<td>8</td>
+<td>શું ગ્રાહક આજે અધિકારોની વિનંતી સબમિટ કરી શકે છે અને ટ્રેક કરેલ પ્રતિસાદ મેળવી શકે છે?</td>
+<td>અધિકારો</td>
+</tr>
+<tr>
+<td>9</td>
+<td>શું પ્રોસેસર કોન્ટ્રાક્ટને સુરક્ષા અને ભંગ સહકારની જરૂર છે?</td>
+<td>તૃતીય-પક્ષ</td>
+</tr>
+<tr>
+<td>10</td>
+<td>શું નેતૃત્વએ છેલ્લા 90 દિવસમાં DPDPA જોખમની સમીક્ષા કરી?</td>
+<td>જવાબદારી</td>
+</tr>
+</tbody>
+</table>
+<p><strong>સ્કોરિંગ:</strong> 8-10 હા = મજબૂત રનવે | 5-7 = 2027 પહેલા બંધ થવાના ગાબડા | 0-4 = અવલોકન + પરવાનગી સાથે તરત જ પ્રારંભ કરો</p>
+<hr />
+<h2>વિભાગ 19: 12 ઉદ્યોગ જોખમ સ્નેપશોટ</h2>
+<p><a id="19-12"></a></p>
+<p>સંપૂર્ણ 12-બ્લોક ઇન્ડસ્ટ્રી પ્લેબુક SaralPrivacy વેબસાઇટ પર લાઇવ છે. આ વિભાગ પીડીએફ વાચકો માટે <strong>કોમ્પેક્ટ સ્નેપશોટ</strong> આપે છે - પહેલા ઠીક કરવા માટે બે પ્રવાહોને પ્રાથમિકતા આપવા માટે પૂરતું છે (CEO પૃષ્ઠ, Section 4).</p>
+<h3>જોખમ હીટમેપ</h3>
+<p><em>Diagram: see figure below.</em></p>
+<figure class="figure"><img src="../infographics/infographic-06-industry-heatmap.png" alt="ઇન્ફોગ્રાફિક 7: Industry Risk Heatmap" /></figure>
+<p><em>આકૃતિ: ઇન્ફોગ્રાફિક 7: ઇન્ડસ્ટ્રી રિસ્ક હીટમેપ</em></p>
+<table>
+<thead>
+<tr>
+<th>પ્રાથમિકતા</th>
+<th>ઉદ્યોગો</th>
+<th>સ્કેન રૂટ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>જટિલ</strong></td>
+<td>ક્લિનિક્સ, શાળાઓ, ફિનટેક</td>
+<td>પહેલા સેક્ટર સ્કેન કરો</td>
+</tr>
+<tr>
+<td><strong>ઉચ્ચ</strong></td>
+<td>CA, ફાર્મસી, કાયદો, તાલીમ</td>
+<td>સેક્ટર સ્કેન + સામાન્ય આકારણી</td>
+</tr>
+<tr>
+<td><strong>મધ્યમ</strong></td>
+<td>D2C, ભરતી, હોટેલ્સ, રિયલ એસ્ટેટ, જિમ</td>
+<td>જ્યારે સંબંધિત હોય ત્યારે સેક્ટર સ્કેન કરો</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>CA ફર્મ્સ</h3>
+<p><strong>પ્રાથમિક જોખમ થીમ:</strong> ક્લાયન્ટ-દસ્તાવેજ નિયંત્રણ - કર જ્ઞાન નહીં.</p>
+<p><strong>કોણ:</strong> સોલો CA અને ભાગીદારી, GST/પેરોલ/સલાહકાર ફર્મ, લેખ સહાયકો અને શેર કરેલ ક્લાઉડ ફોલ્ડર્સનો ઉપયોગ કરતી ટીમો.</p>
+<p><strong>સામાન્ય વ્યક્તિગત ડેટા:</strong> PAN, Aadhaar, ITR ફાઇલો, બેંક સ્ટેટમેન્ટ, પગારપત્રક, Google Drive, WhatsApp, લેખ સ્ટાફ ઍક્સેસ, જૂની ક્લાયન્ટ ફાઇલો</p>
+<p><strong>ઉચ્ચ જોખમનો પ્રવાહ:</strong><br />
+1. ક્લાયન્ટ PAN અને બેંક સ્ટેટમેન્ટ WhatsApp દ્વારા અથવા પ્રમાણભૂત ઇન્ટેક વિના ઇમેઇલ મોકલે છે<br />
+2. ભૂતપૂર્વ લેખો અને ઇન્ટર્ન માટે જૂની ઍક્સેસ સાથે શેર કરેલ ડ્રાઇવ ફોલ્ડર્સ<br />
+3. જૂની ITR અને KYC નકલો કાઢી નાખવાના નિયમો વિના અનિશ્ચિત સમય માટે જાળવી રાખવામાં આવે છે</p>
+<p><strong>DPDPA ટ્રિગર થયેલી જવાબદારીઓ:</strong> સૂચના (R3) | સુરક્ષા (R6) | ભંગ (R7) | અધિકારો (R14) | કલમ 4, 5, 6/7, 8</p>
+<p><strong>તાત્કાલિક પગલાં:</strong><br />
+1. ક્લાયન્ટ્સ PAN, Aadhaar, ITR અને બેંક દસ્તાવેજો કેવી રીતે અપલોડ કરે છે તેનું માનકીકરણ કરો<br />
+2. Google Drive, ઇમેઇલ ફોલ્ડર્સ અને ક્લાયન્ટ ફાઇલોની ઍક્સેસને પ્રતિબંધિત અને સમીક્ષા કરો<br />
+3. જૂની ITR ફાઇલો, PAN નકલો, બેંક સ્ટેટમેન્ટ અને પેરોલ ડેટા માટે રીટેન્શન નિયમો વ્યાખ્યાયિત કરો</p>
+<p><strong>સ્કેન:</strong> saralprivacy.com/મૂલ્યાંકન/ca-firms - 10 પ્રશ્નો - ~3 મિનિટ</p>
+<hr />
+<h3>ભરતી એજન્સીઓ</h3>
+<p><strong>પ્રાથમિક જોખમ થીમ:</strong> ક્લાયન્ટ્સ, ટૂલ્સ અને ટીમોમાં CV ચળવળ - માત્ર રિઝ્યુમ ફોરવર્ડ કરવા માટે નહીં.</p>
+<p><strong>કોણ:</strong> ભરતી અને સ્ટાફિંગ એજન્સીઓ, એક્ઝિક્યુટિવ સર્ચ, RPO ટીમો ઇમેઇલ અથવા પોર્ટલ દ્વારા CVs શેર કરે છે.</p>
+<p><strong>સામાન્ય અંગત ડેટા:</strong> સીવી, ઉમેદવારની સંમતિ, જોબ પોર્ટલ, LinkedIn, ATS, WhatsApp, ક્લાયંટ શેરિંગ, BGV, પગારની સ્લિપ, નકારેલ પ્રોફાઇલ્સ, AI સ્ક્રીનીંગ</p>
+<p><strong>ઉચ્ચ જોખમનો પ્રવાહ:</strong><br />
+1. PAN, Aadhaar નું પ્રારંભિક કલેક્શન, ઓફર સ્ટેજ પહેલા પગાર સ્લિપ<br />
+2. જથ્થાબંધ CV ફોલ્ડર્સ ક્લાયન્ટ સાથે WhatsApp અથવા ઇમેઇલ જોડાણો દ્વારા શેર કરવામાં આવે છે<br />
+3. નકારી કાઢવામાં આવેલી ઉમેદવારની પ્રોફાઇલ્સ કાઢી નાખવાની પ્રક્રિયા વિના અનિશ્ચિત સમય માટે રાખવામાં આવી છે</p>
+<p><strong>DPDPA ટ્રિગર થયેલી જવાબદારીઓ:</strong> સૂચના (R3) | સંમતિ (Sec 6) | સુરક્ષા (R6) | ભંગ (R7) | અધિકારો (R14)</p>
+<p><strong>તાત્કાલિક પગલાં:</strong><br />
+1. ઉમેદવારના સોર્સિંગ અને સંમતિ/સૂચનાની ભાષાને પ્રમાણિત કરો<br />
+2. PAN, Aadhaar, પગાર સ્લિપ અને BGV ફાઇલોના પ્રારંભિક સંગ્રહમાં ઘટાડો<br />
+3. ગ્રાહકો સાથે સીવી શેરિંગને નિયંત્રિત કરો અને બલ્ક ફોલ્ડર્સ ટાળો</p>
+<p><strong>સ્કેન:</strong> saralprivacy.com/મૂલ્યાંકન/ભરતી - 10 પ્રશ્નો - ~3 મિનિટ</p>
+<hr />
+<h3>તાલીમ સંસ્થાઓ</h3>
+<p><strong>પ્રાથમિક જોખમ થીમ:</strong> સગીરો, માતા-પિતા, WhatsApp જૂથો અને LMS ડેટા - માત્ર વર્ગખંડમાં વિતરણ જ નહીં.</p>
+<p><strong>કોણ:</strong> કોચિંગ સેન્ટર્સ, ટેસ્ટ-પ્રેપ બ્રાન્ડ્સ, લાઇવ ક્લાસ સાથે EdTech અને LMS, પેરેન્ટ્સ WhatsApp જૂથો સાથેની સંસ્થાઓ.</p>
+<p><strong>સામાન્ય વ્યક્તિગત ડેટા:</strong> વિદ્યાર્થી ડેટા, માતાપિતાની વિગતો, સગીર, WhatsApp જૂથો, LMS સાધનો, વિદ્યાર્થીઓના ફોટા, પ્રશંસાપત્રો, હાજરી, ફી રેકોર્ડ, પ્લેસમેન્ટ ડેટા</p>
+<p><strong>ઉચ્ચ જોખમનો પ્રવાહ:</strong><br />
+1. માતાપિતા/વાલીની સંમતિ વિના દસ્તાવેજીકૃત 18 વર્ષથી નીચેના વિદ્યાર્થીઓ<br />
+2. અલગ સંમતિ વિના માર્કેટિંગ માટે ઉપયોગમાં લેવાતા ફોટા, પ્રશંસાપત્રો અને ડેમો-ક્લાસ રેકોર્ડિંગ્સ<br />
+3. જુના લીડ્સ અને પ્રવેશ રેકોર્ડ સ્પષ્ટ નિયમો વિના જાળવી રાખ્યા</p>
+<p><strong>DPDPA ટ્રિગર થયેલી જવાબદારીઓ:</strong> સૂચના (R3) | બાળકો (Sec 9, R10) | સુરક્ષા (R6) | અધિકારો (R14)</p>
+<p><strong>તાત્કાલિક પગલાં:</strong><br />
+1. વિદ્યાર્થીઓ 18 વર્ષથી નીચેના છે કે કેમ તે રેકોર્ડ કરો અને માતાપિતા/વાલીની સંમતિ મેળવો<br />
+2. અનૌપચારિક ચેનલોથી દૂર વિદ્યાર્થી અને માતા-પિતાના ડેટાને પ્રમાણિત કરો<br />
+3. WhatsApp જૂથો, ફોટા, પ્રશંસાપત્રો અને ડેમો-ક્લાસ રેકોર્ડિંગ્સની સમીક્ષા કરો</p>
+<p><strong>સ્કેન:</strong> saralprivacy.com/મૂલ્યાંકન/તાલીમ-સંસ્થાઓ - 10 પ્રશ્નો - ~3 મિનિટ</p>
+<hr />
+<h3>D2C બ્રાન્ડ્સ</h3>
+<p><strong>પ્રાથમિક જોખમ થીમ:</strong> દરેક ઓર્ડર પાછળ માર્કેટિંગ અને એડ-ટેક એન્જિન - માત્ર ઉત્પાદન વેચાણ જ નહીં.</p>
+<p><strong>કોણ:</strong> Shopify/Woo D2C બ્રાન્ડ્સ, સુંદરતા/સુખાકારી/ખાદ્ય જીવનશૈલીના લેબલ, મેટા જાહેરાતો ચલાવતી ટીમો અને WhatsApp ઝુંબેશ.</p>
+<p><strong>સામાન્ય વ્યક્તિગત ડેટા:</strong> WhatsApp માર્કેટિંગ, Meta Pixel, કાર્ટ ત્યાગ, Shopify, SMS ઑપ્ટ-ઇન, લોજિસ્ટિક્સ વેન્ડર્સ, લોયલ્ટી, અનસબ્સ્ક્રાઇબ, ગ્રાહક ડેટા, માર્કેટપ્લેસ</p>
+<p><strong>ઉચ્ચ જોખમનો પ્રવાહ:</strong><br />
+1. પ્રમોશનલ WhatsApp/SMS સાબિત કરવા યોગ્ય ઑપ્ટ-ઇન વિના<br />
+2. Meta Pixel અને કૂકી/સૂચના જાહેર કર્યા વિના પુન: લક્ષ્યીકરણ<br />
+3. લોજિસ્ટિક્સ અને જાહેરાત વિક્રેતાઓ મેપ કરેલા કરાર વિના ગ્રાહક ડેટા મેળવે છે</p>
+<p><strong>DPDPA ટ્રિગર થયેલી જવાબદારીઓ:</strong> સૂચના (R3) | સંમતિ (Sec 6) | સુરક્ષા (R6) | વિક્રેતાઓ (R6, R15) | અધિકારો (R14)</p>
+<p><strong>તાત્કાલિક પગલાં:</strong><br />
+1. કૅપ્ચર કરો અને WhatsApp/SMS/ઇમેઇલ પ્રમોશન માટે અલગ ઑપ્ટ-ઇન સાબિત કરો<br />
+2. ગોપનીયતા/કુકી નોટિસમાં Meta Pixel, GA અને પુન: લક્ષ્યીકરણ સાધનો જાહેર કરો<br />
+3. બધી ચેનલોમાં અનસબ્સ્ક્રાઇબ અને પસંદગી વ્યવસ્થાપનને સક્ષમ કરો</p>
+<p><strong>સ્કેન:</strong> saralprivacy.com/મૂલ્યાંકન/d2c - 10 પ્રશ્નો - ~3 મિનિટ</p>
+<hr />
+<h3>ક્લિનિક્સ અને ડાયગ્નોસ્ટિક લેબ્સ</h3>
+<p><strong>પ્રાથમિક જોખમ થીમ:</strong> આરોગ્ય અહેવાલો, WhatsApp શેરિંગ, અને ઍક્સેસ નિયંત્રણ - સર્વોચ્ચ સંવેદનશીલતા બેન્ડ.</p>
+<p><strong>કોણ:</strong> સિંગલ અને મલ્ટિ-સ્પેશિયાલિટી ક્લિનિક્સ, પેથોલોજી અને રેડિયોલોજી લેબ્સ, હોમ સેમ્પલ કલેક્શન ચેન.</p>
+<p><strong>સામાન્ય વ્યક્તિગત ડેટા:</strong> દર્દીના અહેવાલો, પ્રિસ્ક્રિપ્શન્સ, આરોગ્ય ડેટા, WhatsApp શેરિંગ, લેબ સૉફ્ટવેર, રિસેપ્શન ઍક્સેસ, હોમ કલેક્શન, ડૉક્ટર રેફરલ્સ, વીમો/TPA, જૂના રિપોર્ટ્સ</p>
+<p><strong>ઉચ્ચ જોખમનો પ્રવાહ:</strong><br />
+1. લેબ રિપોર્ટ્સ WhatsApp પર દર્દીઓ અથવા પરિવારને પ્રાપ્તકર્તાની ચકાસણી વિના શેર કરવામાં આવે છે<br />
+2. ક્લિનિક/HIS સિસ્ટમ્સમાં શેર કરેલ લોગિન અથવા ભૂતપૂર્વ સ્ટાફની ઍક્સેસ<br />
+3. વિક્રેતા રજિસ્ટર વિના આઉટસોર્સ્ડ લેબ્સ અને હોમ કલેક્શન પાર્ટનર્સ</p>
+<p><strong>DPDPA ટ્રિગર થયેલી જવાબદારીઓ:</strong> સૂચના (R3) | સુરક્ષા (R6) | ભંગ (R7) | અધિકારો (R14) | Rule 12/Schedule 4 (બાળકનું સ્વાસ્થ્ય)</p>
+<p><strong>તાત્કાલિક પગલાં:</strong><br />
+1. દર્દીના સેવનની ચેનલોને પ્રમાણિત કરો - છૂટાછવાયા WhatsApp અને કાગળનું સેવન ઓછું કરો<br />
+2. WhatsApp અથવા ઇમેઇલ દ્વારા અહેવાલો શેર કરતા પહેલા પ્રાપ્તકર્તાઓને ચકાસો<br />
+3. રોલ-આધારિત નિયંત્રણો સાથે સ્વાગત, બિલિંગ, લેબ અને સપોર્ટ સ્ટાફની ઍક્સેસને પ્રતિબંધિત કરો</p>
+<p><strong>સ્કેન:</strong> saralprivacy.com/મૂલ્યાંકન/ક્લિનિક્સ-ડાયગ્નોસ્ટિક-લેબ્સ - 10 પ્રશ્નો - ~3 મિનિટ</p>
+<hr />
+<h3>શાળાઓ અને કોલેજો</h3>
+<p><strong>પ્રાથમિક જોખમ થીમ:</strong> ચિલ્ડ્રન્સ ડેટા, CCTV, એપ્લિકેશન્સ અને ટ્રાન્સપોર્ટ મોનિટરિંગ - મહત્વપૂર્ણ પ્રાથમિકતા.</p>
+<p><strong>કોણ:</strong> K-12 શાળાઓ, કોલેજો, ERP એપ્લિકેશનો સાથેની સંસ્થાઓ, CCTV, પરિવહન GPS અને ફી સિસ્ટમ્સ.</p>
+<p><strong>સામાન્ય વ્યક્તિગત ડેટા:</strong> બાળકોનો ડેટા, માતાપિતાના રેકોર્ડ્સ, શાળાની એપ્લિકેશનો, CCTV, હાજરી, પરિવહન GPS, વિદ્યાર્થીઓના ફોટા, ફી રેકોર્ડ, LMS, જૂની વિદ્યાર્થી ફાઇલો</p>
+<p><strong>ઉચ્ચ જોખમનો પ્રવાહ:</strong><br />
+1. ચોક્કસ માતાપિતાની સૂચના અને સંમતિ પ્રક્રિયા વિના 18 વર્ષથી નીચેના વિદ્યાર્થીઓ<br />
+2. અલગ સંમતિ વિના જાહેર ફોટા, વિડિયો અને પરિણામો<br />
+3. CCTV, બાયોમેટ્રિક, RFID, અને પરિવહન GPS ગવર્નન્સ અને રીટેન્શન નિયમો વિના</p>
+<p><strong>DPDPA ટ્રિગર થયેલી જવાબદારીઓ:</strong> સૂચના (R3) | બાળકો (Sec 9, R10-12) | સુરક્ષા (R6) | ભંગ (R7) | અધિકારો (R14)</p>
+<p><strong>તાત્કાલિક પગલાં:</strong><br />
+1. નકશો જ્યાં વિદ્યાર્થી અને માતાપિતાનો ડેટા એકત્રિત અને સંગ્રહિત કરવામાં આવે છે<br />
+2. 18 વર્ષથી નીચેના વિદ્યાર્થીઓ માટે માતાપિતા/વાલીઓની સૂચના અને સંમતિને મજબૂત બનાવો<br />
+3. CCTV, બાયોમેટ્રિક, RFID, પરિવહન GPS અને હોસ્ટેલ મોનિટરિંગનું સંચાલન કરો</p>
+<p><strong>સ્કેન:</strong> saralprivacy.com/મૂલ્યાંકન/શાળા-કોલેજ - 10 પ્રશ્નો - ~3 મિનિટ</p>
+<hr />
+<h3>લો ફર્મ્સ</h3>
+<p><strong>પ્રાથમિક જોખમ થીમ:</strong> મેટર ફાઇલો, પુરાવા અને જુનિયર એક્સેસ - ગોપનીયતા વત્તા DPDPA પુરાવા.</p>
+<p><strong>કોણ:</strong> મુકદ્દમા અને કોર્પોરેટ વ્યવહાર, બુટીક, જુનિયરો સાથેની ટીમો, ઈન્ટર્ન અને મેટર ફોલ્ડર્સ.</p>
+<p><strong>સામાન્ય વ્યક્તિગત ડેટા:</strong> ક્લાયન્ટ KYC, PAN/Aadhaar, કેસ ફાઇલો, પુરાવાના રેકોર્ડ્સ, એફિડેવિટ્સ, WhatsApp સૂચનાઓ, કોર્ટ ફાઇલિંગ, જુનિયર ઍક્સેસ, બાહ્ય સલાહકાર, બંધ બાબતો</p>
+<p><strong>ઉચ્ચ જોખમનો પ્રવાહ:</strong><br />
+1. મેટર-ટીમ પ્રતિબંધ વિના શેર કરેલી ડ્રાઇવ પર સંવેદનશીલ કેસ ફાઇલો<br />
+2. WhatsApp અથવા અનૌપચારિક ઇમેઇલ નિકાસ દ્વારા પ્રાપ્ત પુરાવા<br />
+3. ક્લાઉડ અથવા ઉપકરણ ઍક્સેસ જાળવી રાખતા ભૂતપૂર્વ સ્ટાફ, ઇન્ટર્ન અથવા સહયોગીઓ</p>
+<p><strong>DPDPA ટ્રિગર થયેલી જવાબદારીઓ:</strong> સૂચના (R3) | સુરક્ષા (R6) | ભંગ (R7) | અધિકારો (R14) | ક્રોસ-બોર્ડર (Sec 16)</p>
+<p><strong>તાત્કાલિક પગલાં:</strong><br />
+1. ક્લાયન્ટ દસ્તાવેજો અને મેટર-ડેટા પ્રવાહનો નકશો બનાવો<br />
+2. સંવેદનશીલ કેસ ફાઇલોને મેટર ટીમ સુધી મર્યાદિત કરો<br />
+3. ક્લાયંટ દસ્તાવેજો માટે WhatsApp/email/shared-folder વપરાશને પ્રમાણિત કરો</p>
+<p><strong>સ્કેન:</strong> saralprivacy.com/મૂલ્યાંકન/લૉ-ફર્મ્સ - 10 પ્રશ્નો - ~3 મિનિટ</p>
+<hr />
+<h3>રિયલ એસ્ટેટ</h3>
+<p><strong>પ્રાથમિક જોખમ થીમ:</strong> KYC અને બ્રોકર નેટવર્ક પ્રોપર્ટી અને ઓળખ ડેટાને ખસેડે છે.</p>
+<p><strong>કોણ:</strong> બ્રોકર્સ, પ્રોપર્ટી કન્સલ્ટન્ટ, ડેવલપર સેલ્સ ડેસ્ક, રેન્ટલ અને રિસેલ ટીમ.</p>
+<p><strong>સામાન્ય વ્યક્તિગત ડેટા:</strong> ખરીદનાર લીડ, ભાડૂત KYC, PAN/Aadhaar, ભાડા કરાર, વેચાણ ખત, મિલકતના કાગળો, WhatsApp જૂથો, બ્રોકર નેટવર્ક્સ, લોન ભાગીદારો, જૂના લીડ્સ</p>
+<p><strong>ઉચ્ચ જોખમનો પ્રવાહ:</strong><br />
+1. PAN/Aadhaar/સંપત્તિ દસ્તાવેજો WhatsApp દ્વારા પ્રાપ્ત અને ફોરવર્ડ<br />
+2. ક્લાયન્ટની સૂચના વિના બ્રોકર WhatsApp જૂથોમાં લીડ શીટ્સ<br />
+3. ભૂતપૂર્વ સ્ટાફ અથવા જૂના બ્રોકર ભાગીદારો CRM અથવા ક્લાઉડ ઍક્સેસ જાળવી રાખે છે</p>
+<p><strong>DPDPA ટ્રિગર થયેલી જવાબદારીઓ:</strong> સૂચના (R3) | સુરક્ષા (R6) | ભંગ (R7) | અધિકારો (R14)</p>
+<p><strong>તાત્કાલિક પગલાં:</strong><br />
+1. માનકીકરણ KYC અને મિલકત-દસ્તાવેજ સંગ્રહ<br />
+2. PAN, Aadhaar અને કરાર દસ્તાવેજોનું WhatsApp ફોરવર્ડિંગ ઘટાડવું<br />
+3. સહ-દલાલો, બિલ્ડરો, મકાનમાલિકો અને લોન ભાગીદારો સાથે લીડ શેરિંગને નિયંત્રિત કરો</p>
+<p><strong>સ્કેન:</strong> saralprivacy.com/આકારણી/રિયલ-એસ્ટેટ - 10 પ્રશ્નો - ~3 મિનિટ</p>
+<hr />
+<h3>હોટેલ્સ અને ટ્રાવેલ</h3>
+<p><strong>પ્રાથમિક જોખમ થીમ:</strong> અતિથિ IDs, પાસપોર્ટ નકલો અને OTA ડેટા શેરિંગ.</p>
+<p><strong>કોણ:</strong> હોટેલ્સ, રિસોર્ટ્સ, હોમસ્ટે, ટ્રાવેલ એજન્સીઓ, કોર્પોરેટ ટ્રાવેલ ડેસ્ક.</p>
+<p><strong>સામાન્ય વ્યક્તિગત ડેટા:</strong> અતિથિ IDs, પાસપોર્ટ નકલો, બુકિંગ ઇતિહાસ, OTA શેરિંગ, મુસાફરી દસ્તાવેજો, WhatsApp પુષ્ટિકરણ, CCTV, PMS ઍક્સેસ, પરિવહન વિક્રેતાઓ, જૂના અતિથિ રેકોર્ડ્સ</p>
+<p><strong>ઉચ્ચ જોખમનો પ્રવાહ:</strong><br />
+1. WhatsApp અથવા વ્યક્તિગત ઇમેઇલ દ્વારા એકત્રિત પાસપોર્ટ અને વિઝા દસ્તાવેજો<br />
+2. વિદેશી મહેમાન અને સી-ફોર્મ ડેટા અનિશ્ચિત સમય માટે જાળવી રાખ્યો<br />
+3. શેર કરેલ PMS/OTA લૉગિન અને એક્સ-સ્ટાફ એક્સેસ ગેસ્ટ સિસ્ટમ્સ</p>
+<p><strong>DPDPA ટ્રિગર થયેલી જવાબદારીઓ:</strong> સૂચના (R3) | સુરક્ષા (R6) | ભંગ (R7) | અધિકારો (R14) | ક્રોસ-બોર્ડર (R15)</p>
+<p><strong>તાત્કાલિક પગલાં:</strong><br />
+1. પ્રમાણભૂત ID, પાસપોર્ટ અને મુસાફરી-દસ્તાવેજ સંગ્રહ<br />
+2. મહેમાન IDs અને પાસપોર્ટની નકલોની WhatsApp/ઇમેઇલ શેરિંગ ઘટાડવી<br />
+3. PMS, CRM, OTA ડેશબોર્ડ, CCTV અને સ્ટાફ ઉપકરણ ઍક્સેસને પ્રતિબંધિત કરો</p>
+<p><strong>સ્કેન:</strong> saralprivacy.com/મૂલ્યાંકન/હોટલ્સ-ટ્રાવેલ - 10 પ્રશ્નો - ~3 મિનિટ</p>
+<hr />
+<h3>ફાર્મસીઓ</h3>
+<p><strong>પ્રાથમિક જોખમ થીમ:</strong> પ્રિસ્ક્રિપ્શન્સ, દવાનો ઇતિહાસ અને રિફિલ ઝુંબેશ.</p>
+<p><strong>કોણ:</strong> છૂટક અને સાંકળ ફાર્મસીઓ, ઓનલાઈન ફાર્મસી પરિપૂર્ણતા, WhatsApp પર પ્રિસ્ક્રિપ્શન પ્રાપ્ત કરતી ટીમો.</p>
+<p><strong>સામાન્ય વ્યક્તિગત ડેટા:</strong> પ્રિસ્ક્રિપ્શન્સ, દવાનો ઇતિહાસ, WhatsApp ઓર્ડર્સ, રિફિલ રિમાઇન્ડર્સ, ડિલિવરી ભાગીદારો, બિલિંગ સૉફ્ટવેર, આરોગ્ય સૂચકાંકો, સ્ટાફ ઍક્સેસ, જૂના રેકોર્ડ્સ</p>
+<p><strong>ઉચ્ચ જોખમનો પ્રવાહ:</strong><br />
+1. પ્રિસ્ક્રિપ્શન છબીઓ WhatsApp અથવા સ્ટાફ ફોન દ્વારા પ્રાપ્ત થઈ છે<br />
+2. અલગ સંમતિ વિના સંવેદનશીલ દવાઓની શ્રેણીઓ માટે રિફિલ અથવા પ્રમોશનલ સંદેશાઓ<br />
+3. શેર કરેલ ફાર્મસી સોફ્ટવેર લોગિન અને અસ્પષ્ટ ભૂતપૂર્વ સ્ટાફ એક્સેસ</p>
+<p><strong>DPDPA ટ્રિગર થયેલી જવાબદારીઓ:</strong> સૂચના (R3) | સુરક્ષા (R6) | ભંગ (R7) | બાળકો (R10-12) | અધિકારો (R14)</p>
+<p><strong>તાત્કાલિક પગલાં:</strong><br />
+1. પ્રિસ્ક્રિપ્શન સંગ્રહ અને સંગ્રહને પ્રમાણિત કરો<br />
+2. પ્રિસ્ક્રિપ્શન ઈમેજોના WhatsApp અને સ્ટાફ-ફોન હેન્ડલિંગમાં ઘટાડો<br />
+3. દવા-ઇતિહાસ ડેટા માટે રીટેન્શન અને રિફિલ-મેસેજ નિયમો વ્યાખ્યાયિત કરો</p>
+<p><strong>સ્કેન:</strong> saralprivacy.com/મૂલ્યાંકન/ફાર્મસી - 10 પ્રશ્નો - ~3 મિનિટ</p>
+<hr />
+<h3>Fintech અને NBFC</h3>
+<p><strong>પ્રાથમિક જોખમ થીમ:</strong> KYC, પ્રોફાઇલિંગ, DSAs, અને ક્રોસ-બોર્ડર એનાલિટિક્સ - જટિલ જટિલતા.</p>
+<p><strong>કોણ:</strong> NBFCs, ડિજિટલ ધિરાણકર્તા, ચુકવણી એપ્લિકેશન્સ, UPI/wallet/BNPL, સંગ્રહ વ્યવસાયો.</p>
+<p><strong>સામાન્ય વ્યક્તિગત ડેટા:</strong> KYC, PAN/Aadhaar, બેંક ડેટા, UPI, ક્રેડિટ બ્યુરો, પ્રોફાઇલિંગ, DSAs, સંગ્રહ એજન્ટો, ચુકવણી ભાગીદારો, જૂના રેકોર્ડ્સ</p>
+<p><strong>ઉચ્ચ જોખમનો પ્રવાહ:</strong><br />
+1. KYC અને બ્યુરો ડેટા WhatsApp અથવા ફીલ્ડ એજન્ટો દ્વારા સંમતિ પુરાવા વિના એકત્રિત<br />
+2. મર્યાદિત ગ્રાહક-સામનો સમજૂતી સાથે સ્વયંસંચાલિત નિર્ણય<br />
+3. DSA અને કલેક્શન એજન્ટો ગ્રાહક યાદીમાં ડાઉનલોડ/નિકાસ ઍક્સેસ સાથે</p>
+<p><strong>DPDPA ટ્રિગર થયેલી જવાબદારીઓ:</strong> સૂચના (R3) | સંમતિ (Sec 6) | સુરક્ષા (R6) | ભંગ (R7) | SDF ઘડિયાળ (R13) | અધિકારો (R14) | RBI ક્ષેત્રના નિયમો</p>
+<p><strong>તાત્કાલિક પગલાં:</strong><br />
+1. નકશો KYC, બેંક, બ્યુરો, UPI અને ચુકવણી ડેટા પ્રવાહ<br />
+2. ચકાસણી, પ્રોફાઇલિંગ અને શેરિંગ માટે ટાઇમસ્ટેમ્પ્ડ સંમતિને મજબૂત બનાવો<br />
+3. કંટ્રોલ DSA, કલેક્શન-એજન્ટ, કોલ સેન્ટર અને વેન્ડર એક્સેસ</p>
+<p><strong>સ્કેન:</strong> saralprivacy.com/મૂલ્યાંકન/fintech-nbfc - 10 પ્રશ્નો - ~3 મિનિટ</p>
+<hr />
+<h3>જિમ, સલુન્સ અને સ્પા</h3>
+<p><strong>પ્રાથમિક જોખમ થીમ:</strong> આરોગ્ય-સંલગ્ન શરીર ડેટા, ફોટા અને WhatsApp ઝુંબેશ.</p>
+<p><strong>કોણ:</strong> જીમ, ફિટનેસ સ્ટુડિયો, સલુન્સ, સ્પા, મેમ્બરશિપ અને એપોઇન્ટમેન્ટ એપ સાથે વેલનેસ ચેઇન.</p>
+<p><strong>સામાન્ય વ્યક્તિગત ડેટા:</strong> સદસ્યતા ડેટા, આરોગ્ય વિગતો, શરીર માપન, ગ્રાહક ફોટા, છબીઓ પહેલાં-પછી, WhatsApp ઝુંબેશ, એપોઇન્ટમેન્ટ એપ્લિકેશન્સ, સ્ટાફ ફોન, જૂના રેકોર્ડ્સ</p>
+<p><strong>ઉચ્ચ જોખમનો પ્રવાહ:</strong><br />
+1. અલગ સંમતિ વિના સોશિયલ મીડિયા અથવા જાહેરાતો માટે ઉપયોગમાં લેવાતા ગ્રાહકના ફોટા<br />
+2. સ્ટાફ ફોન અથવા WhatsApp પર રેકોર્ડ કરાયેલ આરોગ્ય અને શરીરનો ડેટા<br />
+3. શેર કરેલ CRM અથવા એપોઇન્ટમેન્ટ એપ લોગીન સમગ્ર ટ્રેનર્સ અને થેરાપિસ્ટ</p>
+<p><strong>DPDPA ટ્રિગર થયેલી જવાબદારીઓ:</strong> સૂચના (R3) | સંમતિ (Sec 6) | સુરક્ષા (R6) | ભંગ (R7) | અધિકારો (R14)</p>
+<p><strong>તાત્કાલિક પગલાં:</strong><br />
+1. ફોર્મ, એપ્સ, WhatsApp, DMs અને સ્ટાફની નોંધો પર ગ્રાહક ડેટાનો નકશો બનાવો<br />
+2. ગ્રાહકના ફોટા, પહેલાં-પછીની છબીઓ અથવા પ્રશંસાપત્રોનો ઉપયોગ કરતા પહેલા સંમતિ મેળવો<br />
+3. આરોગ્ય, શરીર, પરામર્શ અને પરિવર્તન ડેટાની ઍક્સેસને પ્રતિબંધિત કરો</p>
+<p><strong>સ્કેન:</strong> saralprivacy.com/મૂલ્યાંકન/જિમ્સ-સલૂન્સ-સ્પાસ - 10 પ્રશ્નો - ~3 મિનિટ</p>
+<hr />
+<h2>વિભાગ 20: એક્ટ Section નકશો</h2>
+<p><a id="20-section"></a></p>
+<table>
+<thead>
+<tr>
+<th>સેકન્ડ.</th>
+<th>વિષય</th>
+<th>સાદો અર્થ</th>
+<th>સંસ્થાઓ માટે ક્રિયા</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3</td>
+<td>અરજી</td>
+<td>ભારતમાં ડિજિટલ વ્યક્તિગત ડેટા; ઑફલાઇન ડેટા પછીથી ડિજિટાઇઝ્ડ; વિદેશી પ્રક્રિયા ભારતમાં માલ/સેવાઓ ઓફર કરવા સાથે જોડાયેલી છે.</td>
+<td>ગ્રાહકો, કર્મચારીઓ, વિક્રેતાઓ, લીડ્સ, વેબસાઇટ/એપ વપરાશકર્તાઓ અને ભારત-સામનો સેવાઓનો નકશો બનાવો.</td>
+</tr>
+<tr>
+<td>4</td>
+<td>મેદાનો</td>
+<td>પ્રક્રિયા કાયદેસરના હેતુ માટે હોવી જોઈએ અને ક્યાં તો સંમતિ અથવા અમુક કાયદેસર ઉપયોગો.</td>
+<td>સંમતિ-આધારિત અથવા કાયદેસર-ઉપયોગ આધારિત તરીકે દરેક પ્રક્રિયા પ્રવૃત્તિને ટેગ કરો.</td>
+</tr>
+<tr>
+<td>5</td>
+<td>નોટિસ</td>
+<td>સૂચનાએ ડેટા પ્રિન્સિપાલને જણાવવું આવશ્યક છે કે કયા ડેટા પર પ્રક્રિયા કરવામાં આવે છે, હેતુ, અધિકારો, ઉપાડ અને ફરિયાદનો માર્ગ.</td>
+<td>એકલ સૂચનાઓનો ઉપયોગ કરો; લાંબી ટી એન્ડ સીમાં મુખ્ય સૂચના છુપાવશો નહીં.</td>
+</tr>
+<tr>
+<td>6</td>
+<td>સંમતિ</td>
+<td>સંમતિ મફત, ચોક્કસ, જાણકાર, બિનશરતી અને સ્પષ્ટ હકારાત્મક ક્રિયા હોવી જોઈએ; ઉપાડ સરળ હોવો જોઈએ.</td>
+<td>માર્કેટિંગ, પ્રોફાઇલિંગ, ફોટા અથવા રેફરલ્સ જેવા વૈકલ્પિક ઉપયોગો માટે અલગ સંમતિ.</td>
+</tr>
+<tr>
+<td>7</td>
+<td>કાયદેસર ઉપયોગો</td>
+<td>મર્યાદિત બિન-સંમતિ આધારો જેમ કે સ્પષ્ટ હેતુ માટે સ્વૈચ્છિક ડેટા, રાજ્ય કાર્યો, કાનૂની પાલન, કોર્ટના આદેશો, તબીબી કટોકટી, આપત્તિ/જાહેર હુકમ, રોજગાર સુરક્ષા.</td>
+<td>દરેક વ્યવસાયિક સગવડને કાયદેસર ઉપયોગ ન કહેશો.</td>
+</tr>
+<tr>
+<td>8</td>
+<td>DF જવાબદારીઓ</td>
+<td>ડેટા ફિડ્યુસિયરી કાયદેસર પ્રક્રિયા, સુરક્ષા, ઉલ્લંઘનની સૂચના, કાઢી નાખવા, ફરિયાદ, પ્રોસેસર નિયંત્રણ માટે જવાબદાર રહે છે.</td>
+<td>માલિક, રેકોર્ડ્સ, ઉલ્લંઘન પ્રક્રિયા, રીટેન્શન શેડ્યૂલ અને પ્રોસેસર કોન્ટ્રાક્ટ્સ બનાવો.</td>
+</tr>
+<tr>
+<td>9</td>
+<td>બાળકો</td>
+<td>ચકાસણીપાત્ર માતાપિતાની સંમતિ; બાળકો પર નિર્દેશિત કોઈ ટ્રેકિંગ, વર્તણૂકીય દેખરેખ અથવા લક્ષિત જાહેરાતો નહીં; કોઈ હાનિકારક પ્રક્રિયા નથી.</td>
+<td>બાળ-સામનો પ્રવાહનું વર્ગીકરણ કરો અને બાળકોને લક્ષિત જાહેરાતો બંધ કરો.</td>
+</tr>
+<tr>
+<td>10</td>
+<td>SDF</td>
+<td>સૂચિત નોંધપાત્ર ડેટા ફિડ્યુશિયર્સ માટે વધારાની જવાબદારીઓ.</td>
+<td>જો સ્કેલ/જોખમ/ક્ષેત્ર હોદ્દો બુદ્ધિગમ્ય બનાવે તો જ તૈયારી કરો.</td>
+</tr>
+<tr>
+<td>11-14</td>
+<td>અધિકારો</td>
+<td>પ્રવેશ, સુધારણા, પૂર્ણતા, અપડેટ, ભૂંસી નાખવું, ફરિયાદ, નામાંકન.</td>
+<td>ઓળખ તપાસો અને પ્રતિભાવ માલિકી સાથે વિનંતી પ્રક્રિયા બનાવો.</td>
+</tr>
+<tr>
+<td>15</td>
+<td>ડેટા પ્રિન્સિપાલની ફરજો</td>
+<td>કોઈ ઢોંગ, ખોટી ફરિયાદ, ભૌતિક માહિતીનું દમન અથવા સુધારણા/ભૂંસી નાખવા માટે વણચકાસાયેલ માહિતી.</td>
+<td>અધિકારોના કાર્યપ્રવાહમાં વાજબી-ઉપયોગની ભાષા પ્રકાશિત કરો.</td>
+</tr>
+<tr>
+<td>16</td>
+<td>સીમાપાર</td>
+<td>સરકાર સૂચિત દેશો/પ્રદેશોમાં ટ્રાન્સફરને પ્રતિબંધિત કરી શકે છે; સખત ક્ષેત્રીય કાયદા હજુ પણ લાગુ પડે છે.</td>
+<td>ક્રોસ બોર્ડર રજિસ્ટર જાળવો અને સૂચનાઓનું નિરીક્ષણ કરો.</td>
+</tr>
+<tr>
+<td>17</td>
+<td>મુક્તિ</td>
+<td>કાનૂની અધિકારો, અદાલતો, નિવારણ/તપાસ/પ્રોસિક્યુશન, મર્જર, ડિફોલ્ટ્સ, રાજ્ય સુરક્ષા/જાહેર હુકમ, સંશોધન/આંકડાઓ માટેની ચોક્કસ પ્રક્રિયાને મુક્તિ આપવામાં આવી શકે છે.</td>
+<td>છૂટને સંકુચિત રીતે લાગુ કરો અને કાનૂની આધારને દસ્તાવેજ કરો.</td>
+</tr>
+<tr>
+<td>18-34</td>
+<td>DPBI</td>
+<td>ડિજિટલ ડેટા પ્રોટેક્શન બોર્ડ, કાર્યવાહી, ઓર્ડર, મધ્યસ્થી, સ્વૈચ્છિક ઉપક્રમો, દંડ.</td>
+<td>પુરાવા રાખો કારણ કે અમલીકરણ ડિજિટલ અને દસ્તાવેજ-આગેવાની છે.</td>
+</tr>
+<tr>
+<td>36-37</td>
+<td>સરકારી સત્તાઓ</td>
+<td>સરકારી માહિતી વિનંતી સત્તાઓ; પુનરાવર્તિત દંડ અને બિન-અનુપાલન પછી ભલામણને અવરોધિત કરવી.</td>
+<td>કાનૂની નેતૃત્વને સરકારી નોટિસ મોકલો.</td>
+</tr>
+<tr>
+<td>44</td>
+<td>સુધારાઓ</td>
+<td>TDSAT ફ્રેમવર્ક, IT એક્ટ અને RTI એક્ટ Section 8(1)(j) માં સુધારો કરે છે.</td>
+<td>પેન્ડિંગ RTI/પ્રાઇવસી લિટીગેશનને ફર્મ જાહેર-ક્ષેત્રના માર્ગદર્શન પહેલાં ટ્રૅક કરો.</td>
+</tr>
+</tbody>
+</table>
+<h3>નિયમો અને સમયપત્રકનો નકશો</h3>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>વિષય</th>
+<th>Rule  શું કહે છે</th>
+<th>આ નિયંત્રણ બનાવો</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1-2</td>
+<td>પ્રારંભ/વ્યાખ્યાઓ</td>
+<td>પ્રારંભ, વપરાશકર્તા ખાતું, તકનીકી-કાનૂની પગલાં અને ચકાસી શકાય તેવી સંમતિ વ્યાખ્યાયિત કરે છે.</td>
+<td>નીતિ અને ઉત્પાદન સ્પેક્સમાં નિયમ વ્યાખ્યાઓનો ઉપયોગ કરો.</td>
+</tr>
+<tr>
+<td>3</td>
+<td>નોટિસ</td>
+<td>સૂચના સ્વતંત્ર રીતે સમજી શકાય તેવી, સાદી, આઇટમવાળી હોવી જોઈએ અને ઉપાડ, અધિકારો અને બોર્ડની ફરિયાદ માટે લિંક્સ પ્રદાન કરવી જોઈએ.</td>
+<td>T&amp;Cs થી અલગ સૂચના આપો અને તેને ભાષા-સુલભ રાખો.</td>
+</tr>
+<tr>
+<td>4 + Sch. 1</td>
+<td>સંમતિ મેનેજરો</td>
+<td>ભારતમાં સમાવિષ્ટ કંપની, ન્યૂનતમ INR 2 કરોડ નેટવર્થ, ઇન્ટરઓપરેબલ પ્લેટફોર્મ, સ્વતંત્રતા, ઓડિટેબિલિટી, કોઈ દુરુપયોગ નહીં.</td>
+<td>સંમતિ મેનેજર તરીકે ઓપરેટ/નોંધણી કરતી હોય અથવા એક સાથે સંકલન કરતી હોય તો જ સંબંધિત.</td>
+</tr>
+<tr>
+<td>5 + Sch. 2</td>
+<td>રાજ્ય પ્રક્રિયા</td>
+<td>સબસિડી, લાભ, સેવા, પ્રમાણપત્ર, લાઇસન્સ અથવા પરમિટ માટે રાજ્ય અથવા ઇન્સ્ટ્રુમેન્ટલિટી પ્રોસેસિંગ ડેટા માટેના ધોરણો.</td>
+<td>સરકાર સાથે જોડાયેલા પ્રોજેક્ટને Schedule 2 અનુપાલન સમીક્ષાની જરૂર છે.</td>
+</tr>
+<tr>
+<td>6</td>
+<td>સુરક્ષા સુરક્ષા</td>
+<td>એન્ક્રિપ્શન/અસ્પષ્ટતા/માસ્કિંગ/ટોકનાઇઝેશન, એક્સેસ કંટ્રોલ, લોગ્સ, મોનિટરિંગ, બેકઅપ, પ્રોસેસર કોન્ટ્રાક્ટ કલમો, સંસ્થાકીય પગલાં.</td>
+<td>ન્યૂનતમ સુરક્ષા આધારરેખા અને એક વર્ષનો લોગ રીટેન્શન બનાવો.</td>
+</tr>
+<tr>
+<td>7</td>
+<td>ભંગની સૂચના</td>
+<td>વિલંબ કર્યા વિના અસરગ્રસ્ત ડેટા પ્રિન્સિપાલોને સૂચિત કરો; વિલંબ કર્યા વિના બોર્ડને સૂચિત કરો; 72 કલાકની અંદર વિગતવાર બોર્ડ રિપોર્ટ.</td>
+<td>ઘટના ઘડિયાળ, તથ્યો લોગ, વપરાશકર્તા નોટિસ ટેમ્પલેટ અને બોર્ડ રિપોર્ટ ટેમ્પ્લેટ જાળવો.</td>
+</tr>
+<tr>
+<td>8 + Sch. 3</td>
+<td>ઇરેઝર/રીટેન્શન</td>
+<td>ચોક્કસ મોટા ઈ-કોમર્સ, સોશિયલ મીડિયા અને ઓનલાઈન ગેમિંગ એકમોએ નિર્દિષ્ટ નિષ્ક્રિયતા અવધિ પછી ભૂંસી નાખવી જોઈએ; 48-કલાકની ચેતવણી; ઓછામાં ઓછા એક વર્ષ માટે લોગ.</td>
+<td>રીટેન્શન શેડ્યૂલ વત્તા ઓટોમેટેડ ડિલીટ અને અપવાદ હેન્ડલિંગ.</td>
+</tr>
+<tr>
+<td>9</td>
+<td>સંપર્ક બિંદુ</td>
+<td>ડેટા પ્રિન્સિપલ પ્રશ્નો માટે DPO અથવા અધિકૃત વ્યક્તિનો સંપર્ક પ્રકાશિત કરો.</td>
+<td>વેબસાઇટ/એપ અને નોટિસમાં સંપર્ક મૂકો.</td>
+</tr>
+<tr>
+<td>10</td>
+<td>બાળકની સંમતિ</td>
+<td>હાલની વિશ્વસનીય વિગતો, સ્વૈચ્છિક ઓળખ/વયની વિગતો અથવા અધિકૃત એન્ટિટીના વર્ચ્યુઅલ ટોકનનો ઉપયોગ કરીને માતાપિતા/પુખ્ત વયની ચકાસણી કરો.</td>
+<td>બાળકના ડેટા માટે વય દરવાજો અને માતાપિતાની ચકાસણી ઉમેરો.</td>
+</tr>
+<tr>
+<td>11</td>
+<td>વિકલાંગ વ્યક્તિઓ</td>
+<td>જ્યાં જરૂરી હોય ત્યાં લાગુ વિકલાંગતા કાયદા હેઠળ કાયદેસર વાલીને ચકાસો.</td>
+<td>એવું ન માનો કે તમામ વિકલાંગતા માટે વાલીની સંમતિ જરૂરી છે.</td>
+</tr>
+<tr>
+<td>12 + Sch. 4</td>
+<td>બાળકોને મુક્તિ</td>
+<td>ક્લિનિકલ સંસ્થાઓ, માનસિક સ્વાસ્થ્ય સંસ્થાઓ, શૈક્ષણિક સંસ્થાઓ, બાળ સંભાળ, પરિવહન, ક્રિચ જેવા ઉલ્લેખિત વર્ગો સૂચિબદ્ધ હેતુઓ માટે પ્રક્રિયા કરી શકે છે.</td>
+<td>ફક્ત સૂચિબદ્ધ હેતુ અને વર્ગ માટે ઉપયોગ કરો; જાહેરાત અથવા પ્રોફાઇલિંગ માટે નહીં.</td>
+</tr>
+<tr>
+<td>13</td>
+<td>SDF જવાબદારીઓ</td>
+<td>વાર્ષિક DPIA અને ઓડિટ; બોર્ડને આપવામાં આવેલ નોંધપાત્ર અવલોકનો; અલ્ગોરિધમિક/ટૂલ્સ માટે યોગ્ય ખંત; ઉલ્લેખિત ડેટાનું શક્ય સ્થાનિકીકરણ.</td>
+<td>SDF રેડીનેસ પેક: DPO, DPIA, ઓડિટ, અલ્ગોરિધમિક જોખમ સમીક્ષા, સ્થાનિકીકરણ ઘડિયાળ.</td>
+</tr>
+<tr>
+<td>14</td>
+<td>અધિકારોની વિનંતીઓ</td>
+<td>ડેટા પ્રિન્સિપાલ અધિકારો અને નોમિનેશન વિનંતીઓ કેવી રીતે કરી શકે છે તે પ્રકાશિત કરો; મહત્તમ 90 દિવસમાં ફરિયાદનો જવાબ.</td>
+<td>અધિકારો એસઓપી, ઓળખ ચકાસણી, કતાર ટ્રેકિંગ અને બંધ પુરાવા.</td>
+</tr>
+<tr>
+<td>15</td>
+<td>ભારત બહાર ટ્રાન્સફર</td>
+<td>સ્થાનાંતરણોએ વિદેશી રાજ્ય અથવા નિયંત્રિત સંસ્થાઓને વ્યક્તિગત ડેટાની ઉપલબ્ધતા માટે કેન્દ્ર સરકાર નિર્દિષ્ટ કરી શકે તેવી જરૂરિયાતોને પૂર્ણ કરવી આવશ્યક છે.</td>
+<td>સરકારી ઍક્સેસ જોખમ માટે ક્રોસ-બોર્ડર રજિસ્ટર અને કરાર કલમો.</td>
+</tr>
+<tr>
+<td>16</td>
+<td>સંશોધન/આંકડા</td>
+<td>સંશોધન, આર્કાઇવિંગ અથવા આંકડાકીય પ્રક્રિયાને માત્ર ત્યારે જ મુક્તિ મળે છે જો ડેટા પ્રિન્સિપાલને લગતા ચોક્કસ નિર્ણયો માટે ઉપયોગમાં લેવામાં ન આવે અને ધોરણોને પૂર્ણ કરે.</td>
+<td>વિશ્લેષણ/સંશોધનને નિર્ણય લેવાથી અલગ કરો.</td>
+</tr>
+<tr>
+<td>17-21 + Sch. 5-6</td>
+<td>DPBI</td>
+<td>બોર્ડના અધ્યક્ષ/સભ્યો, પગાર, બેઠકો, ડિજિટલ ઓફિસ અને સ્ટાફ તરીકેની કામગીરી.</td>
+<td>ડિજિટલ ફાઇલિંગ માટે પુરાવા તૈયાર કરો.</td>
+</tr>
+<tr>
+<td>22</td>
+<td>અપીલ</td>
+<td>TDSAT ને ફી અને તકનીકી-કાનૂની પગલાં સાથે ડિજિટલી અપીલ કરો.</td>
+<td>અપીલની સમયરેખા અને રેકોર્ડને ટ્રૅક કરો.</td>
+</tr>
+<tr>
+<td>23 + Sch. 7</td>
+<td>સરકારી માહિતી સત્તાઓ</td>
+<td>સરકારને સૂચિબદ્ધ હેતુઓ માટે માહિતીની જરૂર પડી શકે છે અને જાહેરાતને પ્રતિબંધિત કરી શકે છે.</td>
+<td>સરકારી માહિતી વિનંતીઓ માટે કાનૂની સમીક્ષા વર્કફ્લો બનાવો.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>વિભાગ 21: કોર્ટ કેસો અને લિટીગેશન ટ્રેકર</h2>
+<p><a id="21"></a></p>
+<p><strong>ચેતવણી:</strong> પેન્ડિંગ કેસો માત્ર જાગૃતિની વસ્તુઓ છે. 14 જૂન 2026 સુધીમાં કોઈપણ અદાલતે DPDPA પર સ્ટે આપ્યો નથી અથવા સ્ટ્રાઇક કરી નથી.</p>
+<table>
+<thead>
+<tr>
+<th>કેસ</th>
+<th>સ્થિતિ</th>
+<th>શા માટે વ્યવસાય વાચકે કાળજી લેવી જોઈએ</th>
+<th>એન્કરનો ઉપયોગ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>જસ્ટિસ કે.એસ. પુટ્ટાસ્વામી વિ યુનિયન ઓફ ઈન્ડિયા, 2017</td>
+<td>અંતિમ</td>
+<td>ગોપનીયતા એ મૂળભૂત અધિકાર છે; રાજ્ય ક્રિયા માટે પ્રમાણસરતા પરીક્ષણ</td>
+<td>માત્ર બંધારણીય ઘડતર</td>
+</tr>
+<tr>
+<td>કે.એસ. પુટ્ટાસ્વામી Aadhaar ચુકાદો, 2018/2019</td>
+<td>અંતિમ</td>
+<td>ID/KYC લઘુત્તમીકરણ અને પ્રમાણસરતા</td>
+<td>Aadhaar/PAN-ભારે ક્ષેત્રો માટે ઉદ્યોગ જોખમ સંદર્ભ</td>
+</tr>
+<tr>
+<td>CPIO, સુપ્રીમ કોર્ટ વિરુદ્ધ સુભાષ ચંદ્ર અગ્રવાલ, 2019/2020</td>
+<td>અંતિમ</td>
+<td>RTI માં ગોપનીયતા વિ જાહેર હિત; DPDPA સુધારેલ RTI Section 8(1)(j)</td>
+<td>RTI/ગોપનીયતા ઇન્ટરફેસ</td>
+</tr>
+<tr>
+<td>વેંકટેશ નાયક વિ યુનિયન ઓફ ઈન્ડિયા, W.P.(C) નંબર 177/2026</td>
+<td>બાકી છે</td>
+<td>પડકારો RTI સુધારો, રાજ્ય મુક્તિ, સર્વેલન્સ-સંબંધિત જોગવાઈઓ</td>
+<td>ક્ષિતિજ / કાનૂની ઘડિયાળ - એક્ટ રોકાયો નથી</td>
+</tr>
+<tr>
+<td>રિપોર્ટર્સ કલેક્ટિવ ટ્રસ્ટ અને નીતિન સેઠી વિરુદ્ધ યુનિયન ઓફ ઈન્ડિયા</td>
+<td>બાકી/ટેગ કરેલ</td>
+<td>પ્રેસની સ્વતંત્રતા અને જાહેર હિતની રિપોર્ટિંગ</td>
+<td>મીડિયા અને જાહેર ક્ષેત્રની જાહેરાતો</td>
+</tr>
+<tr>
+<td>ગીતા સેશુ/SFLC પિટિશન, W.P.(C) નંબર 275/2026</td>
+<td>બાકી/ટેગ કરેલ</td>
+<td>જાહેર વિ ખાનગી ડેટા વ્યાખ્યાઓ અને સરકારી સત્તાઓ</td>
+<td>સરકારી ડેટા હેન્ડલિંગ ઘડિયાળ</td>
+</tr>
+<tr>
+<td>અંજલિ ભારદ્વાજ/અમૃતા જોહરી અને NCPRI-સંબંધિત અરજીઓ, 2026</td>
+<td>બાકી/ટેગ કરેલ</td>
+<td>Section 44(3) અને RTI-સ્રોત કરેલ વ્યક્તિગત ડેટાનું પુનરુત્થાન</td>
+<td>નાગરિક સમાજ અને સંશોધન ઉપયોગો</td>
+</tr>
+<tr>
+<td>ચંદ્રેશ જૈન વિરુદ્ધ યુનિયન ઓફ ઈન્ડિયા, દિલ્હી હાઈકોર્ટ</td>
+<td>નોટિસ ફેબ્રુઆરી 2026 જારી</td>
+<td>બોર્ડ માળખું, રાજ્ય મુક્તિ, અવરોધિત સત્તાઓ</td>
+<td>સંસ્થાકીય ડિઝાઇન ઘડિયાળ</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>વિભાગ 22: ટ્રૅક કરવા માટે વર્તમાન ઓપન આઇટમ્સ</h2>
+<p><a id="22"></a></p>
+<p>માસિક શાસન સમીક્ષાઓમાં આ ટ્રેકરનો ઉપયોગ કરો. દરેક પંક્તિને લેબલ કરો: <strong>અમલમાં</strong>, <strong>સૂચિત તબક્કો</strong>, <strong>સૂચિત</strong> અથવા <strong>બાકી મુકદ્દમા</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>તારીખ</th>
+<th>સ્ત્રોત</th>
+<th>જે અંગે ચર્ચા કરવામાં આવી હતી</th>
+<th>વ્યાપાર અસર</th>
+<th>સારવાર</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>13 નવેમ્બર 2025</td>
+<td>MeitY G.S.R. 846(E)</td>
+<td>નિયમો સૂચિત</td>
+<td>તબક્કાવાર ઘડિયાળ શરૂ થાય છે</td>
+<td>તમામ સમયરેખા માટે એન્કર તારીખ</td>
+</tr>
+<tr>
+<td>14 નવેમ્બર 2025</td>
+<td>PIB</td>
+<td>નિયમો પ્રેસ રિલીઝ</td>
+<td>જાહેર પુષ્ટિ</td>
+<td>સ્ટેટસ સ્નેપશોટમાં ટાંકો</td>
+</tr>
+<tr>
+<td>17 નવેમ્બર 2025</td>
+<td>MeitY (અહેવાલ કરેલ)</td>
+<td>મોટી/વૈશ્વિક-સુસંગત કંપનીઓ માટે ઝડપી અમલીકરણ</td>
+<td>રનવે ટૂંકાવી શકે છે</td>
+<td>ક્ષિતિજ ચેતવણી</td>
+</tr>
+<tr>
+<td>23 જાન્યુઆરી 2026</td>
+<td>MeitY સ્ટેકહોલ્ડર મીટિંગ</td>
+<td>દરખાસ્ત: 18 થી 12 મહિનાનું પાલન; SDF યાદી ફાસ્ટ-ટ્રેક; સુધારા પછીના 90 દિવસમાં Rule 8(3)</td>
+<td><strong>ડેડલાઈન 13 નવેમ્બર 2026 સુધી ખસેડી શકે છે</strong></td>
+<td><em>સૂચિત, સૂચિત નથી</em> તરીકે ચિહ્નિત કરો</td>
+</tr>
+<tr>
+<td>ફેબ્રુઆરી 2026</td>
+<td>MeitY</td>
+<td>ઇન્ડસ્ટ્રી ફીડબેક વિન્ડો (રિપોર્ટેડ ડેડલાઇન 4 ફેબ્રુઆરી 2026)</td>
+<td>પરિણામ બાકી છે</td>
+<td>ગેઝેટ પ્રકાશિત થાય ત્યારે અપડેટ કરો</td>
+</tr>
+<tr>
+<td>જૂન 2026</td>
+<td>MeitY સચિવ (ET Telecom)</td>
+<td>સમયરેખા સંકોચન પર ઉદ્યોગના ઇનપુટની રાહ જોઈ રહ્યું છે</td>
+<td>હજુ સુધી કોઈ અંતિમ કોલ નથી</td>
+<td>કાયદા તરીકે ઝડપી તારીખ જણાવશો નહીં</td>
+</tr>
+<tr>
+<td>2026</td>
+<td>કર્ણાટક (અહેવાલ)</td>
+<td>અંડર-16 માટે સોશિયલ મીડિયા પર પ્રતિબંધનો પ્રસ્તાવ</td>
+<td>રાષ્ટ્રીય વિ રાજ્ય સક્ષમતા અસ્પષ્ટ</td>
+<td>નીતિ ચર્ચા તરીકે નોંધ, DPDPA ટેક્સ્ટ નહીં</td>
+</tr>
+<tr>
+<td>બાકી છે</td>
+<td>સુપ્રીમ કોર્ટ / દિલ્હી HC</td>
+<td>બંધારણીયતા, RTI ઇન્ટરફેસ, બોર્ડ માળખું</td>
+<td>મુકદ્દમાનું જોખમ</td>
+<td>કોર્ટ ટેબલ; કોઈ "અધિનિયમ ત્રાટકી" ભાષા</td>
+</tr>
+<tr>
+<td>ખોલો</td>
+<td>MeitY / DPBI</td>
+<td>ટ્રાન્સફર માટે પ્રતિબંધિત દેશની સૂચિ</td>
+<td>ક્રોસ-બોર્ડર કોન્ટ્રાક્ટ અને મેપિંગ નિર્ણયો</td>
+<td>સૂચનાઓનું નિરીક્ષણ કરો</td>
+</tr>
+<tr>
+<td>ખોલો</td>
+<td>MeitY / DPBI</td>
+<td>SDF હોદ્દો સૂચિ અને સ્થાનિકીકરણ શ્રેણીઓ</td>
+<td>SDF પ્રોગ્રામનો અવકાશ</td>
+<td>શરતી રીતે તૈયાર કરો</td>
+</tr>
+<tr>
+<td>ખોલો</td>
+<td>DPBI</td>
+<td>સંમતિ મેનેજર ઓપરેશનલ ફ્રેમવર્ક</td>
+<td>ઉત્પાદન અને એકીકરણ રોડમેપ</td>
+<td>નવેમ્બર 2026ના તબક્કાથી જુઓ</td>
+</tr>
+<tr>
+<td>ખોલો</td>
+<td>DPBI</td>
+<td>વ્યવહારમાં બોર્ડ પોર્ટલ ફાઇલિંગ પ્રક્રિયાઓ</td>
+<td>ઉલ્લંઘન અને કાર્યવાહી માટે પુરાવા ફોર્મેટ</td>
+<td>પાયલોટ જ્યારે પોર્ટલ લાઇવ</td>
+</tr>
+</tbody>
+</table>
+<p><strong>શિસ્ત વિકસિત કરો (v6 થી):</strong> 30-મિનિટના માસિક સ્કેન માલિકને સોંપો; આંતરિક "આ ક્વાર્ટરમાં શું બદલાયું" મેમો પ્રકાશિત કરો; વર્ષમાં બે વાર ભંગ ટેબલટૉપને તાજું કરો; મુખ્ય ઉત્પાદન અથવા વિક્રેતા ફેરફારો પછી ડેટા ઇન્વેન્ટરી ફરીથી ચલાવો.</p>
+<hr />
+<h2>વિભાગ 23: 90-દિવસ DPDPA એક્શન પ્લાન</h2>
+<p><a id="23-90--dpdpa"></a></p>
+<p>આ પ્લાન હજુ સુધી કોઈ સમર્પિત ગોપનીયતા ટીમ સાથે મિડ-માર્કેટ ઓપરેટર ધારે છે. તમારા org ચાર્ટમાં માલિકોને સમાયોજિત કરો. ધ્યેય: બોર્ડ-રેડી પુરાવા પેક v1 સાથે 90મા દિવસે બહાર નીકળો, સંપૂર્ણતા નહીં.</p>
+<p><em>Diagram: see figure below.</em></p>
+<figure class="figure"><img src="../infographics/infographic-07-90-day-roadmap.png" alt="ઇન્ફોગ્રાફિક 8: 90-Day Roadmap" /></figure>
+<p><em>આકૃતિ: ઇન્ફોગ્રાફિક 8: 90-દિવસ રોડમેપ</em></p>
+<table>
+<thead>
+<tr>
+<th>તબક્કો</th>
+<th>અઠવાડિયા</th>
+<th>ફોકસ કરો</th>
+<th>આઉટપુટ</th>
+<th>માલિક</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>શોધો</strong></td>
+<td>1-2</td>
+<td>માલિકની નિમણૂક કરો; સ્કોપ સિસ્ટમ્સ; ડેટા મેપ શરૂ કરો</td>
+<td>નામ DPDPA માલિક; પ્રક્રિયા પ્રવૃત્તિ રજીસ્ટર v0.1</td>
+<td>CEO + ops લીડ</td>
+</tr>
+<tr>
+<td><strong>પરવાનગી</strong></td>
+<td>3-4</td>
+<td>નોટિસને ઠીક કરો; ટેગ કાયદેસર આધાર; અલગ માર્કેટિંગ સંમતિ</td>
+<td>અપડેટ કરેલી સૂચનાઓ; વૈકલ્પિક ઉપયોગો માટે સંમતિ પ્રવાહ</td>
+<td>કાનૂની + ઉત્પાદન</td>
+</tr>
+<tr>
+<td><strong>નિયંત્રણ</strong></td>
+<td>5-8</td>
+<td>વિક્રેતાઓ, અધિકારો ઇનબૉક્સ, રીટેન્શન, ઍક્સેસ નિયંત્રણો</td>
+<td>પ્રોસેસર સમીક્ષા લોગ; અધિકાર SOP; રીટેન્શન શેડ્યૂલ</td>
+<td>IT + પ્રાપ્તિ + HR</td>
+</tr>
+<tr>
+<td><strong>સાબિત કરો</strong></td>
+<td>9-12</td>
+<td>ભંગ કવાયત; શાસન સમીક્ષા; એક્ઝિક્યુટિવ સાઇન-ઓફ</td>
+<td>ટેબલટોપનો ભંગ રેકોર્ડ; બોર્ડ સારાંશ; પુરાવા પેક v1</td>
+<td>સુરક્ષા + CEO</td>
+</tr>
+</tbody>
+</table>
+<h3>અઠવાડિયા-દર-અઠવાડિયે વિગત</h3>
+<p><strong>અઠવાડિયા 1-2 (ડિસ્કવર):</strong> જવાબદાર માલિકનું નામ આપો. સૂચિ સિસ્ટમ્સ: CRM, HRMS, વેબસાઇટ, WhatsApp વ્યવસાય, ક્લાઉડ ડ્રાઇવ્સ, ચુકવણી સાધનો. ટોચના 10 પ્રવાહો સાથે ડ્રાફ્ટ પ્રોસેસિંગ રજિસ્ટર. Section 19 થી બે ઉદ્યોગ-વિશિષ્ટ જોખમોને ફ્લેગ કરો.</p>
+<p><strong>અઠવાડિયા 3-4 (પરવાનગી):</strong> વેબસાઇટ, એપ્લિકેશન અને ટોચના ઑફલાઇન ફોર્મ માટે એકલ સૂચનાઓ પ્રકાશિત કરો. વિભાજિત માર્કેટિંગ સંમતિ. દસ્તાવેજ Section 7 નો ઉપયોગ પગારપત્રક અને કાનૂની અનુપાલન માટે જ થાય છે જ્યાં સલાહકાર સંમત થાય છે. સંમતિ/વર્ઝન લોગ શરૂ કરો.</p>
+<p><strong>અઠવાડિયા 5-6 (નિયંત્રણ - વિક્રેતાઓ અને અધિકારો):</strong> સંપૂર્ણ પ્રોસેસર રજિસ્ટર. ટોચના પાંચ વિક્રેતા કરારને અપગ્રેડ કરો. Rights@grievance inbox ખોલો. અધિકારોની સૂચનાઓ પ્રકાશિત કરો. 60-દિવસની આંતરિક SLA વ્યાખ્યાયિત કરો.</p>
+<p><strong>અઠવાડિયા 7-8 (નિયંત્રણ - રીટેન્શન અને એક્સેસ):</strong> રીટેન્શન શેડ્યૂલને મંજૂરી આપો. ભૂતપૂર્વ કર્મચારી અને વિક્રેતા ઍક્સેસ દૂર કરો. શેર કરેલ ફોલ્ડર્સ અને એડમિન પેનલ્સ પર એક્સેસ રિવ્યૂ ચલાવો.</p>
+<p><strong>અઠવાડિયા 9-10 (સાબિત કરો):</strong> ટેબલટૉપ ઉલ્લંઘન દૃશ્ય (WhatsApp ખોટી રીતે મોકલો અથવા વિક્રેતા લીક). 72-કલાકના રિપોર્ટ ડ્રાફ્ટનો સમય. કવાયત માટે પણ ઘટના રેકોર્ડ ફાઇલ કરો.</p>
+<p><strong>અઠવાડિયા 11-12 (સાબિત):</strong> રેડીનેસ સ્કોરકાર્ડ સામે નેતૃત્વ સમીક્ષા. એક-પૃષ્ઠ બોર્ડ સારાંશ: પાંચ જોખમો, પાંચ પુરાવા વસ્તુઓ, ઓપન લો વોચલિસ્ટ. 90-દિવસના પ્લાન વેવ 2 પર એક્ઝિક્યુટિવ સાઇન-ઓફ.</p>
+<h3>90મા દિવસે સફળતાનો માપદંડ</h3>
+<p>તમે ખચકાટ વિના આનો <strong>હા</strong> જવાબ આપવા સક્ષમ હોવા જોઈએ:</p>
+<ul>
+<li>નામના માલિક 15-મિનિટના વોકથ્રુમાં પ્રોસેસિંગ પ્રવૃત્તિ રજિસ્ટર રજૂ કરી શકે છે.</li>
+<li>ઓછામાં ઓછા ત્રણ કલેક્શન પોઈન્ટ છેલ્લા 30 દિવસની અંદરની એકલ નોટિસ દર્શાવે છે.</li>
+<li>ટોચના પાંચ વિક્રેતાઓએ સુરક્ષા અને ભંગની કલમો સાથે કરારો પર હસ્તાક્ષર કર્યા છે અથવા તેમાં સુધારો કર્યો છે અથવા તેમને અપગ્રેડ કરવા માટે દસ્તાવેજી યોજના છે.</li>
+<li>પુરાવા પેકમાં સંશોધિત નમૂના સાથે પરીક્ષણ અધિકારોની વિનંતી લોગ કરવામાં આવી હતી, સોંપવામાં આવી હતી અને બંધ કરવામાં આવી હતી.</li>
+<li>ઉલ્લંઘન ટેબલટૉપએ કસરત વિંડોમાં સમયરેખા, ડ્રાફ્ટ વપરાશકર્તા સૂચના અને ડ્રાફ્ટ બોર્ડ સૂચનાનું નિર્માણ કર્યું.</li>
+<li>નેતૃત્વ સમજાવી શકે છે કે Section 19 થી કયો ઉદ્યોગ વહે છે તે પ્રાથમિકતા એક અને બે છે.</li>
+</ul>
+<p>જો કોઈ જવાબ ના હોય તો, તૈયારી જાહેર કરવાને બદલે તે અંતરને આગામી 90-દિવસના વેવમાં લઈ જાઓ. DPDPA પ્રોગ્રામ્સ કમ્પાઉન્ડ - દરેક ક્વાર્ટર પુરાવાની ઊંડાઈ ઉમેરે છે, નવો પ્રોજેક્ટ નહીં.</p>
+<hr />
+<h2>વિભાગ 24: ડિસ્ક્લેમર અને SaralPrivacy પ્રોડક્ટ બ્રિજ</h2>
+<p><a id="24-saralprivacy"></a></p>
+<h3>અસ્વીકરણ</h3>
+<p>આ વ્હાઇટપેપર SaralPrivacy દ્વારા **માહિતી અને શૈક્ષણિક હેતુઓ માટે પ્રકાશિત કરવામાં આવ્યું છે. તે કાનૂની સલાહ નથી, ભારતીય કાયદામાં લાયકાત ધરાવતા સલાહકારનો વિકલ્પ નથી, અને પાલન અથવા નિયમનકારી પરિણામની બાંયધરી નથી. સ્થિતિ તારીખ (14 જૂન 2026) પછી કાયદો, નિયમો, સૂચનાઓ અને કોર્ટના નિર્ણયો બદલાઈ શકે છે. ઓપરેશનલ નિર્ણયો પર આધાર રાખતા પહેલા તમારા સલાહકારો અને સત્તાવાર ગેઝેટ સ્ત્રોતો સાથે તમામ સમયમર્યાદા, મુક્તિ અને ક્ષેત્રીય જવાબદારીઓ ચકાસો. SaralPrivacy ફક્ત આ દસ્તાવેજના આધારે લેવામાં આવેલી ક્રિયાઓ માટે કોઈ જવાબદારી સ્વીકારતું નથી.</p>
+<h3>SaralPrivacy ઉત્પાદન પુલ (સંયમિત)</h3>
+<p>SaralPrivacy ભારતીય ઓપરેટરોને <strong>શોધવામાં</strong> મદદ કરે છે કે તેઓ ખરેખર કયા વ્યક્તિગત ડેટા પર પ્રક્રિયા કરે છે અને ઊંડા કાનૂની ખર્ચ પહેલાં તૈયારતાનું <strong>મૂલ્યાંકન</strong> કરે છે. આ વ્હાઇટપેપર નકશો છે; સાધનો હોકાયંત્ર તપાસ છે.</p>
+<table>
+<thead>
+<tr>
+<th>પગલું</th>
+<th>રૂટ</th>
+<th>તે શું કરે છે</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. શોધો</td>
+<td><a href="https://saralprivacy.com/discovery">saralprivacy.com/discovery</a></td>
+<td>સંપૂર્ણ અનુપાલન કાર્ય બનાવતા પહેલા તમારો વ્યવસાય સમગ્ર ચેનલોમાં કયા વ્યક્તિગત-ડેટા પ્રકારો એકત્રિત કરે છે તેનો નકશો બનાવો</td>
+</tr>
+<tr>
+<td>2. આકારણી</td>
+<td><a href="https://saralprivacy.com/assessment">saralprivacy.com/assessment</a></td>
+<td>સામાન્ય 10-પ્રશ્ન તત્પરતા સ્કેન (~3 મિનિટ)</td>
+</tr>
+<tr>
+<td>3. સેક્ટર સ્કેન</td>
+<td>Section 19 રૂટ</td>
+<td>ઉદ્યોગ-વિશિષ્ટ 10-પ્રશ્નનો સ્નેપશોટ; પ્રારંભિક પરિણામ પછી ઊંડા નિદાન</td>
+</tr>
+</tbody>
+</table>
+<p><strong>આ પાથનો ઉપયોગ કેવી રીતે કરવો:</strong> વિભાગો 3-5 અને તમારા ઉદ્યોગનો સ્નેપશોટ વાંચો. જો તમે તમારા ડેટા પ્રકારોને સાદા અંગ્રેજીમાં સૂચિબદ્ધ કરી શકતા નથી, તો ડિસ્કવરી ચલાવો. ગેપને પ્રાથમિકતા આપવા માટે સામાન્ય અથવા સેક્ટર એસેસમેન્ટ ચલાવો. સલાહકાર અને તમારા 90-દિવસના પ્લાન માલિકને આઉટપુટ લો - બીજી રીતે નહીં.</p>
+<p>કોઈપણ ઉત્પાદન વિશેષતા નોટિસ, સુરક્ષા, ઉલ્લંઘન પ્રતિભાવ અથવા કાયદા દ્વારા જરૂરી અધિકારોની કામગીરીને બદલે છે. ટૂલ્સ <strong>ક્યાંથી શરૂ કરવું</strong> સંકુચિત છે જેથી ટીમો વાસ્તવિક પ્રવાહો પર કાનૂની અને એન્જિનિયરિંગ સમય પસાર કરે છે, સામાન્ય ચિંતા નહીં.</p>
+<p><strong>પ્રથમ વખતના વાચક માટે સૂચવેલ ક્રમ:</strong></p>
+<ol>
+<li>CEO અથવા સ્થાપક: વિભાગો 3, 4, 5, અને 19 (તમારો ઉદ્યોગ) - 20 મિનિટ.</li>
+<li>પ્રોગ્રામ માલિક: વિભાગો 7-18 વત્તા Section 23 - એક કાર્યકારી સત્ર.</li>
+<li>કાનૂની સલાહકાર: વિભાગો 8, 9, 20-22 અને શબ્દકોષ - માન્યતા પાસ.</li>
+<li>બોર્ડ પેકેટ: Section 4 ઇન્ફોગ્રાફિક, Section 9 ઓબ્લિગેશન ટેબલ, Section 23 gantt, Section 18 તરફથી રેડીનેસ સ્કોરકાર્ડ.</li>
+</ol>
+<p>જ્યારે ગેઝેટ સૂચનાઓ તારીખો બદલશે અથવા જ્યારે SaralPrivacy નવા ઉદ્યોગ સ્કેન સંસ્કરણો પ્રકાશિત કરશે ત્યારે આ વ્હાઇટપેપર અપડેટ કરવામાં આવશે. બાહ્ય રીતે સમયમર્યાદા ટાંકતા પહેલા કવર પર સ્થિતિ તારીખ તપાસો.</p>
+<p><strong>પ્રકાશક નોંધ:</strong> SaralPrivacy ભારતીય ઓપરેટરો માટે શોધ અને મૂલ્યાંકન સાધનો બનાવે છે. આ દસ્તાવેજ OPERATE v6.1 અને જૂન 2026ના કાનૂની સ્ટેટસ સ્નેપશોટ સાથે સંરેખિત જાહેર સંદર્ભ આવૃત્તિ છે. SaralPrivacy સપોર્ટ ચેનલો દ્વારા પ્રતિસાદ અને સુધારાઓનું સ્વાગત છે.</p>
+<hr />
+<h2>શબ્દકોશ (25 શબ્દો)</h2>
+<p><a id="25"></a></p>
+<table>
+<thead>
+<tr>
+<th>મુદત</th>
+<th>સાદા અંગ્રેજી</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ડેટા ફિડ્યુસિયરી</strong></td>
+<td>વ્યક્તિગત ડેટા પર શા માટે અને કેવી રીતે પ્રક્રિયા કરવામાં આવે છે તે સંસ્થા - સામાન્ય રીતે તમારી કંપની.</td>
+</tr>
+<tr>
+<td><strong>ડેટા પ્રિન્સિપાલ</strong></td>
+<td>જે વ્યક્તિના ડેટા પર પ્રક્રિયા કરવામાં આવે છે - ગ્રાહક, કર્મચારી, વિદ્યાર્થી, દર્દી વગેરે.</td>
+</tr>
+<tr>
+<td><strong>ડેટા પ્રોસેસર</strong></td>
+<td>એક વિક્રેતા જે તમારી સૂચનાઓ પર વ્યક્તિગત ડેટા પર પ્રક્રિયા કરે છે - ક્લાઉડ હોસ્ટ, પેરોલ પ્રદાતા, ATS.</td>
+</tr>
+<tr>
+<td><strong>વ્યક્તિગત ડેટા</strong></td>
+<td>ઓળખી શકાય તેવી વ્યક્તિ વિશેનો કોઈપણ ડેટા - નામ, ફોન, PAN, આરોગ્ય રેકોર્ડ, ફોટો.</td>
+</tr>
+<tr>
+<td><strong>પ્રક્રિયા કરી રહ્યું છે</strong></td>
+<td>ડેટા સાથે કંઈપણ કરવામાં આવે છે: એકત્રિત કરો, સંગ્રહ કરો, ઉપયોગ કરો, શેર કરો, વિશ્લેષણ કરો, કાઢી નાખો.</td>
+</tr>
+<tr>
+<td><strong>સંમતિ</strong></td>
+<td>સ્પષ્ટ, હકારાત્મક ક્રિયા સાથે મુક્તપણે આપવામાં આવેલી ચોક્કસ પરવાનગી; પાછું ખેંચવું સરળ હોવું જોઈએ.</td>
+</tr>
+<tr>
+<td><strong>કાયદેસર ઉપયોગો</strong></td>
+<td>સંમતિ વિના પ્રક્રિયા કરવાની મંજૂરી આપતા સાંકડા Section 7 આધારો - સામાન્ય વ્યવસાય મુક્તિ નથી.</td>
+</tr>
+<tr>
+<td><strong>નોટિસ</strong></td>
+<td>ડેટા, હેતુ, અધિકારો અને ફરિયાદો વિશે એકત્ર કરતી વખતે સાદી ભાષામાં સમજૂતી.</td>
+</tr>
+<tr>
+<td><strong>નોંધપાત્ર ડેટા ફિડ્યુસિયરી (SDF)</strong></td>
+<td>વધારાની ફરજો (DPIA, ઓડિટ, વગેરે) સાથે સરકાર દ્વારા સૂચિત મોટા/ઉચ્ચ-અસરવાળા વિશ્વાસુઓ.</td>
+</tr>
+<tr>
+<td><strong>સંમતિ મેનેજર</strong></td>
+<td>રજિસ્ટર્ડ મધ્યસ્થી લોકોને સેવાઓમાં સંમતિ આપવામાં, મેનેજ કરવા અને પાછી ખેંચવામાં મદદ કરે છે.</td>
+</tr>
+<tr>
+<td><strong><strong>KEP32</strong></strong></td>
+<td>ડિજિટલ ડેટા પ્રોટેક્શન બોર્ડ ઓફ ઈન્ડિયા - DPDPA અમલીકરણ માટેનું નિયમનકાર.</td>
+</tr>
+<tr>
+<td><strong>ફરિયાદ</strong></td>
+<td>ડેટા પ્રિન્સિપાલ દ્વારા ઔપચારિક ફરિયાદ કે જે તમારે મહત્તમ 90 દિવસની અંદર સંબોધિત કરવી આવશ્યક છે.</td>
+</tr>
+<tr>
+<td><strong>નોમિનેશન</strong></td>
+<td>મૃત્યુ/અક્ષમતા પછી તેમના વતી અધિકારોનો ઉપયોગ કરવા માટે કોઈને નામ આપવાનો ડેટા પ્રિન્સિપાલનો અધિકાર.</td>
+</tr>
+<tr>
+<td><strong>ભંગ</strong></td>
+<td>વ્યક્તિગત ડેટાને ઉજાગર કરતી સુરક્ષા ઘટના - વપરાશકર્તા અને બોર્ડ સૂચના ફરજોને ટ્રિગર કરે છે.</td>
+</tr>
+<tr>
+<td><strong>72-કલાકનો અહેવાલ</strong></td>
+<td>બોર્ડ સૂચના (Rule 7) ના 72 કલાકની અંદર DPBI ને વિગતવાર ઉલ્લંઘનનો અહેવાલ.</td>
+</tr>
+<tr>
+<td><strong>વાજબી સુરક્ષા સલામતી</strong></td>
+<td>એન્ક્રિપ્શન, એક્સેસ કંટ્રોલ, લોગ્સ, બેકઅપ્સ, મોનિટરિંગ - Section 8(5) બેઝલાઇન.</td>
+</tr>
+<tr>
+<td><strong>ક્રોસ-બોર્ડર ટ્રાન્સફર</strong></td>
+<td>ભારતની બહાર વ્યક્તિગત ડેટા મોકલવો અથવા ઍક્સેસ કરવો - ભવિષ્યના પ્રતિબંધોને આધીન.</td>
+</tr>
+<tr>
+<td><strong>__કીપ22__15 શરતો</strong></td>
+<td>વિદેશી રાજ્યો અથવા નિયંત્રિત સંસ્થાઓમાં સ્થાનાંતરણ માટે સરકાર દ્વારા નિર્દિષ્ટ જરૂરિયાતો.</td>
+</tr>
+<tr>
+<td><strong>પ્રક્રિયા રજીસ્ટર પ્રક્રિયા</strong></td>
+<td>તમે કયા ડેટા પર પ્રક્રિયા કરો છો, શા માટે, ક્યાં અને કેટલા સમય માટે તમારી ઇન્વેન્ટરી.</td>
+</tr>
+<tr>
+<td><strong>હેતુ મર્યાદા</strong></td>
+<td>ડેટાનો ઉપયોગ ફક્ત તે હેતુ માટે જ કરવો જે તમે તેને એકત્રિત કરતી વખતે જણાવ્યું હતું.</td>
+</tr>
+<tr>
+<td><strong>ડેટા મિનિમાઇઝેશન</strong></td>
+<td>જણાવેલ હેતુ માટે તમને જે જોઈએ તે જ એકત્રિત કરવું.</td>
+</tr>
+<tr>
+<td><strong>રીટેન્શન શેડ્યૂલ</strong></td>
+<td>કેટલો સમય ડેટા રાખવામાં આવે છે અને ક્યારે કાઢી નાખવામાં આવે છે તેના દસ્તાવેજી નિયમો.</td>
+</tr>
+<tr>
+<td><strong>ચકાસણી યોગ્ય સંમતિ (બાળકો)</strong></td>
+<td>માતા-પિતા/વાલીની સંમતિ કે જે Rule 10 પદ્ધતિઓ હેઠળ ચકાસી શકાય છે.</td>
+</tr>
+<tr>
+<td><strong>ટેક્નો-કાનૂની પગલાં</strong></td>
+<td>ટેક્નોલોજી અને કાનૂની પ્રક્રિયાને સંયોજિત કરતી બોર્ડ/ડિજિટલ અનુપાલન આવશ્યકતાઓ.</td>
+</tr>
+<tr>
+<td><strong>તબક્કાવાર શરૂઆત</strong></td>
+<td>અલગ-અલગ અધિનિયમ/નિયમોની કલમો અલગ-અલગ ગેઝેટ તારીખો પર લાગુ થઈ શકે છે.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>સ્રોત નોંધણી</h2>
+<p><a id=""></a></p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>સ્ત્રોત</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S1</td>
+<td>ડિજિટલ પર્સનલ ડેટા પ્રોટેક્શન એક્ટ, 2023, 2023 નો એક્ટ નંબર 22, MeitY/ગેઝેટ.</td>
+<td>https://www.meity.gov.in/static/uploads/2024/02/Digital-Personal-Data-Protection-Act-2023.pdf</td>
+</tr>
+<tr>
+<td>S2</td>
+<td>ડિજિટલ પર્સનલ ડેટા પ્રોટેક્શન રૂલ્સ, 2025, G.S.R. 846(E), ગેઝેટ તારીખ 13 નવેમ્બર 2025.</td>
+<td>https://www.meity.gov.in/static/uploads/2025/11/53450e6e5dc0bfa85ebd78686cadad39.pdf</td>
+</tr>
+<tr>
+<td>S3</td>
+<td>DPDP એક્ટ, G.S.R. 843(E), 13 નવેમ્બર 2025 ના ગેઝેટ માટે અમલીકરણ સમયરેખા.</td>
+<td>https://www.meity.gov.in/static/uploads/2025/11/c56ceae6c383460ca69577428d36828b.pdf</td>
+</tr>
+<tr>
+<td>S4</td>
+<td>ભારતના ડેટા પ્રોટેક્શન બોર્ડની સ્થાપના, G.S.R. 844(E), ગેઝેટ તારીખ 13 નવેમ્બર 2025.</td>
+<td>https://www.meity.gov.in/static/uploads/2025/11/cc217843dc3bcb37b2b05bcc3b4e031f.pdf</td>
+</tr>
+<tr>
+<td>S5</td>
+<td>PIB રિલીઝ: સરકારે DPDP નિયમો, 14 નવેમ્બર 2025 ના રોજ સૂચિત કર્યા.</td>
+<td>https://www.pib.gov.in/PressReleaseIframePage.aspx?PRID=2190014</td>
+</tr>
+<tr>
+<td>S6</td>
+<td>સુપ્રીમ કોર્ટના નિરીક્ષક: DPDPAની બંધારણીયતા, વેંકટેશ નાયક વિ યુનિયન ઓફ ઇન્ડિયા.</td>
+<td>https://www.scobserver.in/cases/constitutionality-of-the-digital-personal-data-protection-act-2023/amp/</td>
+</tr>
+<tr>
+<td>S7</td>
+<td>મની કંટ્રોલ: સુપ્રીમ કોર્ટે 19 ફેબ્રુઆરી 2026ના રોજ મોટી બેંચને RTI સુધારા પડકારનો ઉલ્લેખ કર્યો.</td>
+<td>https://www.moneycontrol.com/news/india/supreme-court-refers-data-protection-law-amendment-of-rti-act-challenge-to-larger-bench-no-question-of-stay-13830233.html</td>
+</tr>
+<tr>
+<td>S8</td>
+<td>મીડિયાનામા: DPDP એક્ટ પડકારમાં સુપ્રીમ કોર્ટની નોટિસ, 13 માર્ચ 2026.</td>
+<td>https://www.medianama.com/2026/03/223-supreme-court-dpdp-act-challenge/</td>
+</tr>
+<tr>
+<td>S9</td>
+<td>લૉબીટ: DPDP રાજ્ય મુક્તિ અને અવરોધિત સત્તાઓ પર દિલ્હી HC નોટિસ, 19 ફેબ્રુઆરી 2026.</td>
+<td>https://lawbeat.in/news-updates/delhi-hc-issues-notice-on-plea-against-state-exemptions-blocking-powers-under-dpdp-act-1566615</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><em>ભારતનું DPDPA રેડીનેસ વ્હાઇટપેપર 2026-2027 v6.1 - SaralPrivacy - 14 જૂન 2026 - OPERATE મોડેલ - માહિતીપ્રદ માળખું, કાનૂની સલાહ નહીં.</em></p>
+<p><em>ભારતનું DPDPA તૈયારી વ્હાઇટપેપર 2026-2027 v6.1 - SaralPrivacy - 14 જૂન 2026 - OPERATE model - Informational structure, not legal advice.</em></p>
+
+<div class="cta-block" id="cta">
+  <h2>તમારા અંતરાલ જાણો. મહત્વનું ઠીક કરો.</h2>
+  <p>મફત 3-મિનિટ ગોપનીયતા તૈયારી સ્કેનથી શરૂ કરો — પછી વિભાગ 19 માંથી ઉદ્યોગ સ્નેપશોટ લો.</p>
+  <a class="btn-primary" href="https://saralprivacy.com/assessment">મફત મૂલ્યાંકન શરૂ કરો →</a>
+</div>
+
+</main>
+
+<footer class="doc-footer">
+  <div class="footer-brand-block">
+    <img src="SaralPrivacyLogo1.png" alt="SaralPrivacy" class="logo-footer" />
+    <div class="brand">Saral<span>Privacy</span></div>
+  </div>
+  <div class="meta">DPDPA તૈયારી વ્હાઇટપેપર · સંસ્કરણ 3 · જૂન 2026 · SaralPrivacy</div>
+  <div class="handle">@saralprivacy · saralprivacy.com</div>
+</footer>
+
+</div>
+</body>
+</html>
