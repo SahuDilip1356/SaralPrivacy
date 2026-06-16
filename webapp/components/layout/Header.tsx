@@ -153,7 +153,7 @@ export function Header() {
                 onMouseLeave={() => item.children && scheduleClose()}
               >
                 {item.badge && (
-                  <span className="pointer-events-none absolute -top-1.5 left-1/2 -translate-x-1/2 z-10 rounded-full bg-green-500 px-1.5 py-px text-[8px] font-bold uppercase tracking-wide text-white shadow-sm">
+                  <span className="pointer-events-none absolute -top-1.5 left-1/2 -translate-x-1/2 z-10 rounded-full bg-navy-700 px-1.5 py-px text-[8px] font-bold uppercase tracking-wide text-white shadow-sm">
                     {item.badge}
                   </span>
                 )}
@@ -210,7 +210,7 @@ export function Header() {
               Templates
             </button>
             <div className="relative hidden md:inline-flex">
-              <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 z-10 whitespace-nowrap rounded-full bg-amber-400 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-navy-800 shadow-sm">
+              <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 z-10 whitespace-nowrap rounded-full bg-navy-700 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white shadow-sm">
                 7 Indian languages
               </span>
               <Link
@@ -248,7 +248,7 @@ export function Header() {
               >
                 <span>{item.label}</span>
                 {item.badge && (
-                  <span className="bg-green-100 text-green-700 text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                  <span className="bg-navy-700 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
                     {item.badge}
                   </span>
                 )}
@@ -281,7 +281,7 @@ export function Header() {
             >
               <Download size={14} />
               DPDPA Guide
-              <span className="rounded-full bg-amber-400 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-navy-800">7 Indian languages</span>
+              <span className="rounded-full bg-navy-700 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white">7 Indian languages</span>
             </Link>
             <Link
               href="/contact"
