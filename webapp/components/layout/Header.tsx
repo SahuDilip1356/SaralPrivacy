@@ -26,7 +26,7 @@ const navigation = [
     children: sectorNavLinks,
   },
   {
-    label: "DPDPA Guide",
+    label: "Learn DPDPA",
     href: "/learn",
     children: [
       { label: "DPDP Act 2023 (Full Text)",   href: "/learn/dpdp-act-2023" },
