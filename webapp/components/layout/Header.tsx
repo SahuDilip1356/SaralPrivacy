@@ -208,13 +208,18 @@ export function Header() {
               <Download size={14} />
               Templates
             </button>
-            <Link
-              href="/white-paper#download"
-              className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold whitespace-nowrap bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
-            >
-              <Download size={14} />
-              Guide
-            </Link>
+            <div className="relative hidden md:inline-flex">
+              <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 z-10 whitespace-nowrap rounded-full bg-amber-400 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-navy-800 shadow-sm">
+                7 languages
+              </span>
+              <Link
+                href="/white-paper#download"
+                className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold whitespace-nowrap bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+              >
+                <Download size={14} />
+                DPDPA Guide
+              </Link>
+            </div>
             <button
               className="lg:hidden p-2 text-slate-600 hover:text-slate-900"
               onClick={() => setMobileOpen(!mobileOpen)}
