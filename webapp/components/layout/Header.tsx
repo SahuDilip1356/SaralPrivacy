@@ -212,6 +212,7 @@ export function Header() {
               href="/white-paper#download"
               className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold whitespace-nowrap bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
             >
+              <Download size={14} />
               Guide
             </Link>
             <button
