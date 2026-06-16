@@ -187,7 +187,7 @@ export function AudienceCards() {
           </h2>
           <p className="text-slate-600 max-w-2xl mx-auto leading-relaxed">
             A recruitment agency, a CA firm, a training institute, a D2C brand, and a clinic all collect
-            personal data — but their risks, obligations, and compliance paths are completely different.
+            personal data, but their risks, obligations, and compliance paths are completely different.
           </p>
         </div>
 

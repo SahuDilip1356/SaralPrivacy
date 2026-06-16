@@ -5,7 +5,7 @@ const pillars = [
     icon: BookOpen,
     title: "Educational, not alarmist",
     description:
-      "We explain what DPDPA actually requires in language that founders and operations teams can act on — not fear-mongering.",
+      "We explain what DPDPA actually requires in language that founders and operations teams can act on, not fear-mongering.",
   },
   {
     icon: Target,

@@ -28,7 +28,7 @@ export function HeroSection() {
           <div className="inline-flex items-center gap-2 bg-teal-700/30 border border-teal-500/40 rounded-full px-3.5 py-1.5 mb-6">
             <div className="w-2 h-2 rounded-full bg-teal-400 animate-pulse" />
             <span className="text-teal-300 text-xs font-semibold">
-              DPDP Rules, 2025 notified 14 November 2025 — use the phased rollout window now
+              DPDP Rules, 2025 notified 14 November 2025. Use the phased rollout window now
             </span>
           </div>
 
@@ -46,7 +46,7 @@ export function HeroSection() {
 
           <p className="text-lg text-slate-300 leading-relaxed mb-8 max-w-2xl">
             Understand whether DPDPA applies to you, how exposed your current practices are, and
-            exactly what to do next — in plain English, no legal degree required.
+            exactly what to do next, in plain English — no legal degree required.
           </p>
 
           {/* CTAs — primary dominant, secondary clearly subordinate */}
@@ -71,9 +71,9 @@ export function HeroSection() {
           <div className="flex flex-wrap gap-5">
             {[
               "Free 3–5 minute readiness check",
-              "No legalese — plain English",
+              "No legalese, plain English",
               "Industry-specific guidance",
-              "Not legal advice — educational",
+              "Not legal advice, educational",
             ].map((item) => (
               <div key={item} className="flex items-center gap-1.5">
                 <CheckCircle size={14} className="text-green-400 shrink-0" />

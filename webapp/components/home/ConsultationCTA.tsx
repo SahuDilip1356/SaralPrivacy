@@ -36,7 +36,7 @@ export function ConsultationCTA() {
 
               <div className="space-y-3 mb-8">
                 {[
-                  { icon: Calendar, text: "30-minute discovery call — free, no obligation" },
+                  { icon: Calendar, text: "30-minute discovery call: free, no obligation" },
                   { icon: Mail, text: "Written summary of next steps after the call" },
                   { icon: Phone, text: "Available via phone, video, or WhatsApp" },
                 ].map(({ icon: Icon, text }) => (

@@ -54,7 +54,7 @@ export function NewsletterSection() {
             DPDPA briefings, delivered to your inbox
           </h2>
           <p className="text-slate-600 mb-8 leading-relaxed">
-            Get practical DPDPA updates, compliance tips, and regulatory developments —
+            Get practical DPDPA updates, compliance tips, and regulatory developments:
             a short daily briefing, written for business owners, not lawyers.
           </p>
 

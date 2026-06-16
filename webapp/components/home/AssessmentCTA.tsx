@@ -57,7 +57,7 @@ export function AssessmentCTA() {
 
             <p className="text-slate-600 text-lg leading-relaxed mb-6">
               Our industry-specific assessments score your business across four dimensions:
-              applicability, maturity, risk, and urgency. You get a personalised result — not a generic report.
+              applicability, maturity, risk, and urgency. You get a personalised result, not a generic report.
             </p>
 
             {/* Score outcomes */}

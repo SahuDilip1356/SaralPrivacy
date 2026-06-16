@@ -2,9 +2,9 @@ import Link from "next/link";
 import { Download, FileText, CheckCircle } from "lucide-react";
 
 const whitePaperContents = [
-  "What DPDPA is and who it applies to — in plain English",
+  "What DPDPA is and who it applies to, in plain English",
   "Obligations for Data Fiduciaries: consent, notice, security, breach",
-  "Risk snapshots for all 12 sectors — plus the OPERATE framework",
+  "Risk snapshots for all 12 sectors, plus the OPERATE framework",
   "Rights of individuals and how businesses must respond",
   "Enforcement timeline and penalty structure",
   "Your 90-day privacy readiness action plan",
@@ -31,7 +31,7 @@ export function WhitePaperSection() {
             </h2>
 
             <p className="text-slate-300 text-lg leading-relaxed mb-7">
-              A practitioner-grade guide — now in 7 Indian languages — that covers everything your
+              A practitioner-grade guide, now in 7 Indian languages, that covers everything your
               business needs to know about DPDPA, from applicability to enforcement, without the legalese.
             </p>
 

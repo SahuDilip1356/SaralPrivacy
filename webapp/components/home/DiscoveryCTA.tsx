@@ -2,9 +2,9 @@ import Link from "next/link";
 import { ArrowRight, Search, Layers, EyeOff } from "lucide-react";
 
 const points = [
-  { icon: Layers, text: "276 business types mapped — pick yours, no blank forms" },
+  { icon: Layers, text: "276 business types mapped: pick yours, no blank forms" },
   { icon: EyeOff, text: "Surfaces the hidden, often-missed data most owners forget" },
-  { icon: Search, text: "Instant DPDPA risk snapshot — no email to see your result" },
+  { icon: Search, text: "Instant DPDPA risk snapshot: no email to see your result" },
 ];
 
 export function DiscoveryCTA() {
@@ -26,8 +26,8 @@ export function DiscoveryCTA() {
 
             <p className="text-slate-300 text-lg leading-relaxed mb-6">
               Most businesses underestimate it. Use the <strong className="text-white">Personal Data
-              Discovery</strong> tool to map the data your business actually collects — in about
-              three minutes — then move to the full assessment.
+              Discovery</strong> tool to map the data your business actually collects (in about
+              three minutes), then move to the full assessment.
             </p>
 
             <ul className="space-y-3 mb-8">

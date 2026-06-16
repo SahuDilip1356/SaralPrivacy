@@ -51,7 +51,7 @@ export async function BriefingsSection() {
             </h2>
             <p className="text-slate-600 mt-2 max-w-xl">
               Clear, actionable briefings on DPDPA updates, enforcement signals, and compliance
-              guidance — written for business owners, not lawyers.
+              guidance, written for business owners, not lawyers.
             </p>
           </div>
           <Link
