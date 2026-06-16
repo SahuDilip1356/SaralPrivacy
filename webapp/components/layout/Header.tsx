@@ -11,8 +11,19 @@ import { sectorNavLinks } from "@/lib/data/sectors";
 
 const navigation = [
   {
-    label: "Briefings",
-    href: "/briefings",
+    label: "Data Discovery",
+    href: "/discovery",
+    badge: "Free",
+  },
+  {
+    label: "Assessment",
+    href: "/assessment",
+    badge: "Free",
+  },
+  {
+    label: "Industries",
+    href: "/industries",
+    children: sectorNavLinks,
   },
   {
     label: "DPDPA Guide",
@@ -31,21 +42,11 @@ const navigation = [
     ],
   },
   {
-    label: "Industries",
-    href: "/industries",
-    children: sectorNavLinks,
+    label: "Daily Briefings",
+    href: "/briefings",
   },
   {
-    label: "Data Discovery",
-    href: "/discovery",
-  },
-  {
-    label: "Assessment",
-    href: "/assessment",
-    badge: "Free",
-  },
-  {
-    label: "Insights",
+    label: "Blog",
     href: "/blog",
   },
 ];
@@ -151,6 +152,11 @@ export function Header() {
                 onMouseEnter={() => item.children && openMenu(item.label)}
                 onMouseLeave={() => item.children && scheduleClose()}
               >
+                {item.badge && (
+                  <span className="pointer-events-none absolute -top-1.5 left-1/2 -translate-x-1/2 z-10 rounded-full bg-green-500 px-1.5 py-px text-[8px] font-bold uppercase tracking-wide text-white shadow-sm">
+                    {item.badge}
+                  </span>
+                )}
                 <Link
                   href={item.href}
                   className={cn(
@@ -161,11 +167,6 @@ export function Header() {
                   )}
                 >
                   {item.label}
-                  {item.badge && (
-                    <span className="ml-1 bg-green-100 text-green-700 text-[10px] font-bold px-1.5 py-0.5 rounded-full">
-                      {item.badge}
-                    </span>
-                  )}
                   {item.children && (
                     <ChevronDown
                       size={14}
