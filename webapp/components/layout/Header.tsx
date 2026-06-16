@@ -210,7 +210,7 @@ export function Header() {
             </button>
             <div className="relative hidden md:inline-flex">
               <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 z-10 whitespace-nowrap rounded-full bg-amber-400 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-navy-800 shadow-sm">
-                7 languages
+                7 Indian languages
               </span>
               <Link
                 href="/white-paper#download"
@@ -276,9 +276,11 @@ export function Header() {
             </button>
             <Link
               href="/white-paper#download"
-              className="block w-full text-center px-4 py-2.5 text-sm font-semibold bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+              className="flex w-full items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
             >
-              Download the Guide
+              <Download size={14} />
+              DPDPA Guide
+              <span className="rounded-full bg-amber-400 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-navy-800">7 Indian languages</span>
             </Link>
             <Link
               href="/contact"
