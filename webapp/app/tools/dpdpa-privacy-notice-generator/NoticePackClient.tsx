@@ -57,6 +57,14 @@ export default function NoticePackClient() {
       ))}
     </div>
   );
+  // single-select chips for 5+ options (clearer than a wrapping segmented pill)
+  const radio = (field: keyof NPState, vals: string[]) => (
+    <div className="chips">
+      {vals.map((v) => (
+        <button key={v} type="button" className={`opt ${S[field] === v ? "on" : ""}`} onClick={() => update({ [field]: v } as Partial<NPState>)}>{v}</button>
+      ))}
+    </div>
+  );
 
   const s = score(S);
   const b = band(s);
@@ -102,6 +110,8 @@ export default function NoticePackClient() {
   if (done) {
     const cb = consentBlocks(S.org);
     const fl = flags(S);
+    const risks = fl.filter((f) => f.severity === "risk");
+    const headsUp = fl.filter((f) => f.severity === "info");
     const consents: [string, string][] = [
       ["Service consent", cb.service],
       ["Marketing consent (separate)", cb.marketing],
@@ -134,12 +144,22 @@ export default function NoticePackClient() {
             <p style={{ fontSize: 13, color: "var(--slate-2)" }}>{b.msg}</p>
           </div>
           <div className="rcard">
-            <h3>Risk flags · {fl.length}</h3>
+            <h3>Risk flags · {risks.length}</h3>
             <div className="flags">
-              {fl.length ? fl.map((f, i) => (
+              {risks.length ? risks.map((f, i) => (
                 <div className="fl" key={i}><span className="d" style={{ background: f.color }} /><span><b>{f.title}</b> — {f.detail}</span></div>
-              )) : <p style={{ fontSize: 13, color: "var(--slate-2)" }}>No flags. Nicely scoped.</p>}
+              )) : <p style={{ fontSize: 13, color: "var(--slate-2)" }}>No outstanding defects.</p>}
             </div>
+            {headsUp.length > 0 && (
+              <>
+                <h3 style={{ marginTop: 16 }}>Heads-up · {headsUp.length}</h3>
+                <div className="flags">
+                  {headsUp.map((f, i) => (
+                    <div className="fl" key={i}><span className="d" style={{ background: f.color }} /><span><b>{f.title}</b> — {f.detail}</span></div>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         </div>
 
@@ -323,8 +343,8 @@ export default function NoticePackClient() {
               <>
                 <h2>Consent &amp; withdrawal</h2>
                 <p className="hint">How you take permission, and how people can withdraw it — withdrawal must be as easy as giving it (DPDPA §6).</p>
-                <div className="field"><label className="lab">How do you take consent?</label>{seg("consentVia", ["Website checkbox", "App screen", "Paper form", "WhatsApp opt-in", "Email", "Not documented"])}</div>
-                <div className="field"><label className="lab">How can people withdraw consent?</label>{seg("withdrawMethod", ["Email", "Web form", "Account settings", "WhatsApp", "Phone", "Not available yet"])}
+                <div className="field"><label className="lab">How do you take consent?</label>{radio("consentVia", ["Website checkbox", "App screen", "Paper form", "WhatsApp opt-in", "Email", "Not documented"])}</div>
+                <div className="field"><label className="lab">How can people withdraw consent?</label>{radio("withdrawMethod", ["Email", "Web form", "Account settings", "WhatsApp", "Phone", "Not available yet"])}
                   {S.withdrawMethod === "Not available yet" && <div className="flag"><WarnIcon /> <span>Withdrawal should be as easy as giving consent. Add a clear channel before publishing.</span></div>}
                 </div>
                 <div className="field"><label className="lab">Withdrawal / privacy contact email</label><input type="email" value={S.withdrawContact} onChange={(e) => update({ withdrawContact: e.target.value })} placeholder="privacy@yourbiz.in" /></div>
@@ -361,7 +381,7 @@ export default function NoticePackClient() {
               <>
                 <h2>Retention &amp; grievance contact</h2>
                 <p className="hint">How long you keep data, and who answers rights requests (DPDPA §5/§13).</p>
-                <div className="field"><label className="lab">How long do you keep personal data?</label>{seg("retention", ["Until service ends", "1 year", "3 years", "5–8 yrs (tax/legal)", "As required by law", "Forever", "Not sure"])}
+                <div className="field"><label className="lab">How long do you keep personal data?</label>{radio("retention", ["Until service ends", "1 year", "3 years", "5–8 yrs (tax/legal)", "As required by law", "Forever", "Not sure"])}
                   {["Forever", "Not sure"].includes(S.retention) && <div className="flag"><WarnIcon /> <span>“{S.retention}” is a weak position. Set a time-bound or purpose-linked period where you can.</span></div>}
                 </div>
                 <div className="row2">

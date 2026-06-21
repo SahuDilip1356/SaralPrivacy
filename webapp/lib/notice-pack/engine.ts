@@ -88,26 +88,32 @@ export function score(S: NPState): number {
   if (S.retention && !["Forever", "Not sure"].includes(S.retention)) s += w.retention;
   if (S.children !== "Yes" || S.childWhy.length) s += w.children;
   if (S.slug || S.cEmail) s += w.dsar;
-  return Math.min(100, s);
+  let v = Math.min(100, s);
+  // Honesty cap: an unresolved defect must not read as "Strong" (≥85).
+  if (flags(S).some((f) => f.severity === "risk")) v = Math.min(v, 84);
+  return v;
 }
 
 export function band(s: number): NPBand {
   return SCORE_BANDS.find((b) => s >= b.min) as NPBand;
 }
 
-export interface RiskFlag { color: string; title: string; detail: string; }
+export interface RiskFlag { color: string; title: string; detail: string; severity: "risk" | "info"; }
 export function flags(S: NPState): RiskFlag[] {
   const f: RiskFlag[] = [];
-  if (S.children === "Yes") f.push({ color: "#E8AB42", title: "Children’s data selected", detail: "Verifiable parental consent required; no targeted ads." });
+  // ── Risks: real defects that lower the score (capped below "Strong") ──
+  if (!S.cEmail) f.push({ severity: "risk", color: "#E24B4A", title: "No grievance contact", detail: "Add a contact email for rights requests (DPDPA §5/§13)." });
+  if (!(S.withdrawMethod && S.withdrawMethod !== "Not available yet")) f.push({ severity: "risk", color: "#E24B4A", title: "No withdrawal channel", detail: "Withdrawal must be as easy as giving consent — add a clear channel." });
+  if (["Forever", "Not sure"].includes(S.retention)) f.push({ severity: "risk", color: "#E8AB42", title: "Weak retention", detail: "Set a time-bound or purpose-linked period instead of “" + (S.retention || "—") + "”." });
+  if (!S.noVendors && !S.vendors.length) f.push({ severity: "risk", color: "#E8AB42", title: "No vendors disclosed", detail: 'Add who you share data with, or tick "no third party".' });
+  if (S.data.some((d) => isVague(S.purpose[d]))) f.push({ severity: "risk", color: "#E8AB42", title: "Vague purpose detected", detail: "Some data has a too-broad purpose — describe the specific activity." });
+  if (S.children === "Yes" && !S.childWhy.length) f.push({ severity: "risk", color: "#E8AB42", title: "Children’s data not detailed", detail: "State why children’s data is collected." });
+  // ── Heads-up: informational, not defects — no score impact ──
   const sens = S.data.filter((d) => SENSITIVE.has(d));
-  if (sens.length) f.push({ color: "#E24B4A", title: "Sensitive data selected", detail: sens.slice(0, 4).join(", ") + (sens.length > 4 ? "…" : "") + " — handle with extra care." });
+  if (sens.length) f.push({ severity: "info", color: "#35B6AE", title: "Sensitive data in scope", detail: sens.slice(0, 4).join(", ") + (sens.length > 4 ? "…" : "") + " — handle with extra care." });
+  if (S.children === "Yes") f.push({ severity: "info", color: "#35B6AE", title: "Children’s data in scope", detail: "Verifiable parental consent required; no targeted ads — clause added." });
   const mkt = (SECTORS.find((s) => s.key === S.sector)?.purposes) || [];
-  if (mkt.some((p) => /market/i.test(p))) f.push({ color: "#35B6AE", title: "Marketing in scope", detail: "A separate marketing consent block is included — never bundle it into service consent." });
-  if (!S.noVendors && !S.vendors.length) f.push({ color: "#E8AB42", title: "No vendors disclosed", detail: 'Add who you share data with, or tick "no third party".' });
-  if (["Forever", "Not sure"].includes(S.retention)) f.push({ color: "#E8AB42", title: "Weak retention", detail: "Set a time-bound or purpose-linked period." });
-  if (!(S.withdrawMethod && S.withdrawMethod !== "Not available yet")) f.push({ color: "#E8AB42", title: "No withdrawal channel", detail: "Add a clear way to withdraw consent." });
-  if (!S.cEmail) f.push({ color: "#E24B4A", title: "No grievance contact", detail: "Add a contact email for rights requests." });
-  if (S.data.some((d) => isVague(S.purpose[d]))) f.push({ color: "#E8AB42", title: "Vague purpose detected", detail: "Some data has a too-broad purpose." });
+  if (mkt.some((p) => /market/i.test(p))) f.push({ severity: "info", color: "#35B6AE", title: "Marketing in scope", detail: "A separate marketing consent block is included — never bundle it into service consent." });
   return f;
 }
 

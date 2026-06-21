@@ -63,6 +63,12 @@
 .npb .seg{display:inline-flex;border:1px solid #CBD5E1;border-radius:var(--pill);overflow:hidden;flex-wrap:wrap}
 .npb .seg button{background:#fff;border:none;padding:9px 16px;font-family:inherit;font-size:13px;font-weight:600;color:var(--slate-2);cursor:pointer;transition:.15s}
 .npb .seg button.on{background:var(--green);color:#fff}
+/* single-select option chips (for 5+ options — clearer than a wrapping segmented pill) */
+.npb .opt{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:var(--r-md);padding:10px 13px;cursor:pointer;font-size:13px;background:#fff;font-family:inherit;color:var(--slate);text-align:left;transition:border-color .15s,background .15s}
+.npb .opt:hover{border-color:#CBD5E1}
+.npb .opt::before{content:"";width:15px;height:15px;border-radius:50%;border:1.5px solid #CBD5E1;flex:0 0 auto;transition:.15s}
+.npb .opt.on{border-color:var(--green);background:var(--green-tint);color:var(--green-d);font-weight:600}
+.npb .opt.on::before{border-color:var(--green);background:radial-gradient(circle,#fff 0 28%,var(--green) 36%)}
 
 .npb .ptable{display:flex;flex-direction:column;gap:8px}
 .npb .prow{display:grid;grid-template-columns:130px 1fr;gap:10px;align-items:center}
