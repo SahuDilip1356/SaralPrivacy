@@ -594,5 +594,148 @@ once and reused by the Notice rights block. Build order: minimal intake first (c
 dashboard next.
 
 ---
+---
+
+# PART VII — Build plan / sprints (added 2026-06-21)
+
+**Assumptions:** solo founder + Claude Code (1 effective builder) · **1-week sprints** · ~3.5 committed
+build-days/week (≈75% capacity) · DB = **Supabase Postgres** · Sprint 1 starts Mon 2026-06-22.
+**Carryover:** none — front-end P0 is built and on a Vercel preview (`/tools/dpdpa-privacy-notice-generator`).
+**Shippable after Sprint 1** as a clean, measurable validation surface; rest is built against real demand.
+
+| Sprint | Dates | Goal | Backlog (est build-days) |
+|--------|-------|------|--------------------------|
+| **S1** | Jun 22–28 | Not broken + leads captured | QA blockers — hide/wire 2 dead CTAs · fix copy-after-unlock bug · required-field validation · modal a11y · hide Hindi (EN-only) (1.5d) · `/api/capture` + `email_captures` (Supabase), replaces Formspree (1d) · fire 14 events → GA + `notice_events` · localStorage save/resume · real evidence hash+id (1d) |
+| **S2** | Jun 29–Jul 5 | A page that sells + ranks | What-you-get cards · How-it-works · See-sample · hero (1.5d) · HowTo schema + internal links (homepage/guide/assessment/discovery/sector blogs) (1d) · server-side branded PDF or robust print fallback (1.5d) |
+| **S3** | Jul 6–12 | Cross-tool funnel | Journey D (Assessment CTA + prefill + tag, 1d) · Journey C (Discovery prefill + event, 1d) · Journey B (consultant toggle + advisor tag, 0.5d) · `privacy_notice_runs` persistence + stored evidence (1d) |
+| **S4** | Jul 13–19 | DSAR live (minimal) + lead board | Minimal DSAR — slug claim · `/r/[slug]` intake · 6 types · email-confirm · Request ID · owner notify · `dsar_requests` (2.5d) · internal `app/admin/notice-leads` (table + filters + CSV) (1d) |
+| **S5** | Jul 20–26 | DSAR owner dashboard + tests | Owner dashboard (scorecards · table · status · CSV · preview) behind magic-link (2.5d) · tests: unit (engine/score/guardrail) + e2e (wizard→gate→export; DSAR submit→confirm) (1.5d) |
+| **S6** | Jul 27–Aug 2 | P1 depth | Hosted notice page `/n/[slug]` + version archive + review reminder (2d) · full Hindi (data/purpose strings, native review) (1.5d) · vendor disclosure table (1d) |
+
+**Forced gate:** one **legal sign-off** (template + §17b validity guardrails + children's clause + DSAR copy) before any public/prod promote — start it in parallel during S1–S2.
+
+### Risks
+| Risk | Mitigation |
+|---|---|
+| DB/auth setup slows S1/S4 | Supabase MCP + magic-link (no password infra) |
+| Server PDF on Vercel fiddly | ship print fallback; defer true PDF if it slips |
+| Legal sign-off blocks launch | run the review in parallel from S1 |
+| Solo capacity / interrupts | plan ~75%; cut stretch (Hindi-finish) first |
+
+### Open decisions (gating S1)
+1. DB = Supabase Postgres? 2. Hindi: hide now (rec) or finish in S1? 3. Booking URL for "Book a review" + hide "Create Data Rights Form" until S4? 4. Go straight to `/api/capture` (rec) or interim Formspree id?
+
+### Definition of Done (per item)
+- [ ] Type-checks + `next build` passes · [ ] Works on the Vercel preview · [ ] Mobile verified · [ ] Founder sign-off · [ ] (data/legal items) legal-reviewed
+
+---
+---
+
+# PART VIII — Engineering build plan (dev tasks · eng review · testing)
+
+## VIII-0. Reuse baseline — build ON existing infra, add ~nothing
+Verified from the repo (`webapp/`). **Correction to earlier "PostgreSQL" assumption — the app uses Appwrite.**
+| Need | Reuse (already in repo) |
+|---|---|
+| Database + storage | **Appwrite** — `lib/appwrite.ts` (`databases`, `storage`, `DB_ID`, `COLLECTIONS`, `ID`, `Query`, `getFileViewUrl`) |
+| Spam / rate-limit | `lib/abuseGuard.ts` (`rateLimit`, `getClientIp`, `HONEYPOT_FIELD`, `isHoneypotTripped`) |
+| Transactional email | `lib/email.ts` (**Resend**) — add `sendNoticeLeadAlert`, `sendDsarConfirm`, `sendDsarOwnerAlert` |
+| Validation | **zod** (installed) |
+| Auth (owner/admin) | Appwrite magic-URL (used in `app/subscribe`); existing `app/admin` area |
+| Analytics | GA (`G-…` in `layout.tsx`) + `lib/analytics.ts` |
+| Route pattern | copy `app/api/subscribe/route.ts` → rateLimit → honeypot → zod → `databases.createDocument` → email |
+**New deps: none** — except an optional server-side PDF renderer (deferred; see Dependencies).
+
+## VIII-1. New Appwrite collections (add to `COLLECTIONS`)
+Appwrite uses document permissions, not SQL/RLS — scope owner docs with per-document read perms.
+- `notice_captures` — email · name · business_name · sector · readiness_score · export_type · source · ip/city/country · created_at
+- `notice_runs` — notice_id(unique) · version · language · sector · input_json · readiness_score · risk_flags · notice_hash · pdf_file_id · created_at
+- `notice_events` — name(whitelisted) · session_id · sector · payload(no PII) · created_at
+- `business_profiles` — slug(unique idx) · name · sector · owner_email · created_at
+- `dsar_requests` — request_id(unique) · profile_slug · type · requester_name · requester_email · detail · status · confirm_token · confirmed_at · created_at
+
+## VIII-2. Per-sprint dev tasks (files · acceptance)
+**S1 — not broken + capture/events**
+- `NoticePackClient.tsx`: hide 2 inert CTAs; fix copy-after-unlock (store requested text); per-step required-field gate (S1: name+sector; S8: cEmail) with disabled Next + inline error; modal focus-trap/Esc/aria; hide Hindi behind flag; **localStorage** save/resume; real evidence — `crypto.subtle` SHA-256 + `notice_id`.
+- `app/api/notice/capture/route.ts` (clone subscribe): rateLimit→honeypot→zod→`createDocument(notice_captures)`→`sendNoticeLeadAlert`. Client gate posts here (drop Formspree).
+- `app/api/notice/events/route.ts`: zod-whitelist 14 names→`notice_events`; `lib/notice-pack/track.ts` fires events + `gtag`.
+- *Acceptance:* no dead CTA · correct copy · can't export with placeholders · refresh restores · capture row + founder alert · 429 on flood · events recorded.
+
+**S2 — page sells + ranks + PDF**
+- `page.tsx`: hero · what-you-get cards · how-it-works · see-sample (prefilled demo link) · trust line. HowTo schema. Internal links from homepage toolkit, `/learn` guide, assessment + discovery result pages, industry pages.
+- PDF: enhance **client print** (popup-block fallback + branded header/logo) [P0]; server PDF deferred.
+- *Acceptance:* sections render · links resolve · PDF downloads or shows fallback.
+
+**S3 — cross-tool + run persistence**
+- `app/api/notice/run/route.ts` → `notice_runs` on export (hash, score, flags). Journey D (Assessment CTA → `?sector=&src=assessment`), C (Discovery prefill `src=discovery`), B (step-1 "for a client?" → `advisor` tag). Client reads params → `applySector` + source tag on capture/events.
+- *Acceptance:* prefill from params · source tags flow to capture · runs persisted.
+
+**S4 — minimal DSAR + lead board**
+- `app/api/business/route.ts` (slug claim, unique) → `business_profiles`. `app/r/[slug]/page.tsx` (SSR lookup) + form → `app/api/dsar/request/route.ts` (rateLimit+honeypot+zod) → `dsar_requests` status `pending_confirm` → `sendDsarConfirm`. `app/api/dsar/confirm/route.ts?token` → `Received` → `sendDsarOwnerAlert`. `app/admin/notice-leads/page.tsx` (existing admin auth) → list `notice_captures` + filters + CSV.
+- *Acceptance:* unique slug · submit→confirm→Received+owner alert · admin list + CSV.
+
+**S5 — DSAR owner dashboard + tests**
+- Appwrite magic-URL login → owner view: scorecards · table · status PATCH (`app/api/dsar/[id]/status`, owner-scoped perms) · CSV · preview public. Tests (below).
+- *Acceptance:* owner sees only own requests · status persists · CI green.
+
+**S6 — P1 depth**
+- Hosted notice `/n/[slug]` (publish a `notice_run`; version history) + review reminder · full **Hindi** strings (native review) + re-enable toggle · vendor disclosure table output.
+
+## VIII-3. Engineering review (plan-eng-review)
+```
+ARCHITECTURE
+  Next.js (App Router, Vercel) — front-end built.
+   app/tools/dpdpa-privacy-notice-generator  (wizard SPA)         [built]
+   app/r/[slug]                              (DSAR intake SSR)    [S4]
+   app/admin/notice-leads                    (lead board)         [S4]
+   app/api/notice/{capture,events,run,pdf}                        [S1–S3]
+   app/api/business · app/api/dsar/{request,confirm,[id]/status} [S4–S5]
+  Engine: lib/notice-pack/{data,engine,types,track}  (deterministic, no LLM)
+  Data:   Appwrite collections (VIII-1) + Appwrite Storage (PDF)
+  Reuse:  abuseGuard · email(Resend) · zod · analytics(GA) · appwrite
+
+DATA FLOW
+  Wizard → localStorage (client) → engine assembles preview (ungated).
+  Export → email gate → POST /api/notice/capture (Appwrite write + Resend alert) → POST /api/notice/run (persist + hash) → PDF/HTML.
+  Events → POST /api/notice/events (batch) + gtag. State: client until export; server on capture/export only.
+  DSAR → /r/[slug] submit → /api/dsar/request (pending_confirm) → confirm email → /api/dsar/confirm → Received → owner alert → owner dashboard status updates.
+
+EDGE CASES (≥1 per path)
+  capture: bad email(400) · honeypot(silent-ok) · flood(429) · oversized(413) · Appwrite down(502, don't lose UX).
+  events: unknown name(drop) · PII in payload(strip) · flood(rate-limit).
+  run: duplicate notice_id(idempotent) · giant input(cap).
+  business/slug: taken(409) · reserved/invalid chars · squatting(rate-limit + email-confirm before public).
+  dsar/request: invalid type · missing email · spam(confirm-gate+honeypot+rate-limit) · XSS in detail(sanitize/escape).
+  dsar/confirm: token invalid/expired/reused(one-time) · already-confirmed(idempotent).
+  dsar/status: not owner(403) · invalid status · concurrent edit(last-write).
+  auth: magic-link expired/wrong-email · admin not in allowlist(403).
+  privacy: never store real Aadhaar/PAN/health — categories only; events carry no PII.
+
+TEST MATRIX
+  unit: engine(buildNotice per sector · score · band · flags severity+cap · isVague · slugify · vclause · retText · evidence · rightsBlock) · validity guardrail(no GDPR rights, §6 not §7) · CSV serializer · sha256.
+  integration: /api/notice/capture(write+tag+reject+429) · /events(whitelist) · /business(unique 409) · /dsar/request+confirm(state machine + owner alert) · /dsar/status(owner-scope 403) · email senders(mock Resend).
+  e2e(Playwright): wizard→preview(no email) · export→gate→capture→download · prefill(?sector=) · DSAR submit→confirm→owner dashboard→status→CSV · admin lead board lists capture.
+  a11y: wizard keyboard + modal focus-trap (axe).
+
+DX FRICTION
+  TTHW: `npm run dev` + Appwrite dev project + env (APPWRITE_*, RESEND_API_KEY, NEXT_PUBLIC_GA). Deploy: Vercel auto per push.
+  (Note: dev server can't run in the agent sandbox — verify locally / via Vercel preview.)
+
+DEPENDENCIES
+  none new for S1–S5 — reuse appwrite · resend · zod · abuseGuard · analytics.
+  testing: add vitest (unit) + Playwright (e2e) — justified: no runner present; standard, dev-only.
+  PDF (S2+, optional): puppeteer-core + @sparticuz/chromium to render notice HTML → Appwrite Storage.
+    Heaviest dep; only if branded server PDF is required. Default: client print (no dep). DECISION NEEDED.
+```
+
+## VIII-4. Testing strategy
+**Pyramid:** many unit (engine is pure → cheapest, highest value) · some integration (route handlers, Appwrite/Resend mocked) · few e2e (the 3 revenue-critical funnels).
+- **Cover:** engine assembly + scoring + §17b validity guardrail (security boundary) · capture/DSAR state machines · owner-scoping (authorization) · CSV/hash integrity · the export funnel.
+- **Skip:** framework/Next internals · trivial presentational components · generated types · the deterministic data tables (lint, not test).
+- **Coverage targets:** `lib/notice-pack/*` **100%** (pure, critical) · API route logic **≥80%** · 3 e2e funnels green.
+- **Example cases:** "clinic notice never emits GDPR portability/restriction" · "score caps ≤84 when a risk flag exists" · "DSAR confirm token is single-use" · "owner A cannot read owner B's requests" · "honeypot submit stores nothing, returns ok".
+- **CI gates (per PR):** `tsc` + `eslint` + `vitest` + `next build`; Playwright e2e pre-deploy; Vercel preview per PR. Block merge on red.
+
+---
 
 *House standard: no competitive-analysis section (lives in product-context). Full detail intended — this is the dev-ready spec.*
