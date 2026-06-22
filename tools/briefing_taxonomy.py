@@ -16,9 +16,23 @@ import re
 # The day 91–240 macro themes map onto the journey spine. Foundational weeks (1–90)
 # are mostly "learn"; the industry blocks are assess → fix → sustain.
 _STAGE_BY_WEEK_THEME = {
-    "industry data reality":        "assess",
+    # Day 91–240 industry blocks
+    "industry data reality":           "assess",
     "industry compliance touchpoints": "fix",
-    "industry response packs":      "sustain",
+    "industry response packs":         "sustain",
+    # Day 1–90 foundational editorial arc (for backfill of the live archive)
+    "what is dpdpa?":                      "learn",
+    "why smbs should care":                "learn",
+    "business implications":               "learn",
+    "where to start":                      "assess",
+    "how dpdpa affects each function":     "assess",
+    "what readiness looks like":           "assess",
+    "industry use cases":                  "assess",
+    "mistakes smbs make":                  "fix",
+    "30-day smb action plan":              "fix",
+    "act now":                             "fix",
+    "make it practical":                   "fix",
+    "convert awareness into commitment":   "sustain",
 }
 _STAGE_SLUGS = {"learn", "assess", "fix", "sustain"}
 
