@@ -3,6 +3,7 @@ import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 import { BriefingSubscribeCard } from "@/components/briefings/BriefingSubscribeCard";
 import { BriefingsExplorer, type ExplorerBriefing } from "@/components/briefings/BriefingsExplorer";
 import { FORMAT_SLUGS } from "@/lib/data/briefing-taxonomy";
+import { itemListSchema } from "@/lib/schema";
 import { unstable_cache } from "next/cache";
 
 export const revalidate = 3600; // Re-fetch every 60 min — briefings are published once daily
@@ -76,6 +77,15 @@ export default async function BriefingsPage() {
 
   return (
     <div className="min-h-screen bg-slate-50">
+      {/* ItemList JSON-LD — helps crawlers/LLMs enumerate the archive (latest 50) */}
+      {all.length > 0 && itemListSchema(
+        all.slice(0, 50).map((b) => ({
+          name: b.title,
+          url: `https://saralprivacy.com/briefings/${b.slug}`,
+        })),
+        "DPDPA Daily Briefings",
+      )}
+
       {/* Page header */}
       <div className="bg-navy-700 py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
