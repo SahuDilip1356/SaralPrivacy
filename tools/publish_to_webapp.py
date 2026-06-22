@@ -127,6 +127,11 @@ def build_payload(content: dict, infographic_b64: str) -> dict:
     date_str = content.get("date", get_today_iso())
     day_num  = content.get("day_number", 1)
 
+    # Discovery facets (stage/sector/content_type). Honours explicit values merged from
+    # the roadmap in main(), else derives from week_theme / topic / infographic_type.
+    from tools.briefing_taxonomy import derive as derive_taxonomy
+    tax = derive_taxonomy(content)
+
     overview        = content.get("overview", {})
     key_points      = content.get("key_points", {})
     what_this_means = content.get("what_this_means", {})
@@ -151,6 +156,11 @@ def build_payload(content: dict, infographic_b64: str) -> dict:
         "save":         content.get("save_worthy_takeaway", ""),
         # Infographic title (since infographic_title attribute was at capacity)
         "inf_title":    content.get("infographic", {}).get("title", ""),
+        # Discovery facets — also packed here so the detail page can render badges
+        "stage":        tax["stage"],
+        "sector":       tax["sector"],
+        "content_type": tax["content_type"],
+        "week_theme":   content.get("week_theme", ""),
     }, ensure_ascii=False)
 
     # Action checklist — array of action strings
@@ -160,20 +170,23 @@ def build_payload(content: dict, infographic_b64: str) -> dict:
         if item.get("action")
     ]
 
-    # Tags from topic words
+    # Tags = format slug first (drives the Format facet), then up to 5 topic words.
     topic = content.get("topic", "")
-    tags  = [w.lower() for w in topic.replace(",", "").split()[:5]]
+    word_tags = [w.lower() for w in topic.replace(",", "").split()[:5]]
+    tags = [tax["content_type"]] + [w for w in word_tags if w != tax["content_type"]]
 
     return {
-        # Core fields (map to existing Appwrite attributes)
+        # Core fields (map to existing Appwrite attributes).
+        # Discovery facets ride on existing attributes (collection is at capacity):
+        #   Stage  -> category, Sector -> industries[0], Format -> tags[0]
         "title":            content.get("subject_line", f"Day {day_num}: {topic}"),
         "excerpt":          content.get("preview_text", summary[:200]),
         "summary":          summary,           # Hook body (overview.body)
         "why_it_matters":   why_rich,          # Extended JSON envelope
         "action_checklist": checklist,
-        "category":         "compliance-guidance",
-        "tags":             tags,
-        "industries":       ["general"],
+        "category":         tax["stage"],      # Stage facet (learn|assess|fix|sustain)
+        "tags":             tags,              # tags[0] = Format facet
+        "industries":       [tax["sector"]],   # Sector facet
         "read_time":        max(3, content.get("word_count", 300) // 200),
         "featured":         False,
         "author":           "DPDPA Editorial Team",
@@ -247,6 +260,19 @@ def main(content: dict) -> dict:
     load_env()
     date_str = content.get("date", get_today_iso())
     day_num  = content.get("day_number", 1)
+
+    # Recover authoritative roadmap fields the Pydantic content model drops
+    # (week_theme + explicit stage/sector/content_type). The content JSON does not
+    # carry these, so merge them back from roadmap_{date}.json without overwriting
+    # anything the content already provides.
+    try:
+        from tools.utils import read_json
+        roadmap = read_json(tmp_path(f"roadmap_{date_str}.json"))
+        for key in ("week_theme", "stage", "sector", "content_type", "infographic_type"):
+            if not content.get(key) and roadmap.get(key):
+                content[key] = roadmap[key]
+    except Exception as e:
+        logger.warning(f"Could not merge roadmap taxonomy for {date_str} (non-blocking): {e}")
 
     logger.info(f"Publishing Day {day_num} briefing: '{content.get('topic', '?')}' ({date_str})")
 
