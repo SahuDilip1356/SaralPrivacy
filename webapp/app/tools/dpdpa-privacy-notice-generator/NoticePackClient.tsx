@@ -1,14 +1,17 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   DATA_GROUPS, SENSITIVE, DATA_PURPOSE, CONTEXTS, VENDORS, CHILD_WHY, SECTORS, consentBlocks,
 } from "@/lib/notice-pack/data";
 import {
-  buildNotice, score, band, flags, isVague, slugify, miniFor, evidence, rightsBlock,
+  buildNotice, score, band, flags, isVague, slugify, miniFor, evidence, rightsBlock, newNoticeId, sha256,
 } from "@/lib/notice-pack/engine";
+import { track } from "@/lib/notice-pack/track";
 import type { NPState } from "@/lib/notice-pack/types";
 
-const FORMSPREE = "https://formspree.io/f/your-form-id"; // ← swap for the real form id to go live
+const SHOW_HINDI = false; // Hindi output is partial — hidden until fully translated (spec S6)
+const LS_KEY = "np_state_v1";
+const HONEYPOT = "hp_url";
 
 const INITIAL: NPState = {
   org: "", website: "", sector: "", data: [], contexts: [], purpose: {},
@@ -19,6 +22,9 @@ const INITIAL: NPState = {
 const WarnIcon = () => (
   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#B98A1E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 9v4M12 17h.01" /><path d="M10.3 3.9 2 18a2 2 0 0 0 1.7 3h16.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" /></svg>
 );
+const emailOk = (e: string) => /\S+@\S+\.\S+/.test(e);
+
+type Pending = { kind: "pdf" | "copyFull" | "copyText"; text?: string } | null;
 
 export default function NoticePackClient() {
   const [S, setS] = useState<NPState>(INITIAL);
@@ -27,9 +33,41 @@ export default function NoticePackClient() {
   const [unlocked, setUnlocked] = useState(false);
   const [gateOpen, setGateOpen] = useState(false);
   const [gateDone, setGateDone] = useState(false);
-  const [pending, setPending] = useState<"pdf" | "copy" | null>(null);
+  const [pending, setPending] = useState<Pending>(null);
   const [email, setEmail] = useState("");
   const [consent, setConsent] = useState(false);
+  const [noticeId, setNoticeId] = useState("");
+  const [hash, setHash] = useState("");
+  const hydrated = useRef(false);
+  const hpRef = useRef<HTMLInputElement>(null);
+  const gateEmailRef = useRef<HTMLInputElement>(null);
+
+  // ── persistence: restore once on mount, then save on change ──
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(LS_KEY);
+      if (saved) {
+        const o = JSON.parse(saved);
+        if (o.S) setS(o.S);
+        if (typeof o.step === "number") setStep(o.step);
+      }
+    } catch { /* ignore */ }
+    setNoticeId(newNoticeId());
+    track("notice_builder_started");
+    hydrated.current = true;
+  }, []);
+  useEffect(() => {
+    if (!hydrated.current) return;
+    try { localStorage.setItem(LS_KEY, JSON.stringify({ S, step })); } catch { /* ignore */ }
+  }, [S, step]);
+
+  // ── real evidence hash, recomputed for the result view ──
+  useEffect(() => {
+    if (!done) return;
+    let live = true;
+    sha256(buildNotice(S, S.lang)).then((h) => { if (live) setHash(h); });
+    return () => { live = false; };
+  }, [done, S]);
 
   const update = (patch: Partial<NPState>) => setS((p) => ({ ...p, ...patch }));
   const toggle = (field: "data" | "contexts" | "vendors" | "childWhy", val: string) =>
@@ -41,7 +79,7 @@ export default function NoticePackClient() {
       if (field === "data" && !has && !(val in p.purpose)) patch.purpose = { ...p.purpose, [val]: DATA_PURPOSE[val] || "" };
       return { ...p, ...patch };
     });
-  const applySector = (key: string) =>
+  const applySector = (key: string) => {
     setS((p) => {
       const sec = SECTORS.find((s) => s.key === key);
       if (!sec) return { ...p, sector: key };
@@ -49,6 +87,8 @@ export default function NoticePackClient() {
       sec.data.forEach((d) => (purpose[d] = DATA_PURPOSE[d] || ""));
       return { ...p, sector: key, data: [...sec.data], contexts: [...sec.contexts], vendors: [...sec.vendors], noVendors: false, children: sec.children ? "Yes" : "No", purpose };
     });
+    if (key) track("business_type_selected", { sector: SECTORS.find((s) => s.key === key)?.label || key });
+  };
 
   const seg = (field: keyof NPState, vals: string[]) => (
     <div className="seg">
@@ -57,7 +97,6 @@ export default function NoticePackClient() {
       ))}
     </div>
   );
-  // single-select chips for 5+ options (clearer than a wrapping segmented pill)
   const radio = (field: keyof NPState, vals: string[]) => (
     <div className="chips">
       {vals.map((v) => (
@@ -69,49 +108,114 @@ export default function NoticePackClient() {
   const s = score(S);
   const b = band(s);
 
-  // ---- export / gate ----
+  // ── per-step required-field validation ──
+  function stepValid(n: number): boolean {
+    if (n === 0) return !!(S.org.trim() && S.sector);
+    if (n === 1) return S.data.length > 0;
+    if (n === 7) return !!(S.cName.trim() && emailOk(S.cEmail));
+    return true;
+  }
+  const stepHint = (n: number): string => {
+    if (n === 0 && !stepValid(0)) return "Enter a business name and pick a sector to continue.";
+    if (n === 1 && !stepValid(1)) return "Select at least one data category.";
+    if (n === 7 && !stepValid(7)) return "Add a grievance contact name and a valid email.";
+    return "";
+  };
+
+  // ── export / gate ──
   const fullHtml = () =>
     `<!doctype html><meta charset="utf-8"><title>Privacy Notice — ${S.org}</title><div style="font-family:Inter,Arial,sans-serif;max-width:760px;margin:auto;color:#334155;line-height:1.6">${buildNotice(S, S.lang)}</div>`;
-  const doExport = (which: "pdf" | "copy") => {
-    if (which === "pdf") {
+  const runPending = (p: Pending) => {
+    if (!p) return;
+    if (p.kind === "pdf") {
       const w = window.open("", "_blank");
-      if (w) { w.document.write(fullHtml()); w.document.close(); w.focus(); setTimeout(() => w.print(), 300); }
-    } else {
-      navigator.clipboard?.writeText(fullHtml());
+      if (w) { w.document.write(fullHtml()); w.document.close(); w.focus(); setTimeout(() => w.print(), 300); track("notice_pdf_downloaded", { sector: S.sector }); }
+      else alert("Please allow pop-ups to download the PDF, or use Copy HTML instead.");
+    } else if (p.kind === "copyFull") {
+      navigator.clipboard?.writeText(fullHtml()); track("notice_html_copied", { sector: S.sector });
+    } else if (p.kind === "copyText") {
+      navigator.clipboard?.writeText(p.text || "");
     }
   };
-  const requestExport = (which: "pdf" | "copy") => {
-    setPending(which);
-    if (unlocked) doExport(which);
+  const requestExport = (kind: "pdf" | "copyFull") => {
+    const p: Pending = { kind };
+    setPending(p);
+    if (unlocked) runPending(p);
     else { setGateDone(false); setGateOpen(true); }
   };
   const onCopyText = (text: string) => {
-    if (!unlocked) { setPending("copy"); setGateDone(false); setGateOpen(true); return; }
-    navigator.clipboard?.writeText(text);
+    const p: Pending = { kind: "copyText", text };
+    setPending(p);
+    if (unlocked) runPending(p);
+    else { setGateDone(false); setGateOpen(true); }
   };
-  const submitGate = (e: React.FormEvent) => {
+  const submitGate = async (e: React.FormEvent) => {
     e.preventDefault();
-    const fd = new FormData();
-    fd.append("source", "notice-generator");
-    fd.append("email", email);
-    fd.append("business_name", S.org);
-    fd.append("sector", SECTORS.find((x) => x.key === S.sector)?.label || "");
-    fd.append("export_type", pending || "");
-    fd.append("readiness_score", String(s));
-    fetch(FORMSPREE, { method: "POST", body: fd, headers: { Accept: "application/json" } }).catch(() => {});
+    const payload: Record<string, unknown> = {
+      email, business_name: S.org, sector: SECTORS.find((x) => x.key === S.sector)?.label || "",
+      readiness_score: s, export_type: pending?.kind === "pdf" ? "pdf" : "copy", source: "notice-generator", consent,
+      [HONEYPOT]: hpRef.current?.value || "",
+    };
+    fetch("/api/notice/capture", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) }).catch(() => {});
+    track("notice_lead_captured", { sector: S.sector, score: s });
     setUnlocked(true);
     setGateDone(true);
-    setTimeout(() => { setGateOpen(false); if (pending) doExport(pending); }, 900);
+    setTimeout(() => { setGateOpen(false); runPending(pending); }, 900);
   };
 
   const STEP_LABELS = ["Profile", "Data", "Context", "Purpose", "Consent", "Vendors", "Children", "Retention"];
 
-  // ---------- result view ----------
+  function LangBar() {
+    if (!SHOW_HINDI) return null;
+    return (
+      <div className="langbar">
+        <button className={S.lang === "en" ? "on" : ""} onClick={() => update({ lang: "en" })}>English</button>
+        <button className={S.lang === "hi" ? "on" : ""} onClick={() => update({ lang: "hi" })}>हिन्दी</button>
+      </div>
+    );
+  }
+
+  // ── gate modal (focus + Esc + aria) ──
+  function Gate() {
+    useEffect(() => {
+      const prev = document.activeElement as HTMLElement | null;
+      gateEmailRef.current?.focus();
+      const onKey = (ev: KeyboardEvent) => { if (ev.key === "Escape") setGateOpen(false); };
+      document.addEventListener("keydown", onKey);
+      return () => { document.removeEventListener("keydown", onKey); prev?.focus?.(); };
+    }, []);
+    return (
+      <div className="modal" role="dialog" aria-modal="true" aria-labelledby="np-gate-title" onClick={(e) => { if (e.target === e.currentTarget) setGateOpen(false); }}>
+        <div className="modal__card">
+          <button className="modal__close" aria-label="Close" onClick={() => setGateOpen(false)}>×</button>
+          {!gateDone ? (
+            <form onSubmit={submitGate}>
+              <h3 id="np-gate-title">Get your Notice Pack</h3>
+              <p className="msub">Add your email and we’ll unlock the export and email you a copy you can reopen anytime.</p>
+              <input ref={gateEmailRef} type="email" placeholder="Work email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+              <input ref={hpRef} type="text" name={HONEYPOT} tabIndex={-1} autoComplete="off" aria-hidden="true" style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }} />
+              <label className="consent"><input type="checkbox" required checked={consent} onChange={(e) => setConsent(e.target.checked)} /> <span>Send me practical DPDPA updates. No spam, unsubscribe anytime.</span></label>
+              <button type="submit" className="btn">Unlock my pack <span className="arr">→</span></button>
+            </form>
+          ) : (
+            <div className="ok">
+              <span className="seal"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m5 12 5 5 9-11" /></svg></span>
+              <h3>Unlocked.</h3>
+              <p className="msub" style={{ marginBottom: 0 }}>{pending?.kind === "pdf" ? "Your download is starting…" : "Done — your content is on the clipboard."}</p>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // ── result view ──
   if (done) {
     const cb = consentBlocks(S.org);
     const fl = flags(S);
     const risks = fl.filter((f) => f.severity === "risk");
     const headsUp = fl.filter((f) => f.severity === "info");
+    const ev = evidence(S, { noticeId, hash });
     const consents: [string, string][] = [
       ["Service consent", cb.service],
       ["Marketing consent (separate)", cb.marketing],
@@ -127,7 +231,7 @@ export default function NoticePackClient() {
           </div>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             <button className="btn btn--ghost btn--sm" onClick={() => setDone(false)}>← Edit answers</button>
-            <button className="btn btn--ghost btn--sm" onClick={() => requestExport("copy")}>Copy notice HTML</button>
+            <button className="btn btn--ghost btn--sm" onClick={() => requestExport("copyFull")}>Copy notice HTML</button>
             <button className="btn btn--sm" onClick={() => requestExport("pdf")}>Download PDF</button>
           </div>
         </div>
@@ -166,10 +270,7 @@ export default function NoticePackClient() {
         <div className="out">
           <div className="out__top">
             <h3>Full privacy notice</h3>
-            <div className="langbar">
-              <button className={S.lang === "en" ? "on" : ""} onClick={() => update({ lang: "en" })}>English</button>
-              <button className={S.lang === "hi" ? "on" : ""} onClick={() => update({ lang: "hi" })}>हिन्दी</button>
-            </div>
+            <LangBar />
           </div>
           <div className="doc" style={{ maxHeight: "46vh" }} dangerouslySetInnerHTML={{ __html: buildNotice(S, S.lang) }} />
         </div>
@@ -182,7 +283,7 @@ export default function NoticePackClient() {
               const txt = miniFor(S, k);
               return c ? (
                 <div className="mini" key={k}>
-                  <div className="mini__t">{c.label}<button className="copy" onClick={() => onCopyText(txt)}>Copy</button></div>
+                  <div className="mini__t">{c.label}<button className="copy" onClick={() => { onCopyText(txt); track("mini_notice_copied", { context: k }); }}>Copy</button></div>
                   <p>{txt}</p>
                 </div>
               ) : null;
@@ -192,7 +293,7 @@ export default function NoticePackClient() {
             <div className="out__top"><h3>Consent &amp; rights blocks</h3></div>
             {consents.map(([t, v]) => (
               <div className="mini" key={t}>
-                <div className="mini__t">{t}<button className="copy" onClick={() => onCopyText(v)}>Copy</button></div>
+                <div className="mini__t">{t}<button className="copy" onClick={() => { onCopyText(v); track("consent_block_copied"); }}>Copy</button></div>
                 <p>{v}</p>
               </div>
             ))}
@@ -204,14 +305,10 @@ export default function NoticePackClient() {
         </div>
 
         <div className="out">
-          <div className="out__top"><h3>Notice evidence record</h3><button className="copy" onClick={() => onCopyText(JSON.stringify(evidence(S), null, 2))}>Copy JSON</button></div>
-          <pre className="codeblk">{JSON.stringify(evidence(S), null, 2)}</pre>
+          <div className="out__top"><h3>Notice evidence record</h3><button className="copy" onClick={() => onCopyText(JSON.stringify(ev, null, 2))}>Copy JSON</button></div>
+          <pre className="codeblk">{JSON.stringify(ev, null, 2)}</pre>
         </div>
 
-        <div className="rcta">
-          <a className="btn" href="#" onClick={(e) => e.preventDefault()}>Create free Data Rights Form →</a>
-          <a className="btn btn--ghost" href="#" onClick={(e) => e.preventDefault()}>Book a 20-minute review</a>
-        </div>
         <p className="disc-note">This tool generates a practical draft based on your inputs. It is not legal advice. Review before publishing.</p>
 
         {gateOpen && <Gate />}
@@ -219,33 +316,7 @@ export default function NoticePackClient() {
     );
   }
 
-  // ---------- gate modal ----------
-  function Gate() {
-    return (
-      <div className="modal" role="dialog" aria-modal="true" onClick={(e) => { if (e.target === e.currentTarget) setGateOpen(false); }}>
-        <div className="modal__card">
-          <button className="modal__close" aria-label="Close" onClick={() => setGateOpen(false)}>×</button>
-          {!gateDone ? (
-            <form onSubmit={submitGate}>
-              <h3>Get your Notice Pack</h3>
-              <p className="msub">Add your email and we’ll unlock the export and email you a copy you can reopen anytime.</p>
-              <input type="email" placeholder="Work email" required value={email} onChange={(e) => setEmail(e.target.value)} />
-              <label className="consent"><input type="checkbox" required checked={consent} onChange={(e) => setConsent(e.target.checked)} /> <span>Send me practical DPDPA updates. No spam, unsubscribe anytime.</span></label>
-              <button type="submit" className="btn">Unlock my pack <span className="arr">→</span></button>
-            </form>
-          ) : (
-            <div className="ok">
-              <span className="seal"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m5 12 5 5 9-11" /></svg></span>
-              <h3>Unlocked.</h3>
-              <p className="msub" style={{ marginBottom: 0 }}>{pending === "pdf" ? "Your download is starting…" : "Copy buttons are live."}</p>
-            </div>
-          )}
-        </div>
-      </div>
-    );
-  }
-
-  // ---------- wizard view ----------
+  // ── wizard view ──
   return (
     <div className="wrap">
       <div className="head">
@@ -255,7 +326,6 @@ export default function NoticePackClient() {
       </div>
 
       <div className="app">
-        {/* wizard */}
         <section className="card">
           <div className="steps">
             {STEP_LABELS.map((_, n) => <span key={n} className={`pip ${n < step ? "done" : ""} ${n === step ? "now" : ""}`} />)}
@@ -391,26 +461,24 @@ export default function NoticePackClient() {
                 <div className="field"><label className="lab">Reserve your rights-page slug (optional)</label><input type="text" value={S.slug} onChange={(e) => update({ slug: e.target.value })} placeholder={slugify(S.org) || "your-business"} /><div className="pwarn" style={{ color: "var(--muted)" }}>Used in the rights block: saralprivacy.com/r/<b>{S.slug || slugify(S.org) || "your-business"}</b></div></div>
               </>
             )}
+
+            {!stepValid(step) && <div className="pwarn">{stepHint(step)}</div>}
           </div>
 
           <div className="foot">
             <button className="btn btn--ghost btn--sm" style={{ visibility: step === 0 ? "hidden" : "visible" }} onClick={() => setStep((n) => Math.max(0, n - 1))}>← Back</button>
             <span className="pg">{step + 1} / 8</span>
             {step < 7
-              ? <button className="btn btn--sm" onClick={() => setStep((n) => n + 1)}>Next <span className="arr">→</span></button>
-              : <button className="btn btn--sm" onClick={() => setDone(true)}>View my Notice Pack ✓</button>}
+              ? <button className="btn btn--sm" disabled={!stepValid(step)} onClick={() => setStep((n) => n + 1)}>Next <span className="arr">→</span></button>
+              : <button className="btn btn--sm" disabled={!stepValid(7)} onClick={() => { track("notice_score_calculated", { sector: S.sector, score: s }); setDone(true); }}>View my Notice Pack ✓</button>}
           </div>
         </section>
 
-        {/* live preview */}
         <section className="preview">
           <div className="pvtop">
             <span className="live"><i /> Live preview</span>
             <span className="scorechip" style={{ color: b.color, background: b.bg }}>Readiness {s} · {b.label}</span>
-            <div className="langbar">
-              <button className={S.lang === "en" ? "on" : ""} onClick={() => update({ lang: "en" })}>English</button>
-              <button className={S.lang === "hi" ? "on" : ""} onClick={() => update({ lang: "hi" })}>हिन्दी</button>
-            </div>
+            <LangBar />
           </div>
           <article className="doc" dangerouslySetInnerHTML={{ __html: buildNotice(S, S.lang) }} />
         </section>

@@ -130,10 +130,22 @@ export function miniFor(S: NPState, key: string): string {
   return c ? c.mini(S.org || "us") : "";
 }
 
-export function evidence(S: NPState) {
+export function newNoticeId(): string {
+  const r = Math.random().toString(36).slice(2, 8).toUpperCase();
+  return `SP-NOTICE-${new Date().getFullYear()}-${r}`;
+}
+
+// Real SHA-256 of the notice text (browser Web Crypto). Returns "" if unavailable (SSR).
+export async function sha256(text: string): Promise<string> {
+  if (typeof globalThis.crypto?.subtle === "undefined") return "";
+  const buf = await globalThis.crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+  return "sha256:" + Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+export function evidence(S: NPState, opts?: { noticeId?: string; hash?: string }) {
   const sec = SECTORS.find((s) => s.key === S.sector);
   return {
-    notice_id: "SP-NOTICE-2026-(draft)",
+    notice_id: opts?.noticeId || "SP-NOTICE-(pending)",
     notice_version: "1.0",
     business_name: S.org,
     sector: sec?.label || "",
@@ -149,7 +161,7 @@ export function evidence(S: NPState) {
     rights_contact_email: S.cEmail,
     dsar_link: dsarLink(S),
     readiness_score: score(S),
-    notice_hash: "sha256:(generated on export)",
+    notice_hash: opts?.hash || "sha256:(generated on export)",
   };
 }
 
