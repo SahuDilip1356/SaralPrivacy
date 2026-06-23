@@ -35,7 +35,7 @@ import requests
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from tools.utils import get_env, load_env, setup_logger, tmp_path, write_json, read_json
+from tools.utils import get_env, setup_logger, tmp_path, write_json, read_json
 from tools.briefing_taxonomy import derive as derive_taxonomy
 from tools.read_roadmap import get_sheet_data, get_csv_data
 
@@ -45,20 +45,45 @@ COLLECTION = "briefings"
 
 # ── Appwrite REST helpers ────────────────────────────────────────────────────────
 
+def discover_database_id(endpoint: str, headers: dict) -> str:
+    """Find the database holding the 'briefings' collection, using only the API key.
+    Lets the backfill run without an APPWRITE_DATABASE_ID secret."""
+    try:
+        resp = requests.get(f"{endpoint}/databases", headers=headers, timeout=30)
+        resp.raise_for_status()
+        dbs = resp.json().get("databases", [])
+        for db in dbs:
+            cols = requests.get(
+                f"{endpoint}/databases/{db['$id']}/collections",
+                headers=headers,
+                params=[("queries[]", json.dumps({"method": "limit", "values": [100]}))],
+                timeout=30,
+            )
+            if cols.ok and any(c.get("$id") == COLLECTION for c in cols.json().get("collections", [])):
+                logger.info(f"Auto-discovered database '{db['$id']}' (has '{COLLECTION}')")
+                return db["$id"]
+        if len(dbs) == 1:
+            return dbs[0]["$id"]
+    except Exception as e:
+        logger.warning(f"Database auto-discovery failed: {e}")
+    return ""
+
+
 def _cfg():
     endpoint = get_env("APPWRITE_ENDPOINT").rstrip("/")
     project  = get_env("APPWRITE_PROJECT_ID")
     api_key  = get_env("APPWRITE_API_KEY")
-    db_id    = get_env("APPWRITE_DATABASE_ID")
-    if not all([endpoint, project, api_key, db_id]):
-        raise EnvironmentError(
-            "Missing APPWRITE_ENDPOINT / APPWRITE_PROJECT_ID / APPWRITE_API_KEY / APPWRITE_DATABASE_ID"
-        )
+    if not all([endpoint, project, api_key]):
+        raise EnvironmentError("Missing APPWRITE_ENDPOINT / APPWRITE_PROJECT_ID / APPWRITE_API_KEY")
     headers = {
         "X-Appwrite-Project": project,
         "X-Appwrite-Key":     api_key,
         "Content-Type":       "application/json",
     }
+    # APPWRITE_DATABASE_ID is optional — auto-discover it from the API key when unset.
+    db_id = get_env("APPWRITE_DATABASE_ID") or discover_database_id(endpoint, headers)
+    if not db_id:
+        raise EnvironmentError("Could not resolve a database containing the 'briefings' collection")
     base = f"{endpoint}/databases/{db_id}/collections/{COLLECTION}/documents"
     return base, headers
 
@@ -160,7 +185,6 @@ def plan_changes(docs: list[dict], slug_index: dict) -> tuple[list[dict], list[d
 # ── Main ─────────────────────────────────────────────────────────────────────────
 
 def run(apply: bool):
-    load_env()
     base, headers = _cfg()
     slug_index = build_slug_index()
     docs = list_all_briefings(base, headers)
@@ -201,7 +225,6 @@ def run(apply: bool):
 
 
 def revert(backup_file: str):
-    load_env()
     base, headers = _cfg()
     entries = read_json(Path(backup_file))
     ok = 0
