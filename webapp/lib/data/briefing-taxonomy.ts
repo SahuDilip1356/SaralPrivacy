@@ -64,7 +64,8 @@ const HIGH_RISK_SECTORS = new Set([
   "fitness-wellness",
 ]);
 export function riskFor(sector: string): RiskTier {
-  if (sector === "general" || !sector) return "low";
+  // Baseline is Medium, not Low — with DPDP Rules 2025 in force, no DPDPA topic is
+  // genuinely "low priority". Sensitive-data sectors escalate to High.
   return HIGH_RISK_SECTORS.has(sector) ? "high" : "medium";
 }
 export const RISK_LABEL: Record<RiskTier, string> = {

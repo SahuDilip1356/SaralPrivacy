@@ -271,11 +271,12 @@ export function BriefingsExplorer({ briefings }: { briefings: ExplorerBriefing[]
 function BriefingCard({ b }: { b: ExplorerBriefing }) {
   const risk = riskFor(b.sector);
   const cta = stageCta(b.stage);
+  const [imgOk, setImgOk] = useState(Boolean(b.image));
   return (
     <div className="group h-full flex flex-col rounded-xl border border-slate-200 bg-white overflow-hidden hover:border-teal-300 hover:shadow-sm transition-all">
-      {b.image && (
+      {imgOk && b.image && (
         /* eslint-disable-next-line @next/next/no-img-element */
-        <img src={b.image} alt="" loading="lazy"
+        <img src={b.image} alt="" loading="lazy" onError={() => setImgOk(false)}
           className="w-full aspect-[2/1] object-cover bg-slate-100 border-b border-slate-100" />
       )}
       <div className="p-5 flex flex-col flex-1">
