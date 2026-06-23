@@ -2,11 +2,15 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Calendar, Clock, Search, X, Sparkles, SearchX } from "lucide-react";
+import {
+  ArrowRight, Calendar, Clock, Search, X, SearchX,
+  Compass, Zap, AlertTriangle, Check,
+} from "lucide-react";
 import { formatDateShort } from "@/lib/utils";
 import {
   STAGES, FORMATS, BRIEFING_SECTORS, FORMAT_SLUGS,
-  stageLabel, sectorLabel, formatLabel,
+  stageLabel, sectorLabel, formatLabel, stageJtbd, stageCta,
+  riskFor, RISK_LABEL, FACET_HEADERS, type RiskTier,
 } from "@/lib/data/briefing-taxonomy";
 
 export interface ExplorerBriefing {
@@ -16,18 +20,31 @@ export interface ExplorerBriefing {
   excerpt: string;
   date: string;
   readTime: number;
-  image: string;   // infographic URL (or data URI); "" when none
-  stage: string;   // from category
-  sector: string;  // from industries[0]
-  format: string;  // from tags[0] (a known format slug) or ""
+  image: string;    // infographic URL (or data URI); "" when none
+  fixToday: string; // first action-checklist item; "" when none
+  stage: string;    // from category
+  sector: string;   // from industries[0]
+  format: string;   // from tags[0] (a known format slug) or ""
 }
 
 const STAGE_SLUGS = STAGES.map((s) => s.slug);
-const FORMAT_LIST = FORMATS.map((f) => f.slug);
+
+const RISK_CHIP: Record<RiskTier, string> = {
+  high:   "text-red-700 bg-red-100",
+  medium: "text-amber-800 bg-amber-100",
+  low:    "text-slate-600 bg-slate-100",
+};
+
+// Inline conversion bands, rotated through the results list.
+const INLINE_CTAS = [
+  { title: "Not sure what data you hold?", sub: "Map every place personal data lives in 10 minutes.", label: "Run Data Discovery", href: "/discovery" },
+  { title: "Want your DPDPA risk score?",  sub: "Take the free 3–5 minute readiness assessment.",     label: "Check my score",     href: "/assessment" },
+  { title: "Need ready-to-use templates?", sub: "Consent forms, notices and checklists, done for you.", label: "Browse templates",  href: "/resources" },
+];
 
 function matchesQuery(b: ExplorerBriefing, q: string): boolean {
   if (!q) return true;
-  const hay = `${b.title} ${b.excerpt} ${sectorLabel(b.sector)} ${stageLabel(b.stage)} ${formatLabel(b.format)}`.toLowerCase();
+  const hay = `${b.title} ${b.excerpt} ${b.fixToday} ${sectorLabel(b.sector)} ${stageLabel(b.stage)} ${formatLabel(b.format)}`.toLowerCase();
   return q.split(/\s+/).every((term) => hay.includes(term));
 }
 
@@ -40,13 +57,8 @@ export function BriefingsExplorer({ briefings }: { briefings: ExplorerBriefing[]
   const q = query.trim().toLowerCase();
   const isFiltered = q !== "" || sector !== "" || stages.size > 0 || formats.size > 0;
 
-  // Items passing search — the base set all facet counts are computed against.
-  const searched = useMemo(
-    () => briefings.filter((b) => matchesQuery(b, q)),
-    [briefings, q]
-  );
+  const searched = useMemo(() => briefings.filter((b) => matchesQuery(b, q)), [briefings, q]);
 
-  // A match helper that can exclude one group, for faceted counts.
   const passes = (b: ExplorerBriefing, skip?: "sector" | "stage" | "format") => {
     if (skip !== "sector" && sector && b.sector !== sector) return false;
     if (skip !== "stage" && stages.size && !stages.has(b.stage)) return false;
@@ -54,12 +66,8 @@ export function BriefingsExplorer({ briefings }: { briefings: ExplorerBriefing[]
     return true;
   };
 
-  const results = useMemo(
-    () => searched.filter((b) => passes(b)),
-    [searched, sector, stages, formats]
-  );
+  const results = useMemo(() => searched.filter((b) => passes(b)), [searched, sector, stages, formats]);
 
-  // Counts respect search + the OTHER groups' active filters.
   const sectorCounts = useMemo(() => {
     const m = new Map<string, number>();
     for (const b of searched) if (passes(b, "sector")) m.set(b.sector, (m.get(b.sector) ?? 0) + 1);
@@ -76,10 +84,13 @@ export function BriefingsExplorer({ briefings }: { briefings: ExplorerBriefing[]
     return m;
   }, [searched, sector, stages]);
 
-  const startHere = useMemo(
-    () => briefings.filter((b) => b.stage === "learn").slice(0, 4),
-    [briefings]
-  );
+  // Featured rail (zero-filter only): Start here · Fix today · Sector alert.
+  const featured = useMemo(() => {
+    const startHere = briefings.find((b) => b.stage === "learn");
+    const fixToday  = briefings.find((b) => b.stage === "fix") ?? briefings.find((b) => b.fixToday);
+    const sectorAlert = briefings.find((b) => b.sector !== "general");
+    return { startHere, fixToday, sectorAlert };
+  }, [briefings]);
 
   const toggle = (set: Set<string>, val: string, setter: (s: Set<string>) => void) => {
     const next = new Set(set);
@@ -91,8 +102,38 @@ export function BriefingsExplorer({ briefings }: { briefings: ExplorerBriefing[]
   const chipBase =
     "shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-1";
 
+  // Interleave conversion bands into the results every 5 cards.
+  const gridItems: React.ReactNode[] = [];
+  results.forEach((b, i) => {
+    gridItems.push(<BriefingCard key={b.id} b={b} />);
+    if ((i + 1) % 5 === 0 && i !== results.length - 1) {
+      const cta = INLINE_CTAS[Math.floor(i / 5) % INLINE_CTAS.length];
+      gridItems.push(
+        <Link key={`cta-${i}`} href={cta.href}
+          className="col-span-1 md:col-span-2 lg:col-span-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl bg-navy-700 px-6 py-5 hover:bg-navy-800 transition-colors">
+          <div>
+            <p className="text-white font-bold text-base">{cta.title}</p>
+            <p className="text-slate-300 text-sm">{cta.sub}</p>
+          </div>
+          <span className="inline-flex items-center gap-1.5 bg-green-600 text-white font-semibold text-sm px-4 py-2 rounded-lg shrink-0">
+            {cta.label} <ArrowRight size={15} />
+          </span>
+        </Link>
+      );
+    }
+  });
+
   return (
     <div>
+      {/* Featured rail — only when nothing is filtered */}
+      {!isFiltered && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          <FeaturedCard tone="blue"  icon={<Compass size={13} />}       eyebrow="Start here"   b={featured.startHere} cta="Read guide" />
+          <FeaturedCard tone="red"   icon={<Zap size={13} />}           eyebrow="Fix today"    b={featured.fixToday}  cta="Fix now" />
+          <FeaturedCard tone="amber" icon={<AlertTriangle size={13} />} eyebrow="Sector alert" b={featured.sectorAlert} cta="See alert" />
+        </div>
+      )}
+
       {/* Search */}
       <div className="relative mb-4">
         <label htmlFor="briefing-search" className="sr-only">Search briefings</label>
@@ -113,17 +154,13 @@ export function BriefingsExplorer({ briefings }: { briefings: ExplorerBriefing[]
         )}
       </div>
 
-      {/* Facets */}
+      {/* Facets — plain-English, jobs-to-be-done labels */}
       <div className="space-y-2.5 mb-3">
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-xs text-slate-400 w-14 shrink-0">Sector</span>
-          <select
-            aria-label="Filter by sector"
-            value={sector}
-            onChange={(e) => setSector(e.target.value)}
-            className="text-xs h-8 px-2 rounded-md border border-slate-200 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
-          >
-            <option value="">All sectors</option>
+          <span className="text-xs text-slate-400 w-32 shrink-0">{FACET_HEADERS.sector}</span>
+          <select aria-label="Filter by business type" value={sector} onChange={(e) => setSector(e.target.value)}
+            className="text-xs h-8 px-2 rounded-md border border-slate-200 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-500">
+            <option value="">All business types</option>
             {BRIEFING_SECTORS.map((s) => {
               const c = sectorCounts.get(s.slug) ?? 0;
               if (c === 0 && s.slug !== sector) return null;
@@ -133,7 +170,7 @@ export function BriefingsExplorer({ briefings }: { briefings: ExplorerBriefing[]
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-xs text-slate-400 w-14 shrink-0">Stage</span>
+          <span className="text-xs text-slate-400 w-32 shrink-0">{FACET_HEADERS.stage}</span>
           {STAGES.map((s) => {
             const on = stages.has(s.slug);
             const c = stageCounts.get(s.slug) ?? 0;
@@ -141,14 +178,14 @@ export function BriefingsExplorer({ briefings }: { briefings: ExplorerBriefing[]
               <button key={s.slug} type="button" aria-pressed={on} title={s.hint}
                 onClick={() => toggle(stages, s.slug, setStages)}
                 className={`${chipBase} ${on ? "bg-navy-700 text-white" : "bg-slate-100 text-slate-600 hover:bg-slate-200"}`}>
-                {s.label} {c}
+                {stageJtbd(s.slug)} {c}
               </button>
             );
           })}
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-xs text-slate-400 w-14 shrink-0">Format</span>
+          <span className="text-xs text-slate-400 w-32 shrink-0">{FACET_HEADERS.format}</span>
           {FORMATS.map((f) => {
             const on = formats.has(f.slug);
             const c = formatCounts.get(f.slug) ?? 0;
@@ -165,7 +202,7 @@ export function BriefingsExplorer({ briefings }: { briefings: ExplorerBriefing[]
       </div>
 
       {/* Applied filters + live count */}
-      <div role="status" aria-live="polite" className="flex items-center gap-2 flex-wrap pt-3 mb-6 border-t border-slate-200">
+      <div role="status" aria-live="polite" className="flex items-center gap-2 flex-wrap pt-3 mb-6 border-t border-slate-200" id="latest-briefings">
         <span className="text-sm font-semibold text-slate-600">{results.length} result{results.length === 1 ? "" : "s"}</span>
         {sector && (
           <button onClick={() => setSector("")} className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-teal-600 text-white">
@@ -174,7 +211,7 @@ export function BriefingsExplorer({ briefings }: { briefings: ExplorerBriefing[]
         )}
         {[...stages].map((s) => (
           <button key={s} onClick={() => toggle(stages, s, setStages)} className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-navy-700 text-white">
-            {stageLabel(s)} <X size={13} />
+            {stageJtbd(s)} <X size={13} />
           </button>
         ))}
         {[...formats].map((f) => (
@@ -187,62 +224,10 @@ export function BriefingsExplorer({ briefings }: { briefings: ExplorerBriefing[]
         )}
       </div>
 
-      {/* Start here — only when nothing is filtered */}
-      {!isFiltered && startHere.length > 0 && (
-        <div className="mb-8">
-          <div className="flex items-center gap-1.5 mb-3">
-            <Sparkles size={15} className="text-slate-400" aria-hidden />
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Start here</span>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-            {startHere.map((b) => (
-              <Link key={b.id} href={`/briefings/${b.slug}`}
-                className="block p-3.5 rounded-lg border border-slate-200 bg-white hover:border-teal-300 transition-colors">
-                <span className="text-[10px] font-semibold text-navy-700 bg-navy-100 px-2 py-0.5 rounded-full">Learn</span>
-                <p className="text-sm text-slate-700 mt-2 leading-snug line-clamp-2">{b.title}</p>
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Results */}
+      {/* Results + interleaved CTAs */}
       {results.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {results.map((b) => (
-            <Link key={b.id} href={`/briefings/${b.slug}`}>
-              <div className="group h-full flex flex-col rounded-xl border border-slate-200 bg-white overflow-hidden hover:border-teal-300 hover:shadow-sm transition-all">
-                {b.image && (
-                  /* eslint-disable-next-line @next/next/no-img-element */
-                  <img
-                    src={b.image}
-                    alt=""
-                    loading="lazy"
-                    className="w-full aspect-[16/9] object-cover bg-slate-100 border-b border-slate-100"
-                  />
-                )}
-                <div className="p-6 flex flex-col flex-1">
-                  <div className="flex items-center gap-2 mb-3 flex-wrap">
-                    {b.sector !== "general" && (
-                      <span className="text-[10px] font-semibold text-teal-700 bg-teal-100 px-2 py-0.5 rounded-full">{sectorLabel(b.sector)}</span>
-                    )}
-                    {STAGE_SLUGS.includes(b.stage) && (
-                      <span className="text-[10px] font-semibold text-navy-700 bg-navy-100 px-2 py-0.5 rounded-full">{stageLabel(b.stage)}</span>
-                    )}
-                  </div>
-                  <h3 className="font-bold text-navy-700 text-base leading-snug mb-2 group-hover:text-green-600 line-clamp-3">{b.title}</h3>
-                  <p className="text-slate-500 text-sm leading-relaxed flex-1 line-clamp-3 mb-4">{b.excerpt}</p>
-                  <div className="flex items-center justify-between pt-3 border-t border-slate-100">
-                    <div className="flex items-center gap-3 text-slate-400 text-xs">
-                      <span className="flex items-center gap-1"><Calendar size={11} />{formatDateShort(b.date)}</span>
-                      <span className="flex items-center gap-1"><Clock size={11} />{b.readTime} min</span>
-                    </div>
-                    <ArrowRight size={14} className="text-slate-400 group-hover:text-teal-600 transition-colors" />
-                  </div>
-                </div>
-              </div>
-            </Link>
-          ))}
+          {gridItems}
         </div>
       ) : (
         <div className="text-center py-16 px-4 rounded-xl border border-slate-200 bg-white">
@@ -252,6 +237,92 @@ export function BriefingsExplorer({ briefings }: { briefings: ExplorerBriefing[]
           <button onClick={clearAll} className="text-sm font-semibold text-white bg-navy-700 hover:bg-navy-800 px-4 py-2 rounded-lg transition-colors">Clear all filters</button>
         </div>
       )}
+
+      {/* Closing conversion CTA */}
+      <div className="mt-12 text-center rounded-2xl border border-slate-200 bg-white py-10 px-6">
+        <h2 className="text-xl font-bold text-navy-700 mb-2">Not sure where to start?</h2>
+        <p className="text-slate-500 text-sm max-w-md mx-auto mb-5">
+          Take the free 5-minute readiness assessment and get a personalised DPDPA roadmap for your business type.
+        </p>
+        <Link href="/assessment"
+          className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold text-sm px-6 py-3 rounded-lg transition-colors">
+          Take free readiness assessment <ArrowRight size={16} />
+        </Link>
+      </div>
     </div>
+  );
+}
+
+/** Action-desk briefing card: thumbnail + risk/sector/stage badges + fix-today + dual CTA. */
+function BriefingCard({ b }: { b: ExplorerBriefing }) {
+  const risk = riskFor(b.sector);
+  const cta = stageCta(b.stage);
+  return (
+    <div className="group h-full flex flex-col rounded-xl border border-slate-200 bg-white overflow-hidden hover:border-teal-300 hover:shadow-sm transition-all">
+      {b.image && (
+        /* eslint-disable-next-line @next/next/no-img-element */
+        <img src={b.image} alt="" loading="lazy"
+          className="w-full aspect-[2/1] object-cover bg-slate-100 border-b border-slate-100" />
+      )}
+      <div className="p-5 flex flex-col flex-1">
+        <div className="flex items-center gap-1.5 mb-2.5 flex-wrap">
+          <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${RISK_CHIP[risk]}`}>{RISK_LABEL[risk]}</span>
+          {b.sector !== "general" && (
+            <span className="text-[10px] font-semibold text-teal-700 bg-teal-100 px-2 py-0.5 rounded-full">{sectorLabel(b.sector)}</span>
+          )}
+          {STAGE_SLUGS.includes(b.stage) && (
+            <span className="text-[10px] font-semibold text-navy-700 bg-navy-100 px-2 py-0.5 rounded-full">{stageLabel(b.stage)}</span>
+          )}
+          <span className="ml-auto inline-flex items-center gap-2 text-[11px] text-slate-400">
+            <span className="inline-flex items-center gap-1"><Calendar size={11} />{formatDateShort(b.date)}</span>
+            <span className="inline-flex items-center gap-1"><Clock size={11} />{b.readTime} min</span>
+          </span>
+        </div>
+
+        <Link href={`/briefings/${b.slug}`} className="block">
+          <h3 className="font-bold text-navy-700 text-base leading-snug mb-2 group-hover:text-green-600 line-clamp-2">{b.title}</h3>
+        </Link>
+        <p className="text-slate-500 text-sm leading-relaxed line-clamp-2 mb-3">{b.excerpt}</p>
+
+        {b.fixToday && (
+          <div className="flex items-start gap-1.5 text-xs text-green-700 bg-green-50 rounded-lg px-2.5 py-2 mb-3">
+            <Check size={13} className="mt-0.5 shrink-0" aria-hidden />
+            <span className="leading-snug"><span className="font-semibold">Fix this today:</span> {b.fixToday}</span>
+          </div>
+        )}
+
+        <div className="mt-auto flex items-center justify-between gap-2 pt-3 border-t border-slate-100">
+          <Link href={`/briefings/${b.slug}`} className="inline-flex items-center gap-1 text-xs font-semibold text-navy-700 hover:text-green-600">
+            Read briefing <ArrowRight size={13} />
+          </Link>
+          <Link href={cta.href} className="inline-flex items-center gap-1 text-xs font-semibold text-teal-700 hover:text-teal-800 bg-teal-50 hover:bg-teal-100 px-2.5 py-1.5 rounded-lg transition-colors">
+            {cta.label}
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const FEATURED_TONE = {
+  blue:  { bar: "border-blue-400",  bg: "bg-blue-50",  text: "text-blue-700" },
+  red:   { bar: "border-red-400",   bg: "bg-red-50",   text: "text-red-600" },
+  amber: { bar: "border-amber-400", bg: "bg-amber-50", text: "text-amber-700" },
+} as const;
+
+function FeaturedCard({ tone, icon, eyebrow, b, cta }:
+  { tone: keyof typeof FEATURED_TONE; icon: React.ReactNode; eyebrow: string; b?: ExplorerBriefing; cta: string }) {
+  if (!b) return null;
+  const t = FEATURED_TONE[tone];
+  return (
+    <Link href={`/briefings/${b.slug}`}
+      className={`block rounded-xl border border-slate-200 border-l-4 ${t.bar} ${t.bg} p-5 hover:shadow-sm transition-shadow`}>
+      <span className={`inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wide ${t.text} mb-2`}>
+        {icon} {eyebrow}
+      </span>
+      <h3 className="font-bold text-navy-700 text-[15px] leading-snug mb-1.5 line-clamp-2">{b.title}</h3>
+      <p className="text-slate-500 text-xs leading-relaxed line-clamp-2 mb-3">{b.excerpt}</p>
+      <span className={`inline-flex items-center gap-1 text-xs font-semibold ${t.text}`}>{cta} <ArrowRight size={13} /></span>
+    </Link>
   );
 }

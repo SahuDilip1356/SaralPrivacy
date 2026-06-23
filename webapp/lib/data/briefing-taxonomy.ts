@@ -30,6 +30,47 @@ export const STAGES: readonly TaxonomyOption[] = [
   { slug: "sustain", label: "Sustain", hint: "Keep compliance a habit, not a one-off" },
 ] as const;
 
+/** Plain-English, jobs-to-be-done label for each stage (SMBs think in jobs, not taxonomy). */
+const STAGE_JTBD: Record<string, string> = {
+  learn:   "Understand the law",
+  assess:  "Check my risk",
+  fix:     "Take action",
+  sustain: "Maintain compliance",
+};
+export const stageJtbd = (slug: string): string => STAGE_JTBD[slug] ?? stageLabel(slug);
+
+/** Plain-English facet group headers — shown above each filter group. */
+export const FACET_HEADERS = {
+  sector: "My business type",
+  stage:  "What I need now",
+  format: "How I want to use it",
+} as const;
+
+/** Per-stage tool CTA on each card — routes readers from a briefing into the funnel. */
+const STAGE_CTA: Record<string, { label: string; href: string }> = {
+  learn:   { label: "Check my readiness", href: "/assessment" },
+  assess:  { label: "Map my data",        href: "/discovery" },
+  fix:     { label: "Get the checklist",  href: "/resources" },
+  sustain: { label: "Browse templates",   href: "/resources" },
+};
+export const stageCta = (slug: string) =>
+  STAGE_CTA[slug] ?? { label: "Check my readiness", href: "/assessment" };
+
+/** Risk tier per sector — auto-derived (no per-briefing authoring). */
+export type RiskTier = "high" | "medium" | "low";
+const HIGH_RISK_SECTORS = new Set([
+  "ca-firms", "recruitment", "clinics-labs", "schools-colleges", "hospitals",
+  "pharmacies", "nbfc", "fintech", "insurance-brokers", "edtech", "law-firms",
+  "fitness-wellness",
+]);
+export function riskFor(sector: string): RiskTier {
+  if (sector === "general" || !sector) return "low";
+  return HIGH_RISK_SECTORS.has(sector) ? "high" : "medium";
+}
+export const RISK_LABEL: Record<RiskTier, string> = {
+  high: "High risk", medium: "Medium risk", low: "Low risk",
+};
+
 /** Content formats — derived from the roadmap's infographic_type + stage. */
 export const FORMATS: readonly TaxonomyOption[] = [
   { slug: "explainer",   label: "Explainer" },
