@@ -85,11 +85,22 @@ export function BriefingsExplorer({ briefings }: { briefings: ExplorerBriefing[]
   }, [searched, sector, stages]);
 
   // Featured rail (zero-filter only): Start here · Fix today · Sector alert.
+  // Only includes a slot when a matching briefing exists, so the row never has holes.
   const featured = useMemo(() => {
-    const startHere = briefings.find((b) => b.stage === "learn");
-    const fixToday  = briefings.find((b) => b.stage === "fix") ?? briefings.find((b) => b.fixToday);
+    const startHere   = briefings.find((b) => b.stage === "learn");
+    const fixToday    = briefings.find((b) => b.stage === "fix") ?? briefings.find((b) => b.fixToday);
     const sectorAlert = briefings.find((b) => b.sector !== "general");
-    return { startHere, fixToday, sectorAlert };
+    const used = new Set<string>();
+    const pick = (b?: ExplorerBriefing) => {
+      if (!b || used.has(b.id)) return undefined;
+      used.add(b.id);
+      return b;
+    };
+    return [
+      { tone: "blue"  as const, eyebrow: "Start here",   cta: "Read guide", b: pick(startHere) },
+      { tone: "red"   as const, eyebrow: "Fix today",    cta: "Fix now",    b: pick(fixToday) },
+      { tone: "amber" as const, eyebrow: "Sector alert", cta: "See alert",  b: pick(sectorAlert) },
+    ].filter((f) => f.b);
   }, [briefings]);
 
   const toggle = (set: Set<string>, val: string, setter: (s: Set<string>) => void) => {
@@ -102,12 +113,13 @@ export function BriefingsExplorer({ briefings }: { briefings: ExplorerBriefing[]
   const chipBase =
     "shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-1";
 
-  // Interleave conversion bands into the results every 5 cards.
+  // Interleave conversion bands into the results every 6 cards — a multiple of the
+  // 3-column grid, so each band always follows a complete row (no half-empty rows).
   const gridItems: React.ReactNode[] = [];
   results.forEach((b, i) => {
     gridItems.push(<BriefingCard key={b.id} b={b} />);
-    if ((i + 1) % 5 === 0 && i !== results.length - 1) {
-      const cta = INLINE_CTAS[Math.floor(i / 5) % INLINE_CTAS.length];
+    if ((i + 1) % 6 === 0 && i !== results.length - 1) {
+      const cta = INLINE_CTAS[Math.floor(i / 6) % INLINE_CTAS.length];
       gridItems.push(
         <Link key={`cta-${i}`} href={cta.href}
           className="col-span-1 md:col-span-2 lg:col-span-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl bg-navy-700 px-6 py-5 hover:bg-navy-800 transition-colors">
@@ -125,12 +137,14 @@ export function BriefingsExplorer({ briefings }: { briefings: ExplorerBriefing[]
 
   return (
     <div>
-      {/* Featured rail — only when nothing is filtered */}
-      {!isFiltered && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <FeaturedCard tone="blue"  icon={<Compass size={13} />}       eyebrow="Start here"   b={featured.startHere} cta="Read guide" />
-          <FeaturedCard tone="red"   icon={<Zap size={13} />}           eyebrow="Fix today"    b={featured.fixToday}  cta="Fix now" />
-          <FeaturedCard tone="amber" icon={<AlertTriangle size={13} />} eyebrow="Sector alert" b={featured.sectorAlert} cta="See alert" />
+      {/* Featured rail — only when nothing is filtered; sized to the cards that exist */}
+      {!isFiltered && featured.length > 0 && (
+        <div className={`grid grid-cols-1 gap-4 mb-8 ${
+          featured.length >= 3 ? "md:grid-cols-3" : featured.length === 2 ? "md:grid-cols-2" : ""
+        }`}>
+          {featured.map((f) => (
+            <FeaturedCard key={f.eyebrow} tone={f.tone} eyebrow={f.eyebrow} cta={f.cta} b={f.b!} />
+          ))}
         </div>
       )}
 
@@ -310,15 +324,20 @@ const FEATURED_TONE = {
   amber: { bar: "border-amber-400", bg: "bg-amber-50", text: "text-amber-700" },
 } as const;
 
-function FeaturedCard({ tone, icon, eyebrow, b, cta }:
-  { tone: keyof typeof FEATURED_TONE; icon: React.ReactNode; eyebrow: string; b?: ExplorerBriefing; cta: string }) {
-  if (!b) return null;
+const FEATURED_ICON: Record<keyof typeof FEATURED_TONE, React.ReactNode> = {
+  blue:  <Compass size={13} />,
+  red:   <Zap size={13} />,
+  amber: <AlertTriangle size={13} />,
+};
+
+function FeaturedCard({ tone, eyebrow, b, cta }:
+  { tone: keyof typeof FEATURED_TONE; eyebrow: string; b: ExplorerBriefing; cta: string }) {
   const t = FEATURED_TONE[tone];
   return (
     <Link href={`/briefings/${b.slug}`}
       className={`block rounded-xl border border-slate-200 border-l-4 ${t.bar} ${t.bg} p-5 hover:shadow-sm transition-shadow`}>
       <span className={`inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wide ${t.text} mb-2`}>
-        {icon} {eyebrow}
+        {FEATURED_ICON[tone]} {eyebrow}
       </span>
       <h3 className="font-bold text-navy-700 text-[15px] leading-snug mb-1.5 line-clamp-2">{b.title}</h3>
       <p className="text-slate-500 text-xs leading-relaxed line-clamp-2 mb-3">{b.excerpt}</p>
