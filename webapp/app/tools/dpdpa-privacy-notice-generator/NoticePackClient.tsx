@@ -16,7 +16,7 @@ const HONEYPOT = "hp_url";
 const INITIAL: NPState = {
   org: "", website: "", sector: "", data: [], contexts: [], purpose: {},
   consentVia: "", withdrawMethod: "", withdrawContact: "", vendors: [], noVendors: false,
-  children: "", childWhy: [], retention: "", cName: "", cEmail: "", cPhone: "", slug: "", lang: "en",
+  children: "", childWhy: [], retention: "", cName: "", cEmail: "", cPhone: "", regAddress: "", slug: "", lang: "en",
 };
 
 const WarnIcon = () => (
@@ -38,6 +38,8 @@ export default function NoticePackClient() {
   const [consent, setConsent] = useState(false);
   const [noticeId, setNoticeId] = useState("");
   const [hash, setHash] = useState("");
+  const [effIso, setEffIso] = useState("");
+  const [copiedToast, setCopiedToast] = useState(false);
   const hydrated = useRef(false);
   const hpRef = useRef<HTMLInputElement>(null);
   const gateEmailRef = useRef<HTMLInputElement>(null);
@@ -53,6 +55,7 @@ export default function NoticePackClient() {
       }
     } catch { /* ignore */ }
     setNoticeId(newNoticeId());
+    setEffIso(new Date().toISOString());
     track("notice_builder_started");
     hydrated.current = true;
   }, []);
@@ -65,7 +68,7 @@ export default function NoticePackClient() {
   useEffect(() => {
     if (!done) return;
     let live = true;
-    sha256(buildNotice(S, S.lang)).then((h) => { if (live) setHash(h); });
+    sha256(buildNotice(S, S.lang, effIso)).then((h) => { if (live) setHash(h); });
     return () => { live = false; };
   }, [done, S]);
 
@@ -124,7 +127,7 @@ export default function NoticePackClient() {
 
   // ── export / gate ──
   const fullHtml = () =>
-    `<!doctype html><meta charset="utf-8"><title>Privacy Notice — ${S.org}</title><div style="font-family:Inter,Arial,sans-serif;max-width:760px;margin:auto;color:#334155;line-height:1.6">${buildNotice(S, S.lang)}</div>`;
+    `<!doctype html><meta charset="utf-8"><title>Privacy Notice — ${S.org}</title><div style="font-family:Inter,Arial,sans-serif;max-width:760px;margin:auto;color:#334155;line-height:1.6">${buildNotice(S, S.lang, effIso)}</div>`;
   const runPending = (p: Pending) => {
     if (!p) return;
     if (p.kind === "pdf") {
@@ -132,11 +135,12 @@ export default function NoticePackClient() {
       if (w) { w.document.write(fullHtml()); w.document.close(); w.focus(); setTimeout(() => w.print(), 300); track("notice_pdf_downloaded", { sector: S.sector }); }
       else alert("Please allow pop-ups to download the PDF, or use Copy HTML instead.");
     } else if (p.kind === "copyFull") {
-      navigator.clipboard?.writeText(fullHtml()); track("notice_html_copied", { sector: S.sector });
+      navigator.clipboard?.writeText(fullHtml()); track("notice_html_copied", { sector: S.sector }); flashCopied();
     } else if (p.kind === "copyText") {
-      navigator.clipboard?.writeText(p.text || "");
+      navigator.clipboard?.writeText(p.text || ""); flashCopied();
     }
   };
+  const flashCopied = () => { setCopiedToast(true); setTimeout(() => setCopiedToast(false), 1400); };
   const requestExport = (kind: "pdf" | "copyFull") => {
     const p: Pending = { kind };
     setPending(p);
@@ -272,7 +276,7 @@ export default function NoticePackClient() {
             <h3>Full privacy notice</h3>
             <LangBar />
           </div>
-          <div className="doc" style={{ maxHeight: "46vh" }} dangerouslySetInnerHTML={{ __html: buildNotice(S, S.lang) }} />
+          <div className="doc" style={{ maxHeight: "46vh" }} dangerouslySetInnerHTML={{ __html: buildNotice(S, S.lang, effIso) }} />
         </div>
 
         <div className="rgrid">
@@ -312,6 +316,7 @@ export default function NoticePackClient() {
         <p className="disc-note">This tool generates a practical draft based on your inputs. It is not legal advice. Review before publishing.</p>
 
         {gateOpen && <Gate />}
+        {copiedToast && <div className="np-toast" role="status">Copied ✓</div>}
       </div>
     );
   }
@@ -458,6 +463,7 @@ export default function NoticePackClient() {
                   <div className="field"><label className="lab">Grievance contact name <span className="req">*</span></label><input type="text" value={S.cName} onChange={(e) => update({ cName: e.target.value })} placeholder="e.g. Priya Nair" /></div>
                   <div className="field"><label className="lab">Contact email <span className="req">*</span></label><input type="email" value={S.cEmail} onChange={(e) => update({ cEmail: e.target.value })} placeholder="privacy@yourbiz.in" /></div>
                 </div>
+                <div className="field"><label className="lab">Registered / office address (optional)</label><input type="text" value={S.regAddress} onChange={(e) => update({ regAddress: e.target.value })} placeholder="Shown in the notice's “Who we are”" /></div>
                 <div className="field"><label className="lab">Reserve your rights-page slug (optional)</label><input type="text" value={S.slug} onChange={(e) => update({ slug: e.target.value })} placeholder={slugify(S.org) || "your-business"} /><div className="pwarn" style={{ color: "var(--muted)" }}>Used in the rights block: saralprivacy.com/r/<b>{S.slug || slugify(S.org) || "your-business"}</b></div></div>
               </>
             )}
@@ -477,14 +483,15 @@ export default function NoticePackClient() {
         <section className="preview">
           <div className="pvtop">
             <span className="live"><i /> Live preview</span>
-            <span className="scorechip" style={{ color: b.color, background: b.bg }}>Readiness {s} · {b.label}</span>
+            <span className="scorechip" aria-live="polite" style={{ color: b.color, background: b.bg }}>Readiness {s} · {b.label}</span>
             <LangBar />
           </div>
-          <article className="doc" dangerouslySetInnerHTML={{ __html: buildNotice(S, S.lang) }} />
+          <article className="doc" dangerouslySetInnerHTML={{ __html: buildNotice(S, S.lang, effIso) }} />
         </section>
       </div>
 
       {gateOpen && <Gate />}
+      {copiedToast && <div className="np-toast" role="status">Copied ✓</div>}
     </div>
   );
 }

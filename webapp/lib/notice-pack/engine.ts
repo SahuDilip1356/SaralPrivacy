@@ -10,7 +10,7 @@ const H = {
   en: {
     title: (n: string) => `Privacy Notice — ${n || "[Your business]"}`,
     eff: "Effective date",
-    intro: (n: string) => `${n || "[Your business]"} ("we", "us") respects your privacy. This notice explains what personal data we collect, why, how, and the rights you have under India's Digital Personal Data Protection Act, 2023 (DPDPA).`,
+    intro: (n: string) => `${n || "[Your business]"} ("we", "us", "our") respects your privacy and is the Data Fiduciary responsible for the personal data described here. This notice explains what personal data we collect, why and how, and the rights you have under India's Digital Personal Data Protection Act, 2023 (DPDPA).`,
     h: ["1. Who we are", "2. Personal data we collect", "3. Why we collect it", "4. How we collect it", "5. Sharing with service providers", "6. Children’s data", "7. How long we keep your data", "8. Consent & withdrawal", "9. Your rights", "10. Grievance & Data Protection Board", "11. Contact us", "12. Updates to this notice"],
     rights: "You have the right to access the data we hold about you, correct or complete it, erase it where the law allows, withdraw consent as easily as you gave it, nominate someone to exercise your rights, and raise a grievance with our Officer.",
     child: "We process children’s data only with verifiable parental or guardian consent, and never for behavioural monitoring or targeted advertising directed at children.",
@@ -35,6 +35,33 @@ export function vclause(S: NPState): string {
   return VENDOR_CLAUSE[sec ? sec.vclause : "generic"] || VENDOR_CLAUSE.generic;
 }
 
+// Why each recipient category receives data — drives the structured sharing list (§5).
+const VENDOR_PURPOSE: Record<string, string> = {
+  "Payment gateway": "to process payments and refunds",
+  "Logistics / courier": "to deliver orders and manage returns",
+  "WhatsApp / SMS / email provider": "to send service updates and, with consent, marketing messages",
+  "Cloud storage": "to host and back up records securely",
+  "CRM": "to manage customer records and communication",
+  "Accounting / tax consultant": "for accounting, tax filing and statutory compliance",
+  "Legal consultant": "for legal advice and compliance",
+  "HR / payroll software": "to run payroll and HR administration",
+  "Recruitment / BGV vendor": "for candidate sourcing and background verification",
+  "LMS / EdTech platform": "to deliver classes and learning",
+  "Diagnostic lab partner": "to perform tests and deliver reports",
+  "Insurance partner": "to process claims and billing",
+  "Hotel / travel platform": "to manage bookings and travel",
+  "Analytics / advertising": "to measure usage and, with consent, run marketing",
+  "CCTV / security vendor": "for premises safety, security and access control",
+};
+
+function sharingHtml(S: NPState): string {
+  if (S.noVendors) return `<p>We do not share your personal data with third parties, except where required by law.</p>`;
+  if (!S.vendors.length) return `<p>${vclause(S)}</p>`;
+  return `<p>We share personal data only with the following categories of service providers, and only for the purposes described:</p><ul>${S.vendors
+    .map((v) => `<li><b>${escHtml(v)}</b> — ${VENDOR_PURPOSE[v] || "to deliver the services described in this notice"}</li>`)
+    .join("")}</ul>`;
+}
+
 export function retText(S: NPState): string {
   const m: Record<string, string> = {
     "Until service ends": "for as long as needed to provide the service",
@@ -48,22 +75,30 @@ export function retText(S: NPState): string {
   return m[S.retention] || "for as long as needed for the purposes above";
 }
 
-export function buildNotice(S: NPState, L: "en" | "hi"): string {
+export function buildNotice(S: NPState, L: "en" | "hi", effIso?: string): string {
   const t = H[L];
   const n = S.org;
-  const today = new Date().toLocaleDateString(L === "hi" ? "hi-IN" : "en-IN", { day: "numeric", month: "long", year: "numeric" });
+  // Effective date is stamped once at generation (passed in) so it's stable across preview/PDF.
+  const today = (effIso ? new Date(effIso) : new Date()).toLocaleDateString(L === "hi" ? "hi-IN" : "en-IN", { day: "numeric", month: "long", year: "numeric" });
   const e = escHtml;
   const li = (a: string[]) => (a && a.length ? `<ul>${a.map((x) => `<li>${e(x)}</li>`).join("")}</ul>` : `<p class="muted">— not specified yet —</p>`);
   const sec = SECTORS.find((s) => s.key === S.sector);
   let h = `<h1 class="dt">${t.title(n)}</h1><div class="dmeta">SP-NOTICE-2026-(draft) · v1.0 · ${t.eff}: ${today}${S.website ? " · " + e(S.website) : ""}</div><p>${t.intro(n)}</p>`;
-  h += `<h2 class="dh">${t.h[0]}</h2><p>${e(n) || "[business]"}${sec ? ", " + sec.label.toLowerCase() : ""}.</p>`;
+  // §1 Who we are — proper-cased sector + website + grievance contact + optional registered address.
+  const whoWeAre =
+    `${e(n) || "[business]"}${sec ? " is a " + e(sec.label) : ""}.` +
+    (S.website ? ` Website: ${e(S.website)}.` : "") +
+    (S.regAddress ? ` Registered address: ${e(S.regAddress)}.` : "") +
+    (S.cName || S.cEmail ? ` For privacy matters, contact ${e(S.cName) || "our Grievance Officer"}${S.cEmail ? " at " + e(S.cEmail) : ""}.` : "");
+  h += `<h2 class="dh">${t.h[0]}</h2><p>${whoWeAre}</p>`;
   h += `<h2 class="dh">${t.h[1]}</h2>${li(S.data)}`;
   h += `<h2 class="dh">${t.h[2]}</h2>${S.data.length ? `<ul>${S.data.map((d) => `<li><b>${e(d)}</b> — ${e(S.purpose[d] || "…")}</li>`).join("")}</ul>` : '<p class="muted">— add purposes —</p>'}`;
   h += `<h2 class="dh">${t.h[3]}</h2>${li(S.contexts.map((k) => { const c = CONTEXTS.find((x) => x.key === k); return c ? c.label : k; }))}`;
-  h += `<h2 class="dh">${t.h[4]}</h2><p>${vclause(S)}</p>`;
+  h += `<h2 class="dh">${t.h[4]}</h2>${sharingHtml(S)}`;
   if (S.children === "Yes") h += `<h2 class="dh">${t.h[5]}</h2><p>${t.child}</p>`;
   h += `<h2 class="dh">${t.h[6]}</h2><p>${L === "hi" ? "हम आपका डेटा रखते हैं " : "We keep your data "}${retText(S)}.</p>`;
-  h += `<h2 class="dh">${t.h[7]}</h2><p>${L === "hi" ? "सहमति आधार पर। आप किसी भी समय सहमति वापस ले सकते हैं" : "We process data on the basis of your consent (DPDPA §6). You can withdraw consent at any time"}${S.withdrawContact ? ` — ${e(S.withdrawContact)}` : ""}.</p>`;
+  const wContact = S.withdrawContact || S.cEmail;
+  h += `<h2 class="dh">${t.h[7]}</h2><p>${L === "hi" ? "सहमति आधार पर। आप किसी भी समय सहमति वापस ले सकते हैं" : "We process data on the basis of your consent (DPDPA §6). You can withdraw consent at any time"}${wContact ? ` — ${e(wContact)}` : ""}.</p>`;
   h += `<h2 class="dh">${t.h[8]}</h2><p>${t.rights}</p>`;
   h += `<h2 class="dh">${t.h[9]}</h2><p>${e(S.cName) || "[Officer]"}${S.cEmail ? " · " + e(S.cEmail) : ""}. ${t.board}</p>`;
   h += `<h2 class="dh">${t.h[10]}</h2><p>${e(S.cName) || "[name]"}${S.cEmail ? " · " + e(S.cEmail) : ""}${S.cPhone ? " · " + e(S.cPhone) : ""}</p>`;

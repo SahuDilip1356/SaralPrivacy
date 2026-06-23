@@ -17,6 +17,7 @@ export interface NPState {
   cName: string;
   cEmail: string;
   cPhone: string;
+  regAddress: string;
   slug: string;
   lang: "en" | "hi";
 }
