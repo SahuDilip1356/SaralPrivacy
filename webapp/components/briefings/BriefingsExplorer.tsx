@@ -16,6 +16,7 @@ export interface ExplorerBriefing {
   excerpt: string;
   date: string;
   readTime: number;
+  image: string;   // infographic URL (or data URI); "" when none
   stage: string;   // from category
   sector: string;  // from industries[0]
   format: string;  // from tags[0] (a known format slug) or ""
@@ -210,23 +211,34 @@ export function BriefingsExplorer({ briefings }: { briefings: ExplorerBriefing[]
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {results.map((b) => (
             <Link key={b.id} href={`/briefings/${b.slug}`}>
-              <div className="group h-full p-6 flex flex-col rounded-xl border border-slate-200 bg-white hover:border-teal-300 hover:shadow-sm transition-all">
-                <div className="flex items-center gap-2 mb-3 flex-wrap">
-                  {b.sector !== "general" && (
-                    <span className="text-[10px] font-semibold text-teal-700 bg-teal-100 px-2 py-0.5 rounded-full">{sectorLabel(b.sector)}</span>
-                  )}
-                  {STAGE_SLUGS.includes(b.stage) && (
-                    <span className="text-[10px] font-semibold text-navy-700 bg-navy-100 px-2 py-0.5 rounded-full">{stageLabel(b.stage)}</span>
-                  )}
-                </div>
-                <h3 className="font-bold text-navy-700 text-base leading-snug mb-2 group-hover:text-green-600 line-clamp-3">{b.title}</h3>
-                <p className="text-slate-500 text-sm leading-relaxed flex-1 line-clamp-3 mb-4">{b.excerpt}</p>
-                <div className="flex items-center justify-between pt-3 border-t border-slate-100">
-                  <div className="flex items-center gap-3 text-slate-400 text-xs">
-                    <span className="flex items-center gap-1"><Calendar size={11} />{formatDateShort(b.date)}</span>
-                    <span className="flex items-center gap-1"><Clock size={11} />{b.readTime} min</span>
+              <div className="group h-full flex flex-col rounded-xl border border-slate-200 bg-white overflow-hidden hover:border-teal-300 hover:shadow-sm transition-all">
+                {b.image && (
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  <img
+                    src={b.image}
+                    alt=""
+                    loading="lazy"
+                    className="w-full aspect-[16/9] object-cover bg-slate-100 border-b border-slate-100"
+                  />
+                )}
+                <div className="p-6 flex flex-col flex-1">
+                  <div className="flex items-center gap-2 mb-3 flex-wrap">
+                    {b.sector !== "general" && (
+                      <span className="text-[10px] font-semibold text-teal-700 bg-teal-100 px-2 py-0.5 rounded-full">{sectorLabel(b.sector)}</span>
+                    )}
+                    {STAGE_SLUGS.includes(b.stage) && (
+                      <span className="text-[10px] font-semibold text-navy-700 bg-navy-100 px-2 py-0.5 rounded-full">{stageLabel(b.stage)}</span>
+                    )}
                   </div>
-                  <ArrowRight size={14} className="text-slate-400 group-hover:text-teal-600 transition-colors" />
+                  <h3 className="font-bold text-navy-700 text-base leading-snug mb-2 group-hover:text-green-600 line-clamp-3">{b.title}</h3>
+                  <p className="text-slate-500 text-sm leading-relaxed flex-1 line-clamp-3 mb-4">{b.excerpt}</p>
+                  <div className="flex items-center justify-between pt-3 border-t border-slate-100">
+                    <div className="flex items-center gap-3 text-slate-400 text-xs">
+                      <span className="flex items-center gap-1"><Calendar size={11} />{formatDateShort(b.date)}</span>
+                      <span className="flex items-center gap-1"><Clock size={11} />{b.readTime} min</span>
+                    </div>
+                    <ArrowRight size={14} className="text-slate-400 group-hover:text-teal-600 transition-colors" />
+                  </div>
                 </div>
               </div>
             </Link>

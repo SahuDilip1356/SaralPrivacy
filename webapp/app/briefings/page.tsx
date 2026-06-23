@@ -48,12 +48,17 @@ function normaliseDoc(doc: any): ExplorerBriefing {
   const industries: string[] = tryParse(doc.industries, ["general"]);
   const tags: string[] = tryParse(doc.tags, []);
   const format = tags.find((t) => FORMAT_SLUGS.has(t)) ?? "";
+  // Infographic: stored in infographic_base64 as an Appwrite Storage https URL
+  // (new) or raw base64 (legacy). Same unpacking as the detail page.
+  const rawImg: string = doc.infographic_base64 || "";
+  const image = !rawImg ? "" : rawImg.startsWith("https://") ? rawImg : `data:image/jpeg;base64,${rawImg}`;
   return {
     id:       doc.$id,
     slug:     doc.slug,
     title:    doc.title,
     excerpt:  doc.excerpt || doc.summary?.slice(0, 200) || "",
     date:     doc.published_at || doc.created_at || doc.$createdAt,
+    image,
     readTime: doc.read_time || 5,
     stage:    doc.category || "",          // Stage facet
     sector:   industries[0] || "general",  // Sector facet
