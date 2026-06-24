@@ -16,7 +16,7 @@ const HONEYPOT = "hp_url";
 
 const INITIAL: NPState = {
   org: "", website: "", sector: "", data: [], contexts: [], purpose: {},
-  consentVia: "", withdrawMethod: "", withdrawContact: "", vendors: [], noVendors: false,
+  consentVia: [], withdrawMethod: [], withdrawContact: "", vendors: [], noVendors: false,
   children: "", childWhy: [], retention: "", cName: "", cEmail: "", cPhone: "", regAddress: "", slug: "", lang: "en",
 };
 
@@ -52,7 +52,14 @@ export default function NoticePackClient() {
       const saved = localStorage.getItem(LS_KEY);
       if (saved) {
         const o = JSON.parse(saved);
-        if (o.S) setS(o.S);
+        if (o.S) {
+          // Migrate: consentVia/withdrawMethod were single strings before they
+          // became multi-select arrays — coerce so old saved state won't crash.
+          const arr = (x: unknown) => (Array.isArray(x) ? x : x ? [x] : []);
+          o.S.consentVia = arr(o.S.consentVia);
+          o.S.withdrawMethod = arr(o.S.withdrawMethod);
+          setS(o.S);
+        }
         if (typeof o.step === "number") setStep(o.step);
       }
     } catch { /* ignore */ }
@@ -75,7 +82,7 @@ export default function NoticePackClient() {
   }, [done, S]);
 
   const update = (patch: Partial<NPState>) => setS((p) => ({ ...p, ...patch }));
-  const toggle = (field: "data" | "contexts" | "vendors" | "childWhy", val: string) =>
+  const toggle = (field: "data" | "contexts" | "vendors" | "childWhy" | "consentVia" | "withdrawMethod", val: string) =>
     setS((p) => {
       const arr = p[field];
       const has = arr.includes(val);
@@ -106,6 +113,14 @@ export default function NoticePackClient() {
     <div className="chips">
       {vals.map((v) => (
         <button key={v} type="button" className={`opt ${S[field] === v ? "on" : ""}`} onClick={() => update({ [field]: v } as Partial<NPState>)}>{v}</button>
+      ))}
+    </div>
+  );
+  // Multi-select chips (same look as radio, but more than one can be picked).
+  const multi = (field: "consentVia" | "withdrawMethod", vals: string[]) => (
+    <div className="chips">
+      {vals.map((v) => (
+        <button key={v} type="button" className={`opt ${S[field].includes(v) ? "on" : ""}`} onClick={() => toggle(field, v)}>{v}</button>
       ))}
     </div>
   );
@@ -453,9 +468,9 @@ export default function NoticePackClient() {
               <>
                 <h2>Consent &amp; withdrawal</h2>
                 <p className="hint">How you take permission, and how people can withdraw it — withdrawal must be as easy as giving it (DPDPA §6).</p>
-                <div className="field"><label className="lab">How do you take consent?</label>{radio("consentVia", ["Website checkbox", "App screen", "Paper form", "WhatsApp opt-in", "Email", "Not documented"])}</div>
-                <div className="field"><label className="lab">How can people withdraw consent?</label>{radio("withdrawMethod", ["Email", "Web form", "Account settings", "WhatsApp", "Phone", "Not available yet"])}
-                  {S.withdrawMethod === "Not available yet" && <div className="flag"><WarnIcon /> <span>Withdrawal should be as easy as giving consent. Add a clear channel before publishing.</span></div>}
+                <div className="field"><label className="lab">How do you take consent? <span className="lab-hint">Pick all that apply</span></label>{multi("consentVia", ["Website checkbox", "App screen", "Paper form", "WhatsApp opt-in", "Email", "Not documented"])}</div>
+                <div className="field"><label className="lab">How can people withdraw consent? <span className="lab-hint">Pick all that apply</span></label>{multi("withdrawMethod", ["Email", "Web form", "Account settings", "WhatsApp", "Phone", "Not available yet"])}
+                  {!S.withdrawMethod.some((m) => m !== "Not available yet") && S.withdrawMethod.includes("Not available yet") && <div className="flag"><WarnIcon /> <span>Withdrawal should be as easy as giving consent. Add a clear channel before publishing.</span></div>}
                 </div>
                 <div className="field"><label className="lab">Withdrawal / privacy contact email</label><input type="email" value={S.withdrawContact} onChange={(e) => update({ withdrawContact: e.target.value })} placeholder="privacy@yourbiz.in" /></div>
               </>
@@ -491,7 +506,7 @@ export default function NoticePackClient() {
               <>
                 <h2>Retention &amp; grievance contact</h2>
                 <p className="hint">How long you keep data, and who answers rights requests (DPDPA §5/§13).</p>
-                <div className="field"><label className="lab">How long do you keep personal data?</label>{radio("retention", ["Until service ends", "1 year", "3 years", "5–8 yrs (tax/legal)", "As required by law", "Forever", "Not sure"])}
+                <div className="field"><label className="lab">How long do you keep personal data?</label>{radio("retention", ["Until service ends", "6 months", "1 year", "3 years", "5–8 yrs (tax/legal)", "As required by law", "Forever", "Not sure"])}
                   {["Forever", "Not sure"].includes(S.retention) && <div className="flag"><WarnIcon /> <span>“{S.retention}” is a weak position. Set a time-bound or purpose-linked period where you can.</span></div>}
                 </div>
                 <div className="row2">

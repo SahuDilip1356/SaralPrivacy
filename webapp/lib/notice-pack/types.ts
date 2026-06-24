@@ -6,8 +6,8 @@ export interface NPState {
   data: string[];
   contexts: string[];
   purpose: Record<string, string>;
-  consentVia: string;
-  withdrawMethod: string;
+  consentVia: string[];
+  withdrawMethod: string[];
   withdrawContact: string;
   vendors: string[];
   noVendors: boolean;

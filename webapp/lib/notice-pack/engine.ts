@@ -62,9 +62,15 @@ function sharingHtml(S: NPState): string {
     .join("")}</ul>`;
 }
 
+// A real withdrawal channel = at least one selected method that isn't the
+// "Not available yet" placeholder.
+export const hasWithdrawalChannel = (S: NPState): boolean =>
+  S.withdrawMethod.some((m) => m && m !== "Not available yet");
+
 export function retText(S: NPState): string {
   const m: Record<string, string> = {
     "Until service ends": "for as long as needed to provide the service",
+    "6 months": "for up to 6 months after your last activity",
     "1 year": "for up to 1 year after your last activity",
     "3 years": "for up to 3 years",
     "5–8 yrs (tax/legal)": "for 5–8 years to meet tax and legal requirements",
@@ -117,7 +123,7 @@ export function score(S: NPState): number {
     s += Math.round((w.purposeMapped * mapped) / S.data.length);
   }
   if (S.contexts.length) s += w.contexts;
-  if (S.withdrawMethod && S.withdrawMethod !== "Not available yet" && S.withdrawContact) s += w.withdrawal;
+  if (hasWithdrawalChannel(S) && S.withdrawContact) s += w.withdrawal;
   if (S.cEmail) s += w.rightsContact;
   if (S.noVendors || S.vendors.length) s += w.vendorDisclosed;
   if (S.retention && !["Forever", "Not sure"].includes(S.retention)) s += w.retention;
@@ -138,7 +144,7 @@ export function flags(S: NPState): RiskFlag[] {
   const f: RiskFlag[] = [];
   // ── Risks: real defects that lower the score (capped below "Strong") ──
   if (!S.cEmail) f.push({ severity: "risk", color: "#E24B4A", title: "No grievance contact", detail: "Add a contact email for rights requests (DPDPA §5/§13)." });
-  if (!(S.withdrawMethod && S.withdrawMethod !== "Not available yet")) f.push({ severity: "risk", color: "#E24B4A", title: "No withdrawal channel", detail: "Withdrawal must be as easy as giving consent — add a clear channel." });
+  if (!hasWithdrawalChannel(S)) f.push({ severity: "risk", color: "#E24B4A", title: "No withdrawal channel", detail: "Withdrawal must be as easy as giving consent — add a clear channel." });
   if (["Forever", "Not sure"].includes(S.retention)) f.push({ severity: "risk", color: "#E8AB42", title: "Weak retention", detail: "Set a time-bound or purpose-linked period instead of “" + (S.retention || "—") + "”." });
   if (!S.noVendors && !S.vendors.length) f.push({ severity: "risk", color: "#E8AB42", title: "No vendors disclosed", detail: 'Add who you share data with, or tick "no third party".' });
   if (S.data.some((d) => isVague(S.purpose[d]))) f.push({ severity: "risk", color: "#E8AB42", title: "Vague purpose detected", detail: "Some data has a too-broad purpose — describe the specific activity." });
