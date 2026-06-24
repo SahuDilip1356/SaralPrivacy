@@ -6,6 +6,7 @@ import {
 import {
   buildNotice, score, band, flags, isVague, slugify, miniFor, evidence, rightsBlock, newNoticeId, sha256,
 } from "@/lib/notice-pack/engine";
+import { noticeDocumentHtml } from "@/lib/notice-pack/render";
 import { track } from "@/lib/notice-pack/track";
 import type { NPState } from "@/lib/notice-pack/types";
 
@@ -40,6 +41,7 @@ export default function NoticePackClient() {
   const [hash, setHash] = useState("");
   const [effIso, setEffIso] = useState("");
   const [copiedToast, setCopiedToast] = useState(false);
+  const [pdfBusy, setPdfBusy] = useState(false);
   const hydrated = useRef(false);
   const hpRef = useRef<HTMLInputElement>(null);
   const gateEmailRef = useRef<HTMLInputElement>(null);
@@ -126,14 +128,47 @@ export default function NoticePackClient() {
   };
 
   // ── export / gate ──
-  const fullHtml = () =>
-    `<!doctype html><meta charset="utf-8"><title>Privacy Notice — ${S.org}</title><div style="font-family:Inter,Arial,sans-serif;max-width:760px;margin:auto;color:#334155;line-height:1.6">${buildNotice(S, S.lang, effIso)}</div>`;
+  // Shared document shell — same template the server uses for the PDF, so Copy
+  // HTML, the print fallback and the PDF never drift.
+  const fullHtml = () => noticeDocumentHtml(S, { effIso });
+  // Browser-print fallback (used only if the server PDF route fails).
+  const printFallback = () => {
+    const w = window.open("", "_blank");
+    if (w) { w.document.write(fullHtml()); w.document.close(); w.focus(); setTimeout(() => w.print(), 300); }
+    else alert("Please allow pop-ups to download the PDF, or use Copy HTML instead.");
+  };
+  // Server-side PDF: POST the answers, stream back a branded PDF, trigger download.
+  const downloadServerPdf = async () => {
+    setPdfBusy(true);
+    try {
+      const res = await fetch("/api/notice/pdf", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...S, effIso }),
+      });
+      if (!res.ok) throw new Error(`pdf ${res.status}`);
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `dpdpa-privacy-notice-${slugify(S.org) || "your-business"}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 4000);
+      track("notice_pdf_downloaded", { sector: S.sector });
+    } catch (err) {
+      console.error("server pdf failed, falling back to print:", err);
+      printFallback();
+      track("notice_pdf_downloaded", { sector: S.sector, fallback: "print" });
+    } finally {
+      setPdfBusy(false);
+    }
+  };
   const runPending = (p: Pending) => {
     if (!p) return;
     if (p.kind === "pdf") {
-      const w = window.open("", "_blank");
-      if (w) { w.document.write(fullHtml()); w.document.close(); w.focus(); setTimeout(() => w.print(), 300); track("notice_pdf_downloaded", { sector: S.sector }); }
-      else alert("Please allow pop-ups to download the PDF, or use Copy HTML instead.");
+      downloadServerPdf();
     } else if (p.kind === "copyFull") {
       navigator.clipboard?.writeText(fullHtml()); track("notice_html_copied", { sector: S.sector }); flashCopied();
     } else if (p.kind === "copyText") {
@@ -236,7 +271,7 @@ export default function NoticePackClient() {
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             <button className="btn btn--ghost btn--sm" onClick={() => setDone(false)}>← Edit answers</button>
             <button className="btn btn--ghost btn--sm" onClick={() => requestExport("copyFull")}>Copy notice HTML</button>
-            <button className="btn btn--sm" onClick={() => requestExport("pdf")}>Download PDF</button>
+            <button className="btn btn--sm" disabled={pdfBusy} aria-busy={pdfBusy} onClick={() => requestExport("pdf")}>{pdfBusy ? "Generating…" : "Download PDF"}</button>
           </div>
         </div>
 
