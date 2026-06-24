@@ -148,4 +148,8 @@ export const trackEvent = {
     risk_band:      params.band     || "",
     page_location:  params.location || "assessment_result",
   }),
+
+  // ── Notice Pack Builder (/tools/dpdpa-privacy-notice-generator) ──────────
+  notice: (name: string, params: Record<string, any> = {}) =>
+    gtag(name, { event_category: name === "notice_lead_captured" ? "lead" : "engagement", ...params }),
 };

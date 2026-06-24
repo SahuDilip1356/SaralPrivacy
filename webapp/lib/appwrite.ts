@@ -50,6 +50,12 @@ export const COLLECTIONS = {
   OUTREACH_CONTACTS:  "outreach_contacts",
   EMAIL_SEND_LOG:     "email_send_log",
   AI_CITATIONS:       "ai_citations",
+  // Notice Pack Builder + DSAR (Notice Pack spec Part VIII)
+  NOTICE_CAPTURES:    "notice_captures",
+  NOTICE_RUNS:        "notice_runs",
+  NOTICE_EVENTS:      "notice_events",
+  BUSINESS_PROFILES:  "business_profiles",
+  DSAR_REQUESTS:      "dsar_requests",
 } as const;
 
 /** Returns the public view URL for a file in Appwrite Storage */

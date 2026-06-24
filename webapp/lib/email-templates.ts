@@ -170,6 +170,37 @@ export function downloadAlertTemplate(download: DownloadData): { subject: string
 }
 
 // ──────────────────────────────────────────────────────────────────────────────
+// 2b. Notice Pack lead alert (Admin)
+// ──────────────────────────────────────────────────────────────────────────────
+
+export interface NoticeLeadData {
+  email: string;
+  business_name?: string;
+  sector?: string;
+  readiness_score?: number;
+  export_type?: string;
+}
+
+export function noticeLeadAlertTemplate(lead: NoticeLeadData): { subject: string; html: string } {
+  const subject = `Notice Pack lead — ${lead.business_name || lead.email}${lead.sector ? " (" + lead.sector + ")" : ""}`;
+  const html = baseLayout(`
+    <p style="margin:0 0 4px;font-size:13px;color:${MUTED};">ADMIN ALERT</p>
+    <h2 style="margin:0 0 20px;font-size:22px;font-weight:700;color:${NAV};">Notice Pack generated</h2>
+    ${badge('Notice Pack Lead', '#2D9B6F')}
+    ${divider()}
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      ${labelRow('Email', lead.email)}
+      ${labelRow('Business', lead.business_name || '—')}
+      ${labelRow('Sector', lead.sector || '—')}
+      ${labelRow('Readiness score', lead.readiness_score != null ? String(lead.readiness_score) + ' / 100' : '—')}
+      ${labelRow('Export', lead.export_type || '—')}
+    </table>
+    <p style="margin:20px 0 0;font-size:12px;color:${MUTED};">Captured at the export gate of the Notice Pack Builder.</p>
+  `);
+  return { subject, html };
+}
+
+// ──────────────────────────────────────────────────────────────────────────────
 // 3. Assessment Alert (Admin)
 // ──────────────────────────────────────────────────────────────────────────────
 

@@ -9,8 +9,10 @@ import {
   briefingEmailTemplate,
   surveyResultEmailTemplate,
   bloggerInviteTemplate,
+  noticeLeadAlertTemplate,
   type LeadData,
   type DownloadData,
+  type NoticeLeadData,
   type AssessmentData,
   type BriefingData,
   type SurveyResultData,
@@ -75,6 +77,22 @@ export async function sendDownloadAlert(download: DownloadData): Promise<EmailRe
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     console.error('[email] sendDownloadAlert failed:', msg);
+    return { success: false, error: msg };
+  }
+}
+
+// ──────────────────────────────────────────────────────────────────────────────
+// 2b. sendNoticeLeadAlert — notify admin of a Notice Pack export lead
+// ──────────────────────────────────────────────────────────────────────────────
+export async function sendNoticeLeadAlert(lead: NoticeLeadData): Promise<EmailResult> {
+  try {
+    const { subject, html } = noticeLeadAlertTemplate(lead);
+    const { error } = await resend.emails.send({ from: FROM_NOREPLY, to: ADMIN_EMAIL, subject, html });
+    if (error) return { success: false, error: error.message };
+    return { success: true };
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error('[email] sendNoticeLeadAlert failed:', msg);
     return { success: false, error: msg };
   }
 }

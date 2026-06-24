@@ -6,7 +6,10 @@ const nextConfig: NextConfig = {
   // Vercel, etc.) via a conditional require pattern that Turbopack's static
   // resolver can't follow. Marking it external means Next.js falls back to
   // Node's native require, which handles the platform branch correctly.
-  serverExternalPackages: ["@resvg/resvg-js"],
+  // @sparticuz/chromium + puppeteer-core ship a platform-specific chromium
+  // binary and use dynamic requires the bundler can't trace — keep them external
+  // so the serverless function loads them via Node's native require.
+  serverExternalPackages: ["@resvg/resvg-js", "puppeteer-core", "@sparticuz/chromium"],
   // The infographic route reads Inter font files from lib/fonts/ via
   // fs.readFileSync(join(process.cwd(), "lib/fonts", ...)). Next.js's File
   // Trace builder can't always follow that path expression, so include the

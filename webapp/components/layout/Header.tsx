@@ -21,6 +21,11 @@ const navigation = [
     badge: "Free",
   },
   {
+    label: "Notice Generator",
+    href: "/tools/dpdpa-privacy-notice-generator",
+    badge: "Free",
+  },
+  {
     label: "Industries",
     href: "/industries",
     children: sectorNavLinks,
