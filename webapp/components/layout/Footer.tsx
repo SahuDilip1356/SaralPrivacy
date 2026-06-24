@@ -18,6 +18,7 @@ const footerLinks = {
   assessment: [
     { label: "DPDPA Readiness Assessment", href: "/assessment" },
     { label: "Personal Data Discovery", href: "/discovery" },
+    { label: "DPDPA Notice Generator", href: "/tools/dpdpa-privacy-notice-generator" },
   ],
   legal: [
     { label: "Privacy Notice", href: "/privacy" },

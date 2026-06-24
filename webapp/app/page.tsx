@@ -5,6 +5,7 @@ import { AudienceCards } from "@/components/home/AudienceCards";
 import { BriefingsSection } from "@/components/home/BriefingsSection";
 import { DiscoveryCTA } from "@/components/home/DiscoveryCTA";
 import { AssessmentCTA } from "@/components/home/AssessmentCTA";
+import { NoticeCTA } from "@/components/home/NoticeCTA";
 import { WhitePaperSection } from "@/components/home/WhitePaperSection";
 import { FAQPreview } from "@/components/home/FAQPreview";
 import { NewsletterSection } from "@/components/home/NewsletterSection";
@@ -51,6 +52,7 @@ export default function HomePage() {
       <BriefingsSection />
       <DiscoveryCTA />
       <AssessmentCTA />
+      <NoticeCTA />
       <WhitePaperSection />
       <FAQPreview />
       <NewsletterSection />

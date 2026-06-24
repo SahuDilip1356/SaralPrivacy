@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { breadcrumbSchema } from "@/lib/schema";
 import { DiscoveryCrossLink } from "@/components/DiscoveryCrossLink";
+import { NoticeCrossLink } from "@/components/NoticeCrossLink";
 import SurveyClient from "./SurveyClient";
 
 export const metadata: Metadata = {
@@ -45,6 +46,7 @@ export default function AssessmentPage() {
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-8">
         <DiscoveryCrossLink />
+        <NoticeCrossLink className="mt-4" />
       </div>
 
       <SurveyClient />
