@@ -42,13 +42,14 @@ Order top→bottom. **Core** = carries conversion; **Support** = secondary.
 2. **Where DPDPA risk hides** [Problem] — *"Why should I care?"* The **Scatter** signature visual — personal data fans from the business to ~8 everyday tools, each carrying its own gold gap. Proves the hero's "hidden data you missed" claim. **Dark-navy continuation of the hero.** Detail: §3d.
 3. **Trust ribbon** [Support] — *"Can I trust them?"* ANI · Business Standard · The Tribune · Lokmat Times · Latestly.
 4. **How it works = do it now** [Core] — *"So what do I actually do?"* The 4-step ladder Discover → Assess → Fix → Get help, where **each step is a live card into the real tool** (Personal Data Discovery / assessment / Notice Pack / gap review). The merge: orientation + action in one section.
-5. **Proof — sample + sector finder** [Core] — *"Does it fit MY business?"* One sample result (e.g. Clinic 41/100, illustrative) beside a compact pick-your-sector finder (**all 12**). Sectors are a finder here, NOT an early 12-card wall.
+5. **Proof — sample result** [Core] — *"Does it fit MY business?"* One illustrative sample-result card (e.g. Clinic 41/100 — top gap, first fix). **Slim: NO sector finder here** — it points down to Beat 7 (*"see what's at stake for your sector ↓"*). Detail: §3b.
 6. **Founder proof** [Support] — *"Who's behind this?"* Dilip Sahu · CA · IIM Bangalore · 22+ yrs enterprise.
-7. **Get help** [Core] — *"I need a person."* Request a free gap review. Placed at the **trust peak** (right after the founder block), before the engagement catch.
-8. **Stay current** [Support] — *"Not ready — keep me sharp."* ONE block consolidating Daily Briefings + DPDPA learning + blog + newsletter/FAQ. The engagement/SEO engine, kept below the conversion beats.
-9. **Footer** — sectors · sitemap · legal.
+7. **Explore DPDPA by your sector** [Support] — *"What's at stake for MY sector?"* The rich **12-card wall** (per-sector data types + "is your X workflow DPDPA-ready?" + per-sector links). **Demoted from early to here** — late = reward for scroll, not choice-overload. The single sector-selection moment (Option A, agreed 2026-06-25). Detail: §3e.
+8. **Get help** [Core] — *"I need a person."* Request a free gap review. The **final conversion CTA**, after the sector deep-dive.
+9. **Stay current** [Support] — *"Not ready — keep me sharp."* ONE block consolidating Daily Briefings + DPDPA learning + blog + newsletter/FAQ. The engagement/SEO engine, kept below the conversion beats.
+10. **Footer** — sectors · sitemap · legal.
 
-**Why 9 beats (was 8):** added **Beat 2 (Scatter)** as the single problem/thesis visual immediately after the hero, above Trust — agreed 2026-06-25. Still de-duped: merged Journey + Discovery + Assessment + Fix into beat 4; folded the 12-card wall into beat 5's finder; consolidated Briefings + Newsletter + FAQ into beat 8. **Get help (7) sits before Stay current (8)** — ask for the human at the trust peak, then catch the rest. The **Lifecycle** visual is deliberately NOT on the landing → it lives on the Discovery tool (see `docs/visual-system/`).
+**Why 10 beats:** added **Beat 2 (Scatter)** (problem/thesis, after hero) and **Beat 7 (sector wall)** — both agreed 2026-06-25. The 12-card wall is **demoted to Beat 7** (late = reward for scroll, not early choice-overload) and is the **single** sector-selection moment (Option A); Beat 5 is therefore slim sample-result proof only that points down to it. Still de-duped: merged Journey + Discovery + Assessment + Fix into beat 4; consolidated Briefings + Newsletter + FAQ into beat 9. **Get help (8)** is the final conversion CTA. The **Lifecycle** visual stays OFF the landing → Discovery tool (see `docs/visual-system/`).
 
 ## 3a. Beat 4 detail — "How it works = do it now" (animated flow)
 The Core converting beat. A single **centered vertical flow**: a 3-step spine → a milestone → a 3-way "keep it living" branch. Orientation (the numbered path) and action (each box is a live link) in one section. Visual reference: session `how_it_works_centered_fixed`.
@@ -63,7 +64,7 @@ The Core converting beat. A single **centered vertical flow**: a 3-step spine �
    - **Sector Deep Dive** — _go deeper on your sector_ → `/industries`
    - **Deep Review** — **Coming soon** (dashed border, muted, `not-allowed` cursor, static connector, no link until it ships)
 
-**Relationship to the beats:** this branch previews the *ongoing* layer; it does NOT replace beat 7 (Get help / free gap review) or beat 8 (Stay current) — those remain. Daily Brief appears here as a teaser and again in the consolidated Stay-current block.
+**Relationship to the beats:** this branch previews the *ongoing* layer; it does NOT replace beat 8 (Get help / free gap review) or beat 9 (Stay current) — those remain. Daily Brief appears here as a teaser and again in the consolidated Stay-current block.
 
 **Motion:**
 - **Boxes slide up + fade in, staggered** top→bottom (Discover → … → branches) so the eye is led down the path.
@@ -75,15 +76,15 @@ The Core converting beat. A single **centered vertical flow**: a 3-step spine �
 - In production the box links are Next.js `<Link>` (client nav), routes identical to above. Plain CSS `@keyframes` — add an `IntersectionObserver` if you want replay on scroll-into-view.
 - This becomes the `HowItWorks` component in Stage 1.
 
-## 3b. Beat 5 detail — "Proof + sector finder" (brand-styled)
-The "does it fit MY business?" beat. **Light** section (per the dark-zones rule, §3c). Visual reference: session `beat4_proof_finder_brand` (brand-styled) — supersedes the earlier generic-token mock.
+## 3b. Beat 5 detail — "Proof" (sample result only, brand-styled)
+The "does it fit MY business?" beat. **Light** section (per the dark-zones rule, §3c). **Slim under Option A — sample-result card only; the sector finder moved to Beat 7 (§3e).** Visual reference: session `beat4_proof_finder_brand` (use the left/sample-card half only).
 
-**Layout:** Cloud-50 surface → centered header (eyebrow "Proof" in Assurance Teal · H2 "Does this fit your business?" · sub) → two columns → one centered green CTA.
-- **Left — sample result card** (white, hairline border, no shadow). Sector name (navy) + "Sample · illustrative" pill (honest — never fake "your" data). Score ring **41/100 in Signal Gold** (NO red — see tokens) + "High-priority action" pill (gold bg + navy text). **Top gap** (gold alert icon) + **First fix** (green check). Quiet teal link "See the clinic assessment" → `/assessment/clinics-diagnostic-labs`.
-- **Right — sector finder.** "Find your sector" + all **12 sector chips** (navy text on white, hairline, Assurance Teal hover) → `/assessment/{assessmentSlug}` from `sectors.ts`. Quiet navigation, NOT 12 green buttons.
-- **One primary CTA (green):** "Take your free assessment" → `/assessment`. Subtle teal link below: "Not listed? Start with Discovery" → `/discovery` (no dead ends).
+**Layout:** Cloud-50 surface → centered header (eyebrow "Proof" · H2 "Does this fit your business?" · sub) → the sample-result card, centered → a quiet pointer down to Beat 7.
+- **Sample-result card** (white, hairline border, no shadow). Sector name (navy) + "Sample · illustrative" pill (honest — never fake "your" data). Score ring **41/100 in Signal Gold** (NO red — see tokens) + "High-priority action" pill (gold bg + navy text). **Top gap** (gold alert icon) + **First fix** (green check).
+- **Quiet pointer (NOT a finder):** "See what's at stake for your sector ↓" → scrolls to Beat 7. No sector grid here.
+- **One primary CTA (green):** "Take your free assessment" → `/assessment`.
 
-**Optional v1+ enhancement:** the sample card swaps to match the sector the visitor hovers/taps in the finder (small JS) — makes the proof personal.
+**Optional v1+ enhancement:** the sample card swaps to match the sector the visitor picks in the Beat 7 wall (small JS) — makes the proof personal.
 
 ## 3c. Brand tokens (CANONICAL — governs every beat)
 Source: SaralPrivacy brand skill (`anthropic-skills:saralprivacy-brand`). All beats must use these; re-skin the hero + how-it-works flow to match.
@@ -118,6 +119,19 @@ The single **problem / thesis** beat, placed **immediately after the Hero, above
 **Animation (agreed):** **scroll-triggered, play once** (`IntersectionObserver`). The teal lines **flow outward** from the hub to each tool *in sequence* (data escaping the building), and each **gold gap snaps in the moment its line lands** — "data escapes → gap appears." `prefers-reduced-motion` → composed state instantly, no movement.
 
 **Build:** use the **fixed-canvas** technique (avoid the SVG-centre-drift bug — see §3a build notes). Becomes a `WhereRiskHides` component. **Lifecycle is NOT on the landing** — it's a Discovery-tool/guide asset (`docs/visual-system/`).
+
+## 3e. Beat 7 detail — "Explore DPDPA by your sector" (the 12-card wall)
+The rich per-sector section, **demoted from early to late** (between Founder and Get help) — agreed 2026-06-25 (Option A). Late placement removes the early choice-overload while keeping the asset: it's a **reward for scroll**, the SEO/internal-linking surface, and the **single** sector-selection moment on the page.
+
+**Carried over from the live page** (don't rebuild from scratch — it's the `AudienceCards.tsx` content): 12 cards, each with the sector name, its data types (e.g. "PAN / Aadhaar / bank data"), the sector-specific line ("is your X workflow DPDPA-ready?"), and per-card links **Take Assessment → `/assessment/{slug}`** + **View Industry Guide → `/industries/{slug}`**.
+
+**Brand discipline (the fix vs the live version):**
+- **Light** section (Cloud-50). Cards = white, hairline borders, no shadow.
+- **NOT 12 green buttons.** Per the one-primary-CTA rule (§3c), the per-card "Take Assessment" / "View guide" are **quiet** (navy/teal links), not green.
+- **Retire the 12 per-sector accent hues** → uniform card treatment (semantic colour only; gold only when showing risk). Matches the "collapse 12 hues" note in `docs/visual-system/`.
+- Heading: "Explore DPDPA by your sector" · sub: "Same law. Different data. Different fixes." (calm, India-first).
+
+**Relationship to Beat 5:** Beat 5 is the slim sample-result *proof*; Beat 7 is the *sector selection + detail*. Beat 5 points down here. This is the ONLY full sector grid on the page.
 
 ## 4. Indian-SMB design principles (non-negotiable)
 - **Clarity over fear.** Calm converts this audience; fear bounces them. No "penalties will ruin you."
