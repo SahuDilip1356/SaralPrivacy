@@ -31,22 +31,23 @@ Trust + proof wraps the ladder (press strip, founder block). Briefings/newslette
 - Discovery and Assessment CTAs sit adjacent, **both green, undifferentiated** → competing CTAs.
 - `AssessmentCTA.tsx:31-40` picker hardcodes **only 8 of 12 sectors** (missing hotels-travel, pharmacies, fintech-nbfc, gyms-salons-spas) — credibility leak. `AudienceCards` already has all 12.
 
-## 3. Target structure (build to this)
-Annotated wireframe rendered in session `saralprivacy_landing_conversion_structure`. Order top→bottom:
+## 3. Target structure — refined 8-beat flow (build to this)
+Organized by the **visitor's question at each scroll**, not by section type. This supersedes the
+earlier 13-section inventory (de-duplicated). Visuals: session `saralprivacy_landing_flow_v2` (this flow)
++ `saralprivacy_landing_conversion_structure` (the inventory it came from).
 
-1. **Alert bar** — DPDP Rules, 2025 window. _Factual deadline, not fear._
-2. **Hero** — H1 "See exactly where your business stands on DPDPA". Primary CTA = **Discover**, secondary = Assess. Nav button aligned to the same first action.
-3. **Press + trust strip** — ANI · Business Standard · The Tribune · Lokmat Times · Latestly.
-4. **Journey strip** — Discover → Assess → Fix → Get help (fold the "Where to start?" chooser in).
-5. **Discover** — Personal Data Discovery. _Map your data · no email · instant snapshot._ (teal)
-6. **Assess** — Readiness assessment **+ sample-result card** (e.g. Clinic 41/100, High-priority, top gap, first fix — labelled "illustrative"). Picker = **all 12 sectors**. _No account._ (green)
-7. **Audience cards** — grouped (not a wall). A sector *finder*, not choice-overload. (support)
-8. **Fix** — Notice generator + Guide + templates. _Do the next thing, not just read._ (amber)
-9. **Founder proof** — Dilip Sahu: CA · IIM Bangalore · 22+ yrs enterprise (ERP, finance, governance, controls). _People-trust anchor._
-10. **Get help** — rename consultation → **"Request free gap review."** (blue)
-11. **Briefings** — moved DOWN. Return-visit engagement.
-12. **Newsletter + FAQ** — capture + objection handling.
-13. **Footer.**
+Order top→bottom. **Core** = carries conversion; **Support** = secondary.
+
+1. **Hero** [Core] — *"Is DPDPA even for me?"* Is-this-me sector pick → instant verdict. The alert bar (DPDP Rules window) is a thin strip in this region. Primary CTA = Discover, secondary = Assess. Detail: `LANDING_PAGE_HERO_SPEC.md`.
+2. **Trust ribbon** [Support] — *"Can I trust them?"* ANI · Business Standard · The Tribune · Lokmat Times · Latestly.
+3. **How it works = do it now** [Core] — *"So what do I actually do?"* The 4-step ladder Discover → Assess → Fix → Get help, where **each step is a live card into the real tool** (Personal Data Discovery / assessment / Notice Pack / gap review). The merge: orientation + action in one section.
+4. **Proof — sample + sector finder** [Core] — *"Does it fit MY business?"* One sample result (e.g. Clinic 41/100, illustrative) beside a compact pick-your-sector finder (**all 12**). Sectors are a finder here, NOT an early 12-card wall.
+5. **Founder proof** [Support] — *"Who's behind this?"* Dilip Sahu · CA · IIM Bangalore · 22+ yrs enterprise.
+6. **Get help** [Core] — *"I need a person."* Request a free gap review. Placed at the **trust peak** (right after the founder block), before the engagement catch.
+7. **Stay current** [Support] — *"Not ready — keep me sharp."* ONE block consolidating Daily Briefings + DPDPA learning + blog + newsletter/FAQ. The engagement/SEO engine, kept below the conversion beats.
+8. **Footer** — sectors · sitemap · legal.
+
+**Why 8 not 13:** merged Journey + Discovery + Assessment + Fix into beat 3; folded the 12-card wall into beat 4's finder; consolidated Briefings + Newsletter + FAQ into beat 7. De-dupes repeated orientation/action and gives explicit Core/Support hierarchy. Order refinement vs the v2 diagram: **Get help (6) sits before Stay current (7)** — ask for the human at the trust peak, then catch the rest.
 
 ## 4. Indian-SMB design principles (non-negotiable)
 - **Clarity over fear.** Calm converts this audience; fear bounces them. No "penalties will ruin you."
