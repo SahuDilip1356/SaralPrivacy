@@ -39,17 +39,18 @@ earlier 13-section inventory (de-duplicated). Visuals: session `saralprivacy_lan
 Order top→bottom. **Core** = carries conversion; **Support** = secondary.
 
 1. **Hero** [Core] — *"Is DPDPA even for me?"* Is-this-me sector pick → instant verdict. The alert bar (DPDP Rules window) is a thin strip in this region. Primary CTA = Discover, secondary = Assess. Detail: `LANDING_PAGE_HERO_SPEC.md`.
-2. **Trust ribbon** [Support] — *"Can I trust them?"* ANI · Business Standard · The Tribune · Lokmat Times · Latestly.
-3. **How it works = do it now** [Core] — *"So what do I actually do?"* The 4-step ladder Discover → Assess → Fix → Get help, where **each step is a live card into the real tool** (Personal Data Discovery / assessment / Notice Pack / gap review). The merge: orientation + action in one section.
-4. **Proof — sample + sector finder** [Core] — *"Does it fit MY business?"* One sample result (e.g. Clinic 41/100, illustrative) beside a compact pick-your-sector finder (**all 12**). Sectors are a finder here, NOT an early 12-card wall.
-5. **Founder proof** [Support] — *"Who's behind this?"* Dilip Sahu · CA · IIM Bangalore · 22+ yrs enterprise.
-6. **Get help** [Core] — *"I need a person."* Request a free gap review. Placed at the **trust peak** (right after the founder block), before the engagement catch.
-7. **Stay current** [Support] — *"Not ready — keep me sharp."* ONE block consolidating Daily Briefings + DPDPA learning + blog + newsletter/FAQ. The engagement/SEO engine, kept below the conversion beats.
-8. **Footer** — sectors · sitemap · legal.
+2. **Where DPDPA risk hides** [Problem] — *"Why should I care?"* The **Scatter** signature visual — personal data fans from the business to ~8 everyday tools, each carrying its own gold gap. Proves the hero's "hidden data you missed" claim. **Dark-navy continuation of the hero.** Detail: §3d.
+3. **Trust ribbon** [Support] — *"Can I trust them?"* ANI · Business Standard · The Tribune · Lokmat Times · Latestly.
+4. **How it works = do it now** [Core] — *"So what do I actually do?"* The 4-step ladder Discover → Assess → Fix → Get help, where **each step is a live card into the real tool** (Personal Data Discovery / assessment / Notice Pack / gap review). The merge: orientation + action in one section.
+5. **Proof — sample + sector finder** [Core] — *"Does it fit MY business?"* One sample result (e.g. Clinic 41/100, illustrative) beside a compact pick-your-sector finder (**all 12**). Sectors are a finder here, NOT an early 12-card wall.
+6. **Founder proof** [Support] — *"Who's behind this?"* Dilip Sahu · CA · IIM Bangalore · 22+ yrs enterprise.
+7. **Get help** [Core] — *"I need a person."* Request a free gap review. Placed at the **trust peak** (right after the founder block), before the engagement catch.
+8. **Stay current** [Support] — *"Not ready — keep me sharp."* ONE block consolidating Daily Briefings + DPDPA learning + blog + newsletter/FAQ. The engagement/SEO engine, kept below the conversion beats.
+9. **Footer** — sectors · sitemap · legal.
 
-**Why 8 not 13:** merged Journey + Discovery + Assessment + Fix into beat 3; folded the 12-card wall into beat 4's finder; consolidated Briefings + Newsletter + FAQ into beat 7. De-dupes repeated orientation/action and gives explicit Core/Support hierarchy. Order refinement vs the v2 diagram: **Get help (6) sits before Stay current (7)** — ask for the human at the trust peak, then catch the rest.
+**Why 9 beats (was 8):** added **Beat 2 (Scatter)** as the single problem/thesis visual immediately after the hero, above Trust — agreed 2026-06-25. Still de-duped: merged Journey + Discovery + Assessment + Fix into beat 4; folded the 12-card wall into beat 5's finder; consolidated Briefings + Newsletter + FAQ into beat 8. **Get help (7) sits before Stay current (8)** — ask for the human at the trust peak, then catch the rest. The **Lifecycle** visual is deliberately NOT on the landing → it lives on the Discovery tool (see `docs/visual-system/`).
 
-## 3a. Beat 3 detail — "How it works = do it now" (animated flow)
+## 3a. Beat 4 detail — "How it works = do it now" (animated flow)
 The Core converting beat. A single **centered vertical flow**: a 3-step spine → a milestone → a 3-way "keep it living" branch. Orientation (the numbered path) and action (each box is a live link) in one section. Visual reference: session `how_it_works_centered_fixed`.
 
 **Structure (top → bottom, all centered on one axis):**
@@ -62,7 +63,7 @@ The Core converting beat. A single **centered vertical flow**: a 3-step spine �
    - **Sector Deep Dive** — _go deeper on your sector_ → `/industries`
    - **Deep Review** — **Coming soon** (dashed border, muted, `not-allowed` cursor, static connector, no link until it ships)
 
-**Relationship to the 8 beats:** this branch previews the *ongoing* layer; it does NOT replace beat 6 (Get help / free gap review) or beat 7 (Stay current) — those remain. Daily Brief appears here as a teaser and again in the consolidated Stay-current block.
+**Relationship to the beats:** this branch previews the *ongoing* layer; it does NOT replace beat 7 (Get help / free gap review) or beat 8 (Stay current) — those remain. Daily Brief appears here as a teaser and again in the consolidated Stay-current block.
 
 **Motion:**
 - **Boxes slide up + fade in, staggered** top→bottom (Discover → … → branches) so the eye is led down the path.
@@ -74,8 +75,8 @@ The Core converting beat. A single **centered vertical flow**: a 3-step spine �
 - In production the box links are Next.js `<Link>` (client nav), routes identical to above. Plain CSS `@keyframes` — add an `IntersectionObserver` if you want replay on scroll-into-view.
 - This becomes the `HowItWorks` component in Stage 1.
 
-## 3b. Beat 4 detail — "Proof + sector finder" (brand-styled)
-The "does it fit MY business?" beat. **Light** section (per the two-dark-moments rule). Visual reference: session `beat4_proof_finder_brand` (brand-styled) — supersedes the earlier generic-token mock.
+## 3b. Beat 5 detail — "Proof + sector finder" (brand-styled)
+The "does it fit MY business?" beat. **Light** section (per the dark-zones rule, §3c). Visual reference: session `beat4_proof_finder_brand` (brand-styled) — supersedes the earlier generic-token mock.
 
 **Layout:** Cloud-50 surface → centered header (eyebrow "Proof" in Assurance Teal · H2 "Does this fit your business?" · sub) → two columns → one centered green CTA.
 - **Left — sample result card** (white, hairline border, no shadow). Sector name (navy) + "Sample · illustrative" pill (honest — never fake "your" data). Score ring **41/100 in Signal Gold** (NO red — see tokens) + "High-priority action" pill (gold bg + navy text). **Top gap** (gold alert icon) + **First fix** (green check). Quiet teal link "See the clinic assessment" → `/assessment/clinics-diagnostic-labs`.
@@ -102,10 +103,21 @@ Source: SaralPrivacy brand skill (`anthropic-skills:saralprivacy-brand`). All be
 - **CTA button is locked:** Verification Green bg + white label. Never ghost/outline green. **One primary CTA per beat** — green is reserved for it; everything else (finder chips, nav) is quiet (navy/teal).
 - **Forbidden combos:** gold text on white · green bg + teal text · navy bg + slate text · any gradient as a primary background.
 - **Hairlines, not shadows** (`1px solid rgba(18,26,46,0.08–0.10)`).
-- **Two dark moments only:** how-it-works flow (Beat 3) + final CTA are Trust Navy; **every other beat is light** (Cloud-50/white). Brand mocks are fixed-palette (NOT theme-adaptive) because the live site is a fixed light/dark system, not claude-adaptive.
+- **Dark zones (updated 2026-06-25):** the **problem opening = Hero + Scatter (Beats 1–2), one continuous Trust-Navy block**, plus the **how-it-works flow (Beat 4)** and the **final CTA**. Every other beat (Trust, Proof, Founder, Get help, Stay current) is light (Cloud-50/white). Supersedes the earlier "two dark moments only" — the agreed dark Scatter continuation makes the opening one continuous dark moment. Brand mocks are fixed-palette (NOT theme-adaptive) because the live site is a fixed light/dark system, not claude-adaptive.
 - **Typography — Inter:** H1 48/56 bold · H2 32/38 bold · H3 24/30 semibold · Body 16/24 regular · Button 16 semibold · Label/pill 12 medium. Fallback `system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif`.
 
 **Copy rules (brand non-negotiables):** sentence case · active voice · India-first (DPDPA, not GDPR) · no fear-mongering · never the phrase "legal compliance" (use "privacy readiness", "trust signal", "data protection practice") · lead with business consequence then the fix · answer the 3 silent questions fast (does this apply to me? what's my risk? what do I do next?).
+
+## 3d. Beat 2 detail — "Where DPDPA risk hides" (Scatter — signature visual)
+The single **problem / thesis** beat, placed **immediately after the Hero, above Trust** (agreed 2026-06-25). It proves the hero's "hidden data you missed" claim — claim → proof — then the page pivots to credibility (Trust) and the fix (How it works). It IS the brand **signature visual** (`docs/visual-system/`), reused on Discovery / deck / reports. Visual reference: session `where_risk_hides_adjacent_gaps`.
+
+**Surface:** **dark-navy continuation of the Hero** (Trust Navy) — feels like the hero "opening up" to reveal where the data went; the page then goes light at Trust. (Hero + Scatter = one continuous dark moment — see §3c dark-zones.)
+
+**Design (brand kit):** hub **"Your business"** (navy) → data **fans out** (Assurance Teal dashed connectors) to ~8 everyday tools rendered as **mono navy icons** (NOT brand-colour logos — no logo soup) → each tool carries its **own gold gap adjacent** (consent / access / retention / vendor / evidence). **Gold is the only attention colour** (= risk). Eyebrow "Where DPDPA risk hides" · H2 "Follow the data. The risk becomes visible." · sub = the thesis line. Calm, no red, no fear.
+
+**Animation (agreed):** **scroll-triggered, play once** (`IntersectionObserver`). The teal lines **flow outward** from the hub to each tool *in sequence* (data escaping the building), and each **gold gap snaps in the moment its line lands** — "data escapes → gap appears." `prefers-reduced-motion` → composed state instantly, no movement.
+
+**Build:** use the **fixed-canvas** technique (avoid the SVG-centre-drift bug — see §3a build notes). Becomes a `WhereRiskHides` component. **Lifecycle is NOT on the landing** — it's a Discovery-tool/guide asset (`docs/visual-system/`).
 
 ## 4. Indian-SMB design principles (non-negotiable)
 - **Clarity over fear.** Calm converts this audience; fear bounces them. No "penalties will ruin you."
