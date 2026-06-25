@@ -49,6 +49,31 @@ Order top→bottom. **Core** = carries conversion; **Support** = secondary.
 
 **Why 8 not 13:** merged Journey + Discovery + Assessment + Fix into beat 3; folded the 12-card wall into beat 4's finder; consolidated Briefings + Newsletter + FAQ into beat 7. De-dupes repeated orientation/action and gives explicit Core/Support hierarchy. Order refinement vs the v2 diagram: **Get help (6) sits before Stay current (7)** — ask for the human at the trust peak, then catch the rest.
 
+## 3a. Beat 3 detail — "How it works = do it now" (animated flow)
+The Core converting beat. A single **centered vertical flow**: a 3-step spine → a milestone → a 3-way "keep it living" branch. Orientation (the numbered path) and action (each box is a live link) in one section. Visual reference: session `how_it_works_centered_fixed`.
+
+**Structure (top → bottom, all centered on one axis):**
+1. **Discover** — _Data Discovery · map your data_ → `/discovery` (teal, badge 1)
+2. **Assess** — _Generic Assessment · score your risk_ → `/assessment` (green, badge 2)
+3. **Fix what matters** — _Notice Pack · generate your notices_ → `/tools/dpdpa-privacy-notice-generator` (amber, badge 3)
+4. **Milestone: "You're DPDPA-ready"** — _the basics are done — now keep it living._ Emerald shield, brighter border. Status marker, **not** a link (unless we later point it at `/assessment`).
+5. **Branch into 3 "keep it living" leaves** (fan from the milestone):
+   - **Daily Brief** — _5-min updates + actions_ → `/briefings`
+   - **Sector Deep Dive** — _go deeper on your sector_ → `/industries`
+   - **Deep Review** — **Coming soon** (dashed border, muted, `not-allowed` cursor, static connector, no link until it ships)
+
+**Relationship to the 8 beats:** this branch previews the *ongoing* layer; it does NOT replace beat 6 (Get help / free gap review) or beat 7 (Stay current) — those remain. Daily Brief appears here as a teaser and again in the consolidated Stay-current block.
+
+**Motion:**
+- **Boxes slide up + fade in, staggered** top→bottom (Discover → … → branches) so the eye is led down the path.
+- **Active flow line** — each dashed connector fades in right after its source box lands, then keeps a continuous "marching" flow (animated `stroke-dashoffset`). The Coming-soon branch connector is **static + muted**.
+- **`prefers-reduced-motion`**: render the final composed state instantly, no movement. Non-negotiable.
+
+**Build notes:**
+- **Centering lesson (don't repeat the bug):** never mix a width-stretching SVG (`width:100%` + `preserveAspectRatio="none"`) with fixed-px HTML boxes — the SVG centre drifts off the box centre on wide screens. Pin the whole diagram to one **fixed canvas** (e.g. 660×644, `margin:0 auto`) so SVG and boxes share one coordinate system. Or make both fully percentage-based.
+- In production the box links are Next.js `<Link>` (client nav), routes identical to above. Plain CSS `@keyframes` — add an `IntersectionObserver` if you want replay on scroll-into-view.
+- This becomes the `HowItWorks` component in Stage 1.
+
 ## 4. Indian-SMB design principles (non-negotiable)
 - **Clarity over fear.** Calm converts this audience; fear bounces them. No "penalties will ruin you."
 - **Show the outcome before asking for anything.** Ungated preview (Discovery no-email, Assessment no-account) is the biggest conversion asset — surface it.
