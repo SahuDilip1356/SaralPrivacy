@@ -1,6 +1,6 @@
-# Visual System + Later-Phase Backlog
+# SaralPrivacy Visual System + Content Backlog
 
-_Created 2026-06-25. Outcome of a "design like Visualize Value" analysis (DesignDisciplin post + a VV-tactics mapping). **Discussion record + backlog — NOT locked design.** The 4 directions below are proposed leans pending Dilip's explicit agreement. Companion: `LANDING_PAGE_STRUCTURE.md` (§3c brand tokens are already locked)._
+_Created 2026-06-25. A **brand-wide** visual language and a sequenced backlog of visual assets across ALL SaralPrivacy surfaces (website, tools, reports, LinkedIn, decks). **Deliberately standalone — NOT part of the landing-page design set.** The landing page is just one consumer of this system. Outcome of a "design like Visualize Value" analysis (DesignDisciplin post + a VV-tactics mapping). Brand colour/type tokens are owned by the SaralPrivacy brand skill (`anthropic-skills:saralprivacy-brand`). **Discussion record + backlog — NOT locked design.** The 4 directions below are proposed leans pending Dilip's explicit agreement._
 
 ---
 
@@ -42,4 +42,4 @@ The way VV uses black-and-white, we use the **locked brand tokens (`LANDING_PAGE
 
 ---
 
-_Status: discussion + backlog only. No design or `page.tsx` changed. Promote items into `LANDING_PAGE_STRUCTURE.md` only on explicit agreement._
+_Status: discussion + backlog only. No design or page code changed. Promote any item into the relevant page/surface spec only on explicit agreement._
