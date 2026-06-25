@@ -74,6 +74,39 @@ The Core converting beat. A single **centered vertical flow**: a 3-step spine �
 - In production the box links are Next.js `<Link>` (client nav), routes identical to above. Plain CSS `@keyframes` — add an `IntersectionObserver` if you want replay on scroll-into-view.
 - This becomes the `HowItWorks` component in Stage 1.
 
+## 3b. Beat 4 detail — "Proof + sector finder" (brand-styled)
+The "does it fit MY business?" beat. **Light** section (per the two-dark-moments rule). Visual reference: session `beat4_proof_finder_brand` (brand-styled) — supersedes the earlier generic-token mock.
+
+**Layout:** Cloud-50 surface → centered header (eyebrow "Proof" in Assurance Teal · H2 "Does this fit your business?" · sub) → two columns → one centered green CTA.
+- **Left — sample result card** (white, hairline border, no shadow). Sector name (navy) + "Sample · illustrative" pill (honest — never fake "your" data). Score ring **41/100 in Signal Gold** (NO red — see tokens) + "High-priority action" pill (gold bg + navy text). **Top gap** (gold alert icon) + **First fix** (green check). Quiet teal link "See the clinic assessment" → `/assessment/clinics-diagnostic-labs`.
+- **Right — sector finder.** "Find your sector" + all **12 sector chips** (navy text on white, hairline, Assurance Teal hover) → `/assessment/{assessmentSlug}` from `sectors.ts`. Quiet navigation, NOT 12 green buttons.
+- **One primary CTA (green):** "Take your free assessment" → `/assessment`. Subtle teal link below: "Not listed? Start with Discovery" → `/discovery` (no dead ends).
+
+**Optional v1+ enhancement:** the sample card swaps to match the sector the visitor hovers/taps in the finder (small JS) — makes the proof personal.
+
+## 3c. Brand tokens (CANONICAL — governs every beat)
+Source: SaralPrivacy brand skill (`anthropic-skills:saralprivacy-brand`). All beats must use these; re-skin the hero + how-it-works flow to match.
+
+**Palette (hex · role · rough share of surface):**
+| Name | Hex | Use | Share |
+|---|---|---|---|
+| Trust Navy | `#121A2E` | Hero/dark bg, headings, badge core | ~45% |
+| Verification Green | `#07B981` | The ONE primary CTA, active states, trust affirmations | ~20% |
+| Assurance Teal | `#35B6AE` | Hover cues, secondary accent, quiet links | ~10% |
+| Signal Gold | `#E8AB42` | Risk/attention + single emphasis only | ~5% |
+| Slate 700 | `#334155` | Body copy on light bg | ~10% |
+| Cloud 50 | `#F7F9FC` | Light section surfaces, whitespace | ~10% |
+
+**Locked rules:**
+- **No red anywhere.** Risk = Signal Gold. This is deliberate — it enforces "explain risk calmly, never raise the pulse." Alarm-red is off-brand.
+- **CTA button is locked:** Verification Green bg + white label. Never ghost/outline green. **One primary CTA per beat** — green is reserved for it; everything else (finder chips, nav) is quiet (navy/teal).
+- **Forbidden combos:** gold text on white · green bg + teal text · navy bg + slate text · any gradient as a primary background.
+- **Hairlines, not shadows** (`1px solid rgba(18,26,46,0.08–0.10)`).
+- **Two dark moments only:** how-it-works flow (Beat 3) + final CTA are Trust Navy; **every other beat is light** (Cloud-50/white). Brand mocks are fixed-palette (NOT theme-adaptive) because the live site is a fixed light/dark system, not claude-adaptive.
+- **Typography — Inter:** H1 48/56 bold · H2 32/38 bold · H3 24/30 semibold · Body 16/24 regular · Button 16 semibold · Label/pill 12 medium. Fallback `system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif`.
+
+**Copy rules (brand non-negotiables):** sentence case · active voice · India-first (DPDPA, not GDPR) · no fear-mongering · never the phrase "legal compliance" (use "privacy readiness", "trust signal", "data protection practice") · lead with business consequence then the fix · answer the 3 silent questions fast (does this apply to me? what's my risk? what do I do next?).
+
 ## 4. Indian-SMB design principles (non-negotiable)
 - **Clarity over fear.** Calm converts this audience; fear bounces them. No "penalties will ruin you."
 - **Show the outcome before asking for anything.** Ungated preview (Discovery no-email, Assessment no-account) is the biggest conversion asset — surface it.
