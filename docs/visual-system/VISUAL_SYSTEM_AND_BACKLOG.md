@@ -25,12 +25,16 @@ The way VV uses black-and-white, we use the **locked brand tokens (`LANDING_PAGE
 | **Landing** | is it me? what do I do? | Flow (how-it-works) · "where risk hides" signature · before/after (policy vs readiness) | **NOW** |
 | Assessment result | what does my score mean? | Readiness Stack · Continuum / readiness curve (0–100 bands) | Later |
 | Industries / "Readiness Index" | where does my sector stand? | Risk-vs-Readiness Matrix (Cartesian) · Sensitivity Spectrum | Later |
-| Discovery tool | where is my data? | Data scatter / lifecycle · Three Layers (core/operational/hidden) | Later / parallel |
+| Discovery tool | where is my data? | **Data Lifecycle flow (CONFIRMED — agreed 2026-06-25)** · Three Layers (core/operational/hidden) | Lifecycle = Discovery page |
 | Methodology / advisory | how do I stay ready? | OPERATE Loop (the full cycle) | Later |
 | Glossary / Guide | who's responsible? | Hierarchy (principal→fiduciary→processor→sub) · Control Map | Later |
 | LinkedIn / content | hook + teach | 12 carousels · Risk Shadow · metaphors | Ongoing, separate |
 
 **The one allowed exception to scope-guard:** the signature visual (#1) may recur across surfaces — it's the thesis, so "render once, reuse" is leverage, not creep. The guard is only against building *new, different* visuals per surface now.
+
+**Confirmed placements (agreed 2026-06-25):**
+- **Scatter ("where risk hides")** → **landing page, Beat 2** (immediately after Hero, above Trust; dark hero-continuation). See `LANDING_PAGE_STRUCTURE.md` §3d. Brand mock: session `where_risk_hides_adjacent_gaps`.
+- **Data Lifecycle flow (Collect → Store → Use → Share → Retain → Delete)** → **Data Discovery page** (NOT the landing). Brand mock: session `data_lifecycle_flow_brand`. The risky middle (Share / Retain) gets the gold emphasis.
 
 **Readiness-band copy (captured, for the later assessment-result Continuum):** 0–25 Unaware · 26–50 Aware · 51–70 Mapped · 71–85 Controlled · 86–100 Evidence-ready.
 
