@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, CheckCircle, AlertTriangle, XCircle, Clock } from "lucide-react";
+import { SECTORS } from "@/lib/data/sectors";
 
 const outcomes = [
   {
@@ -28,16 +29,13 @@ const outcomes = [
   },
 ];
 
-const assessments = [
-  { label: "Recruitment Agencies", href: "/assessment/recruitment", count: "8 questions" },
-  { label: "CA Firms", href: "/assessment/ca-firms", count: "7 questions" },
-  { label: "Training Institutes", href: "/assessment/training-institutes", count: "7 questions" },
-  { label: "D2C Brands", href: "/assessment/d2c-brands", count: "8 questions" },
-  { label: "Clinics & Diagnostic Labs", href: "/assessment/clinics-diagnostic-labs", count: "10 questions" },
-  { label: "Schools & Colleges", href: "/assessment/schools-colleges", count: "10 questions" },
-  { label: "Law Firms & Legal Consultants", href: "/assessment/law-firms", count: "10 questions" },
-  { label: "Real Estate & Property Firms", href: "/assessment/real-estate", count: "10 questions" },
-];
+// All 12 sectors, single-sourced from sectors.ts (was hardcoded to 8 — the
+// Tier-0 bug). Per-sector question count dropped (it drifted from the packs);
+// the "~3-5 minutes" time estimate is the signal that matters to owners.
+const assessments = SECTORS.map((s) => ({
+  label: s.navLabel,
+  href: `/assessment/${s.assessmentSlug}`,
+}));
 
 export function AssessmentCTA() {
   return (
@@ -90,7 +88,7 @@ export function AssessmentCTA() {
             </p>
 
             <div className="space-y-3">
-              {assessments.map(({ label, href, count }) => (
+              {assessments.map(({ label, href }) => (
                 <Link
                   key={href}
                   href={href}
@@ -100,7 +98,7 @@ export function AssessmentCTA() {
                     <div className="font-semibold text-navy-700 text-sm group-hover:text-navy-700 transition-colors">
                       {label}
                     </div>
-                    <div className="text-xs text-slate-500 mt-0.5">{count} · ~3–5 minutes</div>
+                    <div className="text-xs text-slate-500 mt-0.5">~3–5 minutes</div>
                   </div>
                   <ArrowRight size={16} className="text-slate-400 group-hover:text-teal-500 transition-colors" />
                 </Link>
