@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { ArrowRight, CheckCircle } from "lucide-react";
 import { HERO_VERDICTS, getHeroVerdict } from "@/lib/data/hero-verdicts";
+import { trackEvent } from "@/lib/analytics";
 
 // Beat 1 — Hero. The "is-this-me" moment: pick a business type → instant
 // verdict (applies + sector risk + typical band), then act. Discovery-first
@@ -71,7 +72,10 @@ export function HeroSection() {
                 <button
                   key={v.slug}
                   type="button"
-                  onClick={() => setSlug(v.slug)}
+                  onClick={() => {
+                    setSlug(v.slug);
+                    trackEvent.heroSectorSelect({ sector: v.slug });
+                  }}
                   aria-pressed={active}
                   className={`text-sm rounded-full px-3.5 py-1.5 border transition-colors ${
                     active
@@ -121,6 +125,7 @@ export function HeroSection() {
         <div className="flex flex-col sm:flex-row gap-3 mb-8">
           <Link
             href={discoverHref}
+            onClick={() => trackEvent.landingCtaClick({ cta: "discover", sector: slug ?? "" })}
             className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl transition-colors text-base"
           >
             {slug ? "See my data map" : "Discover my personal data"}
@@ -128,6 +133,7 @@ export function HeroSection() {
           </Link>
           <Link
             href={assessHref}
+            onClick={() => trackEvent.landingCtaClick({ cta: "assess", sector: slug ?? "" })}
             className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white/10 hover:bg-white/15 text-white font-semibold rounded-xl border border-white/20 transition-colors text-base backdrop-blur-sm"
           >
             Take the assessment

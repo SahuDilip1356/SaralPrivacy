@@ -43,6 +43,23 @@ export const trackEvent = {
       niche:          params.niche,
     }),
 
+  // ── Landing hero (Beat 1 — is-this-me) ──────────────────────────────────
+  // Fires when a visitor picks their business type in the hero (top-of-funnel
+  // engagement signal + lead segmentation by sector).
+  heroSectorSelect: (params: { sector: string }) =>
+    gtag("hero_sector_select", {
+      event_category: "engagement",
+      sector:         params.sector,
+    }),
+
+  // Landing primary-CTA clicks (Discover / Assess), with the picked sector.
+  landingCtaClick: (params: { cta: string; sector?: string }) =>
+    gtag("landing_cta_click", {
+      event_category: "engagement",
+      cta:            params.cta,
+      sector:         params.sector || "",
+    }),
+
   // ── Assessment (old /assessment route) ─────────────────────────────────
   assessmentComplete: (params: {
     score: number;
