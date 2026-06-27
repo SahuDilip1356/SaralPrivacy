@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { HeroSection } from "@/components/home/HeroSection";
+import { WhereRiskHides } from "@/components/home/WhereRiskHides";
 import { TrustStrip } from "@/components/home/TrustStrip";
+import { HowItWorks } from "@/components/home/HowItWorks";
+import { ProofSection } from "@/components/home/ProofSection";
+import { FounderProof } from "@/components/home/FounderProof";
 import { AudienceCards } from "@/components/home/AudienceCards";
 import { BriefingsSection } from "@/components/home/BriefingsSection";
-import { DiscoveryCTA } from "@/components/home/DiscoveryCTA";
-import { AssessmentCTA } from "@/components/home/AssessmentCTA";
-import { NoticeCTA } from "@/components/home/NoticeCTA";
 import { WhitePaperSection } from "@/components/home/WhitePaperSection";
 import { FAQPreview } from "@/components/home/FAQPreview";
 import { NewsletterSection } from "@/components/home/NewsletterSection";
@@ -32,13 +33,24 @@ export const metadata: Metadata = {
   },
 };
 
+// Homepage — 10-beat Discovery-first structure (see LANDING_PAGE_MASTER.md).
+// Built incrementally; beats marked TODO are wired in as their components land.
 export default function HomePage() {
   return (
     <>
       {organizationSchema()}
       {websiteSchema()}
       {speakableSchema(['.answer-block'], 'https://saralprivacy.com', 'DPDPA Compliance for Indian Businesses')}
+
+      {/* Beat 1 — Hero (interactive is-this-me verdict: TODO upgrade) */}
       <HeroSection />
+
+      {/* Beat 2 — Where DPDPA risk hides (Scatter, dark) */}
+      <WhereRiskHides />
+
+      {/* Beat 3 — Trust ribbon (press + stats) */}
+      <TrustStrip />
+      <PressProofStrip />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
         <AnswerBlock
           question="What is DPDPA?"
@@ -46,17 +58,27 @@ export default function HomePage() {
           className="mb-6"
         />
       </div>
-      <TrustStrip />
-      <PressProofStrip />
+
+      {/* Beat 4 — How it works = do it now (consolidates Discovery/Assess/Fix) */}
+      <HowItWorks />
+
+      {/* Beat 5 — Proof (slim sample-result) */}
+      <ProofSection />
+
+      {/* Beat 6 — Founder proof */}
+      <FounderProof />
+
+      {/* Beat 7 — Explore DPDPA by your sector (the 12-card wall) */}
       <AudienceCards />
+
+      {/* Beat 8 — Get help (free gap review) */}
+      <ConsultationCTA />
+
+      {/* Beat 9 — Stay current (briefings + guide + FAQ + newsletter) */}
       <BriefingsSection />
-      <DiscoveryCTA />
-      <AssessmentCTA />
-      <NoticeCTA />
       <WhitePaperSection />
       <FAQPreview />
       <NewsletterSection />
-      <ConsultationCTA />
     </>
   );
 }
