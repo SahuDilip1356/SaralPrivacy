@@ -1,4 +1,15 @@
-import { BookOpen, Target, Users, MessageSquare } from "lucide-react";
+import { BookOpen, Target, Users, MessageSquare, Clock, TrendingUp, CheckCircle, FileText } from "lucide-react";
+import { SECTOR_COUNT } from "@/lib/data/sectors";
+
+// Beat 3 — Trust ribbon. Scale stats (moved here from the hero) + the four
+// "why us" pillars. Press logos render separately via <PressProofStrip />.
+
+const stats = [
+  { icon: Clock, value: "Free", label: "3–5 minute assessment" },
+  { icon: TrendingUp, value: "200+", label: "Briefings published" },
+  { icon: CheckCircle, value: String(SECTOR_COUNT), label: "Sector assessments" },
+  { icon: FileText, value: "50+", label: "Resources available" },
+];
 
 const pillars = [
   {
@@ -31,6 +42,22 @@ export function TrustStrip() {
   return (
     <section className="py-14 bg-white border-y border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        {/* scale stats */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 pb-10 mb-10 border-b border-slate-100">
+          {stats.map(({ icon: Icon, value, label }) => (
+            <div key={label} className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-lg bg-teal-50 flex items-center justify-center shrink-0">
+                <Icon size={18} className="text-teal-600" />
+              </div>
+              <div>
+                <div className="text-navy-700 font-bold text-lg leading-none">{value}</div>
+                <div className="text-slate-500 text-xs mt-1">{label}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* why-us pillars */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {pillars.map(({ icon: Icon, title, description }) => (
             <div key={title} className="flex gap-4">
