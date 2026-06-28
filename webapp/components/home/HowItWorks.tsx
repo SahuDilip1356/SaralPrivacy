@@ -34,7 +34,7 @@ const steps: Step[] = [
     n: 1,
     icon: Search,
     title: "Discover",
-    sub: "Data Discovery · map your data",
+    sub: "Find where your personal data sits",
     href: "/discovery",
     badge: "bg-teal-500",
     ring: "bg-teal-500/15",
@@ -44,7 +44,7 @@ const steps: Step[] = [
     n: 2,
     icon: ClipboardCheck,
     title: "Assess",
-    sub: "Generic Assessment · score your risk",
+    sub: "Score your current risk",
     href: "/assessment",
     badge: "bg-green-500",
     ring: "bg-green-500/15",
@@ -54,7 +54,7 @@ const steps: Step[] = [
     n: 3,
     icon: FileText,
     title: "Fix what matters",
-    sub: "Notice Pack · generate your notices",
+    sub: "Generate notices + first controls",
     href: "/tools/dpdpa-privacy-notice-generator",
     badge: "bg-gold-400",
     ring: "bg-gold-400/15",
@@ -186,7 +186,7 @@ export function HowItWorks() {
                 You&apos;re DPDPA-ready
               </span>
               <span className="block text-slate-400 text-xs mt-0.5">
-                The basics are done — now keep it living
+                Keep evidence ready for customers, vendors &amp; regulators
               </span>
             </span>
           </div>

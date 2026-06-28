@@ -188,6 +188,10 @@ export function WhereRiskHides() {
             })}
           </ul>
         </div>
+
+        <p className="text-center text-slate-400 text-sm mt-10 max-w-xl mx-auto">
+          DPDPA risk usually hides in ordinary workflows — not in legal documents.
+        </p>
       </div>
     </section>
   );

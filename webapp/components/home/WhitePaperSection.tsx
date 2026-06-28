@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Download, FileText, CheckCircle } from "lucide-react";
+import { GUIDE_LANGUAGES } from "@/lib/data/guide-languages";
 
 const whitePaperContents = [
   "What DPDPA is and who it applies to, in plain English",
@@ -30,10 +31,21 @@ export function WhitePaperSection() {
               <span className="block text-teal-400 mt-1">for Indian businesses</span>
             </h2>
 
-            <p className="text-slate-300 text-lg leading-relaxed mb-7">
+            <p className="text-slate-300 text-lg leading-relaxed mb-4">
               A practitioner-grade guide, now in 7 Indian languages, that covers everything your
               business needs to know about DPDPA, from applicability to enforcement, without the legalese.
             </p>
+            <div className="flex flex-wrap gap-2 mb-8">
+              {GUIDE_LANGUAGES.map((l) => (
+                <span
+                  key={l.code}
+                  title={l.roman}
+                  className="text-xs text-slate-200 bg-white/10 border border-white/15 rounded-full px-3 py-1"
+                >
+                  {l.native}
+                </span>
+              ))}
+            </div>
 
             {/* Contents */}
             <ul className="space-y-2.5 mb-8">
@@ -50,7 +62,7 @@ export function WhitePaperSection() {
               className="inline-flex items-center gap-2 px-7 py-3.5 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl transition-colors text-base"
             >
               <Download size={18} />
-              Download the Free Guide
+              Download the free 7-language guide
             </Link>
             <p className="text-slate-500 text-xs mt-3">
               Requires name, work email, and industry. Separate consent options for follow-up.

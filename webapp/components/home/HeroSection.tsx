@@ -115,8 +115,8 @@ export function HeroSection() {
             </div>
           ) : (
             <div className="text-slate-400 text-sm border border-dashed border-white/15 rounded-2xl px-5 py-6 max-w-xl">
-              Pick your business above to see if DPDPA applies to you — and where
-              the risk hides.
+              Choose your business type — see the data you hold and where the
+              risk hides.
             </div>
           )}
         </div>

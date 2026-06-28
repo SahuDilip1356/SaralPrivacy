@@ -3,8 +3,8 @@ import { Users, Calculator, GraduationCap, ShoppingBag, Stethoscope, School, Sca
 
 // Beat 7 — "Explore DPDPA by your sector" (the 12-card wall, late placement).
 // Reskinned to brand: ONE uniform card treatment (retired the 12 per-sector
-// hues) + quiet per-card links (no 12 green buttons — green is reserved for the
-// page's primary CTAs). The per-sector content is carried over unchanged.
+// hues) + a single SEMANTIC gold risk badge per card for scannability + quiet
+// per-card links (no 12 green buttons). Per-sector content carried over.
 
 const audiences = [
   {
@@ -12,6 +12,7 @@ const audiences = [
     title: "Recruitment Agencies",
     href: "/industries/recruitment-agencies",
     assessmentHref: "/assessment/recruitment",
+    risk: "Candidate ID & CV risk",
     painPoints: ["CV databases & candidate data", "Client profile sharing", "Background check documents", "Cross-border data flows"],
     promise: "Find out whether your recruitment workflows create DPDPA exposure in 3–5 minutes.",
   },
@@ -20,6 +21,7 @@ const audiences = [
     title: "CA Firms",
     href: "/industries/ca-firms",
     assessmentHref: "/assessment/ca-firms",
+    risk: "PAN / Aadhaar / ITR risk",
     painPoints: ["PAN / Aadhaar / bank data", "Client payroll records", "Cloud drives & shared folders", "Sensitive financial documents"],
     promise: "Understand your DPDPA obligations for client records, payroll data, and firm operations.",
   },
@@ -28,6 +30,7 @@ const audiences = [
     title: "Training Institutes",
     href: "/industries/training-institutes",
     assessmentHref: "/assessment/training-institutes",
+    risk: "Student & parent data risk",
     painPoints: ["Student & parent data", "Admissions & lead forms", "Digital marketing consent", "Placement data retention"],
     promise: "Check whether your admissions, marketing, and student data workflows are DPDPA-ready.",
   },
@@ -36,6 +39,7 @@ const audiences = [
     title: "D2C Brands",
     href: "/industries/d2c-brands",
     assessmentHref: "/assessment/d2c-brands",
+    risk: "Marketing & pixel-data risk",
     painPoints: ["Email / SMS / WhatsApp marketing", "Third-party analytics & pixels", "Customer loyalty data", "Retention of inactive customers"],
     promise: "See whether your customer acquisition and retention stack creates DPDPA risk.",
   },
@@ -44,6 +48,7 @@ const audiences = [
     title: "Clinics & Diagnostic Labs",
     href: "/industries/clinics-diagnostic-labs",
     assessmentHref: "/assessment/clinics-diagnostic-labs",
+    risk: "Health-data risk",
     painPoints: ["Prescriptions & lab reports", "WhatsApp report sharing", "Reception & lab staff access", "Old patient-record retention"],
     promise: "Check whether your patient-data and report-sharing workflows are DPDPA-ready.",
   },
@@ -52,6 +57,7 @@ const audiences = [
     title: "Schools & Colleges",
     href: "/industries/schools-colleges",
     assessmentHref: "/assessment/schools-colleges",
+    risk: "Children's-data risk",
     painPoints: ["Children's data & parent consent", "School apps, ERP & LMS", "CCTV, biometric & transport GPS", "Student photos & old records"],
     promise: "Check whether your student-data, parent-consent and monitoring workflows are DPDPA-ready.",
   },
@@ -60,6 +66,7 @@ const audiences = [
     title: "Law Firms & Legal Consultants",
     href: "/industries/law-firms",
     assessmentHref: "/assessment/law-firms",
+    risk: "Sensitive case-file risk",
     painPoints: ["Client KYC & evidence files", "Junior / intern / ex-staff access", "WhatsApp & email document sharing", "Closed matter-file retention"],
     promise: "Check whether your matter intake, sensitive-file access and sharing workflows are DPDPA-ready.",
   },
@@ -68,6 +75,7 @@ const audiences = [
     title: "Real Estate & Property Firms",
     href: "/industries/real-estate",
     assessmentHref: "/assessment/real-estate",
+    risk: "KYC & broker-sharing risk",
     painPoints: ["Buyer/tenant KYC & PAN/Aadhaar", "WhatsApp lead & document sharing", "Broker networks & loan partners", "Old lead-database retention"],
     promise: "Check whether your KYC handling, broker sharing and lead retention workflows are DPDPA-ready.",
   },
@@ -76,6 +84,7 @@ const audiences = [
     title: "Hotels, Hospitality & Travel",
     href: "/industries/hotels-travel",
     assessmentHref: "/assessment/hotels-travel",
+    risk: "Guest-ID retention risk",
     painPoints: ["Guest IDs & passport copies", "OTA & travel-vendor sharing", "WhatsApp confirmations & CCTV", "Old guest-record retention"],
     promise: "See whether your guest IDs, OTA sharing, travel documents and record retention are DPDPA-ready.",
   },
@@ -84,6 +93,7 @@ const audiences = [
     title: "Pharmacies & Online Pharmacies",
     href: "/industries/pharmacies",
     assessmentHref: "/assessment/pharmacies",
+    risk: "Prescription-data risk",
     painPoints: ["Prescriptions & medicine history", "WhatsApp orders & health indicators", "Delivery-partner data sharing", "Old prescription retention"],
     promise: "Check whether your prescriptions, medicine-history handling and vendor sharing are DPDPA-ready.",
   },
@@ -92,6 +102,7 @@ const audiences = [
     title: "Fintech, NBFC & Digital Payments",
     href: "/industries/fintech-nbfc",
     assessmentHref: "/assessment/fintech-nbfc",
+    risk: "KYC & profiling risk",
     painPoints: ["KYC, PAN/Aadhaar & bank data", "Bureau checks & credit profiling", "DSAs & collection-agent access", "Old application & KYC retention"],
     promise: "See whether your KYC, profiling, partner sharing and agent access are DPDPA-ready.",
   },
@@ -100,6 +111,7 @@ const audiences = [
     title: "Gyms, Salons & Spas",
     href: "/industries/gyms-salons-spas",
     assessmentHref: "/assessment/gyms-salons-spas",
+    risk: "Photo & health-data risk",
     painPoints: ["Health & body measurements", "Customer & before-after photos", "WhatsApp campaigns & staff phones", "Old member-record retention"],
     promise: "Check whether your photo consent, health-data handling and staff access are DPDPA-ready.",
   },
@@ -135,6 +147,12 @@ export function AudienceCards() {
               </div>
 
               <h3 className="font-bold text-navy-700 text-lg mb-2">{audience.title}</h3>
+
+              {/* one semantic gold risk badge (scannability without 12 hues) */}
+              <span className="inline-flex items-center gap-1.5 self-start text-2xs font-semibold text-navy-700 bg-gold-400/15 border border-gold-400/30 rounded-full px-2.5 py-1 mb-3">
+                <span className="w-1.5 h-1.5 rounded-full bg-gold-400" />
+                {audience.risk}
+              </span>
 
               <ul className="space-y-1.5 mb-4 flex-1">
                 {audience.painPoints.map((point) => (
