@@ -1,11 +1,25 @@
 import Link from "next/link";
-import { ArrowRight, Calendar, Clock } from "lucide-react";
+import { ArrowRight, Calendar, Clock, CheckCircle } from "lucide-react";
 import { formatDateShort, getCategoryLabel } from "@/lib/utils";
 import { Badge } from "@/components/ui/Badge";
 import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 
+function tryParseArray(v: unknown): string[] {
+  if (Array.isArray(v)) return v as string[];
+  if (typeof v === "string") {
+    try {
+      const p = JSON.parse(v);
+      return Array.isArray(p) ? p : [];
+    } catch {
+      return [];
+    }
+  }
+  return [];
+}
+
 // Normalise Appwrite doc to the shape the cards expect
 function normalise(doc: any) {
+  const raw = doc.infographic_base64 || "";
   return {
     id:       doc.$id,
     slug:     doc.slug,
@@ -15,6 +29,10 @@ function normalise(doc: any) {
     category: doc.category || "compliance-guidance",
     readTime: doc.read_time || 5,
     featured: doc.featured ?? false,
+    // Appwrite Storage URL (new) or base64 data URI (legacy) — same unpack as the detail page
+    image:    !raw ? "" : raw.startsWith("https://") ? raw : `data:image/jpeg;base64,${raw}`,
+    // top 2–3 action items for the featured card
+    bullets:  tryParseArray(doc.action_checklist).slice(0, 3),
   };
 }
 
@@ -73,37 +91,65 @@ export async function BriefingsSection() {
 
         {briefings.length > 0 && (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Featured briefing */}
+            {/* Featured briefing — text + bullets + infographic (fills the card) */}
             {featured && (
               <div className={latest.length > 0 ? "lg:col-span-2" : "lg:col-span-3"}>
-                <Link href={`/briefings/${featured.slug}`}>
-                  <div className="bg-navy-700 rounded-xl p-7 h-full flex flex-col hover:bg-navy-800 transition-colors group">
-                    <div className="flex items-center gap-2 mb-4">
-                      <Badge variant="teal">Latest</Badge>
-                      <Badge variant="amber">{getCategoryLabel(featured.category)}</Badge>
-                    </div>
-                    <h3 className="text-xl font-bold text-white leading-snug mb-3 group-hover:text-teal-300 transition-colors">
-                      {featured.title}
-                    </h3>
-                    <p className="text-slate-300 text-sm leading-relaxed mb-5 flex-1">
-                      {featured.excerpt}
-                    </p>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3 text-slate-400 text-xs">
-                        <span className="flex items-center gap-1">
-                          <Calendar size={12} />
-                          {formatDateShort(featured.date)}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Clock size={12} />
-                          {featured.readTime} min read
+                <Link href={`/briefings/${featured.slug}`} className="block h-full">
+                  <div className="bg-navy-700 rounded-xl overflow-hidden h-full flex flex-col lg:flex-row hover:bg-navy-800 transition-colors group">
+                    {/* text */}
+                    <div className={`p-7 flex flex-col ${featured.image ? "lg:w-3/5" : "w-full"}`}>
+                      <div className="flex items-center gap-2 mb-4">
+                        <Badge variant="teal">Latest</Badge>
+                        <Badge variant="amber">{getCategoryLabel(featured.category)}</Badge>
+                      </div>
+                      <h3 className="text-xl font-bold text-white leading-snug mb-3 group-hover:text-teal-300 transition-colors">
+                        {featured.title}
+                      </h3>
+                      <p className="text-slate-300 text-sm leading-relaxed mb-4">
+                        {featured.excerpt}
+                      </p>
+
+                      {featured.bullets.length > 0 && (
+                        <ul className="space-y-2 mb-5">
+                          {featured.bullets.map((b) => (
+                            <li key={b} className="flex items-start gap-2 text-slate-300 text-sm">
+                              <CheckCircle size={15} className="text-teal-400 mt-0.5 shrink-0" />
+                              <span className="leading-snug">{b}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+
+                      <div className="mt-auto pt-2 flex items-center justify-between">
+                        <div className="flex items-center gap-3 text-slate-400 text-xs">
+                          <span className="flex items-center gap-1">
+                            <Calendar size={12} />
+                            {formatDateShort(featured.date)}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Clock size={12} />
+                            {featured.readTime} min read
+                          </span>
+                        </div>
+                        <span className="text-green-400 text-sm font-semibold group-hover:gap-2 flex items-center gap-1 transition-all">
+                          Read briefing
+                          <ArrowRight size={14} />
                         </span>
                       </div>
-                      <span className="text-green-400 text-sm font-semibold group-hover:gap-2 flex items-center gap-1 transition-all">
-                        Read briefing
-                        <ArrowRight size={14} />
-                      </span>
                     </div>
+
+                    {/* infographic — fills the right side (the old empty space) */}
+                    {featured.image && (
+                      <div className="lg:w-2/5 shrink-0 bg-navy-800">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={featured.image}
+                          alt={`${featured.title} — DPDPA infographic`}
+                          loading="lazy"
+                          className="w-full h-52 lg:h-full object-cover"
+                        />
+                      </div>
+                    )}
                   </div>
                 </Link>
               </div>
