@@ -345,6 +345,14 @@ export async function POST(request: NextRequest) {
     tomorrow.setDate(tomorrow.getDate() + 1);
     tomorrow.setHours(3, 30, 0, 0);
 
+    // Publish date shown on the site = the roadmap's planned date, not "now".
+    // The list page renders published_at || created_at, so a backfilled day
+    // (payload carries `date`) must stamp created_at to that date (9 AM IST =
+    // 03:30 UTC) — otherwise every backfill would display as today.
+    const createdAt = body.date
+      ? `${dateStr}T03:30:00.000Z`
+      : new Date().toISOString();
+
     const approvalToken = crypto.randomUUID();
 
     // Pack rich data same way as auto-generation
@@ -377,7 +385,7 @@ export async function POST(request: NextRequest) {
       status:           "approved",   // live on website immediately
       approval_token:   approvalToken,
       scheduled_for:    tomorrow.toISOString(),
-      created_at:       new Date().toISOString(),
+      created_at:       createdAt,
 
       // ── Infographic — stored as Appwrite Storage URL (new) or base64 (legacy) ──
       // publish_to_webapp.py now uploads to Appwrite Storage and sends infographic_url.
