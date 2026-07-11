@@ -97,7 +97,7 @@ export async function BriefingsSection() {
                 <Link href={`/briefings/${featured.slug}`} className="block h-full">
                   <div className="bg-navy-700 rounded-xl overflow-hidden h-full flex flex-col lg:flex-row hover:bg-navy-800 transition-colors group">
                     {/* text */}
-                    <div className={`p-7 flex flex-col ${featured.image ? "lg:w-3/5" : "w-full"}`}>
+                    <div className={`p-7 flex flex-col min-w-0 ${featured.image ? "lg:w-3/5" : "w-full"}`}>
                       <div className="flex items-center gap-2 mb-4">
                         <Badge variant="teal">Latest</Badge>
                         <Badge variant="amber">{getCategoryLabel(featured.category)}</Badge>
@@ -138,15 +138,17 @@ export async function BriefingsSection() {
                       </div>
                     </div>
 
-                    {/* infographic — fills the right side (the old empty space) */}
+                    {/* infographic — fills the right side (the old empty space).
+                        object-contain + navy panel: portrait infographics show
+                        whole (no crop), min-w-0 + overflow-hidden stops overlap. */}
                     {featured.image && (
-                      <div className="lg:w-2/5 shrink-0 bg-navy-800">
+                      <div className="lg:w-2/5 shrink-0 min-w-0 overflow-hidden bg-navy-900 flex items-center justify-center p-3">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={featured.image}
                           alt={`${featured.title} — DPDPA infographic`}
                           loading="lazy"
-                          className="w-full h-52 lg:h-full object-cover"
+                          className="max-w-full h-48 lg:h-full w-auto object-contain rounded-lg"
                         />
                       </div>
                     )}
