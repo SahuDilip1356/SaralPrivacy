@@ -6,6 +6,8 @@ _The single place to observe development progress against the spec. Update the *
 **Status legend:** ✅ done · 🔨 in progress · ⬜ open · ⏸ deferred · 🔁 decision changed
 
 ## Progress log
+- **2026-07-11 — 🚀 SHIPPED TO PRODUCTION.** `main` fast-forwarded `a21eb80 → a121fa5` (merge of `origin/main` briefings work + landing redesign; zero file overlap, conflict-free). Production build `dpl_4FGF…` **READY** in ~64s, `saralprivacy.com` live. Same SHA was preview-verified READY on the branch alias before promotion. `main` == `feat/landing-redesign`.
+  - _Post-ship fast-follow (deferred, non-blocking):_ hero mobile native-select · "Not listed?" escape · `/discovery?sector=` read · Beat-9 visual consolidation · legal/copy sign-off on hero verdict bands · `LANDING_PAGE_STRUCTURE.md` §3c/§3e de-hue lines → D1 · move repo off iCloud Desktop.
 - **2026-07-11 — Fix batch APPLIED** (commits `8083b54`, `b5d1abe`, `2677ba2`):
   - ✅ F1 alert bar softened + Discovery-first · ✅ F2 Proof pointer → `#sectors` · ✅ F3 "Request free gap review" · ✅ F4 event dedupe · ✅ F6 orphaned AssessmentCTA deleted · ✅ F7a Guide 30→90 (option a) · ✅ S2 Guide "Download" now links
   - ✅ S1 briefings infographic overlap fixed (object-contain + min-w-0) · ✅ D1 sector colour restored + gold badge · ✅ D2 hero → 2-col with scorecard · ✅ D3 real marching-flow motion (scatter + how-it-works) · ✅ F5 tool tags restored
