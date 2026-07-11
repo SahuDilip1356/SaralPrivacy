@@ -1,0 +1,77 @@
+name: Backfill Briefing Taxonomy
+
+# On-demand: reclassify the live briefings archive into the discovery facets
+# (stage / sector / format). Manual trigger only. DRY-RUN by default — choose
+# "apply" to actually patch Appwrite. Idempotent and reversible (the backup
+# JSON is uploaded as an artifact).
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'dryrun = preview only (writes nothing) · apply = patch Appwrite'
+        required: true
+        default: dryrun
+        type: choice
+        options:
+          - dryrun
+          - apply
+
+concurrency:
+  group: backfill-taxonomy
+  cancel-in-progress: false
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    env:
+      TZ: Asia/Kolkata
+      GOOGLE_CREDENTIALS_PATH: ${{ github.workspace }}/credentials.json
+      # Reuses the same repo secrets as the daily pipeline.
+      # NOTE: APPWRITE_DATABASE_ID may need to be added as a repo secret — it is
+      # the only value the daily pipeline did not already require.
+      APPWRITE_API_KEY:     ${{ secrets.APPWRITE_API_KEY }}
+      APPWRITE_ENDPOINT:    ${{ secrets.APPWRITE_ENDPOINT }}
+      APPWRITE_PROJECT_ID:  ${{ secrets.APPWRITE_PROJECT_ID }}
+      APPWRITE_DATABASE_ID: ${{ secrets.APPWRITE_DATABASE_ID }}
+      GOOGLE_SHEET_ID:      ${{ secrets.GOOGLE_SHEET_ID }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Decode Google service-account credentials
+        run: |
+          printf '%s' "$GOOGLE_CREDENTIALS_JSON" > credentials.json
+          python -c "import json; json.load(open('credentials.json'))"
+        env:
+          GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
+
+      - name: Run backfill (${{ inputs.mode }})
+        run: |
+          if [ "${{ inputs.mode }}" = "apply" ]; then
+            python tools/backfill_briefing_taxonomy.py --apply
+          else
+            python tools/backfill_briefing_taxonomy.py
+          fi
+
+      - name: Upload backup (apply only — keep for possible revert)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backfill-backup-${{ github.run_id }}
+          path: .tmp/backfill_backup_*.json
+          retention-days: 90
+          include-hidden-files: true
+          if-no-files-found: ignore

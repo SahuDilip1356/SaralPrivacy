@@ -155,6 +155,30 @@ export function breadcrumbSchema(items: Array<{ name: string; url: string }>) {
   )
 }
 
+export function itemListSchema(
+  items: Array<{ name: string; url: string }>,
+  listName: string,
+) {
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: listName,
+    numberOfItems: items.length,
+    itemListElement: items.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name,
+      url: item.url,
+    })),
+  }
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  )
+}
+
 // ──────────────────────────────────────────────────────────────────────────────
 // AEO/GEO helpers — added Sprint 4 to lift LLM citation rate.
 // Mounted opportunistically; consumers in industry/learn/penalty-calculator pages

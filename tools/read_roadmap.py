@@ -304,6 +304,11 @@ def main(date_str: str) -> dict:
 
     logger.info(f"Found Day {day_num}: '{next_row.get('topic', '')}' planned for {today}")
 
+    # Derive the three discovery facets (stage/sector/content_type). Honours explicit
+    # Sheet columns when present, else derives from week_theme / topic / infographic_type.
+    from tools.briefing_taxonomy import derive as derive_taxonomy
+    taxonomy = derive_taxonomy(next_row)
+
     result = {
         "skip":                False,
         "date":                date_str,
@@ -320,6 +325,10 @@ def main(date_str: str) -> dict:
         ],
         "infographic_type":    next_row.get("infographic_type", "stat"),
         "research_query":      next_row.get("research_query", next_row.get("topic", "")),
+        # Discovery facets (stored on category / industries / tags by publish_to_webapp.py)
+        "stage":               taxonomy["stage"],
+        "sector":              taxonomy["sector"],
+        "content_type":        taxonomy["content_type"],
         "total_days":          len(rows),
     }
 
