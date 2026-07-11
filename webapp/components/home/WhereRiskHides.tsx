@@ -98,7 +98,7 @@ export function WhereRiskHides() {
                 <g key={i}>
                   <path
                     d={`M168 181 C 240 181, 250 ${cy}, 300 ${cy}`}
-                    className={`stroke-teal-500 fill-none transition-opacity duration-700 motion-reduce:!opacity-60 motion-reduce:!transition-none ${inView ? "opacity-60" : "opacity-0"}`}
+                    className={`sp-dash-flow stroke-teal-500 fill-none transition-opacity duration-700 motion-reduce:!opacity-60 motion-reduce:!transition-none ${inView ? "opacity-60" : "opacity-0"}`}
                     style={{ transitionDelay: `${i * 110}ms` }}
                     strokeWidth={1.6}
                     strokeDasharray="5 6"

@@ -167,3 +167,21 @@
 
 /* ── Selection ──────────────────────────────────────────────────────────────── */
 ::selection { background: #C0F3E2; color: #121A2E; }
+
+/* ── Landing motion — marching dashed "flow" (scatter + how-it-works) ───────── */
+@keyframes sp-dash-flow { to { stroke-dashoffset: -24; } }
+@keyframes sp-line-flow { to { background-position: 0 12px; } }
+
+/* SVG dashed connectors that "flow" outward */
+.sp-dash-flow { animation: sp-dash-flow 1s linear infinite; }
+
+/* Vertical HTML dashed connector that "flows" downward */
+.sp-line-flow {
+  background-image: repeating-linear-gradient(to bottom, #35B6AE 0 6px, transparent 6px 12px);
+  animation: sp-line-flow 0.9s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sp-dash-flow,
+  .sp-line-flow { animation: none; }
+}

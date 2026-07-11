@@ -23,6 +23,7 @@ type Step = {
   icon: typeof Search;
   title: string;
   sub: string;
+  tag: string; // product name kept discoverable (Data Discovery / Notice Pack …)
   href: string;
   badge: string; // number-badge bg (full class for Tailwind purge-safety)
   ring: string; // icon tint bg
@@ -35,6 +36,7 @@ const steps: Step[] = [
     icon: Search,
     title: "Discover",
     sub: "Find where your personal data sits",
+    tag: "Data Discovery",
     href: "/discovery",
     badge: "bg-teal-500",
     ring: "bg-teal-500/15",
@@ -45,6 +47,7 @@ const steps: Step[] = [
     icon: ClipboardCheck,
     title: "Assess",
     sub: "Score your current risk",
+    tag: "Assessment",
     href: "/assessment",
     badge: "bg-green-500",
     ring: "bg-green-500/15",
@@ -55,6 +58,7 @@ const steps: Step[] = [
     icon: FileText,
     title: "Fix what matters",
     sub: "Generate notices + first controls",
+    tag: "Notice Pack",
     href: "/tools/dpdpa-privacy-notice-generator",
     badge: "bg-gold-400",
     ring: "bg-gold-400/15",
@@ -156,7 +160,7 @@ export function HowItWorks() {
                       {step.title}
                     </span>
                     <span className="block text-slate-400 text-xs mt-0.5">
-                      {step.sub}
+                      {step.sub} <span className="text-slate-500">· {step.tag}</span>
                     </span>
                   </span>
                   <ArrowRight
@@ -167,7 +171,7 @@ export function HowItWorks() {
                 {/* connector */}
                 <span
                   aria-hidden
-                  className="my-2 h-8 w-px border-l-2 border-dashed border-teal-500/40"
+                  className="my-2 h-8 w-0.5 rounded-full opacity-70 sp-line-flow"
                 />
               </div>
             );
