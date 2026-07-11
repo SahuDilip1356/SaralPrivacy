@@ -5,6 +5,13 @@ _The single place to observe development progress against the spec. Update the *
 **Branch:** `feat/landing-redesign` · **Preview:** https://webapp-git-feat-landing-redesign-dilipsahu31s-projects.vercel.app · **Last commit:** `a9b34b9`
 **Status legend:** ✅ done · 🔨 in progress · ⬜ open · ⏸ deferred · 🔁 decision changed
 
+## Progress log
+- **2026-07-11 — Fix batch APPLIED** (commits `8083b54`, `b5d1abe`, `2677ba2`):
+  - ✅ F1 alert bar softened + Discovery-first · ✅ F2 Proof pointer → `#sectors` · ✅ F3 "Request free gap review" · ✅ F4 event dedupe · ✅ F6 orphaned AssessmentCTA deleted · ✅ F7a Guide 30→90 (option a) · ✅ S2 Guide "Download" now links
+  - ✅ S1 briefings infographic overlap fixed (object-contain + min-w-0) · ✅ D1 sector colour restored + gold badge · ✅ D2 hero → 2-col with scorecard · ✅ D3 real marching-flow motion (scatter + how-it-works) · ✅ F5 tool tags restored
+  - **Open:** F7 was resolved as (a); still deferred: hero mobile native-select, "Not listed?" escape, `/discovery?sector=` read, Beat-9 consolidation, `LANDING_PAGE_STRUCTURE.md` §3c/§3e de-hue lines need updating to reflect D1 (colour kept).
+  - **Next:** verify Vercel green → Dilip re-review → productionize + merge-base decision.
+
 ---
 
 ## 1. Beat-by-beat status (spec vs actual)
