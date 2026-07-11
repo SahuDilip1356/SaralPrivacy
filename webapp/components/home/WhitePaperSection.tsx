@@ -94,7 +94,7 @@ export function WhitePaperSection() {
                   "04. Sector Breakdown",
                   "05. Rights of Individuals",
                   "06. Enforcement & Penalties",
-                  "07. 30-Day Action Plan",
+                  "07. 90-Day Action Plan",
                 ].map((section) => (
                   <div
                     key={section}
@@ -106,11 +106,14 @@ export function WhitePaperSection() {
                 ))}
               </div>
 
-              <div className="mt-5 p-3.5 rounded-lg bg-green-50 border border-green-200 text-center">
+              <Link
+                href="/white-paper"
+                className="mt-5 block p-3.5 rounded-lg bg-green-50 border border-green-200 text-center hover:bg-green-100 transition-colors"
+              >
                 <p className="text-green-700 text-sm font-semibold">
                   Download instantly · Free · DPDPA-compliant consent
                 </p>
-              </div>
+              </Link>
             </div>
 
             {/* Floating badge — gold accent */}

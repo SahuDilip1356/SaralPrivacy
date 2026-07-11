@@ -73,8 +73,8 @@ export function HeroSection() {
                   key={v.slug}
                   type="button"
                   onClick={() => {
+                    if (v.slug !== slug) trackEvent.heroSectorSelect({ sector: v.slug });
                     setSlug(v.slug);
-                    trackEvent.heroSectorSelect({ sector: v.slug });
                   }}
                   aria-pressed={active}
                   className={`text-sm rounded-full px-3.5 py-1.5 border transition-colors ${

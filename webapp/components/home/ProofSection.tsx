@@ -82,7 +82,7 @@ export function ProofSection() {
           </Link>
           <div className="mt-4">
             <Link
-              href="/industries"
+              href="#sectors"
               className="inline-flex items-center gap-1.5 text-sm font-medium text-teal-600 hover:text-teal-700 transition-colors"
             >
               See what&apos;s at stake for your sector

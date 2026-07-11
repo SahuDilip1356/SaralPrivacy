@@ -51,7 +51,7 @@ export function ConsultationCTA() {
                 href="/contact"
                 className="inline-flex items-center gap-2 px-7 py-3.5 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl transition-colors text-base"
               >
-                Request Consultation
+                Request free gap review
                 <ArrowRight size={18} />
               </Link>
             </div>

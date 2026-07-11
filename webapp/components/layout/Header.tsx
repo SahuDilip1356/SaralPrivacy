@@ -108,14 +108,14 @@ export function Header() {
             <span className="relative inline-flex rounded-full h-2 w-2 bg-gold-400" />
           </span>
           <span>
-            <strong>DPDP Rules 2025 are now in effect.</strong>{" "}
-            How ready is your business? Most Indian companies don&apos;t know yet.
+            <strong>DPDP Rules, 2025 are now in effect.</strong>{" "}
+            See where your business stands, in 3–5 minutes.
           </span>
           <Link
-            href="/assessment"
+            href="/discovery"
             className="inline-flex items-center gap-1 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full hover:bg-green-600 transition-colors shrink-0"
           >
-            Find out in 3–5 minutes — free →
+            Find out — free →
           </Link>
         </span>
       </div>
