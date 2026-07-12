@@ -3,13 +3,11 @@ import { HeroSection } from "@/components/home/HeroSection";
 import { WhereRiskHides } from "@/components/home/WhereRiskHides";
 import { TrustStrip } from "@/components/home/TrustStrip";
 import { HowItWorks } from "@/components/home/HowItWorks";
-import { FounderProof } from "@/components/home/FounderProof";
 import { AudienceCards } from "@/components/home/AudienceCards";
 import { BriefingsSection } from "@/components/home/BriefingsSection";
 import { WhitePaperSection } from "@/components/home/WhitePaperSection";
 import { FAQPreview } from "@/components/home/FAQPreview";
 import { NewsletterSection } from "@/components/home/NewsletterSection";
-import { ConsultationCTA } from "@/components/home/ConsultationCTA";
 import { organizationSchema, websiteSchema, speakableSchema } from "@/lib/schema";
 import { AnswerBlock } from "@/components/seo/AnswerBlock";
 import { PressProofStrip } from "@/components/ui/PressProofStrip";
@@ -61,16 +59,14 @@ export default function HomePage() {
       {/* Beat 4 — How it works = do it now (consolidates Discovery/Assess/Fix) */}
       <HowItWorks />
 
-      {/* Beat 5 — Proof: retired; the hero scorecard now carries the sample verdict */}
+      {/* Beat 5 — See a real verdict (VerdictPreview) — added in Phase 2, workstream D */}
 
-      {/* Beat 6 — Founder proof */}
-      <FounderProof />
+      {/* Beat 6 — Founder proof: moved to /about (Phase 2) */}
 
       {/* Beat 7 — Explore DPDPA by your sector (the 12-card wall) */}
       <AudienceCards />
 
-      {/* Beat 8 — Get help (free gap review) */}
-      <ConsultationCTA />
+      {/* Beat 8 — Get help: removed from landing (Phase 2); reachable via Header/Footer/contact/FAQ */}
 
       {/* Beat 9 — Stay current (briefings + guide + FAQ + newsletter) */}
       <BriefingsSection />

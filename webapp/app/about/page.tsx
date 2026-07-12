@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { PressProofStrip } from "@/components/ui/PressProofStrip";
+import { FounderProof } from "@/components/home/FounderProof";
 
 export const metadata: Metadata = {
   title: {
@@ -53,6 +54,9 @@ export default function AboutPage() {
               SaralPrivacy is a practical DPDPA education, assessment, and advisory platform built for Indian businesses. It exists to turn dense privacy obligations into plain-English guidance, useful assessments, and implementation-focused resources by sector.
             </p>
           </div>
+
+          {/* Founder proof — moved here from the landing page (Phase 2) */}
+          <FounderProof />
 
           {/* How it works — 4-stage strip */}
           <div className="bg-white rounded-xl border border-slate-200 p-7">
