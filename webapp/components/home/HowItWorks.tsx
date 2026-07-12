@@ -235,6 +235,12 @@ export function HowItWorks() {
                       </span>
                     )}
                   </span>
+                  {!comingSoon && (
+                    <ArrowRight
+                      size={14}
+                      className="ml-auto text-slate-500 group-hover:text-teal-400 transition-colors shrink-0"
+                    />
+                  )}
                 </>
               );
               const base =
@@ -251,7 +257,7 @@ export function HowItWorks() {
                 <Link
                   key={leaf.title}
                   href={leaf.href as string}
-                  className={`${base} border-white/10 bg-navy-600/40 hover:border-teal-500/40 hover:bg-navy-600/70 transition-colors`}
+                  className={`group ${base} border-white/10 bg-navy-600/40 hover:border-teal-500/40 hover:bg-navy-600/70 transition-colors`}
                 >
                   {inner}
                 </Link>

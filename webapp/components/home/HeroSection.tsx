@@ -81,7 +81,7 @@ export function HeroSection() {
                       aria-pressed={active}
                       className={`text-sm rounded-full px-3.5 py-1.5 border transition-colors ${
                         active
-                          ? "bg-green-500 border-green-500 text-white font-semibold"
+                          ? "bg-green-500 border-green-500 text-white"
                           : "bg-white/5 border-white/15 text-slate-200 hover:border-white/30"
                       }`}
                     >
@@ -121,8 +121,10 @@ export function HeroSection() {
             </div>
           </div>
 
-          {/* RIGHT — scorecard (sample by default, live verdict on select) */}
-          <div aria-live="polite" className="lg:pl-4">
+          {/* RIGHT — scorecard (sample by default, live verdict on select).
+              min-h matches the taller (sample) card so the sample→verdict swap
+              doesn't change the wrapper height and re-centre the hero row. */}
+          <div aria-live="polite" className="lg:pl-4 lg:min-h-[340px]">
             {verdict ? (
               <div className="bg-white rounded-2xl p-6 shadow-elevated max-w-md mx-auto lg:ml-auto animate-fade-up motion-reduce:animate-none">
                 <div className="flex items-center justify-between mb-4">

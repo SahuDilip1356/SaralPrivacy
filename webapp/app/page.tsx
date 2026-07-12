@@ -3,7 +3,6 @@ import { HeroSection } from "@/components/home/HeroSection";
 import { WhereRiskHides } from "@/components/home/WhereRiskHides";
 import { TrustStrip } from "@/components/home/TrustStrip";
 import { HowItWorks } from "@/components/home/HowItWorks";
-import { ProofSection } from "@/components/home/ProofSection";
 import { FounderProof } from "@/components/home/FounderProof";
 import { AudienceCards } from "@/components/home/AudienceCards";
 import { BriefingsSection } from "@/components/home/BriefingsSection";
@@ -62,8 +61,7 @@ export default function HomePage() {
       {/* Beat 4 — How it works = do it now (consolidates Discovery/Assess/Fix) */}
       <HowItWorks />
 
-      {/* Beat 5 — Proof (slim sample-result) */}
-      <ProofSection />
+      {/* Beat 5 — Proof: retired; the hero scorecard now carries the sample verdict */}
 
       {/* Beat 6 — Founder proof */}
       <FounderProof />
