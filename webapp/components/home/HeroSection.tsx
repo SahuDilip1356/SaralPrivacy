@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { ArrowRight, CheckCircle, AlertTriangle } from "lucide-react";
 import { HERO_VERDICTS, getHeroVerdict } from "@/lib/data/hero-verdicts";
+import { ScoreDial } from "@/components/home/ScoreDial";
 import { trackEvent } from "@/lib/analytics";
 
 // Beat 1 — Hero. 2-column: left = "is-this-me" selector + Discovery-first CTAs;
@@ -79,7 +80,7 @@ export function HeroSection() {
                         setSlug(v.slug);
                       }}
                       aria-pressed={active}
-                      className={`text-sm rounded-full px-3.5 py-1.5 border transition-colors ${
+                      className={`inline-flex items-center justify-center text-sm rounded-full border transition-colors px-4 py-2.5 min-h-[44px] sm:px-3.5 sm:py-1.5 sm:min-h-0 ${
                         active
                           ? "bg-green-500 border-green-500 text-white"
                           : "bg-white/5 border-white/15 text-slate-200 hover:border-white/30"
@@ -115,7 +116,15 @@ export function HeroSection() {
               {frictionKillers.map((f) => (
                 <div key={f} className="flex items-center gap-1.5">
                   <CheckCircle size={14} className="text-green-400 shrink-0" />
-                  <span className="text-slate-400 text-sm">{f}</span>
+                  <span
+                    className={`text-sm ${
+                      f === "No email to start"
+                        ? "text-slate-300 font-semibold"
+                        : "text-slate-400"
+                    }`}
+                  >
+                    {f}
+                  </span>
                 </div>
               ))}
             </div>
@@ -142,7 +151,10 @@ export function HeroSection() {
                 <p className="text-slate-600 text-sm leading-snug mb-4">{verdict.riskLine}</p>
                 <div className="border-t border-slate-100 pt-4 flex items-center justify-between">
                   <span className="text-sm text-slate-500">Typical risk</span>
-                  <span className="text-sm font-semibold text-navy-700 bg-gold-400 rounded px-2 py-0.5">
+                  <span
+                    className="text-sm font-semibold text-navy-700 bg-gold-400 rounded px-2 py-0.5 animate-fade-up motion-reduce:animate-none"
+                    style={{ animationDelay: "200ms" }}
+                  >
                     {verdict.band}
                   </span>
                 </div>
@@ -159,15 +171,8 @@ export function HeroSection() {
                   </span>
                 </div>
                 <div className="flex items-center gap-4 mb-4">
-                  <div
-                    className="relative shrink-0 w-[66px] h-[66px] rounded-full grid place-items-center"
-                    style={{ background: "conic-gradient(#E8AB42 0 41%, #E2E8F0 41% 100%)" }}
-                  >
-                    <div className="absolute w-[50px] h-[50px] rounded-full bg-white" />
-                    <div className="relative text-center leading-none">
-                      <span className="block text-xl font-bold text-navy-700">41</span>
-                      <span className="block text-2xs text-slate-400">/ 100</span>
-                    </div>
+                  <div className="shrink-0">
+                    <ScoreDial value={41} size={66} animate />
                   </div>
                   <div>
                     <span className="inline-block text-xs font-semibold text-navy-700 bg-gold-400 rounded-full px-3 py-1 mb-1.5">
