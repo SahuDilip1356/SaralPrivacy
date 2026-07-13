@@ -3,6 +3,7 @@ import { HeroSection } from "@/components/home/HeroSection";
 import { WhereRiskHides } from "@/components/home/WhereRiskHides";
 import { TrustStrip } from "@/components/home/TrustStrip";
 import { HowItWorks } from "@/components/home/HowItWorks";
+import { VerdictPreview } from "@/components/home/VerdictPreview";
 import { AudienceCards } from "@/components/home/AudienceCards";
 import { BriefingsSection } from "@/components/home/BriefingsSection";
 import { WhitePaperSection } from "@/components/home/WhitePaperSection";
@@ -59,7 +60,8 @@ export default function HomePage() {
       {/* Beat 4 — How it works = do it now (consolidates Discovery/Assess/Fix) */}
       <HowItWorks />
 
-      {/* Beat 5 — See a real verdict (VerdictPreview) — added in Phase 2, workstream D */}
+      {/* Beat 5 — See a real verdict (report-output preview) */}
+      <VerdictPreview />
 
       {/* Beat 6 — Founder proof: moved to /about (Phase 2) */}
 
