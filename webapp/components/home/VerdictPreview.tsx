@@ -69,7 +69,7 @@ export function VerdictPreview() {
         >
           <div
             key={v.slug}
-            className="animate-fade-up motion-reduce:animate-none"
+            className="animate-fade-up motion-reduce:animate-none min-h-[340px]"
           >
             <div className="flex items-center justify-between gap-3 mb-5">
               <span className="font-bold text-navy-700">{v.label}</span>
