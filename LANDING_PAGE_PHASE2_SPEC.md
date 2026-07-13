@@ -1,6 +1,6 @@
 # Landing Page Phase 2 — Proof-First Spec
 
-**Status:** Spec complete · CEO review done (Selective Expansion) · awaiting /plan-design-review on D + C
+**Status:** BUILT ✅ (A `08a48d1`, B `a19ad43`, C `16b1bcf`, D `ce0143a`, D-fix `270d874`) on branch feat/landing-redesign · design-review passed (7.5→8.6 after 3 fixes) · preview-verified · awaiting Dilip eyeball → prod merge. 7-day keep/kill gate on Beat 5 starts at prod ship.
 **Date:** 2026-07-12
 **Baseline:** prod `397c422` (hero chip-shift fix, ProofSection retired, HowItWorks leaf arrows)
 **Trigger:** Comparative review vs getmedesign.com — their page *shows* product artifacts at every step; ours *tells*. This phase embeds proof without importing their scroll-jack cinematics.
