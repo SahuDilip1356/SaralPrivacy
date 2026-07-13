@@ -60,6 +60,29 @@ export const trackEvent = {
       sector:         params.sector || "",
     }),
 
+  // ── How it works spine (Beat 4) ─────────────────────────────────────────
+  // Fires when a visitor clicks a step card (Discover / Assess / Fix) — measures
+  // whether the step artifacts (Phase 2) drive clicks into the tools.
+  hiwStepClick: (params: { step: string }) =>
+    gtag("hiw_step_click", {
+      event_category: "engagement",
+      step:           params.step,
+    }),
+
+  // ── Verdict preview (Beat 5 — "See a real verdict") ─────────────────────
+  // Tab switches + CTA clicks feed the pre-committed 7-day keep/kill gate.
+  beat5TabSelect: (params: { sector: string }) =>
+    gtag("beat5_tab_select", {
+      event_category: "engagement",
+      sector:         params.sector,
+    }),
+
+  beat5CtaClick: (params: { sector: string }) =>
+    gtag("beat5_cta_click", {
+      event_category: "engagement",
+      sector:         params.sector,
+    }),
+
   // ── Assessment (old /assessment route) ─────────────────────────────────
   assessmentComplete: (params: {
     score: number;
