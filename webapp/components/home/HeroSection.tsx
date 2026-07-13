@@ -106,7 +106,7 @@ export function HeroSection() {
               <Link
                 href={assessHref}
                 onClick={() => trackEvent.landingCtaClick({ cta: "assess", sector: slug ?? "" })}
-                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white/10 hover:bg-white/15 text-white font-semibold rounded-xl border border-white/20 transition-colors text-base backdrop-blur-sm"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white hover:bg-slate-100 text-navy-700 font-semibold rounded-xl border border-white transition-colors text-base"
               >
                 Take the assessment
               </Link>

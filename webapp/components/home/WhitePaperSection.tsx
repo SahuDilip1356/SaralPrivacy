@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Download, FileText, CheckCircle } from "lucide-react";
+import { Download, FileText, CheckCircle, ArrowUpRight } from "lucide-react";
 import { GUIDE_LANGUAGES } from "@/lib/data/guide-languages";
 
 const whitePaperContents = [
@@ -9,6 +9,23 @@ const whitePaperContents = [
   "Rights of individuals and how businesses must respond",
   "Enforcement timeline and penalty structure",
   "Your 90-day privacy readiness action plan",
+];
+
+// Guide table of contents — each row deep-links to the matching section of the
+// free English guide (public static HTML), opened in a new tab so the visitor
+// can read a section and return here. `anchor` maps to an id in
+// public/guides/dpdpa-guide-en.html (#section-N).
+const GUIDE_EN_HREF = "/guides/dpdpa-guide-en.html";
+const guideSections = [
+  { n: "01", title: "Understanding DPDPA", desc: "Scope, key definitions, and applicability", anchor: "section-7" },
+  { n: "02", title: "Data Fiduciary vs Data Processor", desc: "Which are you — and what does it mean?", anchor: "section-9" },
+  { n: "03", title: "Consent framework", desc: "What valid consent looks like under DPDPA", anchor: "section-8" },
+  { n: "04", title: "Notice requirements", desc: "What you must tell individuals before collecting data", anchor: "section-12" },
+  { n: "05", title: "Rights of individuals", desc: "Access, correction, erasure, and grievance", anchor: "section-14" },
+  { n: "06", title: "Data breach obligations", desc: "Notification timelines and scope", anchor: "section-17" },
+  { n: "07", title: "12 industry risk snapshots", desc: "Plus the OPERATE framework and rights & breach handling", anchor: "section-19" },
+  { n: "08", title: "Penalty structure", desc: "What violations attract what penalties", anchor: "section-5" },
+  { n: "09", title: "90-day compliance action plan", desc: "Prioritised steps for each sector", anchor: "section-23" },
 ];
 
 export function WhitePaperSection() {
@@ -69,40 +86,51 @@ export function WhitePaperSection() {
             </p>
           </div>
 
-          {/* Right: white paper visual */}
+          {/* Right: what's inside — a clickable table of contents. Each row
+              jumps to that section of the free English guide (new tab). */}
           <div className="relative">
-            <div className="bg-white rounded-2xl p-8 shadow-2xl">
+            <div className="bg-white rounded-2xl p-6 sm:p-7 shadow-2xl">
               {/* Document header */}
-              <div className="flex items-center gap-3 mb-6 pb-5 border-b border-slate-100">
+              <div className="flex items-center gap-3 mb-5 pb-4 border-b border-slate-100">
                 <div className="w-12 h-12 rounded-xl bg-navy-700 flex items-center justify-center shrink-0">
                   <FileText size={24} className="text-white" />
                 </div>
                 <div>
                   <div className="font-bold text-navy-700 text-base leading-snug">
-                    DPDPA: The Complete Guide for Indian Businesses
+                    What&apos;s inside the guide
                   </div>
-                  <div className="text-slate-500 text-xs mt-0.5">2026 Edition · 7 languages</div>
+                  <div className="text-slate-500 text-xs mt-0.5">
+                    2026 Edition · 7 languages · jump to any section
+                  </div>
                 </div>
               </div>
 
-              {/* Preview sections */}
-              <div className="space-y-3">
-                {[
-                  "01. Understanding DPDPA",
-                  "02. Who It Applies To",
-                  "03. Consent Framework",
-                  "04. Sector Breakdown",
-                  "05. Rights of Individuals",
-                  "06. Enforcement & Penalties",
-                  "07. 90-Day Action Plan",
-                ].map((section) => (
-                  <div
-                    key={section}
-                    className="flex items-center justify-between py-2 border-b border-slate-100 last:border-0"
+              {/* Deep-linked contents */}
+              <div className="divide-y divide-slate-100">
+                {guideSections.map((s) => (
+                  <a
+                    key={s.n}
+                    href={`${GUIDE_EN_HREF}#${s.anchor}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-start gap-3 py-2.5 -mx-2 px-2 rounded-lg hover:bg-teal-50 transition-colors"
                   >
-                    <span className="text-sm text-slate-600">{section}</span>
-                    <div className="w-16 h-2 bg-slate-100 rounded-full" />
-                  </div>
+                    <span className="text-xs font-bold text-teal-600 tabular-nums pt-0.5 shrink-0 w-5">
+                      {s.n}
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block text-sm font-semibold text-navy-700 leading-snug group-hover:text-teal-700">
+                        {s.title}
+                      </span>
+                      <span className="block text-xs text-slate-500 leading-snug mt-0.5">
+                        {s.desc}
+                      </span>
+                    </span>
+                    <ArrowUpRight
+                      size={15}
+                      className="text-slate-300 group-hover:text-teal-500 transition-colors shrink-0 mt-0.5"
+                    />
+                  </a>
                 ))}
               </div>
 
@@ -111,7 +139,7 @@ export function WhitePaperSection() {
                 className="mt-5 block p-3.5 rounded-lg bg-green-50 border border-green-200 text-center hover:bg-green-100 transition-colors"
               >
                 <p className="text-green-700 text-sm font-semibold">
-                  Download instantly · Free · DPDPA-compliant consent
+                  Download all 7 languages · Free · with consent
                 </p>
               </Link>
             </div>

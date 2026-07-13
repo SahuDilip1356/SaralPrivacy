@@ -134,7 +134,7 @@ export function ScoreDial({
         dominantBaseline="central"
         fontSize={size * 0.3}
         fontWeight={700}
-        fill="#121A2E"
+        fill={variant === "quiet" ? "#E2E8F0" : "#121A2E"}
         fontFamily="inherit"
       >
         {count}

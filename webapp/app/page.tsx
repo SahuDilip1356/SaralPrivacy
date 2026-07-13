@@ -43,10 +43,9 @@ export default function HomePage() {
       {/* Beat 1 — Hero (interactive is-this-me verdict: TODO upgrade) */}
       <HeroSection />
 
-      {/* Beat 2 — Where DPDPA risk hides (Scatter, dark) */}
-      <WhereRiskHides />
-
-      {/* Beat 3 — Trust ribbon (press + stats) */}
+      {/* Beat 2 — Trust ribbon (press + stats + "What is DPDPA?").
+          Reordered ahead of the problem beat for a clean dark→light rhythm and
+          to surface the AEO answer block higher. */}
       <TrustStrip />
       <PressProofStrip />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
@@ -57,15 +56,18 @@ export default function HomePage() {
         />
       </div>
 
-      {/* Beat 4 — How it works = do it now (consolidates Discovery/Assess/Fix) */}
-      <HowItWorks />
+      {/* Beat 3 — Where DPDPA risk hides (Scatter, dark) */}
+      <WhereRiskHides />
 
-      {/* Beat 5 — See a real verdict (report-output preview) */}
+      {/* Beat 4 — See a real verdict (report-output preview, light).
+          Sits right after the problem beat: "here's where you're exposed" →
+          "here's the scored verdict that measures it." */}
       <VerdictPreview />
 
-      {/* Beat 6 — Founder proof: moved to /about (Phase 2) */}
+      {/* Beat 5 — How it works = do it now (Discover/Assess/Fix, dark) */}
+      <HowItWorks />
 
-      {/* Beat 7 — Explore DPDPA by your sector (the 12-card wall) */}
+      {/* Beat 6 — Explore DPDPA by your sector (the 12-card wall) */}
       <AudienceCards />
 
       {/* Beat 8 — Get help: removed from landing (Phase 2); reachable via Header/Footer/contact/FAQ */}

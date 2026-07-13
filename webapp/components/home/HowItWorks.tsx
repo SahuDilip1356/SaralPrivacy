@@ -252,11 +252,19 @@ export function HowItWorks() {
             </span>
           </div>
 
-          {/* branch connector */}
+          {/* branch connector — a 3-prong fan that flows from the milestone to
+              all three leaves (desktop). Mobile stacks, so the fan is hidden. */}
           <span
             aria-hidden
-            className="my-2 h-8 w-px border-l-2 border-dashed border-teal-500/40"
+            className="my-2 h-6 w-px border-l-2 border-dashed border-teal-500/40 sm:hidden"
           />
+          <div aria-hidden className="hidden sm:block relative w-full h-7 mt-1 mb-1">
+            <span className="absolute left-1/2 -translate-x-1/2 top-0 h-3 w-0.5 bg-teal-500/40" />
+            <span className="absolute top-3 left-[16.666%] right-[16.666%] h-0.5 bg-teal-500/30" />
+            <span className="absolute top-3 left-[16.666%] -translate-x-1/2 h-4 w-0.5 bg-teal-500/30" />
+            <span className="absolute top-3 left-1/2 -translate-x-1/2 h-4 w-0.5 bg-teal-500/40" />
+            <span className="absolute top-3 left-[83.333%] -translate-x-1/2 h-4 w-0.5 bg-teal-500/30" />
+          </div>
 
           {/* 3-way "keep it living" branch */}
           <div
@@ -292,12 +300,14 @@ export function HowItWorks() {
                       </span>
                     )}
                   </span>
-                  {!comingSoon && (
-                    <ArrowRight
-                      size={14}
-                      className="ml-auto text-slate-500 group-hover:text-teal-400 transition-colors shrink-0"
-                    />
-                  )}
+                  <ArrowRight
+                    size={14}
+                    className={`ml-auto shrink-0 transition-colors ${
+                      comingSoon
+                        ? "text-slate-600"
+                        : "text-slate-500 group-hover:text-teal-400"
+                    }`}
+                  />
                 </>
               );
               const base =
