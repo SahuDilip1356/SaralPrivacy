@@ -252,19 +252,40 @@ export function HowItWorks() {
             </span>
           </div>
 
-          {/* branch connector — a 3-prong fan that flows from the milestone to
-              all three leaves (desktop). Mobile stacks, so the fan is hidden. */}
+          {/* branch connector — teal dashed-bezier fan flowing from the
+              milestone down to the three leaves (same aesthetic as the
+              "Where DPDPA risk hides" scatter). Mobile stacks → simple stem.
+              preserveAspectRatio="none" + non-scaling stroke keeps the dashes
+              crisp while the fan stretches to the container width. */}
           <span
             aria-hidden
             className="my-2 h-6 w-px border-l-2 border-dashed border-teal-500/40 sm:hidden"
           />
-          <div aria-hidden className="hidden sm:block relative w-full h-7 mt-1 mb-1">
-            <span className="absolute left-1/2 -translate-x-1/2 top-0 h-3 w-0.5 bg-teal-500/40" />
-            <span className="absolute top-3 left-[16.666%] right-[16.666%] h-0.5 bg-teal-500/30" />
-            <span className="absolute top-3 left-[16.666%] -translate-x-1/2 h-4 w-0.5 bg-teal-500/30" />
-            <span className="absolute top-3 left-1/2 -translate-x-1/2 h-4 w-0.5 bg-teal-500/40" />
-            <span className="absolute top-3 left-[83.333%] -translate-x-1/2 h-4 w-0.5 bg-teal-500/30" />
-          </div>
+          <svg
+            aria-hidden
+            viewBox="0 0 768 44"
+            height={44}
+            preserveAspectRatio="none"
+            style={{ transitionDelay: `${(steps.length + 1) * 140}ms` }}
+            className={`hidden sm:block w-full mt-1 mb-1 transition-opacity duration-500 motion-reduce:!opacity-100 ${
+              inView ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            {[
+              "M384 2 C 384 28, 128 16, 128 43",
+              "M384 2 L 384 43",
+              "M384 2 C 384 28, 640 16, 640 43",
+            ].map((d, i) => (
+              <path
+                key={i}
+                d={d}
+                className="sp-dash-flow stroke-teal-500 fill-none opacity-60"
+                strokeWidth={1.6}
+                strokeDasharray="5 6"
+                vectorEffect="non-scaling-stroke"
+              />
+            ))}
+          </svg>
 
           {/* 3-way "keep it living" branch */}
           <div
