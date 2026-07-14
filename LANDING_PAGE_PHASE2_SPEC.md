@@ -1,6 +1,35 @@
 # Landing Page Phase 2 — Proof-First Spec
 
-**Status:** BUILT ✅ (A `08a48d1`, B `a19ad43`, C `16b1bcf`, D `ce0143a`, D-fix `270d874`) on branch feat/landing-redesign · design-review passed (7.5→8.6 after 3 fixes) · preview-verified · awaiting Dilip eyeball → prod merge. 7-day keep/kill gate on Beat 5 starts at prod ship.
+**Status:** SHIPPED TO PROD ✅ (2026-07-14). Phase 2 A–D (`08a48d1` A, `a19ad43` B, `16b1bcf` C, `ce0143a` D, `270d874` D-fix) + follow-ups all merged to `main` and live on saralprivacy.com (current `58f531a`). Design-review passed (7.5→8.6 after 3 fixes). 7-day keep/kill gate on Beat 5 now running (started at prod ship 2026-07-14).
+
+## Follow-ups shipped after Phase 2 (same branch, now on prod)
+
+Driven by a getmedesign.com comparison + Tilda design-principles pass. All live on `main`.
+
+- **Beat reorder 1–6** (`fa77626`): Hero → Trust ribbon → Where risk hides → See a real verdict → How it works → Sector wall. Zero reskins — pure `page.tsx` JSX move for a clean dark→light rhythm; also lifts the "What is DPDPA?" AnswerBlock higher (AEO). Rejected strict full-page alternation (7 reskins, fights the dark data-viz + glow spine) and the 7–10 tail reskin (forced 3-flip package that would break the Briefings dynamic-image section + flatten the Guide CTA). Tail keeps two low-stakes ⬜⬜ pairs by design.
+- **Hero "Take the assessment"** (`fa77626`): ghost `bg-white/10` button merged into navy → now solid white bg + navy text.
+- **ScoreDial quiet variant** (`fa77626`): number was navy-on-navy (invisible) on the Assess step → renders light (`#E2E8F0`) on dark.
+- **HowItWorks branch** (`fa77626` arrows → `8de0a4a` fan): arrows on all three leaves incl. Deep Review (muted); connector upgraded from a straight bracket to a **teal dashed-bezier fan** (`sp-dash-flow`, reduced-motion safe, `preserveAspectRatio="none"` + non-scaling stroke) matching the WhereRiskHides scatter, flowing to each leaf-column centre.
+- **DPDPA Guide card** (`fa77626`): generic 7-row preview → 9-item "What's inside the guide" TOC, each row **deep-links** to the matching section of the free English guide (`/guides/dpdpa-guide-en.html#section-N`) in a new tab (natural "come back"). Download CTA stays gated ("with consent").
+- **Gold-rule removed** (`58f531a`): decorative gold hairline above the Guide section deleted — read as a stray orange line and used gold against the "gold = risk only" brand rule.
+
+### OPEN — guide deep-link mapping to confirm (24 guide sections vs 9 TOC items)
+Best-fit mapping is live; three are weak guesses awaiting Dilip's call:
+| TOC item | → guide anchor | Confidence |
+|---|---|---|
+| 01 Understanding DPDPA | §7 | ✅ |
+| 02 Fiduciary vs Processor | §9 | ⚠️ could be §7 (roles live there) |
+| 03 Consent framework | §8 | ✅ |
+| 04 Notice requirements | §12 | ⚠️ could be §8 ("Notice alignment") |
+| 05 Rights of individuals | §14 | ✅ |
+| 06 Data breach obligations | §17 | ✅ |
+| 07 12 industry risk snapshots | §19 | ✅ |
+| 08 Penalty structure | §5 | ⚠️ **weakest** — no dedicated penalties section; §5 carries enforcement/numbers |
+| 09 90-day action plan | §23 | ✅ |
+Data lives in `guideSections` in `components/home/WhitePaperSection.tsx` (one-line repoint each).
+
+### OPEN — "boxed" How-it-works enrichment (Dilip's point 3)
+Spine is a narrow centred column with empty navy margins. Proposed (not built): (a) side-rail atmosphere treatment [recommended], (b) two-column split with a persistent evidence-pack artifact, (c) subtle radial glow. Needs its own /plan-design-review if (b).
 **Date:** 2026-07-12
 **Baseline:** prod `397c422` (hero chip-shift fix, ProofSection retired, HowItWorks leaf arrows)
 **Trigger:** Comparative review vs getmedesign.com — their page *shows* product artifacts at every step; ours *tells*. This phase embeds proof without importing their scroll-jack cinematics.
