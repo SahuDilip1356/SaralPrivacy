@@ -31,10 +31,7 @@ const guideSections = [
 export function WhitePaperSection() {
   return (
     <section className="py-20 bg-navy-700">
-      {/* Gold rule — ceremonial section divider */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="h-px bg-gold-400 opacity-30 mb-14 -mt-6" />
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left: content */}
           <div>
