@@ -78,11 +78,12 @@ const steps: Step[] = [
 
 // Per-step artifact — supporting proof, kept deliberately quiet so the step
 // title stays the standout (design-review criterion: one standout per card).
-// Desktop only (hidden below sm); pure CSS/SVG, no images.
+// Desktop: sits beside the title. Mobile: the card wraps it onto its own row
+// under the text (see the step map), so it shows on phones too. CSS/SVG only.
 function StepArtifact({ kind }: { kind: Step["key"] }) {
   if (kind === "discover") {
     return (
-      <div className="hidden sm:flex flex-wrap gap-1 max-w-[124px] justify-end shrink-0 opacity-85">
+      <div className="flex flex-wrap gap-1 justify-start sm:justify-end sm:max-w-[124px] shrink-0 opacity-85">
         {["Customers", "Staff", "CCTV", "Vendors"].map((l) => (
           <span
             key={l}
@@ -96,14 +97,14 @@ function StepArtifact({ kind }: { kind: Step["key"] }) {
   }
   if (kind === "assess") {
     return (
-      <div className="hidden sm:block shrink-0 opacity-85">
+      <div className="block shrink-0 opacity-85">
         <ScoreDial value={41} size={46} stroke={6} variant="quiet" showTotal={false} />
       </div>
     );
   }
   // fix — notice-PDF corner mock
   return (
-    <div className="hidden sm:block shrink-0 opacity-85">
+    <div className="block shrink-0 opacity-85">
       <div className="relative w-[62px] h-[46px] rounded-md bg-white/[0.05] border border-white/15 p-2 overflow-hidden">
         <div className="h-1 w-7 bg-white/25 rounded-full mb-1.5" />
         <div className="h-[3px] w-full bg-white/10 rounded-full mb-1" />
@@ -196,7 +197,7 @@ export function HowItWorks() {
                   href={step.href}
                   onClick={() => trackEvent.hiwStepClick({ step: step.key })}
                   style={{ transitionDelay: `${i * 140}ms` }}
-                  className={`group relative w-full max-w-lg flex items-center gap-3.5 rounded-xl border border-white/10 bg-navy-600/40 hover:border-white/25 hover:bg-navy-600/70 px-4 py-3.5 ${reveal(i)}`}
+                  className={`group relative w-full max-w-lg flex flex-wrap items-center gap-x-3.5 gap-y-2 rounded-xl border border-white/10 bg-navy-600/40 hover:border-white/25 hover:bg-navy-600/70 px-4 py-3.5 ${reveal(i)}`}
                 >
                   <span
                     className={`absolute -top-2 -right-2 w-6 h-6 rounded-full grid place-items-center text-xs font-semibold text-navy-700 ${step.badge}`}
@@ -204,11 +205,11 @@ export function HowItWorks() {
                     {step.n}
                   </span>
                   <span
-                    className={`shrink-0 w-11 h-11 rounded-lg grid place-items-center ${step.ring}`}
+                    className={`order-1 shrink-0 w-11 h-11 rounded-lg grid place-items-center ${step.ring}`}
                   >
                     <Icon size={20} className={step.iconColor} />
                   </span>
-                  <span className="min-w-0 flex-1">
+                  <span className="order-2 min-w-0 flex-1">
                     <span className="block text-white font-semibold text-[15px]">
                       {step.title}
                     </span>
@@ -219,10 +220,14 @@ export function HowItWorks() {
                       {step.cap}
                     </span>
                   </span>
-                  <StepArtifact kind={step.key} />
+                  {/* artifact: inline beside the text on desktop; wraps to its own
+                      row (indented under the text) on mobile via basis-full */}
+                  <span className="order-4 sm:order-3 basis-full sm:basis-auto pl-[58px] sm:pl-0">
+                    <StepArtifact kind={step.key} />
+                  </span>
                   <ArrowRight
                     size={16}
-                    className="text-slate-500 group-hover:text-teal-400 transition-colors shrink-0"
+                    className="order-3 sm:order-4 text-slate-500 group-hover:text-teal-400 transition-colors shrink-0"
                   />
                 </Link>
                 {/* connector */}
