@@ -51,9 +51,9 @@ const COLLECTION_ROWS = [
     basis: "Legitimate use — Section 7",
   },
   {
-    data: "Pages visited, device, browser",
+    data: "Pages visited (aggregated)",
     why: "Website analytics — understanding which pages are useful",
-    basis: "Your consent",
+    basis: "Not personal data — no cookie, no cross-day identifier",
   },
 ];
 
@@ -62,7 +62,7 @@ const RETENTION_ROWS = [
   { what: "Assessment and discovery reports", how: "24 months from completion" },
   { what: "Guide and template downloads", how: "24 months from download" },
   { what: "Consultation records", how: "12 months from the consultation" },
-  { what: "Analytics", how: "14 months (Google Analytics default retention)" },
+  { what: "Analytics", how: "Aggregated only; the daily visitor hash is discarded after 24 hours" },
 ];
 
 const SECTIONS: Array<{ id: string; title: string; content: string }> = [
@@ -85,20 +85,21 @@ For everything described in this notice, ${DPO.org} is the **Data Fiduciary** �
 
 **Consultations** — to schedule the session you requested and follow up afterwards.
 
-**Analytics** — to understand which pages are useful so we can improve them.
+**Analytics** — to understand which pages are useful so we can improve them. Our analytics are cookieless and aggregated: we can see that a page was read, not who read it.
 
 We do not:
 - Sell your personal data
 - Share it with third parties for their own marketing
 - Send you marketing you did not consent to
-- Use your assessment answers for anything except producing your report`,
+- Use your assessment answers for anything except producing your report
+- Use analytics cookies, or track you across sessions or other websites`,
   },
   {
     id: "legal-basis",
     title: "4. Our Legal Basis",
     content: `Under the DPDPA we rely on:
 
-**Your consent** — for briefings, marketing, analytics, and optional contact permissions. You opted in, and you can opt out just as easily.
+**Your consent** — for briefings, marketing, and optional contact permissions. You opted in, and you can opt out just as easily.
 
 **Contractual necessity** — to deliver a report, guide, or consultation you specifically asked for.
 

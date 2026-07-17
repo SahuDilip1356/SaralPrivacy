@@ -3,7 +3,11 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { GoogleAnalytics } from "@next/third-parties/google";
+// Vercel Web Analytics — cookieless, no cross-session identifier, so it needs no
+// consent gate. Replaced GA4 (2026-07-17): GA set a cookie-based client id and
+// tracked across sessions with no consent banner, which we cannot square with
+// selling DPDPA readiness. See PRIVACY_RIGHTS_PAGES_SPEC.md §2.
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -62,8 +66,8 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <Analytics />
       </body>
-      <GoogleAnalytics gaId="G-5Y466GNJXW" />
     </html>
   );
 }

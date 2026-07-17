@@ -77,10 +77,10 @@ export const VENDORS: Vendor[] = [
     dpa: 'available',
   },
   {
-    name: 'Google (Analytics 4)',
+    name: 'Vercel Web Analytics',
     purpose: 'Website analytics — understanding which pages are useful',
     dataReceived:
-      'A cookie-based identifier, IP address, pages visited, and behaviour across visits',
+      'Page views, aggregated. No cookies. Visitors are counted with a hash that resets every day, so you cannot be tracked between days or across sites',
     location: 'United States',
     dpa: 'available',
   },
