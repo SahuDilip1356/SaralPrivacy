@@ -142,12 +142,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE}/privacy`,       lastModified: FRESHNESS.legal, changeFrequency: 'yearly', priority: 0.2 },
     { url: `${BASE}/terms`,         lastModified: FRESHNESS.legal, changeFrequency: 'yearly', priority: 0.2 },
 
+    // /rights — canonical hub for Data Principal rights. Indexed deliberately (unlike the
+    // /rights/* stubs): it is a genuine trust surface and targets real search intent.
+    // Higher priority than /privacy for that reason.
+    { url: `${BASE}/rights`,        lastModified: FRESHNESS.legal, changeFrequency: 'yearly', priority: 0.4 },
+
     // EXCLUDED — intentional:
     // /consent-preferences  → utility page, noindex
     // /subscribe            → utility subscribe form, noindex
     // /unsubscribe          → redirect to /consent-preferences
-    // /rights/access        → redirect to /privacy#data-rights, noindex, robots disallowed
-    // /rights/erasure       → redirect to /privacy#data-rights, noindex, robots disallowed
+    // /rights/access        → 308 redirect to /rights#access, noindex
+    // /rights/erasure       → 308 redirect to /rights#erasure, noindex
+    //                         (robots.ts deliberately does NOT disallow /rights/ — rights
+    //                          pages stay crawlable; noindex deindexes just these stubs)
     // /admin/*              → gated, disallowed in robots
     // /api/*                → internal endpoints
     // /assessment/*         → client-side JS wizards, noindex

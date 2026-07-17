@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Mail } from "lucide-react";
 import { PressProofStrip } from "@/components/ui/PressProofStrip";
 import { sectorNavLinks } from "@/lib/data/sectors";
+import { DPO } from "@/lib/data/privacy-vendors";
 
 const footerLinks = {
   platform: [
@@ -20,12 +21,14 @@ const footerLinks = {
     { label: "Personal Data Discovery", href: "/discovery" },
     { label: "DPDPA Notice Generator", href: "/tools/dpdpa-privacy-notice-generator" },
   ],
+  // Point at /rights (canonical hub), not the /rights/* redirect stubs.
   legal: [
     { label: "Privacy Notice", href: "/privacy" },
+    { label: "Your Rights", href: "/rights" },
     { label: "Terms of Use", href: "/terms" },
     { label: "Consent Preferences", href: "/consent-preferences" },
-    { label: "Request Data Access", href: "/rights/access" },
-    { label: "Request Erasure", href: "/rights/erasure" },
+    { label: "Request Data Access", href: "/rights#access" },
+    { label: "Request Erasure", href: "/rights#erasure" },
     { label: "Unsubscribe", href: "/unsubscribe" },
   ],
 };
@@ -143,15 +146,15 @@ export function Footer() {
             </ul>
 
             <div data-nosnippet className="mt-6 p-3 rounded-lg bg-teal-900/40 border border-teal-700/50">
-              <p className="text-xs text-teal-300 font-semibold mb-1">Data Rights Contact</p>
+              <p className="text-xs text-teal-300 font-semibold mb-1">Data Protection Officer</p>
               <a
-                href="mailto:privacy@saralprivacy.com"
+                href={`mailto:${DPO.email}`}
                 className="text-xs text-teal-400 hover:text-teal-300"
               >
-                privacy@saralprivacy.com
+                {DPO.email}
               </a>
               <p className="text-xs text-slate-500 mt-1">
-                For access, correction, erasure, or complaints
+                {DPO.name} — for access, correction, erasure, or complaints
               </p>
             </div>
           </div>
@@ -170,9 +173,12 @@ export function Footer() {
             © {new Date().getFullYear()} SaralPrivacy. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
-            <span className="text-xs text-slate-600">Privacy Notice v1.0 · Updated March 2026</span>
+            <span className="text-xs text-slate-600">Privacy Notice v2.0 · Updated July 2026</span>
             <Link href="/privacy" className="text-xs text-slate-500 hover:text-slate-300 transition-colors">
               Privacy
+            </Link>
+            <Link href="/rights" className="text-xs text-slate-500 hover:text-slate-300 transition-colors">
+              Rights
             </Link>
             <Link href="/terms" className="text-xs text-slate-500 hover:text-slate-300 transition-colors">
               Terms
