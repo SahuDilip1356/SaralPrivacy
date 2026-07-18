@@ -21,14 +21,16 @@ const footerLinks = {
     { label: "Personal Data Discovery", href: "/discovery" },
     { label: "DPDPA Notice Generator", href: "/tools/dpdpa-privacy-notice-generator" },
   ],
-  // Point at /rights (canonical hub), not the /rights/* redirect stubs.
+  // "Your Rights" → /rights is the single entry for data-principal rights. The old
+  // per-action links ("Request Data Access" → /rights#access, "Request Erasure" →
+  // /rights#erasure) were dropped: they landed on the same page /rights already opens,
+  // which surfaces every right (access, erasure, withdraw, nominate, grievance) on arrival.
+  // The /rights/access + /rights/erasure stub routes still 308-redirect for old bookmarks.
   legal: [
     { label: "Privacy Notice", href: "/privacy" },
     { label: "Your Rights", href: "/rights" },
     { label: "Terms of Use", href: "/terms" },
     { label: "Consent Preferences", href: "/consent-preferences" },
-    { label: "Request Data Access", href: "/rights#access" },
-    { label: "Request Erasure", href: "/rights#erasure" },
     { label: "Unsubscribe", href: "/unsubscribe" },
   ],
 };
