@@ -14,10 +14,14 @@ import {
 } from "lucide-react";
 import { DPO } from "@/lib/data/privacy-vendors";
 
+// Deliberately OPERATIONAL framing (title/H1/description), not educational.
+// The educational "what each DPDPA right means" page is /learn/rights — this page
+// is "how to exercise your rights WITH SaralPrivacy" so the two don't compete for
+// the same search intent. This page defers to /learn/rights for the law itself.
 export const metadata: Metadata = {
-  title: "Your Rights Under the DPDPA",
+  title: "Make a Data Request — Exercise Your Rights",
   description:
-    "Exercise your rights as a Data Principal under India's DPDPA — access, correction, erasure, withdraw consent, nomination, and grievance redressal. Contact SaralPrivacy's DPO.",
+    "Exercise your data rights with SaralPrivacy: access, correction, erasure, withdraw consent, nomination, or a grievance. Email our DPO — we respond within 30 days.",
   alternates: { canonical: "https://saralprivacy.com/rights" },
 };
 
@@ -88,23 +92,36 @@ export default function RightsPage() {
               Data Principal Rights
             </span>
           </div>
-          <h1 className="text-3xl font-bold text-white">Your Rights</h1>
+          <h1 className="text-3xl font-bold text-white">Exercise Your Rights</h1>
           <p className="text-slate-300 mt-2 max-w-2xl">
-            Under India&apos;s Digital Personal Data Protection Act, 2023, you have rights over
-            the personal data {DPO.org} holds about you. This page explains each one and how
-            to use it.
+            This page is how you make a data request to {DPO.org} — access, correction,
+            erasure, and more. Under India&apos;s DPDPA, 2023 you have these rights over the
+            personal data we hold about you, and they are free to use.
           </p>
         </div>
       </div>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
         {/* Plain-English intro */}
-        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-8">
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-4">
           <p className="text-amber-800 text-sm">
             <strong>These rights are free to use.</strong> You do not need a lawyer, a form, or a
             reason. Email our DPO and we will action your request within 30 days. If you are not
             satisfied with how we handle it, you can escalate to the Data Protection Board of
             India.
+          </p>
+        </div>
+
+        {/* Defer the "what the law means" job to the educational guide, so the two
+            pages reinforce rather than compete. */}
+        <div className="bg-slate-100 border border-slate-200 rounded-xl p-4 mb-8">
+          <p className="text-slate-600 text-sm">
+            Want to understand what each right means under the law, or how a business should
+            handle these requests?{" "}
+            <Link href="/learn/rights" className="text-green-700 font-semibold underline underline-offset-2">
+              Read our DPDPA rights guide
+            </Link>
+            . This page is just for exercising your rights with us.
           </p>
         </div>
 
