@@ -26,12 +26,16 @@ const footerLinks = {
   // /rights#erasure) were dropped: they landed on the same page /rights already opens,
   // which surfaces every right (access, erasure, withdraw, nominate, grievance) on arrival.
   // The /rights/access + /rights/erasure stub routes still 308-redirect for old bookmarks.
+  // "Unsubscribe" is intentionally NOT here. /unsubscribe is the one-click target for
+  // the mandatory link inside marketing emails — it needs an ?email= param and errors
+  // (or now redirects to /consent-preferences) without one, so it makes a poor footer
+  // destination. "Consent Preferences" is the human-navigable surface and carries its
+  // own "Unsubscribe from All" button, so nothing is lost.
   legal: [
     { label: "Privacy Notice", href: "/privacy" },
     { label: "Your Rights", href: "/rights" },
     { label: "Terms of Use", href: "/terms" },
     { label: "Consent Preferences", href: "/consent-preferences" },
-    { label: "Unsubscribe", href: "/unsubscribe" },
   ],
 };
 

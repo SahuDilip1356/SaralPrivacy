@@ -1,15 +1,20 @@
 "use client";
 import { Suspense, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { CheckCircle, AlertCircle, Loader2 } from "lucide-react";
 
 function UnsubscribeInner() {
+  const router       = useRouter();
   const searchParams = useSearchParams();
   const email        = searchParams.get("email") ?? "";
   const [state, setState] = useState<"loading" | "done" | "error">("loading");
 
   useEffect(() => {
-    if (!email) { setState("error"); return; }
+    // /unsubscribe is the one-click target for the link inside our emails, which
+    // always carries ?email=. Reached without one (e.g. someone typing the URL),
+    // send them to the consent hub where they can look up their address and
+    // unsubscribe — rather than dead-ending on an error.
+    if (!email) { router.replace("/consent-preferences"); return; }
 
     fetch("/api/subscribers/unsubscribe", {
       method:  "POST",
