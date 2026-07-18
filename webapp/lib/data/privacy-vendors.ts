@@ -2,14 +2,24 @@
 // list published in the Privacy Notice. Read by app/privacy, app/rights, and Footer.
 //
 // ─────────────────────────────────────────────────────────────────────────────
-//  RULE: every row here must trace to real code. If a PR adds a processor that
-//  touches personal data, it adds the row in the SAME PR. If a processor stops
-//  being used, the row goes. An inaccurate sub-processor list is the exact
-//  failure our own assessments penalise.
+//  RULE: a row belongs here ONLY if the vendor actually receives a data
+//  principal's PERSONAL DATA. "We have the dep installed" is not the test —
+//  "does our users' personal data reach them" is. If a PR adds such a processor,
+//  it adds the row in the SAME PR; if one stops being used, the row goes. An
+//  inaccurate sub-processor list is the exact failure our own assessments penalise,
+//  and over-disclosure (listing vendors that DON'T get personal data) is just as
+//  inaccurate as under-disclosure.
 //
-//  Deliberately NOT listed:
-//   • Twilio      — dep installed but unused (no live WhatsApp send). If/when
-//                   WhatsApp delivery ships, add the row in that PR.
+//  Deliberately NOT listed, and why:
+//   • Anthropic  — used to DRAFT briefings/blog content (app/api/briefings/generate,
+//                  blog/validate, blog/revise). Only our own editorial text is sent;
+//                  no subscriber/lead/assessment data. Covered by a plain-language
+//                  AI note in the notice instead of a sub-processor row.
+//   • Svix       — NOT a processor. `svix` is used once, in app/api/webhooks/resend
+//                  to VERIFY the signature of incoming Resend webhooks. We send it
+//                  nothing; it is Resend's sub-processor, not ours.
+//   • Twilio     — dep installed but unused (no live WhatsApp send). Add the row in
+//                  the PR that ships WhatsApp delivery.
 //   • KIE / Nano-Banana — offline infographic build script (tools/), no personal data.
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -70,25 +80,10 @@ export const VENDORS: Vendor[] = [
     dpa: 'available',
   },
   {
-    name: 'Svix',
-    purpose: 'Webhook delivery infrastructure used by our email provider',
-    dataReceived: 'Email delivery event metadata',
-    location: 'United States',
-    dpa: 'available',
-  },
-  {
     name: 'Vercel Web Analytics',
     purpose: 'Website analytics — understanding which pages are useful',
     dataReceived:
       'Page views, aggregated. No cookies. Visitors are counted with a hash that resets every day, so you cannot be tracked between days or across sites',
-    location: 'United States',
-    dpa: 'available',
-  },
-  {
-    name: 'Anthropic PBC',
-    purpose: 'AI drafting of our briefings and blog content',
-    dataReceived:
-      'Our own editorial content only — we do not send your personal data to it',
     location: 'United States',
     dpa: 'available',
   },

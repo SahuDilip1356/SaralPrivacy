@@ -245,6 +245,16 @@ export default function PrivacyPage() {
               We do not sell your personal data, and we do not share it with anyone for their own
               marketing. If we add a processor, this list changes in the same release.
             </p>
+
+            <div className="mt-4 rounded-lg bg-slate-50 border border-slate-200 p-3">
+              <p className="text-slate-600 text-xs leading-relaxed">
+                <strong className="text-slate-800">A note on AI:</strong> we use AI tools
+                (Anthropic&apos;s Claude) to help write our briefings and blog posts. Only our own
+                editorial content is sent to them — never your personal data, and never your
+                assessment answers. That is why AI does not appear in the list above: it is not a
+                processor of your data.
+              </p>
+            </div>
           </div>
 
           {/* 6. Cross-border */}
