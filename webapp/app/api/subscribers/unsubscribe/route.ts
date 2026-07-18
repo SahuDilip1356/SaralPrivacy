@@ -18,8 +18,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: true, already_removed: true });
     }
 
+    // Soft-unsubscribe: flip status (suppresses all future sends via
+    // lib/suppression.ts) and stamp WHEN consent was withdrawn. We keep the row
+    // as a suppression record so a later re-import can't re-contact them; full
+    // deletion is available on request via the erasure right (/rights).
     await databases.updateDocument(DB_ID, COLLECTIONS.SUBSCRIBERS, res.documents[0].$id, {
       status: "unsubscribed",
+      unsubscribed_at: new Date().toISOString(),
     });
 
     return NextResponse.json({ success: true });

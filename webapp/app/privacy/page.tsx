@@ -58,7 +58,7 @@ const COLLECTION_ROWS = [
 ];
 
 const RETENTION_ROWS = [
-  { what: "Briefing subscribers", how: "Until you unsubscribe, then deleted within 30 days" },
+  { what: "Briefing subscribers", how: "Until you unsubscribe. We then keep a minimal suppression record (your email + the date) so we never email you again — full deletion on request via Your Rights" },
   { what: "Assessment and discovery reports", how: "24 months from completion" },
   { what: "Guide and template downloads", how: "24 months from download" },
   { what: "Consultation records", how: "12 months from the consultation" },

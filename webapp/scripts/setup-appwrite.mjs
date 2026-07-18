@@ -74,6 +74,10 @@ async function main() {
     { key: "created_at",       type: "datetime",             required: false },
   ]);
 
+  // NOTE: the live collection has drifted ahead of this list over time (status,
+  // ip_address, city, country, region, consent_source, consent_timestamp,
+  // unsubscribe_token were added in the console). Keeping the ones this codebase
+  // writes documented here; `unsubscribed_at` is stamped by the unsubscribe API.
   await createCollection("subscribers", "Newsletter Subscribers", [
     { key: "name",            type: "string",  size: 255, required: true  },
     { key: "email",           type: "email",               required: true  },
@@ -82,6 +86,8 @@ async function main() {
     { key: "consent_version", type: "string",  size: 20,  required: false },
     { key: "user_agent",      type: "string",  size: 500, required: false },
     { key: "created_at",      type: "datetime",            required: false },
+    { key: "status",          type: "string",  size: 20,  required: false },
+    { key: "unsubscribed_at", type: "datetime",            required: false },
   ]);
 
   await createCollection("downloads", "White Paper Downloads", [
