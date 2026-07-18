@@ -1,0 +1,187 @@
+# Coordination contract for the Recruitment Personal Data Flow Map build.
+# Not directly executable: the main Claude Code session acts as orchestrator,
+# spawns each role as an Agent-tool subagent, and enforces production_scope
+# by reviewing diffs before commit. Gates = Dilip's approval between sessions.
+
+project:
+  name: recruitment-personal-data-flow-map
+  platform: saralprivacy
+  objective: >
+    Build a production-grade, configuration-driven interactive Personal Data
+    Flow Map for recruitment and staffing businesses.
+
+execution_mode:
+  sequential_gates: true
+  parallel_research: true
+  direct_production_changes: restricted
+  require_orchestrator_approval: true
+
+shared_context:
+  system_prompt: .claude/agents/recruitment-data-flow-orchestrator.md
+  product_spec: docs/SaralPrivacy_Recruitment_DataFlow_Spec.md
+  output_directory: docs/data-flow-build/
+  decision_log: docs/data-flow-build/decision-log.md
+  app_root: webapp/            # Next.js app inside the repo root; no src/
+
+agents:
+  orchestrator:
+    role: product_orchestrator
+    owns: [scope, sequencing, acceptance_criteria, cross_agent_consistency, final_verdict]
+    may_modify_production_code: false
+
+  repository_analyst:
+    role: repository_and_integration_analyst
+    tasks:
+      - inspect_repository
+      - identify_existing_design_tokens
+      - inspect_discovery_taxonomy      # lib/discovery, niche recruitment-staffing
+      - inspect_assessment_model        # lib/data/industry-assessment/packs/recruitment-agencies.ts
+      - inspect_routes
+      - inspect_analytics               # lib/analytics.ts trackEvent
+      - inspect_testing_stack
+    outputs: [repository-audit.md, reuse-plan.md, integration-risks.md,
+              architecture-decisions.md, assumptions.md]
+    may_modify_production_code: false
+
+  domain_modeller:
+    role: recruitment_privacy_domain_modeller
+    tasks:
+      - model_processes            # 12 stages, businessModels gating on 10-11
+      - model_data_objects         # aligned to discovery recruitment-staffing items
+      - model_personas
+      - model_systems
+      - model_vendors
+      - model_trust_boundaries
+      - model_nodes
+      - model_edges
+      - model_retention_triggers
+      - model_copy_creation
+    outputs:                       # TypeScript config modules, not JSON
+      - webapp/lib/data/data-flow/recruitment/processes.ts
+      - webapp/lib/data/data-flow/recruitment/data-categories.ts
+      - webapp/lib/data/data-flow/recruitment/personas.ts
+      - webapp/lib/data/data-flow/recruitment/nodes.ts
+      - webapp/lib/data/data-flow/recruitment/edges.ts
+      - webapp/lib/data/data-flow/recruitment/obligations.ts
+      - webapp/lib/data/data-flow/recruitment/recommendations.ts
+    may_modify_production_code: false   # drafts content; data_engineer lands it
+
+  ux_architect:
+    role: ux_information_architect
+    tasks:
+      - design_landing_page_preview
+      - design_desktop_map
+      - design_mobile_flow          # process tabs + vertical journey + bottom sheets
+      - design_filters
+      - design_detail_panels
+      - design_motion               # framer-motion + sp-line-flow; reduced-motion parity
+      - design_accessibility
+      - design_empty_states
+    outputs: [ux-flow.md, interaction-spec.md, mobile-spec.md, component-map.md]
+    gate_requirement: "/plan-design-review average >= 8 before frontend_builder starts"
+    may_modify_production_code: false
+
+  data_engineer:
+    role: typescript_data_and_rules_engineer
+    depends_on: [repository_analyst, domain_modeller]
+    tasks:
+      - create_types
+      - create_zod_schemas
+      - create_validation
+      - create_map_builder          # 7 view projections from one model
+      - create_filters
+      - create_assessment_mapper    # bucket keys as literal union from the pack
+      - create_discovery_mapper     # recruitment-staffing item refs
+    may_modify_production_code: true
+    production_scope:
+      - webapp/lib/data-flow/**
+      - webapp/lib/data/data-flow/**
+
+  frontend_builder:
+    role: frontend_graph_experience_engineer
+    depends_on: [repository_analyst, domain_modeller, ux_architect, data_engineer]
+    tasks:
+      - build_page                  # app/industries/recruitment-agencies/data-flow/
+      - build_react_flow_canvas     # @xyflow/react, next/dynamic lazy-load
+      - build_nodes
+      - build_edges
+      - build_filters
+      - build_view_switching
+      - build_detail_panels
+      - build_mobile_view
+      - add_motion
+      - add_analytics               # extend lib/analytics.ts
+      - integrate_landing_preview   # components/industries/DataFlowPreview.tsx (server-safe)
+    may_modify_production_code: true
+    production_scope:
+      - webapp/app/industries/recruitment-agencies/**
+      - webapp/components/data-flow/**
+      - webapp/components/industries/**
+      - webapp/lib/analytics.ts
+      - webapp/app/sitemap.ts
+      - webapp/package.json         # @xyflow/react only
+
+  privacy_reviewer:
+    role: dpdpa_content_and_claims_reviewer
+    depends_on: [domain_modeller, frontend_builder]
+    tasks:
+      - review_dpdpa_language
+      - review_consent_language
+      - review_retention_language   # no invented statutory periods
+      - review_risk_labels          # operational exposure, never compliance score
+      - review_disclaimers          # reference model != user findings
+      - review_external_sharing_guidance
+      - flag_unsupported_claims     # incl. "India's first" marketing claim
+    outputs: [privacy-review.md, content-corrections.md]
+    may_modify_production_code: false
+
+  qa_breaker:
+    role: adversarial_quality_engineer
+    depends_on: [frontend_builder, privacy_reviewer]
+    tasks:
+      - test_functionality
+      - test_schema_failures
+      - test_mobile                 # 375x812, no horizontal scroll, graph not rendered
+      - test_accessibility          # keyboard nav on canvas, focus, contrast
+      - test_reduced_motion
+      - test_performance            # lazy canvas, node budget, <2s render
+      - test_content_completeness   # orphans, purposeless edges, actionless risks
+      - test_routes                 # next build route count; parent page still static
+      - test_analytics
+    outputs: [qa-report.md, defects.md, release-verdict.md]
+    may_modify_production_code: false
+
+gates:
+  gate_1_repository_ready:
+    requires: [repository-audit.md, reuse-plan.md, integration-risks.md,
+               architecture-decisions.md, assumptions.md]
+    approval_by: [orchestrator, dilip]
+  gate_2_domain_ready:
+    requires: [validated_domain_config, schema_completeness_report,
+               no_orphan_nodes, no_orphan_edges, all_external_transfers_classified]
+    approval_by: [orchestrator, dilip]
+  gate_3_ux_ready:
+    requires: [desktop_spec, mobile_spec, accessibility_spec, motion_spec,
+               plan_design_review_avg_8_plus]
+    approval_by: [orchestrator, dilip]
+  gate_4_build_ready:
+    requires: [typescript_types, zod_schemas, map_builder_tests,
+               desktop_prototype_verified, mobile_journey_verified]
+    approval_by: [orchestrator, dilip]
+  gate_5_release_ready:
+    requires: [all_required_tests_pass, no_critical_defects, privacy_review_complete,
+               accessibility_review_complete, reduced_motion_supported,
+               mobile_experience_verified]
+    approval_by: [orchestrator, qa_breaker, dilip]
+
+ship:
+  flow: branch_off_main -> preview_deploy -> vercel_mcp_verify -> merge_main -> prod
+  notes:
+    - "git status --short webapp/ before every push"
+    - "preview deployments 401 to curl; verify via web_fetch_vercel_url + get_runtime_logs"
+    - "post-flight: episodic digest + decisions + STATE.md per end-of-thread protocol"
+
+final_report:
+  include: [scope_delivered, files_created, files_modified, architecture_decisions,
+            test_results, accessibility_status, content_review_status,
+            known_limitations, next_industry_reuse_instructions]
