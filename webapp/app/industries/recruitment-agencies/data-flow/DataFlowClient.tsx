@@ -1,30 +1,38 @@
 "use client";
 
-// Client shell: view/model/riskHeat/selection state, desktop canvas vs mobile
-// journey breakpoint switch, analytics. Receives the pack as a prop — the
-// business map is configuration, never hard-coded here.
+// Client shell. PRIMARY experience = the readable JourneyView (all screens).
+// The dense React Flow graph is an opt-in "full system map" for power users,
+// lazy-loaded only when expanded. The business map is configuration passed as
+// a prop — never hard-coded here.
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
+import { ChevronDown, Map as MapIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { trackEvent } from "@/lib/analytics";
-import type { BusinessModel, DataFlowPack } from "@/lib/data-flow/schemas";
+import { BUSINESS_MODELS, type BusinessModel, type DataFlowPack } from "@/lib/data-flow/schemas";
 import { filterByBusinessModel } from "@/lib/data-flow/schemas";
 import { buildProjection, type FlowView } from "@/lib/data-flow/map-builder";
-import { FlowToolbar } from "@/components/data-flow/FlowToolbar";
-import { FlowLegend } from "@/components/data-flow/FlowLegend";
+import { JourneyView } from "@/components/data-flow/JourneyView";
+import { HotspotRail } from "@/components/data-flow/HotspotRail";
+import { DetailSheet } from "@/components/data-flow/DetailSheet";
 import { NodeDetailPanel } from "@/components/data-flow/NodeDetailPanel";
 import { EdgeDetailPanel } from "@/components/data-flow/EdgeDetailPanel";
-import { HotspotRail } from "@/components/data-flow/HotspotRail";
-import { MobileFlowView } from "@/components/data-flow/MobileFlowView";
 import type { FlowSelection } from "@/components/data-flow/selection";
 
-// Canvas chunk is desktop-only enhancement; skeleton while it loads
-// (design-review state-coverage fix).
+const MODEL_LABELS: Record<BusinessModel, string> = {
+  permanent: "Permanent recruitment",
+  staffing: "Temporary staffing",
+  rpo: "RPO",
+  executive_search: "Executive search",
+};
+
+// Power-user graph — loaded only when the user opts into the full system map.
 const DataFlowCanvas = dynamic(() => import("@/components/data-flow/DataFlowCanvas"), {
   ssr: false,
   loading: () => (
     <div className="flex h-full items-center justify-center rounded-xl border border-slate-200 bg-white">
-      <p className="animate-pulse text-sm font-medium text-slate-400">Loading the map…</p>
+      <p className="animate-pulse text-sm font-medium text-slate-400">Loading the full map…</p>
     </div>
   ),
 });
@@ -34,181 +42,177 @@ interface Props {
 }
 
 export default function DataFlowClient({ pack }: Props) {
-  const [view, setView] = useState<FlowView>("process");
   const [model, setModel] = useState<BusinessModel>("permanent");
-  const [riskHeat, setRiskHeat] = useState(false);
-  const [dpdpaOverlay, setDpdpaOverlay] = useState(false);
+  const [mapOpen, setMapOpen] = useState(false);
+  const [mapView, setMapView] = useState<FlowView>("process");
   const [selection, setSelection] = useState<FlowSelection>(null);
-  const [isDesktop, setIsDesktop] = useState<boolean | null>(null);
 
   useEffect(() => {
     trackEvent.dataFlow("data_flow_opened", { industry: pack.industry });
   }, [pack.industry]);
 
-  useEffect(() => {
-    const mq = window.matchMedia("(min-width: 1024px)");
-    const update = () => setIsDesktop(mq.matches);
-    update();
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
-  }, []);
-
-  const projection = useMemo(
-    () => buildProjection(pack, { view, model }),
-    [pack, view, model],
-  );
   const visible = useMemo(() => filterByBusinessModel(pack, model), [pack, model]);
-  const visibleCounts = useMemo(
-    () => ({
-      stages: visible.stages.length,
-      systems: visible.nodes.filter((n) => n.nodeType !== "person").length,
-    }),
-    [visible],
-  );
+  const stageCount = visible.stages.length;
 
   const selectedNode =
     selection?.kind === "node" ? pack.nodes.find((n) => n.id === selection.id) : undefined;
   const selectedEdge =
     selection?.kind === "edge" ? pack.edges.find((e) => e.id === selection.id) : undefined;
 
-  const handleViewChange = useCallback((v: FlowView) => {
-    setView(v);
-    trackEvent.dataFlow("view_changed", { view: v });
-  }, []);
+  const projection = useMemo(
+    () => (mapOpen ? buildProjection(pack, { view: mapView, model }) : null),
+    [pack, mapView, model, mapOpen],
+  );
+
   const handleModelChange = useCallback((m: BusinessModel) => {
     setModel(m);
-    setSelection(null);
     trackEvent.dataFlow("business_model_selected", { model: m });
-  }, []);
-  const handleRiskHeat = useCallback(() => {
-    setRiskHeat((r) => {
-      if (!r) trackEvent.dataFlow("risk_overlay_enabled", {});
-      return !r;
-    });
-  }, []);
-  const handleDpdpaOverlay = useCallback(() => {
-    setDpdpaOverlay((d) => {
-      if (!d) trackEvent.dataFlow("dpdpa_overlay_enabled", {});
-      return !d;
-    });
-  }, []);
-  const handleReset = useCallback(() => {
-    setView("process");
-    setModel("permanent");
-    setRiskHeat(false);
-    setDpdpaOverlay(false);
-    setSelection(null);
-  }, []);
-  const handleSelect = useCallback((sel: FlowSelection) => {
-    setSelection(sel);
-    if (sel?.kind === "node") trackEvent.dataFlow("node_clicked", { node_id: sel.id });
-    if (sel?.kind === "edge") trackEvent.dataFlow("edge_clicked", { edge_id: sel.id });
-  }, []);
-  const handleHotspotSelect = useCallback((nodeId: string, hotspotId: string) => {
-    setSelection({ kind: "node", id: nodeId });
-    trackEvent.dataFlow("hotspot_clicked", { hotspot_id: hotspotId });
-    document.getElementById("flow-canvas-region")?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, []);
   const handleAssessmentCta = useCallback((bucket?: string) => {
     trackEvent.dataFlow("assessment_cta_clicked", bucket ? { bucket } : {});
   }, []);
-
-  // Keyboard: Esc clears selection.
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setSelection(null);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+  const handleMapToggle = useCallback(() => {
+    setMapOpen((o) => {
+      if (!o) trackEvent.dataFlow("full_map_opened", {});
+      return !o;
+    });
+  }, []);
+  const handleMapSelect = useCallback((sel: FlowSelection) => {
+    setSelection(sel);
+    if (sel?.kind === "node") trackEvent.dataFlow("node_clicked", { node_id: sel.id });
+    if (sel?.kind === "edge") trackEvent.dataFlow("edge_clicked", { edge_id: sel.id });
   }, []);
 
   return (
     <div className="space-y-10">
-      <section id="flow-canvas-region" aria-label="Interactive data flow map" className="scroll-mt-20">
-        {/* Desktop: toolbar + canvas + panel. Mobile: journey. isDesktop===null
-            (pre-hydration) renders the mobile journey — real, crawlable content
-            either way (also the canvas-failure fallback). */}
-        {isDesktop ? (
-          <div className="space-y-3">
-            <FlowToolbar
-              view={view}
-              model={model}
-              riskHeat={riskHeat}
-              dpdpaOverlay={dpdpaOverlay}
-              visibleCounts={visibleCounts}
-              onViewChange={handleViewChange}
-              onModelChange={handleModelChange}
-              onRiskHeatToggle={handleRiskHeat}
-              onDpdpaToggle={handleDpdpaOverlay}
-              onReset={handleReset}
-            />
-            <div className="flex gap-3">
-              <div className="relative h-[68vh] min-h-[480px] flex-1 overflow-hidden rounded-xl border border-slate-200">
-                <DataFlowCanvas
-                  projection={projection}
-                  riskHeat={riskHeat}
-                  dpdpaOverlay={dpdpaOverlay}
-                  selection={selection}
-                  onSelect={handleSelect}
-                />
-                <div className="pointer-events-none absolute bottom-3 left-3 z-10 hidden xl:block">
-                  <FlowLegend />
-                </div>
-              </div>
-              <aside className="hidden w-[360px] shrink-0 lg:block" aria-label="Details panel">
-                {selectedNode ? (
-                  <NodeDetailPanel
-                    pack={pack}
-                    node={selectedNode}
-                    onClose={() => setSelection(null)}
-                    onAssessmentCta={handleAssessmentCta}
-                  />
-                ) : selectedEdge ? (
-                  <EdgeDetailPanel
-                    pack={pack}
-                    edge={selectedEdge}
-                    onClose={() => setSelection(null)}
-                    onAssessmentCta={() => handleAssessmentCta()}
-                  />
-                ) : (
-                  <div className="flex h-full items-center justify-center rounded-xl border border-dashed border-slate-300 bg-white p-6 text-center">
-                    <p className="text-sm leading-relaxed text-slate-500">
-                      Click any system on the map to see what it holds, who can access it, and
-                      what to fix.
-                    </p>
-                  </div>
-                )}
-              </aside>
-            </div>
-            <div className="xl:hidden">
-              <FlowLegend />
-            </div>
-          </div>
-        ) : (
-          <MobileFlowView
-            pack={pack}
-            model={model}
-            onStageExpanded={(stageId) => trackEvent.dataFlow("stage_expanded", { stage_id: stageId })}
-            onNodeSelected={(nodeId) => trackEvent.dataFlow("node_clicked", { node_id: nodeId })}
-            onAssessmentCta={handleAssessmentCta}
+      {/* Business-model selector — switching Staffing/RPO visibly grows the
+          journey by the onboarding + exit stages. */}
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="text-sm font-medium text-slate-600">Show the journey for:</span>
+        <div className="flex flex-wrap gap-1.5" role="group" aria-label="Business model">
+          {BUSINESS_MODELS.map((m) => (
+            <button
+              key={m}
+              type="button"
+              onClick={() => handleModelChange(m)}
+              aria-pressed={model === m}
+              className={cn(
+                "rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500",
+                model === m
+                  ? "bg-navy-700 text-white"
+                  : "bg-slate-100 text-slate-700 hover:bg-slate-200",
+              )}
+            >
+              {MODEL_LABELS[m]}
+            </button>
+          ))}
+        </div>
+        <span aria-live="polite" className="text-xs font-medium text-slate-500">
+          {stageCount} stages
+        </span>
+      </div>
+
+      <section aria-label="Candidate data journey">
+        <JourneyView
+          pack={pack}
+          model={model}
+          onSystemOpen={(nodeId) => trackEvent.dataFlow("node_clicked", { node_id: nodeId })}
+          onAssessmentCta={handleAssessmentCta}
+        />
+      </section>
+
+      {/* Opt-in full system map (power users) */}
+      <section aria-labelledby="full-map-heading">
+        <button
+          type="button"
+          onClick={handleMapToggle}
+          aria-expanded={mapOpen}
+          className="flex w-full items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-left transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
+        >
+          <span className="flex items-center gap-2">
+            <MapIcon size={16} className="text-slate-500" aria-hidden="true" />
+            <span id="full-map-heading" className="text-sm font-semibold text-navy-800">
+              See the full system map
+            </span>
+            <span className="text-xs text-slate-500">
+              every system and connection at once — for IT &amp; compliance teams
+            </span>
+          </span>
+          <ChevronDown
+            size={18}
+            className={cn("shrink-0 text-slate-400 transition-transform", mapOpen && "rotate-180")}
+            aria-hidden="true"
           />
+        </button>
+
+        {mapOpen && projection && (
+          <div className="mt-3 space-y-2">
+            <div className="flex flex-wrap gap-1.5" role="group" aria-label="Map view">
+              {(["process", "systems", "copies", "external"] as FlowView[]).map((v) => (
+                <button
+                  key={v}
+                  type="button"
+                  onClick={() => {
+                    setMapView(v);
+                    trackEvent.dataFlow("view_changed", { view: v });
+                  }}
+                  aria-pressed={mapView === v}
+                  className={cn(
+                    "rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500",
+                    mapView === v ? "bg-navy-700 text-white" : "bg-slate-100 text-slate-700 hover:bg-slate-200",
+                  )}
+                >
+                  {{ process: "Journey", systems: "By system", copies: "Copies", external: "External sharing" }[v]}
+                </button>
+              ))}
+            </div>
+            <div className="h-[60vh] min-h-[420px] overflow-hidden rounded-xl border border-slate-200">
+              <DataFlowCanvas
+                projection={projection}
+                riskHeat={mapView === "process"}
+                dpdpaOverlay={false}
+                selection={selection}
+                onSelect={handleMapSelect}
+              />
+            </div>
+            <p className="text-xs text-slate-500">
+              Tip: this is the raw data-map for auditing. The journey above is the readable version.
+            </p>
+          </div>
+        )}
+
+        {selectedNode && (
+          <DetailSheet onClose={() => setSelection(null)}>
+            <NodeDetailPanel
+              pack={pack}
+              node={selectedNode}
+              onClose={() => setSelection(null)}
+              onAssessmentCta={handleAssessmentCta}
+            />
+          </DetailSheet>
+        )}
+        {selectedEdge && (
+          <DetailSheet onClose={() => setSelection(null)}>
+            <EdgeDetailPanel
+              pack={pack}
+              edge={selectedEdge}
+              onClose={() => setSelection(null)}
+              onAssessmentCta={() => handleAssessmentCta()}
+            />
+          </DetailSheet>
         )}
       </section>
 
       <section aria-labelledby="hotspots-heading">
         <h2 id="hotspots-heading" className="text-xl font-bold text-navy-800">
-          Top risk hotspots — the canonical 7
+          Top risk hotspots — where control usually breaks
         </h2>
         <p className="mt-1 max-w-2xl text-sm leading-relaxed text-slate-600">
-          The places where recruitment agencies most often lose control of candidate data. Each
-          one links to the matching check in the readiness assessment.
+          The seven places recruitment agencies most often lose track of candidate data. Each links
+          to the matching check in the readiness assessment.
         </p>
         <div className="mt-4">
-          <HotspotRail
-            pack={pack}
-            onHotspotSelect={isDesktop ? handleHotspotSelect : undefined}
-            onAssessmentCta={handleAssessmentCta}
-          />
+          <HotspotRail pack={pack} onAssessmentCta={handleAssessmentCta} />
         </div>
       </section>
     </div>
