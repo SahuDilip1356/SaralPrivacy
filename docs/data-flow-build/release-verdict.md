@@ -25,11 +25,14 @@ Date: 2026-07-19 · Branch: `feat/recruitment-data-flow` · Verdict: **READY TO 
 ## Gates cleared
 Gate 1 (audit) ✅ · Gate 2 (domain completeness, 8/8) ✅ · Gate 3 (desktop, design-review 8.1) ✅ · Gate 4 (mobile + intelligence) ✅ · Gate 5 (privacy PASS + QA no blocking defects) ✅.
 
-## Ship steps (awaiting Dilip's go — reversible, but outward-facing)
-1. `git status --short webapp/` — confirm all new files tracked (A not ??).
-2. Push `feat/recruitment-data-flow` → Vercel preview deploy.
-3. Verify preview via Vercel MCP (`web_fetch_vercel_url` — previews 401 to curl; `get_runtime_logs` for errors).
-4. Merge to `main` → prod auto-deploy.
+## Ship steps
+1. `git status --short webapp/` — all new files tracked ✅
+2. Push `feat/recruitment-data-flow` → Vercel preview deploy ✅ (2026-07-19)
+   - Preview alias: `https://webapp-git-feat-recruitment-data-flow-dilipsahu31s-projects.vercel.app`
+   - Route: `/industries/recruitment-agencies/data-flow`
+   - Deploy id `dpl_gT4rHxNHk74bbjVR5HKSTxku4LwR` (commit 7a3c84e)
+3. Verify preview ✅ — deploy `READY` in 53s, **build log errors-only = clean** (8 lambdas, no aliasError). Rendered-HTML fetch via `web_fetch_vercel_url` blocked by this deploy's Vercel SSO protection (returns the auth 302, not a build issue); code is identical to the exhaustively localhost-verified build.
+4. **Merge to `main` → prod auto-deploy — Dilip's decision (chose preview-first; merge NOT yet done).**
 5. Post-flight: episodic digest + decisions + STATE.md + auto-memory.
 
 ## Known limitations (documented, not blocking)
