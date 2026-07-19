@@ -1,4 +1,4 @@
-// Landing-page teaser for the Personal Data Flow Map. Server component — no
+// Landing-page teaser for the Personal Data Flow Map. Server component - no
 // client JS, plain Link. Numbers computed from the pack, never hand-typed.
 // Reused by any industry page: pass the industry's flow pack.
 
@@ -33,7 +33,7 @@ export function DataFlowPreview({ pack, href }: Props) {
       <div className="mt-5 overflow-hidden rounded-2xl border border-navy-200 bg-navy-700 p-6 text-white">
         <p className="text-lg font-bold leading-snug">
           One candidate profile can end up in {s.systems}+ places. When they ask you to delete it
-          — can you find every copy?
+          - can you find every copy?
         </p>
 
         <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-4">

@@ -1,7 +1,7 @@
 "use client";
 
 // Shared overlay: bottom sheet on mobile, centered drawer on desktop. Wraps a
-// detail panel (node or edge). No position:fixed pitfalls — used by both the
+// detail panel (node or edge). No position:fixed pitfalls - used by both the
 // journey and the opt-in full map.
 
 import { useEffect, type ReactNode } from "react";

@@ -32,7 +32,7 @@ type CanvasNode = FlowCanvasNode | StageLabelNodeT;
 
 // Non-interactive stage headers rendered as canvas nodes in column views.
 // With the DPDPA overlay on, each header carries the stage's plain-English
-// obligation — the law annotated exactly where it arises (spec §27).
+// obligation - the law annotated exactly where it arises (spec §27).
 function StageLabelNode({ data }: { data: StageLabelData }) {
   return (
     <div style={{ width: data.width }} className="pointer-events-none">
@@ -131,7 +131,7 @@ export default function DataFlowCanvas({
 
   const handleNodeClick = useCallback<NodeMouseHandler<CanvasNode>>(
     (_e, node) => {
-      // Stage-header labels are decorative — clicking them selects nothing.
+      // Stage-header labels are decorative - clicking them selects nothing.
       if (node.type === "stageLabel") return;
       onSelect({ kind: "node", id: node.id });
     },

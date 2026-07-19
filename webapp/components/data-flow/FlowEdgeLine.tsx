@@ -1,6 +1,6 @@
 "use client";
 
-// Custom React Flow edge — solid internal, dashed external, ⧉ badge when a
+// Custom React Flow edge - solid internal, dashed external, ⧉ badge when a
 // copy is created. Emphasis/dim driven by the active view projection.
 
 import { memo } from "react";

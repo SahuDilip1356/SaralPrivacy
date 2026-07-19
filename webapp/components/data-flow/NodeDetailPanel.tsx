@@ -110,7 +110,7 @@ export function NodeDetailPanel({ pack, node, onClose, onAssessmentCta }: Props)
           )}
         >
           <Clock size={14} aria-hidden="true" />
-          {node.retentionDefined ? "Retention defined" : "No retention rule — copies stay indefinitely"}
+          {node.retentionDefined ? "Retention defined" : "No retention rule - copies stay indefinitely"}
         </div>
 
         <section aria-label="Risk" className={cn("rounded-lg border p-3", risk.chip)}>

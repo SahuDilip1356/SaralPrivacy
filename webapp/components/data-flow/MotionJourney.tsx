@@ -2,9 +2,9 @@
 
 // The primary experience: one animated, informative journey.
 //
-// Engaging — as it scrolls into view, a résumé travels the real hiring
+// Engaging - as it scrolls into view, a resume travels the real hiring
 // journey, copies spray out per stage, and two counters climb: total copies
-// and "places where control breaks". Informative — every stage lists its real
+// and "places where control breaks". Informative - every stage lists its real
 // systems (tap for what it holds + the fix) and its DPDPA duty; the hotspot
 // stages flag in red. Numbers come from the config, so they stay true.
 //
@@ -145,7 +145,7 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
 
   return (
     <div ref={ref} className="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
-      {/* Emotional panel — sticky on desktop, climbs as you scroll */}
+      {/* Emotional panel - sticky on desktop, climbs as you scroll */}
       <aside className="lg:sticky lg:top-6 lg:self-start">
         <div className="rounded-2xl border border-navy-200 bg-navy-800 p-5 text-white">
           <div className="flex items-center gap-2.5">
@@ -163,7 +163,7 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
                 </span>
                 <Copy size={15} className="text-teal-300/70" aria-hidden="true" />
               </div>
-              <p className="mt-1 text-[12px] text-slate-300">copies of one résumé</p>
+              <p className="mt-1 text-[12px] text-slate-300">copies of one resume</p>
             </div>
             <div>
               <div className="flex items-baseline gap-1.5">
@@ -178,7 +178,7 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
 
           <p className="mt-4 flex items-start gap-2 border-t border-white/10 pt-3 text-[13px] font-semibold leading-snug">
             <Trash2 size={15} className="mt-px shrink-0 text-teal-300" aria-hidden="true" />
-            If they ask you to delete it tomorrow — can you find every copy?
+            If they ask you to delete it tomorrow - can you find every copy?
           </p>
         </div>
         <p className="mt-2 px-1 text-[11px] leading-relaxed text-slate-400">{pack.disclaimer}</p>
@@ -200,7 +200,7 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
                   animate={reached ? { scale: [1, 1.18, 1] } : { scale: 1 }}
                   transition={{ duration: 0.4 }}
                 >
-                  {row.stage.sequence}
+                  {i + 1}
                 </motion.span>
                 {i < rows.length - 1 && (
                   <span className="relative w-0.5 flex-1 bg-slate-200">
@@ -318,6 +318,43 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
                   {row.stage.dpdpaNote}
                 </p>
               </div>
+
+              {/* Flying resume copies - the artifact's signature: every copy
+                  this stage creates flies out and stacks up. Desktop delight;
+                  the counter carries the story on mobile. */}
+              <div className="relative hidden w-24 shrink-0 lg:block" aria-hidden="true">
+                {Array.from({ length: Math.min(row.copiesHere, 6) }).map((_, j) => (
+                  <motion.div
+                    key={j}
+                    className={cn(
+                      "absolute left-0 top-7 flex h-11 w-8 flex-col gap-[3px] rounded-md border bg-white p-1.5 shadow-sm",
+                      isHot ? "border-red-200" : "border-slate-200",
+                    )}
+                    initial={false}
+                    animate={
+                      reduce || reached
+                        ? {
+                            opacity: 1,
+                            x: 6 + (j % 3) * 22,
+                            y: Math.floor(j / 3) * 16 + (j % 2 ? 5 : -5),
+                            rotate: j % 2 ? 6 : -6,
+                            scale: 1,
+                          }
+                        : { opacity: 0, x: -18, y: 0, rotate: 0, scale: 0.5 }
+                    }
+                    transition={
+                      reduce
+                        ? { duration: 0 }
+                        : { type: "spring", stiffness: 260, damping: 20, delay: reached ? j * 0.09 : 0 }
+                    }
+                  >
+                    <span className={cn("h-2 w-2 rounded-full", isHot ? "bg-red-400" : "bg-teal-400")} />
+                    <span className="h-[2px] w-4/5 rounded bg-slate-200" />
+                    <span className="h-[2px] w-full rounded bg-slate-200" />
+                    <span className="h-[2px] w-3/5 rounded bg-slate-200" />
+                  </motion.div>
+                ))}
+              </div>
             </li>
           );
         })}
@@ -335,7 +372,7 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
       )}
 
       <span className="sr-only">
-        In this reference model, one candidate&apos;s résumé is copied {totalCopies} times across{" "}
+        In this reference model, one candidate&apos;s resume is copied {totalCopies} times across{" "}
         {rows.length} stages, with {totalHotspots} places where control breaks.
       </span>
     </div>

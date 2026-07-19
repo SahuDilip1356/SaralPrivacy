@@ -1,6 +1,6 @@
 "use client";
 
-// Custom React Flow node — semantic shape by nodeType, risk chip with icon,
+// Custom React Flow node - semantic shape by nodeType, risk chip with icon,
 // shadow-IT + external badges, copy-count badge. Risk is never colour-only.
 
 import { memo } from "react";

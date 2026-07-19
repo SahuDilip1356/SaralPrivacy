@@ -3,7 +3,7 @@
 // Client shell. PRIMARY experience = the animated, informative MotionJourney.
 // The dense React Flow graph is an opt-in "full system map" for power users,
 // lazy-loaded only when expanded. The business map is configuration passed as
-// a prop — never hard-coded here.
+// a prop - never hard-coded here.
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
@@ -27,7 +27,7 @@ const MODEL_LABELS: Record<BusinessModel, string> = {
   executive_search: "Executive search",
 };
 
-// Power-user graph — loaded only when the user opts into the full system map.
+// Power-user graph - loaded only when the user opts into the full system map.
 const DataFlowCanvas = dynamic(() => import("@/components/data-flow/DataFlowCanvas"), {
   ssr: false,
   loading: () => (
@@ -85,7 +85,7 @@ export default function DataFlowClient({ pack }: Props) {
 
   return (
     <div className="space-y-10">
-      {/* Business-model selector — switching Staffing/RPO visibly grows the
+      {/* Business-model selector - switching Staffing/RPO visibly grows the
           journey by the onboarding + exit stages. */}
       <div className="flex flex-wrap items-center gap-2">
         <span className="text-sm font-medium text-slate-600">Show the journey for:</span>
@@ -136,7 +136,7 @@ export default function DataFlowClient({ pack }: Props) {
               See the full system map
             </span>
             <span className="text-xs text-slate-500">
-              every system and connection at once — for IT &amp; compliance teams
+              every system and connection at once - for IT &amp; compliance teams
             </span>
           </span>
           <ChevronDown
@@ -206,7 +206,7 @@ export default function DataFlowClient({ pack }: Props) {
 
       <section aria-labelledby="hotspots-heading">
         <h2 id="hotspots-heading" className="text-xl font-bold text-navy-800">
-          Top risk hotspots — where control usually breaks
+          Top risk hotspots - where control usually breaks
         </h2>
         <p className="mt-1 max-w-2xl text-sm leading-relaxed text-slate-600">
           The seven places recruitment agencies most often lose track of candidate data. Each links

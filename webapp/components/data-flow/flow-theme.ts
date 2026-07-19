@@ -1,5 +1,5 @@
 // Shared visual vocabulary for the Personal Data Flow Map.
-// Semantic shapes + icons + labels — colour reinforces, never carries alone.
+// Semantic shapes + icons + labels - colour reinforces, never carries alone.
 
 import type { LucideIcon } from "lucide-react";
 import {
