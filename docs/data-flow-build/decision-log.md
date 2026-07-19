@@ -13,3 +13,4 @@
 | 2026-07-18 | `external` edge flag is validated against node boundaries (derivation, not free authoring) | Orchestrator | schemas.ts validatePack |
 | 2026-07-18 | tsconfig: `allowImportingTsExtensions: true` added so the data-flow config chain runs under plain `node --test` (existing discovery test convention was broken; not fixed here) | Orchestrator | webapp/tsconfig.json |
 | 2026-07-18 | **Phase 1 complete — Gate 2 READY**: 31 nodes / 49 edges / 39 copies / 27 external / 7 hotspots; 8/8 tests, tsc + build clean. Awaiting Gate 2 approval → Phase 2 (UX + desktop P0) | Orchestrator | domain-completeness-report.md |
+| 2026-07-18 | Phase 2 UX specs written (ux-flow, interaction-spec, mobile-spec, component-map); /plan-design-review scored **8.1/10 → PROCEED** (fixes folded into build: canvas loading skeleton + chunk-failure fallback; explicit hover/active states) | Orchestrator | ux docs |

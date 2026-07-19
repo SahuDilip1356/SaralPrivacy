@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "webapp",
+      "runtimeExecutable": "/bin/sh",
+      "runtimeArgs": ["-c", "cd \"/Users/sahudilip/Desktop/Product Dev/DPDPA Daily Brief/webapp/webapp\" && npm run dev"],
+      "port": 3000
+    }
+  ]
+}

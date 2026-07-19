@@ -113,6 +113,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly' as const,
       priority: 0.7,
     })),
+    // Personal Data Flow Map (recruitment is the first industry; others follow)
+    { url: `${BASE}/industries/recruitment-agencies/data-flow`, lastModified: INDUSTRY_UPDATED, changeFrequency: 'monthly', priority: 0.7 },
 
     // ── Glossary ──
     { url: `${BASE}/glossary`, lastModified: GLOSSARY_UPDATED, changeFrequency: 'monthly', priority: 0.85 },

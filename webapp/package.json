@@ -28,6 +28,7 @@
     "@types/bcryptjs": "^2.4.6",
     "@vercel/analytics": "^2.0.1",
     "@vercel/blob": "^0.15.0",
+    "@xyflow/react": "^12.11.2",
     "ai": "^6.0.158",
     "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",

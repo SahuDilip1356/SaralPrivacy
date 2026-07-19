@@ -192,4 +192,15 @@ export const trackEvent = {
   // ── Notice Pack Builder (/tools/dpdpa-privacy-notice-generator) ──────────
   notice: (name: string, params: Record<string, any> = {}) =>
     gtag(name, { event_category: name === "notice_lead_captured" ? "lead" : "engagement", ...params }),
+
+  // ── Personal Data Flow Map (/industries/{industry}/data-flow) ────────────
+  // CTA clicks are funnel events ("lead" category); everything else engagement.
+  dataFlow: (name: string, params: Record<string, any> = {}) =>
+    gtag(name, {
+      event_category:
+        name === "assessment_cta_clicked" || name === "discovery_cta_clicked"
+          ? "lead"
+          : "engagement",
+      ...params,
+    }),
 };
