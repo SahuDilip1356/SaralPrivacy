@@ -22,9 +22,7 @@ import type { FlowSelection } from "@/components/data-flow/selection";
 
 const MODEL_LABELS: Record<BusinessModel, string> = {
   permanent: "Permanent recruitment",
-  staffing: "Temporary staffing",
-  rpo: "RPO",
-  executive_search: "Executive search",
+  staffing: "Staffing / RPO",
 };
 
 // Power-user graph - loaded only when the user opts into the full system map.

@@ -1,4 +1,4 @@
-// Gate 2 completeness tests — Recruitment Personal Data Flow pack.
+// Gate 2 completeness tests - Recruitment Personal Data Flow pack.
 // Run: node --test --experimental-strip-types lib/data-flow/data-flow.test.ts
 // Minimums from docs/SaralPrivacy_Recruitment_DataFlow_Spec_v1.1_Build_Addendum.md §F.
 
@@ -81,7 +81,7 @@ test("business models: permanent hides employee lifecycle, staffing shows it", (
   assert.ok(staffing.nodes.some((n) => n.id === "payroll-provider"));
 
   // Projection never leaks dangling edges.
-  for (const model of ["permanent", "staffing", "rpo", "executive_search"] as const) {
+  for (const model of ["permanent", "staffing"] as const) {
     const view = filterByBusinessModel(pack, model);
     const ids = new Set(view.nodes.map((n) => n.id));
     for (const e of view.edges) {

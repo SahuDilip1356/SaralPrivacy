@@ -1,7 +1,7 @@
 // 11 data groups (spec §8, A–K). `discoveryItems` reuses the exact item
 // wording of the Discovery niche `recruitment-staffing` (lib/discovery,
 // taxonomy v3.0) so both tools speak the same language. Derived/inferred
-// data (K) is a distinct kind — views must render it visibly different.
+// data (K) is a distinct kind - views must render it visibly different.
 
 import type { DataCategory } from "../../../data-flow/schemas.ts";
 

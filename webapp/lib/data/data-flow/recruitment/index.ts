@@ -1,4 +1,4 @@
-// Recruitment Personal Data Flow pack — assembled config.
+// Recruitment Personal Data Flow pack - assembled config.
 // Spec: docs/SaralPrivacy_Recruitment_DataFlow_Spec.md (+ v1.1 addendum).
 // Adding another industry = clone this folder shape with new content; the
 // schemas, tests and (later) UI need no changes.
@@ -15,7 +15,7 @@ export const recruitmentDataFlowPack: DataFlowPack = {
   industry: "recruitment-agencies",
   title: "Recruitment Personal Data Flow Map",
   disclaimer:
-    "This is a reference model of a typical recruitment business — not a scan of your systems. Your own flow may have fewer or more stops.",
+    "This is a reference model of a typical recruitment business - not a scan of your systems. Your own flow may have fewer or more stops.",
   assessmentRoute: "/assessment/recruitment",
   discoveryNicheId: "recruitment-staffing",
   stages: RECRUITMENT_STAGES,

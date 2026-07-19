@@ -1,9 +1,9 @@
-// Personal Data Flow Map — shared schemas and types.
+// Personal Data Flow Map - shared schemas and types.
 //
 // Contract (spec: docs/SaralPrivacy_Recruitment_DataFlow_Spec.md §11–12, trimmed
 // per v1.1 addendum): only fields a P0/P1 view actually renders. Domain content
 // lives in lib/data/data-flow/<industry>/ as TypeScript config validated by
-// these schemas at test time — never hard-coded in components.
+// these schemas at test time - never hard-coded in components.
 //
 // Adding an industry later = new config folder only; nothing here changes.
 
@@ -13,12 +13,12 @@ import { z } from "zod";
 // Enums
 // ---------------------------------------------------------------------------
 
-export const BUSINESS_MODELS = [
-  "permanent",
-  "staffing",
-  "rpo",
-  "executive_search",
-] as const;
+// Two honest journeys: permanent (candidate becomes the client's employee — no
+// employee-lifecycle data) vs staffing (the agency employs & deploys — adds
+// onboarding/exit, payroll, statutory data). RPO folds into staffing and
+// executive search into permanent, because for data purposes they're identical
+// to those two — so we don't offer buttons that render the same page.
+export const BUSINESS_MODELS = ["permanent", "staffing"] as const;
 export type BusinessModel = (typeof BUSINESS_MODELS)[number];
 
 /** Organisational trust boundary a node lives in (spec §13). */
@@ -32,7 +32,7 @@ export const BOUNDARIES = [
 ] as const;
 export type Boundary = (typeof BOUNDARIES)[number];
 
-/** Boundaries that make a transfer "external" — data outside agency control. */
+/** Boundaries that make a transfer "external" - data outside agency control. */
 export const EXTERNAL_BOUNDARIES: readonly Boundary[] = [
   "client",
   "vendor",
@@ -192,7 +192,7 @@ export type FlowHotspot = z.infer<typeof flowHotspotSchema>;
 export const dataFlowPackSchema = z.object({
   industry: idSchema,
   title: z.string().min(1),
-  /** Reference-model banner — never present metrics as the user's own data. */
+  /** Reference-model banner - never present metrics as the user's own data. */
   disclaimer: z.string().min(1),
   assessmentRoute: z.string().startsWith("/"),
   discoveryNicheId: idSchema,
@@ -284,7 +284,7 @@ export function validatePack(pack: DataFlowPack): string[] {
 }
 
 // ---------------------------------------------------------------------------
-// Reference-model summary (computed, never hand-typed — spec §6.2)
+// Reference-model summary (computed, never hand-typed - spec §6.2)
 // ---------------------------------------------------------------------------
 
 export interface PackSummary {

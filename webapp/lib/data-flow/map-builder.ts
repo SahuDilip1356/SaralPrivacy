@@ -1,4 +1,4 @@
-// View projections — turn one DataFlowPack into positioned nodes/edges for
+// View projections - turn one DataFlowPack into positioned nodes/edges for
 // each P0 view (process journey, systems, copy proliferation, external
 // sharing) with risk-heat as an orthogonal flag. Pure functions, no React,
 // node-testable. Layout is deterministic: hand-computed columns/lanes, no
@@ -24,7 +24,7 @@ export interface ProjectedNode {
   y: number;
   /** De-emphasised in the current view (rendered at low opacity). */
   dimmed: boolean;
-  /** Incoming copy-creating edges — the "copies of the CV that live here". */
+  /** Incoming copy-creating edges - the "copies of the CV that live here". */
   copyCount: number;
 }
 
@@ -220,7 +220,7 @@ export function buildProjection(pack: DataFlowPack, opts: ProjectionOptions): Pr
   };
 }
 
-/** Boundaries actually present — for the legend. */
+/** Boundaries actually present - for the legend. */
 export function presentBoundaries(pack: DataFlowPack): Boundary[] {
   const present = new Set(pack.nodes.map((n) => n.boundary));
   return BOUNDARIES.filter((b) => present.has(b));

@@ -2,7 +2,7 @@
 // does it create a copy, and does it leave agency control.
 // Gate 2 minimums: ≥40 edges · ≥12 createsCopy · ≥10 external (v1.1 §F).
 // `external` must equal "either endpoint is client/vendor/government/public"
-// — validatePack enforces consistency with node boundaries.
+// - validatePack enforces consistency with node boundaries.
 
 import type { FlowEdge } from "../../../data-flow/schemas.ts";
 
@@ -337,7 +337,7 @@ export const RECRUITMENT_EDGES: FlowEdge[] = [
     purpose: "Candidate record becomes an employee master record",
     dataCategoryIds: ["identity", "contact", "financial", "employment"],
     createsCopy: true, external: false, riskLevel: "medium",
-    businessModels: ["staffing", "rpo"],
+    businessModels: ["staffing"],
   },
   {
     id: "hrms-to-payroll",
@@ -346,7 +346,7 @@ export const RECRUITMENT_EDGES: FlowEdge[] = [
     purpose: "Salary, bank and statutory details provisioned for payroll runs",
     dataCategoryIds: ["identity", "financial", "employment"],
     createsCopy: true, external: true, riskLevel: "medium",
-    businessModels: ["staffing", "rpo"],
+    businessModels: ["staffing"],
   },
   {
     id: "payroll-to-bank",
@@ -355,7 +355,7 @@ export const RECRUITMENT_EDGES: FlowEdge[] = [
     purpose: "Monthly salary payment instructions with account details",
     dataCategoryIds: ["financial"],
     createsCopy: false, external: true, riskLevel: "low",
-    businessModels: ["staffing", "rpo"],
+    businessModels: ["staffing"],
   },
   {
     id: "hrms-to-pfesi",
@@ -364,7 +364,7 @@ export const RECRUITMENT_EDGES: FlowEdge[] = [
     purpose: "Statutory PF/ESI filings for deployed staff",
     dataCategoryIds: ["identity", "employment"],
     createsCopy: true, external: true, riskLevel: "low",
-    businessModels: ["staffing", "rpo"],
+    businessModels: ["staffing"],
   },
   {
     id: "hrms-to-client-portal",
@@ -373,7 +373,7 @@ export const RECRUITMENT_EDGES: FlowEdge[] = [
     purpose: "Deployment record created in the client's workforce system",
     dataCategoryIds: ["identity", "employment"],
     createsCopy: true, external: true, riskLevel: "medium",
-    businessModels: ["staffing", "rpo"],
+    businessModels: ["staffing"],
   },
   {
     id: "attendance-sync",
@@ -382,7 +382,7 @@ export const RECRUITMENT_EDGES: FlowEdge[] = [
     purpose: "Attendance and shift data synced into the employee record",
     dataCategoryIds: ["employment"],
     createsCopy: false, external: false, riskLevel: "low",
-    businessModels: ["staffing", "rpo"],
+    businessModels: ["staffing"],
   },
 
   // ---- Stage 11 · Exit & redeployment (staffing / RPO) -------------------
@@ -393,7 +393,7 @@ export const RECRUITMENT_EDGES: FlowEdge[] = [
     purpose: "Ex-employee profile moved back into the pool for redeployment",
     dataCategoryIds: ["identity", "professional", "employment", "derived"],
     createsCopy: true, external: false, riskLevel: "high",
-    businessModels: ["staffing", "rpo"],
+    businessModels: ["staffing"],
   },
 
   // ---- Stage 12 · Archive ------------------------------------------------
