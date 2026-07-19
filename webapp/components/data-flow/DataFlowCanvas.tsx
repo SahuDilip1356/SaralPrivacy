@@ -21,18 +21,30 @@ import { FlowNodeCard, type FlowCanvasNode } from "./FlowNodeCard";
 import { FlowEdgeLine, type FlowCanvasEdge } from "./FlowEdgeLine";
 import { BOUNDARY_META } from "./flow-theme";
 
-type StageLabelData = { title: string; sequence: number; width: number };
+type StageLabelData = {
+  title: string;
+  sequence: number;
+  width: number;
+  dpdpaNote?: string;
+};
 type StageLabelNodeT = Node<StageLabelData, "stageLabel">;
 type CanvasNode = FlowCanvasNode | StageLabelNodeT;
 
 // Non-interactive stage headers rendered as canvas nodes in column views.
+// With the DPDPA overlay on, each header carries the stage's plain-English
+// obligation — the law annotated exactly where it arises (spec §27).
 function StageLabelNode({ data }: { data: StageLabelData }) {
   return (
-    <div
-      style={{ width: data.width }}
-      className="pointer-events-none rounded-lg border border-navy-200 bg-navy-700 px-3 py-1.5 text-center text-[12px] font-bold text-white shadow-sm"
-    >
-      {data.sequence}. {data.title}
+    <div style={{ width: data.width }} className="pointer-events-none">
+      <div className="rounded-lg border border-navy-200 bg-navy-700 px-3 py-1.5 text-center text-[12px] font-bold text-white shadow-sm">
+        {data.sequence}. {data.title}
+      </div>
+      {data.dpdpaNote && (
+        <div className="mt-1.5 rounded-lg border border-teal-300 bg-teal-50 px-2.5 py-1.5 text-[10px] font-medium leading-snug text-teal-900 shadow-sm">
+          <span className="font-bold">DPDPA: </span>
+          {data.dpdpaNote}
+        </div>
+      )}
     </div>
   );
 }
@@ -46,11 +58,18 @@ const edgeTypes = { flowEdge: FlowEdgeLine };
 interface Props {
   projection: Projection;
   riskHeat: boolean;
+  dpdpaOverlay: boolean;
   selection: FlowSelection;
   onSelect: (sel: FlowSelection) => void;
 }
 
-export default function DataFlowCanvas({ projection, riskHeat, selection, onSelect }: Props) {
+export default function DataFlowCanvas({
+  projection,
+  riskHeat,
+  dpdpaOverlay,
+  selection,
+  onSelect,
+}: Props) {
   const showCopyBadge = projection.view === "copies";
 
   const stageLabelNodes = useMemo<StageLabelNodeT[]>(
@@ -63,9 +82,14 @@ export default function DataFlowCanvas({ projection, riskHeat, selection, onSele
         connectable: false,
         selectable: false,
         focusable: false,
-        data: { title: c.stage.name, sequence: c.stage.sequence, width: 220 },
+        data: {
+          title: c.stage.name,
+          sequence: c.stage.sequence,
+          width: 220,
+          dpdpaNote: dpdpaOverlay ? c.stage.dpdpaNote : undefined,
+        },
       })),
-    [projection.stageColumns],
+    [projection.stageColumns, dpdpaOverlay],
   );
 
   const nodes = useMemo<FlowCanvasNode[]>(

@@ -2,7 +2,7 @@
 
 // View switcher + business-model selector + risk-heat toggle + reset.
 
-import { Flame, RotateCcw } from "lucide-react";
+import { Flame, RotateCcw, Scale } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { BusinessModel } from "@/lib/data-flow/schemas";
 import type { FlowView } from "@/lib/data-flow/map-builder";
@@ -25,10 +25,12 @@ interface Props {
   view: FlowView;
   model: BusinessModel;
   riskHeat: boolean;
+  dpdpaOverlay: boolean;
   visibleCounts: { stages: number; systems: number };
   onViewChange: (v: FlowView) => void;
   onModelChange: (m: BusinessModel) => void;
   onRiskHeatToggle: () => void;
+  onDpdpaToggle: () => void;
   onReset: () => void;
 }
 
@@ -36,12 +38,15 @@ export function FlowToolbar({
   view,
   model,
   riskHeat,
+  dpdpaOverlay,
   visibleCounts,
   onViewChange,
   onModelChange,
   onRiskHeatToggle,
+  onDpdpaToggle,
   onReset,
 }: Props) {
+  const dpdpaAvailable = view !== "systems"; // overlay annotates stage columns
   return (
     <div
       role="toolbar"
@@ -81,6 +86,24 @@ export function FlowToolbar({
         )}
       >
         <Flame size={13} aria-hidden="true" /> Risk heat
+      </button>
+
+      <button
+        type="button"
+        onClick={onDpdpaToggle}
+        aria-pressed={dpdpaOverlay}
+        disabled={!dpdpaAvailable}
+        title={dpdpaAvailable ? undefined : "Switch to a journey view to see the DPDPA overlay"}
+        className={cn(
+          "inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500",
+          !dpdpaAvailable
+            ? "cursor-not-allowed bg-slate-50 text-slate-300"
+            : dpdpaOverlay
+              ? "bg-teal-600 text-white"
+              : "bg-slate-100 text-slate-700 hover:bg-slate-200 active:bg-slate-300",
+        )}
+      >
+        <Scale size={13} aria-hidden="true" /> DPDPA overlay
       </button>
 
       <span className="hidden h-5 w-px bg-slate-200 sm:block" aria-hidden="true" />

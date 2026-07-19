@@ -37,6 +37,7 @@ export default function DataFlowClient({ pack }: Props) {
   const [view, setView] = useState<FlowView>("process");
   const [model, setModel] = useState<BusinessModel>("permanent");
   const [riskHeat, setRiskHeat] = useState(false);
+  const [dpdpaOverlay, setDpdpaOverlay] = useState(false);
   const [selection, setSelection] = useState<FlowSelection>(null);
   const [isDesktop, setIsDesktop] = useState<boolean | null>(null);
 
@@ -85,10 +86,17 @@ export default function DataFlowClient({ pack }: Props) {
       return !r;
     });
   }, []);
+  const handleDpdpaOverlay = useCallback(() => {
+    setDpdpaOverlay((d) => {
+      if (!d) trackEvent.dataFlow("dpdpa_overlay_enabled", {});
+      return !d;
+    });
+  }, []);
   const handleReset = useCallback(() => {
     setView("process");
     setModel("permanent");
     setRiskHeat(false);
+    setDpdpaOverlay(false);
     setSelection(null);
   }, []);
   const handleSelect = useCallback((sel: FlowSelection) => {
@@ -126,10 +134,12 @@ export default function DataFlowClient({ pack }: Props) {
               view={view}
               model={model}
               riskHeat={riskHeat}
+              dpdpaOverlay={dpdpaOverlay}
               visibleCounts={visibleCounts}
               onViewChange={handleViewChange}
               onModelChange={handleModelChange}
               onRiskHeatToggle={handleRiskHeat}
+              onDpdpaToggle={handleDpdpaOverlay}
               onReset={handleReset}
             />
             <div className="flex gap-3">
@@ -137,6 +147,7 @@ export default function DataFlowClient({ pack }: Props) {
                 <DataFlowCanvas
                   projection={projection}
                   riskHeat={riskHeat}
+                  dpdpaOverlay={dpdpaOverlay}
                   selection={selection}
                   onSelect={handleSelect}
                 />
