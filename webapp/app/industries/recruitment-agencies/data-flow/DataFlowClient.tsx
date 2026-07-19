@@ -1,6 +1,6 @@
 "use client";
 
-// Client shell. PRIMARY experience = the readable JourneyView (all screens).
+// Client shell. PRIMARY experience = the animated, informative MotionJourney.
 // The dense React Flow graph is an opt-in "full system map" for power users,
 // lazy-loaded only when expanded. The business map is configuration passed as
 // a prop — never hard-coded here.
@@ -13,7 +13,7 @@ import { trackEvent } from "@/lib/analytics";
 import { BUSINESS_MODELS, type BusinessModel, type DataFlowPack } from "@/lib/data-flow/schemas";
 import { filterByBusinessModel } from "@/lib/data-flow/schemas";
 import { buildProjection, type FlowView } from "@/lib/data-flow/map-builder";
-import { JourneyView } from "@/components/data-flow/JourneyView";
+import { MotionJourney } from "@/components/data-flow/MotionJourney";
 import { HotspotRail } from "@/components/data-flow/HotspotRail";
 import { DetailSheet } from "@/components/data-flow/DetailSheet";
 import { NodeDetailPanel } from "@/components/data-flow/NodeDetailPanel";
@@ -113,7 +113,8 @@ export default function DataFlowClient({ pack }: Props) {
       </div>
 
       <section aria-label="Candidate data journey">
-        <JourneyView
+        <MotionJourney
+          key={model}
           pack={pack}
           model={model}
           onSystemOpen={(nodeId) => trackEvent.dataFlow("node_clicked", { node_id: nodeId })}

@@ -5,11 +5,9 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Copy, Search, Share2, ShieldCheck } from "lucide-react";
+import { AlertTriangle, ArrowRight, Copy, Share2, ShieldCheck } from "lucide-react";
 import { breadcrumbSchema } from "@/lib/schema";
 import { recruitmentDataFlowPack as pack } from "@/lib/data/data-flow/recruitment";
-import { computePackSummary } from "@/lib/data-flow/schemas";
-import { SignatureArc } from "@/components/data-flow/SignatureArc";
 import DataFlowClient from "./DataFlowClient";
 
 const PAGE_URL = "https://saralprivacy.com/industries/recruitment-agencies/data-flow";
@@ -28,8 +26,6 @@ export const metadata: Metadata = {
 };
 
 export default function RecruitmentDataFlowPage() {
-  const summary = computePackSummary(pack);
-
   return (
     <>
       {breadcrumbSchema([
@@ -50,50 +46,44 @@ export default function RecruitmentDataFlowPage() {
               One candidate. Many systems. Many copies. One business responsibility.
             </h1>
             <p className="mt-4 max-w-2xl text-sm leading-relaxed text-slate-200">
-              Candidate information moves through job portals, email, WhatsApp, ATS platforms,
-              spreadsheets, clients, vendors, AI tools and backups. Explore how personal data
-              flows through a recruitment business — and where DPDPA risk appears.
+              Follow a single résumé as it moves through job portals, email, WhatsApp, ATS
+              platforms, spreadsheets, clients, vendors, AI tools and backups — and watch how many
+              copies it leaves behind, and where you lose control of it.
             </p>
-            <div className="mt-6 max-w-3xl">
-              <SignatureArc summary={summary} />
-            </div>
-            <p className="mt-4 max-w-2xl text-xs leading-relaxed text-slate-400">{pack.disclaimer}</p>
           </div>
         </div>
 
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
           <DataFlowClient pack={pack} />
 
-          {/* How to read this map */}
+          {/* How to read this journey */}
           <section aria-labelledby="how-to-read" className="mt-12">
             <h2 id="how-to-read" className="text-xl font-bold text-navy-800">
-              How to read this map
+              How to read this journey
             </h2>
             <div className="mt-4 grid gap-4 sm:grid-cols-3">
               <div className="rounded-xl border border-slate-200 bg-white p-5">
-                <Search size={18} className="text-teal-600" aria-hidden="true" />
-                <h3 className="mt-2 text-sm font-bold text-navy-800">Trust boundaries</h3>
-                <p className="mt-1.5 text-[13px] leading-relaxed text-slate-600">
-                  Systems inside your agency, your clients, your vendors and government portals
-                  are marked differently. Amber badges mean data sits outside your direct
-                  control.
-                </p>
-              </div>
-              <div className="rounded-xl border border-slate-200 bg-white p-5">
                 <Copy size={18} className="text-teal-600" aria-hidden="true" />
-                <h3 className="mt-2 text-sm font-bold text-navy-800">Copies multiply</h3>
+                <h3 className="mt-2 text-sm font-bold text-navy-800">Copies pile up</h3>
                 <p className="mt-1.5 text-[13px] leading-relaxed text-slate-600">
-                  Every ⧉ marker is a moment where a new copy of candidate data comes into
-                  existence — downloads, forwards, exports, backups. This model counts{" "}
-                  {summary.copyEvents} of them.
+                  Each stage shows how many new copies of the résumé it creates — downloads,
+                  forwards, exports, backups. Watch the running counter climb as the data spreads.
                 </p>
               </div>
               <div className="rounded-xl border border-slate-200 bg-white p-5">
                 <Share2 size={18} className="text-teal-600" aria-hidden="true" />
-                <h3 className="mt-2 text-sm font-bold text-navy-800">External transfers</h3>
+                <h3 className="mt-2 text-sm font-bold text-navy-800">When it leaves you</h3>
                 <p className="mt-1.5 text-[13px] leading-relaxed text-slate-600">
-                  Dashed lines show data leaving the agency — to clients, portals, vendors and
-                  AI tools. {summary.externalTransfers} movements in this model cross that line.
+                  Amber tags mark systems outside your agency — clients, vendors, portals, AI
+                  tools. Once data lands there, you can no longer control or delete it directly.
+                </p>
+              </div>
+              <div className="rounded-xl border border-slate-200 bg-white p-5">
+                <AlertTriangle size={18} className="text-red-600" aria-hidden="true" />
+                <h3 className="mt-2 text-sm font-bold text-navy-800">Where control breaks</h3>
+                <p className="mt-1.5 text-[13px] leading-relaxed text-slate-600">
+                  Red flags mark the hotspots — the stages where agencies most often lose track of
+                  candidate data. Tap any system to see what it holds and how to fix it.
                 </p>
               </div>
             </div>
