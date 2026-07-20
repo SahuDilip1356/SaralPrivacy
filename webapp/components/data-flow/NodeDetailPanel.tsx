@@ -118,6 +118,14 @@ export function NodeDetailPanel({ pack, node, onClose, onAssessmentCta }: Props)
             <RiskIcon size={14} aria-hidden="true" /> {risk.label}
           </div>
           {node.riskWhy && <p className="mt-1.5 text-[13px] leading-relaxed">{node.riskWhy}</p>}
+          {/* riskWhy explains the mechanism; whyItMatters explains the
+              consequence. Verified non-duplicative across all 7 hotspots. */}
+          {hotspot && (
+            <p className="mt-2 text-[13px] leading-relaxed">
+              <span className="font-bold">Why this matters: </span>
+              {hotspot.whyItMatters}
+            </p>
+          )}
           {node.riskAction && (
             <p className="mt-2 text-[13px] leading-relaxed">
               <span className="font-bold">Fix: </span>

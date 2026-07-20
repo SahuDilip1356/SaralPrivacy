@@ -80,6 +80,13 @@ export default function DataFlowClient({ pack }: Props) {
     if (sel?.kind === "node") trackEvent.dataFlow("node_clicked", { node_id: sel.id });
     if (sel?.kind === "edge") trackEvent.dataFlow("edge_clicked", { edge_id: sel.id });
   }, []);
+  // HotspotRail renders each title as a button and has always accepted this
+  // callback, but it was never passed - so all 7 titles were inert. Opening the
+  // node's detail sheet is what the rail's own header comment promised.
+  const handleHotspotSelect = useCallback((nodeId: string, hotspotId: string) => {
+    setSelection({ kind: "node", id: nodeId });
+    trackEvent.dataFlow("hotspot_clicked", { node_id: nodeId, hotspot_id: hotspotId });
+  }, []);
 
   return (
     <div className="space-y-10">
@@ -211,7 +218,11 @@ export default function DataFlowClient({ pack }: Props) {
           to the matching check in the readiness assessment.
         </p>
         <div className="mt-4">
-          <HotspotRail pack={pack} onAssessmentCta={handleAssessmentCta} />
+          <HotspotRail
+            pack={pack}
+            onHotspotSelect={handleHotspotSelect}
+            onAssessmentCta={handleAssessmentCta}
+          />
         </div>
       </section>
     </div>

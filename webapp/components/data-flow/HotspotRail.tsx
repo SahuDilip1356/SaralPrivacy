@@ -5,7 +5,7 @@
 // assessment with the bucket key.
 
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { DataFlowPack } from "@/lib/data-flow/schemas";
 import { RISK_META } from "./flow-theme";
@@ -42,7 +42,25 @@ export function HotspotRail({ pack, onHotspotSelect, onAssessmentCta }: Props) {
               >
                 {h.title}
               </button>
-              <p className="mt-1.5 flex-1 text-[12px] leading-relaxed text-slate-600">{h.whatHappens}</p>
+              <div className="flex-1">
+                <p className="mt-1.5 text-[12px] leading-relaxed text-slate-600">{h.whatHappens}</p>
+                {/* Native <details>: the text stays in the server-rendered DOM
+                    (this page is indexed), is keyboard- and screen-reader-
+                    operable with zero JS, and needs no state. */}
+                <details className="group mt-2">
+                  <summary className="flex cursor-pointer list-none items-center gap-1 text-[11.5px] font-semibold text-slate-500 transition-colors hover:text-navy-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 [&::-webkit-details-marker]:hidden">
+                    <ChevronRight
+                      size={12}
+                      className="shrink-0 transition-transform group-open:rotate-90"
+                      aria-hidden="true"
+                    />
+                    Why this matters
+                  </summary>
+                  <p className="mt-1.5 text-[12px] leading-relaxed text-slate-600">
+                    {h.whyItMatters}
+                  </p>
+                </details>
+              </div>
               <p className="mt-2 text-[12px] leading-relaxed text-slate-700">
                 <span className="font-bold">Fix: </span>
                 {h.action}
