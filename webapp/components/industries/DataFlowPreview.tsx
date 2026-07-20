@@ -1,11 +1,19 @@
 // Landing-page teaser for the Personal Data Flow Map. Server component - no
 // client JS, plain Link. Numbers computed from the pack, never hand-typed.
 // Reused by any industry page: pass the industry's flow pack.
+//
+// Every number here is scoped to PREVIEW_MODEL, the model the map itself opens
+// on. A teaser that promises "30 places" landing on a map that says 24 is the
+// same reconciliation failure the journey counter had - a number the user
+// cannot square with what they see next. Keep this in step with the map's
+// initial `useState<BusinessModel>` in DataFlowClient.
 
 import Link from "next/link";
-import { ArrowRight, Copy, Share2, Users, Workflow } from "lucide-react";
-import type { DataFlowPack } from "@/lib/data-flow/schemas";
-import { computePackSummary } from "@/lib/data-flow/schemas";
+import { ArrowRight, MapPin, Share2, Users, Workflow } from "lucide-react";
+import type { BusinessModel, DataFlowPack } from "@/lib/data-flow/schemas";
+import { EXTERNAL_BOUNDARIES, filterByBusinessModel } from "@/lib/data-flow/schemas";
+
+const PREVIEW_MODEL: BusinessModel = "permanent";
 
 interface Props {
   pack: DataFlowPack;
@@ -13,12 +21,14 @@ interface Props {
 }
 
 export function DataFlowPreview({ pack, href }: Props) {
-  const s = computePackSummary(pack);
+  const { stages, nodes, edges } = filterByBusinessModel(pack, PREVIEW_MODEL);
+  const places = nodes.filter((n) => n.nodeType !== "person").length;
+  const externalParties = nodes.filter((n) => EXTERNAL_BOUNDARIES.includes(n.boundary)).length;
   const stats = [
-    { icon: Workflow, value: s.systems, label: "systems & repositories" },
-    { icon: Copy, value: s.copyEvents, label: "copy events" },
-    { icon: Share2, value: s.externalTransfers, label: "external transfers" },
-    { icon: Users, value: s.externalParties, label: "outside parties" },
+    { icon: MapPin, value: places, label: "places their data lives" },
+    { icon: Workflow, value: stages.length, label: "stages in the journey" },
+    { icon: Share2, value: edges.filter((e) => e.external).length, label: "external transfers" },
+    { icon: Users, value: externalParties, label: "outside parties" },
   ];
   return (
     <section aria-labelledby="data-flow-preview-heading">
@@ -32,7 +42,7 @@ export function DataFlowPreview({ pack, href }: Props) {
 
       <div className="mt-5 overflow-hidden rounded-2xl border border-navy-200 bg-navy-700 p-6 text-white">
         <p className="text-lg font-bold leading-snug">
-          One candidate profile can end up in {s.systems}+ places. When they ask you to delete it
+          One candidate profile can end up in {places} places. When they ask you to delete it
           - can you find every copy?
         </p>
 

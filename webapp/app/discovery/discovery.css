@@ -393,6 +393,15 @@
 .spd .ab-pill { color: #fff; font-weight: 700; font-size: 13px; padding: 3px 12px; border-radius: 100px;
   min-width: 74px; text-align: center; }
 
+/* next step - data flow map pointer, sits between the learn section and the
+   assessment CTA so the flow reads what -> where -> how ready */
+.spd .next-step { padding: 0 0 56px; }
+.spd .next-step-card { display: flex; align-items: center; justify-content: space-between;
+  gap: 28px; flex-wrap: wrap; }
+.spd .next-step-card p { font-size: 15px; line-height: 1.6; max-width: 640px; }
+.spd .next-step-card .aside-h { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+.spd .next-step-cta { white-space: nowrap; flex-shrink: 0; }
+
 /* CTA block */
 .spd .cta-block { background: var(--navy); color: #fff; padding: 60px 0; }
 .spd .cta-in { display: flex; align-items: center; justify-content: space-between; gap: 36px; flex-wrap: wrap; }

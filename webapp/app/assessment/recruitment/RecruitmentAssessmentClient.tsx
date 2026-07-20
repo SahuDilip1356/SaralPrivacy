@@ -419,6 +419,31 @@ export default function RecruitmentAssessmentClient() {
             </Link>
           </div>
 
+          {/* Secondary step - deliberately quieter than the gap-review CTA above.
+              The scan says how ready your controls are; the map says where the
+              data actually goes. Useful straight after a score, especially a
+              poor one, without competing with the consultation booking. */}
+          <Link
+            href="/industries/recruitment-agencies/data-flow"
+            onClick={() =>
+              trackEvent.dataFlow("data_flow_map_opened", {
+                source: "recruitment-assessment-result",
+                band: result.band,
+              })
+            }
+            className="mt-4 flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white p-4 transition-colors hover:border-teal-300 hover:bg-teal-50/40"
+          >
+            <span>
+              <span className="block text-sm font-bold text-navy-700">
+                See where your candidate data actually travels
+              </span>
+              <span className="mt-0.5 block text-[13px] leading-relaxed text-slate-600">
+                One resume, every system it reaches, and the points where you lose control of it.
+              </span>
+            </span>
+            <ArrowRight size={16} className="shrink-0 text-teal-600" aria-hidden="true" />
+          </Link>
+
           <button onClick={retake} className="mt-4 w-full text-center text-sm text-slate-500 underline hover:text-slate-700">
             Retake the scan
           </button>

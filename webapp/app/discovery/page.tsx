@@ -219,6 +219,32 @@ export default function DiscoveryPage() {
         </div>
       </section>
 
+      {/* Next step: the data flow map. Discovery answers WHAT data you hold;
+          the map answers WHERE it goes. Scoped honestly to recruitment - that
+          is the only sector with a map today, so the copy names the sector
+          rather than promising every visitor a map we cannot show them. */}
+      <section className="next-step">
+        <div className="wrap">
+          <div className="aside-card alt next-step-card">
+            <div>
+              <p className="aside-h">Next: see where that data travels</p>
+              <p>
+                Discovery tells you <strong>what</strong> personal data you hold. The Personal
+                Data Flow Map shows <strong>where it goes</strong> - every system, inbox,
+                spreadsheet, vendor and backup it reaches, and the points where you lose
+                control of it. Available now for recruitment and staffing.
+              </p>
+            </div>
+            <a
+              href="/industries/recruitment-agencies/data-flow"
+              className="btn-ghost btn-sm next-step-cta"
+            >
+              View the recruitment map →
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* CTA block */}
       <section className="cta-block" id="full-assessment">
         <div className="wrap cta-in">
