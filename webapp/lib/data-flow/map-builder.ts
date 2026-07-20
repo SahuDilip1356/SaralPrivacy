@@ -69,6 +69,7 @@ const BOUNDARY_ORDER: readonly Boundary[] = [
   "client",
   "vendor",
   "government",
+  "third-party",
   "public",
 ];
 

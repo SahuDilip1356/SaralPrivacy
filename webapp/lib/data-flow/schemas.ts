@@ -21,13 +21,23 @@ import { z } from "zod";
 export const BUSINESS_MODELS = ["permanent", "staffing"] as const;
 export type BusinessModel = (typeof BUSINESS_MODELS)[number];
 
-/** Organisational trust boundary a node lives in (spec §13). */
+/** Organisational trust boundary a node lives in (spec §13).
+ *
+ *  `third-party` is for organisations that receive personal data WITHOUT a
+ *  processing contract - past employers and universities contacted during
+ *  verification, for example. They are not vendors (nothing is processed on
+ *  our instructions) and they are certainly not `public`: nothing about the
+ *  disclosure is publicly available. `public` is reserved for genuinely open
+ *  sources - profiles, directories, registers - where data is COLLECTED rather
+ *  than disclosed. The distinction matters because the fix differs: a vendor
+ *  needs a contract, a third party needs minimisation and a protected channel. */
 export const BOUNDARIES = [
   "candidate",
   "agency",
   "client",
   "vendor",
   "government",
+  "third-party",
   "public",
 ] as const;
 export type Boundary = (typeof BOUNDARIES)[number];
@@ -37,6 +47,7 @@ export const EXTERNAL_BOUNDARIES: readonly Boundary[] = [
   "client",
   "vendor",
   "government",
+  "third-party",
   "public",
 ];
 

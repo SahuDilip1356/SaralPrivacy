@@ -50,7 +50,10 @@ export const RECRUITMENT_NODES: FlowNode[] = [
     id: "linkedin",
     name: "LinkedIn sourcing",
     nodeType: "system",
-    boundary: "vendor",
+    // `public`, not `vendor`: what is modelled here is scraping open profiles,
+    // not a processing relationship. A Recruiter seat may also exist, but the
+    // activity on this node is collection from a public source.
+    boundary: "public",
     stageIds: ["sourcing"],
     description: "Public-profile sourcing - data collected without the candidate applying; often treated as unrestricted.",
     dataCategoryIds: ["identity", "contact", "professional"],
@@ -296,7 +299,10 @@ export const RECRUITMENT_NODES: FlowNode[] = [
     id: "reference-sources",
     name: "Past employers & institutions",
     nodeType: "system",
-    boundary: "public",
+    // `third-party`, not `public`: this is an OUTBOUND disclosure to private
+    // organisations to verify a claim. Nothing here is publicly available, and
+    // there is no processing contract, so neither `public` nor `vendor` fits.
+    boundary: "third-party",
     stageIds: ["bgv"],
     description: "Previous employers, universities and references contacted during verification - candidate details shared outward to verify.",
     dataCategoryIds: ["identity", "professional", "education"],
