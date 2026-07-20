@@ -75,8 +75,11 @@ export default function RecruitmentDataFlowPage() {
                 <Share2 size={18} className="text-teal-600" aria-hidden="true" />
                 <h3 className="mt-2 text-sm font-bold text-navy-800">When it leaves you</h3>
                 <p className="mt-1.5 text-[13px] leading-relaxed text-slate-600">
-                  Amber tags mark systems outside your agency - clients, vendors, portals, AI
-                  tools. Once data lands there, you can no longer control or delete it directly.
+                  A violet left edge and a tag mark systems outside your agency - clients,
+                  vendors, public sources and third parties. Once data lands there your control
+                  is indirect: it runs through your contract and your instructions, not your
+                  admin panel. Risk is shown separately, as an amber or red fill - so an outside
+                  system can be low risk, and an in-house one can be high risk.
                 </p>
               </div>
               <div className="rounded-xl border border-slate-200 bg-white p-5">
