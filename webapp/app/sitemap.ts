@@ -2,6 +2,7 @@ import { MetadataRoute } from 'next'
 import { databases, DB_ID, COLLECTIONS, Query } from '@/lib/appwrite'
 import { FRESHNESS } from '@/lib/content-freshness'
 import { sectorSlugs } from '@/lib/data/sectors'
+import { dataMapSlugs } from '@/lib/data/data-flow'
 import { READING_LANGS } from '@/lib/data/guide-languages'
 
 const BASE = 'https://saralprivacy.com'
@@ -113,8 +114,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly' as const,
       priority: 0.7,
     })),
-    // Personal Data Flow Map (recruitment is the first industry; others follow)
-    { url: `${BASE}/industries/recruitment-agencies/data-flow`, lastModified: INDUSTRY_UPDATED, changeFrequency: 'monthly', priority: 0.7 },
+    // ── Data Mapping ──
+    // Landing page plus one entry per LIVE map, derived from the data-flow
+    // registry, so a new map is listed the moment its pack is registered and a
+    // planned sector can never be submitted before its page exists.
+    { url: `${BASE}/data-mapping`, lastModified: INDUSTRY_UPDATED, changeFrequency: 'monthly', priority: 0.8 },
+    ...dataMapSlugs.map((slug) => ({
+      url: `${BASE}/industries/${slug}/data-flow`,
+      lastModified: INDUSTRY_UPDATED,
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    })),
 
     // ── Glossary ──
     { url: `${BASE}/glossary`, lastModified: GLOSSARY_UPDATED, changeFrequency: 'monthly', priority: 0.85 },

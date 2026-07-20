@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Mail } from "lucide-react";
 import { PressProofStrip } from "@/components/ui/PressProofStrip";
 import { sectorNavLinks } from "@/lib/data/sectors";
+import { dataMapFooterLinks } from "@/lib/data/data-flow";
 import { DPO } from "@/lib/data/privacy-vendors";
 
 const footerLinks = {
@@ -16,6 +17,13 @@ const footerLinks = {
     { label: "Media", href: "/media" },
   ],
   industries: sectorNavLinks,
+  // Landing page first, then the sectors that actually have a map. Derived from
+  // the data-flow registry, so publishing the next map adds its row here with
+  // no edit to this file - and a sector without a map can never be listed.
+  dataMapping: [
+    { label: "Data Mapping Overview", href: "/data-mapping" },
+    ...dataMapFooterLinks,
+  ],
   assessment: [
     { label: "DPDPA Readiness Assessment", href: "/assessment" },
     { label: "Personal Data Discovery", href: "/discovery" },
@@ -93,6 +101,23 @@ export function Footer() {
             <h4 className="text-white font-semibold text-sm mb-4">Platform</h4>
             <ul className="space-y-2.5">
               {footerLinks.platform.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-slate-400 hover:text-white transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+
+            {/* Data Mapping - sits under Platform per the product spine:
+                Discovery -> Data Mapping -> Assessment -> Notice. Industry rows
+                come from the registry, so this list grows as maps ship. */}
+            <h4 className="text-white font-semibold text-sm mb-4 mt-6">Data Mapping</h4>
+            <ul className="space-y-2.5">
+              {footerLinks.dataMapping.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
