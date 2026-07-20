@@ -10,11 +10,14 @@ import { dirname, join } from "node:path";
 
 import {
   ASSESSMENT_BUCKETS,
+  BOUNDARIES,
+  EXTERNAL_BOUNDARIES,
   computePackSummary,
   dataFlowPackSchema,
   filterByBusinessModel,
   validatePack,
 } from "./schemas.ts";
+import { stageDataRollup } from "./stage-data.ts";
 import { recruitmentDataFlowPack as pack } from "../data/data-flow/recruitment/index.ts";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -158,6 +161,68 @@ test("ATS is in play from sourcing, where its first copies actually land", () =>
     assert.ok(
       ats.stageIds.includes(stageId),
       `ats.stageIds covers "${stageId}", where an edge delivers data to it`,
+    );
+  }
+});
+
+// The boundary taxonomy gained `third-party` when two nodes were reclassified:
+// LinkedIn (genuinely a public source) was tagged `vendor`, and past employers /
+// universities (a private outbound disclosure) were the only node tagged
+// `public`. They were effectively swapped. These guard the correction and the
+// invariant that a new boundary must be explicitly placed inside or outside.
+test("boundary taxonomy: external is a subset of boundaries, and complete", () => {
+  for (const b of EXTERNAL_BOUNDARIES) {
+    assert.ok(BOUNDARIES.includes(b), `"${b}" is a real boundary`);
+  }
+  const internal = BOUNDARIES.filter((b) => !EXTERNAL_BOUNDARIES.includes(b));
+  assert.deepEqual(
+    [...internal].sort(),
+    ["agency", "candidate"],
+    "only candidate + agency are internal - a new boundary must pick a side",
+  );
+});
+
+test("boundary content: LinkedIn is a public source, references are a third party", () => {
+  const byId = new Map(pack.nodes.map((n) => [n.id, n]));
+  assert.equal(byId.get("linkedin")?.boundary, "public");
+  assert.equal(byId.get("reference-sources")?.boundary, "third-party");
+});
+
+// Pinned exactly, not `>=`: this is what proves the reclassification moved no
+// numbers on /data-mapping or the recruitment teaser card, both of which count
+// external parties via EXTERNAL_BOUNDARIES.
+test("external-party count is unchanged by the boundary reclassification", () => {
+  assert.equal(computePackSummary(pack).externalParties, 15);
+});
+
+test("stage data: every stage moves at least one data category, in both models", () => {
+  for (const model of ["permanent", "staffing"] as const) {
+    for (const row of stageDataRollup(pack, model)) {
+      assert.ok(
+        row.moving.length > 0,
+        `${model}/${row.stageId} has data moving (an empty "Moving here" row would render)`,
+      );
+    }
+  }
+});
+
+// The "new at this stage" emphasis depends on this: a category is introduced
+// exactly once, and between them the stages introduce everything reachable.
+test("stage data: first appearance covers every reachable category exactly once", () => {
+  for (const model of ["permanent", "staffing"] as const) {
+    const rows = stageDataRollup(pack, model);
+    const introduced: string[] = [];
+    for (const r of rows) introduced.push(...r.newIds);
+    assert.equal(
+      introduced.length,
+      new Set(introduced).size,
+      `${model}: no category is introduced twice`,
+    );
+    const reachable = new Set(rows.flatMap((r) => r.moving.map((c) => c.id)));
+    assert.deepEqual(
+      [...introduced].sort(),
+      [...reachable].sort(),
+      `${model}: everything that moves is introduced somewhere`,
     );
   }
 });

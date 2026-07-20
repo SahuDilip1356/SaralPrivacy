@@ -42,8 +42,15 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { BusinessModel, DataFlowPack, FlowNode, FlowStage } from "@/lib/data-flow/schemas";
+import type {
+  BusinessModel,
+  DataCategory,
+  DataFlowPack,
+  FlowNode,
+  FlowStage,
+} from "@/lib/data-flow/schemas";
 import { filterByBusinessModel } from "@/lib/data-flow/schemas";
+import { stageDataRollup } from "@/lib/data-flow/stage-data";
 import {
   BOUNDARY_META,
   EXTERNAL_BOUNDARY_SET,
@@ -69,7 +76,13 @@ interface Row {
   runPlaces: number;
   hotspotNames: string[];
   runHotspots: number;
+  /** Personal data moving at this stage, new categories first. */
+  moving: DataCategory[];
+  newCategoryIds: ReadonlySet<string>;
 }
+
+/** Chips shown before "+N more" - today's busiest stage has 6. */
+const MAX_CATEGORY_CHIPS = 6;
 
 const STEP_MS = 460;
 
@@ -170,6 +183,12 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
       (hotspotsByStage.get(sid) ?? hotspotsByStage.set(sid, []).get(sid)!).push(h.title);
     }
 
+    // What personal data moves at each stage - shared helper so the component
+    // and the test suite compute this exactly one way.
+    const dataByStage = new Map(
+      stageDataRollup(pack, model).map((r) => [r.stageId, r]),
+    );
+
     let runPlaces = 0;
     let runHotspots = 0;
     const rows: Row[] = ordered.map((stage) => {
@@ -181,7 +200,17 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
       });
       const placesHere = systems.length;
       runPlaces += placesHere;
-      return { stage, systems, placesHere, runPlaces, hotspotNames, runHotspots };
+      const rollup = dataByStage.get(stage.id);
+      return {
+        stage,
+        systems,
+        placesHere,
+        runPlaces,
+        hotspotNames,
+        runHotspots,
+        moving: rollup?.moving ?? [],
+        newCategoryIds: rollup?.newIds ?? new Set<string>(),
+      };
     });
     return { rows, totalPlaces: runPlaces, totalHotspots: runHotspots };
   }, [pack, model]);
@@ -369,14 +398,58 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
                   </p>
                 )}
 
+                {/* What personal data moves here. Kept deliberately flat and
+                    borderless: the system chips below are buttons and must stay
+                    the dominant, tappable thing on the card. No animation - the
+                    card already carries five. */}
+                {row.moving.length > 0 && (
+                  <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
+                    <span className="text-[10.5px] font-semibold uppercase tracking-wide text-slate-400">
+                      Moving here
+                    </span>
+                    {row.moving.slice(0, MAX_CATEGORY_CHIPS).map((c) => {
+                      const isNew = row.newCategoryIds.has(c.id);
+                      // Only tag data the business inferred when the category's
+                      // own name doesn't already say so - "Derived & inferred
+                      // data · inferred" reads as a bug.
+                      const tagInferred =
+                        c.kind === "derived" && !/inferred|derived/i.test(c.name);
+                      return (
+                        <span
+                          key={c.id}
+                          className={cn(
+                            "rounded px-1.5 py-0.5 text-[11px]",
+                            c.kind === "derived"
+                              ? "bg-navy-50 font-medium text-navy-700"
+                              : "bg-slate-50 text-slate-600",
+                            isNew && "font-semibold text-slate-700 ring-1 ring-inset ring-teal-300",
+                          )}
+                        >
+                          {c.name}
+                          {tagInferred && <span className="ml-1 font-bold">· inferred</span>}
+                          {isNew && <span className="sr-only"> (new at this stage)</span>}
+                        </span>
+                      );
+                    })}
+                    {row.moving.length > MAX_CATEGORY_CHIPS && (
+                      <span className="text-[11px] text-slate-400">
+                        +{row.moving.length - MAX_CATEGORY_CHIPS} more
+                      </span>
+                    )}
+                  </div>
+                )}
+
                 {row.systems.length > 0 && (
                   <div className="mt-3 flex flex-wrap gap-2">
                     {row.systems.map((n, j) => {
+                      // Two independent axes. Risk paints the fill; boundary
+                      // paints the left rule. A high-risk in-house system and a
+                      // low-risk client system must not look alike.
                       const risk = RISK_META[n.riskLevel];
                       const RiskIcon = risk.icon;
-                      const TypeIcon = NODE_TYPE_META[n.nodeType].icon;
+                      const bound = BOUNDARY_META[n.boundary];
+                      const BoundaryIcon = bound.icon;
                       const external = EXTERNAL_BOUNDARY_SET.has(n.boundary);
-                      const danger = n.riskLevel === "high" || n.riskLevel === "critical";
                       return (
                         <motion.button
                           key={n.id}
@@ -393,14 +466,21 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
                           transition={{ duration: 0.3, delay: reached && !reduce ? j * 0.05 : 0 }}
                           className={cn(
                             "inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-[12px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500",
-                            danger
-                              ? "border-amber-300 bg-amber-50 text-amber-900 hover:bg-amber-100"
-                              : external
-                                ? "border-amber-200 bg-amber-50/60 text-amber-800 hover:bg-amber-100"
+                            // AXIS 1 - risk drives the fill
+                            n.riskLevel === "critical"
+                              ? "border-red-300 bg-red-50 text-red-900 hover:bg-red-100"
+                              : n.riskLevel === "high"
+                                ? "border-amber-300 bg-amber-50 text-amber-900 hover:bg-amber-100"
                                 : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50",
+                            // AXIS 2 - boundary drives the left rule
+                            bound.rule,
                           )}
                         >
-                          <TypeIcon size={13} className="shrink-0 opacity-70" aria-hidden="true" />
+                          <BoundaryIcon
+                            size={13}
+                            className="shrink-0 opacity-70"
+                            aria-hidden="true"
+                          />
                           {n.name}
                           {n.shadowIt && (
                             <span className="rounded bg-white/70 px-1 text-[10px] font-semibold text-slate-500">
@@ -408,22 +488,37 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
                             </span>
                           )}
                           {external && (
-                            <span className="rounded bg-white/70 px-1 text-[10px] font-semibold text-amber-700">
-                              {BOUNDARY_META[n.boundary].label}
+                            <span
+                              className={cn(
+                                "rounded px-1 text-[10px] font-semibold ring-1 ring-inset",
+                                bound.pill,
+                              )}
+                            >
+                              {bound.label}
                             </span>
                           )}
                           <RiskIcon
                             size={13}
                             className={cn(
                               "shrink-0",
-                              danger
-                                ? "text-amber-600"
-                                : n.riskLevel === "medium"
-                                  ? "text-slate-400"
-                                  : "text-green-600",
+                              n.riskLevel === "critical"
+                                ? "text-red-600"
+                                : n.riskLevel === "high"
+                                  ? "text-amber-600"
+                                  : n.riskLevel === "medium"
+                                    ? "text-slate-400"
+                                    : "text-green-600",
                             )}
-                            aria-label={risk.label}
+                            aria-hidden="true"
                           />
+                          {/* aria-label on an inline SVG is unreliable; give the
+                              screen reader both axes as real text instead. */}
+                          <span className="sr-only">
+                            {risk.label}
+                            {external
+                              ? `, outside your agency: ${bound.label}`
+                              : ", inside your agency"}
+                          </span>
                         </motion.button>
                       );
                     })}
