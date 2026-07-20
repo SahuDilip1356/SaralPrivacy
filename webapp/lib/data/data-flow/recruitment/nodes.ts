@@ -93,7 +93,9 @@ export const RECRUITMENT_NODES: FlowNode[] = [
     name: "ATS / recruitment CRM",
     nodeType: "system",
     boundary: "agency",
-    stageIds: ["registration", "screening", "assessment", "client-submission", "interview", "bgv", "offer", "archive"],
+    // `sourcing` belongs here: portal-to-ats and linkedin-to-ats both land in
+    // the ATS at stage 1, so the ATS is already in play before registration.
+    stageIds: ["sourcing", "registration", "screening", "assessment", "client-submission", "interview", "bgv", "offer", "archive"],
     description: "The intended system of record: profiles, notes, consent records, submission history and status.",
     dataCategoryIds: ["identity", "contact", "professional", "assessment", "verification", "derived", "device-technical"],
     accessPersonaIds: ["recruiter", "recruitment-lead", "ops-head", "hr-compliance", "it-admin"],

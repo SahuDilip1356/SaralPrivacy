@@ -120,6 +120,48 @@ test("discovery alignment: category wording matches the recruitment-staffing nic
   }
 });
 
+// The journey counter shows "places their data now lives" and the stage cards
+// show the systems reached at that stage. They are the same fact, so they must
+// reconcile: every non-person node must land in exactly one in-model stage.
+// If a node's stageIds ever drift out of the model's stage set it becomes an
+// orphan - invisible in the boxes but still real - and the counter under-reads.
+test("places reconcile: every system is counted once, at exactly one stage", () => {
+  for (const model of ["permanent", "staffing"] as const) {
+    const { stages, nodes } = filterByBusinessModel(pack, model);
+    const seq = new Map(stages.map((s) => [s.id, s.sequence]));
+    const systems = nodes.filter((n) => n.nodeType !== "person");
+
+    const placed = systems.filter((n) => n.stageIds.some((id) => seq.has(id)));
+    assert.equal(
+      placed.length,
+      systems.length,
+      `${model}: every system reaches a stage shown in this model (no orphans)`,
+    );
+
+    const perStage = new Map<string, number>();
+    for (const n of systems) {
+      const first = n.stageIds
+        .filter((id) => seq.has(id))
+        .sort((a, b) => seq.get(a)! - seq.get(b)!)[0];
+      perStage.set(first, (perStage.get(first) ?? 0) + 1);
+    }
+    const total = [...perStage.values()].reduce((a, b) => a + b, 0);
+    assert.equal(total, systems.length, `${model}: running total equals distinct places`);
+  }
+});
+
+test("ATS is in play from sourcing, where its first copies actually land", () => {
+  const ats = pack.nodes.find((n) => n.id === "ats");
+  assert.ok(ats, "ats node exists");
+  const arrivesAt = new Set(pack.edges.filter((e) => e.target === "ats").map((e) => e.stageId));
+  for (const stageId of arrivesAt) {
+    assert.ok(
+      ats.stageIds.includes(stageId),
+      `ats.stageIds covers "${stageId}", where an edge delivers data to it`,
+    );
+  }
+});
+
 test("reference summary is computed, plausible and self-consistent", () => {
   const s = computePackSummary(pack);
   assert.equal(s.stages, 12);

@@ -5,7 +5,7 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
-import { AlertTriangle, ArrowRight, Copy, Share2, ShieldCheck } from "lucide-react";
+import { AlertTriangle, ArrowRight, MapPin, Share2, ShieldCheck } from "lucide-react";
 import { breadcrumbSchema } from "@/lib/schema";
 import { recruitmentDataFlowPack as pack } from "@/lib/data/data-flow/recruitment";
 import DataFlowClient from "./DataFlowClient";
@@ -18,9 +18,9 @@ export const metadata: Metadata = {
     "Interactive map of how candidate data moves through a recruitment business - job portals, ATS, WhatsApp, Excel, clients, BGV vendors, AI tools and backups - and where DPDPA risk appears.",
   alternates: { canonical: PAGE_URL },
   openGraph: {
-    title: "One candidate. Many systems. Many copies. - Recruitment Personal Data Flow Map",
+    title: "One candidate. Many systems. One responsibility. - Recruitment Personal Data Flow Map",
     description:
-      "See how candidate data travels through a typical recruitment business, where copies multiply, and where control breaks.",
+      "See how candidate data travels through a typical recruitment business, every place it ends up, and where control breaks.",
     url: PAGE_URL,
   },
 };
@@ -43,12 +43,12 @@ export default function RecruitmentDataFlowPage() {
               <ShieldCheck size={18} aria-hidden="true" /> Where your data travels · Recruitment
             </div>
             <h1 className="max-w-3xl text-3xl font-bold leading-tight text-white sm:text-4xl">
-              One candidate. Many systems. Many copies. One business responsibility.
+              One candidate. Many systems. One business responsibility.
             </h1>
             <p className="mt-4 max-w-2xl text-sm leading-relaxed text-slate-200">
               Follow a single resume as it moves through job portals, email, WhatsApp, ATS
-              platforms, spreadsheets, clients, vendors, AI tools and backups - and watch how many
-              copies it leaves behind, and where you lose control of it.
+              platforms, spreadsheets, clients, vendors, AI tools and backups - and count every
+              place it ends up, and where you lose control of it.
             </p>
           </div>
         </div>
@@ -63,11 +63,12 @@ export default function RecruitmentDataFlowPage() {
             </h2>
             <div className="mt-4 grid gap-4 sm:grid-cols-3">
               <div className="rounded-xl border border-slate-200 bg-white p-5">
-                <Copy size={18} className="text-teal-600" aria-hidden="true" />
-                <h3 className="mt-2 text-sm font-bold text-navy-800">Copies pile up</h3>
+                <MapPin size={18} className="text-teal-600" aria-hidden="true" />
+                <h3 className="mt-2 text-sm font-bold text-navy-800">The places add up</h3>
                 <p className="mt-1.5 text-[13px] leading-relaxed text-slate-600">
-                  Each stage shows how many new copies of the resume it creates - downloads,
-                  forwards, exports, backups. Watch the running counter climb as the data spreads.
+                  Each stage shows the new places the data reaches - inboxes, spreadsheets,
+                  laptops, vendor tools, backups. Every place is counted once, so the running
+                  counter always matches the systems listed above it.
                 </p>
               </div>
               <div className="rounded-xl border border-slate-200 bg-white p-5">

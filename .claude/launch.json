@@ -4,8 +4,8 @@
     {
       "name": "webapp",
       "runtimeExecutable": "/bin/sh",
-      "runtimeArgs": ["-c", "cd \"/Users/sahudilip/Desktop/Product Dev/DPDPA Daily Brief/webapp/webapp\" && npm run dev"],
-      "port": 3000
+      "runtimeArgs": ["-c", "cd \"/Users/sahudilip/Desktop/Product Dev/DPDPA Daily Brief/webapp/webapp\" && PORT=3100 npm run dev"],
+      "port": 3100
     }
   ]
 }

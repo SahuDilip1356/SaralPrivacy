@@ -3,10 +3,19 @@
 // The primary experience: one animated, informative journey.
 //
 // Engaging - as it scrolls into view, a resume travels the real hiring
-// journey, copies spray out per stage, and two counters climb: total copies
-// and "places where control breaks". Informative - every stage lists its real
-// systems (tap for what it holds + the fix) and its DPDPA duty; the hotspot
-// stages flag in red. Numbers come from the config, so they stay true.
+// journey, new places light up per stage, and two counters climb: places the
+// data now lives and "places where control breaks". Informative - every stage
+// lists its real systems (tap for what it holds + the fix) and its DPDPA duty;
+// the hotspot stages flag in red. Numbers come from the config, so they stay true.
+//
+// We count PLACES, not copy events. Copy events summed alternative routes a
+// single candidate would never all take (5 entry channels at stage 1, when a
+// person arrives through one), so "34 copies of one resume" overstated. Worse,
+// the boxes showed a system's first appearance while the counter showed copy
+// events landing in systems introduced earlier - "1 box, +3 copies" was
+// irreconcilable on screen. Places fix both: every box is one place, counted
+// once, so the counter and the boxes cannot disagree by construction.
+// (Per-edge `createsCopy` is still true and still used in the full system map.)
 //
 // SEO + reduced-motion safe: all text is server-rendered and visible; only
 // the copy documents, counters, tile glow and hotspot flags animate, and only
@@ -19,9 +28,9 @@ import {
   Archive,
   ClipboardCheck,
   ClipboardList,
-  Copy,
   FileSearch,
   LogOut,
+  MapPin,
   MessageCircle,
   Search,
   Send,
@@ -54,8 +63,10 @@ interface Props {
 interface Row {
   stage: FlowStage;
   systems: FlowNode[];
-  copiesHere: number;
-  runCopies: number;
+  /** New places at this stage - always equals `systems.length`, so the
+   *  counter and the boxes on screen are the same fact. */
+  placesHere: number;
+  runPlaces: number;
   hotspotNames: string[];
   runHotspots: number;
 }
@@ -132,8 +143,8 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
     };
   }, [inView]);
 
-  const { rows, totalCopies, totalHotspots } = useMemo(() => {
-    const { stages, nodes, edges } = filterByBusinessModel(pack, model);
+  const { rows, totalPlaces, totalHotspots } = useMemo(() => {
+    const { stages, nodes } = filterByBusinessModel(pack, model);
     const ordered = [...stages].sort((a, b) => a.sequence - b.sequence);
     const seq = new Map(ordered.map((s) => [s.id, s.sequence]));
 
@@ -159,20 +170,20 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
       (hotspotsByStage.get(sid) ?? hotspotsByStage.set(sid, []).get(sid)!).push(h.title);
     }
 
-    let runCopies = 0;
+    let runPlaces = 0;
     let runHotspots = 0;
     const rows: Row[] = ordered.map((stage) => {
-      const copiesHere = edges.filter((e) => e.stageId === stage.id && e.createsCopy).length;
-      runCopies += copiesHere;
       const hotspotNames = hotspotsByStage.get(stage.id) ?? [];
       runHotspots += hotspotNames.length;
       const systems = (systemsByStage.get(stage.id) ?? []).sort((a, b) => {
         const order = { critical: 0, high: 1, medium: 2, low: 3 } as const;
         return order[a.riskLevel] - order[b.riskLevel];
       });
-      return { stage, systems, copiesHere, runCopies, hotspotNames, runHotspots };
+      const placesHere = systems.length;
+      runPlaces += placesHere;
+      return { stage, systems, placesHere, runPlaces, hotspotNames, runHotspots };
     });
-    return { rows, totalCopies: runCopies, totalHotspots: runHotspots };
+    return { rows, totalPlaces: runPlaces, totalHotspots: runHotspots };
   }, [pack, model]);
 
   // Drive the sequence once in view. Reduced motion / no-JS → jump to the end.
@@ -192,7 +203,7 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
     return () => clearInterval(id);
   }, [inView, reduce, rows.length, model]);
 
-  const shownCopies = step === 0 ? 0 : rows[Math.min(step, rows.length) - 1].runCopies;
+  const shownPlaces = step === 0 ? 0 : rows[Math.min(step, rows.length) - 1].runPlaces;
   const shownHotspots = step === 0 ? 0 : rows[Math.min(step, rows.length) - 1].runHotspots;
 
   const openSystem = (n: FlowNode) => {
@@ -227,18 +238,18 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
               <div>
                 <div className="flex items-baseline gap-2">
                   <motion.span
-                    key={shownCopies}
+                    key={shownPlaces}
                     initial={reduce ? false : { scale: 0.82 }}
                     animate={{ scale: 1 }}
                     transition={{ type: "spring", stiffness: 460, damping: 18 }}
                     className="text-6xl font-extrabold tabular-nums leading-none tracking-tight text-teal-300"
                   >
-                    {shownCopies}
+                    {shownPlaces}
                   </motion.span>
-                  <Copy size={16} className="text-teal-300/60" aria-hidden="true" />
+                  <MapPin size={16} className="text-teal-300/60" aria-hidden="true" />
                 </div>
                 <p className="mt-1.5 text-[12.5px] font-medium text-slate-300">
-                  copies of one resume
+                  places their data now lives
                 </p>
               </div>
               <div>
@@ -343,9 +354,9 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
                       </motion.span>
                     )}
                   </h3>
-                  {row.copiesHere > 0 && (
+                  {row.placesHere > 0 && (
                     <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-medium text-slate-600">
-                      <Copy size={11} aria-hidden="true" /> +{row.copiesHere} {row.copiesHere === 1 ? "copy" : "copies"} · {row.runCopies} so far
+                      <MapPin size={11} aria-hidden="true" /> +{row.placesHere} {row.placesHere === 1 ? "place" : "places"} · {row.runPlaces} so far
                     </span>
                   )}
                 </div>
@@ -427,11 +438,12 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
                 </p>
               </div>
 
-              {/* Flying resume copies - the artifact's signature: every copy
-                  this stage creates flies out and stacks up. Desktop delight;
+              {/* Flying resume copies - the artifact's signature: one document
+                  flies out per NEW PLACE this stage adds, so the paper, the
+                  chips and the counter are all the same count. Desktop delight;
                   the counter carries the story on mobile. */}
               <div className="relative hidden w-24 shrink-0 lg:block" aria-hidden="true">
-                {Array.from({ length: Math.min(row.copiesHere, 6) }).map((_, j) => (
+                {Array.from({ length: Math.min(row.placesHere, 6) }).map((_, j) => (
                   <motion.div
                     key={j}
                     className={cn(
@@ -481,8 +493,8 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
       )}
 
       <span className="sr-only">
-        In this reference model, one candidate&apos;s resume is copied {totalCopies} times across{" "}
-        {rows.length} stages, with {totalHotspots} places where control breaks.
+        In this reference model, one candidate&apos;s data ends up in {totalPlaces} distinct places
+        across {rows.length} stages, with {totalHotspots} places where control breaks.
       </span>
     </div>
   );
