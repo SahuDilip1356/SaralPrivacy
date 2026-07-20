@@ -9,8 +9,15 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { ChevronDown, Map as MapIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { trackEvent } from "@/lib/analytics";
-import { BUSINESS_MODELS, type BusinessModel, type DataFlowPack } from "@/lib/data-flow/schemas";
+import {
+  BUSINESS_MODELS,
+  RISK_LEVELS,
+  type BusinessModel,
+  type DataFlowPack,
+  type RiskLevel,
+} from "@/lib/data-flow/schemas";
 import { filterByBusinessModel } from "@/lib/data-flow/schemas";
+import { RISK_META } from "@/components/data-flow/flow-theme";
 import { MotionJourney } from "@/components/data-flow/MotionJourney";
 import {
   BoundaryLaneMap,
@@ -37,6 +44,9 @@ export default function DataFlowClient({ pack }: Props) {
   const [model, setModel] = useState<BusinessModel>("permanent");
   const [mapOpen, setMapOpen] = useState(false);
   const [wires, setWires] = useState<WireMode>("copies");
+  // Worst-first, all on by default: the filter is for narrowing to what needs
+  // attention, not for hiding things until you ask.
+  const [risks, setRisks] = useState<ReadonlySet<RiskLevel>>(() => new Set(RISK_LEVELS));
   const [selection, setSelection] = useState<FlowSelection>(null);
 
   useEffect(() => {
@@ -72,6 +82,16 @@ export default function DataFlowClient({ pack }: Props) {
   // HotspotRail renders each title as a button and has always accepted this
   // callback, but it was never passed - so all 7 titles were inert. Opening the
   // node's detail sheet is what the rail's own header comment promised.
+  const toggleRisk = useCallback((r: RiskLevel) => {
+    setRisks((prev) => {
+      const next = new Set(prev);
+      if (next.has(r)) next.delete(r);
+      else next.add(r);
+      // Never let the board go completely blank - the last one stays on.
+      return next.size === 0 ? new Set([r]) : next;
+    });
+    trackEvent.dataFlow("risk_filter_toggled", { risk: r });
+  }, []);
   const handleHotspotSelect = useCallback((nodeId: string, hotspotId: string) => {
     setSelection({ kind: "node", id: nodeId });
     trackEvent.dataFlow("hotspot_clicked", { node_id: nodeId, hotspot_id: hotspotId });
@@ -145,6 +165,31 @@ export default function DataFlowClient({ pack }: Props) {
             {/* Copies is the default, not "all". Everything at once was the old
                 graph's failure - the filtered views are the ones that answer a
                 question. */}
+            <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label="Risk level">
+              <span className="mr-1 text-xs font-medium text-slate-500">Risk level:</span>
+              {([...RISK_LEVELS].reverse() as RiskLevel[]).map((r) => {
+                const on = risks.has(r);
+                const RiskIcon = RISK_META[r].icon;
+                return (
+                  <button
+                    key={r}
+                    type="button"
+                    onClick={() => toggleRisk(r)}
+                    aria-pressed={on}
+                    className={cn(
+                      "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold capitalize transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500",
+                      RISK_META[r].chip,
+                    )}
+                    style={{ opacity: on ? 1 : 0.4 }}
+                  >
+                    <RiskIcon size={11} aria-hidden="true" />
+                    {r}
+                    <span className="sr-only">{on ? " - showing" : " - hidden"}</span>
+                  </button>
+                );
+              })}
+            </div>
+
             <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label="Show connections">
               <span className="mr-1 text-xs font-medium text-slate-500">Show:</span>
               {WIRE_MODES.map((v) => (
@@ -171,6 +216,7 @@ export default function DataFlowClient({ pack }: Props) {
                 pack={pack}
                 model={model}
                 wires={wires}
+                risks={risks}
                 selectedId={selection?.kind === "node" ? selection.id : undefined}
                 onSelect={(nodeId) => handleMapSelect({ kind: "node", id: nodeId })}
               />
@@ -188,6 +234,15 @@ export default function DataFlowClient({ pack }: Props) {
               <span className="inline-flex items-center gap-1.5">
                 <span className="inline-block h-0 w-5 border-t-[3px] border-violet-500" aria-hidden="true" />
                 Creates a copy
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <span
+                  className="rounded-full bg-red-600 px-1.5 text-[9px] font-bold uppercase tracking-wide text-white"
+                  aria-hidden="true"
+                >
+                  hot
+                </span>
+                One of the {pack.hotspots.length} control breaks
               </span>
               <span>Rows are trust boundaries; columns are stages. Tap any system for detail.</span>
             </div>

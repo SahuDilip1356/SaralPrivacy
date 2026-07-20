@@ -22,7 +22,13 @@
 
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
-import type { BusinessModel, Boundary, DataFlowPack, FlowNode } from "@/lib/data-flow/schemas";
+import type {
+  BusinessModel,
+  Boundary,
+  DataFlowPack,
+  FlowNode,
+  RiskLevel,
+} from "@/lib/data-flow/schemas";
 import { filterByBusinessModel } from "@/lib/data-flow/schemas";
 import { BOUNDARY_META, EXTERNAL_BOUNDARY_SET, RISK_META } from "./flow-theme";
 
@@ -61,11 +67,14 @@ interface Props {
   pack: DataFlowPack;
   model: BusinessModel;
   wires: WireMode;
+  /** Risk levels still switched on. Others dim rather than disappear, so the
+   *  board keeps its shape and you can see what you filtered out. */
+  risks: ReadonlySet<RiskLevel>;
   selectedId?: string;
   onSelect: (nodeId: string) => void;
 }
 
-export function BoundaryLaneMap({ pack, model, wires, selectedId, onSelect }: Props) {
+export function BoundaryLaneMap({ pack, model, wires, risks, selectedId, onSelect }: Props) {
   const boardRef = useRef<HTMLDivElement>(null);
   const [paths, setPaths] = useState<
     { d: string; external: boolean; copy: boolean; on: boolean }[]
@@ -204,6 +213,7 @@ export function BoundaryLaneMap({ pack, model, wires, selectedId, onSelect }: Pr
                 nodes={view.nodes}
                 home={view.home}
                 hotRank={hotRank}
+                risks={risks}
                 selectedId={selectedId}
                 onSelect={onSelect}
               />
@@ -246,6 +256,7 @@ function FragmentRow({
   nodes,
   home,
   hotRank,
+  risks,
   selectedId,
   onSelect,
 }: {
@@ -257,6 +268,7 @@ function FragmentRow({
   nodes: FlowNode[];
   home: Map<string, string | undefined>;
   hotRank: Map<string, number>;
+  risks: ReadonlySet<RiskLevel>;
   selectedId?: string;
   onSelect: (id: string) => void;
 }) {
@@ -297,6 +309,7 @@ function FragmentRow({
               const risk = RISK_META[n.riskLevel];
               const rank = hotRank.get(n.id);
               const on = selectedId === n.id;
+              const muted = !risks.has(n.riskLevel);
               return (
                 <button
                   key={n.id}
@@ -305,7 +318,7 @@ function FragmentRow({
                   onClick={() => onSelect(n.id)}
                   aria-pressed={on}
                   className={cn(
-                    "relative z-10 flex w-full flex-col gap-1 rounded-lg border px-2 py-1.5 text-left transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500",
+                    "relative z-10 flex w-full flex-col gap-1 rounded-lg border px-2 py-1.5 text-left transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500",
                     n.riskLevel === "critical"
                       ? "border-red-300 bg-red-50"
                       : n.riskLevel === "high"
@@ -313,6 +326,12 @@ function FragmentRow({
                         : "border-slate-200 bg-white",
                     on ? "ring-2 ring-navy-700" : "hover:shadow-md",
                   )}
+                  // Inline, not a utility class: this is a state-driven value,
+                  // and the Tailwind build did not emit `opacity-25` for it -
+                  // the class applied but computed to 1. Inline is deterministic.
+                  style={{ opacity: muted ? 0.22 : 1 }}
+                  aria-hidden={muted || undefined}
+                  tabIndex={muted ? -1 : undefined}
                 >
                   <span className="text-[11.5px] font-semibold leading-tight text-navy-800">
                     {n.name}
