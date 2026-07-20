@@ -144,8 +144,14 @@ export function Header() {
             </div>
           </Link>
 
-          {/* Desktop nav */}
-          <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1">
+          {/* Desktop nav.
+              Shown from xl, not lg: at 1024-1279 the six items + two CTAs + logo
+              measured exactly 0px of slack, so labels wrapped to two lines
+              ("Data Discovery", "Learn DPDPA") and squeezed the wordmark. The
+              mobile menu is the better experience in that band than a wrapped
+              bar. `whitespace-nowrap` makes any future overflow visible as
+              overflow instead of silently re-wrapping. */}
+          <nav className="hidden xl:flex items-center gap-0.5 2xl:gap-1">
             {navigation.map((item) => (
               <div
                 key={item.label}
@@ -161,7 +167,7 @@ export function Header() {
                 <Link
                   href={item.href}
                   className={cn(
-                    "flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                    "flex items-center gap-1 whitespace-nowrap px-3 py-2 rounded-lg text-sm font-medium transition-colors",
                     pathname === item.href || pathname.startsWith(item.href + "/")
                       ? "text-green-600 bg-green-50"
                       : "text-slate-700 hover:text-navy-700 hover:bg-cloud-50"
@@ -223,7 +229,7 @@ export function Header() {
               </Link>
             </div>
             <button
-              className="lg:hidden p-2 text-slate-600 hover:text-slate-900"
+              className="xl:hidden p-2 text-slate-600 hover:text-slate-900"
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label="Toggle menu"
             >
@@ -235,7 +241,7 @@ export function Header() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="lg:hidden bg-white border-t border-slate-200 py-4 px-4 space-y-1 max-h-[80vh] overflow-y-auto">
+        <div className="xl:hidden bg-white border-t border-slate-200 py-4 px-4 space-y-1 max-h-[80vh] overflow-y-auto">
           {navigation.map((item) => (
             <div key={item.label}>
               <Link
