@@ -1,19 +1,23 @@
 "use client";
 
 // Client shell. PRIMARY experience = the animated, informative MotionJourney.
-// The dense React Flow graph is an opt-in "full system map" for power users,
-// lazy-loaded only when expanded. The business map is configuration passed as
-// a prop - never hard-coded here.
+// The opt-in "full system map" is BoundaryLaneMap - trust boundaries as rows,
+// stages as columns - for IT and compliance. The business map is configuration
+// passed as a prop - never hard-coded here.
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import dynamic from "next/dynamic";
 import { ChevronDown, Map as MapIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { trackEvent } from "@/lib/analytics";
 import { BUSINESS_MODELS, type BusinessModel, type DataFlowPack } from "@/lib/data-flow/schemas";
 import { filterByBusinessModel } from "@/lib/data-flow/schemas";
-import { buildProjection, type FlowView } from "@/lib/data-flow/map-builder";
 import { MotionJourney } from "@/components/data-flow/MotionJourney";
+import {
+  BoundaryLaneMap,
+  WIRE_LABELS,
+  WIRE_MODES,
+  type WireMode,
+} from "@/components/data-flow/BoundaryLaneMap";
 import { HotspotRail } from "@/components/data-flow/HotspotRail";
 import { DetailSheet } from "@/components/data-flow/DetailSheet";
 import { NodeDetailPanel } from "@/components/data-flow/NodeDetailPanel";
@@ -25,16 +29,6 @@ const MODEL_LABELS: Record<BusinessModel, string> = {
   staffing: "Staffing / RPO",
 };
 
-// Power-user graph - loaded only when the user opts into the full system map.
-const DataFlowCanvas = dynamic(() => import("@/components/data-flow/DataFlowCanvas"), {
-  ssr: false,
-  loading: () => (
-    <div className="flex h-full items-center justify-center rounded-xl border border-slate-200 bg-white">
-      <p className="animate-pulse text-sm font-medium text-slate-400">Loading the full map…</p>
-    </div>
-  ),
-});
-
 interface Props {
   pack: DataFlowPack;
 }
@@ -42,7 +36,7 @@ interface Props {
 export default function DataFlowClient({ pack }: Props) {
   const [model, setModel] = useState<BusinessModel>("permanent");
   const [mapOpen, setMapOpen] = useState(false);
-  const [mapView, setMapView] = useState<FlowView>("process");
+  const [wires, setWires] = useState<WireMode>("copies");
   const [selection, setSelection] = useState<FlowSelection>(null);
 
   useEffect(() => {
@@ -56,11 +50,6 @@ export default function DataFlowClient({ pack }: Props) {
     selection?.kind === "node" ? pack.nodes.find((n) => n.id === selection.id) : undefined;
   const selectedEdge =
     selection?.kind === "edge" ? pack.edges.find((e) => e.id === selection.id) : undefined;
-
-  const projection = useMemo(
-    () => (mapOpen ? buildProjection(pack, { view: mapView, model }) : null),
-    [pack, mapView, model, mapOpen],
-  );
 
   const handleModelChange = useCallback((m: BusinessModel) => {
     setModel(m);
@@ -151,39 +140,57 @@ export default function DataFlowClient({ pack }: Props) {
           />
         </button>
 
-        {mapOpen && projection && (
+        {mapOpen && (
           <div className="mt-3 space-y-2">
-            <div className="flex flex-wrap gap-1.5" role="group" aria-label="Map view">
-              {(["process", "systems", "copies", "external"] as FlowView[]).map((v) => (
+            {/* Copies is the default, not "all". Everything at once was the old
+                graph's failure - the filtered views are the ones that answer a
+                question. */}
+            <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label="Show connections">
+              <span className="mr-1 text-xs font-medium text-slate-500">Show:</span>
+              {WIRE_MODES.map((v) => (
                 <button
                   key={v}
                   type="button"
                   onClick={() => {
-                    setMapView(v);
+                    setWires(v);
                     trackEvent.dataFlow("view_changed", { view: v });
                   }}
-                  aria-pressed={mapView === v}
+                  aria-pressed={wires === v}
                   className={cn(
                     "rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500",
-                    mapView === v ? "bg-navy-700 text-white" : "bg-slate-100 text-slate-700 hover:bg-slate-200",
+                    wires === v ? "bg-navy-700 text-white" : "bg-slate-100 text-slate-700 hover:bg-slate-200",
                   )}
                 >
-                  {{ process: "Journey", systems: "By system", copies: "Copies", external: "External sharing" }[v]}
+                  {WIRE_LABELS[v]}
                 </button>
               ))}
             </div>
-            <div className="h-[60vh] min-h-[420px] overflow-hidden rounded-xl border border-slate-200">
-              <DataFlowCanvas
-                projection={projection}
-                riskHeat={mapView === "process"}
-                dpdpaOverlay={false}
-                selection={selection}
-                onSelect={handleMapSelect}
+
+            <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
+              <BoundaryLaneMap
+                pack={pack}
+                model={model}
+                wires={wires}
+                selectedId={selection?.kind === "node" ? selection.id : undefined}
+                onSelect={(nodeId) => handleMapSelect({ kind: "node", id: nodeId })}
               />
             </div>
-            <p className="text-xs text-slate-500">
-              Tip: this is the raw data-map for auditing. The journey above is the readable version.
-            </p>
+
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 text-[11.5px] text-slate-500">
+              <span className="inline-flex items-center gap-1.5">
+                <span className="inline-block h-0 w-5 border-t-2 border-teal-500" aria-hidden="true" />
+                Moves within a boundary
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <span className="inline-block h-0 w-5 border-t-2 border-dashed border-violet-500" aria-hidden="true" />
+                Crosses a boundary
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <span className="inline-block h-0 w-5 border-t-[3px] border-violet-500" aria-hidden="true" />
+                Creates a copy
+              </span>
+              <span>Rows are trust boundaries; columns are stages. Tap any system for detail.</span>
+            </div>
           </div>
         )}
 
