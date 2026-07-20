@@ -316,6 +316,42 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
                 </span>
               </span>
             </p>
+
+            {/* Legend lives here, not in a section further down the page: the
+                panel is sticky, so the key to the colours stays on screen for
+                the whole scroll - which is exactly when you need it. */}
+            <dl className="mt-4 border-t border-white/10 pt-3.5">
+              <dt className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                How to read the chips
+              </dt>
+              <div className="mt-2.5 flex flex-col gap-2">
+                <dd className="flex items-center gap-2.5 text-[11.5px] leading-tight text-slate-300">
+                  <span
+                    aria-hidden="true"
+                    className="h-4 w-7 shrink-0 rounded border border-white/20 border-l-4 border-l-violet-400 bg-white/5"
+                  />
+                  Left edge - sits outside your agency
+                </dd>
+                <dd className="flex items-center gap-2.5 text-[11.5px] leading-tight text-slate-300">
+                  <span
+                    aria-hidden="true"
+                    className="h-4 w-7 shrink-0 rounded border border-amber-400/60 bg-amber-400/25"
+                  />
+                  Amber or red fill - high or critical risk
+                </dd>
+                <dd className="flex items-center gap-2.5 text-[11.5px] leading-tight text-slate-300">
+                  <span
+                    aria-hidden="true"
+                    className="h-4 w-7 shrink-0 rounded bg-teal-400/30 ring-1 ring-inset ring-teal-300"
+                  />
+                  Teal - personal data new at that stage
+                </dd>
+              </div>
+              <p className="mt-2.5 text-[11px] leading-snug text-slate-400">
+                Risk and location are separate. An outside system can be low risk; an in-house
+                one can be your worst.
+              </p>
+            </dl>
           </div>
         </div>
         <p className="mt-2 px-1 text-[11px] leading-relaxed text-slate-400">{pack.disclaimer}</p>
@@ -398,16 +434,20 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
                   </p>
                 )}
 
-                {/* What personal data moves here. Kept deliberately flat and
-                    borderless: the system chips below are buttons and must stay
-                    the dominant, tappable thing on the card. No animation - the
-                    card already carries five. */}
+                {/* What personal data moves here. Teal is the third semantic -
+                    it collides with neither risk (amber/red) nor boundary
+                    (violet), and this IS the candidate's own data, so the
+                    brand's "your side" hue is apt. Categories new at this stage
+                    are filled and pulse ONCE as the stage lands; repeats stay
+                    outlined so the eye goes to what changed. The pulse is a
+                    single settling beat, not a loop - a compliance page that
+                    throbs is a page people stop reading. */}
                 {row.moving.length > 0 && (
-                  <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
-                    <span className="text-[10.5px] font-semibold uppercase tracking-wide text-slate-400">
+                  <div className="mt-3 flex flex-wrap items-center gap-1.5">
+                    <span className="text-[10.5px] font-bold uppercase tracking-wider text-teal-700">
                       Moving here
                     </span>
-                    {row.moving.slice(0, MAX_CATEGORY_CHIPS).map((c) => {
+                    {row.moving.slice(0, MAX_CATEGORY_CHIPS).map((c, k) => {
                       const isNew = row.newCategoryIds.has(c.id);
                       // Only tag data the business inferred when the category's
                       // own name doesn't already say so - "Derived & inferred
@@ -415,20 +455,30 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
                       const tagInferred =
                         c.kind === "derived" && !/inferred|derived/i.test(c.name);
                       return (
-                        <span
+                        <motion.span
                           key={c.id}
+                          initial={false}
+                          animate={
+                            isNew && reached && !reduce
+                              ? { scale: [1, 1.13, 1], opacity: [0.75, 1, 1] }
+                              : { scale: 1, opacity: 1 }
+                          }
+                          transition={{
+                            duration: 0.55,
+                            delay: reached && !reduce ? 0.18 + k * 0.07 : 0,
+                            ease: "easeOut",
+                          }}
                           className={cn(
-                            "rounded px-1.5 py-0.5 text-[11px]",
-                            c.kind === "derived"
-                              ? "bg-navy-50 font-medium text-navy-700"
-                              : "bg-slate-50 text-slate-600",
-                            isNew && "font-semibold text-slate-700 ring-1 ring-inset ring-teal-300",
+                            "rounded-md px-2 py-0.5 text-[11.5px]",
+                            isNew
+                              ? "bg-teal-100 font-bold text-teal-900 ring-1 ring-inset ring-teal-500"
+                              : "bg-white font-medium text-slate-600 ring-1 ring-inset ring-slate-200",
                           )}
                         >
                           {c.name}
                           {tagInferred && <span className="ml-1 font-bold">· inferred</span>}
                           {isNew && <span className="sr-only"> (new at this stage)</span>}
-                        </span>
+                        </motion.span>
                       );
                     })}
                     {row.moving.length > MAX_CATEGORY_CHIPS && (
