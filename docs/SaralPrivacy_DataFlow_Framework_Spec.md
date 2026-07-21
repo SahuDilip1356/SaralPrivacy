@@ -193,6 +193,81 @@ accent input. That separation IS the harmony guarantee.
 
 ---
 
+## 6b. Authoring worksheet + content model (fill BEFORE any code)
+
+Adopted from Dilip's industry playbook (2026-07-21). The engine gives you the *shape*; this is
+the *content* discipline that keeps 12 industries in harmony. Every page answers seven
+questions, and the pack is authored by filling this worksheet first, then translating to the TS
+pack.
+
+**The seven questions → page element**
+| Question | Element |
+|---|---|
+| Whose data are we following? | The one person node (protagonist) |
+| What business journey? | The 12 stages |
+| What data is created/collected? | `dataCategoryIds` on nodes + edges → the "Moving here" chips |
+| Where does it travel? | Systems/repositories (nodes) |
+| Where does control weaken? | The 7 hotspots |
+| What does DPDPA require? | `stage.dpdpaNote` (one operational duty per stage) |
+| What next? | Hotspot fix + assessment CTA |
+
+**Protagonist per industry** (the single `person` node):
+CA firm → Client · Law → Client/matter subject · Clinic → Patient · School → Student ·
+D2C → Customer · Real estate → Buyer/tenant · Hotel → Guest · Pharmacy → Patient ·
+Fintech/NBFC → Borrower · Training → Student · Gym/Salon → Member.
+
+**Stage-authoring method — start with the business lifecycle, NOT the apps:**
+`Entry → Registration → Service delivery → Internal processing → External sharing → Closure →
+Archive/deletion`. For each of the 12 stages, ask the five control-break questions — any "yes"
+is a hotspot candidate: (1) does data create another copy? (2) does it leave the org? (3) is
+the system unmanaged? (4) is retention unclear? (5) can the business find and delete it?
+
+**DPDPA obligation library** (attach ONE to each stage — plain instruction, no section numbers):
+Collect → *tell the person what you collect and why* · Consent → *keep evidence of what they
+agreed to* · Use → *only for the stated purpose* · Share → *only what the recipient needs* ·
+Vendor → *set clear responsibilities and limits* · Store → *managed, protected systems* ·
+Retain → *no longer than needed* · Delete → *be able to find and erase copies* · Correct →
+*allow inaccurate data to be fixed* · Breach → *know who acts and who must be informed*.
+
+**Hotspot title rule:** name a visible operational failure, never a generic risk.
+Good: *"Client documents remain in staff WhatsApp chats."* Weak: *"Poor data governance."*
+
+### Hotspot taxonomy (NEW — additive field, adopt from the playbook)
+Hotspots currently carry severity only. Add an **optional** `tags: HotspotTag[]` field so control
+breaks are typed — this is the "kind" dimension the external review flagged as missing, and it
+enables cross-industry filters/analytics later. Additive and backward-compatible (recruitment
+can be backfilled). Standard tags:
+`shadow_system · copy_sprawl · external_transfer · vendor_dependency · retention_gap ·
+access_gap · purpose_drift · ai_tool · identity_document · physical_record · rights_failure ·
+breach_exposure`.
+
+### ⚠️ Reconciling the playbook with the code (3 conflicts — hold to the code)
+The playbook is 80% aligned, but three of its numbers will fail `tsc`/tests if authored literally:
+1. **Hotspots = EXACTLY 7**, not "5–8". Schema `.length(7)`, ranks 1–7. The canonical 7 is a
+   feature; do not deviate.
+2. **Stages: 12 canonical**, gated down for display (permanent shows 10). "8–12" means "12
+   defined, some hidden by business model", NOT a free choice — a truly shorter lifecycle needs
+   the gate test relaxed to a range, which folds into Blocker B.
+3. **Variants are a GLOBAL 2-value enum** (`BUSINESS_MODELS`), not per-industry. 3-variant sets
+   (CA: Individual/Business/Payroll) need an engine change first — same class as Blocker A. Only
+   add a variant where stages/data/systems genuinely differ.
+Also: keep **TS packs, not JSON** (`tsc` + `validatePack` catch bad packs at build time — JSON
+loses that). Assessment linking is **bucket-level today** (5 per pack), not per-question; per-
+question is a good north star but needs Blocker A resolved first.
+
+---
+
+## 6c. Production sequence (adopted from the playbook)
+Build in waves, easiest-and-closest-to-recruitment first:
+- **Wave 1 — Professional services:** CA Firms → Law Firms → Training Institutes
+  (document-heavy, familiar, close to the recruitment model).
+- **Wave 2 — High-impact personal data:** Clinics/Labs → Schools → Pharmacies.
+- **Wave 3 — Consumer/transaction:** D2C → Real Estate → Hotels → Gyms/Salons.
+- **Wave 4 — Financial/complex:** Fintech/NBFC last (heaviest regulatory + vendor overlay;
+  matches the assessment pack running hottest at Σcaps 122).
+
+---
+
 ## 7. Process gate (before any code)
 Same discipline as the industry-assessment packs:
 1. Draft the journey content (12 stages, ~28+ nodes, 7 hotspots) as a spec.
@@ -207,7 +282,12 @@ Same discipline as the industry-assessment packs:
 
 ## 8. Known open items the framework inherits
 - `ASSESSMENT_BUCKETS` generalisation (Blocker A) — do first.
-- Test parametrisation (Blocker B).
+- Test parametrisation (Blocker B) — also relaxes the hardcoded `stages.length === 12` to a
+  range if a shorter-lifecycle industry ever needs it.
+- **Hotspot `tags` field (§6b taxonomy)** — additive, do alongside pack #2 so the taxonomy is
+  established before the data multiplies across 12 industries.
+- Per-industry variant sets — `BUSINESS_MODELS` is a global 2-value enum; generalise only when
+  an industry genuinely needs 3+ variants.
 - Persona *roles* (create/view/edit/share) are NOT modelled — edges carry no persona, and
   `accessPersonaIds` is a flat list. A real schema change if ever wanted; out of scope per pack.
 - Tailwind `opacity-25`/`opacity-40` utilities were found NOT emitted by the build — use inline
