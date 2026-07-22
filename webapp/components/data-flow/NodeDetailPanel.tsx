@@ -7,7 +7,7 @@ import Link from "next/link";
 import { ArrowRight, Clock, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { DataFlowPack, FlowNode } from "@/lib/data-flow/schemas";
-import { BOUNDARY_META, NODE_TYPE_META, RISK_META } from "./flow-theme";
+import { BOUNDARY_META, NODE_TYPE_META, RISK_META, boundaryLabel } from "./flow-theme";
 
 interface Props {
   pack: DataFlowPack;
@@ -20,7 +20,7 @@ export function NodeDetailPanel({ pack, node, onClose, onAssessmentCta }: Props)
   const risk = RISK_META[node.riskLevel];
   const RiskIcon = risk.icon;
   const type = NODE_TYPE_META[node.nodeType];
-  const boundary = BOUNDARY_META[node.boundary];
+  const boundary = { ...BOUNDARY_META[node.boundary], label: boundaryLabel(pack, node.boundary) };
   const categories = pack.dataCategories.filter((c) => node.dataCategoryIds.includes(c.id));
   const personas = pack.personas.filter((p) => node.accessPersonaIds.includes(p.id));
   const hotspot = pack.hotspots.find((h) => h.nodeId === node.id);
@@ -94,7 +94,7 @@ export function NodeDetailPanel({ pack, node, onClose, onAssessmentCta }: Props)
               <li key={p.id} className="flex items-center justify-between gap-2 text-[13px]">
                 <span className="font-medium text-slate-700">{p.name}</span>
                 <span className={cn("rounded-full border px-1.5 py-px text-[10px]", BOUNDARY_META[p.boundary].badge)}>
-                  {BOUNDARY_META[p.boundary].label}
+                  {boundaryLabel(pack, p.boundary)}
                 </span>
               </li>
             ))}

@@ -94,18 +94,16 @@ export const EDGE_CHANNELS = [
 export type EdgeChannel = (typeof EDGE_CHANNELS)[number];
 
 /**
- * Bucket keys of lib/data/industry-assessment/packs/recruitment-agencies.ts.
- * Literal union so a typo in a hotspot mapping fails typecheck; the pack test
- * additionally asserts each key exists in the live pack (drift guard).
+ * Assessment bucket keys are declared PER PACK (`pack.assessmentBuckets`), not
+ * globally: every industry's assessment scores different things. Recruitment's
+ * five and CA's five have zero overlap, so a global enum would either fail
+ * typecheck on a correct CA bucket or - worse - compile with a recruitment one
+ * and deep-link to a section the CA assessment cannot match, silently killing
+ * the focus banner on every hotspot. `validatePack` enforces membership against
+ * the pack's own list, and the pack test asserts each key exists in the live
+ * assessment pack (drift guard).
  */
-export const ASSESSMENT_BUCKETS = [
-  "candidate_sourcing",
-  "candidate_document",
-  "client_sharing",
-  "ats_tool_access",
-  "retention_rights",
-] as const;
-export type AssessmentBucketKey = (typeof ASSESSMENT_BUCKETS)[number];
+const bucketKeySchema = z.string().regex(/^[a-z0-9_]+$/, "bucket keys are snake_case");
 
 // ---------------------------------------------------------------------------
 // Schemas
@@ -196,16 +194,43 @@ export const flowHotspotSchema = z.object({
   whyItMatters: z.string().min(1),
   dataCategoryIds: z.array(idSchema).min(1),
   action: z.string().min(1),
-  assessmentBucket: z.enum(ASSESSMENT_BUCKETS),
+  /** Must be one of the owning pack's `assessmentBuckets` (checked in validatePack). */
+  assessmentBucket: bucketKeySchema,
 });
 export type FlowHotspot = z.infer<typeof flowHotspotSchema>;
+
+/**
+ * Layer 1 of the industry standard: WHOSE data this map follows, plus the nouns
+ * the shared components use to talk about them. Without this the components
+ * render recruitment's words ("Candidate", "your agency") on every industry -
+ * visibly wrong the moment a second map exists.
+ *
+ * `boundaryLabels` overrides BOUNDARY_META per pack; omitted keys fall back to
+ * the shared default, so an industry only names what genuinely differs.
+ */
+export const flowLexiconSchema = z.object({
+  /** Singular, lowercase, used mid-sentence: "candidate" / "client". */
+  subject: z.string().min(1),
+  /** The thing being followed: "One candidate's CV" / "One client's documents". */
+  subjectArtefact: z.string().min(1),
+  /** The business, used as "outside your ___": "agency" / "firm". */
+  org: z.string().min(1),
+});
+export type FlowLexicon = z.infer<typeof flowLexiconSchema>;
 
 export const dataFlowPackSchema = z.object({
   industry: idSchema,
   title: z.string().min(1),
+  /** Layer 1 - the human this map follows, as shown in the header. */
+  mainActor: z.string().min(1),
+  lexicon: flowLexiconSchema,
+  /** Per-pack boundary label overrides; unset keys use BOUNDARY_META. */
+  boundaryLabels: z.record(z.enum(BOUNDARIES), z.string().min(1)).optional(),
   /** Reference-model banner - never present metrics as the user's own data. */
   disclaimer: z.string().min(1),
   assessmentRoute: z.string().startsWith("/"),
+  /** This industry's assessment bucket keys - the only values its hotspots may use. */
+  assessmentBuckets: z.array(bucketKeySchema).min(1),
   discoveryNicheId: idSchema,
   stages: z.array(flowStageSchema).min(1),
   dataCategories: z.array(dataCategorySchema).min(1),
@@ -284,9 +309,16 @@ export function validatePack(pack: DataFlowPack): string[] {
     if (!touchedNodes.has(n.id)) issues.push(`orphan node (no edges): ${n.id}`);
   }
 
+  const bucketKeys = new Set(pack.assessmentBuckets);
   for (const h of pack.hotspots) {
     if (!nodeById.has(h.nodeId)) issues.push(`hotspot ${h.id}: unknown node ${h.nodeId}`);
     for (const c of h.dataCategoryIds) if (!categoryIds.has(c)) issues.push(`hotspot ${h.id}: unknown data category ${c}`);
+    // A bucket outside this pack's own list deep-links to a section the
+    // industry's assessment cannot match: the link lands, the focus banner
+    // never renders, and nothing errors. Catch it here instead.
+    if (!bucketKeys.has(h.assessmentBucket)) {
+      issues.push(`hotspot ${h.id}: assessmentBucket ${h.assessmentBucket} not in pack.assessmentBuckets`);
+    }
   }
   const ranks = pack.hotspots.map((h) => h.rank).sort((a, b) => a - b);
   if (ranks.join(",") !== "1,2,3,4,5,6,7") issues.push(`hotspot ranks must be exactly 1..7, got ${ranks.join(",")}`);

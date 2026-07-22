@@ -44,6 +44,18 @@ export const NODE_TYPE_META: Record<NodeType, { icon: LucideIcon; label: string 
 // which is also the colourblind-safe and screen-reader-safe channel.
 // `rule` is empty for internal boundaries - that emptiness is asserted in the
 // test suite, so a new boundary cannot be added without deciding its side.
+/** Boundary label for a given pack: its override, else the shared default.
+ *
+ *  Colour, rule and glyph stay global - those encode "inside vs outside your
+ *  control", which is identical in every industry. Only the NOUN changes: a
+ *  CA firm's `agency` row is "Your firm", not "Your agency". */
+export function boundaryLabel(
+  pack: { boundaryLabels?: Partial<Record<Boundary, string>> },
+  boundary: Boundary,
+): string {
+  return pack.boundaryLabels?.[boundary] ?? BOUNDARY_META[boundary].label;
+}
+
 export const BOUNDARY_META: Record<
   Boundary,
   { label: string; badge: string; rule: string; pill: string; icon: LucideIcon }
