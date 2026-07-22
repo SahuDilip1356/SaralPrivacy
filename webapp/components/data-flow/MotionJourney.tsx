@@ -56,6 +56,7 @@ import {
   EXTERNAL_BOUNDARY_SET,
   NODE_TYPE_META,
   RISK_META,
+  boundaryLabel,
 } from "./flow-theme";
 import { NodeDetailPanel } from "./NodeDetailPanel";
 import { DetailSheet } from "./DetailSheet";
@@ -260,7 +261,7 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
               <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-teal-300 ring-1 ring-white/15">
                 <User size={17} aria-hidden="true" />
               </span>
-              <p className="text-sm font-semibold">One candidate&apos;s CV</p>
+              <p className="text-sm font-semibold">{pack.lexicon.subjectArtefact}</p>
             </div>
 
             <div className="mt-5 grid grid-cols-2 gap-4 lg:grid-cols-1">
@@ -330,7 +331,7 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
                     aria-hidden="true"
                     className="h-4 w-7 shrink-0 rounded border border-white/20 border-l-4 border-l-violet-400 bg-white/5"
                   />
-                  Left edge - sits outside your agency
+                  Left edge - sits outside your {pack.lexicon.org}
                 </dd>
                 <dd className="flex items-center gap-2.5 text-[11.5px] leading-tight text-slate-300">
                   <span
@@ -497,7 +498,7 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
                       // low-risk client system must not look alike.
                       const risk = RISK_META[n.riskLevel];
                       const RiskIcon = risk.icon;
-                      const bound = BOUNDARY_META[n.boundary];
+                      const bound = { ...BOUNDARY_META[n.boundary], label: boundaryLabel(pack, n.boundary) };
                       const BoundaryIcon = bound.icon;
                       const external = EXTERNAL_BOUNDARY_SET.has(n.boundary);
                       return (
@@ -566,8 +567,8 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
                           <span className="sr-only">
                             {risk.label}
                             {external
-                              ? `, outside your agency: ${bound.label}`
-                              : ", inside your agency"}
+                              ? `, outside your ${pack.lexicon.org}: ${bound.label}`
+                              : `, inside your ${pack.lexicon.org}`}
                           </span>
                         </motion.button>
                       );
@@ -638,7 +639,7 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
       )}
 
       <span className="sr-only">
-        In this reference model, one candidate&apos;s data ends up in {totalPlaces} distinct places
+        In this reference model, one {pack.lexicon.subject}&apos;s data ends up in {totalPlaces} distinct places
         across {rows.length} stages, with {totalHotspots} places where control breaks.
       </span>
     </div>

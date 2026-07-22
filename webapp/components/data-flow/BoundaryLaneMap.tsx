@@ -30,7 +30,7 @@ import type {
   RiskLevel,
 } from "@/lib/data-flow/schemas";
 import { filterByBusinessModel } from "@/lib/data-flow/schemas";
-import { BOUNDARY_META, EXTERNAL_BOUNDARY_SET, RISK_META } from "./flow-theme";
+import { BOUNDARY_META, EXTERNAL_BOUNDARY_SET, RISK_META, boundaryLabel } from "./flow-theme";
 
 export const WIRE_MODES = ["copies", "external", "all", "none"] as const;
 export type WireMode = (typeof WIRE_MODES)[number];
@@ -201,7 +201,7 @@ export function BoundaryLaneMap({ pack, model, wires, risks, selectedId, onSelec
             const external = EXTERNAL_BOUNDARY_SET.has(b);
             const wall = external && !wallDrawn;
             if (wall) wallDrawn = true;
-            const meta = BOUNDARY_META[b];
+            const meta = { ...BOUNDARY_META[b], label: boundaryLabel(pack, b) };
             return (
               <FragmentRow
                 key={b}

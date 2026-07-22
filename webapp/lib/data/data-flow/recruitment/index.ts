@@ -14,9 +14,26 @@ import { RECRUITMENT_HOTSPOTS } from "./hotspots.ts";
 export const recruitmentDataFlowPack: DataFlowPack = {
   industry: "recruitment-agencies",
   title: "Recruitment Personal Data Flow Map",
+  mainActor: "Candidate",
+  // Exactly the words the components hard-coded before they became per-pack -
+  // so this map renders identically to how it shipped.
+  lexicon: {
+    subject: "candidate",
+    subjectArtefact: "One candidate's CV",
+    org: "agency",
+  },
   disclaimer:
     "This is a reference model of a typical recruitment business - not a scan of your systems. Your own flow may have fewer or more stops.",
   assessmentRoute: "/assessment/recruitment",
+  // Bucket keys of lib/data/industry-assessment/packs/recruitment-agencies.ts.
+  // The pack test asserts each one still exists there (drift guard).
+  assessmentBuckets: [
+    "candidate_sourcing",
+    "candidate_document",
+    "client_sharing",
+    "ats_tool_access",
+    "retention_rights",
+  ],
   discoveryNicheId: "recruitment-staffing",
   stages: RECRUITMENT_STAGES,
   dataCategories: RECRUITMENT_DATA_CATEGORIES,

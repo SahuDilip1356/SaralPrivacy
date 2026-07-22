@@ -9,7 +9,6 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 import {
-  ASSESSMENT_BUCKETS,
   BOUNDARIES,
   EXTERNAL_BOUNDARIES,
   computePackSummary,
@@ -101,7 +100,7 @@ test("hotspots: canonical 7 map to real assessment pack buckets", () => {
     join(HERE, "..", "data", "industry-assessment", "packs", "recruitment-agencies.ts"),
     "utf8",
   );
-  for (const bucket of ASSESSMENT_BUCKETS) {
+  for (const bucket of pack.assessmentBuckets) {
     assert.ok(
       packSource.includes(`key: "${bucket}"`),
       `assessment pack still defines bucket "${bucket}"`,
