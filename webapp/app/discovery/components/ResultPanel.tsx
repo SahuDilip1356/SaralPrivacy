@@ -1,9 +1,10 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
 import Gauge from "./Gauge";
-import PersonalDataMap from "./PersonalDataMap";
+import DiscoveryPack from "./pack/DiscoveryPack";
 import { bandColor, resolveGroups, TAG_GROUP } from "@/lib/discovery/engine";
-import { getNiche } from "@/lib/discovery/data";
+import { getNiche, TAG_LIB } from "@/lib/discovery/data";
+import { buildRegister } from "@/lib/discovery/register";
 import { checklistFor } from "@/lib/discovery/checklist-map";
 import { trackEvent } from "@/lib/analytics";
 import type { ItemGroup, ResolvedItem, ScoreResult } from "@/lib/discovery/types";
@@ -98,6 +99,24 @@ export default function ResultPanel({
     [nicheId, selected],
   );
   const checklist = checklistFor(nicheId);
+
+  // The three-report Discovery Pack — pure derivation of the confirmed items.
+  // Engine helpers are injected so the pure builder never imports the engine.
+  const register = useMemo(
+    () =>
+      buildRegister({
+        nicheId,
+        nicheName,
+        groups: mapGroups,
+        selectedIds: selected,
+        result: r,
+        deps: {
+          tagWeight: (t) => TAG_LIB[t]?.weight ?? 1,
+          categoryName: (k) => TAG_GROUP[k],
+        },
+      }),
+    [nicheId, nicheName, mapGroups, selected, r],
+  );
 
   const [stage, setStage] = useState<Stage>("cta");
   const [form, setForm] = useState({
@@ -249,52 +268,11 @@ export default function ResultPanel({
 
       <p className="result-narrative">{narrative(nicheId, r)}</p>
 
-      <div className="result-cols">
-        <div className="rc">
-          <h4 className="rc-h">Personal data you’re working with</h4>
-          <div className="cat-chips">
-            {r.categories.map((c) => (
-              <span className="cat-chip" key={c}>{c}</span>
-            ))}
-          </div>
-          {r.obligations.length > 0 && (
-            <>
-              <h4 className="rc-h" style={{ marginTop: 18 }}>DPDPA duties this triggers</h4>
-              <div className="oblig-row">
-                {r.obligations.map((o) => (
-                  <span className={"oblig-chip" + (o.startsWith("Children") ? " child" : "")} key={o}>
-                    {o}
-                  </span>
-                ))}
-              </div>
-            </>
-          )}
-          {r.hiddenSelected.length > 0 && (
-            <div className="hidden-box" style={{ marginTop: 16 }}>
-              <div className="hidden-h">Often-missed data you flagged</div>
-              <ul>
-                {r.hiddenSelected.map((h) => (
-                  <li key={h.id}>{h.item}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
-        <div className="rc">
-          <h4 className="rc-h">Your top {r.precautions.length} precautions</h4>
-          <ol className="precs">
-            {r.precautions.map((p, i) => (
-              <li key={i}>
-                <span className="prec-n">{i + 1}</span>
-                <span>{p}</span>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </div>
+      <p className="result-narrative-sub">{r.categories.slice(0, 6).join(" · ")}</p>
 
-      {/* Detailed personal-data map (RoPA inventory) — free, on-screen */}
-      <PersonalDataMap groups={mapGroups} />
+      {/* The three-report Personal Data Discovery Pack (Register · Retention · Risk)
+          + prioritised actions + the Data-Mapping handoff seam. */}
+      <DiscoveryPack register={register} />
 
       <div className="result-exposure">
         <span className="exp-icon" aria-hidden="true">▣</span>
