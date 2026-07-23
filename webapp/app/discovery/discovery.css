@@ -655,3 +655,9 @@
   background: #fff; transition: transform 0.15s ease; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); }
 .spd .dpack-switch.on .dpack-switch-knob { transform: translateX(20px); }
 .spd .dpack-switch:focus-visible { outline: none; box-shadow: var(--ring); }
+
+/* Alignment fix: every row shares ONE set of column tracks via subgrid, so rows
+   with long content (e.g. "customers/users/employees") can't push their own
+   columns out of line with the rest. */
+.spd .dpack-reg { display: grid; grid-template-columns: 2.2fr 1fr 1.4fr 2fr 0.85fr 1.35fr; column-gap: 14px; }
+.spd .dpack-reg-row { grid-template-columns: subgrid; grid-column: 1 / -1; }
