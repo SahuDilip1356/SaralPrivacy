@@ -261,3 +261,8 @@ Off clean 1fc42bf (concurrent CA session had contested feat/data-discovery-enhan
 - #3 Start-free-check resets — StartFreshLink clears sp_discovery_v1 + reloads to #tool (step 0).
 - #6 hero motion — card rise, staggered rows, check pop, often-missed pulse, gauge sweep 0→61%; prefers-reduced-motion → static.
 - DEFERRED next sprint (Phase B): #4 save pack (email+details+DPDPA consent) + #5 store→admin review→resend (mirror assessment layer on Appwrite).
+
+### Progress — session 3b (preview review round 2)
+- Stored-at was collapsing to a sliver: root cause was auto table-layout + line-clamp giving the cell ~0 width. Fixed with `table-layout: fixed` + explicit column widths; Principal squeezed to 11%, Stored-at widened to 23% (clamped to 3 lines).
+- Decision control → compact **Yes / No** segmented toggle, **default Yes (green)**, No red (greys+strikes row). Reclaims column space. Header "Keep?".
+- Export now the full 3-section pack CSV (Master Register + Retention Matrix + Data Risk Register) via `buildPackCsv(register)` — replaces the inventory-only CSV; file `{niche}-dpdpa-discovery-pack.csv`. Answers "does the extract include retention + risk" = now YES.
