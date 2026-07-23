@@ -628,3 +628,30 @@
 .spd .dpack-yn-no.on { background: var(--error); color: #fff; }
 .spd .dpack-yn-btn:focus-visible { outline: none; box-shadow: inset var(--ring); }
 @media (max-width: 900px) { .spd .dpack-yn-btn { padding: 4px 9px; } }
+
+/* ── Register as CSS GRID (deterministic column widths; cannot collapse to 1 char,
+      which the <table> layout was doing). Replaces the .dpack-table.reg approach. ── */
+.spd .dpack-reg-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r); }
+.spd .dpack-reg { min-width: 720px; }
+.spd .dpack-reg-row { display: grid; grid-template-columns: 2.2fr 1fr 1.4fr 2fr 0.85fr 1.35fr; gap: 14px;
+  padding: 12px 14px; border-bottom: 1px solid var(--line); align-items: start; font-size: 14px; color: var(--slate); }
+.spd .dpack-reg-head { background: var(--cloud); font-size: 12px; text-transform: uppercase; letter-spacing: 0.03em;
+  color: var(--navy); font-weight: 600; }
+.spd .dpack-reg-row:not(.dpack-reg-head):last-child { border-bottom: none; }
+.spd .dpack-reg-row:not(.dpack-reg-head):hover { background: var(--cloud); }
+.spd .dpack-reg-row.declined { opacity: 0.5; }
+.spd .dpack-reg-row.declined .dpack-c-item strong { text-decoration: line-through; }
+.spd .dpack-c-item strong { color: var(--navy); font-weight: 600; }
+.spd .dpack-c-stored { color: var(--muted); overflow-wrap: break-word; }
+
+/* Keep? toggle — a real switch: green (Yes) / red (No), knob slides. */
+.spd .dpack-c-keep { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+.spd .dpack-keep { display: inline-flex; align-items: center; gap: 8px; }
+.spd .dpack-keep-lbl { font-size: 12px; font-weight: 600; color: var(--slate-2); min-width: 22px; }
+.spd .dpack-switch { width: 42px; height: 22px; border-radius: 999px; border: none; background: var(--error);
+  position: relative; cursor: pointer; padding: 0; flex: 0 0 auto; transition: background 0.15s ease; }
+.spd .dpack-switch.on { background: var(--green); }
+.spd .dpack-switch-knob { position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 50%;
+  background: #fff; transition: transform 0.15s ease; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); }
+.spd .dpack-switch.on .dpack-switch-knob { transform: translateX(20px); }
+.spd .dpack-switch:focus-visible { outline: none; box-shadow: var(--ring); }

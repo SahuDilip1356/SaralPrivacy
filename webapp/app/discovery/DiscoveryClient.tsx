@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import IndustryPicker from "./components/IndustryPicker";
 import DataReview from "./components/DataReview";
 import ControlQuestions from "./components/ControlQuestions";
@@ -59,6 +59,15 @@ export default function DiscoveryClient() {
       /* ignore quota / privacy-mode errors */
     }
   }, [ready, step, niche, industry, selected, answers]);
+
+  // On step change, bring the tool back into view so the new step (esp. the 3
+  // questions and the result) starts at the top — not scrolled past. Skips the
+  // initial mount so we don't yank a returning visitor around on load.
+  const firstStep = useRef(true);
+  useEffect(() => {
+    if (firstStep.current) { firstStep.current = false; return; }
+    document.getElementById("tool")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [step]);
 
   function pickIndustry(catId: string) {
     setIndustry(catId);

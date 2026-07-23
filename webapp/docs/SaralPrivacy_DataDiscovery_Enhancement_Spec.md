@@ -266,3 +266,10 @@ Off clean 1fc42bf (concurrent CA session had contested feat/data-discovery-enhan
 - Stored-at was collapsing to a sliver: root cause was auto table-layout + line-clamp giving the cell ~0 width. Fixed with `table-layout: fixed` + explicit column widths; Principal squeezed to 11%, Stored-at widened to 23% (clamped to 3 lines).
 - Decision control → compact **Yes / No** segmented toggle, **default Yes (green)**, No red (greys+strikes row). Reclaims column space. Header "Keep?".
 - Export now the full 3-section pack CSV (Master Register + Retention Matrix + Data Risk Register) via `buildPackCsv(register)` — replaces the inventory-only CSV; file `{niche}-dpdpa-discovery-pack.csv`. Answers "does the extract include retention + risk" = now YES.
+
+### Progress — session 3c (register rebuilt as CSS Grid)
+Root cause of the persistent "Stored at" sliver + vertical "Details"/"Yes/No": the `<table>` used auto layout (table-layout:fixed was not taking effect on the build) and `overflow-wrap:anywhere`/`word-break:break-word` drove per-character wrapping in any tight column. Could NOT verify visually — this sandbox blocks every browser path (in-app pane only snapshots local files with no screenshot; real Chrome refuses file://, localhost, and *.vercel.app). So switched to a deterministic fix rather than another blind table tweak:
+- Register is now a **CSS Grid** (`.dpack-reg` divs with ARIA table/row/cell roles), `grid-template-columns: 2.2fr 1fr 1.4fr 2fr 0.85fr 1.35fr`. fr tracks floor at min-content (longest word) → cannot collapse to 1 char. `overflow-wrap: break-word` (NOT anywhere).
+- **Keep? = a real toggle switch** (`role="switch"`), green (Yes, default) / red (No), sliding knob; No greys+strikes the row.
+- Step-change scrolls `#tool` into view (fixes "3 questions showing content below").
+- Old `.dpack-table.reg` / `.dpack-yn` / `.dpack-stored` CSS now dead (register no longer a table) — cleanup-later, left to avoid churn.
