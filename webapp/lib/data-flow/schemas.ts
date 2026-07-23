@@ -18,8 +18,11 @@ import { z } from "zod";
 // onboarding/exit, payroll, statutory data). RPO folds into staffing and
 // executive search into permanent, because for data purposes they're identical
 // to those two — so we don't offer buttons that render the same page.
-export const BUSINESS_MODELS = ["permanent", "staffing"] as const;
-export type BusinessModel = (typeof BUSINESS_MODELS)[number];
+// Business models are declared PER PACK (`pack.businessModels`): recruitment's
+// two are not every industry's two. A CA firm has ONE honest journey, and a
+// pack that declares one hides the selector rather than offering a button that
+// re-renders the same page.
+export type BusinessModel = string;
 
 /** Organisational trust boundary a node lives in (spec §13).
  *
@@ -111,8 +114,16 @@ const bucketKeySchema = z.string().regex(/^[a-z0-9_]+$/, "bucket keys are snake_
 
 const idSchema = z.string().regex(/^[a-z0-9-]+$/, "ids are kebab-case");
 
-/** `businessModels` omitted = applies to every business model. */
-const businessModelsSchema = z.array(z.enum(BUSINESS_MODELS)).min(1).optional();
+/** `businessModels` omitted = applies to every business model in the pack.
+ *  Ids are validated against `pack.businessModels` in validatePack. */
+const businessModelsSchema = z.array(idSchema).min(1).optional();
+
+/** A journey variant this industry genuinely has. One entry = no selector. */
+export const businessModelSchema = z.object({
+  id: idSchema,
+  label: z.string().min(1),
+});
+export type BusinessModelOption = z.infer<typeof businessModelSchema>;
 
 export const flowStageSchema = z.object({
   id: idSchema,
@@ -226,6 +237,8 @@ export const dataFlowPackSchema = z.object({
   lexicon: flowLexiconSchema,
   /** Per-pack boundary label overrides; unset keys use BOUNDARY_META. */
   boundaryLabels: z.record(z.enum(BOUNDARIES), z.string().min(1)).optional(),
+  /** Journey variants. Exactly one = the selector hides. First is the default. */
+  businessModels: z.array(businessModelSchema).min(1),
   /** Reference-model banner - never present metrics as the user's own data. */
   disclaimer: z.string().min(1),
   assessmentRoute: z.string().startsWith("/"),
@@ -260,6 +273,19 @@ export function validatePack(pack: DataFlowPack): string[] {
       seen.add(id);
     }
   };
+  // A gating id that isn't a declared model silently hides the entity from
+  // every view - it matches no selector value, so it simply never renders.
+  const modelIds = new Set(pack.businessModels.map((m) => m.id));
+  dupes(pack.businessModels.map((m) => m.id), "business-model");
+  const checkModels = (ids: readonly string[] | undefined, what: string) => {
+    for (const m of ids ?? []) {
+      if (!modelIds.has(m)) issues.push(`${what}: unknown business model ${m}`);
+    }
+  };
+  for (const s of pack.stages) checkModels(s.businessModels, `stage ${s.id}`);
+  for (const n of pack.nodes) checkModels(n.businessModels, `node ${n.id}`);
+  for (const e of pack.edges) checkModels(e.businessModels, `edge ${e.id}`);
+
   dupes(pack.stages.map((s) => s.id), "stage");
   dupes(pack.dataCategories.map((c) => c.id), "data-category");
   dupes(pack.personas.map((p) => p.id), "persona");
@@ -298,7 +324,8 @@ export function validatePack(pack: DataFlowPack): string[] {
         );
       }
       // A stage-gated edge must not reference a node hidden in that model mix.
-      const models = (x?: readonly BusinessModel[]) => x ?? BUSINESS_MODELS;
+      const allModels = pack.businessModels.map((m) => m.id);
+      const models = (x?: readonly BusinessModel[]) => x ?? allModels;
       for (const m of models(e.businessModels)) {
         if (!models(src.businessModels).includes(m)) issues.push(`edge ${e.id}: source ${src.id} absent for model ${m}`);
         if (!models(tgt.businessModels).includes(m)) issues.push(`edge ${e.id}: target ${tgt.id} absent for model ${m}`);
