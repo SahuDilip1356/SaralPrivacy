@@ -1,5 +1,14 @@
-// Gate 2 completeness tests - Recruitment Personal Data Flow pack.
+// Data Flow pack tests - two tiers.
 // Run: node --test --experimental-strip-types lib/data-flow/data-flow.test.ts
+//
+//  TIER 1 (UNIVERSAL) loops over every pack in PACKS: framework guarantees that
+//  MUST hold for any industry. A new map is added to PACKS with one line and
+//  inherits all of them automatically - this is the map-#2..#12 safety net.
+//
+//  TIER 2 (recruitment-specific) pins exact content of the reference map: node
+//  ids, counts, permanent/staffing specifics, discovery-golden wording. Each
+//  industry owns its own content assertions; these stay bound to recruitment.
+//
 // Minimums from docs/SaralPrivacy_Recruitment_DataFlow_Spec_v1.1_Build_Addendum.md §F.
 
 import test from "node:test";
@@ -11,30 +20,123 @@ import { dirname, join } from "node:path";
 import {
   BOUNDARIES,
   EXTERNAL_BOUNDARIES,
+  type DataFlowPack,
   computePackSummary,
   dataFlowPackSchema,
   filterByBusinessModel,
   validatePack,
 } from "./schemas.ts";
 import { stageDataRollup } from "./stage-data.ts";
-import { recruitmentDataFlowPack as pack } from "../data/data-flow/recruitment/index.ts";
+import { recruitmentDataFlowPack } from "../data/data-flow/recruitment/index.ts";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 
-test("schema: pack parses against the Zod contract", () => {
-  const parsed = dataFlowPackSchema.safeParse(pack);
-  assert.ok(
-    parsed.success,
-    parsed.success ? "ok" : JSON.stringify(parsed.error.issues, null, 2),
-  );
-});
+// Every live pack. Add a map here and it inherits every TIER 1 guarantee below.
+// (Imported directly rather than via the registry, whose sectors.ts chain uses
+//  extensionless imports that plain `node --test` cannot resolve.)
+const PACKS: DataFlowPack[] = [recruitmentDataFlowPack];
 
-test("referential integrity: no orphans, no drift, consistent boundaries", () => {
-  const issues = validatePack(pack);
-  assert.deepEqual(issues, []);
-});
+/** Business-model ids a pack declares - the values its own views are keyed by. */
+const modelsOf = (p: DataFlowPack) => p.businessModels.map((m) => m.id);
+
+// The reference map, for the recruitment-specific tier.
+const pack = recruitmentDataFlowPack;
+
+// ---------------------------------------------------------------------------
+// TIER 1 - universal framework guarantees, per pack
+// ---------------------------------------------------------------------------
+
+for (const p of PACKS) {
+  test(`[${p.industry}] schema: pack parses against the Zod contract`, () => {
+    const parsed = dataFlowPackSchema.safeParse(p);
+    assert.ok(
+      parsed.success,
+      parsed.success ? "ok" : JSON.stringify(parsed.error.issues, null, 2),
+    );
+  });
+
+  test(`[${p.industry}] referential integrity: no orphans, no drift, consistent boundaries`, () => {
+    assert.deepEqual(validatePack(p), []);
+  });
+
+  test(`[${p.industry}] hotspots: exactly 7, ranked 1..7`, () => {
+    assert.equal(p.hotspots.length, 7, "exactly 7 curated hotspots");
+    assert.deepEqual(
+      p.hotspots.map((h) => h.rank).sort((a, b) => a - b),
+      [1, 2, 3, 4, 5, 6, 7],
+      "ranks are exactly 1..7",
+    );
+    // Every hotspot bucket is one the pack declares (guards the silent
+    // deep-link-to-nowhere failure that a wrong bucket would cause).
+    const buckets = new Set(p.assessmentBuckets);
+    for (const h of p.hotspots) {
+      assert.ok(buckets.has(h.assessmentBucket), `${h.id} bucket in pack.assessmentBuckets`);
+    }
+  });
+
+  test(`[${p.industry}] business models: projection leaks no dangling edges`, () => {
+    for (const model of modelsOf(p)) {
+      const view = filterByBusinessModel(p, model);
+      const ids = new Set(view.nodes.map((n) => n.id));
+      for (const e of view.edges) {
+        assert.ok(ids.has(e.source) && ids.has(e.target), `${model}: edge ${e.id} intact`);
+      }
+    }
+  });
+
+  test(`[${p.industry}] places reconcile: every system counted once, at one stage`, () => {
+    for (const model of modelsOf(p)) {
+      const { stages, nodes } = filterByBusinessModel(p, model);
+      const seq = new Map(stages.map((s) => [s.id, s.sequence]));
+      const systems = nodes.filter((n) => n.nodeType !== "person");
+
+      const placed = systems.filter((n) => n.stageIds.some((id) => seq.has(id)));
+      assert.equal(placed.length, systems.length, `${model}: no orphan systems`);
+
+      const perStage = new Map<string, number>();
+      for (const n of systems) {
+        const first = n.stageIds
+          .filter((id) => seq.has(id))
+          .sort((a, b) => seq.get(a)! - seq.get(b)!)[0];
+        perStage.set(first, (perStage.get(first) ?? 0) + 1);
+      }
+      const total = [...perStage.values()].reduce((a, b) => a + b, 0);
+      assert.equal(total, systems.length, `${model}: running total equals distinct places`);
+    }
+  });
+
+  test(`[${p.industry}] stage data: every stage moves >=1 category; introduced once`, () => {
+    for (const model of modelsOf(p)) {
+      const rows = stageDataRollup(p, model);
+      for (const row of rows) {
+        assert.ok(row.moving.length > 0, `${model}/${row.stageId} has data moving`);
+      }
+      const introduced: string[] = [];
+      for (const r of rows) introduced.push(...r.newIds);
+      assert.equal(introduced.length, new Set(introduced).size, `${model}: no category introduced twice`);
+      const reachable = new Set(rows.flatMap((r) => r.moving.map((c) => c.id)));
+      assert.deepEqual(
+        [...introduced].sort(),
+        [...reachable].sort(),
+        `${model}: everything that moves is introduced somewhere`,
+      );
+    }
+  });
+
+  test(`[${p.industry}] reference summary is computed and self-consistent`, () => {
+    const s = computePackSummary(p);
+    assert.equal(s.stages, p.stages.length);
+    assert.equal(s.copyEvents, p.edges.filter((e) => e.createsCopy).length);
+    assert.equal(s.externalTransfers, p.edges.filter((e) => e.external).length);
+  });
+}
+
+// ---------------------------------------------------------------------------
+// TIER 2 - recruitment-specific content (the reference map's exact shape)
+// ---------------------------------------------------------------------------
 
 test("gate 2 minimums (v1.1 §F)", () => {
+  assert.equal(pack.stages.length, 12, "12 lifecycle stages");
   assert.equal(pack.stages.length, 12, "12 lifecycle stages");
   assert.ok(pack.nodes.length >= 28, `nodes >= 28 (got ${pack.nodes.length})`);
   assert.ok(pack.edges.length >= 40, `edges >= 40 (got ${pack.edges.length})`);
@@ -81,15 +183,7 @@ test("business models: permanent hides employee lifecycle, staffing shows it", (
   const staffing = filterByBusinessModel(pack, "staffing");
   assert.equal(staffing.stages.length, 12, "staffing shows all 12 stages");
   assert.ok(staffing.nodes.some((n) => n.id === "payroll-provider"));
-
-  // Projection never leaks dangling edges.
-  for (const model of ["permanent", "staffing"] as const) {
-    const view = filterByBusinessModel(pack, model);
-    const ids = new Set(view.nodes.map((n) => n.id));
-    for (const e of view.edges) {
-      assert.ok(ids.has(e.source) && ids.has(e.target), `${model}: edge ${e.id} intact`);
-    }
-  }
+  // (projection-leak invariant is covered universally in TIER 1)
 });
 
 test("hotspots: canonical 7 map to real assessment pack buckets", () => {
@@ -122,35 +216,7 @@ test("discovery alignment: category wording matches the recruitment-staffing nic
   }
 });
 
-// The journey counter shows "places their data now lives" and the stage cards
-// show the systems reached at that stage. They are the same fact, so they must
-// reconcile: every non-person node must land in exactly one in-model stage.
-// If a node's stageIds ever drift out of the model's stage set it becomes an
-// orphan - invisible in the boxes but still real - and the counter under-reads.
-test("places reconcile: every system is counted once, at exactly one stage", () => {
-  for (const model of ["permanent", "staffing"] as const) {
-    const { stages, nodes } = filterByBusinessModel(pack, model);
-    const seq = new Map(stages.map((s) => [s.id, s.sequence]));
-    const systems = nodes.filter((n) => n.nodeType !== "person");
-
-    const placed = systems.filter((n) => n.stageIds.some((id) => seq.has(id)));
-    assert.equal(
-      placed.length,
-      systems.length,
-      `${model}: every system reaches a stage shown in this model (no orphans)`,
-    );
-
-    const perStage = new Map<string, number>();
-    for (const n of systems) {
-      const first = n.stageIds
-        .filter((id) => seq.has(id))
-        .sort((a, b) => seq.get(a)! - seq.get(b)!)[0];
-      perStage.set(first, (perStage.get(first) ?? 0) + 1);
-    }
-    const total = [...perStage.values()].reduce((a, b) => a + b, 0);
-    assert.equal(total, systems.length, `${model}: running total equals distinct places`);
-  }
-});
+// (places-reconcile invariant is covered universally in TIER 1)
 
 test("ATS is in play from sourcing, where its first copies actually land", () => {
   const ats = pack.nodes.find((n) => n.id === "ats");
@@ -194,43 +260,11 @@ test("external-party count is unchanged by the boundary reclassification", () =>
   assert.equal(computePackSummary(pack).externalParties, 15);
 });
 
-test("stage data: every stage moves at least one data category, in both models", () => {
-  for (const model of ["permanent", "staffing"] as const) {
-    for (const row of stageDataRollup(pack, model)) {
-      assert.ok(
-        row.moving.length > 0,
-        `${model}/${row.stageId} has data moving (an empty "Moving here" row would render)`,
-      );
-    }
-  }
-});
+// (stage-data invariants are covered universally in TIER 1)
 
-// The "new at this stage" emphasis depends on this: a category is introduced
-// exactly once, and between them the stages introduce everything reachable.
-test("stage data: first appearance covers every reachable category exactly once", () => {
-  for (const model of ["permanent", "staffing"] as const) {
-    const rows = stageDataRollup(pack, model);
-    const introduced: string[] = [];
-    for (const r of rows) introduced.push(...r.newIds);
-    assert.equal(
-      introduced.length,
-      new Set(introduced).size,
-      `${model}: no category is introduced twice`,
-    );
-    const reachable = new Set(rows.flatMap((r) => r.moving.map((c) => c.id)));
-    assert.deepEqual(
-      [...introduced].sort(),
-      [...reachable].sort(),
-      `${model}: everything that moves is introduced somewhere`,
-    );
-  }
-});
-
-test("reference summary is computed, plausible and self-consistent", () => {
+test("recruitment reference summary hits its expected magnitudes", () => {
   const s = computePackSummary(pack);
   assert.equal(s.stages, 12);
   assert.ok(s.systems >= 27, "systems/repos counted");
   assert.ok(s.externalParties >= 8, "external parties counted");
-  assert.equal(s.copyEvents, pack.edges.filter((e) => e.createsCopy).length);
-  assert.equal(s.externalTransfers, pack.edges.filter((e) => e.external).length);
 });

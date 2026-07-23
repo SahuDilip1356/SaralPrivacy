@@ -10,7 +10,6 @@ import { ChevronDown, Map as MapIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { trackEvent } from "@/lib/analytics";
 import {
-  BUSINESS_MODELS,
   RISK_LEVELS,
   type BusinessModel,
   type DataFlowPack,
@@ -31,17 +30,16 @@ import { NodeDetailPanel } from "@/components/data-flow/NodeDetailPanel";
 import { EdgeDetailPanel } from "@/components/data-flow/EdgeDetailPanel";
 import type { FlowSelection } from "@/components/data-flow/selection";
 
-const MODEL_LABELS: Record<BusinessModel, string> = {
-  permanent: "Permanent recruitment",
-  staffing: "Staffing / RPO",
-};
-
 interface Props {
   pack: DataFlowPack;
 }
 
 export default function DataFlowClient({ pack }: Props) {
-  const [model, setModel] = useState<BusinessModel>("permanent");
+  // First declared model is the default. An industry with one honest journey
+  // (a CA firm) declares one, and the selector below hides itself rather than
+  // offering a button that re-renders the same page.
+  const models = pack.businessModels;
+  const [model, setModel] = useState<BusinessModel>(models[0].id);
   const [mapOpen, setMapOpen] = useState(false);
   const [wires, setWires] = useState<WireMode>("copies");
   // Worst-first, all on by default: the filter is for narrowing to what needs
@@ -102,25 +100,29 @@ export default function DataFlowClient({ pack }: Props) {
       {/* Business-model selector - switching Staffing/RPO visibly grows the
           journey by the onboarding + exit stages. */}
       <div className="flex flex-wrap items-center gap-2">
-        <span className="text-sm font-medium text-slate-600">Show the journey for:</span>
-        <div className="flex flex-wrap gap-1.5" role="group" aria-label="Business model">
-          {BUSINESS_MODELS.map((m) => (
-            <button
-              key={m}
-              type="button"
-              onClick={() => handleModelChange(m)}
-              aria-pressed={model === m}
-              className={cn(
-                "rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500",
-                model === m
-                  ? "bg-navy-700 text-white"
-                  : "bg-slate-100 text-slate-700 hover:bg-slate-200",
-              )}
-            >
-              {MODEL_LABELS[m]}
-            </button>
-          ))}
-        </div>
+        {models.length > 1 && (
+          <>
+            <span className="text-sm font-medium text-slate-600">Show the journey for:</span>
+            <div className="flex flex-wrap gap-1.5" role="group" aria-label="Business model">
+              {models.map((m) => (
+                <button
+                  key={m.id}
+                  type="button"
+                  onClick={() => handleModelChange(m.id)}
+                  aria-pressed={model === m.id}
+                  className={cn(
+                    "rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500",
+                    model === m.id
+                      ? "bg-navy-700 text-white"
+                      : "bg-slate-100 text-slate-700 hover:bg-slate-200",
+                  )}
+                >
+                  {m.label}
+                </button>
+              ))}
+            </div>
+          </>
+        )}
         <span aria-live="polite" className="text-xs font-medium text-slate-500">
           {stageCount} stages
         </span>

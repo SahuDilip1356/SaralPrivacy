@@ -15,6 +15,12 @@ export const recruitmentDataFlowPack: DataFlowPack = {
   industry: "recruitment-agencies",
   title: "Recruitment Personal Data Flow Map",
   mainActor: "Candidate",
+  // Two honest journeys: permanent (the client employs) vs staffing (the agency
+  // employs and deploys - adds onboarding/exit, payroll, statutory data).
+  businessModels: [
+    { id: "permanent", label: "Permanent recruitment" },
+    { id: "staffing", label: "Staffing / RPO" },
+  ],
   // Exactly the words the components hard-coded before they became per-pack -
   // so this map renders identically to how it shipped.
   lexicon: {
