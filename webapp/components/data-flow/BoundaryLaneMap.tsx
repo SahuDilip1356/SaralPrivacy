@@ -30,7 +30,7 @@ import type {
   RiskLevel,
 } from "@/lib/data-flow/schemas";
 import { filterByBusinessModel } from "@/lib/data-flow/schemas";
-import { BOUNDARY_META, EXTERNAL_BOUNDARY_SET, RISK_META, boundaryLabel } from "./flow-theme";
+import { BOUNDARY_META, EXTERNAL_BOUNDARY_SET, RISK_META, WIRE_STROKE, boundaryLabel } from "./flow-theme";
 
 export const WIRE_MODES = ["copies", "external", "all", "none"] as const;
 export type WireMode = (typeof WIRE_MODES)[number];
@@ -170,7 +170,7 @@ export function BoundaryLaneMap({ pack, model, wires, risks, selectedId, onSelec
           {/* header row */}
           <div className="sticky left-0 z-20 border-b border-r border-slate-200 bg-slate-50 px-3 py-2.5">
             <span className="block text-[12px] font-bold text-navy-800">Trust boundary</span>
-            <span className="block text-[10.5px] text-slate-400">
+            <span className="block text-[10px] text-slate-400">
               {view.stages.length} stages &rarr;
             </span>
           </div>
@@ -183,13 +183,13 @@ export function BoundaryLaneMap({ pack, model, wires, risks, selectedId, onSelec
                 key={s.id}
                 className="border-b border-slate-200 bg-slate-50 px-2.5 py-2.5"
               >
-                <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-navy-700 text-[10.5px] font-bold tabular-nums text-white">
+                <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-navy-700 text-[10px] font-bold tabular-nums text-white">
                   {i + 1}
                 </span>
-                <span className="mt-1.5 block text-[11.5px] font-semibold leading-tight text-navy-800">
+                <span className="mt-1.5 block text-[11px] font-semibold leading-tight text-navy-800">
                   {s.name}
                 </span>
-                <span className="mt-0.5 block text-[10.5px] tabular-nums text-slate-400">
+                <span className="mt-0.5 block text-[10px] tabular-nums text-slate-400">
                   {n ? `+${n} ${n === 1 ? "place" : "places"}` : "no new place"}
                 </span>
               </div>
@@ -234,7 +234,7 @@ export function BoundaryLaneMap({ pack, model, wires, risks, selectedId, onSelec
                 key={i}
                 d={p.d}
                 fill="none"
-                stroke={p.external ? "#8e51ff" : "#35b6ae"}
+                stroke={p.external ? WIRE_STROKE.external : WIRE_STROKE.internal}
                 strokeWidth={p.copy ? 2.4 : 1.3}
                 strokeDasharray={p.external ? "5 4" : undefined}
                 opacity={selectedId ? (p.on ? 0.95 : 0.06) : p.copy ? 0.42 : 0.2}
@@ -283,7 +283,7 @@ function FragmentRow({
         )}
       >
         {wall && (
-          <span className="mb-1 inline-flex w-fit items-center rounded-full border border-violet-500 px-1.5 py-px text-[9px] font-bold uppercase tracking-wider text-violet-700">
+          <span className="mb-1 inline-flex w-fit items-center rounded-full border border-violet-500 px-1.5 py-px text-[10px] font-bold uppercase tracking-wider text-violet-700">
             control wall
           </span>
         )}
@@ -291,7 +291,7 @@ function FragmentRow({
           <LaneIcon size={13} className="shrink-0 opacity-70" aria-hidden="true" />
           {meta.label}
         </span>
-        <span className="text-[10.5px] leading-tight text-slate-400">{LANE_SUB[boundary]}</span>
+        <span className="text-[10px] leading-tight text-slate-400">{LANE_SUB[boundary]}</span>
       </div>
 
       {stages.map((s) => {
@@ -333,25 +333,25 @@ function FragmentRow({
                   aria-hidden={muted || undefined}
                   tabIndex={muted ? -1 : undefined}
                 >
-                  <span className="text-[11.5px] font-semibold leading-tight text-navy-800">
+                  <span className="text-[11px] font-semibold leading-tight text-navy-800">
                     {n.name}
                   </span>
                   <span className="flex flex-wrap items-center gap-1">
                     <span
                       className={cn(
-                        "rounded-full border px-1.5 text-[9px] font-bold uppercase tracking-wide",
+                        "rounded-full border px-1.5 text-[10px] font-bold uppercase tracking-wide",
                         risk.chip,
                       )}
                     >
                       {n.riskLevel}
                     </span>
                     {n.shadowIt && (
-                      <span className="rounded-full border border-slate-200 px-1.5 text-[9px] font-bold uppercase tracking-wide text-slate-500">
+                      <span className="rounded-full border border-slate-200 px-1.5 text-[10px] font-bold uppercase tracking-wide text-slate-500">
                         unmanaged
                       </span>
                     )}
                     {rank && (
-                      <span className="rounded-full bg-red-600 px-1.5 text-[9px] font-bold uppercase tracking-wide text-white">
+                      <span className="rounded-full bg-red-600 px-1.5 text-[10px] font-bold uppercase tracking-wide text-white">
                         hot {rank}
                       </span>
                     )}

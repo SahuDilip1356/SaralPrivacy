@@ -20,6 +20,25 @@ import {
 } from "lucide-react";
 import type { Boundary, NodeType, RiskLevel } from "@/lib/data-flow/schemas";
 
+// Micro-label type scale. This is dense data-viz, so it genuinely needs sizes
+// below Tailwind's `text-xs` (12px) - but as a NAMED, finite set, not ad-hoc
+// per-element pixel values. Every sub-`text-sm` label uses one of these four.
+export const TEXT = {
+  micro: "text-[10px]", // dense legends, badges, sr-adjacent captions
+  mini: "text-[11px]", // chip labels, secondary meta
+  tiny: "text-[12px]", // the workhorse small label (= text-xs)
+  small: "text-[13px]", // emphasised small copy
+} as const;
+
+// Wire stroke colours for the lane board. One canonical casing, one home -
+// they mirror the teal("stays inside")/violet("crosses out") legend, so they
+// live here with the rest of the boundary vocabulary rather than as raw hex
+// literals inline (where the teal had drifted to two different casings).
+export const WIRE_STROKE = {
+  internal: "#35B6AE", // teal - movement within a boundary
+  external: "#8E51FF", // violet - crosses a trust boundary
+} as const;
+
 export const NODE_TYPE_META: Record<NodeType, { icon: LucideIcon; label: string }> = {
   person: { icon: User, label: "Person" },
   system: { icon: MonitorSmartphone, label: "System" },

@@ -48,7 +48,7 @@ export function HotspotRail({ pack, onHotspotSelect, onAssessmentCta }: Props) {
                     (this page is indexed), is keyboard- and screen-reader-
                     operable with zero JS, and needs no state. */}
                 <details className="group mt-2">
-                  <summary className="flex cursor-pointer list-none items-center gap-1 text-[11.5px] font-semibold text-slate-500 transition-colors hover:text-navy-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 [&::-webkit-details-marker]:hidden">
+                  <summary className="flex cursor-pointer list-none items-center gap-1 text-[11px] font-semibold text-slate-500 transition-colors hover:text-navy-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 [&::-webkit-details-marker]:hidden">
                     <ChevronRight
                       size={12}
                       className="shrink-0 transition-transform group-open:rotate-90"

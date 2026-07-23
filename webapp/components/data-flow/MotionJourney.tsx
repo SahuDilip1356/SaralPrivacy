@@ -272,13 +272,13 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
                     initial={reduce ? false : { scale: 0.82 }}
                     animate={{ scale: 1 }}
                     transition={{ type: "spring", stiffness: 460, damping: 18 }}
-                    className="text-6xl font-extrabold tabular-nums leading-none tracking-tight text-teal-300"
+                    className="text-6xl font-bold tabular-nums leading-none tracking-tight text-teal-300"
                   >
                     {shownPlaces}
                   </motion.span>
                   <MapPin size={16} className="text-teal-300/60" aria-hidden="true" />
                 </div>
-                <p className="mt-1.5 text-[12.5px] font-medium text-slate-300">
+                <p className="mt-1.5 text-[12px] font-medium text-slate-300">
                   places their data now lives
                 </p>
               </div>
@@ -289,19 +289,19 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
                     initial={reduce ? false : { scale: 0.82 }}
                     animate={{ scale: 1 }}
                     transition={{ type: "spring", stiffness: 460, damping: 18 }}
-                    className="text-6xl font-extrabold tabular-nums leading-none tracking-tight text-red-300"
+                    className="text-6xl font-bold tabular-nums leading-none tracking-tight text-red-300"
                   >
                     {shownHotspots}
                   </motion.span>
                   <AlertTriangle size={16} className="text-red-300/60" aria-hidden="true" />
                 </div>
-                <p className="mt-1.5 text-[12.5px] font-medium text-slate-300">
+                <p className="mt-1.5 text-[12px] font-medium text-slate-300">
                   places control breaks
                 </p>
               </div>
             </div>
 
-            <p className="mt-5 flex items-start gap-2 border-t border-white/10 pt-4 text-[14px] font-semibold leading-snug">
+            <p className="mt-5 flex items-start gap-2 border-t border-white/10 pt-4 text-sm font-semibold leading-snug">
               <Trash2 size={16} className="mt-0.5 shrink-0 text-teal-300" aria-hidden="true" />
               <span>
                 If they ask you to delete it tomorrow -{" "}
@@ -326,21 +326,21 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
                 How to read the chips
               </dt>
               <div className="mt-2.5 flex flex-col gap-2">
-                <dd className="flex items-center gap-2.5 text-[11.5px] leading-tight text-slate-300">
+                <dd className="flex items-center gap-2.5 text-[11px] leading-tight text-slate-300">
                   <span
                     aria-hidden="true"
                     className="h-4 w-7 shrink-0 rounded border border-white/20 border-l-4 border-l-violet-400 bg-white/5"
                   />
                   Left edge - sits outside your {pack.lexicon.org}
                 </dd>
-                <dd className="flex items-center gap-2.5 text-[11.5px] leading-tight text-slate-300">
+                <dd className="flex items-center gap-2.5 text-[11px] leading-tight text-slate-300">
                   <span
                     aria-hidden="true"
                     className="h-4 w-7 shrink-0 rounded border border-amber-400/60 bg-amber-400/25"
                   />
                   Amber or red fill - high or critical risk
                 </dd>
-                <dd className="flex items-center gap-2.5 text-[11.5px] leading-tight text-slate-300">
+                <dd className="flex items-center gap-2.5 text-[11px] leading-tight text-slate-300">
                   <span
                     aria-hidden="true"
                     className="h-4 w-7 shrink-0 rounded bg-teal-400/30 ring-1 ring-inset ring-teal-300"
@@ -411,7 +411,7 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
                     {row.stage.name}
                     {isHot && (
                       <motion.span
-                        className="inline-flex items-center gap-1 rounded-md bg-red-50 px-2 py-0.5 text-[10.5px] font-bold uppercase tracking-wide text-red-700"
+                        className="inline-flex items-center gap-1 rounded-md bg-red-50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-red-700"
                         initial={false}
                         animate={{ opacity: reached ? 1 : 0.15, x: reached ? 0 : -4 }}
                         transition={{ duration: 0.35 }}
@@ -445,7 +445,7 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
                     throbs is a page people stop reading. */}
                 {row.moving.length > 0 && (
                   <div className="mt-3 flex flex-wrap items-center gap-1.5">
-                    <span className="text-[10.5px] font-bold uppercase tracking-wider text-teal-700">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-teal-700">
                       Moving here
                     </span>
                     {row.moving.slice(0, MAX_CATEGORY_CHIPS).map((c, k) => {
@@ -470,7 +470,7 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
                             ease: "easeOut",
                           }}
                           className={cn(
-                            "rounded-md px-2 py-0.5 text-[11.5px]",
+                            "rounded-md px-2 py-0.5 text-[11px]",
                             isNew
                               ? "bg-teal-100 font-bold text-teal-900 ring-1 ring-inset ring-teal-500"
                               : "bg-white font-medium text-slate-600 ring-1 ring-inset ring-slate-200",
