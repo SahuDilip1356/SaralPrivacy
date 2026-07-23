@@ -43,6 +43,20 @@ export const trackEvent = {
       niche:          params.niche,
     }),
 
+  // ── Discovery → Data Mapping handoff seam ───────────────────────────────
+  // THE metric that unlocks Phases B–E: does a Discovery completer choose to
+  // continue into Data Mapping? Fires on the "Build My Data Flow Map" click.
+  discoveryHandoffClick: (params: {
+    niche: string;
+    highRisk: number;
+    recipients: number;
+  }) => gtag("discovery_handoff_click", {
+    event_category: "engagement",
+    niche:          params.niche,
+    high_risk:      params.highRisk,
+    recipients:     params.recipients,
+  }),
+
   // ── Landing hero (Beat 1 — is-this-me) ──────────────────────────────────
   // Fires when a visitor picks their business type in the hero (top-of-funnel
   // engagement signal + lead segmentation by sector).

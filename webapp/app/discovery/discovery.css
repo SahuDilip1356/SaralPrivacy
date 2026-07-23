@@ -442,3 +442,118 @@
   .spd .rh-band { font-size: 40px; }
   .spd .rh-risk { font-size: 30px; }
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Personal Data Discovery Pack (3-report handoff) — scoped under .spd so it
+   inherits the discovery design tokens. Read-first, serious, table-led.
+   ───────────────────────────────────────────────────────────────────────── */
+.spd .dpack { margin-top: 28px; display: flex; flex-direction: column; gap: 34px; }
+.spd .dpack-empty-pack { background: var(--cloud); border: 1px solid var(--line); border-radius: var(--r);
+  padding: 28px; color: var(--muted); text-align: center; }
+
+/* completion header */
+.spd .dpack-head { border-top: 3px solid var(--green); padding-top: 22px; }
+.spd .dpack-eyebrow { font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--green-d); margin-bottom: 14px; }
+.spd .dpack-tiles { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+.spd .dpack-tile { background: var(--cloud); border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+.spd .dpack-tile.accent { background: rgba(232, 112, 74, 0.07); border-color: rgba(232, 112, 74, 0.3); }
+.spd .dpack-tile-n { display: block; font-size: 26px; font-weight: 800; color: var(--navy); line-height: 1.05; }
+.spd .dpack-tile.accent .dpack-tile-n { color: var(--orange); }
+.spd .dpack-tile-l { display: block; font-size: 12px; color: var(--muted); margin-top: 4px; }
+@media (max-width: 760px) { .spd .dpack-tiles { grid-template-columns: repeat(2, 1fr); } }
+
+/* report shell */
+.spd .dpack-report { display: flex; flex-direction: column; gap: 14px; }
+.spd .dpack-rh h3 { font-size: 19px; font-weight: 700; color: var(--navy); }
+.spd .dpack-rh p { font-size: 14px; color: var(--slate-2); margin-top: 4px; max-width: 70ch; }
+
+/* controls */
+.spd .dpack-controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.spd .dpack-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.spd .dpack-chip { font-size: 13px; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--line);
+  background: var(--white); color: var(--slate-2); cursor: pointer; }
+.spd .dpack-chip.on { background: var(--green); border-color: var(--green); color: #fff; font-weight: 600; }
+.spd .dpack-chip:focus-visible, .spd .dpack-select:focus-visible, .spd .dpack-search:focus-visible,
+.spd .dpack-sortbtn:focus-visible, .spd .dpack-confirm:focus-visible, .spd .dpack-link:focus-visible,
+.spd .dpack-drawer-x:focus-visible { outline: none; box-shadow: var(--ring); border-radius: 8px; }
+.spd .dpack-select, .spd .dpack-search { font-size: 13px; padding: 6px 10px; border: 1px solid var(--line);
+  border-radius: 8px; background: var(--white); color: var(--slate); }
+.spd .dpack-search { min-width: 180px; }
+.spd .dpack-count { font-size: 13px; color: var(--muted); }
+
+/* table */
+.spd .dpack-tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r); }
+.spd .dpack-table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 720px; }
+.spd .dpack-table th { text-align: left; background: var(--cloud); color: var(--navy); font-weight: 600;
+  font-size: 12px; text-transform: uppercase; letter-spacing: 0.03em; padding: 10px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.spd .dpack-table td { padding: 11px 12px; border-bottom: 1px solid var(--line); vertical-align: top; color: var(--slate); }
+.spd .dpack-table tr:last-child td { border-bottom: none; }
+.spd .dpack-table tbody tr:hover { background: var(--cloud); }
+.spd .dpack-item strong { color: var(--navy); font-weight: 600; }
+.spd .dpack-dim { color: var(--muted); }
+.spd .dpack-sortbtn { background: none; border: none; font: inherit; text-transform: inherit; letter-spacing: inherit;
+  color: inherit; cursor: pointer; display: inline-flex; gap: 4px; align-items: center; padding: 0; }
+.spd .dpack-caret { font-size: 9px; color: var(--green-d); }
+.spd .dpack-band { font-weight: 600; white-space: nowrap; }
+.spd .dpack-status { font-size: 12px; color: var(--muted); }
+.spd .dpack-status.done { color: var(--green-d); font-weight: 600; }
+.spd .dpack-actions { display: flex; gap: 8px; white-space: nowrap; }
+.spd .dpack-confirm { font-size: 12px; padding: 4px 10px; border-radius: 7px; border: 1px solid var(--green);
+  background: var(--white); color: var(--green-d); cursor: pointer; font-weight: 600; }
+.spd .dpack-confirm[disabled] { border-color: var(--line); color: var(--muted); cursor: default; }
+.spd .dpack-link { background: none; border: none; color: var(--teal); cursor: pointer; font: inherit; font-size: 13px;
+  text-decoration: underline; padding: 0; }
+.spd .dpack-empty { background: var(--cloud); border: 1px dashed var(--line); border-radius: var(--r);
+  padding: 22px; text-align: center; color: var(--muted); }
+.spd .dpack-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+/* retention flags */
+.spd .dpack-flag { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 6px; }
+.spd .dpack-flag.statutory_floor { background: rgba(232, 171, 66, 0.16); color: #8a6100; }
+.spd .dpack-flag.dpdpa_determination { background: rgba(7, 185, 129, 0.12); color: var(--green-d); }
+.spd .dpack-suggested { display: block; font-size: 11px; color: var(--muted); margin-top: 4px; font-style: italic; }
+
+/* risk register */
+.spd .dpack-risklist { display: grid; gap: 12px; list-style: none; }
+.spd .dpack-risk { border: 1px solid var(--line); border-radius: var(--r); padding: 16px; background: var(--white); }
+.spd .dpack-risk-top { display: flex; gap: 10px; align-items: center; font-size: 12px; margin-bottom: 8px; }
+.spd .dpack-prio { font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; font-size: 11px; }
+.spd .dpack-prio.immediate { color: var(--error); }
+.spd .dpack-prio.high { color: var(--orange); }
+.spd .dpack-prio.medium { color: var(--gold); }
+.spd .dpack-risk-cat { margin-left: auto; background: var(--cloud); color: var(--muted); padding: 2px 8px; border-radius: 6px; }
+.spd .dpack-risk h4 { font-size: 15px; color: var(--navy); font-weight: 600; }
+.spd .dpack-control { font-size: 14px; margin-top: 6px; }
+.spd .dpack-bridge { font-size: 13px; color: var(--teal); margin-top: 8px; font-style: italic; }
+
+/* actions */
+.spd .dpack-actions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.spd .dpack-actcol { background: var(--cloud); border: 1px solid var(--line); border-radius: var(--r); padding: 16px; }
+.spd .dpack-actcol-h { font-weight: 700; color: var(--navy); font-size: 14px; margin-bottom: 10px; }
+.spd .dpack-actcol ol { margin: 0; padding-left: 18px; display: grid; gap: 8px; font-size: 13px; color: var(--slate); }
+@media (max-width: 760px) { .spd .dpack-actions-grid { grid-template-columns: 1fr; } }
+
+/* seam */
+.spd .dpack-seam { background: var(--navy); color: #fff; border-radius: 18px; padding: 28px; display: flex;
+  gap: 20px; align-items: center; justify-content: space-between; flex-wrap: wrap; box-shadow: var(--shadow-lg); }
+.spd .dpack-seam-copy { flex: 1 1 320px; }
+.spd .dpack-seam h3 { color: #fff; font-size: 20px; font-weight: 700; }
+.spd .dpack-seam p { color: var(--muted-dk); font-size: 14px; margin-top: 8px; max-width: 62ch; }
+.spd .dpack-seam strong { color: #fff; }
+.spd .dpack-seam-btn { flex: 0 0 auto; }
+.spd .dpack-disclaimer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; max-width: 80ch; }
+
+/* detail drawer */
+.spd .dpack-drawer-scrim { position: fixed; inset: 0; background: rgba(18, 26, 46, 0.45); z-index: 60;
+  display: flex; justify-content: flex-end; }
+.spd .dpack-drawer { background: #fff; width: min(460px, 92vw); height: 100%; overflow-y: auto; padding: 28px;
+  position: relative; box-shadow: var(--shadow-lg); }
+.spd .dpack-drawer-x { position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 18px;
+  color: var(--muted); cursor: pointer; }
+.spd .dpack-drawer h4 { font-size: 20px; color: var(--navy); font-weight: 700; padding-right: 24px; }
+.spd .dpack-dl { margin-top: 18px; display: grid; gap: 14px; }
+.spd .dpack-dl dt { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; color: var(--muted); }
+.spd .dpack-dl dd { font-size: 14px; color: var(--slate); margin-top: 3px; }
+.spd .result-narrative-sub { font-size: 13px; color: var(--muted); margin-top: -6px; }
+@media (prefers-reduced-motion: reduce) { .spd .dpack * { animation: none !important; transition: none !important; } }
