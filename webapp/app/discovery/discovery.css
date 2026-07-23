@@ -607,3 +607,24 @@
   .spd .hero-card, .spd .hero-card *, .spd .dpack * { animation: none !important; transition: none !important; }
   .spd .hero-card .hc-gauge { --hcp: 61%; }
 }
+
+/* ── Review round 2: fixed layout (Stored-at can't collapse) + compact Yes/No ── */
+.spd .dpack-table.reg { table-layout: fixed; min-width: 760px; }
+.spd .dpack-table.reg th:nth-child(1), .spd .dpack-table.reg td:nth-child(1) { width: 21%; }
+.spd .dpack-table.reg th:nth-child(2), .spd .dpack-table.reg td:nth-child(2) { width: 11%; } /* Principal squeezed */
+.spd .dpack-table.reg th:nth-child(3), .spd .dpack-table.reg td:nth-child(3) { width: 16%; }
+.spd .dpack-table.reg th:nth-child(4), .spd .dpack-table.reg td:nth-child(4) { width: 23%; } /* Stored at widened */
+.spd .dpack-table.reg th:nth-child(5), .spd .dpack-table.reg td:nth-child(5) { width: 12%; }
+.spd .dpack-table.reg th:nth-child(6), .spd .dpack-table.reg td:nth-child(6) { width: 17%; }
+.spd .dpack-table.reg td { word-break: break-word; }
+.spd .dpack-stored { -webkit-line-clamp: 3; overflow-wrap: anywhere; }
+
+.spd .dpack-yn { display: inline-flex; border: 1px solid var(--line); border-radius: 7px; overflow: hidden; }
+.spd .dpack-yn-btn { font-size: 12px; font-weight: 700; padding: 4px 12px; border: none; background: var(--white); color: var(--muted); cursor: pointer; }
+.spd .dpack-yn-yes { border-right: 1px solid var(--line); }
+.spd .dpack-yn-yes:hover { color: var(--green-d); }
+.spd .dpack-yn-no:hover { color: var(--error); }
+.spd .dpack-yn-yes.on { background: var(--green); color: #fff; }
+.spd .dpack-yn-no.on { background: var(--error); color: #fff; }
+.spd .dpack-yn-btn:focus-visible { outline: none; box-shadow: inset var(--ring); }
+@media (max-width: 900px) { .spd .dpack-yn-btn { padding: 4px 9px; } }
