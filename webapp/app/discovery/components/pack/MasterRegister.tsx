@@ -1,13 +1,16 @@
 "use client";
-// Report 1 — Master Personal Data Register. Read-first table (S3) with light
-// interactivity (S4): sort, risk/category filter chips, inline Confirm, and a
-// focus-trapped detail drawer. NOT a spreadsheet grid — that's Phase C.
+// Report 1 — Master Personal Data Register. Read-first table with light
+// interactivity: sort, risk/category filter chips, search, a per-row
+// Confirm/Decline decision (green ✓ / red ✕, neutral by default; declined rows
+// grey out), and a focus-trapped detail drawer. NOT a spreadsheet grid — that's
+// Phase C. Decisions are session-only (nothing is stored in this cut).
 import { useMemo, useState, useRef, useEffect, useCallback } from "react";
 import type { RegisterRow, RiskRow, RetentionRule } from "@/lib/discovery/register";
 import { bandColor } from "@/lib/discovery/engine";
 import type { RiskBand } from "@/lib/discovery/types";
 
 type SortKey = "dataItem" | "dataCategory" | "riskLevel";
+type Decision = "confirmed" | "declined";
 const RISK_RANK: Record<RiskBand, number> = { Low: 0, Moderate: 1, High: 2, Critical: 3 };
 
 export default function MasterRegister({
@@ -19,7 +22,7 @@ export default function MasterRegister({
   risks: RiskRow[];
   retention: RetentionRule[];
 }) {
-  const [confirmed, setConfirmed] = useState<Set<string>>(new Set());
+  const [decisions, setDecisions] = useState<Record<string, Decision>>({});
   const [riskFilter, setRiskFilter] = useState<RiskBand | "All">("All");
   const [catFilter, setCatFilter] = useState<string>("All");
   const [query, setQuery] = useState("");
@@ -27,6 +30,13 @@ export default function MasterRegister({
   const [openRow, setOpenRow] = useState<RegisterRow | null>(null);
 
   const categories = useMemo(() => ["All", ...new Set(rows.map((r) => r.dataCategory))], [rows]);
+  const decide = (id: string, v: Decision) =>
+    setDecisions((d) => {
+      const next = { ...d };
+      if (next[id] === v) delete next[id];
+      else next[id] = v;
+      return next;
+    });
 
   const view = useMemo(() => {
     let v = rows.slice();
@@ -54,11 +64,14 @@ export default function MasterRegister({
     sort.key !== key ? "none" : sort.dir === 1 ? "ascending" : "descending";
   const clearFilters = () => { setRiskFilter("All"); setCatFilter("All"); setQuery(""); };
 
+  const confirmedCount = Object.values(decisions).filter((d) => d === "confirmed").length;
+  const declinedCount = Object.values(decisions).filter((d) => d === "declined").length;
+
   return (
     <section className="dpack-report" aria-labelledby="reg-h">
       <header className="dpack-rh">
         <h3 id="reg-h">1 · Master Personal Data Register</h3>
-        <p>A working inventory of the personal data your business is likely to handle. Confirm or edit each row — nothing here is stored.</p>
+        <p>A working inventory of the personal data your business is likely to handle. Confirm the rows that apply and decline the ones that don&rsquo;t — nothing here is stored.</p>
       </header>
 
       <div className="dpack-controls">
@@ -75,7 +88,12 @@ export default function MasterRegister({
           onChange={(e) => setQuery(e.target.value)} aria-label="Search register" />
       </div>
 
-      <p className="dpack-count" aria-live="polite">{view.length} of {rows.length} items</p>
+      <p className="dpack-count" aria-live="polite">
+        {view.length} of {rows.length} items
+        {(confirmedCount > 0 || declinedCount > 0) && (
+          <span className="dpack-count-dec"> · <strong>{confirmedCount}</strong> confirmed · <strong>{declinedCount}</strong> declined</span>
+        )}
+      </p>
 
       {view.length === 0 ? (
         <div className="dpack-empty">
@@ -83,7 +101,7 @@ export default function MasterRegister({
         </div>
       ) : (
         <div className="dpack-tablewrap">
-          <table className="dpack-table">
+          <table className="dpack-table reg">
             <caption className="dpack-sr">Master personal data register — {rows.length} items</caption>
             <thead>
               <tr>
@@ -92,24 +110,30 @@ export default function MasterRegister({
                 <th scope="col" aria-sort={ariaSort("dataCategory")}><button type="button" className="dpack-sortbtn" onClick={() => toggleSort("dataCategory")}>Category{sort.key === "dataCategory" && <Caret dir={sort.dir} />}</button></th>
                 <th scope="col">Stored at</th>
                 <th scope="col" aria-sort={ariaSort("riskLevel")}><button type="button" className="dpack-sortbtn" onClick={() => toggleSort("riskLevel")}>Risk{sort.key === "riskLevel" && <Caret dir={sort.dir} />}</button></th>
-                <th scope="col">Status</th>
-                <th scope="col"><span className="dpack-sr">Actions</span></th>
+                <th scope="col">Your decision</th>
               </tr>
             </thead>
             <tbody>
               {view.map((row) => {
-                const isConfirmed = confirmed.has(row.id);
+                const dec = decisions[row.id];
                 return (
-                  <tr key={row.id}>
+                  <tr key={row.id} className={dec === "declined" ? "dpack-row declined" : "dpack-row"}>
                     <td className="dpack-item"><strong>{row.dataItem}</strong></td>
                     <td>{row.dataPrincipal}</td>
                     <td>{row.dataCategory}</td>
-                    <td className="dpack-dim">{row.storedAt}</td>
+                    <td className="dpack-dim dpack-stored">{row.storedAt}</td>
                     <td><span className="dpack-band" style={{ color: bandColor(row.riskLevel) }}>● {row.riskLevel}</span></td>
-                    <td><span className={"dpack-status" + (isConfirmed ? " done" : "")}>{isConfirmed ? "Confirmed" : "Suggested"}</span></td>
-                    <td className="dpack-actions">
-                      <button type="button" className="dpack-confirm" aria-disabled={isConfirmed} disabled={isConfirmed}
-                        onClick={() => setConfirmed((s) => new Set(s).add(row.id))}>{isConfirmed ? "✓" : "Confirm"}</button>
+                    <td className="dpack-decision">
+                      <div className="dpack-toggle" role="group" aria-label={`Decision for ${row.dataItem}`}>
+                        <button type="button" className={"dpack-yes" + (dec === "confirmed" ? " on" : "")}
+                          aria-pressed={dec === "confirmed"} onClick={() => decide(row.id, "confirmed")}>
+                          ✓ <span className="dpack-tlabel">Confirm</span>
+                        </button>
+                        <button type="button" className={"dpack-no" + (dec === "declined" ? " on" : "")}
+                          aria-pressed={dec === "declined"} onClick={() => decide(row.id, "declined")}>
+                          ✕ <span className="dpack-tlabel">Decline</span>
+                        </button>
+                      </div>
                       <button type="button" className="dpack-link" onClick={() => setOpenRow(row)}>Details</button>
                     </td>
                   </tr>

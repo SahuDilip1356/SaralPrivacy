@@ -557,3 +557,53 @@
 .spd .dpack-dl dd { font-size: 14px; color: var(--slate); margin-top: 3px; }
 .spd .result-narrative-sub { font-size: 13px; color: var(--muted); margin-top: -6px; }
 @media (prefers-reduced-motion: reduce) { .spd .dpack * { animation: none !important; transition: none !important; } }
+
+/* ── Master Register: Confirm/Decline toggle + tighter layout (review fixes) ── */
+.spd .dpack-table.reg { min-width: 840px; }
+.spd .dpack-table.reg th:nth-child(1), .spd .dpack-table.reg td:nth-child(1) { width: 22%; }
+.spd .dpack-table.reg th:nth-child(2), .spd .dpack-table.reg td:nth-child(2) { width: 13%; }
+.spd .dpack-table.reg th:nth-child(3), .spd .dpack-table.reg td:nth-child(3) { width: 15%; }
+.spd .dpack-table.reg th:nth-child(4), .spd .dpack-table.reg td:nth-child(4) { width: 16%; }
+.spd .dpack-table.reg th:nth-child(5), .spd .dpack-table.reg td:nth-child(5) { width: 92px; }
+.spd .dpack-table.reg th:nth-child(6), .spd .dpack-table.reg td:nth-child(6) { width: 168px; }
+.spd .dpack-stored { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+.spd .dpack-decision { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+.spd .dpack-toggle { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.spd .dpack-yes, .spd .dpack-no { font-size: 12px; font-weight: 600; padding: 5px 9px; border: none; background: var(--white);
+  color: var(--muted); cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
+.spd .dpack-yes { border-right: 1px solid var(--line); }
+.spd .dpack-yes:hover { color: var(--green-d); }
+.spd .dpack-no:hover { color: var(--error); }
+.spd .dpack-yes.on { background: var(--green); color: #fff; }
+.spd .dpack-no.on { background: var(--error); color: #fff; }
+.spd .dpack-yes:focus-visible, .spd .dpack-no:focus-visible { outline: none; box-shadow: inset var(--ring); }
+.spd .dpack-row.declined { opacity: 0.5; }
+.spd .dpack-row.declined .dpack-item strong { text-decoration: line-through; }
+.spd .dpack-count-dec { color: var(--muted); }
+.spd .dpack-count-dec strong { color: var(--navy); }
+@media (max-width: 900px) { .spd .dpack-tlabel { display: none; } .spd .dpack-table.reg th:nth-child(6), .spd .dpack-table.reg td:nth-child(6) { width: 110px; } }
+
+/* ── Discovery hero — motion so the card feels alive (#6). Reduced-motion safe. ── */
+@property --hcp { syntax: "<percentage>"; inherits: false; initial-value: 0%; }
+.spd .hero-card { animation: hc-in 0.6s ease-out both; }
+.spd .hero-card .hc-row { animation: hc-rowin 0.5s ease-out both; }
+.spd .hero-card .hc-row:nth-child(1) { animation-delay: 0.18s; }
+.spd .hero-card .hc-row:nth-child(2) { animation-delay: 0.30s; }
+.spd .hero-card .hc-row:nth-child(3) { animation-delay: 0.42s; }
+.spd .hero-card .hc-row:nth-child(4) { animation-delay: 0.54s; }
+.spd .hero-card .hc-row:nth-child(5) { animation-delay: 0.66s; }
+.spd .hero-card .hc-check.on { animation: hc-pop 0.45s ease-out both; animation-delay: 0.7s; }
+.spd .hero-card .hc-row.dim .hc-check { animation: hc-pulse 2.6s ease-in-out 1.2s infinite; }
+.spd .hero-card .hc-gauge { background: conic-gradient(var(--orange) 0 var(--hcp), var(--line) var(--hcp) 100%);
+  animation: hc-sweep 1.1s 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.spd .hero-card .hc-bpill { animation: hc-pop 0.5s ease-out both; animation-delay: 1.5s; }
+@keyframes hc-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+@keyframes hc-rowin { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+@keyframes hc-pop { from { opacity: 0; transform: scale(0.6); } 60% { transform: scale(1.12); } to { opacity: 1; transform: scale(1); } }
+@keyframes hc-pulse { 0%, 100% { transform: scale(1); opacity: 0.75; } 50% { transform: scale(1.18); opacity: 1; } }
+@keyframes hc-sweep { from { --hcp: 0%; } to { --hcp: 61%; } }
+@media (prefers-reduced-motion: reduce) {
+  .spd .hero-card, .spd .hero-card *, .spd .dpack * { animation: none !important; transition: none !important; }
+  .spd .hero-card .hc-gauge { --hcp: 61%; }
+}
