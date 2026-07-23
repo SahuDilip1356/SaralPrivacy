@@ -253,3 +253,11 @@ No monetary penalty estimates ever. No overall compliance verdict. No storing th
   - TSX components — written, one type bug fixed by eye (sort comparator union). **Full `tsc`/`next build`/dev-preview could NOT run locally**: `node_modules` is iCloud-zeroed (`eslint/package.json` = 7225 bytes, all null) → toolchain hangs/fails. This is the documented iCloud-zeroing pitfall, NOT a code issue. **Authoritative validation = preview deploy (clean Vercel node_modules).**
 - ⏭️ **S9** — component/e2e tests + preview `next build` + browser verify (blocked locally; do at preview). **S10** — seam motion (fast-follow).
 - **Repro to validate locally:** `npm ci` to restore node_modules, then `npm run dev` → `/discovery` → pick a niche → confirm items → see the 3-report pack + seam.
+
+### Progress — session 3 (preview review fixes) — branch feat/data-discovery-review-fixes
+Off clean 1fc42bf (concurrent CA session had contested feat/data-discovery-enhancement; recovered via isolated worktree). Decisions: polish now, persistence next sprint; row model = Confirm/Decline, unconfirmed default.
+- #1 alignment — register table: scoped column widths (.dpack-table.reg), narrowed Principal, clamped Stored-at to 2 lines, decision column fits.
+- #2 Confirm/Decline toggle — green ✓ / red ✕, neutral default, declined rows grey+strike; dropped Status column; count shows confirmed/declined.
+- #3 Start-free-check resets — StartFreshLink clears sp_discovery_v1 + reloads to #tool (step 0).
+- #6 hero motion — card rise, staggered rows, check pop, often-missed pulse, gauge sweep 0→61%; prefers-reduced-motion → static.
+- DEFERRED next sprint (Phase B): #4 save pack (email+details+DPDPA consent) + #5 store→admin review→resend (mirror assessment layer on Appwrite).

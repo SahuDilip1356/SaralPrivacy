@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { faqPageSchema, breadcrumbSchema } from "@/lib/schema";
 import DiscoveryClient from "./DiscoveryClient";
+import StartFreshLink from "./components/StartFreshLink";
 import "./discovery.css";
 
 const URL = "https://saralprivacy.com/discovery";
@@ -74,7 +75,7 @@ export default function DiscoveryPage() {
               businesses miss, and the practical precautions to get DPDP-ready — in about three minutes.
             </p>
             <div className="hero-cta">
-              <a href="#tool" className="btn-primary btn-lg">Start free check</a>
+              <StartFreshLink className="btn-primary btn-lg">Start free check</StartFreshLink>
               <span className="hero-note">No email needed to see your result.</span>
             </div>
             <div className="hero-trust">
