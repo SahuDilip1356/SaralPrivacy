@@ -229,12 +229,45 @@ export const flowLexiconSchema = z.object({
 });
 export type FlowLexicon = z.infer<typeof flowLexiconSchema>;
 
+/**
+ * Page copy that varies by industry. The PRESENTATION (layout, sections, order,
+ * icons, interactions) is identical for every map and lives in the shared route
+ * + components; only these STRINGS change per sector. Moving them onto the pack
+ * is what lets one dynamic route serve all twelve industries with zero drift -
+ * an improvement to one page is an improvement to all of them.
+ */
+export const flowPresentationSchema = z.object({
+  /** Header eyebrow suffix, after "Where your data travels · ". */
+  eyebrow: z.string().min(1),
+  /** H1 - the one-line thesis of the map. */
+  h1: z.string().min(1),
+  /** Sub-hero paragraph under the H1. */
+  intro: z.string().min(1),
+  /** <title> and meta description for SEO. */
+  metaTitle: z.string().min(1),
+  metaDescription: z.string().min(1),
+  ogTitle: z.string().min(1),
+  ogDescription: z.string().min(1),
+  /** Breadcrumb leaf + the industry's own index page label. */
+  breadcrumbLabel: z.string().min(1),
+  /** The three "how to read this journey" cards (icons are fixed in the view). */
+  howToRead: z
+    .array(z.object({ title: z.string().min(1), body: z.string().min(1) }))
+    .length(3),
+  /** Closing call-to-action band. */
+  ctaHeading: z.string().min(1),
+  ctaBody: z.string().min(1),
+  ctaButton: z.string().min(1),
+});
+export type FlowPresentation = z.infer<typeof flowPresentationSchema>;
+
 export const dataFlowPackSchema = z.object({
   industry: idSchema,
   title: z.string().min(1),
   /** Layer 1 - the human this map follows, as shown in the header. */
   mainActor: z.string().min(1),
   lexicon: flowLexiconSchema,
+  presentation: flowPresentationSchema,
   /** Per-pack boundary label overrides; unset keys use BOUNDARY_META. */
   boundaryLabels: z.record(z.enum(BOUNDARIES), z.string().min(1)).optional(),
   /** Journey variants. Exactly one = the selector hides. First is the default. */

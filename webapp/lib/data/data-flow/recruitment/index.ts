@@ -28,6 +28,39 @@ export const recruitmentDataFlowPack: DataFlowPack = {
     subjectArtefact: "One candidate's CV",
     org: "agency",
   },
+  // Exact strings the recruitment route hard-coded before the page became a
+  // shared dynamic route - so the page renders identically.
+  presentation: {
+    eyebrow: "Recruitment",
+    h1: "One candidate. Many systems. One business responsibility.",
+    intro:
+      "Follow a single resume as it moves through job portals, email, WhatsApp, ATS platforms, spreadsheets, clients, vendors, AI tools and backups - and count every place it ends up, and where you lose control of it.",
+    metaTitle: "Recruitment Personal Data Flow Map - Where Candidate Data Travels",
+    metaDescription:
+      "Interactive map of how candidate data moves through a recruitment business - job portals, ATS, WhatsApp, Excel, clients, BGV vendors, AI tools and backups - and where DPDPA risk appears.",
+    ogTitle: "One candidate. Many systems. One responsibility. - Recruitment Personal Data Flow Map",
+    ogDescription:
+      "See how candidate data travels through a typical recruitment business, every place it ends up, and where control breaks.",
+    breadcrumbLabel: "Recruitment Agencies",
+    howToRead: [
+      {
+        title: "The places add up",
+        body: "Each stage shows the new places the data reaches - inboxes, spreadsheets, laptops, vendor tools, backups. Every place is counted once, so the running counter always matches the systems listed above it.",
+      },
+      {
+        title: "When it leaves you",
+        body: "A violet left edge and a tag mark systems outside your agency - clients, vendors, public sources and third parties. Once data lands there your control is indirect: it runs through your contract and your instructions, not your admin panel. Risk is shown separately, as an amber or red fill - so an outside system can be low risk, and an in-house one can be high risk.",
+      },
+      {
+        title: "Where control breaks",
+        body: "Red flags mark the hotspots - the stages where agencies most often lose track of candidate data. Tap any system to see what it holds and how to fix it.",
+      },
+    ],
+    ctaHeading: "Now check whether your controls hold up",
+    ctaBody:
+      "The map shows where candidate data travels in a typical agency. The 3-minute readiness scan checks whether your agency has the controls that matter at each hotspot - and the Discovery tool builds your own data inventory.",
+    ctaButton: "Take the recruitment risk scan",
+  },
   disclaimer:
     "This is a reference model of a typical recruitment business - not a scan of your systems. Your own flow may have fewer or more stops.",
   assessmentRoute: "/assessment/recruitment",
