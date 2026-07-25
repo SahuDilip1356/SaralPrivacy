@@ -197,8 +197,9 @@ export type FlowEdge = z.infer<typeof flowEdgeSchema>;
 
 export const flowHotspotSchema = z.object({
   id: idSchema,
-  /** 1–7; the canonical seven of v1.1 addendum §G, ranked worst-first. */
-  rank: z.number().int().min(1).max(7),
+  /** Rank within this pack's hotspots, worst-first. Ranks are contiguous 1..N
+   *  where N is the pack's hotspot count (5-8) - see dataFlowPackSchema. */
+  rank: z.number().int().min(1).max(8),
   nodeId: idSchema,
   title: z.string().min(1),
   whatHappens: z.string().min(1),
@@ -285,7 +286,13 @@ export const dataFlowPackSchema = z.object({
   personas: z.array(flowPersonaSchema).min(1),
   nodes: z.array(flowNodeSchema).min(1),
   edges: z.array(flowEdgeSchema).min(1),
-  hotspots: z.array(flowHotspotSchema).length(7),
+  // Hotspots are the curated "start here" control breaks, ranked worst-first -
+  // NOT the full risk inventory (that lives in the nodes' risk levels). The
+  // count follows the industry's reality within a band, exactly as stage and
+  // node counts do: enough (>=5) to be a serious section, few enough (<=8) to
+  // stay a highlight rather than a wall. Was a hard 7; relaxed 2026-07 so the
+  // count is honest per industry (see docs spec + decisions).
+  hotspots: z.array(flowHotspotSchema).min(5).max(8),
 });
 export type DataFlowPack = z.infer<typeof dataFlowPackSchema>;
 
@@ -382,8 +389,13 @@ export function validatePack(pack: DataFlowPack): string[] {
       issues.push(`hotspot ${h.id}: assessmentBucket ${h.assessmentBucket} not in pack.assessmentBuckets`);
     }
   }
+  // Ranks must be a contiguous 1..N covering every hotspot exactly once, so the
+  // "worst-first" order is total and unambiguous however many there are.
   const ranks = pack.hotspots.map((h) => h.rank).sort((a, b) => a - b);
-  if (ranks.join(",") !== "1,2,3,4,5,6,7") issues.push(`hotspot ranks must be exactly 1..7, got ${ranks.join(",")}`);
+  const expected = pack.hotspots.map((_, i) => i + 1).join(",");
+  if (ranks.join(",") !== expected) {
+    issues.push(`hotspot ranks must be contiguous 1..${pack.hotspots.length}, got ${ranks.join(",")}`);
+  }
 
   return issues;
 }

@@ -168,7 +168,16 @@ Enum keys reused structurally; only labels change.
 
 ---
 
-## 6. Layer 9 — WHERE CONTROL BREAKS (exactly 7, ranked)
+## 6. Layer 9 — WHERE CONTROL BREAKS (5–8, ranked; CA has 7)
+
+> **Framework change (2026-07):** hotspots were a hard "exactly 7"; relaxed to a
+> band of **5–8** so the count is honest per industry, exactly as stage and node
+> counts already vary (recruitment 12 stages, CA 10). The count is not
+> presentation — a control-breaks section renders identically at 5 or 8 cards.
+> Hotspots are the curated "start here" ranked highlight, not the full risk
+> inventory (that lives in the nodes' risk levels). CA legitimately has 7 (DSC
+> and portal passwords are real, serious, and CA-specific), so CA is unchanged.
+> Schema: `.length(7)` → `.min(5).max(8)`; ranks contiguous `1..N`.
 
 | # | Hotspot | Bucket | Why here |
 |---|---|---|---|

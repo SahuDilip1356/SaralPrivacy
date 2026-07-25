@@ -60,12 +60,15 @@ for (const p of PACKS) {
     assert.deepEqual(validatePack(p), []);
   });
 
-  test(`[${p.industry}] hotspots: exactly 7, ranked 1..7`, () => {
-    assert.equal(p.hotspots.length, 7, "exactly 7 curated hotspots");
+  test(`[${p.industry}] hotspots: 5-8 curated, ranked contiguously`, () => {
+    assert.ok(
+      p.hotspots.length >= 5 && p.hotspots.length <= 8,
+      `5-8 curated hotspots (got ${p.hotspots.length})`,
+    );
     assert.deepEqual(
       p.hotspots.map((h) => h.rank).sort((a, b) => a - b),
-      [1, 2, 3, 4, 5, 6, 7],
-      "ranks are exactly 1..7",
+      p.hotspots.map((_, i) => i + 1),
+      "ranks are contiguous 1..N",
     );
     // Every hotspot bucket is one the pack declares (guards the silent
     // deep-link-to-nowhere failure that a wrong bucket would cause).
