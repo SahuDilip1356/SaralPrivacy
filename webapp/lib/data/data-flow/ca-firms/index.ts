@@ -39,6 +39,8 @@ export const caFirmsDataFlowPack: DataFlowPack = {
     ogDescription:
       "See how a CA firm's client data travels through a typical practice, every place it ends up, and where control breaks.",
     breadcrumbLabel: "CA Firms",
+    previewBlurb:
+      "Before you fix anything, see the problem. One client's documents move through email, WhatsApp, Tally, cloud drives, tax software, government portals, DSC tokens and years of archives.",
     howToRead: [
       {
         title: "The places add up",

@@ -14,6 +14,8 @@ import { breadcrumbSchema, faqPageSchema, speakableSchema } from "@/lib/schema";
 import { Byline } from "@/components/seo/Byline";
 import { FRESHNESS, toISODate } from "@/lib/content-freshness";
 import { caFirmPack } from "@/lib/data/industry-assessment/packs/ca-firms";
+import { caFirmsDataFlowPack } from "@/lib/data/data-flow/ca-firms";
+import { DataFlowPreview } from "@/components/industries/DataFlowPreview";
 
 const faqs = [
   {
@@ -182,6 +184,12 @@ export default function CAFirmsIndustryPage() {
                   })}
                 </div>
               </section>
+
+              {/* Personal Data Flow Map preview */}
+              <DataFlowPreview
+                pack={caFirmsDataFlowPack}
+                href="/industries/ca-firms/data-flow"
+              />
 
               {/* How it works */}
               <section>

@@ -42,6 +42,8 @@ export const recruitmentDataFlowPack: DataFlowPack = {
     ogDescription:
       "See how candidate data travels through a typical recruitment business, every place it ends up, and where control breaks.",
     breadcrumbLabel: "Recruitment Agencies",
+    previewBlurb:
+      "Before you fix anything, see the problem. One candidate's CV moves through job portals, email, WhatsApp, ATS, spreadsheets, clients, vendors, AI tools and backups.",
     howToRead: [
       {
         title: "The places add up",

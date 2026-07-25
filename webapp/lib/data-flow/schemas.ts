@@ -250,6 +250,8 @@ export const flowPresentationSchema = z.object({
   ogDescription: z.string().min(1),
   /** Breadcrumb leaf + the industry's own index page label. */
   breadcrumbLabel: z.string().min(1),
+  /** One-line teaser on the industry landing page, above the data-flow preview. */
+  previewBlurb: z.string().min(1),
   /** The three "how to read this journey" cards (icons are fixed in the view). */
   howToRead: z
     .array(z.object({ title: z.string().min(1), body: z.string().min(1) }))

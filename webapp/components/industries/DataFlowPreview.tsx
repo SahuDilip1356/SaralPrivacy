@@ -10,10 +10,8 @@
 
 import Link from "next/link";
 import { ArrowRight, MapPin, Share2, Users, Workflow } from "lucide-react";
-import type { BusinessModel, DataFlowPack } from "@/lib/data-flow/schemas";
+import type { DataFlowPack } from "@/lib/data-flow/schemas";
 import { EXTERNAL_BOUNDARIES, filterByBusinessModel } from "@/lib/data-flow/schemas";
-
-const PREVIEW_MODEL: BusinessModel = "permanent";
 
 interface Props {
   pack: DataFlowPack;
@@ -21,7 +19,9 @@ interface Props {
 }
 
 export function DataFlowPreview({ pack, href }: Props) {
-  const { stages, nodes, edges } = filterByBusinessModel(pack, PREVIEW_MODEL);
+  // Scope to the model the map itself opens on (its first declared model), so
+  // the teaser's numbers reconcile with what the user sees next.
+  const { stages, nodes, edges } = filterByBusinessModel(pack, pack.businessModels[0].id);
   const places = nodes.filter((n) => n.nodeType !== "person").length;
   const externalParties = nodes.filter((n) => EXTERNAL_BOUNDARIES.includes(n.boundary)).length;
   const stats = [
@@ -33,17 +33,14 @@ export function DataFlowPreview({ pack, href }: Props) {
   return (
     <section aria-labelledby="data-flow-preview-heading">
       <h2 id="data-flow-preview-heading" className="text-2xl font-bold text-navy-700">
-        See where candidate data actually travels
+        See where {pack.lexicon.subject} data actually travels
       </h2>
-      <p className="mt-1 text-sm text-slate-600">
-        Before you fix anything, see the problem. One candidate&apos;s CV moves through job
-        portals, email, WhatsApp, ATS, spreadsheets, clients, vendors, AI tools and backups.
-      </p>
+      <p className="mt-1 text-sm text-slate-600">{pack.presentation.previewBlurb}</p>
 
       <div className="mt-5 overflow-hidden rounded-2xl border border-navy-200 bg-navy-700 p-6 text-white">
         <p className="text-lg font-bold leading-snug">
-          One candidate profile can end up in {places} places. When they ask you to delete it
-          - can you find every copy?
+          One {pack.lexicon.subject}&apos;s data can end up in {places} places. When they ask you
+          to delete it - can you find every copy?
         </p>
 
         <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-4">
