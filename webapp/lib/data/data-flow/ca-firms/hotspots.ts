@@ -1,0 +1,86 @@
+// The canonical 7 hotspots for a CA firm, ranked worst-first. Buckets map to
+// the CA assessment pack (client_document / intake / storage_access /
+// retention / vendor_incident) - every bucket is reachable from the map.
+// DSC and portal credentials have no analogue in recruitment; they lead.
+
+import type { FlowHotspot } from "../../../data-flow/schemas.ts";
+
+export const CA_FIRMS_HOTSPOTS: FlowHotspot[] = [
+  {
+    id: "hs-dsc-token",
+    rank: 1,
+    nodeId: "dsc-token",
+    title: "The firm holds the client's digital signature",
+    whatHappens: "Clients' DSC USB tokens and PINs are kept at the firm so returns can be e-signed and filed without chasing the client each time.",
+    whyItMatters: "A DSC is signing authority, not just a document - whoever holds the token and PIN can legally sign and file as the client, so its custody deserves the same care as the signature itself.",
+    dataCategoryIds: ["dsc", "identity"],
+    action: "Keep tokens in named custody with a signing log, store the PIN separately, and return or destroy tokens when the engagement ends.",
+    assessmentBucket: "storage_access",
+  },
+  {
+    id: "hs-password-sheet",
+    rank: 2,
+    nodeId: "password-sheet",
+    title: "Client portal passwords in a shared sheet",
+    whatHappens: "Income Tax, GST and TRACES logins for hundreds of clients sit in one spreadsheet so any staff member can file for anyone.",
+    whyItMatters: "A single file unlocks government portals for every client at once; if it leaks, so does the ability to log in as each of them.",
+    dataCategoryIds: ["credentials", "identity"],
+    action: "Move credentials into a proper password manager with per-user access and logging, and stop keeping portal logins in a shared file.",
+    assessmentBucket: "storage_access",
+  },
+  {
+    id: "hs-whatsapp-intake",
+    rank: 3,
+    nodeId: "personal-whatsapp",
+    title: "PAN, Aadhaar and bank statements arrive over WhatsApp",
+    whatHappens: "Clients send their most sensitive documents to staff personal phones, where they auto-download and back up to personal cloud accounts.",
+    whyItMatters: "The firm cannot find, protect or delete these copies - an erasure request cannot reach a staff member's personal phone backup.",
+    dataCategoryIds: ["identity", "bank-financial", "tax-documents"],
+    action: "Move document intake to a secure portal or an official channel, and stop accepting IDs and statements over personal chat.",
+    assessmentBucket: "intake",
+  },
+  {
+    id: "hs-staff-laptop",
+    rank: 4,
+    nodeId: "staff-laptop",
+    title: "Client files on personal laptops",
+    whatHappens: "Documents are downloaded onto unmanaged laptops to work on, and simply stay there after the return is filed.",
+    whyItMatters: "There is no wipe when an article assistant leaves and no record of what they took - the firm's most sensitive data walks out with the device.",
+    dataCategoryIds: ["identity", "bank-financial", "tax-documents"],
+    action: "Work from managed devices or the drive, disable local downloads where you can, and collect or wipe devices on exit.",
+    assessmentBucket: "client_document",
+  },
+  {
+    id: "hs-shared-drive",
+    rank: 5,
+    nodeId: "shared-drive",
+    title: "Shared drive access that outlives the staff",
+    whatHappens: "A single drive holds every client's documents, and access granted to article assistants and staff is rarely reviewed when they leave.",
+    whyItMatters: "Ex-staff and old trainees can retain access to every client's financial documents long after they have gone.",
+    dataCategoryIds: ["identity", "bank-financial", "tax-documents", "payroll"],
+    action: "Review and revoke drive access quarterly, remove leavers immediately, and scope folders so access can be limited per client.",
+    assessmentBucket: "client_document",
+  },
+  {
+    id: "hs-old-folders",
+    rank: 6,
+    nodeId: "old-itr-folders",
+    title: "A decade of client folders, never deleted",
+    whatHappens: "ITRs, Form 16s and bank statements are kept year on year, in drives, folders and inboxes, with no deletion schedule.",
+    whyItMatters: "The firm does not have a deletion problem, it has an accumulation one - ten years of the most sensitive documents multiplies the damage of any breach.",
+    dataCategoryIds: ["tax-documents", "bank-financial", "identity"],
+    action: "Set a retention schedule tied to the statutory period and securely delete client data once the engagement and the law no longer require it.",
+    assessmentBucket: "retention",
+  },
+  {
+    id: "hs-outsourced-vendor",
+    rank: 7,
+    nodeId: "outsourced-data-entry",
+    title: "Outsourced data entry with no written contract",
+    whatHappens: "Bulk data entry and document processing is handed to a freelancer or agency, often on trust with nothing in writing.",
+    whyItMatters: "A processor handling client financial documents without a contract leaves the firm liable, with no agreed controls, deletion duties or breach obligations.",
+    dataCategoryIds: ["bank-financial", "payroll", "identity"],
+    action: "Put a data-processing agreement in place before sharing anything, and limit the vendor's access to only what the task needs.",
+    assessmentBucket: "vendor_incident",
+  },
+];

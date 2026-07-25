@@ -28,13 +28,14 @@ import {
 } from "./schemas.ts";
 import { stageDataRollup } from "./stage-data.ts";
 import { recruitmentDataFlowPack } from "../data/data-flow/recruitment/index.ts";
+import { caFirmsDataFlowPack } from "../data/data-flow/ca-firms/index.ts";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 
 // Every live pack. Add a map here and it inherits every TIER 1 guarantee below.
 // (Imported directly rather than via the registry, whose sectors.ts chain uses
 //  extensionless imports that plain `node --test` cannot resolve.)
-const PACKS: DataFlowPack[] = [recruitmentDataFlowPack];
+const PACKS: DataFlowPack[] = [recruitmentDataFlowPack, caFirmsDataFlowPack];
 
 /** Business-model ids a pack declares - the values its own views are keyed by. */
 const modelsOf = (p: DataFlowPack) => p.businessModels.map((m) => m.id);
