@@ -14,6 +14,8 @@ import { breadcrumbSchema, faqPageSchema, speakableSchema } from "@/lib/schema";
 import { Byline } from "@/components/seo/Byline";
 import { FRESHNESS, toISODate } from "@/lib/content-freshness";
 import { trainingInstitutePack } from "@/lib/data/industry-assessment/packs/training-institutes";
+import { trainingInstitutesDataFlowPack } from "@/lib/data/data-flow/training-institutes";
+import { DataFlowPreview } from "@/components/industries/DataFlowPreview";
 
 const faqs = [
   {
@@ -185,6 +187,12 @@ export default function TrainingInstitutesIndustryPage() {
                   })}
                 </div>
               </section>
+
+              {/* Personal Data Flow Map preview */}
+              <DataFlowPreview
+                pack={trainingInstitutesDataFlowPack}
+                href="/industries/training-institutes/data-flow"
+              />
 
               {/* How it works */}
               <section>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import TrainingAssessmentClient from "./TrainingAssessmentClient";
 
 export const metadata: Metadata = {
@@ -10,5 +11,10 @@ export const metadata: Metadata = {
 };
 
 export default function TrainingInstitutesAssessmentPage() {
-  return <TrainingAssessmentClient />;
+  return (
+    <Suspense fallback={null}>
+      <TrainingAssessmentClient />
+    </Suspense>
+  );
 }
+
