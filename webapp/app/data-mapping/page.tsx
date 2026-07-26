@@ -127,8 +127,12 @@ export default function DataMappingPage() {
           <div className="mt-5 grid gap-5 lg:grid-cols-2">
             {LIVE_DATA_MAPS.map(({ sector, pack, href }) => {
               // Scoped to the model the map opens on, so the numbers advertised
-              // here are the numbers on screen when the visitor arrives.
-              const { stages, nodes, edges } = filterByBusinessModel(pack!, "permanent");
+              // here are the numbers on screen when the visitor arrives. That is
+              // the pack's FIRST declared model - hard-coding recruitment's
+              // "permanent" silently dropped every model-gated system from every
+              // other sector's card.
+              const models = pack!.businessModels;
+              const { stages, nodes, edges } = filterByBusinessModel(pack!, models[0].id);
               const places = nodes.filter((n) => n.nodeType !== "person").length;
               const external = nodes.filter((n) => EXTERNAL_BOUNDARIES.includes(n.boundary)).length;
               const transfers = edges.filter((e) => e.external).length;
@@ -143,14 +147,25 @@ export default function DataMappingPage() {
                   key={sector.slug}
                   className="overflow-hidden rounded-2xl border border-navy-200 bg-navy-700 p-6 text-white"
                 >
-                  <span className="inline-flex items-center rounded-full bg-teal-500/20 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-teal-300">
-                    Live
-                  </span>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="inline-flex items-center rounded-full bg-teal-500/20 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-teal-300">
+                      Live
+                    </span>
+                    {/* Sectors whose journeys genuinely differ say so, so the
+                        headline numbers are read as "the default model", not
+                        "the only shape this sector comes in". */}
+                    {models.length > 1 && (
+                      <span className="inline-flex items-center rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-semibold text-slate-200">
+                        {models.length} operating models
+                      </span>
+                    )}
+                  </div>
                   <h3 className="mt-3 text-xl font-bold">{sector.navLabel}</h3>
                   <p className="mt-1.5 text-sm leading-relaxed text-slate-300">
                     Follow one person&apos;s record through {stages.length} stages and{" "}
                     {external} outside parties - and see the {pack!.hotspots.length} points where
                     control breaks.
+                    {models.length > 1 && ` Shown for ${models[0].label.toLowerCase()}.`}
                   </p>
 
                   <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-4">

@@ -14,12 +14,14 @@ import type { DataFlowPack } from "../../data-flow/schemas";
 import { recruitmentDataFlowPack } from "./recruitment";
 import { caFirmsDataFlowPack } from "./ca-firms";
 import { trainingInstitutesDataFlowPack } from "./training-institutes";
+import { d2cBrandsDataFlowPack } from "./d2c-brands";
 
 /** Sector slug -> its flow pack. Add a line here to publish a new map. */
 const PACKS: Partial<Record<string, DataFlowPack>> = {
   "recruitment-agencies": recruitmentDataFlowPack,
   "ca-firms": caFirmsDataFlowPack,
   "training-institutes": trainingInstitutesDataFlowPack,
+  "d2c-brands": d2cBrandsDataFlowPack,
 };
 
 export interface DataMapEntry {

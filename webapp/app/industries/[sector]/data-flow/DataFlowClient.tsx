@@ -128,7 +128,7 @@ export default function DataFlowClient({ pack }: Props) {
         </span>
       </div>
 
-      <section aria-label="Candidate data journey">
+      <section aria-label={`${pack.mainActor} data journey`}>
         <MotionJourney
           key={model}
           pack={pack}
@@ -277,9 +277,12 @@ export default function DataFlowClient({ pack }: Props) {
         <h2 id="hotspots-heading" className="text-xl font-bold text-navy-800">
           Top risk hotspots - where control usually breaks
         </h2>
+        {/* Pack-driven: the count is the pack's own (5-8), and the noun is its
+            lexicon - hard-coding "seven" and "candidate data" here printed
+            recruitment's words on every other industry's map. */}
         <p className="mt-1 max-w-2xl text-sm leading-relaxed text-slate-600">
-          The seven places recruitment agencies most often lose track of candidate data. Each links
-          to the matching check in the readiness assessment.
+          The {pack.hotspots.length} places {pack.lexicon.subject} data most often slips out of your
+          control. Each links to the matching check in the readiness assessment.
         </p>
         <div className="mt-4">
           <HotspotRail

@@ -14,6 +14,8 @@ import { breadcrumbSchema, faqPageSchema, speakableSchema } from "@/lib/schema";
 import { Byline } from "@/components/seo/Byline";
 import { FRESHNESS, toISODate } from "@/lib/content-freshness";
 import { d2cBrandsPack } from "@/lib/data/industry-assessment/packs/d2c-brands";
+import { d2cBrandsDataFlowPack } from "@/lib/data/data-flow/d2c-brands";
+import { DataFlowPreview } from "@/components/industries/DataFlowPreview";
 
 const faqs = [
   {
@@ -169,6 +171,12 @@ export default function D2CBrandsPage() {
                   })}
                 </div>
               </section>
+
+              {/* Personal Data Flow Map preview */}
+              <DataFlowPreview
+                pack={d2cBrandsDataFlowPack}
+                href="/industries/d2c-brands/data-flow"
+              />
 
               {/* How it works */}
               <section>

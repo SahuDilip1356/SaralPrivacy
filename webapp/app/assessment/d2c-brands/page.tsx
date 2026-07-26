@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import D2CAssessmentClient from "./D2CAssessmentClient";
 
 export const metadata: Metadata = {
@@ -10,5 +11,9 @@ export const metadata: Metadata = {
 };
 
 export default function D2CAssessmentPage() {
-  return <D2CAssessmentClient />;
+  return (
+    <Suspense fallback={null}>
+      <D2CAssessmentClient />
+    </Suspense>
+  );
 }
