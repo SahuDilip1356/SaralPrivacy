@@ -106,7 +106,10 @@ function seoTitle(title: string, max = 46): string {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
-  if (!post) return { title: "Not Found" };
+  // notFound() HERE, not just in the page body: with streaming + loading.tsx the
+  // body's notFound() lands after the 200 header is already flushed, so crawlers
+  // saw a soft 404. Throwing during metadata resolution emits a real 404 status.
+  if (!post) notFound();
   const title = seoTitle(post.title);
   return {
     title,

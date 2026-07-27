@@ -41,7 +41,7 @@ const faqs = [
   {
     question: "Can a client ask us to delete their personal data?",
     answer:
-      "Yes. Under Section 13 of the DPDPA, individuals have a right to erasure of personal data that is no longer needed for the original purpose. However, if you are legally required to retain records (e.g., under the Income Tax Act), you can decline deletion for that specific data. You must inform the client of the legal basis for continued retention.",
+      "Yes. Under Section 12 of the DPDPA, individuals have a right to erasure of personal data that is no longer needed for the original purpose. However, if you are legally required to retain records (e.g., under the Income Tax Act), you can decline deletion for that specific data. You must inform the client of the legal basis for continued retention.",
   },
 ];
 

@@ -4,6 +4,7 @@ import { FRESHNESS } from '@/lib/content-freshness'
 import { sectorSlugs } from '@/lib/data/sectors'
 import { dataMapSlugs } from '@/lib/data/data-flow'
 import { READING_LANGS } from '@/lib/data/guide-languages'
+import { getPublishedBriefings } from '@/lib/data/briefings-source'
 
 const BASE = 'https://saralprivacy.com'
 
@@ -35,8 +36,10 @@ const learnTopics = [
 
 const industryPages = sectorSlugs
 
-// Briefing slugs: add new slugs + real publish dates as briefings go live
-const briefingSlugs: Array<{ slug: string; updated: Date }> = [
+// Briefing slugs that exist as STATIC content only (not Appwrite documents).
+// Every other briefing comes from getPublishedBriefings() — never hand-maintain
+// a slug list here again, it drifted to 8-of-122 last time.
+const staticBriefingSlugs: Array<{ slug: string; updated: Date }> = [
   { slug: 'dpdpa-consent-notice-requirements-2025',          updated: new Date('2026-02-10') },
   { slug: 'recruitment-agencies-dpdpa-cv-database-risk',     updated: new Date('2026-02-14') },
   { slug: 'ca-firms-pan-aadhaar-obligations-dpdpa',          updated: new Date('2026-02-18') },
@@ -47,25 +50,50 @@ const briefingSlugs: Array<{ slug: string; updated: Date }> = [
   { slug: 'significant-data-fiduciary-status-dpdpa',         updated: new Date('2026-03-10') },
 ]
 
-/** Fetch all published blog post slugs + updated dates from Appwrite */
+/**
+ * Live briefings from Appwrite, merged with the static fallbacks above.
+ * Appwrite wins on date when a slug exists in both.
+ */
+async function getBriefingEntries(): Promise<Array<{ slug: string; updated: Date }>> {
+  const live = await getPublishedBriefings()
+  const bySlug = new Map<string, Date>()
+  for (const { slug, updated } of staticBriefingSlugs) bySlug.set(slug, updated)
+  for (const { slug, updated } of live) bySlug.set(slug, updated)
+  return [...bySlug].map(([slug, updated]) => ({ slug, updated }))
+}
+
+/** Fetch ALL published blog post slugs + updated dates from Appwrite (paginated). */
 async function getBlogSlugs(): Promise<Array<{ slug: string; updated: Date }>> {
+  const PAGE = 100
+  const posts: Array<{ slug: string; updated: Date }> = []
   try {
-    const result = await databases.listDocuments(DB_ID, COLLECTIONS.BLOG_POSTS, [
-      Query.equal('status', 'published'),
-      Query.orderDesc('$updatedAt'),
-      Query.limit(100),
-    ])
-    return result.documents.map((doc) => ({
-      slug: doc.slug as string,
-      updated: new Date((doc.published_at || doc.$updatedAt) as string),
-    }))
+    for (let page = 0; page < 20; page++) {
+      const result = await databases.listDocuments(DB_ID, COLLECTIONS.BLOG_POSTS, [
+        Query.equal('status', 'published'),
+        Query.orderDesc('$updatedAt'),
+        Query.limit(PAGE),
+        Query.offset(page * PAGE),
+      ])
+      for (const doc of result.documents) {
+        if (!doc.slug) continue
+        posts.push({
+          slug: doc.slug as string,
+          updated: new Date((doc.published_at || doc.$updatedAt) as string),
+        })
+      }
+      if (result.documents.length < PAGE || posts.length >= result.total) break
+    }
   } catch {
-    return []
+    return posts
   }
+  return posts
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const blogSlugs = await getBlogSlugs()
+  const [blogSlugs, briefingSlugs] = await Promise.all([
+    getBlogSlugs(),
+    getBriefingEntries(),
+  ])
 
   return [
     // ── Core ──

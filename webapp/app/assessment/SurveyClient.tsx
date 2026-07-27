@@ -1299,7 +1299,7 @@ export default function SurveyClient() {
 
             <div className="mt-8 text-center text-xs text-slate-400 flex items-center justify-center gap-2">
               <Shield size={12} />
-              Trusted by 200+ Indian enterprises for DPDPA readiness and secure privacy governance.
+              Built on the DPDP Act, 2023 and the DPDP Rules, 2025. Your answers are never sold or shared.
             </div>
           </div>
         </div>

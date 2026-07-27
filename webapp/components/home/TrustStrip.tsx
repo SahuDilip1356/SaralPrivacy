@@ -1,15 +1,16 @@
 import { BookOpen, Target, Users, MessageSquare, Clock, TrendingUp, CheckCircle, FileText } from "lucide-react";
 import { SECTOR_COUNT } from "@/lib/data/sectors";
+import { getBriefingCountLabel } from "@/lib/data/briefings-source";
 
 // Beat 3 — Trust ribbon. Scale stats (moved here from the hero) + the four
 // "why us" pillars. Press logos render separately via <PressProofStrip />.
+//
+// ⛔ Every number here must be verifiable by a visitor. No aspirational counts.
+// The briefings figure is read live from Appwrite and rounded DOWN, so it can
+// never overclaim (it previously read "200+" against 122 real briefings).
 
-const stats = [
-  { icon: Clock, value: "Free", label: "3–5 minute assessment" },
-  { icon: TrendingUp, value: "200+", label: "Briefings published" },
-  { icon: CheckCircle, value: String(SECTOR_COUNT), label: "Sector assessments" },
-  { icon: FileText, value: "50+", label: "Resources available" },
-];
+/** Downloadable assets in /public/templates — 5 generic + one checklist per sector. */
+const TEMPLATE_COUNT = 17;
 
 const pillars = [
   {
@@ -38,7 +39,20 @@ const pillars = [
   },
 ];
 
-export function TrustStrip() {
+export async function TrustStrip() {
+  // null when Appwrite is unreachable or the count is too small to advertise —
+  // we fall back to a non-numeric label rather than printing a number we can't back.
+  const briefingCount = await getBriefingCountLabel();
+
+  const stats = [
+    { icon: Clock, value: "Free", label: "3–5 minute assessment" },
+    briefingCount
+      ? { icon: TrendingUp, value: briefingCount, label: "Briefings published" }
+      : { icon: TrendingUp, value: "Daily", label: "Briefings published" },
+    { icon: CheckCircle, value: String(SECTOR_COUNT), label: "Sector assessments" },
+    { icon: FileText, value: String(TEMPLATE_COUNT), label: "Free templates & checklists" },
+  ];
+
   return (
     <section className="py-14 bg-white border-y border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">

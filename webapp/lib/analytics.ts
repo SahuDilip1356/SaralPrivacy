@@ -1,10 +1,21 @@
 /**
- * analytics.ts — GA4 custom event helpers for SaralPrivacy
+ * analytics.ts — custom event helpers for SaralPrivacy.
  *
  * Usage (client components only):
  *   import { trackEvent } from "@/lib/analytics";
  *   trackEvent.assessmentComplete({ score: 4, band: "Moderate Risk" });
+ *
+ * Backend: Vercel Web Analytics (cookieless, no cross-session identifier — the
+ * July 2026 decision that replaced GA4). Every helper below used to route through
+ * `window.gtag`, which no loader ever defined once GA4 was removed, so all 23
+ * events were silent no-ops — including `discovery_handoff_click`, the metric
+ * gating Discovery Phase B. It collected zero data for months.
+ *
+ * ⛔ Never add an event here without verifying on preview that it actually
+ * reaches the dashboard (network tab: POST /_vercel/insights/event).
+ * ⛔ No PII in payloads — sector / band / score / counts only.
  */
+import { track as vercelTrack } from "@vercel/analytics";
 
 declare global {
   interface Window {
@@ -12,8 +23,35 @@ declare global {
   }
 }
 
+/** Flatten to the primitives Vercel accepts; drop anything else rather than fail. */
+type EventValue = string | number | boolean | null | undefined;
+
 function gtag(event: string, params?: Record<string, any>) {
-  if (typeof window !== "undefined" && typeof window.gtag === "function") {
+  if (typeof window === "undefined") return;
+
+  const properties: Record<string, EventValue> = {};
+  for (const [key, value] of Object.entries(params ?? {})) {
+    if (
+      value === null ||
+      value === undefined ||
+      typeof value === "string" ||
+      typeof value === "number" ||
+      typeof value === "boolean"
+    ) {
+      properties[key] = value;
+    } else {
+      properties[key] = String(value);
+    }
+  }
+
+  try {
+    vercelTrack(event, properties);
+  } catch {
+    // Analytics must never break a user flow.
+  }
+
+  // Still forward to gtag if a GA loader is ever reintroduced. No-op today.
+  if (typeof window.gtag === "function") {
     window.gtag("event", event, params);
   }
 }

@@ -224,7 +224,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   // Fallback to static
   const staticBriefing = getBriefingBySlug(slug);
-  if (!staticBriefing) return {};
+  // notFound() HERE, not just in the page body: with streaming + loading.tsx the
+  // body's notFound() lands after the 200 header is already flushed, so crawlers
+  // saw a soft 404. Throwing during metadata resolution emits a real 404 status.
+  if (!staticBriefing) notFound();
   const title = seoTitle(staticBriefing.title);
   return {
     title,

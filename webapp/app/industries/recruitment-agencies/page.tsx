@@ -41,7 +41,7 @@ const faqs = [
   {
     question: "What should we do if a candidate asks to erase their data?",
     answer:
-      "Under Section 13 of the DPDPA, candidates have the right to erasure of personal data no longer needed for the purpose it was collected. You must acknowledge the request, verify identity, and erase the data unless retention is required by law. A documented process with a response timeline is recommended.",
+      "Under Section 12 of the DPDPA, candidates have the right to erasure of personal data no longer needed for the purpose it was collected. You must acknowledge the request, verify identity, and erase the data unless retention is required by law. A documented process with a response timeline is recommended.",
   },
 ];
 
