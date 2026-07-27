@@ -13,6 +13,7 @@ import { BriefingSubscribeCard } from "@/components/briefings/BriefingSubscribeC
 import { PressProofStrip } from "@/components/ui/PressProofStrip";
 import { articleSchema, breadcrumbSchema } from "@/lib/schema";
 import BlogImage from "@/components/BlogImage";
+import { isVerifiable } from "@/lib/content/editorial-guard";
 
 export const revalidate = 3600;
 
@@ -60,6 +61,26 @@ const LANE_CONFIG: Record<string, { label: string; color: string; bg: string }> 
 function tryParse<T>(str: string | null | undefined, fallback: T): T {
   if (!str) return fallback;
   try { return JSON.parse(str) as T; } catch { return fallback; }
+}
+
+/**
+ * Whether a post may show the "Verified" badge: a passing validation score AND
+ * no unresolved editorial notes on any surface a reader can see. Used for the
+ * article itself and for the related-post cards, so a card can never advertise
+ * a badge the article it links to would not show.
+ */
+function isPostVerified(post: BlogPost): boolean {
+  const sections = tryParse<Record<string, string>>(post.sections_json, {});
+  const sources = tryParse<PrimarySource[]>(sections.primary_sources, []);
+  return isVerifiable(post.validation_score, [
+    post.section_what_changed,
+    post.section_law_says,
+    sections.section_do_now,
+    sections.section_uncertain,
+    sections.section_mistakes,
+    ...sources.map((s) => s.citation),
+    ...sources.map((s) => s.claim),
+  ]);
 }
 
 async function getPostBySlug(slug: string): Promise<BlogPost | null> {
@@ -260,6 +281,10 @@ export default async function BlogDetailPage({ params }: Props) {
   const section_mistakes  = sectionsJson.section_mistakes  || "";
   const primarySources    = tryParse<PrimarySource[]>(sectionsJson.primary_sources, []);
 
+  // "Verified" must mean verified. A passing validation_score alone let an
+  // article wear the badge while its own Sources list said "must be corrected".
+  const verified = isPostVerified(post);
+
   const relatedPosts = await getRelatedPosts(post.lane, slug);
   const laneCfg = LANE_CONFIG[post.lane] || { label: post.lane, color: "text-slate-600", bg: "bg-slate-100" };
   const pubDate  = post.published_at || post.$createdAt;
@@ -313,7 +338,7 @@ export default async function BlogDetailPage({ params }: Props) {
               <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold ${laneCfg.bg} ${laneCfg.color}`}>
                 {laneCfg.label}
               </span>
-              {post.validation_score >= 75 && (
+              {verified && (
                 <span className="inline-flex items-center gap-1 text-xs font-semibold text-green-700 bg-green-50 px-2.5 py-0.5 rounded-full border border-green-200">
                   <CheckCircle size={11} /> Verified
                 </span>
@@ -479,7 +504,7 @@ export default async function BlogDetailPage({ params }: Props) {
                       </p>
                       <div className="flex items-center gap-2 text-xs text-slate-400">
                         <span>{related.read_time || 5} min</span>
-                        {related.validation_score >= 75 && (
+                        {isPostVerified(related) && (
                           <span className="flex items-center gap-0.5 text-green-600">
                             <CheckCircle size={9} /> Verified
                           </span>

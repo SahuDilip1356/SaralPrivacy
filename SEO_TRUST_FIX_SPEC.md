@@ -31,14 +31,44 @@
 2. Sweep for other miscitations: `grep -rn "Section [0-9]\+" webapp/app webapp/lib --include="*.ts*"` and check each hit against the Act: §11 access · §12 correction & erasure · §13 grievance redressal · §14 nomination. (Sweep on 2026-07-27 found only the 2 known hits pairing a section number with erasure — re-run at build time in case content moved.)
 3. **Accept:** grep for `Section 13` co-occurring with `erasure` returns zero; FAQ JSON-LD on both industry pages carries the corrected text (view page source on preview).
 
-### T2 · Clean the SME blog post (Appwrite content edit — NOT a repo change) — ~45 min
-1. Locate the document in Appwrite `BLOG_POSTS` collection, slug `dpdpa-compliance-for-smes-practical-guide-key-obligations` (via `/admin` or Appwrite console).
+### T2 · Clean the contaminated blog posts — TWO articles, not one (Appwrite content edit — NOT a repo change) — ~90 min
+> Scope corrected 2026-07-27 after a parallel audit session fetched and parsed all 74 sitemap pages + 130 briefings + 8 blog posts. Both articles re-verified against prod HTML here before accepting.
+
+**Article 1 — `dpdpa-compliance-for-smes-practical-guide-key-obligations`** (5 notes, all in `primary_sources`): source #4 "this claim as written is outdated and must be corrected"; #12/#16 "editors should verify…"; #15/#17 "editors should confirm…".
+
+**Article 2 — `dpdpa-terminology-data-principal-fiduciary-guide`** (4 notes) — ⚠️ **two are in BODY PROSE, not `primary_sources`, so a sources-only cleanup misses them**:
+1. *(body)* "…determines the purpose and means of processing personal data — readers should verify the precise section number against the official enrolled Act as published in the Gazette of India."
+2. *(body)* "…Readers should verify the precise sub-section numbers for these definitions against the enrolled Act text…"
+3. *(source #5)* "…Verify whether cross-border transfer restriction categories appear in notified Rules vs. earlier drafts only."
+4. *(source #8)* "…official Gazette notification to be cited; reviewer notes this claim appears unsupported as 'Critical Personal Data' does not appear in the notified Rules"
+
+**Scope is confirmed closed at these two:** zero leaked strings across all 130 briefings and all 64 non-blog static pages. One false positive to ignore — the CMP article's "verify that the vendor is registered…" is legitimate advice copy (the guard in T5 is written to not trip on it).
+
+1. Locate each document in the Appwrite `BLOG_POSTS` collection (via `/admin` or the Appwrite console). Check **both** `primary_sources` **and** the section bodies.
 2. For each of the 9 editorial notes: either (a) verify the claim against the Act/Rules and delete the note, or (b) correct the claim then delete the note. Never delete the note while leaving an unverified claim standing.
 3. Re-verify every legal statement in the article while in there (it is the flagged "Verified" article — it must actually be verified).
-4. **Accept:** `curl -s https://saralprivacy.com/blog/dpdpa-compliance-for-smes-practical-guide-key-obligations | grep -ci "editors should\|must be corrected"` → 0. (ISR: allow cache revalidation or purge before checking.)
+4. **Accept:** for BOTH slugs, `curl -s https://saralprivacy.com/blog/<slug> | grep -ci "editors should\|readers should verify\|must be corrected\|reviewer notes\|appears unsupported"` → 0. (ISR: allow cache revalidation or purge before checking.) The T5 guard also stops showing a "Verified" badge until this is true, so the badge returning is itself a signal the cleanup landed.
 5. Owner: Dilip (or Claude via admin UI with Dilip watching) — content judgment calls on each claim need founder sign-off anyway.
 
-### T3 · Author identity + sameAs — ~30 min
+---
+
+### T5 · Editorial guard — stop this recurring ✅ BUILT
+> Added 2026-07-27. Not in the original spec; the parallel audit surfaced the systemic cause and it was verified here before building.
+
+**The defect:** `app/api/blog/validate/route.ts` has the LLM write reviewer notes into `PrimarySource.citation`; `app/blog/[slug]/page.tsx` renders `{src.citation}` verbatim into the public Sources list; and the "Verified" badge was gated on `post.validation_score >= 75` **alone**. So an article could tell a reader "this claim as written is outdated and must be corrected" while wearing a green Verified badge — which is exactly what prod showed on both contaminated posts. All 8 live posts are currently badged Verified. Cleaning two Appwrite rows (T2) fixes today's leak but not the next generated post.
+
+**Built:**
+1. `webapp/lib/content/editorial-guard.ts` — `hasEditorialNote()`, `countEditorialNotes()`, `isVerifiable()` over a narrow pattern list (`editors should`, `readers should verify`, `must be corrected`, `as written is outdated`, `reviewer notes`, `appears unsupported`, `to be cited`, `verify whether`, `TODO|TBD|FIXME`). Fails SAFE — an ambiguous match costs a badge, never a false claim of verification.
+2. `isPostVerified()` in `app/blog/[slug]/page.tsx` runs it over **body sections AND source citations/claims** (two of the four leaks were in prose), and now gates both the article badge and the related-post card badge. The related-card fix needed no query change — `getRelatedPosts` uses no `Query.select`, so it already returns `sections_json` (the handover's claim that it doesn't was wrong; verified in code).
+3. `webapp/lib/content/editorial-guard.test.ts` — 8 tests, **8/8 green**, fixtured on the 9 real leaked strings plus the legitimate copy that must not trip it. Run: `node --test --experimental-strip-types lib/content/editorial-guard.test.ts`.
+
+**Expected visible effect on preview:** both contaminated articles LOSE their Verified badge until T2 cleans them. That is the intended behaviour, not a regression.
+
+**Not done (deliberate):** the badge is suppressed at render, but `app/api/blog/validate/route.ts` still writes reviewer notes into `citation`. Stopping it at the source — or routing notes to a non-public `reviewer_notes` field — is the cleaner fix and remains open.
+
+### T3 · Author identity + sameAs — ~30 min · ⚠️ OWNED BY A CONCURRENT SESSION — not on this branch
+> Blast radius (measured 2026-07-27, wider than a schema tweak): `SaahoDilipKumaar` is emitted as the Person author on **153 unique live pages** — 8 blog + 121 briefings + 24 others including `/learn/*`, `/white-paper`, `/penalty-calculator`, `/compliance-checklist` — all from the single constant at `lib/data/authors.ts:14`, so it is still a one-line fix with a 153-page effect. Two related gaps: `/about` renders "Dilip Sahu" but emits **no Person schema at all**, so the `author.url → /about` pointer has nothing to reconcile against; and the empty Organization `sameAs: []` (`lib/schema.tsx:41`) is homepage-only, since `organizationSchema()` is called just from `app/page.tsx:39`.
+
 1. `webapp/lib/data/authors.ts`: `name: 'SaahoDilipKumaar'` → `'Dilip Sahu'`. Keep the object key/id as-is (internal only, referenced nowhere else — verified) or rename to `dilipsahu` in the same commit if preferred; zero external references either way.
 2. Populate author `sameAs` with Dilip's LinkedIn profile URL (**needs Dilip to supply the exact URL**) + any other stable public profiles (X, GitHub) worth claiming.
 3. `webapp/lib/schema.tsx:41`: Organization `sameAs: []` → company LinkedIn page URL + any directory/press profiles that are genuinely SaralPrivacy's.
@@ -61,6 +91,8 @@
 3. Merge with the static 8-slug array, dedupe by slug (DB wins on date). Keep the static array only if any of those 8 are static-only; if all 8 exist in Appwrite, delete the hardcoded array entirely.
 4. `lastModified` = real `published_at`/`$updatedAt` per briefing — no shared constant.
 5. **Accept:** on preview, `curl -s <preview>/sitemap.xml | grep -c "/briefings/"` ≥ 122 (use Vercel MCP `web_fetch_vercel_url` — previews 401 to curl); spot-check 3 `lastmod` values against admin dates; total sitemap URL count grows by ~114.
+6. **Verified 2026-07-27 — the 8 hardcoded slugs are ORPHANS, and the merge is what saves them.** All 8 return HTTP 200 but appear **zero** times in the `/briefings` directory listing; the two sets are fully disjoint (122 listed + 8 orphans = the 130 the new sitemap emits). So the old sitemap listed 8 pages nobody can navigate to and omitted all 122 real ones. Keeping the static array merged (rather than deleting it, as step 3 offered) is therefore the correct call — dropping it would strip the only discovery path those 8 pages have.
+7. **Open question for Dilip (content, not code):** those 8 orphans are unreachable from the archive UI. Either link them from `/briefings` or retire them — a page with no internal link and no listing entry is weak regardless of being in the sitemap.
 
 ### C2 · Real 404s for missing content — ⚠️ NOT FIXED. Three approaches tried and measured; all failed. Read before attempting again.
 
