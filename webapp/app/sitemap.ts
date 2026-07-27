@@ -77,7 +77,12 @@ async function getBlogSlugs(): Promise<Array<{ slug: string; updated: Date }>> {
       for (const doc of result.documents) {
         if (!doc.slug) continue
         posts.push({
-          slug: doc.slug as string,
+          // Lowercased deliberately: at least one stored slug has a capital
+          // ("Cross-border-…"). Appwrite slug matching is case-insensitive
+          // (verified on prod: both cases return 200) and proxy.ts 308s
+          // uppercase → lowercase, so the sitemap must advertise the
+          // lowercase URL or every crawl of it would be a wasted redirect.
+          slug: (doc.slug as string).toLowerCase(),
           updated: new Date((doc.published_at || doc.$updatedAt) as string),
         })
       }

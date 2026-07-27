@@ -40,7 +40,9 @@ async function _fetchPublishedBriefings(): Promise<BriefingRef[]> {
         const raw = doc.published_at || doc.created_at || doc.$updatedAt;
         const parsed = new Date(raw);
         refs.push({
-          slug: doc.slug as string,
+          // Lowercased to match the canonical URL proxy.ts redirects to, so the
+          // sitemap never advertises a URL that would 308 on crawl.
+          slug: (doc.slug as string).toLowerCase(),
           updated: isNaN(parsed.getTime()) ? new Date() : parsed,
         });
       }
