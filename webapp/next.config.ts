@@ -18,18 +18,6 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     "/api/blog/infographic": ["./lib/fonts/**/*"],
   },
-  // Force BLOCKING metadata resolution for crawlers.
-  //
-  // /briefings/[slug] and /blog/[slug] are dynamic (ƒ) routes: Next streams the
-  // response, so a notFound() thrown while rendering lands after the 200 header
-  // is flushed — the page renders the 404 UI under a 200 status (a soft 404).
-  // /learn/[topic] does not have this problem because it is SSG (●).
-  //
-  // Listing a UA here makes Next await generateMetadata before sending HTML, so
-  // its notFound() can set a real 404. Humans keep streamed metadata (faster
-  // first paint); only crawlers pay the wait, and only crawlers need the status.
-  htmlLimitedBots:
-    /Googlebot|Google-InspectionTool|Storebot-Google|GoogleOther|bingbot|BingPreview|Slurp|DuckDuckBot|baiduspider|yandex|sogou|Applebot|facebookexternalhit|Twitterbot|LinkedInBot|Slackbot|Discordbot|WhatsApp|redditbot|ia_archiver|GPTBot|OAI-SearchBot|ChatGPT-User|ClaudeBot|Claude-Web|PerplexityBot|Amazonbot|Bytespider|CCBot/i,
   images: {
     remotePatterns: [
       {
