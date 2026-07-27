@@ -62,11 +62,16 @@
 4. `lastModified` = real `published_at`/`$updatedAt` per briefing — no shared constant.
 5. **Accept:** on preview, `curl -s <preview>/sitemap.xml | grep -c "/briefings/"` ≥ 122 (use Vercel MCP `web_fetch_vercel_url` — previews 401 to curl); spot-check 3 `lastmod` values against admin dates; total sitemap URL count grows by ~114.
 
-### C2 · Real 404s for missing content — ~45 min
-1. Root cause: `loading.tsx` + streaming means `notFound()` thrown in the page body lands after the 200 header is sent. Fix at the metadata layer: in `generateMetadata` of both `webapp/app/briefings/[slug]/page.tsx` and `webapp/app/blog/[slug]/page.tsx`, when neither DB nor static source has the slug, call `notFound()` (import from `next/navigation`) instead of returning `{}`.
-2. The page-body `notFound()` calls stay as belt-and-braces.
-3. Check `/learn/[topic]`-style dynamic routes for the same pattern while in there; fix any found in the same commit.
-4. **Accept:** on preview (via Vercel MCP), garbage slugs on `/briefings/*` and `/blog/*` return HTTP **404**; a valid slug still returns 200 with correct metadata; `next build` passes.
+### C2 · Real 404s for missing content — ~45 min ✅ BUILT (took two attempts — read this)
+1. Root cause: `loading.tsx` + streaming means `notFound()` thrown in the page body lands after the 200 header is sent.
+2. **Attempt 1 (insufficient on its own):** call `notFound()` in `generateMetadata` of `webapp/app/briefings/[slug]/page.tsx` and `webapp/app/blog/[slug]/page.tsx` instead of returning `{}`/`{title:"Not Found"}`. **Verified on preview: still HTTP 200**, for both plain curl and a Googlebot user-agent. Metadata is streamed, so the header is already flushed by the time it resolves.
+3. **Attempt 2 (the actual fix):** DELETE the two detail-route loading boundaries — `app/briefings/[slug]/loading.tsx` and `app/blog/[slug]/loading.tsx`. With no loading boundary the segment does not stream a shell first, so `notFound()` sets a real 404.
+   - Keep `app/briefings/loading.tsx` (the archive list) — it has no notFound path.
+   - Cost is near-zero: both detail routes are ISR-cached (`revalidate 1800`), so the skeleton only rendered on a cache miss.
+   - Keep the `generateMetadata` `notFound()` calls from attempt 1 — correct and defensive.
+4. **How the cause was identified:** `/learn/[topic]` and `/industries/[sector]/data-flow` have no `loading.tsx` and already return a correct 404 on prod. That contrast is the diagnostic — if a dynamic route soft-404s, look for a loading boundary on the segment first.
+5. **Accept:** on preview, garbage slugs on `/briefings/*` and `/blog/*` return HTTP **404**; a valid slug still returns 200 with correct metadata; `next build` passes.
+6. ⛔ **Rule for any future dynamic route:** a segment that can `notFound()` must not have a `loading.tsx`, or it will soft-404 silently. Test a garbage slug's STATUS CODE (not the rendered body — the body looks right either way).
 
 ### C3 · Lowercase URL canonicalisation — ~45 min
 1. In `proxy.ts` (⛔ the ONE middleware file — never create `middleware.ts` alongside it): if `pathname` ≠ `pathname.toLowerCase()` and path is not `/api/*` or `/_next/*` or a public file, `308` redirect to the lowercased path (preserve query string).
