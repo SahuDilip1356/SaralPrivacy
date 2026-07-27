@@ -94,7 +94,7 @@
 6. **Verified 2026-07-27 — the 8 hardcoded slugs are ORPHANS, and the merge is what saves them.** All 8 return HTTP 200 but appear **zero** times in the `/briefings` directory listing; the two sets are fully disjoint (122 listed + 8 orphans = the 130 the new sitemap emits). So the old sitemap listed 8 pages nobody can navigate to and omitted all 122 real ones. Keeping the static array merged (rather than deleting it, as step 3 offered) is therefore the correct call — dropping it would strip the only discovery path those 8 pages have.
 7. **Open question for Dilip (content, not code):** those 8 orphans are unreachable from the archive UI. Either link them from `/briefings` or retire them — a page with no internal link and no listing entry is weak regardless of being in the sitemap.
 
-### C2 · Real 404s for missing content — ⚠️ NOT FIXED. Three approaches tried and measured; all failed. Read before attempting again.
+### C2 · Real 404s for missing content — ⚠️ NOT FIXED · WON'T-FIX for now (decision 2026-07-27). Three approaches tried and measured; all failed. Read before attempting again.
 
 **Current state on the branch:** `notFound()` is now called in `generateMetadata` of both `webapp/app/briefings/[slug]/page.tsx` and `webapp/app/blog/[slug]/page.tsx` (it previously returned `{}` / `{title:"Not Found"}`). That change is kept — it is correct and it makes the not-found UI render — but **it does not fix the status code**. Missing slugs still return HTTP 200.
 
@@ -112,12 +112,20 @@
 **Mitigating facts — the practical SEO harm is much smaller than the audit implies:**
 - The not-found response body already carries `<meta name="robots" content="noindex">`, so Google will not index these URLs even at 200.
 - The sitemap now lists only real, canonical URLs, so no crawler is pointed at a junk URL by us.
-- Confirmed en route: the response also carries a conflicting `<meta name="robots" content="index, follow">` from the root layout alongside two `noindex` tags — this is exactly the audit's "conflicting noindex and index,follow" finding. Google takes the most restrictive directive, so `noindex` wins, but it should still be cleaned up.
+- Confirmed en route: the response also carries a conflicting `<meta name="robots" content="index, follow">` from the root layout alongside two `noindex` tags — this is exactly the audit's "conflicting noindex and index,follow" finding. Google takes the most restrictive directive, so `noindex` wins, but it looked at first like a separately-fixable tag bug. **It is not** (see next block).
 
-**Options if this is picked up again** (do not repeat attempts 1–3):
+**The conflicting robots tag is the SAME streaming cause, not an independent bug** (verified 2026-07-27, code-checked):
+- Neither `/briefings/[slug]` nor `/blog/[slug]` has its own `not-found.tsx` — only `/learn/[topic]` does. Missing briefing/blog slugs therefore render Next's **built-in default not-found**, which injects its own `noindex`.
+- That not-found renders **inside the root layout**, whose metadata is `index: true, follow: true` (`webapp/app/layout.tsx:43`) — correct and **load-bearing for the whole site**.
+- On a streaming (ƒ) route the root layout `<head>` (carrying `index, follow`) is **flushed to the wire before** the not-found boundary swaps in its `noindex`. That flush ordering is why both tags appear. Removing the root `index, follow` would deindex the entire site; the duplicate exists only because the head flushes early.
+- ⇒ "Just clean the conflicting tag" would really mean building proper `not-found.tsx` boundaries for both routes, and even then it may still race the already-flushed root head. Real work, uncertain payoff — **not** the low-effort win it first appeared to be.
+
+**DECISION (2026-07-27, Dilip): leave C2 entirely as-is — both the 200 status code AND the tag conflict.** They are one and the same streaming behaviour. The practical SEO risk is already neutralised (body-level `noindex` wins; sitemap points only at real URLs; nothing we control leads a crawler to a junk slug). The 6 other fixes ship without C2. Revisit only if Search Console actually reports these soft-404s being indexed.
+
+**Options if this is ever picked up again** (do not repeat attempts 1–3):
 1. `generateStaticParams` + `dynamicParams = false` on both routes → unknown slugs get a real 404 with no render. **Blocker:** briefings publish daily by cron, so a new briefing would 404 until the next deploy. Only viable if publishing triggers a redeploy.
 2. Return the 404 from `proxy.ts` before the render begins. Needs a slug existence check at the edge — a cached slug set (e.g. revalidated hourly) rather than a per-request Appwrite query.
-3. Accept the soft 404 and instead fix the conflicting robots tags, relying on the body-level `noindex`. Lowest effort, addresses the indexing risk if not the status code.
+3. Add real `not-found.tsx` boundaries to both routes with `robots: noindex` — addresses the tag conflict but NOT the status code, and may still race the flushed root head on a streaming route. Higher effort than it looks; see block above.
 
 **⛔ Rule for future work:** when checking a `notFound()` path, assert on the STATUS CODE, not the rendered body — the body renders the 404 UI correctly either way, which is what makes this class of bug invisible. And check the `next build` marker (● vs ƒ) first.
 
