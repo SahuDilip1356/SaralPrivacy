@@ -1,6 +1,7 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { Industry, RiskLevel, BriefingCategory, ResourceType } from "./types";
+import { STAGE_SLUGS, stageLabel } from "./data/briefing-taxonomy";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -58,8 +59,18 @@ export function getRiskLevelColor(level: RiskLevel): string {
   return colors[level];
 }
 
-export function getCategoryLabel(category: BriefingCategory): string {
-  const labels: Record<BriefingCategory, string> = {
+/**
+ * Human label for a briefing's `category`, which holds one of two vocabularies:
+ * a legacy topic category, or a journey-stage slug (the Stage facet rides on this
+ * attribute — see `lib/data/briefing-taxonomy.ts`).
+ *
+ * Stage labels are NOT duplicated here — they delegate to `stageLabel`, the single
+ * source of truth. Duplicating them is what caused raw slugs to render as badges on
+ * the homepage and briefing pages: this map simply had no entry for "assess", and the
+ * `|| category` fallback printed the slug.
+ */
+export function getCategoryLabel(category: BriefingCategory | string): string {
+  const labels: Record<string, string> = {
     "regulatory-update": "Regulatory Update",
     "consent-management": "Consent Management",
     "data-rights": "Data Rights",
@@ -69,7 +80,9 @@ export function getCategoryLabel(category: BriefingCategory): string {
     "technology": "Technology",
     "international": "International",
   };
-  return labels[category] || category;
+  if (labels[category]) return labels[category];
+  if (STAGE_SLUGS.has(category)) return stageLabel(category);
+  return category;
 }
 
 export function getResourceTypeLabel(type: ResourceType): string {

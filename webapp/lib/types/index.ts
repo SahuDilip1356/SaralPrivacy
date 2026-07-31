@@ -56,7 +56,16 @@ export interface Briefing {
   editorNote?: string;
 }
 
+/**
+ * Values the `category` attribute can hold. Two eras coexist:
+ *   - Legacy topic categories, written by the pre-taxonomy pipeline.
+ *   - Journey stages, written by the current pipeline — `category` is where the
+ *     Stage facet is stored (see `lib/data/briefing-taxonomy.ts`; the collection
+ *     was at attribute capacity, so the facets ride on existing fields).
+ * Both must render a human label — see `getCategoryLabel`.
+ */
 export type BriefingCategory =
+  // Legacy topic categories
   | "regulatory-update"
   | "consent-management"
   | "data-rights"
@@ -64,7 +73,12 @@ export type BriefingCategory =
   | "compliance-guidance"
   | "sector-specific"
   | "technology"
-  | "international";
+  | "international"
+  // Stage facet (current pipeline)
+  | "learn"
+  | "assess"
+  | "fix"
+  | "sustain";
 
 export interface Author {
   name: string;

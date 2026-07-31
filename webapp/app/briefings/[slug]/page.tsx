@@ -161,35 +161,96 @@ const _cachedFetchBriefing = unstable_cache(
 // Request-level deduplication: generateMetadata + page component share one fetch
 const getBriefingFromDb = cache(_cachedFetchBriefing);
 
-async function _fetchRelatedFromDb(currentSlug: string, category: string) {
-  try {
+/**
+ * Related briefings, ranked sector-first.
+ *
+ * Previously this matched on `category` alone, which is why a CA-firms briefing
+ * surfaced law-firm articles. `category` is also where the Stage facet is stored
+ * (learn|assess|fix|sustain), so once the archive is backfilled a category match
+ * means "same journey stage" — even less topical than before. Sector lives in
+ * `industries[0]` and is the field that actually expresses topic.
+ *
+ * One shared fetch of the whole published archive, ranked in memory:
+ *   1. same sector (skipped for "general" — 89 briefings share it, so it carries
+ *      no signal and would just mean "any foundational briefing")
+ *   2. same category / stage
+ *   3. recency
+ * Ranking in memory rather than filtering in the query keeps the fallback chain
+ * intact: a thin sector can never return fewer than 3 results while the archive
+ * has 3 to give. Pooling the whole archive (not just the newest N) matters because
+ * a sector's few briefings are often months old — a recency-capped pool would miss
+ * them and silently fall back to generic matches.
+ */
+type RelatedCandidate = {
+  id: string; slug: string; title: string; date: string; category: string; sector: string;
+};
+
+/**
+ * The candidate pool: every published briefing, reduced to the ranking fields.
+ *
+ * Deliberately takes no arguments so `unstable_cache` stores ONE entry shared by all
+ * briefing pages — a per-page pool would mean one archive fetch per slug per window.
+ * No `Query.select`: `published_at` is a blog_posts attribute, not a briefings one, and
+ * selecting an attribute a collection lacks is a 400 that the catch below would swallow
+ * into "no related posts, sitewide", silently.
+ */
+async function _fetchRelatedPool(): Promise<RelatedCandidate[]> {
+  const PAGE = 100;
+  const docs: any[] = [];
+  for (let offset = 0; ; offset += PAGE) {
     const result = await databases.listDocuments(DB_ID, COLLECTIONS.BRIEFINGS, [
       Query.equal("status", ["sent", "approved"]),
-      Query.equal("category", category),
       Query.orderDesc("$createdAt"),
-      Query.limit(4),
+      Query.limit(PAGE),
+      Query.offset(offset),
     ]);
-    return result.documents
-      .filter((d) => d.slug !== currentSlug)
+    docs.push(...result.documents);
+    if (result.documents.length < PAGE || docs.length >= result.total) break;
+  }
+  return docs.map((d) => {
+    // `industries` is a JSON string on the document; tolerate a real array too.
+    const industries: string[] = Array.isArray(d.industries)
+      ? d.industries
+      : tryParse(d.industries, []);
+    return {
+      id:       d.$id,
+      slug:     d.slug,
+      title:    d.title,
+      date:     d.published_at || d.created_at || d.$createdAt,
+      category: d.category || "compliance-guidance",
+      sector:   industries[0] || "general",
+    };
+  });
+}
+
+const getRelatedPool = unstable_cache(
+  _fetchRelatedPool,
+  ["briefing-related-pool-v2"],
+  { revalidate: 1800, tags: ["briefings"] }
+);
+
+async function getRelatedFromDb(currentSlug: string, category: string, sector: string) {
+  try {
+    const pool = (await getRelatedPool()).filter((c) => c.slug !== currentSlug);
+
+    // "general" covers 89 briefings, so it carries no topical signal — matching on it
+    // would just mean "any foundational briefing". Fall through to category + recency.
+    const useSector = Boolean(sector) && sector !== "general";
+    const score = (c: RelatedCandidate) =>
+      (useSector && c.sector === sector ? 2 : 0) + (c.category === category ? 1 : 0);
+
+    return pool
+      .map((c, i) => ({ c, i, s: score(c) }))
+      // Stable sort: equal scores keep the pool's recency order, so the chain is
+      // sector → category/stage → recency and never returns fewer than 3 while the
+      // archive has 3 to give.
+      .sort((a, b) => b.s - a.s || a.i - b.i)
       .slice(0, 3)
-      .map((d) => ({
-        id:       d.$id,
-        slug:     d.slug,
-        title:    d.title,
-        date:     d.published_at || d.created_at || d.$createdAt,
-        category: d.category || "compliance-guidance",
-      }));
+      .map(({ c }) => ({ id: c.id, slug: c.slug, title: c.title, date: c.date, category: c.category }));
   } catch {
     return [];
   }
 }
-
-// ISR-aware cache for related briefings
-const getRelatedFromDb = unstable_cache(
-  _fetchRelatedFromDb,
-  ["briefing-related"],
-  { revalidate: 1800, tags: ["briefings"] }
-);
 
 function seoTitle(title: string, max = 46): string {
   if (title.length <= max) return title;
@@ -257,7 +318,9 @@ export default async function BriefingDetailPage({ params }: Props) {
     if (staticMatch?.editorNote) {
       briefing.editorNote = staticMatch.editorNote;
     }
-    related = await getRelatedFromDb(slug, briefing.category);
+    // `briefing.industries` is already parsed to an array upstream (see line ~109).
+    const sector = (briefing.industries as string[] | undefined)?.[0] || "general";
+    related = await getRelatedFromDb(slug, briefing.category, sector);
   } else {
     // Fallback to static data
     const staticBriefing = getBriefingBySlug(slug);
@@ -754,9 +817,12 @@ export default async function BriefingDetailPage({ params }: Props) {
 
             {/* ── Sidebar ──────────────────────────────────────────── */}
             <div className="space-y-5">
-              {/* Related briefings */}
+              {/* Related briefings — desktop only. The grid is grid-cols-1 lg:grid-cols-3,
+                  so on mobile this sidebar stacks under the article and duplicated the
+                  "More on this topic" block the renderers already emit (lg:hidden).
+                  Only this card is hidden: everything else in the sidebar must stay on mobile. */}
               {related.length > 0 && (
-                <div className="bg-white rounded-xl border border-slate-200 p-5">
+                <div className="hidden lg:block bg-white rounded-xl border border-slate-200 p-5">
                   <h3 className="font-bold text-navy-700 text-sm mb-4">Related Briefings</h3>
                   <div className="space-y-3">
                     {related.map((rel: any) => (
