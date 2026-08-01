@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   ArrowRight,
   ArrowLeft,
@@ -57,6 +57,16 @@ const MICRO_NOTES: Record<string, string> = {
 
 const REQUIRED = pack.questions.filter((q) => !q.optional);
 const TOTAL_REQUIRED = REQUIRED.length;
+
+// Short focus labels for the Data Flow Map deep-link (?bucket=). Keys match the
+// clinics-diagnostic-labs assessment buckets used by the data-flow hotspots.
+const BUCKET_FOCUS: Record<string, string> = {
+  patient_data_collection: "Patient data collection",
+  health_data_sensitivity: "High-impact health data",
+  report_sharing_communication: "Report sharing & communication",
+  system_staff_vendor_access: "System, staff & vendor access",
+  retention_incident_readiness: "Retention & incident readiness",
+};
 
 // ── 4-tier bucket chip (Controlled / Moderate / High / Critical) ──────────────
 const TIER_STYLE: Record<BandLabel, { cls: string; short: string }> = {
@@ -125,6 +135,9 @@ function MiniBar({ label, value, polarity }: { label: string; value: number; pol
 
 export default function ClinicAssessmentClient() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const focusBucket = searchParams.get("bucket") ?? "";
+  const focusLabel = BUCKET_FOCUS[focusBucket];
   const questions = pack.questions;
   const [phase, setPhase] = useState<"quiz" | "result">("quiz");
   const [qIndex, setQIndex] = useState(0);
@@ -439,6 +452,16 @@ export default function ClinicAssessmentClient() {
             <div className="h-full rounded-full bg-green-500 motion-safe:transition-all motion-safe:duration-300" style={{ width: `${progress}%` }} />
           </div>
         </div>
+
+        {focusLabel && (
+          <div className="mb-5 flex items-center gap-2 rounded-xl border border-teal-200 bg-teal-50 px-4 py-3 text-sm text-teal-900">
+            <Info size={16} className="shrink-0 text-teal-600" aria-hidden="true" />
+            <span>
+              You&apos;re checking: <span className="font-semibold">{focusLabel}</span>. Answer the
+              full scan to see how your controls hold up.
+            </span>
+          </div>
+        )}
 
         {/* Question */}
         <fieldset className="rounded-xl border border-slate-200 bg-white p-6 sm:p-7">

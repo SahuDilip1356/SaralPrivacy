@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import ClinicAssessmentClient from "./ClinicAssessmentClient";
 
 export const metadata: Metadata = {
@@ -9,6 +10,12 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false, googleBot: { index: false, follow: false } },
 };
 
+// `useSearchParams` in the client (the ?bucket= deep-link from the Data Flow
+// Map hotspots) requires a Suspense boundary, or `next build` fails.
 export default function ClinicAssessmentPage() {
-  return <ClinicAssessmentClient />;
+  return (
+    <Suspense fallback={null}>
+      <ClinicAssessmentClient />
+    </Suspense>
+  );
 }

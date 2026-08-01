@@ -13,6 +13,8 @@ import {
 import { breadcrumbSchema, faqPageSchema, speakableSchema } from "@/lib/schema";
 import { FRESHNESS, toISODate } from "@/lib/content-freshness";
 import { clinicsDiagnosticLabsPack } from "@/lib/data/industry-assessment/packs/clinics-diagnostic-labs";
+import { clinicsDiagnosticLabsDataFlowPack } from "@/lib/data/data-flow/clinics-diagnostic-labs";
+import { DataFlowPreview } from "@/components/industries/DataFlowPreview";
 
 const faqs = [
   {
@@ -167,6 +169,12 @@ export default function ClinicsDiagnosticLabsPage() {
                   })}
                 </div>
               </section>
+
+              {/* Personal Data Flow Map preview */}
+              <DataFlowPreview
+                pack={clinicsDiagnosticLabsDataFlowPack}
+                href="/industries/clinics-diagnostic-labs/data-flow"
+              />
 
               {/* How it works */}
               <section>

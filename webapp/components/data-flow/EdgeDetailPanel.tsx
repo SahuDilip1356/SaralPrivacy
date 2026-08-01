@@ -95,7 +95,9 @@ export function EdgeDetailPanel({ pack, edge, onClose, onAssessmentCta }: Props)
             )}
           >
             <ExternalLink size={14} aria-hidden="true" />
-            {edge.external ? "Leaves your control: yes" : "Stays inside your agency"}
+            {/* Pack-driven noun: hard-coding "agency" here printed recruitment's
+                word on the CA, training-institute, D2C and clinic maps. */}
+            {edge.external ? "Leaves your control: yes" : `Stays inside your ${pack.lexicon.org}`}
           </div>
         </div>
 
