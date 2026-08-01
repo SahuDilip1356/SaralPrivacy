@@ -471,14 +471,18 @@ become a universal Tier-1 test** — it cannot be added today because it would f
 Sequence only — no calendar. Hours are tentative and for sizing, not commitment.
 **Gate 0 must clear before step 1 begins.**
 
-### Gate 0 — decisions (blocking, ~0 h of build time)
+### Gate 0 — decisions · ✅ SETTLED with Dilip 2026-08-01 — do not re-litigate
 
-| | Decision | Recommendation |
+| | Decision | Settled as |
 |---|---|---|
-| **D0** | Scope: content-only pack vs the pasted spec's bespoke engine (§0) | **Content-only pack (Selective Expansion)** |
-| **D1** | Default business model (§2) | **`integrated` first**, per the pasted spec |
-| **D2** | `discoveryNicheId`: `clinics` vs `diagnostic-labs` (§9) | **`clinics`** |
-| **D3** | Accept 8 pack-level hotspots, with the four lab-specific exposures as critical nodes rather than hotspots (§7.3) | **Accept** |
+| **D0** | Scope: content-only pack vs the pasted spec's bespoke engine (§0) | ✅ **Content-only pack (Selective Expansion)** — §14 stands as written |
+| **D1** | Default business model (§2) | ✅ **`integrated` first** (= default = superset, the TI pattern) |
+| **D2** | `discoveryNicheId` (§9) | ✅ **`clinics`** |
+| **D3** | 8 pack-level hotspots; the four lab-specific exposures ship as `critical` nodes, not hotspots (§7.3) | ✅ **Accepted** |
+
+Consequences now locked: `integrated` is both the default **and** the superset, so **every gated
+entity must include `integrated`** in its `businessModels` (handoff §3) — and the `/data-mapping`
+card will show the integrated model's numbers.
 
 ### Step 1 — Stage spine + categories + personas · ~1.5 h
 
