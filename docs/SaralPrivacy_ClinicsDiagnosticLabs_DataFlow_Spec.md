@@ -423,7 +423,8 @@ modification, not optional.
 | ~30 new UI components (§26) | ❌ | Shared components already render every pack |
 | `HealthcareFlowSystem` / `Stage` / `Node` / `Edge` types (§14, §15, §19) | ❌ | `flowNode` / `flowEdge` / `flowStage` already carry every field that renders |
 | Separate complete dataset per variant (§1, §16) | ❌ | One pack; entities gated by `businessModels` — the engine's core feature |
-| Fresh variant selector + `?model=` URL state (§7.3) | ❌ | `businessModels` + `filterByBusinessModel` exist, are tested, and already URL-backed |
+| Fresh variant selector (§7.3) | ❌ | `businessModels` + `filterByBusinessModel` exist and are tested |
+| `?model=` URL-shareable variant state (§7.3) | ⚠️ **genuine gap** | Corrected 2026-08-01: the selector is plain React state (`DataFlowClient.tsx:42`, `useState(models[0].id)`) — **not** URL-backed, on any of the five maps. So a model view cannot be linked or shared, and a refresh returns to the default. Making it URL-backed is a **shared-engine** change benefiting all 12 maps; it does not belong on one sector. Backlog |
 | 16-metric panel (§20) | ❌ | `computePackSummary` + journey counters already compute from data; hand-typed metrics are forbidden |
 | Patient-rights simulator (§7.9, §22) | ❌ **backlog** | Genuinely new capability — shared engine, all 12 maps, own cycle |
 | Incident simulator (§7.9, §23) | ❌ **backlog** | Same |
