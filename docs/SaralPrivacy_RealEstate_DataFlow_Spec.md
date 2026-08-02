@@ -1,9 +1,8 @@
 # SaralPrivacy — Real Estate & Property Firms Personal Data Flow Map (Map #8)
 
-**Status:** 🟡 **BUILT — awaiting preview sign-off.** Branch `feat/data-flow-real-estate`, off
-`main` `dda11af`. Both gating decisions are **SETTLED** (§0) — do not re-open them.
-68/68 tests green; flags = counter = 8 in all three models; production build clean; lint clean.
-**Not merged to `main`.**
+**Status:** ✅ **LIVE on production 2026-08-02** (`main` `41cbac5`), signed off on preview by Dilip.
+Both gating decisions are SETTLED (§0) — do not re-open them. 68/68 tests green; flags = counter = 8
+in all three models. **Eight maps now live.**
 **Route:** `/industries/real-estate/data-flow`
 **Contract:** `docs/SaralPrivacy_DataFlow_Framework_Spec.md`
 **Handoff:** `handoff.md` at the project root — §0–§6, §8–§9 are current; §7 and §11 are law-firms
