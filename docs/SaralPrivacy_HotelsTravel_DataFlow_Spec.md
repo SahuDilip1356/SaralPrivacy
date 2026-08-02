@@ -1,8 +1,11 @@
 # SaralPrivacy — Hotels, Hospitality & Travel Personal Data Flow Map (Map #9)
 
 **Route:** `/industries/hotels-travel/data-flow`
-**Branch:** `feat/data-flow-hotels-travel`
-**Status:** ⏸ **Built, awaiting Dilip's preview sign-off.** Not merged, not on prod.
+**Branch:** `feat/data-flow-hotels-travel` (merged, deletable)
+**Status:** ✅ **LIVE on production 2026-08-02** — `main` `f84ffe2`, fast-forward, no drift.
+Verified on `saralprivacy.com`: all four routes 200, 469 KB served HTML carrying the H1, all
+three model labels and all eight hotspot titles, zero leaked nouns, all nine maps 200,
+`/data-mapping` shows Hotels 9th in available maps, sitemap picked up the URL.
 **Contract:** `docs/SaralPrivacy_DataFlow_Framework_Spec.md`
 **Closest siblings to read first:** `real-estate` (three models, derived hotspot count,
 no forced tidiness), `law-firms` (built to the guard tests by construction).
