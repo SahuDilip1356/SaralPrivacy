@@ -121,7 +121,7 @@ export default function HotelsTravelPage() {
         <div className="bg-navy-700 py-14">
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-teal-300">
-              <ShieldCheck size={18} /> Industry Guide \u00b7 Hotels, Hospitality & Travel
+              <ShieldCheck size={18} /> Industry Guide · Hotels, Hospitality & Travel
             </div>
             <h1 className="max-w-3xl text-3xl font-bold leading-tight text-white sm:text-4xl">{p.hero}</h1>
             <div className="answer-block mt-5 max-w-2xl rounded-xl border border-white/15 bg-white/10 px-5 py-4" data-speakable="true">
