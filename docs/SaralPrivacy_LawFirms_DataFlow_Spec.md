@@ -1,7 +1,8 @@
 # SaralPrivacy — Law Firms & Legal Consultants Personal Data Flow Map (Map #7)
 
-**Status:** **BUILT** on `feat/data-flow-law-firms`, awaiting preview sign-off. Both gating decisions
-are SETTLED (§0) — do not re-open them. 61/61 tests green; flags = counter = 8 in all three models.
+**Status:** ✅ **LIVE on production 2026-08-02** (`main` `ee5369e`), signed off on preview by Dilip.
+Both gating decisions are SETTLED (§0) — do not re-open them. 61/61 tests green; flags = counter = 8
+in all three models. **Seven maps now live.**
 **Route:** `/industries/law-firms/data-flow`
 **Contract:** `docs/SaralPrivacy_DataFlow_Framework_Spec.md`
 **Handoff:** `handoff.md` at the project root
