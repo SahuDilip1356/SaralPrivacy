@@ -13,6 +13,8 @@ import {
 import { breadcrumbSchema, faqPageSchema, speakableSchema } from "@/lib/schema";
 import { FRESHNESS, toISODate } from "@/lib/content-freshness";
 import { lawFirmsPack } from "@/lib/data/industry-assessment/packs/law-firms";
+import { lawFirmsDataFlowPack } from "@/lib/data/data-flow/law-firms";
+import { DataFlowPreview } from "@/components/industries/DataFlowPreview";
 
 const faqs = [
   {
@@ -167,6 +169,13 @@ export default function LawFirmsPage() {
                   })}
                 </div>
               </section>
+
+              {/* Personal Data Flow Map preview - understand the sector, then
+                  see the flow, then take the scan. */}
+              <DataFlowPreview
+                pack={lawFirmsDataFlowPack}
+                href="/industries/law-firms/data-flow"
+              />
 
               {/* How it works */}
               <section>

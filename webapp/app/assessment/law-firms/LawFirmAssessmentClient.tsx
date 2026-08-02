@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   ArrowRight,
   ArrowLeft,
@@ -63,6 +63,18 @@ const MICRO_NOTES: Record<string, string> = {
 
 const REQUIRED = pack.questions.filter((q) => !q.optional);
 const TOTAL_REQUIRED = REQUIRED.length;
+
+// Short focus labels for the Data Flow Map deep-link (?bucket=). Keys match the
+// law-firms assessment buckets used by the data-flow hotspots - ALL FIVE must be
+// present or the deep-link guard test fails, because a hotspot can send any of
+// them and a missing key renders no banner while nothing errors.
+const BUCKET_FOCUS: Record<string, string> = {
+  client_matter_data: "Client & matter data",
+  case_evidence_sensitivity: "Evidence & sensitive matters",
+  document_sharing_court_workflow: "Document sharing & court filing",
+  staff_junior_vendor_access: "Staff, junior & vendor access",
+  retention_incident_readiness: "Retention & incident readiness",
+};
 
 // ── 4-tier bucket chip (Controlled / Moderate / High / Critical) ──────────────
 const TIER_STYLE: Record<BandLabel, { cls: string; short: string }> = {
@@ -131,6 +143,10 @@ function MiniBar({ label, value, polarity }: { label: string; value: number; pol
 
 export default function LawFirmAssessmentClient() {
   const router = useRouter();
+  // ?bucket= arrives from a Data Flow Map hotspot: it focuses the scan on the
+  // control area that hotspot is about. Unknown or absent values render nothing.
+  const searchParams = useSearchParams();
+  const focusLabel = BUCKET_FOCUS[searchParams.get("bucket") ?? ""];
   const questions = pack.questions;
   const [phase, setPhase] = useState<"quiz" | "result">("quiz");
   const [qIndex, setQIndex] = useState(0);
@@ -445,6 +461,16 @@ export default function LawFirmAssessmentClient() {
             <div className="h-full rounded-full bg-green-500 motion-safe:transition-all motion-safe:duration-300" style={{ width: `${progress}%` }} />
           </div>
         </div>
+
+        {focusLabel && (
+          <div className="mb-5 flex items-center gap-2 rounded-xl border border-teal-200 bg-teal-50 px-4 py-3 text-sm text-teal-900">
+            <Info size={16} className="shrink-0 text-teal-600" aria-hidden="true" />
+            <span>
+              You&apos;re checking: <span className="font-semibold">{focusLabel}</span>. Answer the
+              full scan to see how your controls hold up.
+            </span>
+          </div>
+        )}
 
         {/* Question */}
         <fieldset className="rounded-xl border border-slate-200 bg-white p-6 sm:p-7">

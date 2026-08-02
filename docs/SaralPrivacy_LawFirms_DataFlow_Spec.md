@@ -1,7 +1,7 @@
 # SaralPrivacy — Law Firms & Legal Consultants Personal Data Flow Map (Map #7)
 
-**Status:** spec authored on `feat/data-flow-law-firms`. **Both gating decisions are SETTLED (§0) —
-do not re-open them.** Pack authoring can begin.
+**Status:** **BUILT** on `feat/data-flow-law-firms`, awaiting preview sign-off. Both gating decisions
+are SETTLED (§0) — do not re-open them. 61/61 tests green; flags = counter = 8 in all three models.
 **Route:** `/industries/law-firms/data-flow`
 **Contract:** `docs/SaralPrivacy_DataFlow_Framework_Spec.md`
 **Handoff:** `handoff.md` at the project root
@@ -189,22 +189,25 @@ counter lie in the models that hide it:
 
 ---
 
-## 4. Target reference model
+## 4. Computed reference model
 
-Targets for authoring, not claims. **Every published metric is computed from the dataset** by
-`computePackSummary` / `filterByBusinessModel` — none is hand-typed into copy, and the numbers below
-are replaced by the verified table once the pack exists.
+**Verified from the built pack**, not targets. Every published metric is computed by
+`computePackSummary` / `filterByBusinessModel` — none is hand-typed into copy.
 
 | | litigation | corporate | full-service |
 |---|---|---|---|
 | Stages | 13 | 13 | 16 |
-| Distinct places (systems) | ~44 | ~46 | ~56 |
-| External parties | ~17 | ~19 | ~23 |
-| External transfers | ~36 | ~40 | ~50 |
-| Hotspots (flags = counter) | 8 = 8 | 8 = 8 | 8 = 8 |
+| Distinct places (systems) | 48 | 48 | 58 |
+| External parties | 25 | 25 | 28 |
+| External transfers | 67 | 73 | 91 |
+| Copies created | 118 | 121 | 156 |
+| Hotspots (flags = counter) | 8 = 8 ✅ | 8 = 8 ✅ | 8 = 8 ✅ |
 
-Pack targets: **16 stages · ~58 nodes · ~105 edges · 16 data categories · ~15 personas · 8 hotspots ·
+Pack totals: **16 stages · 69 nodes · 179 edges · 16 data categories · 15 personas · 8 hotspots ·
 8 rights scenarios · 8 incident scenarios.**
+
+The two 13-stage models land on the same system count by coincidence, not by design — they overlap on
+the eleven all-model stages and each add two of their own.
 
 ### Data categories — 16
 

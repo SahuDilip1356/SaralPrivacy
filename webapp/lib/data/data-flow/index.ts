@@ -17,6 +17,7 @@ import { trainingInstitutesDataFlowPack } from "./training-institutes";
 import { d2cBrandsDataFlowPack } from "./d2c-brands";
 import { clinicsDiagnosticLabsDataFlowPack } from "./clinics-diagnostic-labs";
 import { schoolsCollegesDataFlowPack } from "./schools-colleges";
+import { lawFirmsDataFlowPack } from "./law-firms";
 
 /** Sector slug -> its flow pack. Add a line here to publish a new map. */
 const PACKS: Partial<Record<string, DataFlowPack>> = {
@@ -26,6 +27,7 @@ const PACKS: Partial<Record<string, DataFlowPack>> = {
   "d2c-brands": d2cBrandsDataFlowPack,
   "clinics-diagnostic-labs": clinicsDiagnosticLabsDataFlowPack,
   "schools-colleges": schoolsCollegesDataFlowPack,
+  "law-firms": lawFirmsDataFlowPack,
 };
 
 export interface DataMapEntry {
