@@ -10,6 +10,10 @@ import { RECRUITMENT_PERSONAS } from "./personas.ts";
 import { RECRUITMENT_NODES } from "./nodes.ts";
 import { RECRUITMENT_EDGES } from "./edges.ts";
 import { RECRUITMENT_HOTSPOTS } from "./hotspots.ts";
+import {
+  RECRUITMENT_INCIDENT_SCENARIOS,
+  RECRUITMENT_RIGHTS_SCENARIOS,
+} from "./scenarios.ts";
 
 export const recruitmentDataFlowPack: DataFlowPack = {
   industry: "recruitment-agencies",
@@ -82,6 +86,11 @@ export const recruitmentDataFlowPack: DataFlowPack = {
   nodes: RECRUITMENT_NODES,
   edges: RECRUITMENT_EDGES,
   hotspots: RECRUITMENT_HOTSPOTS,
+  // The two shared, opt-in walkthrough sections (see scenarios.ts). Content
+  // only - the engine has rendered these since the schools-colleges cycle.
+  // With this pack, all six live maps carry them.
+  rightsScenarios: RECRUITMENT_RIGHTS_SCENARIOS,
+  incidentScenarios: RECRUITMENT_INCIDENT_SCENARIOS,
 };
 
 export default recruitmentDataFlowPack;

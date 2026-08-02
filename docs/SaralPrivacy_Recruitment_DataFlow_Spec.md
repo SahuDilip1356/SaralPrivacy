@@ -250,3 +250,85 @@ Every risk maps to ≥1 concrete action. Core sets: uncontrolled WhatsApp (offic
 ## §34. Strategic positioning
 
 The map is the **visual intelligence layer** of SaralPrivacy: Discovery = *what do we collect* · **Flow Map = where does it move, who sees it, where does risk appear** · Assessment = *how ready are our controls* · Notice generator = *what do we tell people*. Build as a **reference map plus guided exploration**, not a blank modelling tool — the product outcome is the discovery moment: "I did not realise candidate data travelled through so many people and systems."
+
+---
+
+## Addendum — rights & incident walkthroughs (added 2026-08-02)
+
+Sixth and final live pack to author the two shared, opt-in sections. **Content only** —
+`scenarios.ts` plus two lines in `index.ts`. **With this pack, all six live maps carry them.**
+
+**8 rights · 8 incidents.** Only the payroll walkthroughs are gated, because only a staffing agency
+employs the person it placed:
+
+| Model | Rights shown | Incidents shown |
+|---|---|---|
+| `permanent` (default) | 7 | 7 |
+| `staffing` (superset) | 8 | 8 |
+
+### What makes these recruitment-specific
+
+**The candidate is the product, not the customer.** In every other pack the data principal is
+someone the business serves — a patient, a student, a client. Here the CV *is* the inventory, and the
+agency's commercial interest runs against deletion. `rs-delete-my-cv` is the hardest scenario in the
+whole series to answer honestly for exactly that reason, and its hard part says so.
+
+**The worst outcome is exposure to one specific person.** Not the public — the candidate's *current
+employer*. `in-cv-reached-current-employer` is the most severe incident in the pack because it can
+cost someone the job they already have, and it cannot be undone. `rs-bgv-contacted-my-employer` is
+the same harm arriving through a vendor.
+
+**The pipeline ends in rejection for almost everyone.** Nobody designs for what happens to the data
+of the people told no — hence `rs-why-was-i-rejected` (automated screening with no recorded human
+decision) and `rs-stop-contacting-me` (still being called years later).
+
+**Recruiter commentary is the hidden layer.** "Not a culture fit", a salary inferred from a call, a
+suitability rating — these live in ATS free-text and a spreadsheet column, candidates never know they
+exist, and they are usually why someone stopped hearing back.
+
+### Language locks
+
+DPDPA scope only. No labour-law, EPFO/ESIC or employment-law claims, no statements about what
+background verification is legally permitted to do, and no "sensitive personal data".
+
+### Verification
+
+52/52 pack tests · **zero scenario references to a node hidden in either model** · production build +
+TypeScript clean · eslint clean.
+
+### ⚠️ Pre-existing hotspot debt now diagnosed (NOT introduced here, NOT fixed here)
+
+The last of the three affected packs to be pinned:
+
+| Stage | Hotspot nodes resolving there |
+|---|---|
+| 2 `registration` | `candidate-database` |
+| 3 `screening` | `excel-tracker`, `ai-screener`, `recruiter-laptop` ← **COLLISION** |
+| 4 `engagement` | `personal-whatsapp` |
+| 6 `client-submission` | `client-email` |
+| 8 `bgv` | `bgv-vendor` |
+
+⇒ 7 hotspots, **5 distinct flags**, identically in both models. Collision mode, same as `ca-firms`.
+
+**Cheap fix, no hotspot copy changes** — give two of the three colliding nodes an earlier or later
+first stage so all seven land on distinct stages. Stages 1 `sourcing`, 5 `assessment`, 7 `interview`,
+9 `offer` and 12 `archive` are all free. A natural split:
+
+- `excel-tracker` → first stage `sourcing` (1) — recruiters track leads from the moment they source
+- `ai-screener` → stays at `screening` (3)
+- `recruiter-laptop` → first stage `assessment` (5)
+
+That yields flags on 1, 2, 3, 4, 5, 6, 8 = **7 distinct = 7 counter**, in both models. Do not use
+stages 10 `onboarding` or 11 `exit` — they are staffing-gated and would reintroduce the disappearance
+mode in `permanent`.
+
+### All three fixes are now specified
+
+| Pack | Mode | Fix | Effort |
+|---|---|---|---|
+| `ca-firms` | collision | `shared-drive` → `kyc`, `staff-laptop` → `accounting` | ~10 min |
+| `recruitment-agencies` | collision | `excel-tracker` → `sourcing`, `recruiter-laptop` → `assessment` | ~10 min |
+| `training-institutes` | disappearance | re-point 4 gated hotspot nodes to ungated anchors | moderate, rewrites copy |
+
+Once all three land, **add the flags-vs-counter invariant as a universal Tier-1 test** so it cannot
+recur. It cannot be added before then, because it would fail three packs on `main`.
