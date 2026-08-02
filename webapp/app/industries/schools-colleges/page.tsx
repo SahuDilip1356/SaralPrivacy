@@ -13,6 +13,8 @@ import {
 import { breadcrumbSchema, faqPageSchema, speakableSchema } from "@/lib/schema";
 import { FRESHNESS, toISODate } from "@/lib/content-freshness";
 import { schoolsCollegesPack } from "@/lib/data/industry-assessment/packs/schools-colleges";
+import { schoolsCollegesDataFlowPack } from "@/lib/data/data-flow/schools-colleges";
+import { DataFlowPreview } from "@/components/industries/DataFlowPreview";
 
 const faqs = [
   {
@@ -167,6 +169,13 @@ export default function SchoolsCollegesPage() {
                   })}
                 </div>
               </section>
+
+              {/* Personal Data Flow Map preview - understand the sector, then
+                  see the flow, then take the scan. */}
+              <DataFlowPreview
+                pack={schoolsCollegesDataFlowPack}
+                href="/industries/schools-colleges/data-flow"
+              />
 
               {/* How it works */}
               <section>
