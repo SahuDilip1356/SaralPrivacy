@@ -23,6 +23,10 @@ import { CLINICS_DIAGNOSTIC_LABS_PERSONAS } from "./personas.ts";
 import { CLINICS_DIAGNOSTIC_LABS_NODES } from "./nodes.ts";
 import { CLINICS_DIAGNOSTIC_LABS_EDGES } from "./edges.ts";
 import { CLINICS_DIAGNOSTIC_LABS_HOTSPOTS } from "./hotspots.ts";
+import {
+  CLINICS_DIAGNOSTIC_LABS_INCIDENT_SCENARIOS,
+  CLINICS_DIAGNOSTIC_LABS_RIGHTS_SCENARIOS,
+} from "./scenarios.ts";
 
 export const clinicsDiagnosticLabsDataFlowPack: DataFlowPack = {
   industry: "clinics-diagnostic-labs",
@@ -103,6 +107,10 @@ export const clinicsDiagnosticLabsDataFlowPack: DataFlowPack = {
   nodes: CLINICS_DIAGNOSTIC_LABS_NODES,
   edges: CLINICS_DIAGNOSTIC_LABS_EDGES,
   hotspots: CLINICS_DIAGNOSTIC_LABS_HOTSPOTS,
+  // The two shared, opt-in walkthrough sections (see scenarios.ts). Content
+  // only - the engine has rendered these since the schools-colleges cycle.
+  rightsScenarios: CLINICS_DIAGNOSTIC_LABS_RIGHTS_SCENARIOS,
+  incidentScenarios: CLINICS_DIAGNOSTIC_LABS_INCIDENT_SCENARIOS,
 };
 
 export default clinicsDiagnosticLabsDataFlowPack;

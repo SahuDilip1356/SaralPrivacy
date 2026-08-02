@@ -538,3 +538,46 @@ card will show the integrated model's numbers.
 
 **Total ~11 h of build**, ~85% of it steps 2–3 (content authoring) — in line with the handoff's
 8–12 h estimate.
+
+---
+
+## 18. Addendum — rights & incident walkthroughs (added 2026-08-02)
+
+Dilip asked for the two sections he liked on the Schools & Colleges map to be brought to this one
+first. **Content only** — `scenarios.ts` plus two lines in `index.ts`. No component, route or schema
+work: the shared engine has rendered these since the schools-colleges cycle
+(`lib/data-flow/schemas.ts`, `components/data-flow/RightsSimulator.tsx`, `IncidentSimulator.tsx`).
+
+**7 rights scenarios · 8 incident scenarios**, gated so each model sees only what it actually runs:
+
+| Model | Rights shown | Incidents shown |
+|---|---|---|
+| `integrated` | 7 | 8 |
+| `clinic` | 5 | 7 |
+| `diagnostic-lab` | 6 | 7 |
+
+Model-specific by design: a standalone clinic never sees sample destruction, chain-of-custody split
+or corporate health-check disclosure; a laboratory never sees the AI-scribe consultation incident or
+the health-package recall withdrawal.
+
+**What is deliberately sector-true here** rather than generic:
+- **The authorised recipient is not the emergency contact.** `rs-change-who-receives` exists because
+  the single field conflation is how a result reaches a spouse the patient had not told — and it is
+  the one mistake on this map that cannot be recalled (`family-member` is a `blockedNodeId`).
+- **A wrong-patient result is a clinical safety event, not only a privacy one** (`in-swapped-result`
+  says so and routes it accordingly).
+- **The specimen is personal data in a physical place.** `rs-destroy-sample` is the only erasure
+  walkthrough in the series that has to reach a freezer, an instrument's memory and someone else's
+  reference lab.
+- **Paying for a test is not entitlement to the result** (`rs-employer-health-check`).
+
+**Language locks hold:** "high-impact health data" throughout, no NDHM/ABDM, no professional-body
+retention schedules, no medical or legal advice. The incident section is labelled an *operational
+response reference*, and the shared component states that whether an incident must be reported is a
+decision for the practice's own advisers.
+
+**Verified:** 52/52 pack tests · `flags=8 counter=8` unchanged in all three models · **zero scenario
+references to a node hidden in any model** · production build + TypeScript clean · eslint clean.
+
+**Remaining:** `recruitment-agencies`, `ca-firms`, `training-institutes` and `d2c-brands` still have
+no scenario content, so those maps render neither section. Content-only per sector.
