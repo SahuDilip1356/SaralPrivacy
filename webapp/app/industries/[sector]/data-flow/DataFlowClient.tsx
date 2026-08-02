@@ -25,6 +25,9 @@ import {
   type WireMode,
 } from "@/components/data-flow/BoundaryLaneMap";
 import { HotspotRail } from "@/components/data-flow/HotspotRail";
+import { FlowSystemTable } from "@/components/data-flow/FlowSystemTable";
+import { RightsSimulator } from "@/components/data-flow/RightsSimulator";
+import { IncidentSimulator } from "@/components/data-flow/IncidentSimulator";
 import { DetailSheet } from "@/components/data-flow/DetailSheet";
 import { NodeDetailPanel } from "@/components/data-flow/NodeDetailPanel";
 import { EdgeDetailPanel } from "@/components/data-flow/EdgeDetailPanel";
@@ -39,8 +42,13 @@ export default function DataFlowClient({ pack }: Props) {
   // (a CA firm) declares one, and the selector below hides itself rather than
   // offering a button that re-renders the same page.
   const models = pack.businessModels;
+
   const [model, setModel] = useState<BusinessModel>(models[0].id);
   const [mapOpen, setMapOpen] = useState(false);
+  // The board is the richer view; the table is the one that works with a
+  // keyboard, a screen reader and a 320px screen. Both render the same filtered
+  // model, so neither is a reduced version of the other.
+  const [boardView, setBoardView] = useState<"board" | "table">("board");
   const [wires, setWires] = useState<WireMode>("copies");
   // Worst-first, all on by default: the filter is for narrowing to what needs
   // attention, not for hiding things until you ask.
@@ -51,6 +59,28 @@ export default function DataFlowClient({ pack }: Props) {
     trackEvent.dataFlow("data_flow_opened", { industry: pack.industry });
   }, [pack.industry]);
 
+  // ?model= makes a chosen journey linkable and survive a reload - previously a
+  // model view could not be shared at all, and a refresh silently reverted to
+  // the default.
+  //
+  // It is read AFTER MOUNT rather than through useSearchParams() on purpose.
+  // useSearchParams() forces this subtree behind a Suspense boundary during
+  // static prerendering, which would strip the journey, every system and every
+  // hotspot title out of the indexed HTML - a bad trade for a query parameter on
+  // a page that exists to be found. This keeps the page statically rendered and
+  // fully server-rendered; the only cost is one frame before a deep link to a
+  // non-default model settles. An unknown value falls back to the default, so a
+  // hand-edited URL can never render an empty page.
+  useEffect(() => {
+    const sync = () => {
+      const raw = new URLSearchParams(window.location.search).get("model");
+      setModel(raw && models.some((m) => m.id === raw) ? raw : models[0].id);
+    };
+    sync();
+    window.addEventListener("popstate", sync);
+    return () => window.removeEventListener("popstate", sync);
+  }, [models]);
+
   const visible = useMemo(() => filterByBusinessModel(pack, model), [pack, model]);
   const stageCount = visible.stages.length;
 
@@ -59,10 +89,20 @@ export default function DataFlowClient({ pack }: Props) {
   const selectedEdge =
     selection?.kind === "edge" ? pack.edges.find((e) => e.id === selection.id) : undefined;
 
-  const handleModelChange = useCallback((m: BusinessModel) => {
-    setModel(m);
-    trackEvent.dataFlow("business_model_selected", { model: m });
-  }, []);
+  const handleModelChange = useCallback(
+    (m: BusinessModel) => {
+      setModel(m);
+      // The default keeps a clean, canonical URL - only a non-default choice is
+      // worth putting in the query string. replaceState, not pushState:
+      // switching models changes the view rather than navigating, so it should
+      // not fill the back button with dead ends.
+      const { pathname } = window.location;
+      const href = m === models[0].id ? pathname : `${pathname}?model=${encodeURIComponent(m)}`;
+      window.history.replaceState(null, "", href);
+      trackEvent.dataFlow("business_model_selected", { model: m });
+    },
+    [models],
+  );
   const handleAssessmentCta = useCallback((bucket?: string) => {
     trackEvent.dataFlow("assessment_cta_clicked", bucket ? { bucket } : {});
   }, []);
@@ -192,7 +232,40 @@ export default function DataFlowClient({ pack }: Props) {
               })}
             </div>
 
-            <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label="Show connections">
+            <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label="Map view">
+              <span className="mr-1 text-xs font-medium text-slate-500">View:</span>
+              {(["board", "table"] as const).map((v) => (
+                <button
+                  key={v}
+                  type="button"
+                  onClick={() => {
+                    setBoardView(v);
+                    trackEvent.dataFlow("map_view_changed", { map_view: v });
+                  }}
+                  aria-pressed={boardView === v}
+                  className={cn(
+                    "rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500",
+                    boardView === v
+                      ? "bg-navy-700 text-white"
+                      : "bg-slate-100 text-slate-700 hover:bg-slate-200",
+                  )}
+                >
+                  {v === "board" ? "Board" : "Table"}
+                </button>
+              ))}
+            </div>
+
+            {/* Connection styling is a property of the board only - a table has
+                no wires to filter, so the control goes away rather than sitting
+                there doing nothing. */}
+            <div
+              className={cn(
+                "flex flex-wrap items-center gap-1.5",
+                boardView !== "board" && "hidden",
+              )}
+              role="group"
+              aria-label="Show connections"
+            >
               <span className="mr-1 text-xs font-medium text-slate-500">Show:</span>
               {WIRE_MODES.map((v) => (
                 <button
@@ -214,17 +287,33 @@ export default function DataFlowClient({ pack }: Props) {
             </div>
 
             <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
-              <BoundaryLaneMap
-                pack={pack}
-                model={model}
-                wires={wires}
-                risks={risks}
-                selectedId={selection?.kind === "node" ? selection.id : undefined}
-                onSelect={(nodeId) => handleMapSelect({ kind: "node", id: nodeId })}
-              />
+              {boardView === "board" ? (
+                <BoundaryLaneMap
+                  pack={pack}
+                  model={model}
+                  wires={wires}
+                  risks={risks}
+                  selectedId={selection?.kind === "node" ? selection.id : undefined}
+                  onSelect={(nodeId) => handleMapSelect({ kind: "node", id: nodeId })}
+                />
+              ) : (
+                <FlowSystemTable
+                  pack={pack}
+                  model={model}
+                  risks={risks}
+                  onSelect={(nodeId) => handleMapSelect({ kind: "node", id: nodeId })}
+                />
+              )}
             </div>
 
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 text-[11.5px] text-slate-500">
+            {/* Wire legend describes the board's strokes; the table carries the
+                same facts as words and columns, so it needs none of it. */}
+            <div
+              className={cn(
+                "flex flex-wrap items-center gap-x-5 gap-y-1.5 text-[11.5px] text-slate-500",
+                boardView !== "board" && "hidden",
+              )}
+            >
               <span className="inline-flex items-center gap-1.5">
                 <span className="inline-block h-0 w-5 border-t-2 border-teal-500" aria-hidden="true" />
                 Moves within a boundary
@@ -292,6 +381,53 @@ export default function DataFlowClient({ pack }: Props) {
           />
         </div>
       </section>
+
+      {/* Both sections below are SHARED and opt-in: they render only for packs
+          that author the content, exactly as the model selector hides itself for
+          a pack with one journey. Nothing here is industry-specific. */}
+      {pack.rightsScenarios?.length ? (
+        <section aria-labelledby="rights-heading">
+          <h2 id="rights-heading" className="text-xl font-bold text-navy-800">
+            What happens when someone asks
+          </h2>
+          <p className="mt-1 max-w-2xl text-sm leading-relaxed text-slate-600">
+            The map above shows where {pack.lexicon.subject} data ends up. This is what that means
+            the day someone asks you to find it, fix it or remove it - including the places a
+            request realistically cannot reach.
+          </p>
+          <div className="mt-4">
+            <RightsSimulator
+              pack={pack}
+              model={model}
+              onScenarioOpen={(id, type) =>
+                trackEvent.dataFlow("rights_scenario_opened", { scenario_id: id, request_type: type })
+              }
+            />
+          </div>
+        </section>
+      ) : null}
+
+      {pack.incidentScenarios?.length ? (
+        <section aria-labelledby="incident-heading">
+          <h2 id="incident-heading" className="text-xl font-bold text-navy-800">
+            When it has already gone wrong
+          </h2>
+          <p className="mt-1 max-w-2xl text-sm leading-relaxed text-slate-600">
+            An operational response reference for the incidents this sector actually has - what to
+            do in the first hour, what to put right afterwards, and the control that stops a repeat.
+            Whether an incident needs to be reported is a decision to take with your own advisers.
+          </p>
+          <div className="mt-4">
+            <IncidentSimulator
+              pack={pack}
+              model={model}
+              onScenarioOpen={(id, severity) =>
+                trackEvent.dataFlow("incident_scenario_opened", { scenario_id: id, severity })
+              }
+            />
+          </div>
+        </section>
+      ) : null}
     </div>
   );
 }

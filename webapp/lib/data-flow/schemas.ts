@@ -211,6 +211,69 @@ export const flowHotspotSchema = z.object({
 });
 export type FlowHotspot = z.infer<typeof flowHotspotSchema>;
 
+// ---------------------------------------------------------------------------
+// Rights & incident walkthroughs (optional per pack)
+// ---------------------------------------------------------------------------
+//
+// Both sections are SHARED presentation driven entirely by pack content, in the
+// same way the journey and the hotspot rail already are - so an industry opts in
+// by authoring content, never by getting its own component tree. A pack that
+// declares neither renders neither section, exactly as a pack with one
+// `businessModel` hides the selector. That keeps "presentation unified, content
+// varies" intact while letting the twelve maps adopt these at their own pace.
+//
+// The point of both is the same: the map shows WHERE data went, and these show
+// what that means the day someone asks you to act on it. The honest answer is
+// usually "we can reach these places, and we cannot reach those" - which is why
+// `blockedNodeIds` is a first-class field rather than an omission.
+
+export const RIGHTS_REQUEST_TYPES = [
+  "access",
+  "correction",
+  "erasure",
+  "remove-media",
+  "withdraw-marketing",
+  "authorisation-change",
+  "complaint",
+] as const;
+export type RightsRequestType = (typeof RIGHTS_REQUEST_TYPES)[number];
+
+export const rightsScenarioSchema = z.object({
+  id: idSchema,
+  /** The request in the data principal's own words. */
+  request: z.string().min(1),
+  requestType: z.enum(RIGHTS_REQUEST_TYPES),
+  /** Who typically asks - matters where a guardian may act for the subject. */
+  who: z.string().min(1),
+  /** Places the request must reach. Node ids; the view resolves them to names. */
+  reachesNodeIds: z.array(idSchema).min(1),
+  /** Places it usually cannot reach. Naming these is the honest half. */
+  blockedNodeIds: z.array(idSchema).optional(),
+  /** What actually has to happen, in order. */
+  steps: z.array(z.string().min(1)).min(1),
+  /** The bit that genuinely fails in practice. */
+  hardPart: z.string().min(1),
+  businessModels: businessModelsSchema,
+});
+export type RightsScenario = z.infer<typeof rightsScenarioSchema>;
+
+export const incidentScenarioSchema = z.object({
+  id: idSchema,
+  title: z.string().min(1),
+  /** How it comes to light - usually a complaint, not a monitoring alert. */
+  trigger: z.string().min(1),
+  severity: z.enum(["medium", "high", "critical"]),
+  involvedNodeIds: z.array(idSchema).min(1),
+  /** First hour: stop it spreading. */
+  containment: z.array(z.string().min(1)).min(1),
+  /** Then: correct, tell people, write it down. */
+  thenWhat: z.array(z.string().min(1)).min(1),
+  /** The control that stops a repeat. */
+  prevention: z.string().min(1),
+  businessModels: businessModelsSchema,
+});
+export type IncidentScenario = z.infer<typeof incidentScenarioSchema>;
+
 /**
  * Layer 1 of the industry standard: WHOSE data this map follows, plus the nouns
  * the shared components use to talk about them. Without this the components
@@ -293,6 +356,10 @@ export const dataFlowPackSchema = z.object({
   // stay a highlight rather than a wall. Was a hard 7; relaxed 2026-07 so the
   // count is honest per industry (see docs spec + decisions).
   hotspots: z.array(flowHotspotSchema).min(5).max(8),
+  /** Optional "what happens when someone asks" walkthroughs - see above. */
+  rightsScenarios: z.array(rightsScenarioSchema).min(1).optional(),
+  /** Optional "it already went wrong" walkthroughs - see above. */
+  incidentScenarios: z.array(incidentScenarioSchema).min(1).optional(),
 });
 export type DataFlowPack = z.infer<typeof dataFlowPackSchema>;
 
@@ -389,6 +456,24 @@ export function validatePack(pack: DataFlowPack): string[] {
       issues.push(`hotspot ${h.id}: assessmentBucket ${h.assessmentBucket} not in pack.assessmentBuckets`);
     }
   }
+  // Rights & incident walkthroughs name systems by id: an id that no longer
+  // exists would render a blank chip and silently understate what a request has
+  // to reach, so it fails here rather than shipping quietly.
+  dupes((pack.rightsScenarios ?? []).map((s) => s.id), "rights-scenario");
+  dupes((pack.incidentScenarios ?? []).map((s) => s.id), "incident-scenario");
+  for (const s of pack.rightsScenarios ?? []) {
+    checkModels(s.businessModels, `rights scenario ${s.id}`);
+    for (const n of [...s.reachesNodeIds, ...(s.blockedNodeIds ?? [])]) {
+      if (!nodeById.has(n)) issues.push(`rights scenario ${s.id}: unknown node ${n}`);
+    }
+  }
+  for (const s of pack.incidentScenarios ?? []) {
+    checkModels(s.businessModels, `incident scenario ${s.id}`);
+    for (const n of s.involvedNodeIds) {
+      if (!nodeById.has(n)) issues.push(`incident scenario ${s.id}: unknown node ${n}`);
+    }
+  }
+
   // Ranks must be a contiguous 1..N covering every hotspot exactly once, so the
   // "worst-first" order is total and unambiguous however many there are.
   const ranks = pack.hotspots.map((h) => h.rank).sort((a, b) => a - b);
