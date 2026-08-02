@@ -1,7 +1,9 @@
 # SaralPrivacy — Real Estate & Property Firms Personal Data Flow Map (Map #8)
 
-**Status:** 🔨 **IN BUILD.** Branch `feat/data-flow-real-estate`, off `main` `dda11af`.
-Both gating decisions are **SETTLED** (§0) — do not re-open them.
+**Status:** 🟡 **BUILT — awaiting preview sign-off.** Branch `feat/data-flow-real-estate`, off
+`main` `dda11af`. Both gating decisions are **SETTLED** (§0) — do not re-open them.
+68/68 tests green; flags = counter = 8 in all three models; production build clean; lint clean.
+**Not merged to `main`.**
 **Route:** `/industries/real-estate/data-flow`
 **Contract:** `docs/SaralPrivacy_DataFlow_Framework_Spec.md`
 **Handoff:** `handoff.md` at the project root — §0–§6, §8–§9 are current; §7 and §11 are law-firms
@@ -219,23 +221,26 @@ and nominee copied across booking systems) sit on the lead-sheet and KYC hotspot
 
 ## 4. Content model
 
-### Target reference model — design targets only
+### Computed reference model
 
-Every published metric is computed by `computePackSummary` / `filterByBusinessModel`; none is
-hand-typed into copy. These are sizing targets, to be replaced with measured values after the build.
+**Verified from the built pack**, not targets. Every published metric is computed by
+`computePackSummary` / `filterByBusinessModel` — none is hand-typed into copy.
 
 | | brokerage | developer | property-management |
 |---|---|---|---|
 | Stages | 10 | 13 | 14 |
-| Distinct places (systems) | ~32 | ~44 | ~46 |
-| External parties | ~15 | ~20 | ~21 |
-| Hotspots (flags = counter) | 8 = 8 | 8 = 8 | 8 = 8 |
+| Distinct places (systems) | 37 | 49 | 47 |
+| External parties | 23 | 30 | 29 |
+| External transfers | 57 | 74 | 77 |
+| Copies created | 84 | 111 | 112 |
+| Hotspots (flags = counter) | 8 = 8 ✅ | 8 = 8 ✅ | 8 = 8 ✅ |
 
-Pack sizing target: **17 stages · ~68 nodes · ~175 edges · 16 data categories · ~15 personas ·
-8 hotspots · 8 rights scenarios · 8 incident scenarios.** Comparable to law firms (16/69/179).
+Pack totals: **17 stages · 68 nodes · 154 edges · 16 data categories · 16 personas · 8 hotspots ·
+8 rights scenarios · 8 incident scenarios.** Comparable to law firms (16/69/179).
 
-The spec's own per-variant targets (≈28 / 34 / 30 distinct locations, ≈14 / 16 / 15 external
-parties) are in the same range and are used as a sanity check after the build, not as inputs.
+The pasted spec's own per-variant targets (≈28 / 34 / 30 distinct locations, ≈14 / 16 / 15 external
+parties) sit just under these — the union spine gives each model a few more places than a
+standalone dataset would, which is the same trade already accepted on maps #5–#7.
 
 ### Data categories — 16
 
@@ -252,7 +257,7 @@ covered by one of these sixteen.
 | `financial-records` | Bank statements, loan applications, sanction/rejection, payment history, deposits | provided |
 | `requirement-budget` | Budget band, buy/rent preference, locality, unit preference, timeline | provided |
 | `property-ownership-docs` | Title deeds, prior sale deed, tax receipts, society NOC, ownership records | provided |
-| `transaction-documents` | Agreement to sell, sale deed, allotment, booking form, rent agreement, stamp & registration record | created |
+| `transaction-documents` | Agreement to sell, sale deed, allotment, booking form, rent agreement, stamp & registration record | provided |
 | `site-visit-location` | Visit history, route, attendance, gate entry, visit photos, live-location shares | provided |
 | `occupancy-access` | Keys, access credentials, entry/exit logs, vehicle, visitor and delivery records, CCTV | provided |
 | `maintenance-complaint` | Work orders, contractor visits, repair photos, complaints, inspection and damage records | provided |
@@ -260,7 +265,7 @@ covered by one of these sixteen.
 | `third-party-records` | Co-applicant, nominee, guarantor, references, prior landlord, witnesses, domestic staff, other occupants | provided |
 | `client-scoring` | Lead score, affordability and seriousness ratings, tenant suitability, payment-behaviour label, fraud flag | derived |
 | `marketing-profile` | Campaign attribution, ad audiences, retargeting and referral lists, suppression state | derived |
-| `staff-access-record` | CRM logins, exports, device sync, portal credentials, access logs | created |
+| `staff-access-record` | CRM logins, exports, device sync, portal credentials, access logs | provided |
 
 `third-party-records` and `occupancy-access` do the sector's distinctive work: the first shows how
 much of the file belongs to people who never engaged the firm (a co-applicant, a guarantor, a

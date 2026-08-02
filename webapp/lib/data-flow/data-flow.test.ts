@@ -34,6 +34,7 @@ import { d2cBrandsDataFlowPack } from "../data/data-flow/d2c-brands/index.ts";
 import { clinicsDiagnosticLabsDataFlowPack } from "../data/data-flow/clinics-diagnostic-labs/index.ts";
 import { schoolsCollegesDataFlowPack } from "../data/data-flow/schools-colleges/index.ts";
 import { lawFirmsDataFlowPack } from "../data/data-flow/law-firms/index.ts";
+import { realEstateDataFlowPack } from "../data/data-flow/real-estate/index.ts";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 
@@ -48,6 +49,7 @@ const PACKS: DataFlowPack[] = [
   clinicsDiagnosticLabsDataFlowPack,
   schoolsCollegesDataFlowPack,
   lawFirmsDataFlowPack,
+  realEstateDataFlowPack,
 ];
 
 /** Business-model ids a pack declares - the values its own views are keyed by. */
