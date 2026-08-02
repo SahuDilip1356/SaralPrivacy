@@ -297,3 +297,80 @@ Computed by `computePackSummary()` (never hand-typed): stages, systems, external
 copy events, external transfers — all derived from the authored pack, per business model. Targets
 (design guidance only, final = computed): stages 10; hybrid systems ~30; external parties ~10–15;
 classroom leaner, online heaviest on subprocessors.
+
+---
+
+## Addendum — rights & incident walkthroughs (added 2026-08-02)
+
+Fourth pack to author the two shared, opt-in sections, after `schools-colleges`,
+`clinics-diagnostic-labs` and `d2c-brands`. **Content only** — `scenarios.ts` plus two lines in
+`index.ts`. No component, route or schema work.
+
+**8 rights scenarios · 8 incident scenarios**, gated per model:
+
+| Model | Rights shown | Incidents shown |
+|---|---|---|
+| `hybrid` (default + superset) | 8 | 8 |
+| `classroom` | 7 | 7 |
+| `online` | 7 | 7 |
+
+A classroom institute never sees the proctoring walkthrough; a purely online institute never sees
+biometrics or CCTV.
+
+### What makes these training-institute-specific
+
+**The student's result is the product being sold.** Every other sector treats publishing a data
+principal's data as a failure; here it is the business model. `rs-remove-result-post` — *"take my
+photo, rank and marks out of your publicity"* — therefore has no real equivalent in the other packs,
+and its hard part is honest: the asset has already been copied into every campaign folder, forwarded
+through dozens of parent groups and reposted by franchise partners, and the original permission was a
+clause signed before the student had any result to publish.
+
+**The enquiry is a tradeable commodity.** `in-enquiry-list-shared` is ranked most severe because a
+coaching enquiry routinely reaches competing institutes and agents within a day — which is why
+`rs-stop-marketing`'s hard part is that suppression cannot reach copies already passed on.
+
+**Whoever pays is treated as the account holder.** `rs-now-an-adult` exists because nothing in these
+systems distinguishes the fee-payer from the data principal, and there is usually one phone number on
+the record — the parent's. Note the pack models `parent` in the `client` boundary, so a disclosure to
+a parent reads as external, which is correct once the student is an adult.
+
+### Language locks
+
+DPDPA scope only. No claims about what an education board, university, skilling authority or
+examination body requires to be retained, and no "sensitive personal data". The incident section is
+labelled an *operational response reference*.
+
+### Verification
+
+52/52 pack tests · **zero scenario references to a node hidden in any model** · production build +
+TypeScript clean · eslint clean.
+
+### ⚠️ Pre-existing hotspot debt confirmed (NOT introduced here, NOT fixed here)
+
+Measuring while in this pack pinned the long-standing flags-vs-counter mismatch to exact nodes:
+
+| Model | visible / flags / counter | Hotspot nodes gated away |
+|---|---|---|
+| `hybrid` | 7 / 7 / 7 ✅ | — |
+| `classroom` | 5 / 5 / 7 ❌ | `proctoring`, `ai-personalisation` |
+| `online` | 5 / 5 / 7 ❌ | `physical-file`, `biometric-device` |
+
+This is the **disappearance** failure mode (§2 of the root handoff), not collision. The spine is fully
+shared — all 10 stages are all-model — so the only cause is that 4 of the 7 hotspot *nodes* carry
+`businessModels` gates.
+
+**Fixing it is a visible content change** (it alters the headline risk list), so it was deliberately
+left out of this content-only cycle and needs Dilip's decision. Two options:
+
+1. **Re-point the 4 gated hotspots to ungated anchors.** TI has 10 ungated non-person nodes
+   (`admission-erp`, `payment-gateway`, `fee-spreadsheet`, `whatsapp`, `certificate-system`,
+   `placement-portal`, `old-records`, `cloud-drive`, `staff-devices`, `backups`), so a 7-hotspot set
+   on 7 distinct ungated anchors is achievable — but 4 hotspots' copy would be rewritten, and the
+   sector-specific proctoring / biometric / AI-personalisation angles would move out of the hotspot
+   rail into node-level risk (where they already exist with `riskWhy`/`riskAction`).
+2. **Reduce to 5 hotspots** (the 3 currently-ungated plus 2 re-pointed). Legal — the band is 5–8 —
+   but loses two headline risks.
+
+Option 1 preserves more and matches what clinics and schools did. Either way, the universal Tier-1
+invariant test can only land once `recruitment-agencies` and `ca-firms` are corrected too.

@@ -13,6 +13,10 @@ import { TRAINING_INSTITUTES_PERSONAS } from "./personas.ts";
 import { TRAINING_INSTITUTES_NODES } from "./nodes.ts";
 import { TRAINING_INSTITUTES_EDGES } from "./edges.ts";
 import { TRAINING_INSTITUTES_HOTSPOTS } from "./hotspots.ts";
+import {
+  TRAINING_INSTITUTES_INCIDENT_SCENARIOS,
+  TRAINING_INSTITUTES_RIGHTS_SCENARIOS,
+} from "./scenarios.ts";
 
 export const trainingInstitutesDataFlowPack: DataFlowPack = {
   industry: "training-institutes",
@@ -88,6 +92,10 @@ export const trainingInstitutesDataFlowPack: DataFlowPack = {
   nodes: TRAINING_INSTITUTES_NODES,
   edges: TRAINING_INSTITUTES_EDGES,
   hotspots: TRAINING_INSTITUTES_HOTSPOTS,
+  // The two shared, opt-in walkthrough sections (see scenarios.ts). Content
+  // only - the engine has rendered these since the schools-colleges cycle.
+  rightsScenarios: TRAINING_INSTITUTES_RIGHTS_SCENARIOS,
+  incidentScenarios: TRAINING_INSTITUTES_INCIDENT_SCENARIOS,
 };
 
 export default trainingInstitutesDataFlowPack;
