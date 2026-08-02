@@ -138,7 +138,20 @@ export const RECRUITMENT_NODES: FlowNode[] = [
     name: "Shared Excel tracker",
     nodeType: "repository",
     boundary: "agency",
-    stageIds: ["screening", "client-submission", "archive"],
+    // ⚠️ WHERE A HOTSPOT NODE STARTS IS LOAD-BEARING.
+    //
+    // The journey paints one red flag per distinct stage a hotspot node lands
+    // on - resolving each node to the FIRST of its stages visible in the chosen
+    // model - while the counter prints `pack.hotspots.length`. `excel-tracker`,
+    // `ai-screener` and `recruiter-laptop` all began at `screening`, so seven
+    // hotspots painted five flags.
+    //
+    // `ai-screener` cannot move (it IS screening) and `recruiter-laptop` now
+    // starts at `sourcing`, so this one starts where the pipeline sheet is
+    // actually run from: assessment through submission. The `ats-to-tracker`
+    // edge still fires at `screening` - an edge may cross stages; only the
+    // node's placement moves.
+    stageIds: ["assessment", "client-submission", "archive"],
     description: "Team trackers with name, mobile, current/expected salary and status - exported from the ATS and shared around.",
     dataCategoryIds: ["identity", "contact", "professional", "financial", "derived"],
     accessPersonaIds: ["recruiter", "recruitment-lead", "ops-head"],
@@ -183,7 +196,11 @@ export const RECRUITMENT_NODES: FlowNode[] = [
     name: "Recruiter laptop downloads",
     nodeType: "device",
     boundary: "agency",
-    stageIds: ["screening", "archive"],
+    // `sourcing` added deliberately, and it is the honest first stage: CVs are
+    // pulled off job portals and LinkedIn onto a laptop before anything reaches
+    // the ATS. It also separates this hotspot from `ai-screener`, which owns
+    // `screening` - see the note above `excel-tracker`.
+    stageIds: ["sourcing", "screening", "archive"],
     description: "Local Downloads folders full of CVs and document packs - outside any system, surviving employee exits.",
     dataCategoryIds: ["identity", "professional", "financial", "verification"],
     accessPersonaIds: ["recruiter", "it-admin"],

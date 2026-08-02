@@ -12,6 +12,24 @@ const ALL_STAGES = [
   "gst-tds", "itr-filing", "review", "govt", "archive",
 ];
 
+// ⚠️ WHERE A SPANNING NODE STARTS IS LOAD-BEARING FOR HOTSPOTS.
+//
+// The journey resolves a node to the FIRST of its stages visible in the selected
+// model, and paints one red flag per distinct stage a hotspot lands on - while
+// the counter prints `pack.hotspots.length`. So if several hotspot nodes all
+// begin at stage 1, they collapse into a single flag and the two numbers stop
+// agreeing. That is exactly what happened here: `personal-whatsapp`,
+// `staff-laptop` and `shared-drive` all resolved to `onboarding`, so seven
+// hotspots painted five flags.
+//
+// These two therefore start where they genuinely first hold client data rather
+// than at "everything" - which is also the more accurate reading. They remain
+// spanning nodes for every stage after their start.
+/** The shared drive first holds client data when KYC scans land in it. */
+const FROM_KYC = ALL_STAGES.slice(1);
+/** Staff laptops come into play once the work itself starts. */
+const FROM_ACCOUNTING = ALL_STAGES.slice(3);
+
 export const CA_FIRMS_NODES: FlowNode[] = [
   // ---- The person -------------------------------------------------------
   {
@@ -124,7 +142,7 @@ export const CA_FIRMS_NODES: FlowNode[] = [
     name: "Shared cloud drive",
     nodeType: "repository",
     boundary: "agency",
-    stageIds: ALL_STAGES,
+    stageIds: FROM_KYC,
     description: "A shared Google Drive or OneDrive holding every client's documents - often with access that was never revoked when staff left.",
     dataCategoryIds: ["identity", "bank-financial", "tax-documents", "payroll", "corporate-kyc"],
     accessPersonaIds: ["partner", "ca", "article-assistant", "accountant", "it-support"],
@@ -139,7 +157,7 @@ export const CA_FIRMS_NODES: FlowNode[] = [
     name: "Staff laptop",
     nodeType: "device",
     boundary: "agency",
-    stageIds: ALL_STAGES,
+    stageIds: FROM_ACCOUNTING,
     description: "Personal and unmanaged laptops where client files are downloaded to work on, and simply stay.",
     dataCategoryIds: ["identity", "bank-financial", "tax-documents", "payroll"],
     accessPersonaIds: ["ca", "article-assistant", "accountant"],

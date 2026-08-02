@@ -358,3 +358,84 @@ of this content-only cycle and needs Dilip's decision. Compare with
 **Remaining after this:** only `recruitment-agencies` lacks scenario content, and it carries the same
 collision-mode debt. Once CA, TI and recruitment are corrected, the flags-vs-counter invariant can
 land as a universal Tier-1 test.
+
+---
+
+## Addendum — hotspot reconciliation fixed on CA & recruitment, guard test added (2026-08-02)
+
+### The defect
+
+The journey paints one red flag per **distinct stage** a hotspot's node resolves to — each node
+resolving to the first of its `stageIds` visible in the selected model. The counter and legend print
+`pack.hotspots.length`, which is pack-level and never filtered. When several hotspot nodes share a
+first stage they collapse into one flag, and a reader counts five flags under a sentence saying
+seven. On a page whose entire argument is *count every place your data ends up*, that undermines the
+whole thing.
+
+### What was fixed
+
+**`ca-firms`** — `shared-drive` and `staff-laptop` both used `ALL_STAGES`, so both resolved to
+`onboarding` (1), where `personal-whatsapp` already sat: three hotspots, one flag.
+
+- `shared-drive` → starts at `kyc` (2) — where client documents first land in it
+- `staff-laptop` → starts at `accounting` (4) — once the work itself begins
+
+Flags now on stages 1, 2, 3, 4, 6, 7, 10 = **7 = 7**.
+
+**`recruitment-agencies`** — `excel-tracker`, `ai-screener` and `recruiter-laptop` all resolved to
+`screening` (3).
+
+- `recruiter-laptop` → `sourcing` (1) **added**, purely additive: CVs are pulled off job portals and
+  LinkedIn onto a laptop before anything reaches the ATS
+- `ai-screener` → unchanged at `screening` (3); it cannot move, it *is* screening
+- `excel-tracker` → `assessment` (5), where the pipeline sheet is actually run from
+
+Flags now on 1, 2, 3, 4, 5, 6, 8 = **7 = 7 in both models**.
+
+**No hotspot copy was rewritten.** Only node `stageIds` changed, and both nodes in each pack remain
+spanning nodes for every stage after their new start.
+
+**One judgement call, recorded honestly:** `excel-tracker` lost `screening` from its `stageIds`, so
+the `ats-to-tracker` edge (shortlists exported during screening) now fires at a stage earlier than
+the node's placement. Edges may cross stages and this renders correctly; only the node's position in
+the journey moved. The alternative was moving `recruiter-laptop` instead, which would have created
+two such crossings rather than one.
+
+### The guard test
+
+`lib/data-flow/data-flow.test.ts` now asserts the invariant across **every model of every pack**:
+
+> the set of packs whose flags disagree with their counter must be exactly `KNOWN_HOTSPOT_DEBT`
+
+Expressed as a set rather than per pack, so that:
+
+- a **new** pack breaking the invariant fails the test ✅
+- `training-institutes` being **fixed** also fails the test, forcing the exception to be removed
+  rather than quietly rotting ✅
+
+It is self-proving: the test only passes if it actually *detected* TI's failure and found CA and
+recruitment clean. A broken detection would produce an empty failing set and fail the assertion.
+
+### State after this change
+
+| Pack | Models reconciling |
+|---|---|
+| recruitment-agencies | 2 / 2 ✅ |
+| ca-firms | 1 / 1 ✅ |
+| d2c-brands | 3 / 3 ✅ |
+| clinics-diagnostic-labs | 3 / 3 ✅ |
+| schools-colleges | 3 / 3 ✅ |
+| training-institutes | 1 / 3 — `classroom`, `online` still short (known debt) |
+
+**12 of 14 model-views**, up from 9. Every *default* view in the series is now correct — TI's default
+(`hybrid`) already reconciled, so the remaining mismatch is only visible to someone who deliberately
+switches to Classroom or Online.
+
+### Remaining
+
+`training-institutes` is the last one. Its spine is fully shared, so the sole cause is that 4 of its
+7 hotspot **nodes** carry `businessModels` gates — fixing it means re-pointing them to ungated
+anchors and rewriting four hotspots' copy. That is a content decision about which risks belong on the
+headline rail, not a mechanical fix, and it is deliberately left for when that map is next revisited.
+Options in `docs/SaralPrivacy_TrainingInstitutes_DataFlow_Spec.md`. When it lands, remove
+`training-institutes` from `KNOWN_HOTSPOT_DEBT` — the test will tell you to.

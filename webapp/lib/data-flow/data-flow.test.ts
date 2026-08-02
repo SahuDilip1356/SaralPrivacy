@@ -147,6 +147,78 @@ for (const p of PACKS) {
 }
 
 // ---------------------------------------------------------------------------
+// TIER 1 - the hotspot reconciliation invariant
+// ---------------------------------------------------------------------------
+//
+// THE DEFECT THIS PREVENTS. The journey paints one red flag per DISTINCT stage a
+// hotspot's node resolves to - where a node resolves to the first of its
+// stageIds visible in the selected model, and a node with no visible stage is
+// skipped silently. The counter and legend, however, print
+// `pack.hotspots.length`, which is pack-level and never filtered. So a reader
+// counts five red flags while the sentence underneath says seven.
+//
+// Two ways to break it, both seen in the wild:
+//   COLLISION      - two hotspot nodes share a first stage (was ca-firms,
+//                    recruitment-agencies)
+//   DISAPPEARANCE  - a hotspot node is model-gated away, so it renders no flag
+//                    in that model at all (training-institutes)
+//
+// THE CONSTRUCTION THAT SATISFIES IT: every hotspot node ungated, and its
+// EARLIEST stage a distinct all-model stage. Spanning later stages is fine - the
+// ERP genuinely does - but a hotspot node must never acquire a stage earlier
+// than its designated one.
+//
+// This is asserted as a SET rather than per pack on purpose. `training-institutes`
+// still carries known debt (2 of its 3 models), and fixing it means rewriting
+// four hotspots' copy - a content decision, not a mechanical one. Expressing the
+// exception this way means:
+//   - a NEW pack that breaks the invariant fails this test           ✅
+//   - training-institutes being FIXED also fails this test, forcing the
+//     entry to be removed rather than quietly rotting                ✅
+// Debt is documented in docs/SaralPrivacy_TrainingInstitutes_DataFlow_Spec.md.
+const KNOWN_HOTSPOT_DEBT = ["training-institutes"];
+
+test("hotspots reconcile with the counter in every model of every pack", () => {
+  const failing: string[] = [];
+
+  for (const p of PACKS) {
+    const nodeById = new Map(p.nodes.map((n) => [n.id, n]));
+    for (const model of modelsOf(p)) {
+      const { stages, nodes } = filterByBusinessModel(p, model);
+      const seq = new Map(stages.map((s) => [s.id, s.sequence]));
+      const visible = new Set(nodes.map((n) => n.id));
+
+      const flagged = new Set(
+        p.hotspots
+          .filter((h) => visible.has(h.nodeId))
+          .map((h) =>
+            nodeById
+              .get(h.nodeId)!
+              .stageIds.filter((id) => seq.has(id))
+              .sort((a, b) => seq.get(a)! - seq.get(b)!)[0],
+          )
+          .filter(Boolean),
+      );
+
+      if (flagged.size !== p.hotspots.length) {
+        failing.push(`${p.industry} [${model}]: ${flagged.size} flags vs ${p.hotspots.length} hotspots`);
+      }
+    }
+  }
+
+  const failingPacks = [...new Set(failing.map((f) => f.split(" ")[0]))].sort();
+  assert.deepEqual(
+    failingPacks,
+    [...KNOWN_HOTSPOT_DEBT].sort(),
+    `hotspot reconciliation changed.\n` +
+      `  Expected exactly these packs to carry known debt: ${KNOWN_HOTSPOT_DEBT.join(", ") || "(none)"}\n` +
+      `  Actually failing:\n    ${failing.join("\n    ") || "(none)"}\n` +
+      `  If you FIXED a pack, remove it from KNOWN_HOTSPOT_DEBT.\n` +
+      `  If you BROKE one, every hotspot node must be ungated and start at a distinct all-model stage.`,
+  );
+});
+
+// ---------------------------------------------------------------------------
 // TIER 2 - recruitment-specific content (the reference map's exact shape)
 // ---------------------------------------------------------------------------
 
