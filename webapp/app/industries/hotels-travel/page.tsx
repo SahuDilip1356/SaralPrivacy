@@ -13,6 +13,8 @@ import {
 import { breadcrumbSchema, faqPageSchema, speakableSchema } from "@/lib/schema";
 import { FRESHNESS, toISODate } from "@/lib/content-freshness";
 import { hotelsTravelPack } from "@/lib/data/industry-assessment/packs/hotels-travel";
+import { hotelsTravelDataFlowPack } from "@/lib/data/data-flow/hotels-travel";
+import { DataFlowPreview } from "@/components/industries/DataFlowPreview";
 
 const faqs = [
   {
@@ -167,6 +169,13 @@ export default function HotelsTravelPage() {
                   })}
                 </div>
               </section>
+
+              {/* Personal Data Flow Map preview - understand the sector, then
+                  see the flow, then take the scan. */}
+              <DataFlowPreview
+                pack={hotelsTravelDataFlowPack}
+                href="/industries/hotels-travel/data-flow"
+              />
 
               {/* How it works */}
               <section>
