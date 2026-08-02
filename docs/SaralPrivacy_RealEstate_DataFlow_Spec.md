@@ -1,75 +1,50 @@
 # SaralPrivacy — Real Estate & Property Firms Personal Data Flow Map (Map #8)
 
-**Status:** 📋 **SPEC — not built.** Branch `feat/data-flow-real-estate` created off `main` `dda11af`.
-Both gating decisions in §0 are **open and awaiting Dilip's call**; authoring does not start until they
-are settled.
-**Route (planned):** `/industries/real-estate/data-flow`
+**Status:** 🔨 **IN BUILD.** Branch `feat/data-flow-real-estate`, off `main` `dda11af`.
+Both gating decisions are **SETTLED** (§0) — do not re-open them.
+**Route:** `/industries/real-estate/data-flow`
 **Contract:** `docs/SaralPrivacy_DataFlow_Framework_Spec.md`
 **Handoff:** `handoff.md` at the project root — §0–§6, §8–§9 are current; §7 and §11 are law-firms
 history.
-**Precedents:** Law firms (multi-model, gated spine, default ≠ superset, derived hotspot count,
-tight language locks) · Schools (first gated spine with a non-superset default) · D2C (the
-generalised multi-model rule)
+**Precedents:** Law firms (multi-model, gated spine, derived hotspot count, tight language locks) ·
+Schools (first gated spine with a non-superset default) · D2C (the generalised multi-model rule)
 
 ---
 
-## 0. The two gating decisions — ⏳ OPEN, must be settled before authoring
+## 0. The two gating decisions — ⛔ SETTLED 2026-08-02
 
-| Decision | Recommendation | Status |
-|---|---|---|
-| The pasted spec's architecture (handoff §9) | **Content-only pack.** Mine its content inventory in full; reject its architecture in writing (§8). | ⏳ Dilip |
-| Gate 0 — operating models (handoff §3) | **Four models, gated spine 11 / 14 / 15 / 18** — `brokerage` (default) · `developer` · `property-management` · `integrated` (superset). | ⏳ Dilip |
+| Decision | Dilip's call |
+|---|---|
+| The pasted spec's architecture | **Content-only pack.** Mine its content inventory in full; reject its bespoke architecture in writing (§8). No component, schema or route edits. |
+| Gate 0 — operating models | **Three, model-gated spine 10 / 13 / 14** — `brokerage` (default) · `developer` · `property-management`. No superset model. |
 
 ### Decision 1 — the pasted specification's architecture
 
-A large external specification was pasted in with this build request. As with maps #3–#7 it proposes
-a **bespoke Real-Estate-only engine**: ~35 new `RealEstate*` components, a parallel
-`RealEstateFlowSystem` / `RealEstateFlowStage` / `RealEstateFlowNode` / `RealEstateFlowEdge` type
-system, its own `RealEstateFlowMetrics` module with 19 counters, a 16-event `real_estate_flow_*`
-analytics namespace, 22 graph filters and 8 view modes.
+The pasted specification is internally split. Its §2 and §26 say exactly what the framework says —
+*"Reuse the shared data-flow engine"*, *"Do not create an isolated real-estate-only framework"*,
+*"Use one shared component engine"* — while its §14–§26 then enumerate a bespoke Real-Estate-only
+engine: ~35 `RealEstate*` components, a parallel `RealEstateFlowSystem` / `RealEstateFlowStage` /
+`RealEstateFlowNode` / `RealEstateFlowEdge` type system, a 19-counter `RealEstateFlowMetrics`
+module, a 16-event `real_estate_flow_*` analytics namespace, 22 graph filters and 8 view modes.
 
-That architecture **violates the "presentation unified, content varies" law** and duplicates what the
-shared engine already renders pack-driven.
+**Resolved in favour of its own §2 and §26: content-only pack.** The spec's content inventory is
+excellent — its stage, system, control-break and hotspot detail is the richest sector input since
+the clinics spec, and it is mined in full below. Its architecture is rejected in writing in §8, one
+row per deviation, nothing silently dropped.
 
-> **Recommendation: content-only pack.** The spec's content inventory is excellent — its stage,
-> system, control-break and hotspot detail is the richest sector input since the clinics spec, and it
-> is mined in full below. Its architecture is rejected in writing in §8. Nothing it asks for that a
-> reader would actually *see* is missing from the shared engine today.
+### Decision 2 — Gate 0: three operating models
 
-The standing answer **alternates** — content-only for #3, #4, #5; content + shared-engine additions
-for #6; content-only again for #7. So it is asked, never assumed. If Dilip chooses shared-engine
-additions this cycle, the two candidates worth costing are recorded in §8: an optional
-`onwardSharingCount` node badge (how many onward recipients a node typically fans out to — the
-sector's defining number) and an `occupancy/access` graph facet.
+Three, as specified: `brokerage` (default) · `developer` · `property-management`. They differ in
+*process*, not merely in scale (§2), so the stage spine is **model-gated** — the recruitment /
+clinics / schools / law-firms precedent.
 
-### Decision 2 — Gate 0: how many operating models
-
-The pasted spec proposes **three**: Brokerage, Developer/Builder sales, Rental & Property
-Management. The handoff's test — do they differ in *process* or only in *systems*? — is passed
-decisively: they differ in process, three ways (§2).
-
-**But three models leaves the pack with no superset**, and the framework's gating convention requires
-one ("each gated entity tags itself with its own model **+ the superset**"). No one of the three
-contains the other two: a brokerage runs no construction-linked demand notices or possession
-handover; a developer holds no landlord mandates and settles no deposits; a property manager
-arranges no home loans and registers no sale deeds.
-
-> **Recommendation: four models, with `integrated` as the superset.** The fourth is a real and
-> common Indian business shape — the group that runs a sales arm, a builder-channel arm and a
-> lettings/facility-management arm under one roof, on one group CRM. It is also the only place the
-> sector's sharpest structural story can be told: **the buyer who bought a flat from the sales arm
-> becomes a rental lead for the management arm and a resale lead for the brokerage arm, because the
-> same group holds all three records.** That is purpose creep by corporate structure, and no other
-> model in this map can show it.
-
-**Cost of the fourth model:** one extra selector button, roughly 4–6 integrated-only nodes, and a
-4-model verification matrix instead of 3. It is not a fourth journey to author — it is the union of
-the other three plus the cross-arm reuse story.
-
-**If Dilip prefers three buttons**, the fallback is `brokerage` (default) · `developer` (superset) ·
-`property-management`, tagging brokerage-only entities `[brokerage, developer]`. It works, but it
-makes the developer view carry seller mandates and co-broker commission splits that a builder's
-sales org does not run, and it loses the cross-arm reuse story entirely. **Recommended against.**
+**No superset model.** A fourth `integrated` model was proposed and declined. It was raised because
+the handoff's gating convention assumes a superset exists ("each gated entity tags itself with its
+own model **+ the superset**"), and none of these three contains the other two. **That assumption
+was checked against the engine and is a convention, not a constraint** — the word *superset* appears
+nowhere in `lib/data-flow/schemas.ts`, and `validatePack`'s only model rule is that an edge's
+`businessModels` be a subset of both endpoints'. Three models validate cleanly. The only cost is
+that no single view shows all seventeen stages, which is a display nicety, not a defect.
 
 ---
 
@@ -90,7 +65,7 @@ never chose.** Three things are true here that are true nowhere else in the seri
    conversation — "we forgot to delete it" becomes "deleting it destroys the asset".
 2. **Onward sharing is the workflow, not the leak.** A client's phone number, budget and household
    details are *meant* to travel — to co-brokers, channel partners, builders, landlords, societies,
-   loan agents. Law firms share with an adversary; real estate broadcasts to competitors and
+   loan agents. A law firm shares with an adversary; a property firm broadcasts to competitors and
    partners simultaneously, in a WhatsApp group, in seconds. Neither the firm nor the client can
    enumerate who now holds it.
 3. **In rentals the data describes a home, not a transaction.** Who lives there, who visits, when
@@ -109,16 +84,13 @@ control ends, performed deliberately, as routine business.
 
 | id | Label | Stages | Role |
 |---|---|---|---|
-| `brokerage` | Brokerage & property consultancy | 11 | **DEFAULT** (drives the `/data-mapping` card stats) |
-| `developer` | Developer / builder sales | 14 | — |
-| `property-management` | Rental & property management | 15 | — |
-| `integrated` | Full-service / integrated property group | 18 | **SUPERSET** (appears in every gated tag) |
+| `brokerage` | Brokerage & property consultancy | 10 | **DEFAULT** (drives the `/data-mapping` card stats) |
+| `developer` | Developer / builder sales | 13 | — |
+| `property-management` | Rental & property management | 14 | — |
 
-Default ≠ superset — the schools, D2C and law-firms pattern. `brokerage` is first because it is what
-most Indian brokers, consultants and small agencies searching this actually run.
-
-`?model=` values are exactly these ids, so the pasted spec's requested `?model=brokerage`,
-`?model=developer` and `?model=property-management` all work as written.
+`?model=` values are exactly these ids, so the spec's requested `?model=brokerage`,
+`?model=developer` and `?model=property-management` all work as written. `brokerage` is first
+because it is what most Indian brokers, consultants and small agencies searching this actually run.
 
 ### Why this is a process split, not a scale split
 
@@ -134,55 +106,50 @@ most Indian brokers, consultants and small agencies searching this actually run.
   police verification and employer checks, then holds an *ongoing* relationship: rent, maintenance
   vendors entering the property, keys and access credentials, society and gate systems, an exit
   inspection and a deposit deduction.
-- An **integrated group** runs all three and adds what none has alone: one group CRM across the
-  arms, and a buyer record that is re-used as a rental and resale lead by a different business unit.
-
-**The stage spine is therefore model-gated** (recruitment / clinics / schools / law-firms
-precedent). Counts are free in this framework — 11 / 14 / 15 / 18 is what the sector produced. The
-pasted spec's "10 stages per variant" is rejected for exactly this reason (§8).
 
 ### Stage spine — union order
 
-Ten of the eighteen stages are **all-model**; eight are gated.
+Nine of the seventeen stages are **all-model**; eight are gated.
 
 | seq | id | Name | Models |
 |---|---|---|---|
-| 1 | `enquiry` | Lead capture & first enquiry | all |
-| 2 | `landlord-mandate` | Landlord mandate & property onboarding | `property-management`, `integrated` |
+| 1 | `landlord-mandate` | Landlord mandate & property onboarding | `property-management` |
+| 2 | `enquiry` | Lead capture & first enquiry | all |
 | 3 | `qualification` | Qualification, budget & household profiling | all |
-| 4 | `matching` | Property matching & inventory | all |
-| 5 | `broker-network` | Co-broker groups & channel-partner circulation | all |
-| 6 | `site-visit` | Site visits, walk-ins & field coordination | all |
-| 7 | `negotiation` | Offer, booking & terms | all |
-| 8 | `kyc-documents` | KYC, income & property documents | all |
-| 9 | `screening` | Tenant screening & police verification | `property-management`, `integrated` |
-| 10 | `finance` | Loan, lender & payment coordination | `brokerage`, `developer`, `integrated` |
-| 11 | `agreement` | Agreement, stamp duty & registration | all |
-| 12 | `construction` | Construction updates, demand notices & payments | `developer`, `integrated` |
-| 13 | `possession` | Possession, inspection, defects & key handover | `developer`, `integrated` |
-| 14 | `tenancy` | Move-in, rent collection & maintenance access | `property-management`, `integrated` |
-| 15 | `society` | Society, security & facility handover | `developer`, `property-management`, `integrated` |
-| 16 | `exit` | Renewal, exit inspection & deposit settlement | `property-management`, `integrated` |
-| 17 | `commission` | Commission, payouts & post-deal reuse | all |
-| 18 | `archive` | Old leads, closed deals, archives & deletion | all |
+| 4 | `matching` | Property matching & broker-network sharing | all |
+| 5 | `site-visit` | Site visits, walk-ins & field coordination | all |
+| 6 | `negotiation` | Offer, booking & terms | all |
+| 7 | `kyc-documents` | KYC, identity & property documents | all |
+| 8 | `screening` | Tenant screening & police verification | `property-management` |
+| 9 | `finance` | Loan, lender & payment coordination | `brokerage`, `developer` |
+| 10 | `agreement` | Agreement, stamp duty & registration | all |
+| 11 | `construction` | Construction updates, demand notices & payments | `developer` |
+| 12 | `possession` | Possession, handover & defect management | `developer` |
+| 13 | `tenancy` | Move-in, rent collection & maintenance access | `property-management` |
+| 14 | `society` | Society, facility & resident handover | `developer`, `property-management` |
+| 15 | `exit` | Renewal, exit inspection & deposit settlement | `property-management` |
+| 16 | `commission` | Commission, referral & post-deal reuse | all |
+| 17 | `archive` | Old leads, closed deals, archives & deletion | all |
 
-- **brokerage** sees 1, 3, 4, 5, 6, 7, 8, 10, 11, 17, 18 = **11**
-- **developer** sees 1, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 15, 17, 18 = **14**
-- **property-management** sees 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 14, 15, 16, 17, 18 = **15**
-- **integrated** sees all = **18**
+- **brokerage** sees 2, 3, 4, 5, 6, 7, 9, 10, 16, 17 = **10** — exactly the spec's §9 journey
+- **developer** sees 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 14, 16, 17 = **13**
+- **property-management** sees 1–8, 10, 13, 14, 15, 16, 17 = **14**
 
-Two deliberate choices:
+### Why the counts are not 10 / 10 / 10
 
-- **`broker-network` is all-model.** A developer's channel-partner portal and a property manager's
-  tenant-sourcing broker network are the same act as a brokerage's co-broker group — the client's
-  requirement leaving the firm to a network of independent parties. Keeping it all-model is also what
-  lets the signature hotspot sit on an all-model stage (§3).
-- **`agreement` is all-model.** Sale deed, agreement for sale, allotment letter and rent agreement
-  all funnel identity and financial documents through drafting vendors, e-stamping, e-signature and
-  the sub-registrar. *Which* instrument differs; the exposure does not.
+The spec asks for ten stages per variant, and each of its three journeys genuinely enumerates ten.
+Those three tens assume **three independent stage arrays**, which is the bespoke architecture
+rejected in Decision 1. The shared engine has **one** `stages` array filtered by `businessModels`,
+so per-model counts are *derived from the union* — they cannot be set independently.
+
+**Brokerage lands on exactly 10**, matching the spec's §9 journey one-for-one. The other two exceed
+ten only because the union already contains stages they share with brokerage (`matching`, `finance`,
+`commission`) that their own §10 / §11 journeys fold into neighbouring steps. Nothing is added that
+the spec does not describe; the same content is simply distributed across the shared spine. This is
+also what the framework requires: *"Do not force equal stage counts to look tidy."*
 
 **Gating convention:** the shared core carries **no** `businessModels` tag; each gated entity tags
-itself with **its own model(s) + `integrated`** (the superset).
+itself with exactly the models that run it.
 
 ---
 
@@ -192,50 +159,61 @@ Guard test (a) — `hotspots reconcile with the counter in every model of every 
 recurring flags-vs-counter defect unshippable. The construction it requires: **every hotspot node
 ungated, and its earliest stage a distinct all-model stage.**
 
-Ten stages are all-model. Eight of them carry a hotspot:
+Nine stages are all-model. Eight of them carry a hotspot:
 
 | Stage (seq) | Hotspot node | Rank | The failure in one line | Bucket |
 |---|---|---|---|---|
-| `broker-network` (5) | `co-broker-group` | **1** | The client's number, budget and family details go to a network nobody can list or recall | `broker_network_sharing` |
-| `kyc-documents` (8) | `kyc-document-folder` | 2 | PAN, Aadhaar, bank statements and title papers arrive over WhatsApp and land in personal folders | `kyc_property_document` |
-| `archive` (18) | `old-lead-database` | 3 | Nothing expires, because the old-lead database *is* the firm's asset | `retention_incident_readiness` |
+| `matching` (4) | `co-broker-group` | **1** | The client's number, budget and family details go to a network nobody can list or recall | `broker_network_sharing` |
+| `kyc-documents` (7) | `kyc-document-folder` | 2 | PAN, Aadhaar, bank statements and title papers arrive over WhatsApp and land in personal folders | `kyc_property_document` |
+| `archive` (17) | `old-lead-database` | 3 | Nothing expires, because the old-lead database *is* the firm's asset | `retention_incident_readiness` |
 | `qualification` (3) | `sales-crm` | 4 | Income guesses, household notes and subjective comments, visible to everyone and exportable by anyone | `crm_staff_vendor_access` |
-| `enquiry` (1) | `shared-lead-sheet` | 5 | The lead is on a spreadsheet and a personal phone before anyone has been told anything | `client_lead_data` |
-| `site-visit` (6) | `field-exec-phone` | 6 | The client's number and live location handed to site security, builders and landlords; photos and routes kept | `client_lead_data` |
-| `agreement` (11) | `documentation-vendor` | 7 | The full KYC set to every intermediary — drafter, notary, registration agent, witness | `kyc_property_document` |
-| `commission` (17) | `marketing-reuse-platform` | 8 | Closed *and* failed clients pushed into ad audiences and referral lists, with no withdrawal that propagates | `client_lead_data` |
+| `enquiry` (2) | `shared-lead-sheet` | 5 | The lead is on a spreadsheet and a personal phone before anyone has been told anything | `client_lead_data` |
+| `site-visit` (5) | `field-exec-phone` | 6 | The client's number and live location handed to site security, builders and landlords; photos and routes kept | `client_lead_data` |
+| `agreement` (10) | `documentation-vendor` | 7 | The full KYC set to every intermediary — drafter, notary, registration agent, witness | `kyc_property_document` |
+| `commission` (16) | `marketing-reuse-platform` | 8 | Closed *and* failed clients pushed into ad audiences and referral lists, with no withdrawal that propagates | `client_lead_data` |
 
-⇒ **flags = 8 = counter in all four models, by arithmetic.**
+⇒ **flags = 8 = counter in all three models, by arithmetic.**
 
 All five assessment buckets are reachable from the hotspot rail ✅ — required by guard test (b).
 
-`matching` (4) and `negotiation` (7) are all-model but carry no hotspot — that is fine and expected
-(schools ran 8 hotspots across 11 all-model stages). A hotspot node **may span later stages** — the
-CRM genuinely does — but must never acquire an *earlier* one, which would move its flag in some
-models and break reconciliation.
+`negotiation` (6) is all-model but carries no hotspot — that is fine and expected (schools ran 8
+hotspots across 11 all-model stages). A hotspot node **may span later stages** — the CRM genuinely
+does — but must never acquire an *earlier* one, which would move its flag in some models and break
+reconciliation.
 
-### Deliberately NOT hotspots, because they sit on model-gated stages
+### The spec's 10 + 11 + 10 hotspots, and why this is 8
 
-Each is authored as a **critical- or high-risk node** with its own `riskWhy` / `riskAction`, and
-renders in full wherever it exists — it simply carries no red flag, because a gated flag would make
-the counter lie in the models that hide it.
+The spec asks for ten brokerage, eleven developer and ten property-management hotspots. The schema
+caps hotspots at **5–8, pack-level and unfiltered** — the counter and legend print
+`pack.hotspots.length`, so a per-model hotspot set would make the counter lie in every view but one.
+The 31 proposed hotspots are not dropped: **eight become the red-flag rail above**, and the rest are
+authored as **critical- and high-risk nodes** with their own `riskWhy` / `riskAction`, which render
+in full in the journey, the node drawer and the table view. They simply do not carry a red flag.
+
+The gated-stage ones — necessarily node-level, because a gated flag would make the counter lie in
+the models that hide the stage:
 
 - the **lender file** — bank statements and salary slips at four loan agents, rejected applications
-  never returned (`finance`)
+  never returned (`finance`) — *spec brokerage #7, developer #6*
 - the **police-verification and screening vendor** — tenant, household *and* domestic-staff identity
-  pushed into a police workflow and a private screening vendor (`screening`)
+  pushed into a police workflow and a private screening vendor (`screening`) — *spec PM #4*
 - the **society app, gate register and CCTV** — continuous occupancy, visitor and vehicle recording,
-  entirely outside the firm's control (`society`)
+  entirely outside the firm's control (`society`) — *spec PM #8, developer #10*
 - the **maintenance vendor with home-access instructions** — a contractor gets a name, an address, a
-  phone number and how to get in (`tenancy`)
+  phone number and how to get in (`tenancy`) — *spec PM #7*
 - the **possession photo and defect repository**, and the resident dataset handed to facility
-  vendors at handover (`possession`)
+  vendors at handover (`possession`) — *spec developer #9*
 - the **demand-notice and reminder trail** that exposes a buyer's outstanding balance to the sales
-  team (`construction`)
-- the **exit inspection photos and deposit-deduction record** that become a lasting tenant-risk label
-  (`exit`)
+  team (`construction`) — *spec developer #8*
+- the **exit inspection photos and deposit-deduction record** that become a lasting tenant-risk
+  label (`exit`) — *spec PM #9*
 - the **landlord bank and ownership document set** copied into management, finance and operations
-  (`landlord-mandate`)
+  (`landlord-mandate`) — *spec PM #1*
+
+The all-model ones folded into a neighbouring hotspot rather than duplicated: *spec brokerage #5*
+(negotiation strategy forwarded) sits on the CRM hotspot's node copy; *spec developer #1*
+(duplicate leads across campaigns, portals and channel partners) and *#4* (applicant, co-applicant
+and nominee copied across booking systems) sit on the lead-sheet and KYC hotspots.
 
 ---
 
@@ -246,21 +224,24 @@ the counter lie in the models that hide it.
 Every published metric is computed by `computePackSummary` / `filterByBusinessModel`; none is
 hand-typed into copy. These are sizing targets, to be replaced with measured values after the build.
 
-| | brokerage | developer | property-management | integrated |
-|---|---|---|---|---|
-| Stages | 11 | 14 | 15 | 18 |
-| Distinct places (systems) | ~34 | ~44 | ~46 | ~58 |
-| External parties | ~16 | ~20 | ~21 | ~26 |
-| Hotspots (flags = counter) | 8 = 8 | 8 = 8 | 8 = 8 | 8 = 8 |
+| | brokerage | developer | property-management |
+|---|---|---|---|
+| Stages | 10 | 13 | 14 |
+| Distinct places (systems) | ~32 | ~44 | ~46 |
+| External parties | ~15 | ~20 | ~21 |
+| Hotspots (flags = counter) | 8 = 8 | 8 = 8 | 8 = 8 |
 
-Pack sizing target: **18 stages · ~72 nodes · ~185 edges · 16 data categories · ~15 personas ·
-8 hotspots · 8 rights scenarios · 8 incident scenarios.** This lands between law firms (16/69/179)
-and schools (15/60/115) — the four-model union is what pushes it, not per-model bloat.
+Pack sizing target: **17 stages · ~68 nodes · ~175 edges · 16 data categories · ~15 personas ·
+8 hotspots · 8 rights scenarios · 8 incident scenarios.** Comparable to law firms (16/69/179).
+
+The spec's own per-variant targets (≈28 / 34 / 30 distinct locations, ≈14 / 16 / 15 external
+parties) are in the same range and are used as a sanity check after the build, not as inputs.
 
 ### Data categories — 16
 
-Sixteen, not the pasted spec's 43. Past ~16 the legend stops communicating and every node renders a
-wall of tags; the fine distinctions live in each category's `examples`.
+Sixteen, not the spec's 43. Past ~16 the legend stops communicating and every node renders a wall of
+tags; the fine distinctions live in each category's `examples`. Every one of the spec's 43 ids is
+covered by one of these sixteen.
 
 | id | Covers | kind |
 |---|---|---|
@@ -287,6 +268,12 @@ tenant's cleaner); the second is the rental half's signature — data that descr
 than a transaction. `client-scoring` and `marketing-profile` are marked `derived`: the quiet half a
 property firm never counts as personal data at all.
 
+The spec's high-impact list (PAN/Aadhaar, passport/NRI, bank statements, income and loan documents,
+title papers, sale deeds, rent agreements, family and occupancy data, home address, repeated
+site-location data, police verification, access-key records, affordability scores, fraud labels,
+children's household data) is carried through node `riskLevel` and the hotspot rail rather than as a
+separate `impactLevel` field — the engine already renders risk that way, on every map.
+
 ### Named software — the "that's my firm" test
 
 Generic "CRM" fails it. Name what the sector actually runs: **portal dashboards** (99acres,
@@ -306,7 +293,7 @@ cupboard** in the office.
 ## 5. Language locks
 
 - **"High-impact identity, financial and property data"**, never "sensitive personal data" — the
-  DPDPA creates no such statutory category. The pasted spec makes this point itself; hold it.
+  DPDPA creates no such statutory category. The spec makes this point itself; hold it.
 - **No property, title, tax, registration, lending or investment advice.** This map describes custody
   and control of personal data. It does not opine on RERA, stamp duty, title validity, tenancy law
   or what a firm must retain under any of them.
@@ -316,37 +303,44 @@ cupboard** in the office.
 - **Retention is not uniformly deletable.** Commission and tax records, a registered instrument and
   an executed agreement have genuine grounds to be kept. Separate **what must be kept** from **what
   merely has been kept** — the old-lead database is the second, and that is the whole point of
-  hotspot #3.
+  hotspot #3. (The spec states the same rule: *"Do not imply that all transaction records should
+  always be erased immediately."*)
 - **No accusation, no fearmongering.** Broker networks and channel partners are how this industry
   works; the map's job is to show where control breaks, not to tell a broker their trade is a
   violation. Watch the high/critical ratio — if most of the map is red, none of it is.
 - **Distinguish the occupant from the signatory.** A co-applicant, a nominee, a guarantor, a
   tenant's family member and a domestic worker are separate people with separate rights. Never
-  collapse them into "the client".
+  collapse them into "the client". (Spec validation rule 33.)
 
 ---
 
 ## 6. The two walkthrough sections
 
-Mandatory build step (handoff §4 Step E). Copy `lib/data/data-flow/ca-firms/scenarios.ts` for the
+Mandatory build step (handoff §4 Step E), and the shared engine's answer to the spec's §22 client-
+rights simulator and §23 incident simulator. Copy `lib/data/data-flow/ca-firms/scenarios.ts` for the
 language-lock header shape. Every referenced node must be visible in every model where the scenario
 shows.
 
 ### Rights scenarios — 8
 
-| id | The request, in their words | Type | Models |
-|---|---|---|---|
-| `rs-who-has-my-number` | "Four brokers I never contacted called me. Where did they get my number?" | access | all |
-| `rs-delete-my-old-enquiry` | "I enquired two years ago and never bought. Delete everything." | erasure | all |
-| `rs-stop-calling-me` | "Stop calling me about new projects. The deal closed." | withdraw-marketing | all |
-| `rs-delete-my-kyc-after-registration` | "It's registered. Delete my PAN, Aadhaar and bank statements." | erasure | all |
-| `rs-correct-my-details` | "My address and my co-applicant's name are wrong on the record." | correction | all |
-| `rs-my-file-went-to-five-lenders` | "My salary slips went to lenders I never chose. Get them back." | access | `brokerage`, `developer`, `integrated` |
-| `rs-i-moved-out-a-year-ago` | "Why does the society app still list my visitors and my cleaner?" | erasure | `property-management`, `integrated` |
-| `rs-im-not-your-client` | "I'm the co-applicant / the guarantor. I never signed anything with you." | access | all |
+Covering all nine request types the spec's §22 lists.
 
-**`blockedNodeIds` is the honest half**, and it carries unusual weight here. Three things a real
-firm genuinely cannot reach, and the walkthroughs must say so:
+| id | The request, in their words | Type | Models | Spec §22 option |
+|---|---|---|---|---|
+| `rs-who-has-my-number` | "Four brokers I never contacted called me. Where did they get my number?" | access | all | Show me my personal data |
+| `rs-delete-my-old-enquiry` | "I enquired two years ago and never bought. Delete everything." | erasure | all | Delete an unsuccessful lead |
+| `rs-stop-calling-me` | "Stop calling me about new projects. The deal closed." | withdraw-marketing | all | Stop promotional communication |
+| `rs-delete-my-kyc-after-registration` | "It's registered. Delete my PAN, Aadhaar and bank statements." | erasure | all | Delete documents after a closed transaction |
+| `rs-correct-my-details` | "My address and my co-applicant's name are wrong on the record." | correction | all | Correct contact details / KYC / ownership |
+| `rs-change-who-speaks-for-me` | "My father held the power of attorney. Deal with me directly now." | authorisation-change | all | Change an authorised representative |
+| `rs-my-file-went-to-five-lenders` | "My salary slips went to lenders I never chose. Get them back." | complaint | `brokerage`, `developer` | Raise a privacy complaint |
+| `rs-i-moved-out-a-year-ago` | "Why does the society app still list my visitors and my cleaner?" | erasure | `property-management` | Delete after the relationship ends |
+
+*"Correct my property preference"* is folded into `rs-correct-my-details` rather than given its own
+walkthrough — the propagation path is identical and a separate card would repeat it verbatim.
+
+**`blockedNodeIds` is the honest half**, and it carries unusual weight here. Three things a real firm
+genuinely cannot reach, and the walkthroughs must say so:
 
 - the **registered instrument at the sub-registrar** — an authority-controlled public record
 - **co-brokers' and channel partners' own phones and CRMs** — the network that makes
@@ -356,19 +350,23 @@ firm genuinely cannot reach, and the walkthroughs must say so:
 
 ### Incident scenarios — 8
 
+The spec's §23 lists ten; two are folded (co-broker contacts the client without authority → the
+`inc-lead-sheet-open-link` and hotspot #1 node copy; property-management vendor exposes access
+records → `inc-tenant-kyc-in-society-group` plus the maintenance-vendor node).
+
 | id | Title | Severity | Models |
 |---|---|---|---|
 | `inc-id-to-wrong-whatsapp` | A PAN and Aadhaar copy went to the wrong WhatsApp contact | critical | all |
 | `inc-lead-sheet-open-link` | The shared lead sheet is open to anyone with the link | critical | all |
 | `inc-ex-staff-crm-export` | A departed salesperson kept a CRM export | high | all |
-| `inc-bank-statement-to-lenders` | A client's bank statement was forwarded to loan agents they never chose | high | `brokerage`, `developer`, `integrated` |
+| `inc-bank-statement-to-lenders` | A client's bank statement was forwarded to loan agents they never chose | high | `brokerage`, `developer` |
 | `inc-wrong-agreement-draft` | The wrong client's draft agreement was sent out | high | all |
 | `inc-site-register-photographed` | A site-visit register page was photographed and circulated | medium | all |
-| `inc-tenant-kyc-in-society-group` | A tenant's KYC was posted into a society WhatsApp group | critical | `property-management`, `integrated` |
+| `inc-tenant-kyc-in-society-group` | A tenant's KYC was posted into a society WhatsApp group | critical | `property-management` |
 | `inc-lost-field-phone` | A field executive's phone holding client documents was lost | high | all |
 
 Labelled an **operational response reference**, explicitly not breach-notification advice — the
-shared `IncidentSimulator` already carries that framing.
+shared `IncidentSimulator` already carries that framing, matching the spec's own instruction.
 
 ---
 
@@ -384,7 +382,7 @@ shared `IncidentSimulator` already carries that framing.
 | Assessment client | `app/assessment/real-estate/RealEstateAssessmentClient.tsx` | exists |
 | Industry page | `app/industries/real-estate/page.tsx` — **exists**, 254 lines, 5 FAQs | 200 on prod |
 | `discoveryNicheId` | **`re-brokers`** ("Real estate brokers & agents") | `lib/discovery/data.generated.ts` |
-| `lexicon` | `subject: "client"` · `subjectArtefact: "One client's property file"` · `org: "firm"` | reads correctly in "outside your firm" for all four models |
+| `lexicon` | `subject: "client"` · `subjectArtefact: "One client's property file"` · `org: "firm"` | reads correctly in "outside your firm" for all three models |
 
 Other real discovery slugs, deliberately not chosen: `re-developers`, `property-management`,
 `commercial-re`, `rental-platforms`, `housing-societies`, `coliving-pg`. `re-brokers` matches the
@@ -416,20 +414,25 @@ focus-banner pattern. This is the one place `useSearchParams` is correct — the
 
 ### `boundaryLabels`
 
-| Boundary | Label |
-|---|---|
-| `candidate` | The client |
-| `agency` | Your firm |
-| `client` | Builders, landlords & owners |
-| `vendor` | Portals, CRM & service vendors |
-| `government` | Registration, police & authorities |
-| `third-party` | Brokers, lenders & others who receive it |
-| `public` | Open links & public records |
+The spec's 35-value relationship taxonomy maps onto the engine's seven boundaries:
+
+| Boundary | Label | Absorbs from the spec's taxonomy |
+|---|---|---|
+| `candidate` | The client | buyer, tenant, seller, landlord, co-applicant, occupant, authorised-representative |
+| `agency` | Your firm | internal, salesperson, field-executive, branch |
+| `client` | Builders, landlords & owners | builder, developer, property-owner, society |
+| `vendor` | Portals, CRM & service vendors | vendor, subprocessor, property-portal, marketing-agency, facility-manager, security-vendor, maintenance-vendor, title-search-vendor |
+| `government` | Registration, police & authorities | government-authority, police-verification, notary, registration-agent |
+| `third-party` | Brokers, lenders & others who receive it | broker, co-broker, channel-partner, bank, nbfc, loan-agent, lawyer, courier, other-third-party |
+| `public` | Open links & public records | — (open share links, the registered instrument) |
 
 `third-party` is unusually load-bearing here — the broker network is the sector's signature and it is
 neither a vendor (nothing is processed on the firm's instructions) nor a client.
 
-### Presentation copy — proposed
+### Presentation copy
+
+The spec's §4 headline, supporting copy, central question and both disclaimers, and its §33 SEO
+block, are adopted **as written** — they are good and they match the series' voice.
 
 | Field | Value |
 |---|---|
@@ -437,61 +440,61 @@ neither a vendor (nothing is processed on the firm's instructions) nor a client.
 | `metaTitle` | Real Estate Client & Property Data Flow Map \| SaralPrivacy |
 | `metaDescription` | See how buyer, tenant, seller and landlord data moves through property portals, brokers, site visits, KYC, loans, agreements, registration and archives. |
 | `ogTitle` | Where does one real-estate client's data go? |
-| Central question | If this client asks you to find, correct or delete their data, can you list every copy your staff, brokers, builders, lenders and vendors hold? |
-
-The pasted spec's headline, supporting copy and central question are adopted as written — they are
-good, and they match the series' voice.
+| Central question | If this client asks you to locate, correct or delete their data, can you find every copy held by your staff, brokers, builders, lenders and vendors? |
 
 ---
 
 ## 8. §14 — What this build deliberately does NOT do
 
-The pasted specification proposed a bespoke Real-Estate-only engine. Per the established response
-(maps #3–#7), its **content inventory is mined in full** and its **architecture is rejected in
-writing**. Every deviation is recorded here rather than silently dropped.
+The spec's §14–§26 propose a bespoke Real-Estate-only engine, contradicting its own §2 and §26. Per
+the established response (maps #3–#7) and Decision 1, its **content inventory is mined in full** and
+its **architecture is rejected in writing**. Every deviation is recorded here rather than silently
+dropped.
 
 | Spec asked for | Not built | Why |
 |---|---|---|
-| ~35 new `RealEstate*` components (`RealEstateFlowPage`, `RealEstateVariantSelector`, `RealEstateStageCard`, `DocumentLocationMatrix`, …) | ❌ | Violates "presentation unified, content varies". The shared engine already renders all of it pack-driven. A parallel tree means maps #9–#12 diverge from #1–#8. |
-| `RealEstateFlowSystem` / `RealEstateFlowStage` / `RealEstateFlowNode` / `RealEstateFlowEdge` parallel types | ❌ | The existing `FlowNode` / `FlowStage` / `FlowEdge` schemas carry every field that renders. A second type system forks validation, both guard tests and the 7 per-pack tests. |
-| 43 data categories | ❌ — **16 authored** | Past ~16 the legend stops communicating. Fine distinctions (stamp duty, commission, CCTV, children's data, fraud labels) live as `examples` on the 16. |
-| 35-value `RealEstateRelationshipType` taxonomy | ❌ | The 7 boundaries already answer the question that changes the fix: is it inside the firm, at a vendor, at an authority, at another party, or public. A 35-way split renders as noise. |
-| `RealEstateFlowMetrics` with 19 counters (`brokerSharingLocationCount`, `locationDataSystemCount`, …) | ❌ | `computePackSummary` plus the journey's cumulative counters derive every metric that is *displayed*. Unrendered counters are not metrics. |
-| 22 graph filters (lead data only, KYC only, financial only, property docs only, site-visit/location, broker sharing, society sharing, …) | ⚠️ partial | Risk and connection-type filters exist, plus the accessible table view. A 22-facet filter bar on a reference model is a research tool, not a teaching one. **An `occupancy/access` facet is the one with a real sector argument** — costed in §0 as a shared-engine candidate, not built by default. |
-| 8 view modes — recipient matrix, document-location matrix, data-category matrix, rights-coverage view, external-transfer table | ❌ | More views of the same ~58 nodes. The lane board, the accessible table view and the node drawer answer the same questions three ways already. |
-| "10 stages per variant" | ❌ — **11 / 14 / 15 / 18** | Forcing equal counts to look tidy is explicitly against the framework. A brokerage runs no possession handover; a property manager registers no sale deed. |
-| Three variants only | ⚠️ **four** — `integrated` added as superset | The gating convention requires a superset and none of the three contains the other two (§0 Decision 2). |
-| 16 `real_estate_flow_*` analytics events | ⚠️ partial | Reuse the shared `trackEvent.dataFlow` namespace. A per-sector event namespace makes cross-map comparison impossible — the exact thing the OMTM needs. |
-| FAQ schema on the data-flow page | ❌ | There are no visible FAQs on this page. Emitting FAQ schema without them is precisely what the content/trust audit flagged. (The *industry* page has 5 real FAQs and keeps its schema.) |
-| Content path `src/content/data-flow/real-estate/` | ❌ | Repo convention is `lib/data/data-flow/real-estate/`. Same shape, existing path. |
-| Client-rights simulator + marketing-withdrawal + KYC-correction as three bespoke components | ❌ — **rights scenarios** | The shared `RightsSimulator` says all three in the section Dilip rates highest, with no new component. Withdrawal and KYC correction are two of the eight scenarios (§6). |
-| Incident simulator as a bespoke component | ❌ — **incident scenarios** | Shared `IncidentSimulator`, 8 scenarios (§6). |
-| "High-impact real-estate scenario panels" (NRI, joint buyers, children, police verification, …) | ⚠️ folded in | Delivered as node risk copy, data-category `examples` and scenarios rather than a tenth page section. |
-| Lighthouse 90+ / a11y 95+ / responsive at 7 widths, verified | ⏳ **not measured** | Never measured on any of the seven live maps. Flagged as an open item — **not claimed** (§9). |
-| Inspect the supplied Vercel preview URL | ⚠️ **substituted** | The URL given (`webapp-git-feat-data-flow-recruitm-…`) is a stale recruitment-branch preview and is SSO-gated in any case. The **live production** `/industries/real-estate` page and the repository were inspected directly instead. |
-| Move the `/data-mapping` card to "Available maps" after approval | ✅ automatic | The single registry line does it. It shows on the **preview** for review; production is unchanged until Dilip merges. |
+| ~35 new `RealEstate*` components (§26: `RealEstateFlowPage`, `RealEstateVariantSelector`, `RealEstateStageCard`, `DocumentLocationMatrix`, …) | ❌ | Violates the spec's own §26 ("use one shared component engine") and the presentation-unified law. The shared engine already renders all of it pack-driven. A parallel tree means maps #9–#12 diverge from #1–#8. |
+| `RealEstateFlowSystem` / `RealEstateFlowStage` / `RealEstateFlowNode` / `RealEstateFlowEdge` parallel types (§14, §15, §19) | ❌ | The existing `FlowNode` / `FlowStage` / `FlowEdge` schemas carry every field that renders. A second type system forks validation, both guard tests and the 7 per-pack tests. |
+| 43 data categories (§8) | ❌ — **16 authored** | Past ~16 the legend stops communicating. All 43 ids are covered; fine distinctions live as `examples`. |
+| 35-value `RealEstateRelationshipType` taxonomy (§13) | ❌ — **mapped to 7 boundaries** | The 7 boundaries answer the question that changes the fix: inside the firm, at a vendor, at an authority, at another party, or public. Full mapping in §7. |
+| `RealEstateFlowMetrics` with 19 counters (§20) | ❌ | `computePackSummary` plus the journey's cumulative counters derive every metric that is *displayed*. Unrendered counters are not metrics. |
+| `calculateRealEstateCumulativeMetrics` (§21) | ✅ **already exists** | The journey already prints new / reused / cumulative places and new external transfers per stage, for every map. |
+| 22 graph filters (§25) | ⚠️ partial | Risk and connection-type filters exist, plus the accessible table view. A 22-facet filter bar on a reference model is a research tool, not a teaching one. |
+| 8 view modes — recipient matrix, document-location matrix, data-category matrix, rights-coverage view, external-transfer table (§7.7, §25) | ❌ | More views of the same ~68 nodes. The lane board, the accessible table view and the node drawer answer the same questions three ways already. |
+| "Ten stages per variant" (§35 rule 7, §40) | ❌ — **10 / 13 / 14** | One shared `stages` array filtered by model; per-model counts are derived from the union and cannot be set independently. Brokerage lands on exactly 10. Reasoning in §2. |
+| 10 + 11 + 10 per-variant hotspots (§9.12, §10.12, §11.12) | ❌ — **8 pack-level** | The counter and legend print `pack.hotspots.length`, unfiltered, so a per-model set makes the counter lie in every view but one. The other 23 are authored as critical/high-risk nodes — full mapping in §3. |
+| 16 `real_estate_flow_*` analytics events (§34) | ⚠️ partial | Reuse the shared `trackEvent.dataFlow` namespace. A per-sector event namespace makes cross-map comparison impossible — the exact thing the OMTM needs. |
+| FAQ schema on the data-flow page (§33) | ❌ | There are no visible FAQs on this page, and the spec itself says "FAQ schema only for visible FAQs". (The *industry* page has 5 real FAQs and keeps its schema.) |
+| Content path `src/content/data-flow/real-estate/` (§16) | ❌ | Repo convention is `lib/data/data-flow/real-estate/`. Same shape, existing path — the spec says "adapt to repository conventions". |
+| Client-rights simulator + marketing-withdrawal + KYC-correction as three bespoke components (§22, §26) | ❌ — **rights scenarios** | The shared `RightsSimulator` says all three in the section Dilip rates highest, with no new component. All nine of §22's options are covered by the eight scenarios (§6). |
+| Incident simulator as a bespoke component (§23, §26) | ❌ — **incident scenarios** | Shared `IncidentSimulator`, 8 scenarios covering §23's ten (§6). |
+| `SpecialRealEstateRiskPanel` — NRI, joint buyers, children, police verification, … (§12, §26) | ⚠️ folded in | Delivered as node risk copy, data-category `examples` and scenarios rather than a tenth page section. |
+| Component, interaction and E2E test suites (§36) | ⚠️ partial | The repo's harness is `node --test` over the datasets, plus two guard tests. Dataset integrity, cumulative counts, variant isolation, rights and incident coverage are all covered. No component/E2E runner exists to add these to; adding one is its own cycle, not this pack's. |
+| Lighthouse 90+ / a11y 95+ / responsive at 7 widths, verified (§28, §29, §37) | ⏳ **not measured** | Never measured on any of the seven live maps. Flagged as an open item — **not claimed** (§9). |
+| Inspect the supplied Vercel preview URL (§2, §38) | ⚠️ **substituted** | The URL given (`webapp-git-feat-data-flow-recruitm-…`) is a stale recruitment-branch preview and returns 302 — previews are SSO-gated. The **live production** `/industries/real-estate` page and the repository were inspected directly instead, as the spec's own preamble instructs. |
+| Move the `/data-mapping` card to "Available maps" after approval (§31) | ✅ automatic | The single registry line does it, in the spec's recommended order (Real Estate 8th). It shows on the **preview** for review; production is unchanged until Dilip merges. |
+| Variant label "3 operating models" on the card (§31) | ✅ automatic | The card already prints "N operating models · Shown for <first label>" from `businessModels`. |
 
-**Also worth flagging:** the pasted spec asks for `?model=` URL state and an accessible table
-fallback as if they were new. **Both already exist** — added in the map #6 cycle and inherited by
-every pack (`DataFlowClient.tsx`, `FlowSystemTable.tsx`). No work needed.
+**Also worth flagging:** the spec asks for `?model=` URL state (§7.3) and an accessible table
+fallback (§7.7) as if they were new. **Both already exist** — added in the map #6 cycle and
+inherited by every pack (`DataFlowClient.tsx`, `FlowSystemTable.tsx`). No work needed.
 
 ---
 
 ## 9. Known limitations — stated, not hidden
 
 1. **Lighthouse, axe and responsive behaviour have never been measured on any map in this series.**
-   The pasted spec asks for 90+/95+/95+/95+ and 320–1440 verification. Do not begin claiming them
-   here. A related measured defect is already on record: white on `green-500` is **2.54:1** against
-   a 4.5:1 bar, and that is the primary CTA on all seven live data-flow pages and would be on this
-   one.
+   The spec asks for 90+/95+/95+/95+ and 320–1440 verification. Do not begin claiming them here. A
+   related measured defect is already on record: white on `green-500` is **2.54:1** against a 4.5:1
+   bar, and that is the primary CTA on all seven live data-flow pages and would be on this one.
 2. **Content not domain-reviewed.** Like every pack before it, the sector detail is authored from the
    framework, the assessment pack, the industry page and the pasted spec — **not** validated by a
    practising broker, developer sales head or property manager.
-3. **Four models is a first for the series.** Every live map has one, two or three. The selector has
-   never rendered four buttons; check it on the preview at mobile width specifically.
+3. **No single view shows all seventeen stages**, because there is no superset model (§0). A reader
+   who wants the whole union has to switch between three tabs.
 4. **`society` is gated to `developer` + `property-management`.** A resale brokerage does deal with
    societies for NOCs and transfer formalities. That is carried as node-level risk copy on the
-   documentation vendor rather than as a stage, to keep the four models genuinely distinct.
+   documentation vendor rather than as a stage, to keep the three models genuinely distinct.
 5. **The map does not model co-living / PG operators or housing societies as controllers**, though
    both are real discovery niches with their own exposure. They are adjacent sectors, not variants of
    this one.
@@ -503,8 +506,6 @@ every pack (`DataFlowClient.tsx`, `FlowSystemTable.tsx`). No work needed.
 
 ## 10. Build order
 
-Once §0 is settled, the handoff's recipe applies unchanged:
-
 1. **Author the pack** — `lib/data/data-flow/real-estate/` (8 files, schools-colleges shape).
    **Hotspot nodes first** (§3), then everything else around them.
 2. **Register** — one line in `lib/data/data-flow/index.ts`, one in `lib/data-flow/data-flow.test.ts`.
@@ -513,12 +514,11 @@ Once §0 is settled, the handoff's recipe applies unchanged:
    3-minute scan works" (line ~173).
 4. **Assessment deep-links** — `<Suspense>` + `useSearchParams` + all five buckets in `BUCKET_FOCUS`
    (§7). Test-enforced.
-5. **Verify** — the test run, then the unenforced-constraint script from handoff §5 across **all four
+5. **Verify** — the test run, then the unenforced-constraint script from handoff §5 across **all three
    models**, requiring `flags=8 counter=8 OK` and no `!!` lines. Then `npm run build`.
 6. **Preview → sign-off → prod.** Push, hand Dilip the branch alias, **stop**. Never self-merge.
 
-Realistic cost: ~10–14h, ~85–90% of it writing content — a little above the series norm because of
-the four-model union.
+Realistic cost: ~10–14h, ~85–90% of it writing content.
 
 ---
 
