@@ -1,7 +1,7 @@
 # SaralPrivacy — Law Firms & Legal Consultants Personal Data Flow Map (Map #7)
 
-**Status:** spec authored on `feat/data-flow-law-firms`. **Pack not yet built — two decisions are owed
-first (§0).**
+**Status:** spec authored on `feat/data-flow-law-firms`. **Both gating decisions are SETTLED (§0) —
+do not re-open them.** Pack authoring can begin.
 **Route:** `/industries/law-firms/data-flow`
 **Contract:** `docs/SaralPrivacy_DataFlow_Framework_Spec.md`
 **Handoff:** `handoff.md` at the project root
@@ -11,7 +11,15 @@ outlives the engagement)
 
 ---
 
-## 0. Two decisions owed before authoring — read this first
+## 0. The two gating decisions — ⛔ SETTLED 2026-08-02, do not re-litigate
+
+| Decision | Dilip's call |
+|---|---|
+| The pasted spec's architecture | **Content-only pack.** Mine its content in full, reject its architecture (§8). No component, schema or route edits. |
+| Gate 0 — operating models | **Three, model-gated spine 13/13/16** — `litigation` (default) · `corporate` · `full-service` (superset). §2 stands as written. |
+
+The reasoning behind each is kept below, because the *why* is what stops a future session re-opening
+them.
 
 ### Decision 1 — the pasted specification's architecture (§9 of the handoff)
 
@@ -28,21 +36,20 @@ shared engine already renders pack-driven.
 > richest sector input the series has received — and reject its architecture in writing (§8 below).
 > Nothing it asks for that a reader would actually *see* is missing from the shared engine today.
 
-**But the standing answer changed on map #6** — Dilip chose "content pack + shared-engine additions"
-after three straight content-only calls. **This is his call, not an assumption.** If he chooses
-shared-engine additions again, they go in as **optional, pack-driven** capabilities that all twelve
-maps can adopt — never a per-sector tree. §8 marks the two candidates worth considering
-(`legal-hold` as a node attribute; an authority/public-record filter) and why neither is required.
+The standing answer had changed on map #6 — "content pack + shared-engine additions" — so this was put
+to Dilip rather than assumed. **He chose content-only.** The two shared-engine candidates that were
+costed and declined for this cycle are recorded in §8: an optional `retentionHold` node badge, and an
+authority/public-record graph facet. Neither is required for the map to teach what it needs to teach;
+either can be revisited as its own shared cycle if usage justifies it.
 
 ### Decision 2 — Gate 0: three operating models (§3 of the handoff)
 
 The handoff flagged "law firms are single-journey like CA" as an **untested guess** and named the real
-candidate split. The pasted spec independently proposes the same three. **§2 below adopts three
-models and explains why the split is a process difference, not a scale difference** — this is the
-recommendation, and it is the one thing that most changes the size of the build. Confirm before
-authoring.
-
-Everything below assumes both recommendations. If either changes, §2–§4 change with it.
+candidate split. The pasted spec independently proposed the same three. **Dilip confirmed three**, on
+the argument set out in §2: litigation and corporate differ in *process*, not merely in scale — a
+litigation practice has no data room and files affidavits into a public record; a corporate practice
+receives other people's personal data in bulk and files with the MCA. The old "single-journey like CA"
+guess is now **retired**, not merely untested.
 
 ---
 
@@ -420,7 +427,7 @@ every pack (`DataFlowClient.tsx`, `FlowSystemTable.tsx`). No work needed.
 
 ## 10. Build order
 
-Once §0's two decisions are confirmed, the handoff's recipe applies unchanged:
+§0's decisions are settled, so the handoff's recipe applies unchanged:
 
 1. **Author the pack** — `lib/data/data-flow/law-firms/` (8 files, schools-colleges shape).
    **Hotspot nodes first** (§3), then everything else around them.
