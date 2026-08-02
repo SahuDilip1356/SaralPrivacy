@@ -13,6 +13,8 @@ import {
 import { breadcrumbSchema, faqPageSchema, speakableSchema } from "@/lib/schema";
 import { FRESHNESS, toISODate } from "@/lib/content-freshness";
 import { pharmaciesPack } from "@/lib/data/industry-assessment/packs/pharmacies";
+import { pharmaciesDataFlowPack } from "@/lib/data/data-flow/pharmacies";
+import { DataFlowPreview } from "@/components/industries/DataFlowPreview";
 
 const faqs = [
   {
@@ -167,6 +169,13 @@ export default function PharmaciesPage() {
                   })}
                 </div>
               </section>
+
+              {/* Personal Data Flow Map preview - understand the sector, then
+                  see the flow, then take the scan. */}
+              <DataFlowPreview
+                pack={pharmaciesDataFlowPack}
+                href="/industries/pharmacies/data-flow"
+              />
 
               {/* How it works */}
               <section>

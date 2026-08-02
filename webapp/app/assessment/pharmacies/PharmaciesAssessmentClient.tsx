@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   ArrowRight,
   ArrowLeft,
@@ -27,6 +27,16 @@ import {
 } from "@/lib/data/industry-assessment";
 
 const pack = pharmaciesPack;
+// Short focus labels for the Data Flow Map deep-link (?bucket=). Keys match the
+// pharmacies assessment buckets used by the data-flow hotspots - every one of
+// pack.assessmentBuckets must appear here or the deep-link guard test fails.
+const BUCKET_FOCUS: Record<string, string> = {
+  customer_prescription_data: "Customer & prescription data",
+  health_indicator_medicine_history: "Health indicators & medicine history",
+  order_delivery_vendor_sharing: "Order, delivery & vendor sharing",
+  system_staff_access: "System, staff & access",
+  retention_refill_incident: "Retention, refill & incident readiness",
+};
 const BAND_COPY = pack.bandCopy!;
 
 // ── Contextual micro-feedback (UI layer) ─────────────────────────────────────
@@ -135,6 +145,11 @@ function MiniBar({ label, value, polarity }: { label: string; value: number; pol
 
 export default function PharmaciesAssessmentClient() {
   const router = useRouter();
+  // Data Flow Map hotspots deep-link here with ?bucket=, so the scan opens
+  // acknowledging the risk area the reader tapped. Requires the <Suspense>
+  // boundary in page.tsx, or `next build` fails.
+  const searchParams = useSearchParams();
+  const focusLabel = BUCKET_FOCUS[searchParams.get("bucket") ?? ""];
   const questions = pack.questions;
   const [phase, setPhase] = useState<"quiz" | "result">("quiz");
   const [qIndex, setQIndex] = useState(0);
@@ -449,6 +464,16 @@ export default function PharmaciesAssessmentClient() {
             <div className="h-full rounded-full bg-green-500 motion-safe:transition-all motion-safe:duration-300" style={{ width: `${progress}%` }} />
           </div>
         </div>
+
+        {focusLabel && (
+          <div className="mb-5 flex items-center gap-2 rounded-xl border border-teal-200 bg-teal-50 px-4 py-3 text-sm text-teal-900">
+            <Info size={16} className="shrink-0 text-teal-600" aria-hidden="true" />
+            <span>
+              You&apos;re checking: <span className="font-semibold">{focusLabel}</span>. Answer the
+              full scan to see how your controls hold up.
+            </span>
+          </div>
+        )}
 
         {/* Question */}
         <fieldset className="rounded-xl border border-slate-200 bg-white p-6 sm:p-7">
