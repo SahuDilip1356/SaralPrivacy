@@ -9,6 +9,7 @@ import { CA_FIRMS_PERSONAS } from "./personas.ts";
 import { CA_FIRMS_NODES } from "./nodes.ts";
 import { CA_FIRMS_EDGES } from "./edges.ts";
 import { CA_FIRMS_HOTSPOTS } from "./hotspots.ts";
+import { CA_FIRMS_INCIDENT_SCENARIOS, CA_FIRMS_RIGHTS_SCENARIOS } from "./scenarios.ts";
 
 export const caFirmsDataFlowPack: DataFlowPack = {
   industry: "ca-firms",
@@ -78,6 +79,11 @@ export const caFirmsDataFlowPack: DataFlowPack = {
   nodes: CA_FIRMS_NODES,
   edges: CA_FIRMS_EDGES,
   hotspots: CA_FIRMS_HOTSPOTS,
+  // The two shared, opt-in walkthrough sections (see scenarios.ts). Content
+  // only - the engine has rendered these since the schools-colleges cycle.
+  // Nothing is model-gated here: a CA firm declares one journey.
+  rightsScenarios: CA_FIRMS_RIGHTS_SCENARIOS,
+  incidentScenarios: CA_FIRMS_INCIDENT_SCENARIOS,
 };
 
 export default caFirmsDataFlowPack;

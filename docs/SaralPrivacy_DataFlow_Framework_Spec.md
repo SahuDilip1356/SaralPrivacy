@@ -292,3 +292,69 @@ Same discipline as the industry-assessment packs:
   `accessPersonaIds` is a flat list. A real schema change if ever wanted; out of scope per pack.
 - Tailwind `opacity-25`/`opacity-40` utilities were found NOT emitted by the build — use inline
   `style={{opacity}}` for state-driven opacity (as BoundaryLaneMap does).
+
+---
+
+## Addendum — CA Firms rights & incident walkthroughs (added 2026-08-02)
+
+CA Firms has no sector spec of its own (older handoffs cite one that does not exist), so this record
+lives with the framework contract.
+
+Fifth and final pack to author the two shared, opt-in sections, after `schools-colleges`,
+`clinics-diagnostic-labs`, `d2c-brands` and `training-institutes`. **Content only** — `scenarios.ts`
+plus two lines in `index.ts`. **7 rights · 8 incidents**, none gated: a CA firm declares one journey.
+
+### What makes these CA-specific
+
+**The firm can ACT AS the client.** In every other pack the business holds data *about* a data
+principal. A CA firm holds the DSC token — the client's legal signature — and a password sheet
+carrying every portal login they have. No other sector in the series has that. Hence
+`rs-dsc-and-credentials` and `in-dsc-used-without-instruction`, the most severe incident in the pack.
+
+**Much of the personal data belongs to people who never engaged the firm.** The client's own
+employees — salary, PAN, bank, deductions — sit in the accounting files and go to outsourced
+processors. `rs-client-employee-data` exists because these people are invisible in most firms'
+thinking, and they are data principals with their own rights.
+
+**The relationship ends by transfer, not by lapse.** A client leaves by moving to another CA, and
+`rs-changing-my-ca` is where the data question actually gets asked — return of originals, handover of
+work product, and deletion of the rest, three different things clients conflate into one request.
+
+### Language locks (tighter here than any other pack)
+
+DPDPA scope only. **No ICAI claims**, no professional-conduct or professional-body retention
+schedules, no statements about what tax law requires to be retained or for how long, and no tax or
+legal advice. Where retention is referred to, it is framed as something the firm determines with its
+own advisers. No "sensitive personal data". The audience are practising professionals and an
+overclaim would be spotted instantly.
+
+### ⚠️ Pre-existing hotspot debt now fully diagnosed (NOT introduced here, NOT fixed here)
+
+| Stage | Hotspot nodes resolving there |
+|---|---|
+| 1 `onboarding` | `personal-whatsapp`, `staff-laptop`, `shared-drive` ← **COLLISION** |
+| 3 `documents` | `outsourced-data-entry` |
+| 6 `gst-tds` | `password-sheet` |
+| 7 `itr-filing` | `dsc-token` |
+| 10 `archive` | `old-itr-folders` |
+
+⇒ 7 hotspots, **5 distinct flags**. This is the **collision** mode, and the cause is narrow:
+`staff-laptop` and `shared-drive` both use `ALL_STAGES`, so their earliest stage is `onboarding`,
+where `personal-whatsapp` already sits.
+
+**The fix is unusually cheap here — no hotspot copy changes at all.** Give the two spanning nodes a
+later first stage:
+
+- `shared-drive` → start at `kyc` (2) — the drive is where KYC scans first land
+- `staff-laptop` → start at `accounting` (4) — staff download working files once the work starts
+
+That yields flags on stages 1, 2, 3, 4, 6, 7, 10 = **7 distinct = 7 counter**. Both remain spanning
+nodes for every later stage; only their first appearance moves.
+
+It is still a **visible** change (those two stop appearing at the earliest stages), so it was left out
+of this content-only cycle and needs Dilip's decision. Compare with
+`docs/SaralPrivacy_TrainingInstitutes_DataFlow_Spec.md`, where the equivalent fix is more invasive.
+
+**Remaining after this:** only `recruitment-agencies` lacks scenario content, and it carries the same
+collision-mode debt. Once CA, TI and recruitment are corrected, the flags-vs-counter invariant can
+land as a universal Tier-1 test.
