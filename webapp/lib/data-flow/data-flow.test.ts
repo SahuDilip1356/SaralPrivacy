@@ -13,7 +13,7 @@
 
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
@@ -176,6 +176,59 @@ for (const p of PACKS) {
 //   - training-institutes being FIXED also fails this test, forcing the
 //     entry to be removed rather than quietly rotting                ✅
 // Debt is documented in docs/SaralPrivacy_TrainingInstitutes_DataFlow_Spec.md.
+// ---------------------------------------------------------------------------
+// TIER 1 - hotspot deep-links must actually land somewhere
+// ---------------------------------------------------------------------------
+//
+// Every hotspot links to `${assessmentRoute}?from=data-flow&bucket=<key>`, and
+// the assessment client is supposed to read that and show a focus banner. When
+// it does not, the failure is SILENT: the link lands, the banner never renders,
+// nothing errors, and nobody notices. `ca-firms` shipped that way and it was
+// only found by hand-checking every pack.
+//
+// `validatePack` already guarantees a hotspot's bucket is one of the pack's own
+// `assessmentBuckets`. What it cannot see is the CLIENT, so this checks the file:
+// the assessment client must read the query param, and must name every bucket
+// the pack can send it.
+test("hotspot deep-links resolve: every assessment client handles ?bucket=", () => {
+  const problems: string[] = [];
+
+  for (const p of PACKS) {
+    const folder = p.assessmentRoute.replace(/^\/assessment\//, "");
+    const dir = join(HERE, "../../app/assessment", folder);
+
+    let clients: string[];
+    try {
+      clients = readdirSync(dir).filter((f) => f.endsWith("Client.tsx"));
+    } catch {
+      problems.push(`${p.industry}: no assessment folder at app/assessment/${folder}`);
+      continue;
+    }
+    if (clients.length === 0) {
+      problems.push(`${p.industry}: no *Client.tsx in app/assessment/${folder}`);
+      continue;
+    }
+
+    const src = clients.map((f) => readFileSync(join(dir, f), "utf8")).join("\n");
+    if (!src.includes("useSearchParams")) {
+      problems.push(`${p.industry}: client never reads the query string - ?bucket= is ignored`);
+      continue;
+    }
+    const missing = p.assessmentBuckets.filter((b) => !src.includes(b));
+    if (missing.length) {
+      problems.push(`${p.industry}: client has no focus label for bucket(s) ${missing.join(", ")}`);
+    }
+
+    // useSearchParams without a Suspense boundary fails `next build`.
+    const page = readFileSync(join(dir, "page.tsx"), "utf8");
+    if (!page.includes("Suspense")) {
+      problems.push(`${p.industry}: client uses useSearchParams but page.tsx has no <Suspense> - next build will fail`);
+    }
+  }
+
+  assert.deepEqual(problems, [], `hotspot deep-links that go nowhere:\n  ${problems.join("\n  ")}`);
+});
+
 const KNOWN_HOTSPOT_DEBT = ["training-institutes"];
 
 test("hotspots reconcile with the counter in every model of every pack", () => {

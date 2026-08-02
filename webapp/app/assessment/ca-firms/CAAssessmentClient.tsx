@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   ArrowRight,
   ArrowLeft,
@@ -26,6 +26,20 @@ import {
 } from "@/lib/data/industry-assessment";
 
 // ── Contextual micro-feedback (UI layer) ─────────────────────────────────────
+// Short focus labels for the Data Flow Map deep-link (?bucket=). Keys MUST match
+// the CA assessment pack's own bucket keys - which are also what
+// lib/data/data-flow/ca-firms declares in `assessmentBuckets`, and what its
+// seven hotspots link with. A key that does not match here fails silently: the
+// link lands, the banner never renders, and nothing errors. That is exactly what
+// was happening before this was wired up.
+const BUCKET_FOCUS: Record<string, string> = {
+  client_document: "Client documents",
+  intake: "How documents reach you",
+  storage_access: "Storage & staff access",
+  retention: "Retention & deletion",
+  vendor_incident: "Vendors & incident readiness",
+};
+
 const MICRO_NOTES: Record<string, string> = {
   "q3:whatsapp":
     "Many CA firms use WhatsApp for convenience. The risk starts when documents stay scattered without access, deletion or breach controls.",
@@ -123,6 +137,11 @@ function MiniBar({ label, value, polarity }: { label: string; value: number; pol
 
 export default function CAAssessmentClient() {
   const router = useRouter();
+  // ?bucket= arrives from a Data Flow Map hotspot: it focuses the scan on the
+  // control the visitor just read about. An unknown or absent value simply
+  // yields no banner, so a hand-edited URL degrades cleanly.
+  const searchParams = useSearchParams();
+  const focusLabel = BUCKET_FOCUS[searchParams.get("bucket") ?? ""];
   const questions = caFirmPack.questions;
   // The marketing page (/industries/ca-firms) is the landing — open directly on Q1.
   const [phase, setPhase] = useState<"quiz" | "result">("quiz");
@@ -290,7 +309,7 @@ export default function CAAssessmentClient() {
             <div className="flex flex-col items-center gap-5 sm:flex-row sm:items-center">
               <ReadinessGauge readiness={result.readinessScore} color={result.bandColor} band={result.band} />
               <div className="text-center sm:text-left">
-                <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Your CA firm's result</div>
+                <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Your CA firm&apos;s result</div>
                 <h2 className="mt-1 text-xl font-bold text-navy-700">
                   DPDPA Readiness: {result.readinessScore} / 100
                 </h2>
@@ -418,7 +437,7 @@ export default function CAAssessmentClient() {
           <div className="mt-5 rounded-xl bg-navy-700 p-6">
             <h3 className="text-sm font-bold text-white">Get a CA Firm DPDPA Gap Review</h3>
             <p className="mb-4 mt-1 text-sm text-slate-300">
-              We'll review your client document flows, Google Drive / email / WhatsApp usage, staff access, vendor exposure and retention practices.
+              We&apos;ll review your client document flows, Google Drive / email / WhatsApp usage, staff access, vendor exposure and retention practices.
             </p>
             <Link
               href="/contact"
@@ -457,6 +476,16 @@ export default function CAAssessmentClient() {
             <div className="h-full rounded-full bg-green-500 motion-safe:transition-all motion-safe:duration-300" style={{ width: `${progress}%` }} />
           </div>
         </div>
+
+        {focusLabel && (
+          <div className="mb-5 flex items-center gap-2 rounded-xl border border-teal-200 bg-teal-50 px-4 py-3 text-sm text-teal-900">
+            <Info size={16} className="shrink-0 text-teal-600" aria-hidden="true" />
+            <span>
+              You&apos;re checking: <span className="font-semibold">{focusLabel}</span>. Answer the
+              full scan to see how your controls hold up.
+            </span>
+          </div>
+        )}
 
         {/* Question */}
         <fieldset className="rounded-xl border border-slate-200 bg-white p-6 sm:p-7">
