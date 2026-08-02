@@ -16,6 +16,10 @@ import { D2C_BRANDS_PERSONAS } from "./personas.ts";
 import { D2C_BRANDS_NODES } from "./nodes.ts";
 import { D2C_BRANDS_EDGES } from "./edges.ts";
 import { D2C_BRANDS_HOTSPOTS } from "./hotspots.ts";
+import {
+  D2C_BRANDS_INCIDENT_SCENARIOS,
+  D2C_BRANDS_RIGHTS_SCENARIOS,
+} from "./scenarios.ts";
 
 export const d2cBrandsDataFlowPack: DataFlowPack = {
   industry: "d2c-brands",
@@ -94,6 +98,10 @@ export const d2cBrandsDataFlowPack: DataFlowPack = {
   nodes: D2C_BRANDS_NODES,
   edges: D2C_BRANDS_EDGES,
   hotspots: D2C_BRANDS_HOTSPOTS,
+  // The two shared, opt-in walkthrough sections (see scenarios.ts). Content
+  // only - the engine has rendered these since the schools-colleges cycle.
+  rightsScenarios: D2C_BRANDS_RIGHTS_SCENARIOS,
+  incidentScenarios: D2C_BRANDS_INCIDENT_SCENARIOS,
 };
 
 export default d2cBrandsDataFlowPack;

@@ -246,3 +246,56 @@ Three defects surfaced by adding a fourth map. Each is pack-driven, so every map
 `ca-firms` and `recruitment-agencies` both still show **5 control-break flags against a counter of
 7** — their hotspot nodes collide on shared primary stages (handoff §1). D2C reconciles at 8 = 8 in
 all three models. Fix the older two when their content is next touched.
+
+---
+
+## Addendum — rights & incident walkthroughs (added 2026-08-02)
+
+Third pack to author the two shared, opt-in sections, after `schools-colleges` and
+`clinics-diagnostic-labs`. **Content only** — `scenarios.ts` plus two lines in `index.ts`. No
+component, route or schema work.
+
+**8 rights scenarios · 8 incident scenarios**, gated per model:
+
+| Model | Rights shown | Incidents shown |
+|---|---|---|
+| `website` (default) | 7 | 6 |
+| `marketplace` | 7 | 6 |
+| `omnichannel` (superset) | 8 | 8 |
+
+An own-website brand never sees the seller-portal walkthrough; a marketplace-first brand never sees
+session replay; only omnichannel sees the store-clienteling incident.
+
+### What makes these D2C-specific rather than generic
+
+**The data subject often never transacted with you.** This is the difference from every other sector
+in the series — elsewhere the person came to the business and knew it. Here a large share of the
+record belongs to people who never bought anything:
+
+- **`rs-gift-recipient`** — *"I never bought anything from you, why do you have my address?"* Someone
+  else typed their name, address and phone into your checkout. There is no account to close and no
+  consent to withdraw, yet they are in the database and usually already in a marketing audience.
+  **No other map in the series has this right**, and the `gift-recipient` node is what makes it
+  authorable.
+- **`rs-stop-marketing`** — the sector's defining request. `blockedNodeIds` is blunt on purpose: a
+  lookalike audience modelled from a list that included someone **cannot be un-seeded**, only stopped
+  and rebuilt. Suppression is also routinely applied per-list rather than per-person, so the next
+  export re-adds them.
+- **`rs-who-holds-my-data`** — the marketplace controller question, and the honest answer that
+  migrating marketplace buyers into brand marketing makes the brand a controller of data collected
+  under someone else's notice.
+- **`in-lookalike-upload`** is ranked the most severe incident, matching hotspot #1.
+
+### Language locks
+
+DPDPA scope only. No consumer-law, e-commerce-rules or payment-regulator claims, and no "sensitive
+personal data" — the DPDPA creates no such statutory category. The incident section is labelled an
+*operational response reference*; the shared component states that whether an incident must be
+reported is the brand's decision with its own advisers.
+
+### Verification
+
+52/52 pack tests · `flags=8 counter=8` unchanged in all three models · **zero scenario references to
+a node hidden in any model** · production build + TypeScript clean · eslint clean.
+
+**Remaining without scenario content:** `recruitment-agencies`, `ca-firms`, `training-institutes`.
