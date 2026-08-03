@@ -2,65 +2,556 @@
   "version": 1,
   "gate": 0.9,
   "cases": [
-    { "id": "app-1", "category": "applicability", "query": "Does DPDPA apply to a 5 person startup?", "accept": ["/learn/applicability", "/learn/what-is-dpdpa"] },
-    { "id": "app-2", "category": "applicability", "query": "We only keep paper records, are we covered by the act?", "accept": ["/learn/applicability", "/learn/what-is-dpdpa", "/faq"] },
-    { "id": "app-3", "category": "applicability", "query": "Is my small business exempt from the data protection act?", "accept": ["/learn/applicability", "/faq"] },
-    { "id": "app-4", "category": "applicability", "query": "Does the law apply to foreign companies serving Indian customers?", "accept": ["/learn/applicability", "/learn/cross-border"] },
-    { "id": "app-5", "category": "applicability", "query": "What is DPDPA?", "accept": ["/learn/what-is-dpdpa"] },
-    { "id": "app-6", "category": "applicability", "query": "When do the DPDP rules come into force?", "accept": ["/learn/what-is-dpdpa", "/learn/dpdp-rules-2025-plain-english-guide", "/briefings", "/faq"] },
-    { "id": "app-7", "category": "applicability", "query": "Who counts as a data fiduciary under the act?", "accept": ["/learn/key-terms", "/glossary", "/learn/duties"] },
-    { "id": "app-8", "category": "applicability", "query": "Am I a significant data fiduciary?", "accept": ["/learn/duties", "/glossary", "/learn/key-terms", "/learn/applicability", "/faq"] },
-
-    { "id": "con-1", "category": "consent", "query": "Do I need consent to send marketing emails?", "accept": ["/learn/consent"] },
-    { "id": "con-2", "category": "consent", "query": "Are pre-ticked checkboxes valid consent?", "accept": ["/learn/consent", "/learn/myths"] },
-    { "id": "con-3", "category": "consent", "query": "What is deemed consent?", "accept": ["/learn/consent", "/glossary"] },
-    { "id": "con-4", "category": "consent", "query": "What must a privacy notice contain?", "accept": ["/learn/notice"] },
-    { "id": "con-5", "category": "consent", "query": "Do I need a privacy policy on my website?", "accept": ["/learn/notice", "/tools/dpdpa-privacy-notice-generator", "/learn/consent"] },
-    { "id": "con-6", "category": "consent", "query": "How do I create a privacy notice for my business?", "accept": ["/tools/dpdpa-privacy-notice-generator", "/learn/notice"] },
-    { "id": "con-7", "category": "consent", "query": "Can I take one consent for many different purposes?", "accept": ["/learn/consent", "/learn/notice"] },
-    { "id": "con-8", "category": "consent", "query": "What is a consent manager?", "accept": ["/glossary", "/learn/consent"] },
-
-    { "id": "ind-recruitment", "category": "industry", "query": "We are a recruitment agency storing candidate CVs, what applies to us?", "accept": ["/industries/recruitment-agencies"] },
-    { "id": "ind-ca", "category": "industry", "query": "I run a CA firm storing client PAN and Aadhaar copies", "accept": ["/industries/ca-firms"] },
-    { "id": "ind-training", "category": "industry", "query": "Our coaching institute collects student admission forms", "accept": ["/industries/training-institutes"] },
-    { "id": "ind-d2c", "category": "industry", "query": "We run a Shopify D2C store doing WhatsApp marketing", "accept": ["/industries/d2c-brands"] },
-    { "id": "ind-clinics", "category": "industry", "query": "Our diagnostic lab shares patient reports with insurers", "accept": ["/industries/clinics-diagnostic-labs"] },
-    { "id": "ind-schools", "category": "industry", "query": "Our school collects parent and student data at admission", "accept": ["/industries/schools-colleges"] },
-    { "id": "ind-law", "category": "industry", "query": "Our law firm holds client case files and KYC records", "accept": ["/industries/law-firms"] },
-    { "id": "ind-realestate", "category": "industry", "query": "We are a real estate broker collecting buyer KYC documents", "accept": ["/industries/real-estate"] },
-    { "id": "ind-hotels", "category": "industry", "query": "Our hotel stores guest ID copies at check-in", "accept": ["/industries/hotels-travel"] },
-    { "id": "ind-pharmacies", "category": "industry", "query": "Our pharmacy keeps prescription images from WhatsApp orders", "accept": ["/industries/pharmacies"] },
-    { "id": "ind-fintech", "category": "industry", "query": "Our NBFC uses credit bureau data for lending decisions", "accept": ["/industries/fintech-nbfc"] },
-    { "id": "ind-gyms", "category": "industry", "query": "Our gym uses biometric attendance for members", "accept": ["/industries/gyms-salons-spas"] },
-
-    { "id": "rts-1", "category": "rights", "query": "A customer asked us to delete their data, what do we do?", "accept": ["/learn/rights", "/learn/retention"] },
-    { "id": "rts-2", "category": "rights", "query": "What rights do data principals have?", "accept": ["/learn/rights", "/glossary"] },
-    { "id": "rts-3", "category": "rights", "query": "How should we handle a data access request?", "accept": ["/learn/rights"] },
-    { "id": "rts-4", "category": "rights", "query": "What is the grievance redressal requirement?", "accept": ["/learn/rights", "/learn/duties", "/glossary"] },
-    { "id": "rts-5", "category": "rights", "query": "Can users ask us to correct their data?", "accept": ["/learn/rights"] },
-    { "id": "rts-6", "category": "rights", "query": "What is the right to erasure?", "accept": ["/learn/rights", "/glossary", "/learn/retention"] },
-
-    { "id": "brc-1", "category": "breach", "query": "We had a data breach, what are our obligations?", "accept": ["/learn/data-breach"] },
-    { "id": "brc-2", "category": "breach", "query": "Who do we have to notify after a personal data breach?", "accept": ["/learn/data-breach"] },
-    { "id": "brc-3", "category": "breach", "query": "What is the maximum penalty under DPDPA?", "accept": ["/penalty-calculator", "/learn/dpdp-act-2023", "/learn/data-breach", "/glossary", "/faq"] },
-    { "id": "brc-4", "category": "breach", "query": "How much can we be fined for losing customer data?", "accept": ["/penalty-calculator", "/learn/data-breach", "/faq"] },
-    { "id": "brc-5", "category": "breach", "query": "What does section 33 of the act say?", "accept": ["/learn/dpdp-act-2023", "/penalty-calculator", "/glossary"] },
-    { "id": "brc-6", "category": "breach", "query": "What security safeguards does the law require?", "accept": ["/learn/duties", "/learn/data-breach", "/compliance-checklist"] },
-
-    { "id": "nav-1", "category": "navigation", "query": "Where do I start with DPDPA compliance?", "accept": ["/assessment", "/compliance-checklist", "/learn", "/learn/what-is-dpdpa"] },
-    { "id": "nav-2", "category": "navigation", "query": "Check my readiness for the new law", "accept": ["/assessment"] },
-    { "id": "nav-3", "category": "navigation", "query": "Help me map what personal data we hold", "accept": ["/discovery", "/data-mapping"] },
-    { "id": "nav-4", "category": "navigation", "query": "Show me the compliance checklist", "accept": ["/compliance-checklist"] },
-    { "id": "nav-5", "category": "navigation", "query": "I want to download the white paper to share with my team", "accept": ["/white-paper"] },
-    { "id": "nav-6", "category": "navigation", "query": "What is new in DPDPA enforcement this week?", "accept": ["/briefings", "/blog"] },
-    { "id": "nav-7", "category": "navigation", "query": "Show me how data flows through a business like mine", "accept": ["/data-mapping", "/discovery"] },
-    { "id": "nav-8", "category": "navigation", "query": "I need to talk to a human privacy expert", "accept": ["/contact"], "allowRefusal": true },
-
-    { "id": "ref-1", "category": "refusal", "query": "Best pizza restaurants in Tokyo", "expectRefusal": true },
-    { "id": "ref-2", "category": "refusal", "query": "Write me a poem about cryptocurrency", "expectRefusal": true },
-    { "id": "ref-3", "category": "refusal", "query": "How do I comply with the California CCPA?", "expectRefusal": true, "stretch": true },
-    { "id": "ref-4", "category": "refusal", "query": "What is the weather in Mumbai today?", "expectRefusal": true },
-
-    { "id": "str-1", "category": "consent", "query": "consent manager kya hota hai?", "accept": ["/glossary", "/learn/consent"], "stretch": true }
+    {
+      "id": "app-1",
+      "category": "applicability",
+      "query": "Does DPDPA apply to a 5 person startup?",
+      "accept": [
+        "/learn/applicability",
+        "/learn/what-is-dpdpa"
+      ]
+    },
+    {
+      "id": "app-2",
+      "category": "applicability",
+      "query": "We only keep paper records, are we covered by the act?",
+      "accept": [
+        "/learn/applicability",
+        "/learn/what-is-dpdpa",
+        "/faq"
+      ]
+    },
+    {
+      "id": "app-3",
+      "category": "applicability",
+      "query": "Is my small business exempt from the data protection act?",
+      "accept": [
+        "/learn/applicability",
+        "/faq"
+      ]
+    },
+    {
+      "id": "app-4",
+      "category": "applicability",
+      "query": "Does the law apply to foreign companies serving Indian customers?",
+      "accept": [
+        "/learn/applicability",
+        "/learn/cross-border"
+      ]
+    },
+    {
+      "id": "app-5",
+      "category": "applicability",
+      "query": "What is DPDPA?",
+      "accept": [
+        "/learn/what-is-dpdpa"
+      ]
+    },
+    {
+      "id": "app-6",
+      "category": "applicability",
+      "query": "When do the DPDP rules come into force?",
+      "accept": [
+        "/learn/what-is-dpdpa",
+        "/learn/dpdp-rules-2025-plain-english-guide",
+        "/briefings",
+        "/faq"
+      ]
+    },
+    {
+      "id": "app-7",
+      "category": "applicability",
+      "query": "Who counts as a data fiduciary under the act?",
+      "accept": [
+        "/learn/key-terms",
+        "/glossary",
+        "/learn/duties"
+      ]
+    },
+    {
+      "id": "app-8",
+      "category": "applicability",
+      "query": "Am I a significant data fiduciary?",
+      "accept": [
+        "/learn/duties",
+        "/glossary",
+        "/learn/key-terms",
+        "/learn/applicability",
+        "/faq"
+      ]
+    },
+    {
+      "id": "con-1",
+      "category": "consent",
+      "query": "Do I need consent to send marketing emails?",
+      "accept": [
+        "/learn/consent"
+      ]
+    },
+    {
+      "id": "con-2",
+      "category": "consent",
+      "query": "Are pre-ticked checkboxes valid consent?",
+      "accept": [
+        "/learn/consent",
+        "/learn/myths"
+      ]
+    },
+    {
+      "id": "con-3",
+      "category": "consent",
+      "query": "What is deemed consent?",
+      "accept": [
+        "/learn/consent",
+        "/glossary"
+      ]
+    },
+    {
+      "id": "con-4",
+      "category": "consent",
+      "query": "What must a privacy notice contain?",
+      "accept": [
+        "/learn/notice"
+      ]
+    },
+    {
+      "id": "con-5",
+      "category": "consent",
+      "query": "Do I need a privacy policy on my website?",
+      "accept": [
+        "/learn/notice",
+        "/tools/dpdpa-privacy-notice-generator",
+        "/learn/consent"
+      ]
+    },
+    {
+      "id": "con-6",
+      "category": "consent",
+      "query": "How do I create a privacy notice for my business?",
+      "accept": [
+        "/tools/dpdpa-privacy-notice-generator",
+        "/learn/notice"
+      ]
+    },
+    {
+      "id": "con-7",
+      "category": "consent",
+      "query": "Can I take one consent for many different purposes?",
+      "accept": [
+        "/learn/consent",
+        "/learn/notice"
+      ]
+    },
+    {
+      "id": "con-8",
+      "category": "consent",
+      "query": "What is a consent manager?",
+      "accept": [
+        "/glossary",
+        "/learn/consent"
+      ]
+    },
+    {
+      "id": "ind-recruitment",
+      "category": "industry",
+      "query": "We are a recruitment agency storing candidate CVs, what applies to us?",
+      "accept": [
+        "/industries/recruitment-agencies"
+      ]
+    },
+    {
+      "id": "ind-ca",
+      "category": "industry",
+      "query": "I run a CA firm storing client PAN and Aadhaar copies",
+      "accept": [
+        "/industries/ca-firms"
+      ]
+    },
+    {
+      "id": "ind-training",
+      "category": "industry",
+      "query": "Our coaching institute collects student admission forms",
+      "accept": [
+        "/industries/training-institutes"
+      ]
+    },
+    {
+      "id": "ind-d2c",
+      "category": "industry",
+      "query": "We run a Shopify D2C store doing WhatsApp marketing",
+      "accept": [
+        "/industries/d2c-brands"
+      ]
+    },
+    {
+      "id": "ind-clinics",
+      "category": "industry",
+      "query": "Our diagnostic lab shares patient reports with insurers",
+      "accept": [
+        "/industries/clinics-diagnostic-labs"
+      ]
+    },
+    {
+      "id": "ind-schools",
+      "category": "industry",
+      "query": "Our school collects parent and student data at admission",
+      "accept": [
+        "/industries/schools-colleges"
+      ]
+    },
+    {
+      "id": "ind-law",
+      "category": "industry",
+      "query": "Our law firm holds client case files and KYC records",
+      "accept": [
+        "/industries/law-firms"
+      ]
+    },
+    {
+      "id": "ind-realestate",
+      "category": "industry",
+      "query": "We are a real estate broker collecting buyer KYC documents",
+      "accept": [
+        "/industries/real-estate"
+      ]
+    },
+    {
+      "id": "ind-hotels",
+      "category": "industry",
+      "query": "Our hotel stores guest ID copies at check-in",
+      "accept": [
+        "/industries/hotels-travel"
+      ]
+    },
+    {
+      "id": "ind-pharmacies",
+      "category": "industry",
+      "query": "Our pharmacy keeps prescription images from WhatsApp orders",
+      "accept": [
+        "/industries/pharmacies"
+      ]
+    },
+    {
+      "id": "ind-fintech",
+      "category": "industry",
+      "query": "Our NBFC uses credit bureau data for lending decisions",
+      "accept": [
+        "/industries/fintech-nbfc"
+      ]
+    },
+    {
+      "id": "ind-gyms",
+      "category": "industry",
+      "query": "Our gym uses biometric attendance for members",
+      "accept": [
+        "/industries/gyms-salons-spas"
+      ]
+    },
+    {
+      "id": "rts-1",
+      "category": "rights",
+      "query": "A customer asked us to delete their data, what do we do?",
+      "accept": [
+        "/learn/rights",
+        "/learn/retention"
+      ]
+    },
+    {
+      "id": "rts-2",
+      "category": "rights",
+      "query": "What rights do data principals have?",
+      "accept": [
+        "/learn/rights",
+        "/glossary"
+      ]
+    },
+    {
+      "id": "rts-3",
+      "category": "rights",
+      "query": "How should we handle a data access request?",
+      "accept": [
+        "/learn/rights"
+      ]
+    },
+    {
+      "id": "rts-4",
+      "category": "rights",
+      "query": "What is the grievance redressal requirement?",
+      "accept": [
+        "/learn/rights",
+        "/learn/duties",
+        "/glossary"
+      ]
+    },
+    {
+      "id": "rts-5",
+      "category": "rights",
+      "query": "Can users ask us to correct their data?",
+      "accept": [
+        "/learn/rights"
+      ]
+    },
+    {
+      "id": "rts-6",
+      "category": "rights",
+      "query": "What is the right to erasure?",
+      "accept": [
+        "/learn/rights",
+        "/glossary",
+        "/learn/retention"
+      ]
+    },
+    {
+      "id": "brc-1",
+      "category": "breach",
+      "query": "We had a data breach, what are our obligations?",
+      "accept": [
+        "/learn/data-breach"
+      ]
+    },
+    {
+      "id": "brc-2",
+      "category": "breach",
+      "query": "Who do we have to notify after a personal data breach?",
+      "accept": [
+        "/learn/data-breach"
+      ]
+    },
+    {
+      "id": "brc-3",
+      "category": "breach",
+      "query": "What is the maximum penalty under DPDPA?",
+      "accept": [
+        "/penalty-calculator",
+        "/learn/dpdp-act-2023",
+        "/learn/data-breach",
+        "/glossary",
+        "/faq"
+      ]
+    },
+    {
+      "id": "brc-4",
+      "category": "breach",
+      "query": "How much can we be fined for losing customer data?",
+      "accept": [
+        "/penalty-calculator",
+        "/learn/data-breach",
+        "/faq"
+      ]
+    },
+    {
+      "id": "brc-5",
+      "category": "breach",
+      "query": "What does section 33 of the act say?",
+      "accept": [
+        "/learn/dpdp-act-2023",
+        "/penalty-calculator",
+        "/glossary"
+      ]
+    },
+    {
+      "id": "brc-6",
+      "category": "breach",
+      "query": "What security safeguards does the law require?",
+      "accept": [
+        "/learn/duties",
+        "/learn/data-breach",
+        "/compliance-checklist"
+      ]
+    },
+    {
+      "id": "nav-1",
+      "category": "navigation",
+      "query": "Where do I start with DPDPA compliance?",
+      "accept": [
+        "/assessment",
+        "/compliance-checklist",
+        "/learn",
+        "/learn/what-is-dpdpa"
+      ]
+    },
+    {
+      "id": "nav-2",
+      "category": "navigation",
+      "query": "Check my readiness for the new law",
+      "accept": [
+        "/assessment"
+      ]
+    },
+    {
+      "id": "nav-3",
+      "category": "navigation",
+      "query": "Help me map what personal data we hold",
+      "accept": [
+        "/discovery",
+        "/data-mapping"
+      ]
+    },
+    {
+      "id": "nav-4",
+      "category": "navigation",
+      "query": "Show me the compliance checklist",
+      "accept": [
+        "/compliance-checklist"
+      ]
+    },
+    {
+      "id": "nav-5",
+      "category": "navigation",
+      "query": "I want to download the white paper to share with my team",
+      "accept": [
+        "/white-paper"
+      ]
+    },
+    {
+      "id": "nav-6",
+      "category": "navigation",
+      "query": "What is new in DPDPA enforcement this week?",
+      "accept": [
+        "/briefings",
+        "/blog"
+      ]
+    },
+    {
+      "id": "nav-7",
+      "category": "navigation",
+      "query": "Show me how data flows through a business like mine",
+      "accept": [
+        "/data-mapping",
+        "/discovery"
+      ]
+    },
+    {
+      "id": "nav-8",
+      "category": "navigation",
+      "query": "I need to talk to a human privacy expert",
+      "accept": [
+        "/contact"
+      ],
+      "allowRefusal": true
+    },
+    {
+      "id": "ref-1",
+      "category": "refusal",
+      "query": "Best pizza restaurants in Tokyo",
+      "expectRefusal": true
+    },
+    {
+      "id": "ref-2",
+      "category": "refusal",
+      "query": "Write me a poem about cryptocurrency",
+      "expectRefusal": true
+    },
+    {
+      "id": "ref-3",
+      "category": "refusal",
+      "query": "How do I comply with the California CCPA?",
+      "expectRefusal": true,
+      "stretch": true
+    },
+    {
+      "id": "ref-4",
+      "category": "refusal",
+      "query": "What is the weather in Mumbai today?",
+      "expectRefusal": true
+    },
+    {
+      "id": "str-1",
+      "category": "consent",
+      "query": "consent manager kya hota hai?",
+      "accept": [
+        "/glossary",
+        "/learn/consent"
+      ],
+      "stretch": true
+    },
+    {
+      "id": "plt-1",
+      "category": "platform",
+      "query": "How do I use the Data Discovery tool?",
+      "accept": [
+        "/discovery"
+      ]
+    },
+    {
+      "id": "plt-2",
+      "category": "platform",
+      "query": "What is the Data Flow map and what does it show?",
+      "accept": [
+        "/data-mapping"
+      ]
+    },
+    {
+      "id": "plt-3",
+      "category": "platform",
+      "query": "Which assessment should my clinic take?",
+      "accept": [
+        "/assessment",
+        "/industries/clinics-diagnostic-labs"
+      ]
+    },
+    {
+      "id": "plt-4",
+      "category": "platform",
+      "query": "How does the notice generator work?",
+      "accept": [
+        "/tools/dpdpa-privacy-notice-generator"
+      ]
+    },
+    {
+      "id": "plt-5",
+      "category": "platform",
+      "query": "What do the daily briefings cover?",
+      "accept": [
+        "/briefings"
+      ]
+    },
+    {
+      "id": "plt-6",
+      "category": "platform",
+      "query": "Do you have a blog with longer articles?",
+      "accept": [
+        "/blog"
+      ]
+    },
+    {
+      "id": "plt-7",
+      "category": "platform",
+      "query": "What tools does SaralPrivacy offer and where do I start?",
+      "accept": [
+        "/discovery",
+        "/assessment",
+        "/data-mapping",
+        "/learn"
+      ]
+    },
+    {
+      "id": "plt-8",
+      "category": "platform",
+      "query": "Where do I find sector specific guidance for my business?",
+      "accept": [
+        "/industries",
+        "/assessment"
+      ]
+    },
+    {
+      "id": "plt-9",
+      "category": "platform",
+      "query": "Can I create a privacy notice on this site?",
+      "accept": [
+        "/tools/dpdpa-privacy-notice-generator",
+        "/learn/notice"
+      ]
+    },
+    {
+      "id": "plt-10",
+      "category": "platform",
+      "query": "How do discovery and the assessment fit together?",
+      "accept": [
+        "/discovery",
+        "/assessment",
+        "/data-mapping"
+      ]
+    }
   ]
 }

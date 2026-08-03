@@ -8,6 +8,7 @@ import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
 import { learnContent } from "../data/learn-content.ts";
+import { PLATFORM_SURFACES, PLATFORM_OVERVIEW } from "../data/platform-guide.ts";
 import { faqs } from "../data/faqs.ts";
 import { TERMS } from "../../components/glossary/glossaryData.ts";
 import { part1Sections, part2Sections } from "../data/compliance-checklist.ts";
@@ -264,16 +265,34 @@ export function collectChecklistChunks(): ChatChunk[] {
 }
 
 export function collectToolChunks(): ChatChunk[] {
-  return ROUTES.filter((r) => r.tier === 3 || r.tier === 4).map((r) => ({
-    id: `tool:${slugify(r.url)}`,
-    url: r.url,
-    title: r.title,
-    tier: r.tier,
-    topicTags: r.topicTags,
-    section: "About this tool",
-    text: `${r.title}: ${r.summary}`,
-    extraction: "typed" as const,
-  }));
+  // Rich platform-guide chunks — how Setu explains and navigates the
+  // platform itself (Discovery, Flow Maps, Assessment, Notice Generator,
+  // Briefings, Blog…). Each surface's guide text is chunked whole; the
+  // overview chunk carries the Discover → Map → Assess → Fix spine.
+  const chunks: ChatChunk[] = PLATFORM_SURFACES.flatMap((s) => {
+    const route = routeMeta(s.url);
+    return splitLong(s.guide).map((piece, i) => ({
+      id: `tool:${slugify(s.url)}${i ? `:${i}` : ""}`,
+      url: s.url,
+      title: s.name,
+      tier: (route?.tier ?? 3) as Tier,
+      topicTags: [...new Set([...s.topicTags, ...(route?.topicTags ?? [])])],
+      section: "How to use this",
+      text: piece,
+      extraction: "typed" as const,
+    }));
+  });
+  chunks.push({
+    id: "tool:platform-overview",
+    url: PLATFORM_OVERVIEW.url,
+    title: PLATFORM_OVERVIEW.title,
+    tier: 3,
+    topicTags: PLATFORM_OVERVIEW.topicTags,
+    section: "Discover → Map → Assess → Fix",
+    text: PLATFORM_OVERVIEW.text,
+    extraction: "typed",
+  });
+  return chunks;
 }
 
 export function collectRegulatoryContextChunks(appRoot: string): ChatChunk[] {

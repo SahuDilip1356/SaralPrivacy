@@ -209,7 +209,7 @@ const INDUSTRY_ROUTES: Route[] = [
     title: "Industry guides",
     tier: 2,
     topicTags: ["industries", "sector"],
-    triggers: ["my industry", "sector guide"],
+    triggers: ["my industry", "sector guide", "industry guide", "sector specific"],
     summary: "DPDPA guidance mapped to 12 Indian industries.",
   },
   ...INDUSTRY_SLUGS.map(
@@ -231,7 +231,7 @@ const TOOL_ROUTES: Route[] = [
     title: "DPDPA Readiness Assessment",
     tier: 3,
     topicTags: ["readiness", "gap analysis", "score"],
-    triggers: ["where do i stand", "assessment", "readiness", "audit myself"],
+    triggers: ["where do i stand", "assessment", "readiness", "audit myself", "industry assessment", "check my business", "how ready"],
     summary: "A sector-wise self-check of your DPDPA readiness.",
   },
   {
@@ -247,7 +247,7 @@ const TOOL_ROUTES: Route[] = [
     title: "Personal Data Discovery",
     tier: 3,
     topicTags: ["data map", "ropa", "inventory", "discovery"],
-    triggers: ["map my data", "what data do i hold", "ropa", "data inventory"],
+    triggers: ["map my data", "what data do i hold", "ropa", "data inventory", "data discovery", "discovery tool", "discover my data"],
     summary: "Map the personal data your business actually handles.",
   },
   {
@@ -255,7 +255,7 @@ const TOOL_ROUTES: Route[] = [
     title: "Privacy Notice Generator",
     tier: 3,
     topicTags: ["notice generator", "privacy notice builder"],
-    triggers: ["create a notice", "generate privacy policy", "notice builder"],
+    triggers: ["create a notice", "generate privacy policy", "notice builder", "notice generator"],
     summary: "Build a DPDPA-ready privacy notice step by step.",
   },
   {
@@ -263,7 +263,7 @@ const TOOL_ROUTES: Route[] = [
     title: "Personal Data Flow Maps",
     tier: 3,
     topicTags: ["data flow", "data map", "journey", "systems"],
-    triggers: ["data flow", "where does data travel", "data journey", "flow map"],
+    triggers: ["data flow", "where does data travel", "data journey", "flow map", "data mapping", "flow maps"],
     summary: "Visual maps of how personal data moves through a business like yours.",
   },
   {
@@ -282,7 +282,7 @@ const FRESHNESS_ROUTES: Route[] = [
     title: "DPDPA Daily Briefings",
     tier: 4,
     topicTags: ["news", "updates", "enforcement"],
-    triggers: ["latest", "news", "what's new", "what changed"],
+    triggers: ["latest", "news", "what's new", "what changed", "daily briefing", "briefings"],
     summary: "Daily briefings on DPDPA developments.",
   },
   {
@@ -290,7 +290,7 @@ const FRESHNESS_ROUTES: Route[] = [
     title: "Insights Blog",
     tier: 4,
     topicTags: ["blog", "articles", "insights"],
-    triggers: ["article", "blog", "in depth"],
+    triggers: ["article", "blog", "in depth", "insights"],
     summary: "Longer reads on DPDPA in practice.",
   },
 ];
