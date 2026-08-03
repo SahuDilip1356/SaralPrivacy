@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import {
   Search,
+  Workflow,
   ClipboardCheck,
   FileText,
   ShieldCheck,
@@ -15,14 +16,16 @@ import {
 import { ScoreDial } from "@/components/home/ScoreDial";
 import { trackEvent } from "@/lib/analytics";
 
-// Beat 4 — "How it works = do it now". The conversion spine: 3 live steps →
+// Beat 4 — "How it works = do it now". The conversion spine: 4 live steps →
 // a DPDPA-ready milestone → a 3-way "keep it living" branch. Ported from the
-// approved `how_it_works_centered_fixed` mockup. Brand tokens via Tailwind:
+// approved `how_it_works_centered_fixed` mockup; step 2 "Map" added per
+// LANDING_TRUST_REACH_SPEC.md so the spine matches the /data-mapping journey
+// (Discover → Map → Assess → Fix). Brand tokens via Tailwind:
 // teal-500 #35B6AE · green-500 #07B981 · gold-400 #E8AB42 · navy-700 #121A2E.
 
 type Step = {
   n: number;
-  key: "discover" | "assess" | "fix";
+  key: "discover" | "map" | "assess" | "fix";
   icon: typeof Search;
   title: string;
   sub: string;
@@ -50,6 +53,19 @@ const steps: Step[] = [
   },
   {
     n: 2,
+    key: "map",
+    icon: Workflow,
+    title: "Map",
+    sub: "See where it travels — and where control breaks",
+    tag: "Data Flow",
+    cap: "Your sector's flow map",
+    href: "/data-mapping",
+    badge: "bg-teal-500",
+    ring: "bg-teal-500/15",
+    iconColor: "text-teal-400",
+  },
+  {
+    n: 3,
     key: "assess",
     icon: ClipboardCheck,
     title: "Assess",
@@ -62,7 +78,7 @@ const steps: Step[] = [
     iconColor: "text-green-400",
   },
   {
-    n: 3,
+    n: 4,
     key: "fix",
     icon: FileText,
     title: "Fix what matters",
@@ -90,6 +106,23 @@ function StepArtifact({ kind }: { kind: Step["key"] }) {
             className="text-[9px] font-medium text-teal-300 bg-teal-500/10 border border-teal-500/25 rounded-full px-1.5 py-0.5"
           >
             {l}
+          </span>
+        ))}
+      </div>
+    );
+  }
+  if (kind === "map") {
+    // three stage nodes on a flow line; the gold dot marks a hotspot
+    return (
+      <div className="flex items-center gap-1 shrink-0 opacity-85">
+        {[0, 1, 2].map((i) => (
+          <span key={i} className="flex items-center gap-1">
+            <span className="relative inline-block w-5 h-5 rounded-md bg-teal-500/10 border border-teal-500/30">
+              {i === 2 && (
+                <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-gold-400" />
+              )}
+            </span>
+            {i < 2 && <span className="inline-block w-2 h-px bg-teal-500/40" />}
           </span>
         ))}
       </div>
