@@ -121,7 +121,7 @@ export async function POST(request: NextRequest) {
           content: `${turnNotes}\n\n${grounding}\n\n<user_message>\n${message}\n</user_message>`,
         },
       ],
-      temperature: 0.3,
+      // temperature is not supported by the claude-5 family — omit it.
       maxOutputTokens: 600,
     });
 
