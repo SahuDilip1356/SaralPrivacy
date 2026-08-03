@@ -130,6 +130,7 @@ Everything the bot cites must resolve to a real route below.
 | Penalty Risk Indicator | `/penalty-calculator` | |
 | Personal Data Discovery | `/discovery` | data-map / RoPA style tool |
 | Privacy Notice Generator | `/tools/dpdpa-privacy-notice-generator` | only tool under `/tools` |
+| Personal Data Flow Maps | `/data-mapping` | added v2.4 — shipped after v2.3 was written; hub only |
 | White Paper | `/white-paper` | download / share-with-team |
 
 **Tier 4 · Freshness (Phase 3 index):** `/briefings` · `/blog`
