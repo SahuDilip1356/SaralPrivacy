@@ -125,7 +125,7 @@ export async function POST(request: NextRequest) {
       }
       if (!meta.actions.some((a) => a.url === "/briefings")) {
         meta.actions = [
-          { type: "open_url", label: "Read the Daily Briefings", url: "/briefings" },
+          { type: "open_url" as const, label: "Read the Daily Briefings", url: "/briefings" },
           ...meta.actions,
         ].slice(0, 3);
       }
