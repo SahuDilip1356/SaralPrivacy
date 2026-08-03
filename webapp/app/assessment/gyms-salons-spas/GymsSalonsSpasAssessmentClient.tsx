@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   ArrowRight,
   ArrowLeft,
@@ -28,6 +28,19 @@ import {
 
 const pack = gymsSalonsSpasPack;
 const BAND_COPY = pack.bandCopy!;
+
+// Deep-link focus from the Data Flow Map hotspots
+// (/industries/gyms-salons-spas/data-flow -> ?from=data-flow&bucket=<key>).
+// Must cover EVERY key in gymsSalonsSpasDataFlowPack.assessmentBuckets, or the
+// link lands, the banner silently never renders, and nothing errors.
+// Test-enforced by the "hotspot deep-links resolve" guard test.
+const BUCKET_FOCUS: Record<string, string> = {
+  customer_membership_data: "Customer & membership data",
+  health_body_consultation_data: "Health, body & consultation data",
+  photos_marketing_whatsapp: "Photos, marketing & WhatsApp",
+  app_staff_vendor_access: "App, staff & vendor access",
+  retention_rights_incident: "Retention & incident readiness",
+};
 
 // ── Contextual micro-feedback (UI layer) ─────────────────────────────────────
 const MICRO_NOTES: Record<string, string> = {
@@ -131,6 +144,8 @@ function MiniBar({ label, value, polarity }: { label: string; value: number; pol
 
 export default function GymsSalonsSpasAssessmentClient() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const focusLabel = BUCKET_FOCUS[searchParams.get("bucket") ?? ""];
   const questions = pack.questions;
   const [phase, setPhase] = useState<"quiz" | "result">("quiz");
   const [qIndex, setQIndex] = useState(0);
@@ -445,6 +460,16 @@ export default function GymsSalonsSpasAssessmentClient() {
             <div className="h-full rounded-full bg-green-500 motion-safe:transition-all motion-safe:duration-300" style={{ width: `${progress}%` }} />
           </div>
         </div>
+
+        {focusLabel && (
+          <div className="mb-5 flex items-center gap-2 rounded-xl border border-teal-200 bg-teal-50 px-4 py-3 text-sm text-teal-900">
+            <Info size={16} className="shrink-0 text-teal-600" aria-hidden="true" />
+            <span>
+              You&apos;re checking: <span className="font-semibold">{focusLabel}</span>. Answer the
+              full scan to see how your controls hold up.
+            </span>
+          </div>
+        )}
 
         {/* Question */}
         <fieldset className="rounded-xl border border-slate-200 bg-white p-6 sm:p-7">

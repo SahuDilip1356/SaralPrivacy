@@ -115,7 +115,7 @@ export function Footer() {
             {/* Data Mapping - sits under Platform per the product spine:
                 Discovery -> Data Mapping -> Assessment -> Notice. Industry rows
                 come from the registry, so this list grows as maps ship. */}
-            <h4 className="text-white font-semibold text-sm mb-4 mt-6">Data Mapping</h4>
+            <h4 className="text-white font-semibold text-sm mb-4 mt-6">Data Flow Maps</h4>
             <ul className="space-y-2.5">
               {footerLinks.dataMapping.map((link) => (
                 <li key={link.href}>

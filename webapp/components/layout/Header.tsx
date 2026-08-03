@@ -16,6 +16,11 @@ const navigation = [
     badge: "Free",
   },
   {
+    label: "Data Flow",
+    href: "/data-mapping",
+    badge: "Free",
+  },
+  {
     label: "Assessment",
     href: "/assessment",
     badge: "Free",

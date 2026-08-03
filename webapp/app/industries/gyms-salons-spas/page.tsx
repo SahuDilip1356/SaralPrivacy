@@ -13,6 +13,8 @@ import {
 import { breadcrumbSchema, faqPageSchema, speakableSchema } from "@/lib/schema";
 import { FRESHNESS, toISODate } from "@/lib/content-freshness";
 import { gymsSalonsSpasPack } from "@/lib/data/industry-assessment/packs/gyms-salons-spas";
+import { gymsSalonsSpasDataFlowPack } from "@/lib/data/data-flow/gyms-salons-spas";
+import { DataFlowPreview } from "@/components/industries/DataFlowPreview";
 
 const faqs = [
   {
@@ -167,6 +169,13 @@ export default function GymsSalonsSpasPage() {
                   })}
                 </div>
               </section>
+
+              {/* Personal Data Flow Map preview - understand the sector, then
+                  see the flow, then take the scan. */}
+              <DataFlowPreview
+                pack={gymsSalonsSpasDataFlowPack}
+                href="/industries/gyms-salons-spas/data-flow"
+              />
 
               {/* How it works */}
               <section>
