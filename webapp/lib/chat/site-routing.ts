@@ -217,6 +217,8 @@ export const DATA_FLOW_SECTORS: IndustrySlug[] = [
   "real-estate",
   "hotels-travel",
   "pharmacies",
+  "fintech-nbfc",
+  "gyms-salons-spas",
 ];
 
 const INDUSTRY_ROUTES: Route[] = [
