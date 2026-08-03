@@ -56,6 +56,8 @@ export const COLLECTIONS = {
   NOTICE_EVENTS:      "notice_events",
   BUSINESS_PROFILES:  "business_profiles",
   DSAR_REQUESTS:      "dsar_requests",
+  // Setu chatbot (spec §9.2 — feedback + redacted failure turns only)
+  CHAT_FEEDBACK:      "chat_feedback",
 } as const;
 
 /** Returns the public view URL for a file in Appwrite Storage */
