@@ -8,6 +8,16 @@ import { ExternalLink, ThumbsDown, ThumbsUp, BadgeCheck } from "lucide-react";
 import type { ChatMessage } from "./useSetuChat";
 import { SetuStage, type AvatarState } from "./SetuStage";
 import { t } from "@/lib/chat/strings";
+import { trackEvent } from "@/lib/analytics";
+
+const TOOL_URLS = new Set([
+  "/assessment",
+  "/discovery",
+  "/tools/dpdpa-privacy-notice-generator",
+  "/penalty-calculator",
+  "/white-paper",
+  "/data-mapping",
+]);
 
 // ---------------------------------------------------------------------------
 // Markdown-lite: **bold** + "- " lists. The prompt bans links/headings/JSON.
@@ -72,6 +82,13 @@ function CitationCards({ msg }: { msg: ChatMessage }) {
           href={a.url}
           target="_blank"
           rel="noopener"
+          onClick={() => {
+            if (TOOL_URLS.has(a.url)) {
+              trackEvent.chatToolCta({ url: a.url, journey: meta.journey });
+            } else {
+              trackEvent.chatLinkClicked({ url: a.url, kind: "action" });
+            }
+          }}
           className="group flex items-center justify-between gap-2 rounded-lg border border-slate-200 bg-white p-3 shadow-sm transition hover:border-[#121A2E]/40 hover:shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#207D78] active:scale-[0.99]"
         >
           <span className="min-w-0">

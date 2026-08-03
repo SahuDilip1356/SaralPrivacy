@@ -255,4 +255,30 @@ export const trackEvent = {
           : "engagement",
       ...params,
     }),
+
+  // ── Setu chatbot (spec §9.4) — no message text, no PII, ever ────────────
+  chatOpened: (params: { page: string; proactive: boolean }) =>
+    gtag("chat_opened", { event_category: "engagement", ...params }),
+
+  chatMessageSent: (params: { journey?: string; industry?: string; turn: number }) =>
+    gtag("chat_message_sent", { event_category: "engagement", ...params }),
+
+  chatLinkClicked: (params: { url: string; kind: "citation" | "action" }) =>
+    gtag("chat_link_clicked", { event_category: "engagement", ...params }),
+
+  // Deliberate referral seam into the starved tools funnel (decision D4).
+  chatToolCta: (params: { url: string; journey?: string }) =>
+    gtag("chat_tool_cta", { event_category: "lead", ...params }),
+
+  chatFeedback: (params: { helpful: boolean }) =>
+    gtag("chat_feedback", { event_category: "engagement", ...params }),
+
+  chatEscalation: (params: { reason: string }) =>
+    gtag("chat_escalation", { event_category: "lead", ...params }),
+
+  chatProactiveShown: (params: { page: string }) =>
+    gtag("chat_proactive_shown", { event_category: "engagement", ...params }),
+
+  chatProactiveDismissed: (params: { page: string; muted: boolean }) =>
+    gtag("chat_proactive_dismissed", { event_category: "engagement", ...params }),
 };

@@ -78,7 +78,7 @@ const LEARN_ROUTES: Route[] = [
     title: "Who does DPDPA apply to?",
     tier: 1,
     topicTags: ["applicability", "coverage", "exemptions", "threshold"],
-    triggers: ["does it apply to me", "am i covered", "small business", "exempt"],
+    triggers: ["does it apply to me", "am i covered", "are we covered", "small business", "exempt", "paper records"],
     summary: "Check whether the law covers your business.",
   },
   {

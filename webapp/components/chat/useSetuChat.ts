@@ -11,6 +11,7 @@ import {
   type ChatSessionState,
 } from "@/lib/chat/journeys";
 import { t } from "@/lib/chat/strings";
+import { trackEvent } from "@/lib/analytics";
 
 export interface ChatMessage {
   id: string;
@@ -85,6 +86,11 @@ export function useSetuChat(pageUrl: string) {
 
       setMessages((prev) => [...prev, userMsg, setuMsg]);
       setStatus("thinking");
+      trackEvent.chatMessageSent({
+        journey: stateRef.current?.journey,
+        industry: stateRef.current?.industry,
+        turn: (stateRef.current?.messageCount ?? 0) + 1,
+      });
 
       const patchSetu = (patch: Partial<ChatMessage>) =>
         setMessages((prev) => prev.map((m) => (m.id === setuMsg.id ? { ...m, ...patch } : m)));
@@ -151,6 +157,7 @@ export function useSetuChat(pageUrl: string) {
 
   const sendFeedback = useCallback(
     (turn: ChatMessage, helpful: boolean) => {
+      trackEvent.chatFeedback({ helpful });
       const priorUser = [...messages].reverse().find((m) => m.role === "user");
       void fetch("/api/chat/feedback", {
         method: "POST",

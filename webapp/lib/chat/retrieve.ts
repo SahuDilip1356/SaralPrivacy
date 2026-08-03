@@ -35,11 +35,25 @@ const STOPWORDS = new Set(
   )
 );
 
+/** Light stemmer: folds plural/verb/nominal suffixes so "deletion", "deleted"
+ * and "delete" share a stem. Deliberately crude — golden set is the judge. */
+export function stem(word: string): string {
+  let w = word;
+  if (w.length > 5) w = w.replace(/(ation|ations)$/, "ate");
+  if (w.length > 5) w = w.replace(/(ion|ions)$/, "");
+  if (w.length > 4) w = w.replace(/(ies)$/, "y");
+  if (w.length > 4) w = w.replace(/(ing|ed|es)$/, "");
+  if (w.length > 3) w = w.replace(/(s)$/, "");
+  if (w.length > 3) w = w.replace(/(e|y)$/, "");
+  return w;
+}
+
 export function tokenize(text: string): string[] {
   return text
     .toLowerCase()
     .split(/[^a-z0-9]+/)
-    .filter((t) => t.length > 1 && !STOPWORDS.has(t));
+    .filter((t) => t.length > 1 && !STOPWORDS.has(t))
+    .map(stem);
 }
 
 // BM25 parameters — standard defaults; floor constants tuned via golden set.
@@ -63,8 +77,11 @@ class Bm25Engine {
     this.index = index;
     const { chunks } = index;
     for (let i = 0; i < chunks.length; i++) {
+      // Field weighting: title + tags count 3×, section 2×, body 1× — a match
+      // on what a page IS about must outrank incidental body mentions.
+      const head = `${chunks[i].title} ${chunks[i].topicTags.join(" ")}`;
       const terms = tokenize(
-        `${chunks[i].title} ${chunks[i].section} ${chunks[i].topicTags.join(" ")} ${chunks[i].text}`
+        `${head} ${head} ${head} ${chunks[i].section} ${chunks[i].section} ${chunks[i].text}`
       );
       this.docLen[i] = terms.length;
       const tf = new Map<string, number>();

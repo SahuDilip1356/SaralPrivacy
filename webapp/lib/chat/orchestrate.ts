@@ -83,9 +83,23 @@ export interface TurnPlan {
   industry?: IndustrySlug;
   retrieval: RetrievalResult;
   glossary: { best: GlossaryHit | null; related: GlossaryHit[] };
+  routerRoutes: Route[];
+  escalate: boolean;
   refuse: boolean;
   piiWarning: boolean;
 }
+
+/** Router rescue: an exact trigger phrase in the message is navigation-grade
+ * evidence even when BM25 scores low (e.g. the single-term "what is dpdpa"). */
+function routerRescue(message: string): Route[] {
+  const m = message.toLowerCase();
+  return ROUTES.filter((r) => r.triggers.some((trig) => m.includes(trig))).sort(
+    (a, b) => a.tier - b.tier
+  );
+}
+
+const ESCALATE_RE =
+  /\b(talk to (a |an )?(human|person|someone|expert)|speak (to|with) (a |an )?(human|person|someone|expert)|human (help|expert)|privacy expert|need a lawyer|legal opinion|consultation with)\b/;
 
 /** Pre-model planning: retrieval + tools + the refusal decision. */
 export function planTurn(message: string, state: ChatSessionState, pageUrl?: string): TurnPlan {
@@ -93,13 +107,16 @@ export function planTurn(message: string, state: ChatSessionState, pageUrl?: str
   const journey = detectJourney(message, state.journey);
   const retrieval = retrieve(message, { industry, pageUrl, topK: 6 });
   const glossary = lookupGlossary(message);
+  const routerRoutes = routerRescue(message);
+  const escalate = ESCALATE_RE.test(message.toLowerCase());
   const piiWarning = redact(message).redactions > 0;
 
   // Spec §4.2: below floor → refuse, no model-memory fill-in. A confident
-  // glossary hit rescues term questions the BM25 floor may miss.
-  const refuse = retrieval.confidence === "low" && !glossary.best;
+  // glossary hit or an exact router-trigger match rescues the turn.
+  const refuse =
+    retrieval.confidence === "low" && !glossary.best && routerRoutes.length === 0 && !escalate;
 
-  return { journey, industry, retrieval, glossary, refuse, piiWarning };
+  return { journey, industry, retrieval, glossary, routerRoutes, escalate, refuse, piiWarning };
 }
 
 // ---------------------------------------------------------------------------
@@ -132,6 +149,11 @@ function dedupeByUrl<T extends { url: string }>(items: T[]): T[] {
 }
 
 export function buildCitations(plan: TurnPlan): ChatCitation[] {
+  const fromRouter = plan.routerRoutes.slice(0, 1).map((r) => ({
+    title: r.title,
+    url: r.url,
+    tier: r.tier as number,
+  }));
   const fromRetrieval = plan.retrieval.hits.map((h) => ({
     title: h.chunk.title,
     url: h.chunk.url,
@@ -140,7 +162,7 @@ export function buildCitations(plan: TurnPlan): ChatCitation[] {
   const fromGlossary: ChatCitation[] = plan.glossary.best
     ? [{ title: "DPDPA Glossary", url: "/glossary", tier: 1 }]
     : [];
-  return dedupeByUrl([...fromGlossary, ...fromRetrieval])
+  return dedupeByUrl([...fromRouter, ...fromGlossary, ...fromRetrieval])
     .filter((c) => isValidCitation(c.url))
     .slice(0, 3);
 }
@@ -160,6 +182,12 @@ export function buildActions(plan: TurnPlan): ChatAction[] {
     return actions;
   }
 
+  // Escalation intent: the human door leads (spec §6 escalation).
+  if (plan.escalate) {
+    actions.push({ type: "open_url", label: "Talk to a human — Contact SaralPrivacy", url: "/contact" });
+  }
+  // Exact router-trigger match: that destination is the answer.
+  if (plan.routerRoutes[0]) push(plan.routerRoutes[0]);
   // Journey destination first.
   if (plan.journey) {
     const j = journeyById(plan.journey);
@@ -194,10 +222,11 @@ export function buildFollowups(plan: TurnPlan): string[] {
 
 export function buildMeta(plan: TurnPlan): ChatMeta {
   const refusal = plan.refuse;
+  const rescued = plan.routerRoutes.length > 0 || plan.glossary.best !== null || plan.escalate;
   return {
     citations: refusal ? [] : buildCitations(plan),
     actions: buildActions(plan),
-    confidence: refusal ? "low" : plan.retrieval.confidence,
+    confidence: refusal ? "low" : rescued ? "high" : plan.retrieval.confidence,
     refusal,
     piiWarning: plan.piiWarning,
     suggestedFollowups: buildFollowups(plan),
