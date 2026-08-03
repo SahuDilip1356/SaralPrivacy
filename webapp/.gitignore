@@ -50,3 +50,4 @@ next-env.d.ts
 
 # discovery tool: regenerable test fixture (rebuild via tools/build-discovery-data.py)
 tools/data/niche-items.golden.json
+node_modules
