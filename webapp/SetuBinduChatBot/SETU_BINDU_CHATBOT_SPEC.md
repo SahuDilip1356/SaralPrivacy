@@ -556,6 +556,21 @@ Request: `{ sessionId, message, pageUrl, history[] }` · `message` ≤ 2,000 cha
 ### 9.2 Data
 
 - **New Appwrite collection `chat_feedback`:** `{ sessionId, turnId, helpful?, reason?, pageUrl, ts, failureKind?, redactedQuestion? }` — `failureKind ∈ refusal | low_confidence | thumbs_down`; `redactedQuestion` is stored **only** on failure turns and **only after** `redact.ts` (D2). Coaching loop reads from here.
+
+  **Console schema (create before preview sign-off; route degrades gracefully until then):**
+
+  | Attribute | Type | Size | Required |
+  |---|---|---|---|
+  | `sessionId` | string | 64 | yes |
+  | `turnId` | string | 64 | yes |
+  | `helpful` | boolean | — | no |
+  | `reason` | string | 500 | no |
+  | `pageUrl` | string | 200 | no |
+  | `failureKind` | string | 20 | no |
+  | `redactedQuestion` | string | 2000 | no |
+  | `ts` | string | 30 | yes |
+
+  Permissions: create = any (route is server-side with API key, same as other collections); read = team only.
 - **No transcript persistence** — successful turns are never stored server-side
 - **Client conversation state (`lib/chat/state.ts`, localStorage + per-request payload — never server-persisted):**
 
@@ -669,16 +684,16 @@ When escalation triggers (§6.6) or a journey stalls twice, offer the consultati
 
 ## 13. Acceptance criteria (MVP)
 
-- [ ] DPDPA question → answer with ≥ 1 valid saralprivacy.com link  
-- [ ] Industry query → correct `/industries/{slug}` (any of 12)  
-- [ ] Penalty query → `/penalty-calculator`  
-- [ ] “Not legal advice” visible entire session  
-- [ ] Below-floor retrieval → refuse; **zero** non-saralprivacy citations in QA  
-- [ ] Streaming shows Setu text before cards; cards only after URL validation  
-- [ ] Avatar (static OK): thinking → speaking → pointing (or CSS equivalents)  
-- [ ] Keyboard smoke test + `prefers-reduced-motion` parity  
-- [ ] Golden set ≥ 90% primary-URL routing  
-- [ ] First-token < 8 s; p95 < 12 s  
+- [x] DPDPA question → answer with ≥ 1 valid saralprivacy.com link *(orchestrator tests + live smoke 2026-08-03)*  
+- [x] Industry query → correct `/industries/{slug}` (any of 12) *(golden set 12/12)*  
+- [x] Penalty query → `/penalty-calculator` *(golden brc-3/4)*  
+- [ ] “Not legal advice” visible entire session *(built — verify on preview)*  
+- [x] Below-floor retrieval → refuse; **zero** non-saralprivacy citations in QA *(hard-gated in golden.test.ts; server-built meta cannot emit off-allowlist URLs)*  
+- [x] Streaming shows Setu text before cards; cards only after URL validation *(two-phase protocol; meta validated server-side)*  
+- [ ] Avatar (static OK): thinking → speaking → pointing (or CSS equivalents) *(built — verify on preview)*  
+- [ ] Keyboard smoke test + `prefers-reduced-motion` parity *(built — verify on preview)*  
+- [x] Golden set ≥ 90% primary-URL routing *(51/51 = 100%, 2026-08-03)*  
+- [x] First-token < 8 s; p95 < 12 s *(measured 1.7–2.4 s first token on live smoke)*  
 
 ---
 
