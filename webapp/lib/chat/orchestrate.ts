@@ -12,7 +12,7 @@ import {
   type IndustrySlug,
   type Route,
 } from "./site-routing.ts";
-import { retrieve, type RetrievalResult } from "./retrieve.ts";
+import { platformTour, retrieve, type RetrievalResult } from "./retrieve.ts";
 import { lookupGlossary, type GlossaryHit } from "./knowledge-tools.ts";
 import { detectJourney, journeyById, type ChatSessionState, type JourneyId } from "./journeys.ts";
 import { redact } from "./redact.ts";
@@ -84,6 +84,7 @@ export interface TurnPlan {
   retrieval: RetrievalResult;
   glossary: { best: GlossaryHit | null; related: GlossaryHit[] };
   routerRoutes: Route[];
+  navIntent: boolean;
   escalate: boolean;
   refuse: boolean;
   piiWarning: boolean;
@@ -98,6 +99,12 @@ function routerRescue(message: string): Route[] {
   );
 }
 
+/** Meta-questions about the platform itself — phrased in words that share no
+ * vocabulary with content ("help me navigate", "what can you do"). These must
+ * NEVER refuse: they ground on the platform-guide chunks deterministically. */
+const NAV_INTENT_RE =
+  /\b(navigat(e|ing|ion)|show me around|(how|what) (do|does|can|is) (i|you|this|the)? ?(use|do|work)?,? ?(this|the|your)? ?(site|website|platform|app|tool)s?\b|what can you (do|help)|help me (get started|start|use)|getting started|guide me (through|around)|give me a tour|what is this (site|website|platform))/;
+
 const ESCALATE_RE =
   /\b(talk to (a |an )?(human|person|someone|expert)|speak (to|with) (a |an )?(human|person|someone|expert)|human (help|expert)|privacy expert|need a lawyer|legal opinion|consultation with)\b/;
 
@@ -105,10 +112,16 @@ const ESCALATE_RE =
 export function planTurn(message: string, state: ChatSessionState, pageUrl?: string): TurnPlan {
   const industry = detectIndustry(message, state, pageUrl);
   const journey = detectJourney(message, state.journey);
-  const retrieval = retrieve(message, { industry, pageUrl, topK: 6 });
+  const lower = message.toLowerCase();
+  const navIntent = NAV_INTENT_RE.test(lower);
+  let retrieval = retrieve(message, { industry, pageUrl, topK: 6 });
+  // Platform meta-questions ground on the platform guide, not lexical overlap.
+  if (navIntent && retrieval.confidence === "low") {
+    retrieval = platformTour();
+  }
   const glossary = lookupGlossary(message);
   const routerRoutes = routerRescue(message);
-  const escalate = ESCALATE_RE.test(message.toLowerCase());
+  const escalate = ESCALATE_RE.test(lower);
   const piiWarning = redact(message).redactions > 0;
 
   // Spec §4.2: below floor → refuse, no model-memory fill-in. A confident
@@ -116,7 +129,7 @@ export function planTurn(message: string, state: ChatSessionState, pageUrl?: str
   const refuse =
     retrieval.confidence === "low" && !glossary.best && routerRoutes.length === 0 && !escalate;
 
-  return { journey, industry, retrieval, glossary, routerRoutes, escalate, refuse, piiWarning };
+  return { journey, industry, retrieval, glossary, routerRoutes, navIntent, escalate, refuse, piiWarning };
 }
 
 // ---------------------------------------------------------------------------
@@ -182,6 +195,14 @@ export function buildActions(plan: TurnPlan): ChatAction[] {
     return actions;
   }
 
+  // Platform tour: the journey's first steps as Open cards.
+  if (plan.navIntent) {
+    push(ROUTES.find((r) => r.url === "/discovery") ?? null, "Start with Data Discovery");
+    push(ROUTES.find((r) => r.url === "/data-mapping") ?? null);
+    push(ROUTES.find((r) => r.url === "/assessment") ?? null);
+    return dedupeByUrl(actions).slice(0, 3);
+  }
+
   // Escalation intent: the human door leads (spec §6 escalation).
   if (plan.escalate) {
     actions.push({ type: "open_url", label: "Talk to a human — Contact SaralPrivacy", url: "/contact" });
@@ -214,6 +235,8 @@ const FOLLOWUP_BY_JOURNEY: Record<JourneyId, string[]> = {
 
 export function buildFollowups(plan: TurnPlan): string[] {
   if (plan.refuse) return ["What is DPDPA?", "Does DPDPA apply to me?"];
+  if (plan.navIntent)
+    return ["What tools does SaralPrivacy offer?", "Where should my business begin?", "What does DPDPA mean for my industry?"];
   if (plan.journey) return FOLLOWUP_BY_JOURNEY[plan.journey];
   const tags = plan.retrieval.hits[0]?.chunk.topicTags ?? [];
   if (tags.includes("consent")) return FOLLOWUP_BY_JOURNEY.J4;

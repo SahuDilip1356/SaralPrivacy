@@ -552,6 +552,59 @@
         "/assessment",
         "/data-mapping"
       ]
+    },
+    {
+      "id": "nav-meta-1",
+      "category": "platform",
+      "query": "pls help me how to navigate along this platform",
+      "accept": [
+        "/discovery",
+        "/data-mapping",
+        "/assessment"
+      ]
+    },
+    {
+      "id": "nav-meta-2",
+      "category": "platform",
+      "query": "what can you do?",
+      "accept": [
+        "/discovery",
+        "/data-mapping",
+        "/assessment",
+        "/learn"
+      ]
+    },
+    {
+      "id": "nav-meta-3",
+      "category": "platform",
+      "query": "how does this website work?",
+      "accept": [
+        "/discovery",
+        "/data-mapping",
+        "/assessment",
+        "/learn"
+      ]
+    },
+    {
+      "id": "nav-meta-4",
+      "category": "platform",
+      "query": "show me around please",
+      "accept": [
+        "/discovery",
+        "/data-mapping",
+        "/assessment"
+      ]
+    },
+    {
+      "id": "nav-meta-5",
+      "category": "platform",
+      "query": "I am new here, help me get started",
+      "accept": [
+        "/discovery",
+        "/data-mapping",
+        "/assessment",
+        "/learn"
+      ]
     }
   ]
 }

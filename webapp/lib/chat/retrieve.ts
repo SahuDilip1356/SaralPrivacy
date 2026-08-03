@@ -147,6 +147,23 @@ export interface RetrieveOptions {
   indexPath?: string;
 }
 
+/** Deterministic platform-tour grounding: the platform-guide chunks, overview
+ * first. Used when the user asks ABOUT the platform in words that share no
+ * vocabulary with any content chunk ("help me navigate this site"). */
+export function platformTour(indexPath?: string, topK = 6): RetrievalResult {
+  const engine = loadIndex(indexPath);
+  const tools = engine.index.chunks.filter((c) => c.id.startsWith("tool:"));
+  const ordered = [
+    ...tools.filter((c) => c.id === "tool:platform-overview"),
+    ...tools.filter((c) => c.id !== "tool:platform-overview"),
+  ].slice(0, topK);
+  return {
+    hits: ordered.map((chunk) => ({ chunk, score: 10 })),
+    confidence: "high",
+    matchedTermRatio: 1,
+  };
+}
+
 export function retrieve(query: string, opts: RetrieveOptions = {}): RetrievalResult {
   const { topK = 6, industry, pageUrl, queryVector, indexPath } = opts;
   const engine = loadIndex(indexPath);
