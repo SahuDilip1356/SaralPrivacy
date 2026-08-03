@@ -1,4 +1,4 @@
-import { Briefing } from "../types";
+import type { Briefing } from "../types";
 
 export const briefings: Briefing[] = [
   {

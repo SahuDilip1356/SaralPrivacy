@@ -30,6 +30,9 @@ test("coverage floors per source", () => {
   assert.ok(stats.bySource.checklist >= 20, `checklist: ${stats.bySource.checklist}`);
   assert.ok(stats.bySource.industry >= 48, `industry: ${stats.bySource.industry}`);
   assert.ok(stats.bySource.learnStatic >= 4, `learnStatic: ${stats.bySource.learnStatic}`);
+  assert.ok(stats.bySource.dataFlow >= 20, `dataFlow: ${stats.bySource.dataFlow}`);
+  assert.ok(stats.bySource.briefings >= 6, `briefings: ${stats.bySource.briefings}`);
+  assert.ok(stats.bySource.tools >= 10, `tools: ${stats.bySource.tools}`);
   assert.ok(stats.total >= 150, `total: ${stats.total}`);
 });
 

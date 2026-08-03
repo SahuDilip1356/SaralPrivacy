@@ -203,6 +203,22 @@ const LEARN_ROUTES: Route[] = [
   },
 ];
 
+// Sectors with a LIVE data-flow map. Kept static so the client bundle never
+// imports the heavy pack registry; the guard test asserts this list matches
+// lib/data/data-flow LIVE_DATA_MAPS exactly.
+export const DATA_FLOW_SECTORS: IndustrySlug[] = [
+  "recruitment-agencies",
+  "ca-firms",
+  "training-institutes",
+  "d2c-brands",
+  "clinics-diagnostic-labs",
+  "schools-colleges",
+  "law-firms",
+  "real-estate",
+  "hotels-travel",
+  "pharmacies",
+];
+
 const INDUSTRY_ROUTES: Route[] = [
   {
     url: "/industries",
@@ -221,6 +237,17 @@ const INDUSTRY_ROUTES: Route[] = [
       topicTags: ["industry", slug],
       triggers: [INDUSTRY_TITLES[slug].toLowerCase()],
       summary: `What DPDPA means day-to-day for ${INDUSTRY_TITLES[slug]}.`,
+    })
+  ),
+  ...DATA_FLOW_SECTORS.map(
+    (slug): Route => ({
+      url: `/industries/${slug}/data-flow`,
+      title: `${INDUSTRY_TITLES[slug]} — Personal Data Flow Map`,
+      tier: 2,
+      industry: slug,
+      topicTags: ["data flow", "flow map", "hotspots", slug],
+      triggers: [`${INDUSTRY_TITLES[slug].toLowerCase()} data flow`],
+      summary: `Where personal data travels in a ${INDUSTRY_TITLES[slug]} business — and where the risk concentrates.`,
     })
   ),
 ];

@@ -9,6 +9,8 @@ import { join } from "node:path";
 
 import { learnContent } from "../data/learn-content.ts";
 import { PLATFORM_SURFACES, PLATFORM_OVERVIEW } from "../data/platform-guide.ts";
+import { LIVE_DATA_MAPS } from "../data/data-flow/index.ts";
+import { briefings } from "../data/briefings.ts";
 import { faqs } from "../data/faqs.ts";
 import { TERMS } from "../../components/glossary/glossaryData.ts";
 import { part1Sections, part2Sections } from "../data/compliance-checklist.ts";
@@ -394,6 +396,81 @@ export function collectStaticLearnChunks(appRoot: string): ChatChunk[] {
   return chunks;
 }
 
+/** Data-flow pack digests — Plane 2 pulled into the index (Dilip, 2026-08-03).
+ * Generated from the SAME typed packs that render the live maps, at build
+ * time, so chat answers and the page can never disagree. */
+export function collectDataFlowChunks(): ChatChunk[] {
+  const chunks: ChatChunk[] = [];
+  for (const map of LIVE_DATA_MAPS) {
+    const pack = map.pack!;
+    const slug = map.sector.slug as IndustrySlug;
+    const url = map.href;
+    const title = `${map.sector.label} — Personal Data Flow Map`;
+    const stages = [...pack.stages].sort((a, b) => a.sequence - b.sequence);
+
+    const overview = [
+      `How personal data flows through a ${map.sector.label} business, stage by stage` +
+        (pack.businessModels.length > 1
+          ? ` across ${pack.businessModels.length} business models (${pack.businessModels.map((m) => m.label).join(", ")}).`
+          : "."),
+      ...stages.map((s) => `${s.sequence}. ${s.name} — ${s.summary}`),
+    ].join("\n\n");
+    splitLong(overview).forEach((piece, i) => {
+      chunks.push({
+        id: `dataflow:${slug}:stages${i ? `:${i}` : ""}`,
+        url,
+        title,
+        tier: 2,
+        industry: slug,
+        topicTags: ["data flow", "stages", "journey", slug],
+        section: "Journey stages",
+        text: piece,
+        extraction: "typed",
+      });
+    });
+
+    const hotspots = [...pack.hotspots]
+      .sort((a, b) => a.rank - b.rank)
+      .map(
+        (h) =>
+          `Risk hotspot #${h.rank}: ${h.title}. What happens: ${h.whatHappens} Why it matters: ${h.whyItMatters} Do now: ${h.action}`
+      )
+      .join("\n\n");
+    splitLong(hotspots).forEach((piece, i) => {
+      chunks.push({
+        id: `dataflow:${slug}:hotspots${i ? `:${i}` : ""}`,
+        url,
+        title,
+        tier: 2,
+        industry: slug,
+        topicTags: ["data flow", "risk hotspots", "risk", slug],
+        section: "Risk hotspots",
+        text: piece,
+        extraction: "typed",
+      });
+    });
+  }
+  return chunks;
+}
+
+/** Seed briefings from lib/data/briefings.ts — tier 4, always dated in-text.
+ * Live Appwrite briefings are fetched at answer time (briefings-live.ts). */
+export function collectBriefingChunks(): ChatChunk[] {
+  return briefings.map((b) => ({
+    id: `briefing:${b.slug}`,
+    url: "/briefings",
+    title: "DPDPA Daily Briefings",
+    tier: 4 as Tier,
+    topicTags: ["briefing", "update", ...b.tags.slice(0, 4)],
+    section: `${b.date} — ${b.title}`,
+    text: `Briefing dated ${b.date}: ${b.title}\n${b.excerpt}\nWhy it matters: ${b.whyItMatters}\nBusiness impact: ${b.businessImpact}\nActions: ${b.actionChecklist.join("; ")}`.slice(
+      0,
+      MAX_CHUNK_CHARS
+    ),
+    extraction: "typed" as const,
+  }));
+}
+
 // ---------------------------------------------------------------------------
 
 export interface IndexStats {
@@ -411,6 +488,8 @@ export function collectAllChunks(appRoot: string): { chunks: ChatChunk[]; stats:
     glossary: collectGlossaryChunks(),
     checklist: collectChecklistChunks(),
     industry: collectIndustryChunks(appRoot),
+    dataFlow: collectDataFlowChunks(),
+    briefings: collectBriefingChunks(),
     tools: collectToolChunks(),
     regulatoryContext: collectRegulatoryContextChunks(appRoot),
   };

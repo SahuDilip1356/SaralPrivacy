@@ -30,7 +30,7 @@ export interface RetrievalResult {
 }
 
 const STOPWORDS = new Set(
-  "a an and are as at be by can do does for from has have how i in is it its my of on or our so that the this to under we what when where which who will with you your".split(
+  "a an and about also are as at be by can do does for from has have how i in is it its just me my of on or our please pls so that the this to under us we what when where which who will with you your".split(
     " "
   )
 );
@@ -193,7 +193,10 @@ export function retrieve(query: string, opts: RetrieveOptions = {}): RetrievalRe
     if (industry && c.industry === industry) boost *= 1.35;
     if (industry && c.industry && c.industry !== industry) boost *= 0.6;
     if (pageUrl && c.url === pageUrl) boost *= 1.15;
-    if (c.tier === 1) boost *= 1.05;
+    if (c.tier === 1) boost *= 1.12;
+    // Conflict rule (spec §6.1): Tier 1 beats Tier 4 — dated briefings may
+    // inform freshness turns but must never outrank canonical Learn content.
+    if (c.tier === 4) boost *= 0.6;
     if (c.extraction === "tsx-text") boost *= 0.92;
     return s * boost;
   });

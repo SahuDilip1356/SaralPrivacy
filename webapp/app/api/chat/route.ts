@@ -18,6 +18,7 @@ import { planTurn, buildGroundingBlock, buildMeta, type ChatMeta } from "@/lib/c
 import { buildSystemPrompt, buildTurnNotes } from "@/lib/chat/system-prompt";
 import { sanitizeState } from "@/lib/chat/journeys";
 import { t } from "@/lib/chat/strings";
+import { FRESH_INTENT_RE, fetchLiveBriefings, briefingsContextBlock } from "@/lib/chat/briefings-live";
 
 export const maxDuration = 60;
 
@@ -108,7 +109,28 @@ export async function POST(request: NextRequest) {
     factsConfirmed: state.factsConfirmed,
     pageUrl,
   });
-  const grounding = buildGroundingBlock(plan);
+  let grounding = buildGroundingBlock(plan);
+
+  // Freshness intent: fetch live Appwrite briefings as a dated context block
+  // (Plane 3 pulled forward). Failure degrades silently to the static index.
+  if (FRESH_INTENT_RE.test(message.toLowerCase())) {
+    const live = await fetchLiveBriefings(message);
+    if (live) {
+      grounding += `\n\n${briefingsContextBlock(live)}`;
+      if (!meta.citations.some((c) => c.url === "/briefings")) {
+        meta.citations = [
+          { title: "DPDPA Daily Briefings", url: "/briefings", tier: 4 },
+          ...meta.citations,
+        ].slice(0, 3);
+      }
+      if (!meta.actions.some((a) => a.url === "/briefings")) {
+        meta.actions = [
+          { type: "open_url", label: "Read the Daily Briefings", url: "/briefings" },
+          ...meta.actions,
+        ].slice(0, 3);
+      }
+    }
+  }
 
   try {
     const result = streamText({

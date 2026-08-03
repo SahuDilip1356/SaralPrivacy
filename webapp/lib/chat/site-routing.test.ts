@@ -15,6 +15,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 import {
+  DATA_FLOW_SECTORS,
   DEFAULT_CHIPS,
   EXCLUDE_FROM_AUTHORITY,
   INDUSTRY_SLUGS,
@@ -50,6 +51,11 @@ function pageExists(path: string): boolean {
       LEARN_TOPIC_SLUGS.has(segments[1])
     );
   }
+  // Data-flow maps render through app/industries/[sector]/data-flow/page.tsx;
+  // slug liveness is asserted against the pack registry in its own test.
+  if (segments[0] === "industries" && segments.length === 3 && segments[2] === "data-flow") {
+    return existsSync(join(APP_DIR, "industries", "[sector]", "data-flow", "page.tsx"));
+  }
   return false;
 }
 
@@ -76,14 +82,26 @@ test("route urls are canonical and unique", () => {
   }
 });
 
-test("all 12 industries have exactly one tier-2 route", () => {
+test("all 12 industries have a guide route; mapped sectors also a data-flow route", () => {
   assert.equal(INDUSTRY_SLUGS.length, 12);
   for (const slug of INDUSTRY_SLUGS) {
     const matches = ROUTES.filter((r) => r.industry === slug);
-    assert.equal(matches.length, 1, `industry ${slug} has ${matches.length} routes`);
-    assert.equal(matches[0].tier, 2);
+    const expected = DATA_FLOW_SECTORS.includes(slug) ? 2 : 1;
+    assert.equal(matches.length, expected, `industry ${slug} has ${matches.length} routes`);
+    for (const m of matches) assert.equal(m.tier, 2);
+    // routeForIndustry must return the GUIDE, not the map.
     assert.equal(routeForIndustry(slug).url, `/industries/${slug}`);
   }
+});
+
+test("DATA_FLOW_SECTORS matches the live pack registry exactly", async () => {
+  const { LIVE_DATA_MAPS } = await import("../data/data-flow/index.ts");
+  const registry = LIVE_DATA_MAPS.map((m) => m.sector.slug).sort();
+  assert.deepEqual(
+    [...DATA_FLOW_SECTORS].sort(),
+    registry,
+    "site-routing DATA_FLOW_SECTORS is out of sync with lib/data/data-flow — update the static list"
+  );
 });
 
 test("toolForIntent covers every intent", () => {

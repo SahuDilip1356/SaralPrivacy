@@ -605,6 +605,46 @@
         "/assessment",
         "/learn"
       ]
+    },
+    {
+      "id": "df-1",
+      "category": "dataflow",
+      "query": "What are the biggest risk hotspots for a pharmacy?",
+      "accept": [
+        "/industries/pharmacies/data-flow",
+        "/industries/pharmacies",
+        "/data-mapping"
+      ]
+    },
+    {
+      "id": "df-2",
+      "category": "dataflow",
+      "query": "How does patient data flow through a clinic from booking to report?",
+      "accept": [
+        "/industries/clinics-diagnostic-labs/data-flow",
+        "/industries/clinics-diagnostic-labs",
+        "/data-mapping"
+      ]
+    },
+    {
+      "id": "df-3",
+      "category": "dataflow",
+      "query": "Which systems hold candidate data in a recruitment agency?",
+      "accept": [
+        "/industries/recruitment-agencies/data-flow",
+        "/industries/recruitment-agencies",
+        "/data-mapping"
+      ]
+    },
+    {
+      "id": "df-4",
+      "category": "dataflow",
+      "query": "Where does guest data travel in a hotel business?",
+      "accept": [
+        "/industries/hotels-travel/data-flow",
+        "/industries/hotels-travel",
+        "/data-mapping"
+      ]
     }
   ]
 }
