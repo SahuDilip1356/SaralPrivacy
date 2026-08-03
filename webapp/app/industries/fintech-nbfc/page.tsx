@@ -13,6 +13,8 @@ import {
 import { breadcrumbSchema, faqPageSchema, speakableSchema } from "@/lib/schema";
 import { FRESHNESS, toISODate } from "@/lib/content-freshness";
 import { fintechNbfcPack } from "@/lib/data/industry-assessment/packs/fintech-nbfc";
+import { fintechNbfcDataFlowPack } from "@/lib/data/data-flow/fintech-nbfc";
+import { DataFlowPreview } from "@/components/industries/DataFlowPreview";
 
 const faqs = [
   {
@@ -167,6 +169,13 @@ export default function FintechNbfcPage() {
                   })}
                 </div>
               </section>
+
+              {/* Personal Data Flow Map preview - understand the sector, then
+                  see the flow, then take the scan. */}
+              <DataFlowPreview
+                pack={fintechNbfcDataFlowPack}
+                href="/industries/fintech-nbfc/data-flow"
+              />
 
               {/* How it works */}
               <section>
