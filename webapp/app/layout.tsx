@@ -8,6 +8,7 @@ import { Footer } from "@/components/layout/Footer";
 // tracked across sessions with no consent banner, which we cannot square with
 // selling DPDPA readiness. See PRIVACY_RIGHTS_PAGES_SPEC.md §2.
 import { Analytics } from "@vercel/analytics/next";
+import SetuChat from "@/components/chat/SetuChat";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -66,6 +67,7 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <SetuChat />
         <Analytics />
       </body>
     </html>
