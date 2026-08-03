@@ -1,6 +1,7 @@
 # SaralPrivacy — Pharmacies & Online Pharmacies Personal Data Flow Map (Map #10)
 
-**Status:** built on `feat/data-flow-pharmacies`, awaiting preview sign-off.
+**Status:** ✅ **LIVE on production** — `main` `a041fa8`, 2026-08-02. Signed off on
+preview, fast-forward merged, verified on the live domain. Branch deleted.
 **Route:** `/industries/pharmacies/data-flow`
 **Contract:** `docs/SaralPrivacy_DataFlow_Framework_Spec.md`
 **Pack:** `webapp/lib/data/data-flow/pharmacies/`
