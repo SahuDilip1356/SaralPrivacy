@@ -1,0 +1,126 @@
+{
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "search_knowledge_base",
+        "description": "Search SaralPrivacy's indexed educational content (learn pages, FAQ, glossary, industry guides, briefings). Use before answering substantive DPDPA questions.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "description": "Natural language search query derived from the user's question"
+            },
+            "tier_filter": {
+              "type": "array",
+              "items": { "type": "integer", "enum": [1, 2, 3, 4] },
+              "description": "Optional: limit to tier 1=learn, 2=industry, 3=tools, 4=briefings/blog"
+            },
+            "industry": {
+              "type": "string",
+              "enum": ["recruitment", "ca", "training", "d2c"],
+              "description": "Optional industry filter if known from conversation"
+            },
+            "top_k": {
+              "type": "integer",
+              "default": 6,
+              "description": "Number of chunks to retrieve"
+            }
+          },
+          "required": ["query"]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "list_routes_for_topic",
+        "description": "Return canonical SaralPrivacy URLs for a topic cluster from site-routing.json. Use to decide which pages to link and open.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "topic": {
+              "type": "string",
+              "description": "Topic cluster e.g. consent, retention, data-breach, applicability"
+            },
+            "industry": {
+              "type": "string",
+              "enum": ["recruitment", "ca", "training", "d2c"]
+            }
+          },
+          "required": ["topic"]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "get_page_summary",
+        "description": "Fetch title and short summary for a specific saralprivacy.com path. Use when user asks about the page they are on or a specific URL.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string",
+              "description": "Path only e.g. /learn/consent or /industries/ca-firms"
+            }
+          },
+          "required": ["path"]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "suggest_tools",
+        "description": "Recommend interactive SaralPrivacy tools (assessment, penalty calculator, white paper) based on user intent.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "intent": {
+              "type": "string",
+              "enum": [
+                "readiness_check",
+                "penalty_question",
+                "download_resource",
+                "industry_guide",
+                "escalate_human"
+              ]
+            }
+          },
+          "required": ["intent"]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "navigate_to_page",
+        "description": "Return structured navigation cards for the chat widget to render as Open buttons. Call when recommending 1-3 pages.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "pages": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "url": { "type": "string" },
+                  "title": { "type": "string" },
+                  "reason": {
+                    "type": "string",
+                    "description": "One line why this page helps the user"
+                  }
+                },
+                "required": ["url", "title", "reason"]
+              },
+              "maxItems": 3
+            }
+          },
+          "required": ["pages"]
+        }
+      }
+    }
+  ]
+}

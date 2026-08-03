@@ -1,0 +1,106 @@
+{
+  "version": "2.0.0",
+  "engine": "rive",
+  "asset": "assets/setu-guide.riv",
+  "state_machine": "SetuGuide_SM",
+  "characters": {
+    "setu": {
+      "required": true,
+      "notes": "Primary motion character for MVP"
+    },
+    "bindu": {
+      "required": false,
+      "mvp": "text_bubble_only",
+      "phase_c": "optional_hover_sprite"
+    }
+  },
+  "states": [
+    {
+      "id": "idle",
+      "rive_input": { "type": "boolean", "name": "isIdle" },
+      "trigger_events": ["chat_idle"],
+      "user_meaning": "Available and calm"
+    },
+    {
+      "id": "greeting",
+      "rive_input": { "type": "trigger", "name": "trigGreeting" },
+      "trigger_events": ["chat_opened"],
+      "duration_ms_hint": 1200,
+      "user_meaning": "Welcome"
+    },
+    {
+      "id": "listening",
+      "rive_input": { "type": "boolean", "name": "isListening" },
+      "trigger_events": ["user_typing", "user_recording"],
+      "user_meaning": "Paying attention"
+    },
+    {
+      "id": "thinking",
+      "rive_input": { "type": "boolean", "name": "isThinking" },
+      "trigger_events": ["retrieval_started", "llm_started"],
+      "user_meaning": "Looking up SaralPrivacy content"
+    },
+    {
+      "id": "speaking",
+      "rive_input": { "type": "boolean", "name": "isSpeaking" },
+      "trigger_events": ["answer_streaming", "answer_ready"],
+      "user_meaning": "Explaining"
+    },
+    {
+      "id": "pointing",
+      "rive_input": { "type": "trigger", "name": "trigPoint" },
+      "trigger_events": ["citations_ready", "actions_ready"],
+      "user_meaning": "Go to this page"
+    },
+    {
+      "id": "unsure",
+      "rive_input": { "type": "trigger", "name": "trigUnsure" },
+      "trigger_events": ["low_confidence", "refusal"],
+      "user_meaning": "Not found on site / need human"
+    },
+    {
+      "id": "guide",
+      "rive_input": { "type": "trigger", "name": "trigGuide" },
+      "trigger_events": ["navigate_clicked"],
+      "user_meaning": "This way"
+    },
+    {
+      "id": "error",
+      "rive_input": { "type": "trigger", "name": "trigError" },
+      "trigger_events": ["api_error", "network_error"],
+      "user_meaning": "Something failed; try again"
+    }
+  ],
+  "priority": [
+    "error",
+    "unsure",
+    "guide",
+    "pointing",
+    "speaking",
+    "thinking",
+    "listening",
+    "greeting",
+    "idle"
+  ],
+  "accessibility": {
+    "respect_prefers_reduced_motion": true,
+    "reduced_motion_behavior": "static_setu_illustration_plus_css_fade",
+    "announce_speaker": true,
+    "pause_when_tab_hidden": true
+  },
+  "performance": {
+    "max_fps": 60,
+    "lazy_load_riv": true,
+    "max_asset_kb_target": 800
+  },
+  "brand_notes": {
+    "chrome_tokens": {
+      "navy": "#121A2E",
+      "green": "#07B981",
+      "teal": "#35B6AE",
+      "gold": "#E8AB42",
+      "cloud": "#F7F9FC"
+    },
+    "tone": "Playful guide, not childish; compliance remains serious"
+  }
+}

@@ -1,0 +1,289 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "version": "1.0.0",
+  "base_url": "https://saralprivacy.com",
+  "last_reviewed": "2026-03-01",
+  "excluded_paths": [
+    "/consent-preferences",
+    "/privacy",
+    "/terms",
+    "/admin",
+    "/api"
+  ],
+  "tiers": {
+    "1_primary_learn": {
+      "description": "Canonical DPDPA educational pages — prefer for substantive answers",
+      "routes": [
+        {
+          "id": "what-is-dpdpa",
+          "url": "/learn/what-is-dpdpa",
+          "title": "What is DPDPA?",
+          "topics": ["overview", "introduction", "basics", "what is dpdpa", "scope"],
+          "keywords": ["digital personal data protection act", "dpdpa", "dpdp act", "law overview"]
+        },
+        {
+          "id": "applicability",
+          "url": "/learn/applicability",
+          "title": "Who does DPDPA apply to?",
+          "topics": ["applicability", "coverage", "exemptions", "threshold"],
+          "keywords": ["does it apply to me", "small business", "startup", "exempt", "covered"]
+        },
+        {
+          "id": "consent",
+          "url": "/learn/consent",
+          "title": "Consent under DPDPA",
+          "topics": ["consent", "deemed consent", "consent manager", "opt-in", "opt-out"],
+          "keywords": ["consent", "permission", "agree", "checkbox", "pre-ticked", "marketing consent"]
+        },
+        {
+          "id": "notice",
+          "url": "/learn/notice",
+          "title": "Notice requirements",
+          "topics": ["notice", "privacy notice", "transparency", "purpose"],
+          "keywords": ["privacy policy", "notice", "inform", "disclosure", "purpose limitation"]
+        },
+        {
+          "id": "rights",
+          "url": "/learn/rights",
+          "title": "Data Principal rights",
+          "topics": ["rights", "access", "correction", "erasure", "deletion", "nomination", "grievance"],
+          "keywords": ["delete my data", "access request", "correction", "erasure", "data principal rights"]
+        },
+        {
+          "id": "data-breach",
+          "url": "/learn/data-breach",
+          "title": "Data breach obligations",
+          "topics": ["breach", "incident", "notification", "security"],
+          "keywords": ["data breach", "hack", "leak", "notify", "incident response"]
+        },
+        {
+          "id": "childrens-data",
+          "url": "/learn/childrens-data",
+          "title": "Children's data",
+          "topics": ["children", "minors", "parental consent", "tracking", "profiling"],
+          "keywords": ["child", "minor", "student under 18", "parent consent", "school data"]
+        },
+        {
+          "id": "retention",
+          "url": "/learn/retention",
+          "title": "Retention and erasure",
+          "topics": ["retention", "storage limitation", "deletion", "erasure"],
+          "keywords": ["how long keep data", "retention period", "delete old records", "archive"]
+        },
+        {
+          "id": "cross-border",
+          "url": "/learn/cross-border",
+          "title": "Cross-border transfers",
+          "topics": ["cross-border", "transfer", "whitelist", "international"],
+          "keywords": ["send data abroad", "foreign server", "aws singapore", "transfer outside india"]
+        },
+        {
+          "id": "duties",
+          "url": "/learn/duties",
+          "title": "Data fiduciary duties",
+          "topics": ["duties", "fiduciary", "accountability", "security safeguards"],
+          "keywords": ["data fiduciary", "responsibilities", "obligations", "accountability"]
+        },
+        {
+          "id": "key-terms",
+          "url": "/learn/key-terms",
+          "title": "Key DPDPA terms",
+          "topics": ["definitions", "terminology", "glossary"],
+          "keywords": ["data principal", "data fiduciary", "personal data", "processing"]
+        },
+        {
+          "id": "myths",
+          "url": "/learn/myths",
+          "title": "Common DPDPA myths",
+          "topics": ["myths", "misconceptions", "fact check"],
+          "keywords": ["myth", "misconception", "not true", "rumour", "confused about"]
+        },
+        {
+          "id": "dpdp-act-2023",
+          "url": "/learn/dpdp-act-2023",
+          "title": "DPDP Act 2023 — full text with summaries",
+          "topics": ["act text", "sections", "statute", "law text"],
+          "keywords": ["section number", "full act", "statutory text", "penalty schedule act"]
+        },
+        {
+          "id": "dpdp-rules-2025",
+          "url": "/learn/dpdp-rules-2025-plain-english-guide",
+          "title": "DPDP Rules 2025 — plain English",
+          "topics": ["rules 2025", "schedules", "implementation rules"],
+          "keywords": ["dpdp rules", "rules 2025", "schedules", "notified rules"]
+        },
+        {
+          "id": "learn-hub",
+          "url": "/learn",
+          "title": "DPDPA Learning Hub",
+          "topics": ["learning", "hub", "start here"],
+          "keywords": ["where to start", "learn dpdpa", "guides"]
+        },
+        {
+          "id": "faq",
+          "url": "/faq",
+          "title": "DPDPA FAQ",
+          "topics": ["faq", "questions"],
+          "keywords": ["frequently asked", "common questions"]
+        },
+        {
+          "id": "glossary",
+          "url": "/glossary",
+          "title": "DPDPA Glossary",
+          "topics": ["glossary", "definitions"],
+          "keywords": ["define", "meaning of", "term definition"]
+        }
+      ]
+    },
+    "2_industry": {
+      "description": "Sector-specific guides — prefer when user mentions industry or workflow",
+      "routes": [
+        {
+          "id": "industry-recruitment",
+          "url": "/industries/recruitment-agencies",
+          "title": "DPDPA for Recruitment Agencies",
+          "industry": "recruitment",
+          "topics": ["cv", "candidate", "ats", "recruitment", "hiring", "aadhaar cv"],
+          "keywords": ["recruitment", "hr agency", "cv database", "candidate data", "hiring firm"]
+        },
+        {
+          "id": "industry-ca",
+          "url": "/industries/ca-firms",
+          "title": "DPDPA for CA Firms",
+          "industry": "ca",
+          "topics": ["ca", "accounting", "pan", "aadhaar", "bookkeeping", "client files"],
+          "keywords": ["chartered accountant", "ca firm", "tax records", "client pan", "google drive client"]
+        },
+        {
+          "id": "industry-training",
+          "url": "/industries/training-institutes",
+          "title": "DPDPA for Training Institutes",
+          "industry": "training",
+          "topics": ["training", "coaching", "admissions", "placement", "students"],
+          "keywords": ["coaching institute", "training center", "admission form", "placement data"]
+        },
+        {
+          "id": "industry-d2c",
+          "url": "/industries/d2c-brands",
+          "title": "DPDPA for D2C Brands",
+          "industry": "d2c",
+          "topics": ["ecommerce", "d2c", "checkout", "whatsapp marketing", "meta pixel"],
+          "keywords": ["online store", "shopify", "ecommerce", "d2c", "whatsapp blast", "meta pixel"]
+        }
+      ]
+    },
+    "3_tools": {
+      "description": "Interactive tools — suggest when user needs self-assessment",
+      "routes": [
+        {
+          "id": "assessment",
+          "url": "/assessment",
+          "title": "DPDPA Readiness Assessment",
+          "topics": ["readiness", "gap analysis", "compliance score", "where do i stand"],
+          "keywords": ["assessment", "checklist", "audit myself", "compliance gap", "readiness"]
+        },
+        {
+          "id": "penalty-calculator",
+          "url": "/penalty-calculator",
+          "title": "DPDPA Penalty Risk Indicator",
+          "topics": ["penalty", "fine", "section 33", "risk band"],
+          "keywords": ["penalty", "fine amount", "how much fine", "section 33", "penalty risk"]
+        },
+        {
+          "id": "white-paper",
+          "url": "/white-paper",
+          "title": "DPDPA White Paper",
+          "topics": ["white paper", "download", "deep dive"],
+          "keywords": ["white paper", "pdf", "download guide", "share with team"]
+        }
+      ]
+    },
+    "4_freshness": {
+      "description": "Time-sensitive content — use for updates, not primary law interpretation",
+      "routes": [
+        {
+          "id": "briefings",
+          "url": "/briefings",
+          "title": "DPDPA Daily Briefings",
+          "topics": ["news", "updates", "enforcement", "briefing"],
+          "keywords": ["latest news", "update", "what changed", "enforcement date"]
+        },
+        {
+          "id": "blog",
+          "url": "/blog",
+          "title": "Insights Blog",
+          "topics": ["blog", "articles", "insights"],
+          "keywords": ["article", "blog post", "in depth"]
+        }
+      ]
+    },
+    "5_utility": {
+      "description": "Non-educational utility — link only when appropriate",
+      "routes": [
+        {
+          "id": "contact",
+          "url": "/contact",
+          "title": "Contact SaralPrivacy",
+          "topics": ["contact", "consultation", "expert", "human"],
+          "keywords": ["talk to someone", "expert", "consultation", "lawyer", "legal advice"]
+        },
+        {
+          "id": "about",
+          "url": "/about",
+          "title": "About SaralPrivacy",
+          "topics": ["about"],
+          "keywords": ["who are you", "about saralprivacy"]
+        }
+      ]
+    }
+  },
+  "intent_routing_rules": [
+    {
+      "intent": "legal_advice_request",
+      "action": "escalate",
+      "primary_url": "/contact",
+      "message_hint": "Educational only — suggest expert consultation"
+    },
+    {
+      "intent": "penalty_question",
+      "primary_url": "/penalty-calculator",
+      "secondary_urls": ["/learn/data-breach", "/learn/dpdp-act-2023"]
+    },
+    {
+      "intent": "readiness_check",
+      "primary_url": "/assessment",
+      "secondary_urls": ["/learn/applicability"]
+    },
+    {
+      "intent": "industry_recruitment",
+      "primary_url": "/industries/recruitment-agencies",
+      "secondary_urls": ["/learn/consent", "/learn/retention"]
+    },
+    {
+      "intent": "industry_ca",
+      "primary_url": "/industries/ca-firms",
+      "secondary_urls": ["/learn/retention", "/learn/duties"]
+    },
+    {
+      "intent": "industry_training",
+      "primary_url": "/industries/training-institutes",
+      "secondary_urls": ["/learn/childrens-data", "/learn/consent"]
+    },
+    {
+      "intent": "industry_d2c",
+      "primary_url": "/industries/d2c-brands",
+      "secondary_urls": ["/learn/consent", "/learn/notice"]
+    }
+  ],
+  "regulatory_context": {
+    "act_assent": "2023-08-11",
+    "rules_notified": "2025-11-14",
+    "dpb_constituted": false,
+    "enforcement_status": "phased — official enforcement date not yet notified",
+    "penalty_caps_inr_crore": {
+      "significant_data_fiduciary": 250,
+      "others": 200
+    },
+    "source": "https://saralprivacy.com/llms-full.txt"
+  }
+}
