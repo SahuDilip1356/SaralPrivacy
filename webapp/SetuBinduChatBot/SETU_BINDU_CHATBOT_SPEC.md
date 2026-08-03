@@ -1,7 +1,7 @@
 # Setu & Bindu — Site-Guide Chatbot for SaralPrivacy
 
-> **Version:** 2.3 (canonical · build-ready)  
-> **Status:** Engineering handoff  
+> **Version:** 2.4 (canonical · build-ready · decisions locked 2026-08-03)  
+> **Status:** Engineering handoff — build in progress on `feat/setu-bindu-chatbot`  
 > **Owner:** SaralPrivacy (Dilip Sahu)  
 > **Voice canon:** `setu_bindu_pro_dpdpa_character_bibleV3.md`  
 > **Audience:** internal engineering  
@@ -21,7 +21,7 @@ A **first-party, motion-graphic, character-voiced site guide** on saralprivacy.c
 
 **Analogy:** a museum guide with a tablet — only talks about exhibits in *this* museum, and walks visitors to the correct gallery.
 
-**Setu** explains. **Bindu** reframes and confirms. One agent experience, two speaker styles — not two competing chatbots.
+**Setu is the chatbot** (locked 2026-08-03). One voice: Setu explains and internalises the clarifying reframe ("You might be wondering…"). Bindu stays in the lore / Character Bible and may return as an optional short text-bubble clarifier in Phase 2+ — never a second competing chatbot.
 
 ### What changed vs v1.0 draft
 
@@ -45,6 +45,26 @@ A **first-party, motion-graphic, character-voiced site guide** on saralprivacy.c
 | Rate limiting left open | **MVP locked:** client throttle + soft server cap; Phase 2 hardens with Appwrite counter (default) or Upstash |
 | Embedding provider open | **Default locked:** `text-embedding-3-small` via OpenRouter (`OPENROUTER_API_KEY` already wired) |
 | Avatar ownership open | **Static SVG/PNG ships MVP.** Rive `.riv` is Phase 2 polish; owner = design; format = Rive |
+
+### Decisions locked in v2.4 (2026-08-03, Dilip)
+
+| # | Decision | Call |
+|---|----------|------|
+| D0 | Character scope | **Setu only.** Bindu deferred to Phase 2+ as optional text bubble; `speaker` enum keeps `"bindu"` reserved |
+| D1 | Multilingual | **English MVP, i18n-ready.** All widget strings + prompt templates externalized (`lib/chat/strings.ts`); Hindi/Hinglish is the first fast-follow. Corpus is English — a non-English voice without matching source pages would break grounding |
+| D2 | Failure logging vs no-transcripts | **Log failure turns only, redacted.** Refusal / low-confidence / 👎 turns store PII-redacted question + pageUrl + reason in `chat_feedback`. Never full transcripts |
+| D3 | Model | **`claude-sonnet-5`** (supersedes `claude-sonnet-4-6` lock of July) |
+| D4 | Proactive result-page triggers | **Yes** — chatbot is a deliberate referral path into the starved tools funnel; `chat_tool_cta` feeds the Phase-B denominator gate |
+| D5 | Character Bible V3 file | Pending from Dilip; **not a build blocker** — §6 voice rules carry MVP |
+
+### Guided-agent layers added in v2.4 (from discovery-agent research)
+
+1. **Trigger policy** (§2.4) — contextual proactive prompts with hard frequency caps
+2. **Journey router** (§3.2) — six named journeys with entry/completion conditions
+3. **Progressive profiling** (§9.2) — typed `ChatSessionState`, client-held, never server-persisted
+4. **Action registry** (§5.2) — deep-link tool starts with non-sensitive preselection; consultation requires explicit confirm
+5. **Human-handoff packet** (§9.5) — structured escalation summary, consent-gated
+6. **Coaching loop** (§10) — failure-turn review, source-gap detection, monthly golden-set expansion
 
 ---
 
@@ -136,22 +156,43 @@ Everything the bot cites must resolve to a real route below.
 
 ### 2.2 Conversation flow (Character Bible V3)
 
-**Default compressed 3-step:**
+**Default compressed 3-beat (Setu only, v2.4):**
 
-1. **Bindu** — one short reframe (optional if question is already sharp)  
-2. **Setu** — plain-English answer + links  
-3. **Setu** — one practical next step  
+1. **Reframe** — one short internalised clarifier (“You might be wondering…”) — omit when the question is already sharp  
+2. **Answer** — plain English, grounded, + links  
+3. **Next step** — one practical action  
 
-Expand to **5-step** only on “explain more” or high nuance. Single-bubble fallback: Setu internalises Bindu (“You might be wondering…”). Anchor line *“One rule. One step. Clear path forward.”* — sparingly.
+Expand to 5-beat only on “explain more” or high nuance. Anchor line *“One rule. One step. Clear path forward.”* — sparingly. If a genuine clarification is required before answering (journey slot missing, §3.2), ask **exactly one question** — never a form.
 
 ### 2.3 Opening + quick replies
 
-> **Setu:** Hi — I’m Setu. Ask me anything about DPDPA in plain English, and I’ll point you to the right guide on SaralPrivacy.  
-> **Bindu:** What’s on your mind — consent, employee data, or whether the law applies to you?
+> **Setu:** Hi — I’m Setu. Ask me anything about DPDPA in plain English, and I’ll point you to the right guide on SaralPrivacy. What’s on your mind — consent, employee data, or whether the law applies to you?
 
 Chips: `Does DPDPA apply to me?` · `Consent & notices` · `My industry` · `Data breach — what do I do?` · `Take the readiness assessment`
 
-Page-aware: on `/industries/{slug}` or `/learn/{topic}`, greet with that context.
+Page-aware: on `/industries/{slug}` or `/learn/{topic}`, greet with that context **and swap the three default chips for sector/topic-specific ones** (e.g. CA Firms page: `What client data creates risk?` · `Check my CA firm` · `How should we handle old records?`). Chip sets live beside the routes in `site-routing.ts` — never free-typed.
+
+### 2.4 Trigger policy (v2.4 — proactive invitations)
+
+The launcher is always available; proactive prompts are contextual and restrained. **All client-side (localStorage), no backend.**
+
+| Page context | Trigger | Opening line |
+|---|---|---|
+| Homepage | 30–40 s dwell or 50% scroll | “Not sure where to begin? I can point you to the right DPDPA tool.” |
+| `/industries/{slug}` | 50% scroll | “Would you like to check what this means for your business?” |
+| `/learn/*` article | 60% scroll or second Learn page this session | “Want me to explain how this applies to your business?” |
+| `/faq`, `/glossary` | two searches/expansions | “Couldn’t find the exact answer? Ask me in plain English.” |
+| Discovery / Assessment results | results rendered | “Would you like help understanding what appeared here?” |
+| Notice Generator | help requested / long hesitation | “I can explain what each question means. I won’t write answers without your confirmation.” |
+| Briefing / blog post | near end of article | “Want the practical business implication of this update?” |
+
+**Hard controls (all enforced in `lib/chat/triggers.ts`):**
+
+- Never auto-open on arrival; max **one proactive prompt per session**
+- Dismissal → suppress proactive prompts **~7 days**; user can **permanently mute** (persisted)
+- Never interrupt an active Assessment / Discovery / Notice Generator step
+- Suppressed entirely on `/privacy`, `/terms`, `/consent-preferences`, rights-request surfaces, `/subscribe`, `/unsubscribe`
+- No desktop exit-intent behaviour on mobile
 
 ---
 
@@ -211,6 +252,21 @@ export function isValidCitation(url: string): boolean;
 
 **Industry branch:** detect industry → fill `industry` slot → industry guide leads → topic `/learn/*` follows.
 
+### 3.2 Named journeys (v2.4 — journey router)
+
+Six launch journeys. Each declares entry conditions, the minimum slots it needs (ask **one** question at a time only for genuinely missing slots), and a completion condition. `journey_stage` lives in `ChatSessionState` (§9.2).
+
+| # | Journey | Entry (intent/phrases) | Minimum slots | Completes when |
+|---|---|---|---|---|
+| J1 | Does DPDPA apply to me? | applicability questions | org type · handles digital personal data? · whose data · India/cross-border | Answer + `/learn/applicability` opened, or `/assessment` started |
+| J2 | What personal data do I handle? | “what data do we hold”, RoPA, mapping | industry · niche · user role | `/discovery` started with industry preselected |
+| J3 | Where should my business begin? | “where do I start”, readiness | industry · broad objective | `/assessment` (sector entry) started — **route to the tool, never re-run the assessment in chat** |
+| J4 | Do I need consent for this? | consent questions | channel · purpose · data subject · existing consent? | Answer + `/learn/consent` (or `/learn/notice`) opened |
+| J5 | Create / improve a privacy notice | notice/policy drafting | data collected · purpose · collection point · sharing · rights channel | `/tools/dpdpa-privacy-notice-generator` started |
+| J6 | What does this term/rule mean? | glossary/definition asks | none (term from message) | Grounded definition + `/glossary` or `/learn/key-terms` cited |
+
+**Rules:** infer slots from page context and prior turns before asking; never re-ask a `facts_confirmed` slot; a journey that stalls twice on clarification offers the human path (§9.5). Breach triage, rights-request guidance, voice and multilingual join only after these six hit targets (§10).
+
 ---
 
 ## 4. Retrieval — in-repo embedded index
@@ -251,7 +307,7 @@ import { streamText, stepCountIs } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
 
 const result = streamText({
-  model: anthropic("claude-sonnet-4-6"),
+  model: anthropic("claude-sonnet-5"),   // D3: supersedes claude-sonnet-4-6
   system,                 // §6
   messages,               // sanitised history + current turn
   tools,                  // §5.2
@@ -271,7 +327,16 @@ list_routes_for_topic(topic: string) → Route[]
 suggest_tool(intent: Intent) → Route | null
 ```
 
-No open-web / browse tools. Ever.
+**Action registry (v2.4).** Navigation actions the model may *propose*; the client renders them as cards and the **user click executes them** — the model never navigates or submits anything itself:
+
+| Action | Phase 1 behaviour | Guard |
+|---|---|---|
+| `start_discovery` | Deep link `/discovery` (+ industry preselect when supported) | non-sensitive params only |
+| `start_assessment` | Deep link to the sector assessment **entry** (`/assessment` hub or `/assessment/{slug}` landing) | quiz-step URLs stay banned as *citations* (`noindex`); entry-as-action is allowed |
+| `start_notice_generator` | Deep link `/tools/dpdpa-privacy-notice-generator` | never pre-fills answers without user confirmation |
+| `request_consultation` | Opens consultation hand-off (§9.5) | **only** action touching contact data — explicit in-chat confirmation + consent required |
+
+Every action URL passes `isValidCitation()`-equivalent allowlisting. No open-web / browse tools. Ever. The agent never generates a URL — it selects from `site-routing.ts`.
 
 ### 5.3 Per-turn grounding block
 
@@ -287,8 +352,7 @@ No open-web / browse tools. Ever.
 ```json
 {
   "messages": [
-    { "speaker": "bindu", "text": "Wait — marketing emails or HR records?" },
-    { "speaker": "setu", "text": "In simple words, …" }
+    { "speaker": "setu", "text": "You might be wondering whether this covers marketing emails or HR records. In simple words, …" }
   ],
   "citations": [
     { "title": "Consent under DPDPA", "url": "https://saralprivacy.com/learn/consent", "tier": 1, "snippet": "…" }
@@ -306,7 +370,8 @@ No open-web / browse tools. Ever.
 
 - `animation.state` ∈ §8.2. Model hint is **advisory**; client owns real animation from UI events (§8.3).  
 - `confidence`: `high | low`. `low` → refusal + `unsure`.  
-- Server **must** filter citations/actions through `isValidCitation()` before emit.
+- Server **must** filter citations/actions through `isValidCitation()` before emit.  
+- `speaker` enum keeps `"bindu"` **reserved but unused in MVP** (D0); clients must render unknown speakers as Setu-styled.
 
 ### 5.5 Streaming protocol (gap closed)
 
@@ -314,7 +379,7 @@ Dual-speaker JSON mid-stream is fragile. Use a **two-phase** pattern:
 
 | Phase | What streams | UX |
 |-------|--------------|-----|
-| **A — Text stream** | Setu’s main answer as plain/markdown tokens (Bindu line may prepend as a short completed bubble once known) | Avatar → `speaking`; user sees words immediately |
+| **A — Text stream** | Setu’s answer as plain/markdown tokens (internalised reframe leads the same stream) | Avatar → `speaking`; user sees words immediately |
 | **B — Structured finish** | On `onFinish`, emit one `data-chat-meta` (or equivalent AI SDK data part) with citations, actions, confidence, grounding, suggested_followups, animation hint | Cards appear; avatar → `pointing` or `unsure` |
 
 **Rules:**
@@ -322,7 +387,7 @@ Dual-speaker JSON mid-stream is fragile. Use a **two-phase** pattern:
 - Never wait for full JSON before showing text (hurts first-token latency).  
 - Cards/actions appear only after server validates URLs.  
 - If tools need multi-step retrieval, show `thinking` until Phase A starts.  
-- Bindu bubble: either (1) short pre-stream bubble after tool resolve, or (2) omitted when question is already clear.
+- The Phase-B meta also carries the updated `journey_stage` + newly confirmed slots so the client can merge them into `ChatSessionState` (§9.2).
 
 ---
 
@@ -330,7 +395,7 @@ Dual-speaker JSON mid-stream is fragile. Use a **two-phase** pattern:
 
 Derived from Character Bible V3 §6 / §7 / §14 + §7 guardrails.
 
-1. **Identity** — Setu explains; Bindu reframes/confirms. 3-step default. One concept, one example, one action.  
+1. **Identity** — Setu, single voice (D0); internalised reframe replaces Bindu. 3-beat default. One concept, one example, one action. English only in MVP (D1); all fixed strings come from `lib/chat/strings.ts`, never hardcoded in the prompt.  
 2. **Grounding** — only `<retrieved_context>` / `<routing_hints>`. If absent → refuse. Never invent sections, penalties, URLs.  
 3. **Uncertainty** — Bible lines: “This part is still evolving…” DPB not constituted; enforcement phased.  
 4. **Scope fence** — DPDPA / privacy / SaralPrivacy only.  
@@ -365,7 +430,7 @@ Mascot = **product-state indicator**, not decoration.
 
 ### 8.1 Components — `components/chat/`
 
-`ChatLauncher` · `ChatPanel` (mobile sheet / desktop ~400×600) · `SetuStage` (static MVP / Rive Phase 2) · `MessageList` · `SetuBubble` / `BinduBubble` · `CitationCard` · `ActionButton` · `QuickReplies` · `DisclaimerStrip` · `FeedbackButtons`. Mount once in `app/layout.tsx`.
+`ChatLauncher` · `ChatPanel` (mobile sheet / desktop ~400×600) · `SetuStage` (static MVP / Rive Phase 2) · `MessageList` · `SetuBubble` (`BinduBubble` deferred with D0) · `CitationCard` · `ActionButton` · `QuickReplies` · `DisclaimerStrip` · `FeedbackButtons`. Mount once in `app/layout.tsx`. All user-facing strings from `lib/chat/strings.ts` (D1).
 
 ### 8.2 Avatar state machine
 
@@ -488,9 +553,28 @@ Request: `{ sessionId, message, pageUrl, history[] }` · `message` ≤ 2,000 cha
 
 ### 9.2 Data
 
-- **New Appwrite collection `chat_feedback`:** `{ sessionId, turnId, helpful, reason?, pageUrl, ts }`  
-- **No default transcript persistence**  
-- **Client session (localStorage):** `sessionId`, `industry?`, `lastTopic`, `pagesShown[]`, `entryPageUrl`, `messageCount`  
+- **New Appwrite collection `chat_feedback`:** `{ sessionId, turnId, helpful?, reason?, pageUrl, ts, failureKind?, redactedQuestion? }` — `failureKind ∈ refusal | low_confidence | thumbs_down`; `redactedQuestion` is stored **only** on failure turns and **only after** `redact.ts` (D2). Coaching loop reads from here.
+- **No transcript persistence** — successful turns are never stored server-side
+- **Client conversation state (`lib/chat/state.ts`, localStorage + per-request payload — never server-persisted):**
+
+```ts
+interface ChatSessionState {
+  sessionId: string;
+  intent?: string;                 // current classified intent
+  userType?: "owner" | "employee" | "consultant" | "individual";
+  industry?: IndustrySlug;
+  businessNiche?: string;
+  journey?: "J1"|"J2"|"J3"|"J4"|"J5"|"J6";
+  journeyStage?: string;
+  factsConfirmed: Record<string, string>; // slot → user-confirmed value; never re-ask
+  lastTopic?: string;
+  pagesShown: string[];
+  entryPageUrl: string;
+  messageCount: number;
+  consentToContact: boolean;       // false until §9.5 explicit consent
+  proactive: { shownAt?: number; dismissedUntil?: number; muted: boolean }; // §2.4
+}
+```
 
 ### 9.3 Rate limiting (MVP locked)
 
@@ -501,7 +585,17 @@ Request: `{ sessionId, message, pageUrl, history[] }` · `message` ≤ 2,000 cha
 
 ### 9.4 Analytics
 
-`chat_opened` · `chat_message_sent` · `chat_link_clicked` · `chat_tool_cta` · `chat_feedback` · `chat_escalation` — wire to existing site analytics; else Appwrite-adjacent log.
+`chat_opened` · `chat_message_sent` · `chat_link_clicked` · `chat_tool_cta` · `chat_feedback` · `chat_escalation` · `chat_proactive_shown` · `chat_proactive_dismissed` — wire to Vercel Analytics custom events (verified live 2026-07-31) and **verify each fires on preview before merge** (content-trust law). `chat_tool_cta` deliberately feeds the starved `/discovery` funnel (D4).
+
+### 9.5 Human-handoff packet (v2.4)
+
+When escalation triggers (§6.6) or a journey stalls twice, offer the consultation hand-off. **Requires explicit user confirmation + `consentToContact`** before any contact field is accepted (name, work email, company, industry, short description). Submission posts through the existing contact/leads flow with a structured packet:
+
+```
+{ summary, industry?, intent, journey?, sourcesShown[], unresolvedQuestion, pageUrl, consentToContact: true, ts }
+```
+
+`summary` and `unresolvedQuestion` pass `redact.ts` first. No packet is ever created without consent; declining leaves the user with `/contact` links as today.
 
 ---
 
@@ -511,6 +605,7 @@ Request: `{ sessionId, message, pageUrl, history[] }` · `message` ≤ 2,000 cha
 - Each case: expected primary URL, disclaimer, forbidden claims, refusal when required  
 - Automated: URL ∈ `ROUTES` + HTTP 200; domain check; no PII; Tier-1/2 for substantive; latency  
 - Human: ~20 feedback-sampled reviews / week; full golden re-run on regulatory change  
+- **Coaching loop (v2.4):** weekly review of `chat_feedback` failure turns (D2) → classify as *retrieval gap* (chunking/floor tuning), *routing gap* (site-routing.ts fix), or **source gap** (no page covers it → content backlog item); monthly golden-set expansion from real failures  
 - **Hard targets:** wrong citation **< 2%**; **off-site hallucination = 0**  
 - Motion QA: no stuck `thinking`; `unsure`/`error` fire correctly; reduced-motion parity; keyboard path; pause on hidden tab  
 - **Design gate:** `/plan-design-review` avg ≥ 8 on widget UI before build  
@@ -523,20 +618,23 @@ Request: `{ sessionId, message, pageUrl, history[] }` · `message` ≤ 2,000 cha
 
 - First-party chat on all public pages  
 - **In-repo index: learn + FAQ + glossary + checklist + all 12 industries + tool blurbs**  
-- Setu/Bindu 3-step voice + streaming protocol (§5.5)  
+- Setu single-voice 3-beat (D0) + streaming protocol (§5.5)  
 - Citations, Open cards, disclaimer, refusal-below-floor, 👍/👎  
+- **Trigger policy** (§2.4) + contextual chips (§2.3)  
+- `ChatSessionState` progressive profiling (§9.2) — journeys J1–J6 routed  
 - **Static avatar** + light chrome motion  
-- `chat_feedback` collection  
-- MVP rate limits (§9.3)  
+- `chat_feedback` collection incl. failure-turn fields (D2)  
+- MVP rate limits (§9.3) · strings externalized (D1)  
 - Refresh `public/llms.txt` industries 4 → 12  
 
 ### Phase 2 — polish navigation + motion
 
 - Page-context greetings polish  
 - Tool hand-offs UX (discovery, notice generator, assessment, penalty)  
+- **Human-handoff packet live** (§9.5) + escalation flow polish  
 - Rive `.riv` character states (pointing / unsure / guide live)  
+- Optional Bindu text-bubble return (D0 revisit)  
 - Analytics dashboard  
-- Escalation flow polish  
 - Rate-limit hardening (Appwrite counter)  
 
 ### Phase 3 — optional scale
@@ -587,10 +685,14 @@ Request: `{ sessionId, message, pageUrl, history[] }` · `message` ≤ 2,000 cha
 | Path | Purpose |
 |------|---------|
 | `SETU_BINDU_CHATBOT_SPEC.md` | This document (canonical) |
-| `lib/chat/site-routing.ts` | Typed routes + helpers |
+| `lib/chat/site-routing.ts` | Typed routes + chips + helpers |
 | `lib/chat/system-prompt.md` | LLM system prompt |
 | `lib/chat/retrieve.ts` | Load index + cosine top-k |
 | `lib/chat/redact.ts` | PII redaction |
+| `lib/chat/state.ts` | `ChatSessionState` (§9.2) |
+| `lib/chat/journeys.ts` | J1–J6 definitions (§3.2) |
+| `lib/chat/triggers.ts` | Proactive trigger policy (§2.4) |
+| `lib/chat/strings.ts` | All widget strings, i18n-ready (D1) |
 | `app/api/chat/route.ts` | Stream + tools |
 | `app/api/chat/feedback/route.ts` | 👍/👎 |
 | `app/api/chat/health/route.ts` | Health |
@@ -617,6 +719,7 @@ Request: `{ sessionId, message, pageUrl, history[] }` · `message` ≤ 2,000 cha
 
 | Version | Date | Notes |
 |---------|------|-------|
+| **2.4** | 2026-08-03 | Decisions D0–D5 locked (Setu-only voice; English i18n-ready; failure-only redacted logging; `claude-sonnet-5`; result-page triggers on; Bible file pending, non-blocking). Guided-agent layers merged from discovery research: §2.4 trigger policy, §3.2 journeys J1–J6, §5.2 action registry, §9.2 `ChatSessionState` + failure-turn logging, §9.5 handoff packet, §10 coaching loop. Contextual chips; proactive analytics events |
 | **2.3** | 2026-07-15 | Added §11.1 Voice & multilingual (Phase 3, optional, consent-gated): Sarvam-primary/ElevenLabs-secondary TTS + Sarvam ASR as an I/O skin on the grounded brain; speech-to-speech agents (Grok Voice etc.) excluded for breaking grounding; India data-residency preference noted. Out-of-scope + Phase-3 lines updated. |
 | **2.2** | 2026-07-14 | Canonical rewrite with plan gaps closed: Phase 1 indexes all 12 industries; streaming two-phase protocol; MVP rate-limit + embedding defaults locked; avatar ownership/timing locked; golden set one-per-industry; full navigation motion states retained from 2.1 |
 | 2.1 | 2026-07-14 | Motion-graphic fold-in: Rive states, event bridge, animation/confidence/grounding fields, brand tokens, zero-hallucination audit |
