@@ -30,6 +30,14 @@
 - [DPDPA for CA Firms](https://saralprivacy.com/industries/ca-firms): Risk areas, compliance checklist, and FAQs covering PAN/Aadhaar storage, Google Drive controls, retention periods, outsourced bookkeeping, and client deletion rights.
 - [DPDPA for Training Institutes](https://saralprivacy.com/industries/training-institutes): Risk areas, compliance checklist, and FAQs covering minor student data, parental consent, admissions forms, placement data marketing, and tracking pixels.
 - [DPDPA for D2C Brands](https://saralprivacy.com/industries/d2c-brands): Risk areas, compliance checklist, and FAQs covering checkout consent, WhatsApp marketing, pre-ticked checkboxes, Meta Pixel disclosure, and customer data retention.
+- [DPDPA for Clinics & Diagnostic Labs](https://saralprivacy.com/industries/clinics-diagnostic-labs): Risk areas, compliance checklist, and FAQs covering patient records, lab reports, appointment data, insurance sharing, and medical record retention.
+- [DPDPA for Schools & Colleges](https://saralprivacy.com/industries/schools-colleges): Risk areas, compliance checklist, and FAQs covering student and parent data, children's consent, admissions records, transport and CCTV data, and alumni retention.
+- [DPDPA for Law Firms](https://saralprivacy.com/industries/law-firms): Risk areas, compliance checklist, and FAQs covering client files, case documents, KYC records, counsel sharing, and matter retention.
+- [DPDPA for Real Estate](https://saralprivacy.com/industries/real-estate): Risk areas, compliance checklist, and FAQs covering buyer KYC, site-visit data, broker sharing, RERA records, and lead retention.
+- [DPDPA for Hotels & Travel](https://saralprivacy.com/industries/hotels-travel): Risk areas, compliance checklist, and FAQs covering guest ID records, booking data, OTA sharing, loyalty programmes, and check-in data retention.
+- [DPDPA for Pharmacies](https://saralprivacy.com/industries/pharmacies): Risk areas, compliance checklist, and FAQs covering prescription data, medicine history, WhatsApp orders, delivery partners, and prescription retention.
+- [DPDPA for Fintech & NBFCs](https://saralprivacy.com/industries/fintech-nbfc): Risk areas, compliance checklist, and FAQs covering KYC data, credit assessment, lending decisions, bureau sharing, and financial record retention.
+- [DPDPA for Gyms, Salons & Spas](https://saralprivacy.com/industries/gyms-salons-spas): Risk areas, compliance checklist, and FAQs covering member health data, biometric attendance, package records, marketing consent, and membership retention.
 
 ## Assessments
 

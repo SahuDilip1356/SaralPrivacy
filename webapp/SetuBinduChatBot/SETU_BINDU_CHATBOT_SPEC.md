@@ -55,7 +55,8 @@ A **first-party, motion-graphic, character-voiced site guide** on saralprivacy.c
 | D2 | Failure logging vs no-transcripts | **Log failure turns only, redacted.** Refusal / low-confidence / 👎 turns store PII-redacted question + pageUrl + reason in `chat_feedback`. Never full transcripts |
 | D3 | Model | **`claude-sonnet-5`** (supersedes `claude-sonnet-4-6` lock of July) |
 | D4 | Proactive result-page triggers | **Yes** — chatbot is a deliberate referral path into the starved tools funnel; `chat_tool_cta` feeds the Phase-B denominator gate |
-| D5 | Character Bible V3 file | Pending from Dilip; **not a build blocker** — §6 voice rules carry MVP |
+| D5 | Character Bible V3 file | Pending from Dilip; **not a build blocker** — §6 voice rules carry MVP. Interim canon: `SETU_CHARACTER_CANON.md` (from the intro films) |
+| D6 | Retrieval backbone (build-time finding, 2026-08-03) | **Lexical BM25 + router boosts is the always-on backbone**; dense `text-embedding-3-small` vectors are an optional add-on when `OPENROUTER_API_KEY` is present at index build (key exists in Vercel, not locally; OpenRouter embeddings unverified). Golden-set eval decides whether dense is needed at all for ~326 chunks |
 
 ### Guided-agent layers added in v2.4 (from discovery-agent research)
 
