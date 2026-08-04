@@ -26,7 +26,7 @@ export function DiscoveryCrossLink({ className = "" }: { className?: string }) {
       </div>
       <Link
         href="/discovery"
-        className="shrink-0 inline-flex items-center justify-center gap-2 px-6 py-3 bg-green-500 text-white font-semibold rounded-xl hover:bg-green-600 transition-colors text-sm whitespace-nowrap"
+        className="shrink-0 inline-flex items-center justify-center gap-2 px-6 py-3 bg-green-500 text-white font-semibold rounded-xl hover:bg-green-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:ring-offset-2 transition-colors text-sm whitespace-nowrap"
       >
         Personal Data Discovery
         <ArrowRight size={16} />

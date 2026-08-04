@@ -16,6 +16,7 @@ import {
 import { cn } from "@/lib/utils";
 import { trackEvent } from "@/lib/analytics";
 import { fintechNbfcPack } from "@/lib/data/industry-assessment/packs/fintech-nbfc";
+import { FlowCrossLink } from "@/components/FlowCrossLink";
 import {
   calculateIndustryResult,
   getBandByScore,
@@ -430,6 +431,8 @@ export default function FintechNbfcAssessmentClient() {
               Book a Fintech / NBFC Gap Review <ArrowRight size={16} />
             </Link>
           </div>
+
+          <FlowCrossLink sectorSlug={fintechNbfcPack.industry} source="assessment" className="mt-5" />
 
           <button onClick={retake} className="mt-4 w-full text-center text-sm text-slate-500 underline hover:text-slate-700">
             Retake the scan

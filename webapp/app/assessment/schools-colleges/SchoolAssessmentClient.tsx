@@ -16,6 +16,7 @@ import {
 import { cn } from "@/lib/utils";
 import { trackEvent } from "@/lib/analytics";
 import { schoolsCollegesPack } from "@/lib/data/industry-assessment/packs/schools-colleges";
+import { FlowCrossLink } from "@/components/FlowCrossLink";
 import {
   calculateIndustryResult,
   getBandByScore,
@@ -428,6 +429,8 @@ export default function SchoolAssessmentClient() {
               Book a School / College Gap Review <ArrowRight size={16} />
             </Link>
           </div>
+
+          <FlowCrossLink sectorSlug={schoolsCollegesPack.industry} source="assessment" className="mt-5" />
 
           <button onClick={retake} className="mt-4 w-full text-center text-sm text-slate-500 underline hover:text-slate-700">
             Retake the scan

@@ -245,6 +245,19 @@ export const trackEvent = {
   notice: (name: string, params: Record<string, any> = {}) =>
     gtag(name, { event_category: name === "notice_lead_captured" ? "lead" : "engagement", ...params }),
 
+  // ── Flow-map cross-links (the swap that feeds the flow maps) ─────────────
+  // One event, three sources: homepage sector cards, the assessment report
+  // screen, the Discovery results view. `sector` is a sectors.ts slug, or
+  // "hub" when the link falls back to /data-mapping. No PII.
+  flowCrosslinkClick: (params: {
+    source: "home_cards" | "assessment" | "discovery";
+    sector: string;
+  }) => gtag("flow_crosslink_click", {
+    event_category: "engagement",
+    source:         params.source,
+    sector:         params.sector,
+  }),
+
   // ── Personal Data Flow Map (/industries/{industry}/data-flow) ────────────
   // CTA clicks are funnel events ("lead" category); everything else engagement.
   dataFlow: (name: string, params: Record<string, any> = {}) =>
