@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { faqPageSchema, breadcrumbSchema } from "@/lib/schema";
 import DiscoveryClient from "./DiscoveryClient";
 import StartFreshLink from "./components/StartFreshLink";
+import FlowMapCta from "./components/FlowMapCta";
 import "./discovery.css";
 
 const URL = "https://saralprivacy.com/discovery";
@@ -233,15 +234,11 @@ export default function DiscoveryPage() {
                 Discovery tells you <strong>what</strong> personal data you hold. The Personal
                 Data Flow Map shows <strong>where it goes</strong> - every system, inbox,
                 spreadsheet, vendor and backup it reaches, and the points where you lose
-                control of it. Available now for recruitment and staffing.
+                control of it. Twelve sector maps are live — pick the one closest to
+                your business.
               </p>
             </div>
-            <a
-              href="/industries/recruitment-agencies/data-flow"
-              className="btn-ghost btn-sm next-step-cta"
-            >
-              View the recruitment map →
-            </a>
+            <FlowMapCta />
           </div>
         </div>
       </section>

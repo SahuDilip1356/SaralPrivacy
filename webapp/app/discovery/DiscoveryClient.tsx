@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
 import IndustryPicker from "./components/IndustryPicker";
-import { FlowCrossLink } from "@/components/FlowCrossLink";
 import DataReview from "./components/DataReview";
 import ControlQuestions from "./components/ControlQuestions";
 import ResultPanel from "./components/ResultPanel";
@@ -174,9 +173,6 @@ export default function DiscoveryClient() {
         {step === 3 && niche && result && (
           <div className="step-pane">
             <ResultPanel nicheId={niche} result={result} selected={selected} onRestart={restart} />
-            {/* Hub variant on purpose: 276 niches don't map 1:1 to the 12
-                sectors, so this never guesses a deep link. */}
-            <FlowCrossLink source="discovery" className="mt-6" />
           </div>
         )}
       </div>
