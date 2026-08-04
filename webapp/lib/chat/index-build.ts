@@ -405,11 +405,11 @@ export function collectDataFlowChunks(): ChatChunk[] {
     const pack = map.pack!;
     const slug = map.sector.slug as IndustrySlug;
     const url = map.href;
-    const title = `${map.sector.label} — Personal Data Flow Map`;
+    const title = `${map.sector.navLabel} — Personal Data Flow Map`;
     const stages = [...pack.stages].sort((a, b) => a.sequence - b.sequence);
 
     const overview = [
-      `How personal data flows through a ${map.sector.label} business, stage by stage` +
+      `How personal data flows through a ${map.sector.navLabel} business, stage by stage` +
         (pack.businessModels.length > 1
           ? ` across ${pack.businessModels.length} business models (${pack.businessModels.map((m) => m.label).join(", ")}).`
           : "."),
