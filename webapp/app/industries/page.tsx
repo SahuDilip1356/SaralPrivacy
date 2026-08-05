@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, Users, Calculator, GraduationCap, ShoppingBag, Stethoscope, School, Scale, Building2, Hotel, Pill, Landmark, Sparkles } from "lucide-react";
 import { DiscoveryCrossLink } from "@/components/DiscoveryCrossLink";
 import { NoticeCrossLink } from "@/components/NoticeCrossLink";
+import { accentFor } from "@/lib/data/sector-accents";
 
 export const metadata: Metadata = {
   title: "DPDPA Compliance Guides for Indian Industries",
@@ -15,182 +16,122 @@ const industries = [
   {
     icon: Users,
     title: "Recruitment & Staffing Agencies",
+    slug: "recruitment-agencies",
     href: "/industries/recruitment-agencies",
     assessmentHref: "/assessment/recruitment",
     tagline: "CV databases, candidate consent, ATS, and cross-border placements",
     risks: ["Candidate data without consent", "CV sharing without disclosure", "Indefinite data retention", "Unvetted ATS vendors"],
     stat: "Most recruitment agencies store candidate data with no formal deletion process",
-    color: "teal",
-    bg: "bg-green-50",
-    border: "border-green-200",
-    iconBg: "bg-green-100",
-    iconColor: "text-green-600",
-    btn: "bg-green-500 hover:bg-green-600",
   },
   {
     icon: Calculator,
     title: "CA Firms & Accounting Practices",
+    slug: "ca-firms",
     href: "/industries/ca-firms",
     assessmentHref: "/assessment/ca-firms",
     tagline: "PAN, Aadhaar, payroll, client records, and cloud storage",
     risks: ["Unencrypted Aadhaar copies", "Broad staff access to client files", "No retention policy", "Unvetted cloud vendors"],
     stat: "CA firms process some of the most sensitive personal data in India",
-    color: "indigo",
-    bg: "bg-indigo-50",
-    border: "border-indigo-200",
-    iconBg: "bg-indigo-100",
-    iconColor: "text-indigo-700",
-    btn: "bg-indigo-700 hover:bg-indigo-800",
   },
   {
     icon: GraduationCap,
     title: "Training Institutes & Coaching Centres",
+    slug: "training-institutes",
     href: "/industries/training-institutes",
     assessmentHref: "/assessment/training-institutes",
     tagline: "Student and parent data, admissions forms, minors, placement records",
     risks: ["No minor consent mechanism", "Marketing pixels on forms", "Placement data misuse", "No data rights process"],
     stat: "Most training institutes have no formal privacy notice for admissions",
-    color: "amber",
-    bg: "bg-amber-50",
-    border: "border-amber-200",
-    iconBg: "bg-amber-100",
-    iconColor: "text-amber-700",
-    btn: "bg-amber-600 hover:bg-amber-700",
   },
   {
     icon: ShoppingBag,
     title: "D2C Brands & E-commerce Businesses",
+    slug: "d2c-brands",
     href: "/industries/d2c-brands",
     assessmentHref: "/assessment/d2c-brands",
     tagline: "Marketing consent, analytics tools, WhatsApp campaigns, loyalty data",
     risks: ["Bundled checkout consent", "Undisclosed tracking pixels", "No unsubscribe mechanism", "Indefinite inactive data"],
     stat: "Most D2C checkout flows bundle marketing consent with purchase terms",
-    color: "rose",
-    bg: "bg-rose-50",
-    border: "border-rose-200",
-    iconBg: "bg-rose-100",
-    iconColor: "text-rose-700",
-    btn: "bg-rose-700 hover:bg-rose-800",
   },
   {
     icon: Stethoscope,
     title: "Clinics & Diagnostic Labs",
+    slug: "clinics-diagnostic-labs",
     href: "/industries/clinics-diagnostic-labs",
     assessmentHref: "/assessment/clinics-diagnostic-labs",
     tagline: "Prescriptions, lab reports, WhatsApp sharing, home collection, and patient records",
     risks: ["WhatsApp report sharing", "Family sharing without verification", "Shared logins / ex-staff access", "Indefinite patient-record retention"],
     stat: "Most clinics and labs share reports over WhatsApp without verifying the recipient",
-    color: "cyan",
-    bg: "bg-cyan-50",
-    border: "border-cyan-200",
-    iconBg: "bg-cyan-100",
-    iconColor: "text-cyan-700",
-    btn: "bg-cyan-600 hover:bg-cyan-700",
   },
   {
     icon: School,
     title: "Schools & Colleges",
+    slug: "schools-colleges",
     href: "/industries/schools-colleges",
     assessmentHref: "/assessment/schools-colleges",
     tagline: "Children's data, parent consent, school apps, CCTV, attendance, transport and student photos",
     risks: ["Minors without parent consent", "Student photos posted publicly", "CCTV / biometric / GPS monitoring", "Indefinite student-record retention"],
     stat: "Most schools publish student photos and results without separate parental consent",
-    color: "sky",
-    bg: "bg-sky-50",
-    border: "border-sky-200",
-    iconBg: "bg-sky-100",
-    iconColor: "text-sky-700",
-    btn: "bg-sky-600 hover:bg-sky-700",
   },
   {
     icon: Scale,
     title: "Law Firms & Legal Consultants",
+    slug: "law-firms",
     href: "/industries/law-firms",
     assessmentHref: "/assessment/law-firms",
     tagline: "Client KYC, case files, evidence, junior/intern access, court & vendor sharing, closed matters",
     risks: ["Sensitive files stored with regular matters", "Ex-staff / intern access lingering", "Evidence shared over WhatsApp/email", "Indefinite closed-matter retention"],
     stat: "Most firms confuse client confidentiality with DPDPA readiness — they are not the same",
-    color: "violet",
-    bg: "bg-violet-50",
-    border: "border-violet-200",
-    iconBg: "bg-violet-100",
-    iconColor: "text-violet-700",
-    btn: "bg-violet-600 hover:bg-violet-700",
   },
   {
     icon: Building2,
     title: "Real Estate Brokers & Property Firms",
+    slug: "real-estate",
     href: "/industries/real-estate",
     assessmentHref: "/assessment/real-estate",
     tagline: "Buyer/tenant KYC, PAN/Aadhaar, agreements, WhatsApp lead sharing, broker networks, loan partners",
     risks: ["PAN/Aadhaar shared over WhatsApp", "Leads in co-broker WhatsApp groups", "Ex-staff / old broker access", "Indefinite old-lead retention"],
     stat: "Most firms keep old buyer/tenant databases indefinitely for future deals",
-    color: "emerald",
-    bg: "bg-emerald-50",
-    border: "border-emerald-200",
-    iconBg: "bg-emerald-100",
-    iconColor: "text-emerald-700",
-    btn: "bg-emerald-600 hover:bg-emerald-700",
   },
   {
     icon: Hotel,
     title: "Hotels, Hospitality & Travel",
+    slug: "hotels-travel",
     href: "/industries/hotels-travel",
     assessmentHref: "/assessment/hotels-travel",
     tagline: "Guest IDs, passport copies, booking records, OTA sharing, WhatsApp confirmations, travel documents, CCTV",
     risks: ["Passport copies over WhatsApp/email", "OTA & travel-vendor sharing", "Ex-staff / shared PMS logins", "Indefinite guest-record retention"],
     stat: "Hotels and travel agencies often keep ID and passport copies long after checkout",
-    color: "orange",
-    bg: "bg-orange-50",
-    border: "border-orange-200",
-    iconBg: "bg-orange-100",
-    iconColor: "text-orange-700",
-    btn: "bg-orange-600 hover:bg-orange-700",
   },
   {
     icon: Pill,
     title: "Pharmacies & Online Pharmacies",
+    slug: "pharmacies",
     href: "/industries/pharmacies",
     assessmentHref: "/assessment/pharmacies",
     tagline: "Prescriptions, medicine history, health indicators, WhatsApp orders, refill reminders, delivery partners",
     risks: ["Prescription images over WhatsApp", "Medicine-history reveals health data", "Delivery-staff over-access", "Indefinite prescription retention"],
     stat: "Medicine history can reveal health conditions even without a diagnosis field",
-    color: "purple",
-    bg: "bg-purple-50",
-    border: "border-purple-200",
-    iconBg: "bg-purple-100",
-    iconColor: "text-purple-700",
-    btn: "bg-purple-600 hover:bg-purple-700",
   },
   {
     icon: Landmark,
     title: "Fintech, NBFC & Digital Payments",
+    slug: "fintech-nbfc",
     href: "/industries/fintech-nbfc",
     assessmentHref: "/assessment/fintech-nbfc",
     tagline: "KYC, PAN/Aadhaar, bank & bureau data, UPI, credit profiling, DSAs, collection agents, vendor platforms",
     risks: ["Bank/bureau data over WhatsApp/DSAs", "Profiling with bundled consent", "Agents exporting customer lists", "Indefinite KYC & rejected-lead retention"],
     stat: "Fintech data moves across a large partner and agent ecosystem — the biggest practical risk",
-    color: "blue",
-    bg: "bg-blue-50",
-    border: "border-blue-200",
-    iconBg: "bg-blue-100",
-    iconColor: "text-blue-700",
-    btn: "bg-blue-600 hover:bg-blue-700",
   },
   {
     icon: Sparkles,
     title: "Gyms, Salons & Spas",
+    slug: "gyms-salons-spas",
     href: "/industries/gyms-salons-spas",
     assessmentHref: "/assessment/gyms-salons-spas",
     tagline: "Membership data, health/body measurements, consultation notes, customer photos, WhatsApp campaigns, staff phones",
     risks: ["Customer photos used without consent", "Health/body data in WhatsApp/staff notes", "Staff personal phones & shared logins", "Indefinite photo & record retention"],
     stat: "Before-after photos and health/body data are high-impact, even though it isn't a clinic",
-    color: "fuchsia",
-    bg: "bg-fuchsia-50",
-    border: "border-fuchsia-200",
-    iconBg: "bg-fuchsia-100",
-    iconColor: "text-fuchsia-700",
-    btn: "bg-fuchsia-600 hover:bg-fuchsia-700",
   },
 ];
 
@@ -322,15 +263,17 @@ export default function IndustriesPage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
-          {industries.map((ind) => (
-            <div key={ind.title} className={`rounded-xl border-2 ${ind.border} ${ind.bg} p-6`}>
+          {industries.map((ind) => {
+            const a = accentFor(ind.slug).light;
+            return (
+            <div key={ind.title} className={`rounded-xl border-2 ${a.border} ${a.bg} p-6`}>
               <div className="flex items-start gap-4 mb-5">
-                <div className={`w-12 h-12 rounded-xl ${ind.iconBg} flex items-center justify-center shrink-0`}>
-                  <ind.icon size={24} className={ind.iconColor} />
+                <div className={`w-12 h-12 rounded-xl ${a.iconBg} flex items-center justify-center shrink-0`}>
+                  <ind.icon size={24} className={a.iconColor} />
                 </div>
                 <div>
                   <h2 className="font-bold text-navy-700 text-xl leading-snug">{ind.title}</h2>
-                  <p className={`text-sm ${ind.iconColor} mt-1`}>{ind.tagline}</p>
+                  <p className={`text-sm ${a.iconColor} mt-1`}>{ind.tagline}</p>
                 </div>
               </div>
 
@@ -345,7 +288,7 @@ export default function IndustriesPage() {
                 <div className="grid grid-cols-2 gap-2">
                   {ind.risks.map((risk) => (
                     <div key={risk} className="flex items-start gap-1.5 text-xs text-slate-600">
-                      <span className={`mt-1 w-1 h-1 rounded-full ${ind.iconColor.replace('text-', 'bg-')} shrink-0`} />
+                      <span className={`mt-1 w-1 h-1 rounded-full ${a.dot} shrink-0`} />
                       {risk}
                     </div>
                   ))}
@@ -355,7 +298,7 @@ export default function IndustriesPage() {
               <div className="flex gap-3">
                 <Link
                   href={ind.assessmentHref}
-                  className={`flex-1 text-center py-2.5 text-sm font-semibold text-white rounded-lg transition-colors ${ind.btn}`}
+                  className={`flex-1 text-center py-2.5 text-sm font-semibold text-white rounded-lg transition-colors ${a.btn}`}
                 >
                   Free Assessment →
                 </Link>
@@ -367,7 +310,8 @@ export default function IndustriesPage() {
                 </Link>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
 
         <div className="mt-10 pt-6 border-t border-slate-200 text-xs text-slate-400 space-y-1">

@@ -4,6 +4,7 @@ import { ArrowRight, AlertTriangle, MapPin, Share2, Workflow } from "lucide-reac
 import { DiscoveryCrossLink } from "@/components/DiscoveryCrossLink";
 import { NoticeCrossLink } from "@/components/NoticeCrossLink";
 import { LIVE_DATA_MAPS, PLANNED_DATA_MAPS } from "@/lib/data/data-flow";
+import { accentFor } from "@/lib/data/sector-accents";
 import { EXTERNAL_BOUNDARIES, filterByBusinessModel } from "@/lib/data-flow/schemas";
 
 const PAGE_URL = "https://saralprivacy.com/data-mapping";
@@ -136,6 +137,9 @@ export default function DataMappingPage() {
               const places = nodes.filter((n) => n.nodeType !== "person").length;
               const external = nodes.filter((n) => EXTERNAL_BOUNDARIES.includes(n.boundary)).length;
               const transfers = edges.filter((e) => e.external).length;
+              // One hue per sector, shared with the /industries cards - so a
+              // sector reads as the same business wherever a visitor meets it.
+              const accent = accentFor(sector.slug).dark;
               const stats = [
                 { icon: MapPin, value: places, label: "places their data lives" },
                 { icon: Workflow, value: stages.length, label: "stages in the journey" },
@@ -148,7 +152,9 @@ export default function DataMappingPage() {
                   className="overflow-hidden rounded-2xl border border-navy-200 bg-navy-700 p-6 text-white"
                 >
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="inline-flex items-center rounded-full bg-teal-500/20 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-teal-300">
+                    <span
+                      className={`inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide ${accent.badge}`}
+                    >
                       Live
                     </span>
                     {/* Sectors whose journeys genuinely differ say so, so the
@@ -173,7 +179,7 @@ export default function DataMappingPage() {
                       const Icon = stat.icon;
                       return (
                         <div key={stat.label} className="flex items-center gap-2.5">
-                          <span className="rounded-lg bg-white/10 p-2 text-teal-300" aria-hidden="true">
+                          <span className={`rounded-lg bg-white/10 p-2 ${accent.icon}`} aria-hidden="true">
                             <Icon size={16} />
                           </span>
                           <span>
@@ -189,7 +195,7 @@ export default function DataMappingPage() {
 
                   <Link
                     href={href}
-                    className="mt-6 inline-flex items-center gap-2 rounded-xl bg-teal-500 px-6 py-3 text-sm font-semibold text-navy-900 transition-colors hover:bg-teal-400"
+                    className={`mt-6 inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold text-navy-900 transition-colors ${accent.cta}`}
                   >
                     Explore the {sector.navLabel} map <ArrowRight size={16} aria-hidden="true" />
                   </Link>
