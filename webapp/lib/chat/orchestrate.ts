@@ -12,7 +12,8 @@ import {
   type IndustrySlug,
   type Route,
 } from "./site-routing.ts";
-import { platformTour, retrieve, type RetrievalResult } from "./retrieve.ts";
+import { fuseRetrieval, platformTour, retrieve, type RetrievalResult } from "./retrieve.ts";
+import { pineconeSearch } from "./pinecone.ts";
 import { lookupGlossary, type GlossaryHit } from "./knowledge-tools.ts";
 import { detectJourney, journeyById, type ChatSessionState, type JourneyId } from "./journeys.ts";
 import { redact } from "./redact.ts";
@@ -61,6 +62,14 @@ const INDUSTRY_KEYWORDS: Array<{ slug: IndustrySlug; words: string[] }> = [
   { slug: "gyms-salons-spas", words: ["gym", "salon", "spa", "fitness", "member"] },
 ];
 
+/** Whole-word match. Substring matching silently mis-fires — "ats" (applicant
+ *  tracking system) matches inside "whatsapp", so every WhatsApp question was
+ *  being classified as a recruitment agency until the hybrid eval caught it. */
+function mentionsWord(haystack: string, phrase: string): boolean {
+  const escaped = phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(`(^|[^a-z0-9])${escaped}([^a-z0-9]|$)`, "i").test(haystack);
+}
+
 export function detectIndustry(
   message: string,
   state: ChatSessionState,
@@ -69,7 +78,7 @@ export function detectIndustry(
   if (state.industry && (INDUSTRY_SLUGS as string[]).includes(state.industry)) return state.industry;
   const m = ` ${message.toLowerCase()} `;
   for (const { slug, words } of INDUSTRY_KEYWORDS) {
-    if (words.some((w) => m.includes(w))) return slug;
+    if (words.some((w) => mentionsWord(m, w))) return slug;
   }
   const fromPage = pageUrl?.match(/\/industries\/([a-z0-9-]+)/)?.[1];
   if (fromPage && (INDUSTRY_SLUGS as string[]).includes(fromPage)) return fromPage as IndustrySlug;
@@ -108,13 +117,24 @@ const NAV_INTENT_RE =
 const ESCALATE_RE =
   /\b(talk to (a |an )?(human|person|someone|expert)|speak (to|with) (a |an )?(human|person|someone|expert)|human (help|expert)|privacy expert|need a lawyer|legal opinion|consultation with)\b/;
 
+export interface PlanOptions {
+  /** Pre-computed retrieval (Pinecone). When null/absent the lexical index is
+   *  used — the automatic fallback if the vector store is down or unset. */
+  retrieval?: RetrievalResult | null;
+}
+
 /** Pre-model planning: retrieval + tools + the refusal decision. */
-export function planTurn(message: string, state: ChatSessionState, pageUrl?: string): TurnPlan {
+export function planTurn(
+  message: string,
+  state: ChatSessionState,
+  pageUrl?: string,
+  opts: PlanOptions = {}
+): TurnPlan {
   const industry = detectIndustry(message, state, pageUrl);
   const journey = detectJourney(message, state.journey);
   const lower = message.toLowerCase();
   const navIntent = NAV_INTENT_RE.test(lower);
-  let retrieval = retrieve(message, { industry, pageUrl, topK: 6 });
+  let retrieval = opts.retrieval ?? retrieve(message, { industry, pageUrl, topK: 6 });
   // Platform meta-questions ground on the platform guide, not lexical overlap.
   if (navIntent && retrieval.confidence === "low") {
     retrieval = platformTour();
@@ -130,6 +150,22 @@ export function planTurn(message: string, state: ChatSessionState, pageUrl?: str
     retrieval.confidence === "low" && !glossary.best && routerRoutes.length === 0 && !escalate;
 
   return { journey, industry, retrieval, glossary, routerRoutes, navIntent, escalate, refuse, piiWarning };
+}
+
+/** Production entry point: Pinecone semantic search + rerank as the primary
+ *  retrieval path (D7), with the local lexical index as an automatic fallback
+ *  whenever Pinecone is unset, unreachable, or returns nothing. */
+export async function planTurnAsync(
+  message: string,
+  state: ChatSessionState,
+  pageUrl?: string
+): Promise<TurnPlan & { retrievalSource: "hybrid" | "lexical" }> {
+  const industry = detectIndustry(message, state, pageUrl);
+  const vector = await pineconeSearch(message, { industry });
+  const lexical = retrieve(message, { industry, pageUrl, topK: 8 });
+  const fused = vector ? fuseRetrieval(vector, lexical, { industry, pageUrl, topK: 6 }) : null;
+  const plan = planTurn(message, state, pageUrl, { retrieval: fused });
+  return { ...plan, retrievalSource: vector ? "hybrid" : "lexical" };
 }
 
 // ---------------------------------------------------------------------------

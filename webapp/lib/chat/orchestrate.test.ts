@@ -47,6 +47,25 @@ test("glossary hit rescues a term question from the BM25 floor", () => {
   assert.ok(plan.glossary.best);
 });
 
+test("industry keywords match whole words only (the WhatsApp/ATS trap)", () => {
+  // "ats" (applicant tracking system) is a substring of "whatsapp", so
+  // substring matching classified every WhatsApp question as recruitment.
+  assert.equal(
+    detectIndustry("Our pharmacy keeps prescription images from WhatsApp orders", state()),
+    "pharmacies"
+  );
+  assert.equal(
+    detectIndustry("We run a Shopify D2C store doing WhatsApp marketing", state()),
+    "d2c-brands"
+  );
+  assert.equal(
+    detectIndustry("we send WhatsApp reminders to members at our gym", state()),
+    "gyms-salons-spas"
+  );
+  // A genuine ATS mention must still route to recruitment.
+  assert.equal(detectIndustry("our ATS stores candidate CVs", state()), "recruitment-agencies");
+});
+
 test("industry detection: state wins, then keywords, then pageUrl", () => {
   const s = state();
   s.industry = "law-firms";

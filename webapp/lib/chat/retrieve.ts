@@ -164,6 +164,66 @@ export function platformTour(indexPath?: string, topK = 6): RetrievalResult {
   };
 }
 
+/** Router-aware boost applied to any retrieval result, whatever its source.
+ *  Kept separate so Pinecone hits get the same industry/tier/page weighting
+ *  the lexical path has always had. */
+export function boostFactor(
+  chunk: ChatChunk,
+  opts: { industry?: IndustrySlug; pageUrl?: string }
+): number {
+  let boost = 1;
+  if (opts.industry && chunk.industry === opts.industry) boost *= 1.35;
+  if (opts.industry && chunk.industry && chunk.industry !== opts.industry) boost *= 0.6;
+  if (opts.pageUrl && chunk.url === opts.pageUrl) boost *= 1.15;
+  if (chunk.tier === 1) boost *= 1.12;
+  // Conflict rule (spec §6.1): Tier 1 beats Tier 4.
+  if (chunk.tier === 4) boost *= 0.6;
+  if (chunk.extraction === "tsx-text") boost *= 0.92;
+  return boost;
+}
+
+const RRF_K = 60; // standard Reciprocal Rank Fusion damping
+
+/**
+ * Hybrid retrieval: fuse Pinecone semantic hits with local lexical hits by
+ * Reciprocal Rank Fusion, then apply router boosts.
+ *
+ * Semantic search understands intent ("delete my data" → rights) while BM25
+ * nails exact statutory vocabulary ("Section 33", "SDF"). Neither wins alone —
+ * fusing them beats both, and the lexical half is free and offline.
+ */
+export function fuseRetrieval(
+  vector: RetrievalResult | null,
+  lexical: RetrievalResult,
+  opts: { industry?: IndustrySlug; pageUrl?: string; topK?: number } = {}
+): RetrievalResult {
+  if (!vector || vector.hits.length === 0) return lexical;
+
+  const byId = new Map<string, { chunk: ChatChunk; rrf: number }>();
+  const addRanked = (hits: RetrievedChunk[], weight: number) => {
+    hits.forEach((h, rank) => {
+      const prev = byId.get(h.chunk.id);
+      const contribution = weight / (RRF_K + rank + 1);
+      if (prev) prev.rrf += contribution;
+      else byId.set(h.chunk.id, { chunk: h.chunk, rrf: contribution });
+    });
+  };
+  // Semantic leads (it is the primary store); lexical corroborates.
+  addRanked(vector.hits, 1.0);
+  addRanked(lexical.hits, 0.75);
+
+  const fused = [...byId.values()]
+    .map(({ chunk, rrf }) => ({ chunk, score: rrf * boostFactor(chunk, opts) }))
+    .sort((a, b) => b.score - a.score)
+    .slice(0, opts.topK ?? 6);
+
+  // Either retriever being confident is enough — they fail on different things.
+  const confidence: "high" | "low" =
+    vector.confidence === "high" || lexical.confidence === "high" ? "high" : "low";
+
+  return { hits: fused, confidence, matchedTermRatio: Math.max(vector.matchedTermRatio, lexical.matchedTermRatio) };
+}
+
 export function retrieve(query: string, opts: RetrieveOptions = {}): RetrievalResult {
   const { topK = 6, industry, pageUrl, queryVector, indexPath } = opts;
   const engine = loadIndex(indexPath);

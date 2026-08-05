@@ -14,7 +14,7 @@ import { streamText } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
 
 import { rateLimit, getClientIp } from "@/lib/abuseGuard";
-import { planTurn, buildGroundingBlock, buildMeta, type ChatMeta } from "@/lib/chat/orchestrate";
+import { planTurnAsync, buildGroundingBlock, buildMeta, type ChatMeta } from "@/lib/chat/orchestrate";
 import { buildSystemPrompt, buildTurnNotes } from "@/lib/chat/system-prompt";
 import { sanitizeState } from "@/lib/chat/journeys";
 import { t } from "@/lib/chat/strings";
@@ -94,7 +94,9 @@ export async function POST(request: NextRequest) {
 
   const state = sanitizeState(payload.state, sessionId, pageUrl ?? "");
   const history = sanitizeHistory(payload.history);
-  const plan = planTurn(message, state, pageUrl);
+  // Pinecone semantic search + rerank (D7); falls back to the local lexical
+  // index automatically if the vector store is unavailable.
+  const plan = await planTurnAsync(message, state, pageUrl);
   const meta = buildMeta(plan);
 
   // Below the floor: refuse without ever calling the model (spec §4.2).
