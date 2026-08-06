@@ -16,6 +16,7 @@ import {
 import { cn } from "@/lib/utils";
 import { trackEvent } from "@/lib/analytics";
 import { lawFirmsPack } from "@/lib/data/industry-assessment/packs/law-firms";
+import { FlowCrossLink } from "@/components/FlowCrossLink";
 import {
   calculateIndustryResult,
   getBandByScore,
@@ -431,6 +432,8 @@ export default function LawFirmAssessmentClient() {
               Book a Law Firm Gap Review <ArrowRight size={16} />
             </Link>
           </div>
+
+          <FlowCrossLink sectorSlug={lawFirmsPack.industry} source="assessment" className="mt-5" />
 
           <button onClick={retake} className="mt-4 w-full text-center text-sm text-slate-500 underline hover:text-slate-700">
             Retake the scan

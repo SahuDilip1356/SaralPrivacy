@@ -27,7 +27,7 @@ export function NoticeCrossLink({ className = "" }: { className?: string }) {
       </div>
       <Link
         href="/tools/dpdpa-privacy-notice-generator"
-        className="shrink-0 inline-flex items-center justify-center gap-2 px-6 py-3 bg-green-500 text-white font-semibold rounded-xl hover:bg-green-600 transition-colors text-sm whitespace-nowrap"
+        className="shrink-0 inline-flex items-center justify-center gap-2 px-6 py-3 bg-green-500 text-white font-semibold rounded-xl hover:bg-green-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:ring-offset-2 transition-colors text-sm whitespace-nowrap"
       >
         Notice Generator
         <ArrowRight size={16} />

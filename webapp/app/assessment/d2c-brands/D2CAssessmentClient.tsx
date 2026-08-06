@@ -16,6 +16,7 @@ import {
 import { cn } from "@/lib/utils";
 import { trackEvent } from "@/lib/analytics";
 import { d2cBrandsPack } from "@/lib/data/industry-assessment/packs/d2c-brands";
+import { FlowCrossLink } from "@/components/FlowCrossLink";
 import {
   calculateIndustryResult,
   getBandByScore,
@@ -420,6 +421,8 @@ export default function D2CAssessmentClient() {
               Book a D2C Brand Gap Review <ArrowRight size={16} />
             </Link>
           </div>
+
+          <FlowCrossLink sectorSlug={d2cBrandsPack.industry} source="assessment" className="mt-5" />
 
           <button onClick={retake} className="mt-4 w-full text-center text-sm text-slate-500 underline hover:text-slate-700">
             Retake the scan

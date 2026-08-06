@@ -16,6 +16,7 @@ import {
 import { cn } from "@/lib/utils";
 import { trackEvent } from "@/lib/analytics";
 import { pharmaciesPack } from "@/lib/data/industry-assessment/packs/pharmacies";
+import { FlowCrossLink } from "@/components/FlowCrossLink";
 import {
   calculateIndustryResult,
   getBandByScore,
@@ -434,6 +435,8 @@ export default function PharmaciesAssessmentClient() {
               Book a Pharmacy Gap Review <ArrowRight size={16} />
             </Link>
           </div>
+
+          <FlowCrossLink sectorSlug={pharmaciesPack.industry} source="assessment" className="mt-5" />
 
           <button onClick={retake} className="mt-4 w-full text-center text-sm text-slate-500 underline hover:text-slate-700">
             Retake the scan
