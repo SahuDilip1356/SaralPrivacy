@@ -7,6 +7,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { ExternalLink, ThumbsDown, ThumbsUp, BadgeCheck } from "lucide-react";
 import type { ChatMessage } from "./useSetuChat";
 import { SetuStage, type AvatarState } from "./SetuStage";
+import { ThinkingIndicator } from "./ThinkingIndicator";
 import { t } from "@/lib/chat/strings";
 import { trackEvent } from "@/lib/analytics";
 
@@ -200,7 +201,7 @@ export function MessageList({
                   msg.error ? "bg-amber-50 border border-amber-200" : "bg-white shadow-sm border border-slate-100"
                 }`}
               >
-                {msg.text ? renderLite(msg.text) : <span className="text-[#354F72]">{t("en", "thinking")}</span>}
+                {msg.text ? renderLite(msg.text) : <ThinkingIndicator />}
                 {msg.meta?.piiWarning && (
                   <p className="mt-2 rounded bg-amber-50 p-2 text-[13px] text-amber-800">{t("en", "piiWarning")}</p>
                 )}
