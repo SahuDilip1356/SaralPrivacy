@@ -99,6 +99,14 @@
   --shadow-green:       0 4px 14px 0 rgb(7 185 129 / 0.30);
 }
 
+/* ── Radius scale — four tiers, by role. Do not mix outside this rule. ───────
+   rounded-full  pills, chips, badges, selector buttons, avatars
+   rounded-2xl   elevated white cards (paired with shadow-card/elevated/2xl)
+   rounded-xl    standard cards and primary buttons
+   rounded-lg    small inner surfaces, inputs, thumbnails
+   Anything else (rounded-md, rounded-sm) is drift. Pick the tier by role.
+   ─────────────────────────────────────────────────────────────────────────── */
+
 /* ── SaralPrivacy — CSS Custom Properties ─────────────────────────────────── */
 :root {
   /* Authority */

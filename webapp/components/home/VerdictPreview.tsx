@@ -20,9 +20,6 @@ export function VerdictPreview() {
     <section className="bg-cloud-50 py-20">
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-8">
-          <span className="inline-block text-xs font-semibold uppercase tracking-wide text-teal-600 mb-3">
-            The report
-          </span>
           <h2 className="text-3xl sm:text-4xl font-bold text-navy-700 mb-3">
             See what your verdict looks like
           </h2>

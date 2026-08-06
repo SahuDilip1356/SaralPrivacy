@@ -105,7 +105,7 @@ function StepArtifact({ kind }: { kind: Step["key"] }) {
   // fix — notice-PDF corner mock
   return (
     <div className="block shrink-0 opacity-85">
-      <div className="relative w-[62px] h-[46px] rounded-md bg-white/[0.05] border border-white/15 p-2 overflow-hidden">
+      <div className="relative w-[62px] h-[46px] rounded-lg bg-white/[0.05] border border-white/15 p-2 overflow-hidden">
         <div className="h-1 w-7 bg-white/25 rounded-full mb-1.5" />
         <div className="h-[3px] w-full bg-white/10 rounded-full mb-1" />
         <div className="h-[3px] w-4/5 bg-white/10 rounded-full mb-1.5" />

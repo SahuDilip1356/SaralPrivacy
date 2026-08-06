@@ -68,9 +68,6 @@ export function WhereRiskHides() {
       <div ref={ref} className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* header */}
         <div className="text-center mb-12">
-          <span className="inline-block text-xs font-semibold uppercase tracking-wide text-teal-400 mb-3">
-            Where DPDPA risk hides
-          </span>
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3">
             Follow the data. The risk becomes visible.
           </h2>
