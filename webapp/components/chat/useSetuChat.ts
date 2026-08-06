@@ -79,10 +79,17 @@ export function useSetuChat(pageUrl: string) {
 
       const userMsg: ChatMessage = { id: crypto.randomUUID(), role: "user", text: trimmed };
       const setuMsg: ChatMessage = { id: crypto.randomUUID(), role: "setu", text: "", streaming: true };
+      // Setu's own turns travel back with the signature the server issued for
+      // them. The server drops any assistant turn that fails verification, so
+      // a tampered or hand-crafted transcript cannot put words in his mouth.
       const history = [...messages]
         .filter((m) => !m.error)
         .slice(-8)
-        .map((m) => ({ role: m.role === "setu" ? ("assistant" as const) : ("user" as const), content: m.text }));
+        .map((m) =>
+          m.role === "setu"
+            ? { role: "assistant" as const, content: m.text, sig: m.meta?.sig }
+            : { role: "user" as const, content: m.text }
+        );
 
       setMessages((prev) => [...prev, userMsg, setuMsg]);
       setStatus("thinking");

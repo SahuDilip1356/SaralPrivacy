@@ -14,11 +14,28 @@ import { streamText } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
 
 import { rateLimit, getClientIp } from "@/lib/abuseGuard";
-import { planTurnAsync, buildGroundingBlock, buildMeta, type ChatMeta } from "@/lib/chat/orchestrate";
+import {
+  planTurnAsync,
+  buildGroundingBlock,
+  buildMeta,
+  DISCLAIMER,
+  type ChatMeta,
+} from "@/lib/chat/orchestrate";
 import { buildSystemPrompt, buildTurnNotes } from "@/lib/chat/system-prompt";
 import { sanitizeState } from "@/lib/chat/journeys";
 import { t } from "@/lib/chat/strings";
 import { FRESH_INTENT_RE, fetchLiveBriefings, briefingsContextBlock } from "@/lib/chat/briefings-live";
+import {
+  LEAK_HOLDBACK,
+  detectInjection,
+  historySigningAvailable,
+  newNonce,
+  sanitizeUntrusted,
+  scanOutput,
+  signTurn,
+  verifyTurn,
+  wrapUserMessage,
+} from "@/lib/chat/guard";
 
 export const maxDuration = 60;
 
@@ -31,30 +48,66 @@ interface HistoryTurn {
   content: string;
 }
 
+/**
+ * History arrives from the browser, so every turn in it is a claim, not a
+ * record. Two defences apply:
+ *   - all content is tag-neutralised, so no turn can smuggle framing markup;
+ *   - assistant turns must carry a valid HMAC we issued (guard.signTurn), or
+ *     they are dropped. Without that check an attacker can put words in
+ *     Setu's mouth — "developer mode enabled" — and the model reads them as
+ *     its own prior commitment, which is far more persuasive than any user
+ *     instruction. When CHAT_HISTORY_SECRET is unset we cannot verify, so
+ *     assistant turns are dropped rather than trusted; the user side of the
+ *     conversation still carries continuity.
+ */
 function sanitizeHistory(raw: unknown): HistoryTurn[] {
   if (!Array.isArray(raw)) return [];
-  return raw
-    .filter(
-      (m): m is HistoryTurn =>
-        !!m &&
-        typeof m === "object" &&
-        ((m as HistoryTurn).role === "user" || (m as HistoryTurn).role === "assistant") &&
-        typeof (m as HistoryTurn).content === "string"
-    )
-    .slice(-MAX_HISTORY_TURNS)
-    .map((m) => ({ role: m.role, content: m.content.slice(0, MAX_MESSAGE_CHARS) }));
+  const canVerify = historySigningAvailable();
+  const out: HistoryTurn[] = [];
+  for (const m of raw.slice(-MAX_HISTORY_TURNS)) {
+    if (!m || typeof m !== "object") continue;
+    const turn = m as { role?: unknown; content?: unknown; sig?: unknown };
+    if (typeof turn.content !== "string") continue;
+    if (turn.role !== "user" && turn.role !== "assistant") continue;
+
+    const content = sanitizeUntrusted(turn.content.slice(0, MAX_MESSAGE_CHARS));
+    if (turn.role === "assistant") {
+      if (!canVerify) continue;
+      if (!verifyTurn(turn.content.trim(), turn.sig)) continue;
+    }
+    out.push({ role: turn.role, content });
+  }
+  return out;
 }
 
 function streamCanned(text: string, meta: ChatMeta): Response {
   const encoder = new TextEncoder();
+  const signed: ChatMeta = { ...meta, sig: signTurn(text.trim()) };
   const body = new ReadableStream({
     start(controller) {
       controller.enqueue(encoder.encode(text));
-      controller.enqueue(encoder.encode(META_SENTINEL + JSON.stringify(meta)));
+      controller.enqueue(encoder.encode(META_SENTINEL + JSON.stringify(signed)));
       controller.close();
     },
   });
   return new Response(body, { headers: { "Content-Type": "text/plain; charset=utf-8" } });
+}
+
+/** Meta for a turn refused by the injection guard — no citations, no leads. */
+function guardedMeta(): ChatMeta {
+  return {
+    citations: [],
+    actions: [
+      { type: "open_url", label: "Open the FAQ", url: "/faq" },
+      { type: "open_url", label: "Contact SaralPrivacy", url: "/contact" },
+    ],
+    confidence: "low",
+    refusal: true,
+    piiWarning: false,
+    suggestedFollowups: ["What is DPDPA?", "Does DPDPA apply to me?"],
+    animation: { state: "unsure" },
+    disclaimer: DISCLAIMER,
+  };
 }
 
 export async function POST(request: NextRequest) {
@@ -92,6 +145,17 @@ export async function POST(request: NextRequest) {
     }
   }
 
+  // Instruction-override attempts stop here: before retrieval, before the
+  // model, at zero cost. This runs ahead of planTurnAsync deliberately — the
+  // refusal floor inside the plan is rescued by any router trigger or glossary
+  // hit, so appending "what is dpdpa" to a payload would otherwise walk it
+  // straight through to the model.
+  const injection = detectInjection(message);
+  if (injection.blocked) {
+    console.warn(`[chat-guard] blocked turn (${injection.rule})`);
+    return streamCanned(t("en", "guarded"), guardedMeta());
+  }
+
   const state = sanitizeState(payload.state, sessionId, pageUrl ?? "");
   const history = sanitizeHistory(payload.history);
   // Pinecone semantic search + rerank (D7); falls back to the local lexical
@@ -118,7 +182,11 @@ export async function POST(request: NextRequest) {
   if (FRESH_INTENT_RE.test(message.toLowerCase())) {
     const live = await fetchLiveBriefings(message);
     if (live) {
-      grounding += `\n\n${briefingsContextBlock(live)}`;
+      // Briefings are generated from external news sources, so unlike the rest
+      // of the corpus this text is not ours. Neutralise it before it enters a
+      // block the prompt treats as trusted — indirect injection travels the
+      // same path as direct injection once it is inside the context.
+      grounding += `\n\n${sanitizeUntrusted(briefingsContextBlock(live))}`;
       if (!meta.citations.some((c) => c.url === "/briefings")) {
         meta.citations = [
           { title: "DPDPA Daily Briefings", url: "/briefings", tier: 4 },
@@ -135,6 +203,10 @@ export async function POST(request: NextRequest) {
   }
 
   try {
+    // The closing delimiter carries an unguessable per-turn nonce, so even a
+    // message that somehow evaded neutralisation cannot close the block early
+    // and continue in the framework's own voice.
+    const nonce = newNonce();
     const result = streamText({
       model: anthropic("claude-sonnet-5"),
       system,
@@ -142,7 +214,7 @@ export async function POST(request: NextRequest) {
         ...history.map((h) => ({ role: h.role, content: h.content })),
         {
           role: "user" as const,
-          content: `${turnNotes}\n\n${grounding}\n\n<user_message>\n${message}\n</user_message>`,
+          content: `${turnNotes}\n\n${grounding}\n\n${wrapUserMessage(message, nonce)}`,
         },
       ],
       // temperature is not supported by the claude-5 family — omit it.
@@ -153,10 +225,51 @@ export async function POST(request: NextRequest) {
     const body = new ReadableStream({
       async start(controller) {
         try {
+          // Release the stream LEAK_HOLDBACK characters behind the model, so a
+          // leak signature is always still in the buffer when it completes and
+          // never reaches the browser. The cost is a fixed ~25-character lag.
+          let produced = "";
+          let pending = "";
+          let released = "";
+          let leaked = false;
+
           for await (const chunk of result.textStream) {
-            controller.enqueue(encoder.encode(chunk));
+            produced += chunk;
+            pending += chunk;
+            if (scanOutput(produced).leaked) {
+              leaked = true;
+              break;
+            }
+            if (pending.length > LEAK_HOLDBACK) {
+              const flush = pending.slice(0, pending.length - LEAK_HOLDBACK);
+              pending = pending.slice(pending.length - LEAK_HOLDBACK);
+              released += flush;
+              controller.enqueue(encoder.encode(flush));
+            }
           }
-          controller.enqueue(encoder.encode(META_SENTINEL + JSON.stringify(meta)));
+
+          if (leaked) {
+            // Whatever is still held back contains the signature; drop it and
+            // close with the guarded line instead of the model's answer.
+            console.warn("[chat-guard] output leak scan tripped — answer withheld");
+            const tail = ` ${t("en", "guarded")}`;
+            controller.enqueue(encoder.encode(tail));
+            const answer = (released + tail).trim();
+            controller.enqueue(
+              encoder.encode(
+                META_SENTINEL +
+                  JSON.stringify({ ...guardedMeta(), sig: signTurn(answer) } satisfies ChatMeta)
+              )
+            );
+            controller.close();
+            return;
+          }
+
+          controller.enqueue(encoder.encode(pending));
+          const answer = (released + pending).trim();
+          controller.enqueue(
+            encoder.encode(META_SENTINEL + JSON.stringify({ ...meta, sig: signTurn(answer) }))
+          );
         } catch {
           const errMeta: ChatMeta = {
             ...meta,

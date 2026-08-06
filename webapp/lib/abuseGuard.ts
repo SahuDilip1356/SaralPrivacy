@@ -15,10 +15,30 @@
 import type { NextRequest } from "next/server";
 
 // ── Client IP ────────────────────────────────────────────────────────────────
+/**
+ * Resolve the caller's IP from headers the CLIENT cannot choose.
+ *
+ * `x-forwarded-for` is attacker-controlled: anyone may send their own, and the
+ * leftmost entry — the value this used to read — is precisely the part they
+ * write. Rotating it per request gave a free pass through every rate limit,
+ * and on /api/chat each request that slips through is a paid model call.
+ *
+ * `x-vercel-forwarded-for` and `x-real-ip` are stamped by the Vercel edge and
+ * overwrite anything the client sent, so they are trustworthy. We fall back to
+ * the RIGHTMOST x-forwarded-for entry: proxies append, so the last hop is the
+ * one added closest to us rather than the one the client authored.
+ */
 export function getClientIp(request: NextRequest): string {
+  const trusted =
+    request.headers.get("x-vercel-forwarded-for") || request.headers.get("x-real-ip");
+  if (trusted) return trusted.split(",")[0]?.trim() || "unknown";
+
   const xff = request.headers.get("x-forwarded-for");
-  if (xff) return xff.split(",")[0]?.trim() || "unknown";
-  return request.headers.get("x-real-ip") || "unknown";
+  if (xff) {
+    const hops = xff.split(",").map((h) => h.trim()).filter(Boolean);
+    return hops[hops.length - 1] || "unknown";
+  }
+  return "unknown";
 }
 
 // ── Rate limiter (sliding window) ──────────────────────────────────────────────

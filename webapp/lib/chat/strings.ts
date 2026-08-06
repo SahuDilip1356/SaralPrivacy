@@ -20,6 +20,10 @@ const en = {
   refusal:
     "I can only help with what's on SaralPrivacy — I don't have that in our guides yet.",
   refusalHint: "Try the FAQ, the Learning Hub, or ask our team directly.",
+  // Shown when a turn is blocked as an instruction-override attempt. Stays in
+  // Setu's voice on purpose: no accusation, no hint about what tripped it.
+  guarded:
+    "I stay on DPDPA questions answered from SaralPrivacy's own guides — that's the only way I can be sure of what I tell you.",
   rateLimited: "You've asked a lot — give me a minute and try again.",
   offline: "I've lost connection — check your network and retry.",
   retry: "Retry",

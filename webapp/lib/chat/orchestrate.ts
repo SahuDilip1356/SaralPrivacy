@@ -41,9 +41,12 @@ export interface ChatMeta {
   industry?: IndustrySlug;
   animation: { state: "pointing" | "unsure" | "speaking" };
   disclaimer: string;
+  /** HMAC over this answer, so the next turn can tell our transcript from a
+   *  forged one. Empty when CHAT_HISTORY_SECRET is unset (see guard.ts). */
+  sig?: string;
 }
 
-const DISCLAIMER = "Educational only — not legal advice.";
+export const DISCLAIMER = "Educational only — not legal advice.";
 
 // ---------------------------------------------------------------------------
 
