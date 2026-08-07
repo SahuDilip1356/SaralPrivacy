@@ -15,7 +15,7 @@ Setu is **live in production** as a grounded, English, text-only site guide.
 |---|---|
 | Widget | `components/chat/*` — launcher, panel, message rail, citation cards with the green ✓ "Verified page" badge, quick-reply chips, 👍/👎, proactive nudge policy. Mounted once in `app/layout.tsx`; hidden on `/admin` and `/report` |
 | Character | New portrait at `public/setu-avatar.png`; squash-and-stretch motion in `SetuStage.tsx` (hop on greeting/thinking, breathe, nod, lean); `ThinkingIndicator.tsx` = animated dots, no text label |
-| API | `app/api/chat/route.ts` — `claude-sonnet-5`, two-phase stream (text, then `U+001E` + `ChatMeta` JSON) |
+| API | `app/api/chat/route.ts` — model from `CHAT_MODEL` (`lib/chat/system-prompt.ts`, currently `claude-haiku-4-5`), two-phase stream (text, then `U+001E` + `ChatMeta` JSON) |
 | Retrieval | **Pinecone `saralprivacy-setu`** primary (406 records, integrated `llama-text-embed-v2`, rerank `bge-reranker-v2-m3`, industry metadata filter) + local lexical index as automatic fallback |
 | Knowledge | 406 chunks: Learn, FAQ, glossary, 96-control checklist, 12 industry guides, **12 data-flow packs** (stages + ranked hotspots), platform guides, 8 seed briefings + live Appwrite briefings on freshness intent |
 | Quality gates | Golden set 70/70 = 100%; 56 tests; zero-hallucination refusal hard-gated; first token 1.7–2.4 s |
@@ -111,7 +111,8 @@ This is a DPDPA product; the voice feature must survive its own audit.
 - **⛔ The repo lives on an iCloud-synced Desktop path.** Git operations hang indefinitely, `tsc` never starts, and a stray `node_modules` copy drowned the sync queue for hours. **Workaround that worked:** `git clone` into `/private/tmp/` and do all git work there. **Real fix:** move the repo off iCloud — worth doing before the next phase.
 - **Pinecone REST is snake_case** (`top_k`, `top_n`); the SDK is camelCase. A camelCase body 422s.
 - **Integrated-index upserts cap at 96 records per request** (the embedding model's batch size), not 1000.
-- **`claude-sonnet-5` rejects the `temperature` parameter.** Omit it.
+- **`temperature` support differs by model.** The claude-5 family rejects it outright; Haiku 4.5 accepts it. Leaving it unset is the only setting that survives a swap in either direction — don't add it.
+- **Swapping `CHAT_MODEL` invalidates the red-team result.** Two of the five guard layers (instruction hierarchy, forged-authority refusal) are properties of the model, not of `guard.ts`. Re-run `scripts/redteam-chat.mts` against a preview before shipping any new model.
 - **Node's `--experimental-strip-types`** can't do parameter properties or runtime type imports; the repo's bundler-style imports need `scripts/ts-resolve.mjs`.
 - **`Sector` has `navLabel`, not `label`** — using `.label` silently rendered "undefined" into chunk titles.
 - **Whole-word industry matching matters:** "ats" is a substring of "whatsapp", which mis-routed every WhatsApp question to recruitment.
