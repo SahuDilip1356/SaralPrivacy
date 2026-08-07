@@ -5,6 +5,15 @@
 
 import { sanitizeInline } from "./guard.ts";
 
+// The one place the model is named. The route, the smoke script and the
+// red-team all read this, so a probe can never pass against a model that
+// production isn't actually running.
+//
+// Changing this invalidates the red-team result: injection resistance is a
+// property of the model, not only of guard.ts. Re-run scripts/redteam-chat.mts
+// against a preview before shipping a new value.
+export const CHAT_MODEL = "claude-haiku-4-5";
+
 // Quarterly-review regulatory constants (spec §6.1). Last review: 2026-08-03.
 export const REGULATORY_CONTEXT = `- DPDP Act 2023 — received assent August 2023
 - DPDP Rules 2025 — notified 14 November 2025; implementation is phased

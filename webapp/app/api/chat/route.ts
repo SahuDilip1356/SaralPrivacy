@@ -21,7 +21,7 @@ import {
   DISCLAIMER,
   type ChatMeta,
 } from "@/lib/chat/orchestrate";
-import { buildSystemPrompt, buildTurnNotes } from "@/lib/chat/system-prompt";
+import { CHAT_MODEL, buildSystemPrompt, buildTurnNotes } from "@/lib/chat/system-prompt";
 import { sanitizeState } from "@/lib/chat/journeys";
 import { t } from "@/lib/chat/strings";
 import { FRESH_INTENT_RE, fetchLiveBriefings, briefingsContextBlock } from "@/lib/chat/briefings-live";
@@ -208,7 +208,7 @@ export async function POST(request: NextRequest) {
     // and continue in the framework's own voice.
     const nonce = newNonce();
     const result = streamText({
-      model: anthropic("claude-sonnet-5"),
+      model: anthropic(CHAT_MODEL),
       system,
       messages: [
         ...history.map((h) => ({ role: h.role, content: h.content })),
@@ -217,7 +217,9 @@ export async function POST(request: NextRequest) {
           content: `${turnNotes}\n\n${grounding}\n\n${wrapUserMessage(message, nonce)}`,
         },
       ],
-      // temperature is not supported by the claude-5 family — omit it.
+      // No temperature. Haiku 4.5 accepts it, but the claude-5 family rejects
+      // it outright — leaving it unset is the only setting that survives a
+      // model swap in either direction.
       maxOutputTokens: 600,
     });
 

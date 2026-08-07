@@ -7,7 +7,7 @@ import { streamText } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
 
 import { planTurn, buildGroundingBlock, buildMeta } from "../lib/chat/orchestrate.ts";
-import { buildSystemPrompt, buildTurnNotes } from "../lib/chat/system-prompt.ts";
+import { CHAT_MODEL, buildSystemPrompt, buildTurnNotes } from "../lib/chat/system-prompt.ts";
 import { createInitialState } from "../lib/chat/journeys.ts";
 
 const message = process.argv[2] ?? "Do I need consent to send marketing emails to my existing customers?";
@@ -26,7 +26,7 @@ if (plan.refuse) {
 
 const t0 = Date.now();
 const result = streamText({
-  model: anthropic("claude-sonnet-5"),
+  model: anthropic(CHAT_MODEL),
   system: buildSystemPrompt(),
   messages: [
     {
