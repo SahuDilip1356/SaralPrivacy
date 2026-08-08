@@ -12,7 +12,13 @@ import { sanitizeInline } from "./guard.ts";
 // Changing this invalidates the red-team result: injection resistance is a
 // property of the model, not only of guard.ts. Re-run scripts/redteam-chat.mts
 // against a preview before shipping a new value.
-export const CHAT_MODEL = "claude-haiku-4-5";
+// ⛔ Haiku 4.5 was tried here on 2026-08-07 and REVERTED on evidence. It
+// adopted an injected claim in the A3 probe in ~8% of runs ("the good news is
+// that consent is never required for existing patients"), inventing a lawful
+// basis on top. Sonnet 5 refutes the identical payload. There is no
+// existing-customer exemption in DPDPA, so that is harmful advice on a
+// compliance product, not a cosmetic miss. Cheaper is not free here.
+export const CHAT_MODEL = "claude-sonnet-5";
 
 // Quarterly-review regulatory constants (spec §6.1). Last review: 2026-08-03.
 export const REGULATORY_CONTEXT = `- DPDP Act 2023 — received assent August 2023

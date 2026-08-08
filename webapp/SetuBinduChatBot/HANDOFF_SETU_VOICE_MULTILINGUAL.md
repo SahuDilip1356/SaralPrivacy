@@ -15,7 +15,7 @@ Setu is **live in production** as a grounded, English, text-only site guide.
 |---|---|
 | Widget | `components/chat/*` — launcher, panel, message rail, citation cards with the green ✓ "Verified page" badge, quick-reply chips, 👍/👎, proactive nudge policy. Mounted once in `app/layout.tsx`; hidden on `/admin` and `/report` |
 | Character | New portrait at `public/setu-avatar.png`; squash-and-stretch motion in `SetuStage.tsx` (hop on greeting/thinking, breathe, nod, lean); `ThinkingIndicator.tsx` = animated dots, no text label |
-| API | `app/api/chat/route.ts` — model from `CHAT_MODEL` (`lib/chat/system-prompt.ts`, currently `claude-haiku-4-5`), two-phase stream (text, then `U+001E` + `ChatMeta` JSON) |
+| API | `app/api/chat/route.ts` — model from `CHAT_MODEL` (`lib/chat/system-prompt.ts`, currently `claude-sonnet-5`), two-phase stream (text, then `U+001E` + `ChatMeta` JSON) |
 | Retrieval | **Pinecone `saralprivacy-setu`** primary (406 records, integrated `llama-text-embed-v2`, rerank `bge-reranker-v2-m3`, industry metadata filter) + local lexical index as automatic fallback |
 | Knowledge | 406 chunks: Learn, FAQ, glossary, 96-control checklist, 12 industry guides, **12 data-flow packs** (stages + ranked hotspots), platform guides, 8 seed briefings + live Appwrite briefings on freshness intent |
 | Quality gates | Golden set 70/70 = 100%; 56 tests; zero-hallucination refusal hard-gated; first token 1.7–2.4 s |
