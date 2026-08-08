@@ -4,6 +4,8 @@
 // literal harvest and are flagged extraction:"tsx-text" so eval can judge them
 // separately. Run via scripts/build-chat-index.mts.
 
+import { FREE_TEMPLATES, STARTER_CHECKLIST_SECTORS } from "../data/templates.ts";
+import { GUIDE_LANGUAGES, isLive } from "../data/guide-languages.ts";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
@@ -297,6 +299,85 @@ export function collectToolChunks(): ChatChunk[] {
   return chunks;
 }
 
+/**
+ * Downloadable templates (/resources) and the per-industry starter checklists.
+ *
+ * These were absent from the first 406-chunk index, so Setu told visitors the
+ * files "aren't something I can locate" and denied that a consent pack existed
+ * — while consent-language-examples.docx sat in public/templates. They are also
+ * the lead-capture surface (template_downloads), which made the gap commercial
+ * as well as factual.
+ *
+ * Tier 3: these are navigation targets, not DPDPA authority. Tier is what
+ * enforces that — isAuthorityCitation() admits tier 1/2 only — so Setu may
+ * point at a template but can never cite one as the source of a legal claim.
+ */
+export function collectTemplateChunks(): ChatChunk[] {
+  const catalogue = FREE_TEMPLATES.map((t) => `${t.title} (${t.tag}) — ${t.desc}`).join("\n");
+  const chunks: ChatChunk[] = splitLong(
+    `SaralPrivacy publishes ${FREE_TEMPLATES.length} free DPDPA templates. You tell us about your business once and all ${FREE_TEMPLATES.length} unlock together — no Google account needed.\n\n${catalogue}`
+  ).map((piece, i) => ({
+    id: `template:catalogue${i ? `:${i}` : ""}`,
+    url: "/resources",
+    title: "Free DPDPA Compliance Templates",
+    tier: 3 as Tier,
+    topicTags: [
+      "templates",
+      "download",
+      "privacy notice template",
+      "consent language",
+      "data inventory",
+      "vendor register",
+      "dsr sop",
+    ],
+    section: "What you can download",
+    text: piece,
+    extraction: "typed" as const,
+  }));
+
+  chunks.push({
+    id: "template:starter-checklists",
+    url: "/assessment",
+    title: "Industry starter checklists",
+    tier: 3,
+    topicTags: ["starter checklist", "templates", "assessment"],
+    section: "How to get your industry checklist",
+    text:
+      `A DPDPA starter checklist is produced for each of the ${STARTER_CHECKLIST_SECTORS.length} sectors SaralPrivacy covers ` +
+      `(${STARTER_CHECKLIST_SECTORS.join(", ")}). It is not a free download from the templates page — ` +
+      `it arrives with the readiness assessment report for that sector, so the route to one is to take the assessment for your industry.`,
+    extraction: "typed",
+  });
+
+  return chunks;
+}
+
+/**
+ * The multi-language Guide. Its prose is deliberately NOT indexed — that would
+ * duplicate the Learn corpus and blunt retrieval. What was actually missing is
+ * the availability fact: asked for a Hindi guide, Setu said he could not
+ * confirm one existed, while dpdpa-guide-hi.pdf was already shipping.
+ */
+export function collectGuideChunks(): ChatChunk[] {
+  const live = GUIDE_LANGUAGES.filter(isLive);
+  const names = live.map((l) => `${l.roman} (${l.native})`).join(", ");
+  return [
+    {
+      id: "guide:languages",
+      url: "/white-paper",
+      title: "The DPDPA Guide",
+      tier: 3,
+      topicTags: ["guide", "white paper", "languages", "hindi", "multilingual", "download", "pdf"],
+      section: "Languages it is available in",
+      text:
+        `The DPDPA Guide is SaralPrivacy's full written guide, readable online and downloadable as a PDF. ` +
+        `It is published in ${live.length} languages: ${names}. ` +
+        `Each language has its own readable page and its own PDF, so it can be shared with a team that does not read English.`,
+      extraction: "typed",
+    },
+  ];
+}
+
 export function collectRegulatoryContextChunks(appRoot: string): ChatChunk[] {
   const text = readFileSync(join(appRoot, "public", "llms-full.txt"), "utf8").trim();
   return splitLong(text).map((piece, i) => ({
@@ -491,6 +572,8 @@ export function collectAllChunks(appRoot: string): { chunks: ChatChunk[]; stats:
     dataFlow: collectDataFlowChunks(),
     briefings: collectBriefingChunks(),
     tools: collectToolChunks(),
+    templates: collectTemplateChunks(),
+    guide: collectGuideChunks(),
     regulatoryContext: collectRegulatoryContextChunks(appRoot),
   };
   const chunks = Object.values(groups).flat();

@@ -303,6 +303,30 @@ const TOOL_ROUTES: Route[] = [
     triggers: ["download", "deep dive", "share with team", "pdf guide"],
     summary: "The full written guide — download and share with your team.",
   },
+  {
+    // Was reachable but not routable: /resources sat in EXCLUDE_FROM_AUTHORITY
+    // (correctly — a template is not legal authority) but was never added
+    // here, so it had no triggers and no chunks. Setu therefore told visitors
+    // the templates "aren't something I can locate" and denied the consent
+    // pack existed. Being excluded from authority and being invisible are two
+    // different things; it stays excluded, and becomes findable.
+    url: "/resources",
+    title: "Free DPDPA Templates",
+    tier: 3,
+    topicTags: ["templates", "download", "consent language", "privacy notice template", "register", "sop"],
+    triggers: [
+      "template",
+      "templates",
+      "consent pack",
+      "consent language",
+      "privacy notice template",
+      "data inventory",
+      "vendor register",
+      "grievance sop",
+      "download templates",
+    ],
+    summary: "Five ready-to-use DPDPA templates — notice, data inventory, consent language, DSR SOP and vendor register.",
+  },
 ];
 
 const FRESHNESS_ROUTES: Route[] = [
@@ -335,7 +359,10 @@ export const ROUTES: Route[] = [
 export const EXCLUDE_FROM_AUTHORITY: string[] = [
   "/about",
   "/contact",
-  "/resources",
+  // /resources moved into ROUTES (tier 3) so the router can surface it for
+  // template questions. It is still never cited as authority — that is
+  // enforced by isAuthorityCitation's tier 1/2 test, not by this list — and
+  // the two lists are required to stay disjoint.
   "/privacy",
   "/terms",
   "/consent-preferences",
