@@ -39,14 +39,30 @@ gaps. That'd be fixing a security bug by creating a privacy one. The HMAC covers
 *answer text only* — no identity, nothing about the person. It authenticates the message,
 not the user, which is why it needs nothing from the visitor.
 
-✅ `CHAT_HISTORY_SECRET` is now set in Vercel for **Production and Preview**, marked
-Sensitive.
+✅ `CHAT_HISTORY_SECRET` is set in Vercel for **Production and Preview**, marked Sensitive.
 
-⚠️ **Unverified and worth 5 minutes:** production last built at `69e48f0`, which was
-*before* the secret was added. Vercel does not retro-apply a new env var to an
-already-built deployment. **Production may still be running with signing disabled** — in
-which case assistant turns are being dropped and Setu can't see his own prior answers.
-Redeploy production, then confirm. Don't assume it's live because the variable exists.
+✅ **VERIFIED LIVE on production, and the round-trip is proven** (8 Aug). No redeploy was
+needed — Vercel injects env vars at runtime for serverless functions, so the deployment
+built *before* the variable was added still picked it up. An earlier draft of this handoff
+warned the opposite; that warning was wrong.
+
+Two non-destructive checks, both worth reusing:
+
+1. **Is signing on at all?** `signTurn` returns `""` with no secret and a 32-char hex with
+   one, so `ChatMeta.sig` is a clean discriminator. Prod returns 32 chars → live.
+2. **Does verification actually work?** Ask a question, capture the answer *and* its `sig`,
+   then replay it as history with a dependent follow-up ("which one did you list second?"):
+   - valid sig → *"Second on that list was **Specific**"* — accepted, continuity restored
+   - tampered sig → *"I can't say what was 'listed second'"* — dropped, forgery rejected
+
+Until this test, every A2 red-team pass had come through the *fail-safe* (drop everything),
+never through signature verification. This is the first proof the signed path works.
+
+⚠️ **Harness trap that invalidated two attempts:** the stream is
+`answer + U+001E + ChatMeta JSON`, and answers contain newlines. `tr '\036' '\n' | head -1`
+therefore captures only the answer's **first line** — a 79-char fragment that genuinely had
+no list in it, which looked exactly like a signing failure. Split on the sentinel with
+`rpartition("\x1e")`, never with `head`.
 
 ---
 
@@ -302,10 +318,10 @@ on a preview and saying go. Never self-merge to `main`.
 
 ## 9. Suggested opening move for the next session
 
-1. Redeploy production and confirm `CHAT_HISTORY_SECRET` actually took (§1) — it's the
-   only item where something may be quietly broken right now.
+1. ~~Redeploy production and confirm the secret took~~ — **done 8 Aug, signing verified live
+   and the round-trip proven** (§1). Nothing outstanding here.
 2. Get the Pinecone ingest run (§4), then re-ask the three questions from §3 on prod.
    They should now be right. **Verify; don't assume.**
 3. Then pick up option A3.
 
-Everything else is optional. Those three are the thread.
+Steps 2 and 3 are the thread. Everything else is optional.
