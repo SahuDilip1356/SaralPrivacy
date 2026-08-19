@@ -25,8 +25,10 @@ export function Card({
   return (
     <div
       className={cn(
-        "bg-white rounded-xl border border-slate-200 shadow-sm",
-        hover && "hover:shadow-md hover:border-slate-300 transition-all duration-200",
+        // Elevation comes from the hairline, not a shadow: on the cloud canvas
+        // a white surface plus a 1px edge reads as raised without the blur.
+        "bg-white rounded-xl border border-pearl-200",
+        hover && "hover:border-pearl-300 transition-colors duration-200",
         paddingClasses[padding],
         className
       )}
