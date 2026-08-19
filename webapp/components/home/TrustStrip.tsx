@@ -1,4 +1,4 @@
-import { BookOpen, Target, Users, MessageSquare, Clock, TrendingUp, CheckCircle, FileText } from "lucide-react";
+import { BookOpen, Target, Users, MessageSquare } from "lucide-react";
 import { SECTOR_COUNT } from "@/lib/data/sectors";
 import { getBriefingCountLabel } from "@/lib/data/briefings-source";
 
@@ -45,28 +45,26 @@ export async function TrustStrip() {
   const briefingCount = await getBriefingCountLabel();
 
   const stats = [
-    { icon: Clock, value: "Free", label: "3–5 minute assessment" },
+    { value: "Free", label: "3–5 minute assessment" },
     briefingCount
-      ? { icon: TrendingUp, value: briefingCount, label: "Briefings published" }
-      : { icon: TrendingUp, value: "Daily", label: "Briefings published" },
-    { icon: CheckCircle, value: String(SECTOR_COUNT), label: "Sector assessments" },
-    { icon: FileText, value: String(TEMPLATE_COUNT), label: "Free templates & checklists" },
+      ? { value: briefingCount, label: "Briefings published" }
+      : { value: "Daily", label: "Briefings published" },
+    { value: String(SECTOR_COUNT), label: "Sector assessments" },
+    { value: String(TEMPLATE_COUNT), label: "Free templates & checklists" },
   ];
 
   return (
-    <section className="py-14 bg-white border-y border-slate-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        {/* scale stats */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 pb-10 mb-10 border-b border-slate-100">
-          {stats.map(({ icon: Icon, value, label }) => (
-            <div key={label} className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-teal-50 flex items-center justify-center shrink-0">
-                <Icon size={18} className="text-teal-600" />
+    <section className="py-24 bg-cloud-50">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        {/* Scale stats. Quiet by design — these are context for the pillars
+            below, not a scoreboard, so no icon tiles and no bold weights. */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 pb-10 mb-12 border-b border-pearl-200">
+          {stats.map(({ value, label }) => (
+            <div key={label}>
+              <div className="text-navy-700 font-semibold text-2xl leading-none tabular-nums">
+                {value}
               </div>
-              <div>
-                <div className="text-navy-700 font-bold text-lg leading-none">{value}</div>
-                <div className="text-slate-500 text-xs mt-1">{label}</div>
-              </div>
+              <div className="text-slate-600 text-sm mt-1.5">{label}</div>
             </div>
           ))}
         </div>
@@ -80,7 +78,7 @@ export async function TrustStrip() {
               </div>
               <div>
                 <h3 className="font-semibold text-navy-700 text-sm mb-1">{title}</h3>
-                <p className="text-slate-500 text-sm leading-relaxed">{description}</p>
+                <p className="text-slate-600 text-sm leading-relaxed">{description}</p>
               </div>
             </div>
           ))}

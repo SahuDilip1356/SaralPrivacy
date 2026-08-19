@@ -42,18 +42,21 @@ export function NewsletterSection() {
   };
 
   return (
-    <section className="py-20 bg-slate-50">
+    /* The closing act, and the page's second and last navy band. The dark
+       ground both ends the scroll and isolates the one thing being asked for
+       here. */
+    <section className="py-24 bg-navy-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="max-w-2xl mx-auto text-center">
           {/* Icon */}
-          <div className="w-12 h-12 rounded-xl bg-teal-100 flex items-center justify-center mx-auto mb-5">
-            <Mail size={24} className="text-teal-600" />
+          <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center mx-auto mb-5">
+            <Mail size={24} className="text-teal-300" />
           </div>
 
-          <h2 className="text-3xl font-semibold text-navy-700 mb-3">
+          <h2 className="text-3xl font-semibold text-white mb-3">
             DPDPA briefings, delivered to your inbox
           </h2>
-          <p className="text-slate-600 mb-8 leading-relaxed">
+          <p className="text-slate-300 mb-8 leading-relaxed">
             Get practical DPDPA updates, compliance tips, and regulatory developments:
             a short daily briefing, written for business owners, not lawyers.
           </p>
@@ -70,7 +73,7 @@ export function NewsletterSection() {
           ) : (
             <form
               onSubmit={handleSubmit}
-              className="bg-white border border-slate-200 rounded-xl p-6 text-left shadow-sm"
+              className="bg-white border border-pearl-200 rounded-xl p-6 text-left"
             >
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                 <Input
@@ -105,7 +108,7 @@ export function NewsletterSection() {
                 />
                 <p className="text-xs text-slate-400 pl-7">
                   Your data is processed as described in our{" "}
-                  <a href="/privacy" className="text-green-600 underline">Privacy Notice</a>.
+                  <a href="/privacy" className="text-green-700 underline">Privacy Notice</a>.
                   We do not pre-check consent boxes. You must opt in actively.
                 </p>
               </div>
@@ -116,7 +119,7 @@ export function NewsletterSection() {
 
               <Button
                 type="submit"
-                variant="secondary"
+                variant="primary"
                 size="lg"
                 className="w-full"
                 loading={loading}

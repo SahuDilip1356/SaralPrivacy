@@ -30,22 +30,22 @@ const guideSections = [
 
 export function WhitePaperSection() {
   return (
-    <section className="py-20 bg-navy-700">
+    <section className="py-24 bg-cloud-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left: content */}
           <div>
-            <div className="inline-flex items-center gap-2 bg-gold-400/10 border border-gold-400/30 rounded-full px-3.5 py-1.5 mb-5">
-              <FileText size={12} className="text-gold-400" />
-              <span className="text-gold-400 text-xs font-semibold">Practitioner guide · Free download</span>
+            <div className="inline-flex items-center gap-2 bg-gold-50 border border-gold-200 rounded-full px-3.5 py-1.5 mb-5">
+              <FileText size={12} className="text-gold-700" />
+              <span className="text-gold-700 text-xs font-semibold">Practitioner guide · Free download</span>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl font-semibold text-white mb-4">
+            <h2 className="text-3xl sm:text-4xl font-semibold text-navy-700 mb-4">
               The complete DPDPA guide
-              <span className="block text-teal-400 mt-1">for Indian businesses</span>
+              <span className="block text-teal-800 mt-1">for Indian businesses</span>
             </h2>
 
-            <p className="text-slate-300 text-lg leading-relaxed mb-4">
+            <p className="text-slate-600 text-lg leading-relaxed mb-4">
               A practitioner-grade guide, now in 7 Indian languages, that covers everything your
               business needs to know about DPDPA, from applicability to enforcement, without the legalese.
             </p>
@@ -54,7 +54,7 @@ export function WhitePaperSection() {
                 <span
                   key={l.code}
                   title={l.roman}
-                  className="text-xs text-slate-200 bg-white/10 border border-white/15 rounded-full px-3 py-1"
+                  className="text-xs text-slate-700 bg-white border border-pearl-200 rounded-full px-3 py-1"
                 >
                   {l.native}
                 </span>
@@ -64,7 +64,7 @@ export function WhitePaperSection() {
             {/* Contents */}
             <ul className="space-y-2.5 mb-8">
               {whitePaperContents.map((item) => (
-                <li key={item} className="flex items-start gap-2.5 text-slate-300 text-sm">
+                <li key={item} className="flex items-start gap-2.5 text-slate-600 text-sm">
                   <CheckCircle size={16} className="text-green-400 mt-0.5 shrink-0" />
                   {item}
                 </li>
@@ -73,12 +73,12 @@ export function WhitePaperSection() {
 
             <Link
               href="/white-paper"
-              className="inline-flex items-center gap-2 px-7 py-3.5 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl transition-colors text-base"
+              className="inline-flex items-center gap-2 px-7 py-3.5 bg-green-700 hover:bg-green-800 text-white font-semibold rounded-lg transition-colors text-base"
             >
               <Download size={18} />
               Download the free 7-language guide
             </Link>
-            <p className="text-slate-500 text-xs mt-3">
+            <p className="text-slate-600 text-xs mt-3">
               Requires name, work email, and industry. Separate consent options for follow-up.
             </p>
           </div>
@@ -86,7 +86,7 @@ export function WhitePaperSection() {
           {/* Right: what's inside — a clickable table of contents. Each row
               jumps to that section of the free English guide (new tab). */}
           <div className="relative">
-            <div className="bg-white rounded-2xl p-6 sm:p-7 shadow-2xl">
+            <div className="bg-white rounded-xl border border-pearl-200 p-6 sm:p-7">
               {/* Document header */}
               <div className="flex items-center gap-3 mb-5 pb-4 border-b border-slate-100">
                 <div className="w-12 h-12 rounded-xl bg-navy-700 flex items-center justify-center shrink-0">
@@ -96,7 +96,7 @@ export function WhitePaperSection() {
                   <div className="font-bold text-navy-700 text-base leading-snug">
                     What&apos;s inside the guide
                   </div>
-                  <div className="text-slate-500 text-xs mt-0.5">
+                  <div className="text-slate-600 text-xs mt-0.5">
                     2026 Edition · 7 languages · jump to any section
                   </div>
                 </div>
@@ -112,20 +112,20 @@ export function WhitePaperSection() {
                     rel="noopener noreferrer"
                     className="group flex items-start gap-3 py-2.5 -mx-2 px-2 rounded-lg hover:bg-teal-50 transition-colors"
                   >
-                    <span className="text-xs font-bold text-teal-600 tabular-nums pt-0.5 shrink-0 w-5">
+                    <span className="text-xs font-semibold text-teal-800 tabular-nums pt-0.5 shrink-0 w-5">
                       {s.n}
                     </span>
                     <span className="min-w-0 flex-1">
                       <span className="block text-sm font-semibold text-navy-700 leading-snug group-hover:text-teal-700">
                         {s.title}
                       </span>
-                      <span className="block text-xs text-slate-500 leading-snug mt-0.5">
+                      <span className="block text-xs text-slate-600 leading-snug mt-0.5">
                         {s.desc}
                       </span>
                     </span>
                     <ArrowUpRight
                       size={15}
-                      className="text-slate-300 group-hover:text-teal-500 transition-colors shrink-0 mt-0.5"
+                      className="text-slate-400 group-hover:text-teal-700 transition-colors shrink-0 mt-0.5"
                     />
                   </a>
                 ))}
@@ -142,7 +142,7 @@ export function WhitePaperSection() {
             </div>
 
             {/* Floating badge — gold accent */}
-            <div className="absolute -top-3 -right-3 bg-gold-400 text-navy-800 text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
+            <div className="absolute -top-3 -right-3 bg-gold-300 text-navy-800 text-xs font-semibold px-3 py-1.5 rounded-full">
               Free Download
             </div>
           </div>

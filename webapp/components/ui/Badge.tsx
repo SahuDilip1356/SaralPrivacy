@@ -11,7 +11,7 @@ interface BadgeProps {
 
 const variantClasses = {
   navy: "bg-navy-100 text-navy-700",
-  teal: "bg-teal-100 text-teal-700",
+  teal: "bg-teal-100 text-teal-900",
   amber: "bg-amber-100 text-amber-800",
   red: "bg-red-100 text-red-700",
   green: "bg-green-100 text-green-700",

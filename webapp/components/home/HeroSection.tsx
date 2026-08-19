@@ -140,7 +140,7 @@ export function HeroSection() {
                 </div>
                 <p className="text-slate-600 text-sm leading-snug mb-4">{verdict.riskLine}</p>
                 <div className="border-t border-slate-100 pt-4 flex items-center justify-between">
-                  <span className="text-sm text-slate-500">Typical risk</span>
+                  <span className="text-sm text-slate-600">Typical risk</span>
                   <span
                     className="text-sm font-semibold text-navy-700 bg-gold-400 rounded px-2 py-0.5 animate-fade-up motion-reduce:animate-none"
                     style={{ animationDelay: "200ms" }}
@@ -159,7 +159,7 @@ export function HeroSection() {
               <div className="bg-white rounded-xl p-6 max-w-md mx-auto lg:ml-auto">
                 <div className="flex items-center justify-between mb-4">
                   <span className="font-semibold text-navy-700">Clinics &amp; Diagnostic Labs</span>
-                  <span className="text-xs font-medium text-slate-500 bg-slate-100 rounded-full px-2.5 py-1 whitespace-nowrap">
+                  <span className="text-xs font-medium text-slate-600 bg-slate-100 rounded-full px-2.5 py-1 whitespace-nowrap">
                     Sample
                   </span>
                 </div>
@@ -176,7 +176,7 @@ export function HeroSection() {
                     </p>
                   </div>
                 </div>
-                <p className="text-xs text-slate-500 mt-4">
+                <p className="text-xs text-slate-600 mt-4">
                   Pick your business on the left to see your own read.
                 </p>
               </div>

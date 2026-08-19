@@ -43,20 +43,24 @@ export default function HomePage() {
       {/* Beat 1 — Hero (interactive is-this-me verdict: TODO upgrade) */}
       <HeroSection />
 
-      {/* Beat 2 — Trust ribbon (press + stats + "What is DPDPA?").
-          Reordered ahead of the problem beat for a clean dark→light rhythm and
-          to surface the AEO answer block higher. */}
+      {/* Beat 2 — Trust ribbon (stats + why-us pillars). */}
       <TrustStrip />
-      <PressProofStrip />
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
-        <AnswerBlock
-          question="What is DPDPA?"
-          answer="DPDPA is India's framework for handling digital personal data, and the DPDP Rules, 2025 have now been notified. For Indian businesses, the real work is operational: fix your notices, consent flows, rights handling, retention logic, and vendor controls. SaralPrivacy helps you understand what matters, assess your risk, and prioritise the next 30 to 90 days."
-          className="mb-6"
-        />
+
+      {/* Beat 2b — "What is DPDPA?" is the education on-ramp, so it sits
+          directly before the problem beat it sets up. It used to land between
+          the press logos and the risk narrative, where it read as an SEO
+          insert interrupting the story. Still server-rendered and still the
+          speakable target — the schema above points at .answer-block. */}
+      <div className="bg-cloud-50">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-16">
+          <AnswerBlock
+            question="What is DPDPA?"
+            answer="DPDPA is India's framework for handling digital personal data, and the DPDP Rules, 2025 have now been notified. For Indian businesses, the real work is operational: fix your notices, consent flows, rights handling, retention logic, and vendor controls. SaralPrivacy helps you understand what matters, assess your risk, and prioritise the next 30 to 90 days."
+          />
+        </div>
       </div>
 
-      {/* Beat 3 — Where DPDPA risk hides (Scatter, dark) */}
+      {/* Beat 3 — Where DPDPA risk hides (Scatter) */}
       <WhereRiskHides />
 
       {/* Beat 4 — See a real verdict (report-output preview, light).
@@ -74,6 +78,12 @@ export default function HomePage() {
 
       {/* Beat 9 — Stay current (briefings + guide + FAQ + newsletter) */}
       <BriefingsSection />
+
+      {/* Press proof moves here from the top of the page. Three trust sections
+          stacked before the reader had seen the problem or the product; the
+          logos do more work next to the capture zone, where scepticism peaks. */}
+      <PressProofStrip />
+
       <WhitePaperSection />
       <FAQPreview />
       <NewsletterSection />

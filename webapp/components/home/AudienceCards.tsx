@@ -105,11 +105,11 @@ const FLOW_HREFS = new Map(
 
 export function AudienceCards() {
   return (
-    <section id="sectors" className="py-20 bg-white scroll-mt-20">
+    <section id="sectors" className="py-24 bg-cloud-50 scroll-mt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Heading */}
         <div className="text-center mb-12">
-          <span className="inline-block text-xs font-semibold uppercase tracking-wide text-teal-600 mb-3">
+          <span className="inline-block text-xs font-medium uppercase tracking-[0.08em] text-slate-600 mb-3">
             Explore DPDPA by your sector
           </span>
           <h2 className="text-3xl sm:text-4xl font-semibold text-navy-700 mb-4">
@@ -152,7 +152,7 @@ export function AudienceCards() {
                   ))}
                 </ul>
 
-                <p className="text-sm text-slate-500 italic mb-4 leading-snug">
+                <p className="text-sm text-slate-600 italic mb-4 leading-snug">
                   {a.promise}
                 </p>
 
@@ -168,7 +168,7 @@ export function AudienceCards() {
                     </Link>
                     <Link
                       href={a.href}
-                      className="text-sm font-medium text-slate-500 hover:text-navy-700 transition-colors"
+                      className="text-sm font-medium text-slate-600 hover:text-navy-700 transition-colors"
                     >
                       Industry guide
                     </Link>

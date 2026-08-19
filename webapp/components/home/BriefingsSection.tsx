@@ -55,7 +55,7 @@ export async function BriefingsSection() {
   const latest   = briefings.filter((b) => b !== featured).slice(0, 4);
 
   return (
-    <section className="py-20 bg-slate-50">
+    <section className="py-24 bg-cloud-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
@@ -160,7 +160,7 @@ export async function BriefingsSection() {
             {/* Latest updates list */}
             {latest.length > 0 && (
               <div className="space-y-3">
-                <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">
+                <h3 className="text-sm font-semibold text-slate-600 uppercase tracking-wider mb-4">
                   Latest Updates
                 </h3>
                 {latest.map((briefing) => (
@@ -189,7 +189,7 @@ export async function BriefingsSection() {
                 ))}
                 <Link
                   href="/briefings"
-                  className="block text-center py-3 text-sm font-semibold text-green-600 hover:text-green-700 border border-dashed border-green-300 rounded-xl hover:bg-green-50 transition-colors"
+                  className="block text-center py-3 text-sm font-semibold text-green-700 hover:text-green-800 border border-dashed border-green-300 rounded-xl hover:bg-green-50 transition-colors"
                 >
                   Browse all briefings →
                 </Link>

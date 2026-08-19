@@ -14,7 +14,7 @@ const credentials = [
 export function FounderProof() {
   return (
     <div className="bg-white rounded-xl border border-slate-200 p-7">
-      <span className="inline-block text-xs font-semibold uppercase tracking-wide text-teal-600 mb-4">
+      <span className="inline-block text-xs font-medium uppercase tracking-[0.08em] text-slate-600 mb-4">
         Who&apos;s behind this
       </span>
 
@@ -24,7 +24,7 @@ export function FounderProof() {
         </span>
         <div>
           <div className="text-navy-700 font-bold text-xl">Dilip Sahu</div>
-          <div className="text-slate-500 text-sm">Founder, SaralPrivacy</div>
+          <div className="text-slate-600 text-sm">Founder, SaralPrivacy</div>
         </div>
       </div>
 

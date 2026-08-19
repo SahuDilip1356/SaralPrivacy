@@ -17,10 +17,10 @@ export function VerdictPreview() {
     VERDICT_PREVIEWS.find((p) => p.slug === active) ?? VERDICT_PREVIEWS[0];
 
   return (
-    <section className="bg-cloud-50 py-20">
+    <section className="bg-cloud-50 py-24">
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-8">
-          <span className="inline-block text-xs font-semibold uppercase tracking-wide text-teal-600 mb-3">
+          <span className="inline-block text-xs font-medium uppercase tracking-[0.08em] text-slate-600 mb-3">
             The report
           </span>
           <h2 className="text-3xl sm:text-4xl font-semibold text-navy-700 mb-3">
@@ -74,7 +74,7 @@ export function VerdictPreview() {
             <div className="flex items-center justify-between gap-3 mb-5">
               <span className="font-bold text-navy-700">{v.label}</span>
               <div className="flex items-center gap-2 shrink-0">
-                <span className="text-2xs font-semibold text-slate-500 bg-cloud-50 border border-slate-200 rounded-full px-2.5 py-1 whitespace-nowrap">
+                <span className="text-2xs font-semibold text-slate-600 bg-cloud-50 border border-slate-200 rounded-full px-2.5 py-1 whitespace-nowrap">
                   Sample · illustrative
                 </span>
                 <span className="text-xs font-semibold text-navy-700 bg-gold-400 rounded-full px-2.5 py-1">
@@ -98,7 +98,7 @@ export function VerdictPreview() {
                       style={{ width: `${c.pct}%` }}
                     />
                   </span>
-                  <span className="text-xs font-semibold text-slate-500 w-8 text-right tabular-nums">
+                  <span className="text-xs font-semibold text-slate-600 w-8 text-right tabular-nums">
                     {c.pct}
                   </span>
                 </div>

@@ -53,7 +53,7 @@ export function DiscoveryCTA() {
           {/* Right: mini data-map preview */}
           <div className="bg-white rounded-2xl shadow-2xl p-6">
             <div className="flex flex-col gap-0.5 pb-4 border-b border-slate-100">
-              <span className="text-[11px] font-semibold tracking-wide uppercase text-teal-600">
+              <span className="text-[11px] font-semibold tracking-wide uppercase text-teal-800">
                 Healthcare &amp; wellness
               </span>
               <span className="text-xl font-bold text-navy-700">Diagnostic lab</span>

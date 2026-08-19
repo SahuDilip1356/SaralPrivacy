@@ -48,8 +48,8 @@ const steps: Step[] = [
     cap: "Know where your data sits",
     href: "/discovery",
     badge: "bg-teal-500",
-    ring: "bg-teal-500/15",
-    iconColor: "text-teal-400",
+    ring: "bg-teal-50",
+    iconColor: "text-teal-700",
   },
   {
     n: 2,
@@ -61,8 +61,8 @@ const steps: Step[] = [
     cap: "Your sector's flow map",
     href: "/data-mapping",
     badge: "bg-teal-500",
-    ring: "bg-teal-500/15",
-    iconColor: "text-teal-400",
+    ring: "bg-teal-50",
+    iconColor: "text-teal-700",
   },
   {
     n: 3,
@@ -74,8 +74,8 @@ const steps: Step[] = [
     cap: "Your score in 3 minutes",
     href: "/assessment",
     badge: "bg-green-500",
-    ring: "bg-green-500/15",
-    iconColor: "text-green-400",
+    ring: "bg-green-50",
+    iconColor: "text-green-700",
   },
   {
     n: 4,
@@ -87,8 +87,8 @@ const steps: Step[] = [
     cap: "Notice pack as a branded PDF",
     href: "/tools/dpdpa-privacy-notice-generator",
     badge: "bg-gold-400",
-    ring: "bg-gold-400/15",
-    iconColor: "text-gold-400",
+    ring: "bg-gold-50",
+    iconColor: "text-gold-700",
   },
 ];
 
@@ -103,7 +103,7 @@ function StepArtifact({ kind }: { kind: Step["key"] }) {
         {["Customers", "Staff", "CCTV", "Vendors"].map((l) => (
           <span
             key={l}
-            className="text-[9px] font-medium text-teal-300 bg-teal-500/10 border border-teal-500/25 rounded-full px-1.5 py-0.5"
+            className="text-[9px] font-medium text-teal-800 bg-teal-50 border border-teal-200 rounded-full px-1.5 py-0.5"
           >
             {l}
           </span>
@@ -117,12 +117,12 @@ function StepArtifact({ kind }: { kind: Step["key"] }) {
       <div className="flex items-center gap-1 shrink-0 opacity-85">
         {[0, 1, 2].map((i) => (
           <span key={i} className="flex items-center gap-1">
-            <span className="relative inline-block w-5 h-5 rounded-md bg-teal-500/10 border border-teal-500/30">
+            <span className="relative inline-block w-5 h-5 rounded-md bg-teal-50 border border-teal-300">
               {i === 2 && (
                 <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-gold-400" />
               )}
             </span>
-            {i < 2 && <span className="inline-block w-2 h-px bg-teal-500/40" />}
+            {i < 2 && <span className="inline-block w-2 h-px bg-teal-400" />}
           </span>
         ))}
       </div>
@@ -138,13 +138,13 @@ function StepArtifact({ kind }: { kind: Step["key"] }) {
   // fix — notice-PDF corner mock
   return (
     <div className="block shrink-0 opacity-85">
-      <div className="relative w-[62px] h-[46px] rounded-md bg-white/[0.05] border border-white/15 p-2 overflow-hidden">
-        <div className="h-1 w-7 bg-white/25 rounded-full mb-1.5" />
-        <div className="h-[3px] w-full bg-white/10 rounded-full mb-1" />
-        <div className="h-[3px] w-4/5 bg-white/10 rounded-full mb-1.5" />
-        <div className="text-[6.5px] leading-none text-slate-400">EN + हिन्दी</div>
+      <div className="relative w-[62px] h-[46px] rounded-md bg-cloud-100 border border-pearl-300 p-2 overflow-hidden">
+        <div className="h-1 w-7 bg-slate-400 rounded-full mb-1.5" />
+        <div className="h-[3px] w-full bg-pearl-300 rounded-full mb-1" />
+        <div className="h-[3px] w-4/5 bg-pearl-300 rounded-full mb-1.5" />
+        <div className="text-[6.5px] leading-none text-slate-600">EN + हिन्दी</div>
         <div
-          className="absolute top-0 right-0 w-3 h-3 bg-gold-400/40"
+          className="absolute top-0 right-0 w-3 h-3 bg-gold-400"
           style={{ clipPath: "polygon(100% 0, 0 0, 100% 100%)" }}
         />
       </div>
@@ -204,17 +204,17 @@ export function HowItWorks() {
     }`;
 
   return (
-    <section className="bg-navy-700 py-20">
+    <section className="bg-cloud-50 py-24">
       <div ref={ref} className="max-w-3xl mx-auto px-4 sm:px-6">
         {/* header */}
         <div className="text-center mb-12">
-          <span className="inline-block text-xs font-semibold uppercase tracking-wide text-teal-400 mb-3">
+          <span className="inline-block text-xs font-medium uppercase tracking-[0.08em] text-slate-600 mb-3">
             How it works
           </span>
-          <h2 className="text-3xl sm:text-4xl font-semibold text-white mb-3">
+          <h2 className="text-3xl sm:text-4xl font-semibold text-navy-700 mb-3">
             Start anywhere. It&apos;s all free to try.
           </h2>
-          <p className="text-slate-300 text-base max-w-md mx-auto leading-relaxed">
+          <p className="text-slate-600 text-base max-w-md mx-auto leading-relaxed">
             Four steps to DPDPA-ready — follow them in order, or jump straight to
             what you need.
           </p>
@@ -230,7 +230,7 @@ export function HowItWorks() {
                   href={step.href}
                   onClick={() => trackEvent.hiwStepClick({ step: step.key })}
                   style={{ transitionDelay: `${i * 140}ms` }}
-                  className={`group relative w-full max-w-lg flex flex-wrap items-center gap-x-3.5 gap-y-2 rounded-xl border border-white/10 bg-navy-600/40 hover:border-white/25 hover:bg-navy-600/70 px-4 py-3.5 ${reveal(i)}`}
+                  className={`group relative w-full max-w-lg flex flex-wrap items-center gap-x-3.5 gap-y-2 rounded-xl border border-pearl-200 bg-white hover:border-pearl-300 px-4 py-3.5 ${reveal(i)}`}
                 >
                   <span
                     className={`absolute -top-2 -right-2 w-6 h-6 rounded-full grid place-items-center text-xs font-semibold text-navy-700 ${step.badge}`}
@@ -243,13 +243,13 @@ export function HowItWorks() {
                     <Icon size={20} className={step.iconColor} />
                   </span>
                   <span className="order-2 min-w-0 flex-1">
-                    <span className="block text-white font-semibold text-[15px]">
+                    <span className="block text-navy-700 font-semibold text-[15px]">
                       {step.title}
                     </span>
-                    <span className="block text-slate-400 text-xs mt-0.5">
-                      {step.sub} <span className="text-slate-500">· {step.tag}</span>
+                    <span className="block text-slate-600 text-xs mt-0.5">
+                      {step.sub} <span className="text-slate-600">· {step.tag}</span>
                     </span>
-                    <span className="block text-[10px] font-semibold tracking-wide uppercase text-slate-400 mt-1.5">
+                    <span className="block text-[10px] font-semibold tracking-wide uppercase text-slate-600 mt-1.5">
                       {step.cap}
                     </span>
                   </span>
@@ -260,7 +260,7 @@ export function HowItWorks() {
                   </span>
                   <ArrowRight
                     size={16}
-                    className="order-3 sm:order-4 text-slate-500 group-hover:text-teal-400 transition-colors shrink-0"
+                    className="order-3 sm:order-4 text-slate-400 group-hover:text-teal-700 transition-colors shrink-0"
                   />
                 </Link>
                 {/* connector */}
@@ -275,16 +275,16 @@ export function HowItWorks() {
           {/* milestone */}
           <div
             style={{ transitionDelay: `${steps.length * 140}ms` }}
-            className={`w-full max-w-lg flex items-center gap-3.5 rounded-xl border-[1.5px] border-green-500/60 bg-green-900/20 px-4 py-4 ${reveal(steps.length)}`}
+            className={`w-full max-w-lg flex items-center gap-3.5 rounded-xl border-[1.5px] border-green-600/40 bg-green-50 px-4 py-4 ${reveal(steps.length)}`}
           >
-            <span className="shrink-0 w-11 h-11 rounded-lg grid place-items-center bg-green-500/20">
-              <ShieldCheck size={22} className="text-green-400" />
+            <span className="shrink-0 w-11 h-11 rounded-lg grid place-items-center bg-green-100">
+              <ShieldCheck size={22} className="text-green-700" />
             </span>
             <span className="min-w-0">
-              <span className="block text-white font-semibold text-base">
+              <span className="block text-navy-700 font-semibold text-base">
                 You&apos;re DPDPA-ready
               </span>
-              <span className="block text-slate-400 text-xs mt-0.5">
+              <span className="block text-slate-600 text-xs mt-0.5">
                 Keep evidence ready for customers, vendors &amp; regulators
               </span>
             </span>
@@ -297,7 +297,7 @@ export function HowItWorks() {
               crisp while the fan stretches to the container width. */}
           <span
             aria-hidden
-            className="my-2 h-6 w-px border-l-2 border-dashed border-teal-500/40 sm:hidden"
+            className="my-2 h-6 w-px border-l-2 border-dashed border-teal-400 sm:hidden"
           />
           <svg
             aria-hidden
@@ -317,7 +317,7 @@ export function HowItWorks() {
               <path
                 key={i}
                 d={d}
-                className="sp-dash-flow stroke-teal-500 fill-none opacity-60"
+                className="sp-dash-flow stroke-teal-700 fill-none opacity-60"
                 strokeWidth={1.6}
                 strokeDasharray="5 6"
                 vectorEffect="non-scaling-stroke"
@@ -336,25 +336,25 @@ export function HowItWorks() {
               const inner = (
                 <>
                   <span
-                    className={`shrink-0 w-9 h-9 rounded-lg grid place-items-center ${comingSoon ? "bg-white/5" : "bg-teal-500/15"}`}
+                    className={`shrink-0 w-9 h-9 rounded-lg grid place-items-center ${comingSoon ? "bg-cloud-100" : "bg-teal-50"}`}
                   >
                     <Icon
                       size={18}
-                      className={comingSoon ? "text-slate-500" : "text-teal-400"}
+                      className={comingSoon ? "text-slate-400" : "text-teal-700"}
                     />
                   </span>
                   <span className="min-w-0">
                     <span
-                      className={`block font-semibold text-sm ${comingSoon ? "text-slate-300" : "text-white"}`}
+                      className={`block font-semibold text-sm ${comingSoon ? "text-slate-600" : "text-navy-700"}`}
                     >
                       {leaf.title}
                     </span>
                     {comingSoon ? (
-                      <span className="inline-block mt-1 text-[10px] font-semibold text-gold-400 bg-gold-400/15 rounded-full px-2 py-0.5">
+                      <span className="inline-block mt-1 text-[10px] font-semibold text-gold-700 bg-gold-50 rounded-full px-2 py-0.5">
                         Coming soon
                       </span>
                     ) : (
-                      <span className="block text-slate-400 text-xs mt-0.5">
+                      <span className="block text-slate-600 text-xs mt-0.5">
                         {leaf.sub}
                       </span>
                     )}
@@ -364,7 +364,7 @@ export function HowItWorks() {
                     className={`ml-auto shrink-0 transition-colors ${
                       comingSoon
                         ? "text-slate-600"
-                        : "text-slate-500 group-hover:text-teal-400"
+                        : "text-slate-400 group-hover:text-teal-700"
                     }`}
                   />
                 </>
@@ -374,7 +374,7 @@ export function HowItWorks() {
               return comingSoon ? (
                 <div
                   key={leaf.title}
-                  className={`${base} border-dashed border-white/15 bg-navy-600/30 cursor-not-allowed opacity-75`}
+                  className={`${base} border-dashed border-pearl-300 bg-cloud-100 cursor-not-allowed opacity-75`}
                   title="Coming soon"
                 >
                   {inner}
@@ -383,7 +383,7 @@ export function HowItWorks() {
                 <Link
                   key={leaf.title}
                   href={leaf.href as string}
-                  className={`group ${base} border-white/10 bg-navy-600/40 hover:border-teal-500/40 hover:bg-navy-600/70 transition-colors`}
+                  className={`group ${base} border-pearl-200 bg-white hover:border-teal-400 transition-colors`}
                 >
                   {inner}
                 </Link>

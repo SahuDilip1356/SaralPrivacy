@@ -65,15 +65,11 @@ app/blog/[slug]/page.tsx:479:                className="block w-full text-center
 app/media/press-wall/page.tsx:67:        <span className="absolute top-2 left-2 inline-flex items-center gap-1 text-[10px] font-semibold bg-green-500 text-white px-2 py-0.5 rounded-full shadow-sm">
 app/media/press-wall/page.tsx:176:            className="inline-flex items-center gap-2 bg-green-500 text-white text-sm font-semibold px-6 py-3 rounded-xl hover:bg-green-600 transition-colors whitespace-nowrap"
 app/media/page.tsx:148:              className="inline-flex items-center gap-2 bg-green-500 text-white text-sm font-semibold px-5 py-3 rounded-xl hover:bg-green-600 transition-colors whitespace-nowrap"
-components/ui/PressProofStrip.tsx:123:            className="inline-flex items-center gap-2 bg-green-500 text-white text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-green-600 transition-colors"
 components/ui/checkbox.tsx:18:      "data-[state=checked]:bg-green-500 data-[state=checked]:border-green-500 data-[state=checked]:text-white",
 components/home/FAQPreview.tsx:58:            className="inline-flex items-center gap-2 px-6 py-3 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition-colors text-sm"
 components/home/DiscoveryCTA.tsx:46:              className="inline-flex items-center gap-2 px-7 py-3.5 bg-green-500 text-white font-semibold rounded-xl hover:bg-green-600 transition-colors text-base"
 components/home/DiscoveryCTA.tsx:84:                      on ? "bg-green-500 text-white" : "bg-slate-100 text-slate-400"
-components/home/WhitePaperSection.tsx:76:              className="inline-flex items-center gap-2 px-7 py-3.5 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl transition-colors text-base"
 components/home/VerdictPreview.tsx:120:              className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 bg-green-500 hover:bg-green-600 text-white text-sm font-semibold rounded-xl transition-colors"
-components/home/HeroSection.tsx:85:                          ? "bg-green-500 border-green-500 text-white"
-components/home/HeroSection.tsx:101:                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl transition-colors text-base"
 components/home/NoticeCTA.tsx:46:              className="inline-flex items-center gap-2 px-7 py-3.5 bg-green-500 text-white font-semibold rounded-xl hover:bg-green-600 transition-colors text-base"
 components/home/NoticeCTA.tsx:71:                  <span className="w-5 h-5 rounded grid place-items-center text-xs font-bold bg-green-500 text-white">
 components/home/NoticeCTA.tsx:90:                <div className="inline-block mt-1 bg-green-500 text-white font-bold text-sm px-3.5 py-1 rounded-full">
