@@ -70,7 +70,7 @@ export default function GlossaryClient() {
       </div>
 
       {/* Search bar */}
-      <div className="bg-white border-b border-slate-200 py-4 sticky top-[calc(4rem+32px)] z-40">
+      <div className="bg-white border-b border-slate-200 py-4 sticky top-16 z-40">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="relative max-w-lg">
             <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
@@ -189,7 +189,7 @@ export default function GlossaryClient() {
             {Object.entries(grouped).sort(([a], [b]) => a.localeCompare(b)).map(([letter, terms]) => (
               <div key={letter}>
                 {/* Letter heading */}
-                <div id={`letter-${letter}`} className="sticky top-[calc(4rem+32px+108px)] bg-slate-50 z-10 py-2 mb-1">
+                <div id={`letter-${letter}`} className="sticky top-[calc(4rem+108px)] bg-slate-50 z-10 py-2 mb-1">
                   <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">{letter}</span>
                 </div>
 

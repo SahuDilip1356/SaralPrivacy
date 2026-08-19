@@ -215,7 +215,7 @@ export default async function BlogPage({ searchParams }: PageProps) {
       </div>
 
       {/* Lane filter tabs */}
-      <div className="bg-white border-b border-slate-200 sticky top-[calc(4rem+32px)] z-40">
+      <div className="bg-white border-b border-slate-200 sticky top-16 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center gap-2 py-3 overflow-x-auto scrollbar-hide">
             {LANE_FILTERS.map((filter) => {

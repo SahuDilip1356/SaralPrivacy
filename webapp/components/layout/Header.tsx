@@ -9,21 +9,21 @@ import { Menu, X, ChevronDown, Download } from "lucide-react";
 import { TemplateDownloadModal } from "@/components/TemplateDownloadModal";
 import { sectorNavLinks } from "@/lib/data/sectors";
 
+// No badges here on purpose. Three gold "Free" chips plus "Daily" plus a
+// "7 Indian languages" chip put five competing emphasis devices in 64px of
+// chrome; "free" is now said once, in the hero trust line.
 const navigation = [
   {
     label: "Data Discovery",
     href: "/discovery",
-    badge: "Free",
   },
   {
     label: "Data Flow",
     href: "/data-mapping",
-    badge: "Free",
   },
   {
     label: "Assessment",
     href: "/assessment",
-    badge: "Free",
   },
   {
     label: "Industries",
@@ -49,7 +49,6 @@ const navigation = [
   {
     label: "Briefings",
     href: "/briefings",
-    badge: "Daily",
   },
   {
     label: "Blog",
@@ -104,26 +103,10 @@ export function Header() {
           : "bg-white/95 backdrop-blur-sm border-b border-slate-100"
       )}
     >
-      {/* Top urgency strip — Trust Navy with Signal Gold dot */}
-      <div className="bg-navy-700 text-white text-xs py-2 px-4 text-center font-medium">
-        <span className="inline-flex items-center gap-2 flex-wrap justify-center">
-          {/* Pulsing urgency dot — Signal Gold, echoes logo tick */}
-          <span className="relative flex h-2 w-2 shrink-0">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold-400 opacity-60" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-gold-400" />
-          </span>
-          <span>
-            <strong>DPDP Rules, 2025 are now in effect.</strong>{" "}
-            See where your business stands, in 3–5 minutes.
-          </span>
-          <Link
-            href="/discovery"
-            className="inline-flex items-center gap-1 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full hover:bg-green-600 transition-colors shrink-0"
-          >
-            Find out — free →
-          </Link>
-        </span>
-      </div>
+      {/* The urgency strip that used to sit here said the same thing as the
+          hero eyebrow 90px below it. The message now lives in the hero only.
+          Removing it also removes the 32px of extra top padding <main> was
+          carrying to clear it — see app/layout.tsx. */}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
@@ -164,11 +147,6 @@ export function Header() {
                 onMouseEnter={() => item.children && openMenu(item.label)}
                 onMouseLeave={() => item.children && scheduleClose()}
               >
-                {item.badge && (
-                  <span className="pointer-events-none absolute -top-1.5 left-1/2 -translate-x-1/2 z-10 rounded-full bg-gold-400 px-1.5 py-px text-[8px] font-bold uppercase tracking-wide text-navy-800 shadow-sm">
-                    {item.badge}
-                  </span>
-                )}
                 <Link
                   href={item.href}
                   className={cn(
@@ -212,27 +190,24 @@ export function Header() {
             ))}
           </nav>
 
-          {/* CTA + Mobile toggle */}
+          {/* One filled action in the chrome. Templates steps down to a text
+              button; the guide keeps the fill because it is the one thing here
+              that isn't already a nav link. */}
           <div className="flex items-center gap-2">
             <button
               onClick={() => setTemplateModalOpen(true)}
-              className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold whitespace-nowrap bg-navy-700 text-white rounded-lg hover:bg-navy-800 transition-colors"
+              className="hidden md:inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium whitespace-nowrap text-slate-700 rounded-lg hover:text-navy-700 hover:bg-cloud-50 transition-colors"
             >
               <Download size={14} />
               Templates
             </button>
-            <div className="relative hidden md:inline-flex">
-              <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 z-10 whitespace-nowrap rounded-full bg-gold-400 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-navy-800 shadow-sm">
-                7 Indian languages
-              </span>
-              <Link
-                href="/white-paper#download"
-                className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold whitespace-nowrap bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
-              >
-                <Download size={14} />
-                DPDPA Guide
-              </Link>
-            </div>
+            <Link
+              href="/white-paper#download"
+              className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold whitespace-nowrap bg-green-700 text-white rounded-lg hover:bg-green-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2"
+            >
+              <Download size={14} />
+              DPDPA Guide
+            </Link>
             <button
               className="xl:hidden p-2 text-slate-600 hover:text-slate-900"
               onClick={() => setMobileOpen(!mobileOpen)}
@@ -259,11 +234,6 @@ export function Header() {
                 )}
               >
                 <span>{item.label}</span>
-                {item.badge && (
-                  <span className="bg-gold-400 text-navy-800 text-[10px] font-bold px-1.5 py-0.5 rounded-full">
-                    {item.badge}
-                  </span>
-                )}
               </Link>
               {item.children && (
                 <div className="ml-4 mt-0.5 space-y-0.5">
@@ -281,23 +251,22 @@ export function Header() {
             </div>
           ))}
           <div className="pt-3 border-t border-slate-100 space-y-2">
+            <Link
+              href="/white-paper#download"
+              className="flex w-full items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold bg-green-700 text-white rounded-lg hover:bg-green-800 transition-colors"
+            >
+              <Download size={14} />
+              DPDPA Guide
+            </Link>
             <button
               onClick={() => { setMobileOpen(false); setTemplateModalOpen(true); }}
-              className="block w-full text-center px-4 py-2.5 text-sm font-semibold bg-navy-700 text-white rounded-lg hover:bg-navy-800 transition-colors"
+              className="block w-full text-center px-4 py-2.5 text-sm font-semibold border border-pearl-300 text-navy-700 rounded-lg hover:bg-cloud-50 transition-colors"
             >
               Download DPDPA Templates
             </button>
             <Link
-              href="/white-paper#download"
-              className="flex w-full items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
-            >
-              <Download size={14} />
-              DPDPA Guide
-              <span className="rounded-full bg-gold-400 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-navy-800">7 Indian languages</span>
-            </Link>
-            <Link
               href="/contact"
-              className="block w-full text-center px-4 py-2.5 text-sm font-semibold border border-navy-300 text-navy-700 rounded-lg hover:bg-cloud-50 transition-colors"
+              className="block w-full text-center px-4 py-2.5 text-sm font-semibold border border-pearl-300 text-navy-700 rounded-lg hover:bg-cloud-50 transition-colors"
             >
               Get Consultation
             </Link>

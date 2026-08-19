@@ -72,7 +72,9 @@ export default function RootLayout({
       </head>
       <body className="font-sans antialiased bg-slate-50 text-slate-900 min-h-screen flex flex-col">
         <Header />
-        <main className="flex-1 pt-[4rem]" style={{ paddingTop: "calc(4rem + 32px)" }}>
+        {/* 4rem clears the fixed header. The extra 32px this used to carry was
+            clearance for the announcement strip, which is gone. */}
+        <main className="flex-1 pt-16">
           {children}
         </main>
         <Footer />
