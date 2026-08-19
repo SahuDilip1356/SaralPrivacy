@@ -19,6 +19,29 @@
 - CTA recipes computed: light = green-700 fill + white (5.48:1) · navy = green-400 fill +
   navy-950 text (9.72:1) · white-on-green-500 banned (2.54:1).
 
+## Branching & merge model
+
+One branch per wave, strictly sequential, each cut from fresh `main` after the previous
+wave merges. Waves are the merge unit (one PR, one preview, one Dilip-verified merge =
+one prod deploy); tasks are the commit unit inside a wave (single-`git revert` escape).
+
+| Branch | Cut from | Merges when |
+|---|---|---|
+| `design/linear-aesthetic-uplift` | main | Docs only — merge first, zero code risk |
+| `design/w0-theme-foundation` | main post-docs | W0 exit gate passed on preview |
+| `design/w1-landing-recomposition` | main post-W0 | W1 exit gate passed on preview |
+| `design/w2-education-surfaces` | main post-W1 + 2 weeks of data | W2 checks passed |
+| W3 branches | main, per mini-spec | Each own gate |
+
+Rationale: W1 depends on W0's primitives/tokens (parallel branches would conflict in
+`globals.css` + `Button.tsx`); W1's tasks are visually interdependent, so partial merges
+would strand prod on a half-transformed page; W0 deploys alone because the font swap
+touches every page and isolation makes regressions unambiguous.
+
+Per-wave flow: push branch → Vercel preview (⚠ feature branches don't always auto-build —
+fall back to `npx vercel deploy`) → Dilip walks the exit-gate checklist on preview → PR →
+Dilip merges (never self-merge) → verify analytics events on PROD within a day.
+
 ## Phase P — Pre-flight (blocking gates before any code)
 
 **P1. Design review gate** · ~1 h
