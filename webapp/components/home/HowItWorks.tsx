@@ -211,7 +211,7 @@ export function HowItWorks() {
           <span className="inline-block text-xs font-semibold uppercase tracking-wide text-teal-400 mb-3">
             How it works
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3">
+          <h2 className="text-3xl sm:text-4xl font-semibold text-white mb-3">
             Start anywhere. It&apos;s all free to try.
           </h2>
           <p className="text-slate-300 text-base max-w-md mx-auto leading-relaxed">

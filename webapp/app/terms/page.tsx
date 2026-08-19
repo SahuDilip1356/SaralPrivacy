@@ -12,7 +12,7 @@ export default function TermsPage() {
     <div className="min-h-screen bg-slate-50">
       <div className="bg-navy-700 py-12">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <h1 className="text-3xl font-bold text-white">Terms of Use</h1>
+          <h1 className="text-3xl font-semibold text-white">Terms of Use</h1>
           <p className="text-slate-300 mt-2">SaralPrivacy Terms of Use</p>
           <p className="text-sm text-slate-500 mt-1">Last updated: March 2026 | Version 1.0</p>
         </div>
@@ -28,7 +28,7 @@ export default function TermsPage() {
             { title: "6. Changes to These Terms", content: "We may update these Terms of Use from time to time. Continued use of the platform after changes constitutes acceptance of the updated terms." },
           ].map((section) => (
             <div key={section.title} className="bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="font-bold text-navy-700 text-lg mb-3">{section.title}</h2>
+              <h2 className="font-semibold text-navy-700 text-lg mb-3">{section.title}</h2>
               <p className="text-slate-600 text-sm leading-relaxed">{section.content}</p>
             </div>
           ))}

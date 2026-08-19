@@ -153,7 +153,7 @@ function ChecklistSectionAccordion({
               </span>
             </div>
             <div>
-              <h3 className="text-sm font-bold text-navy-700 group-hover:text-green-600 transition-colors">
+              <h3 className="text-sm font-semibold text-navy-700 group-hover:text-green-600 transition-colors">
                 {section.title}
               </h3>
               <div className="flex items-center gap-2 mt-0.5 flex-wrap">
@@ -210,7 +210,7 @@ function MidPageCTA() {
         <p className="text-green-400 text-xs font-bold uppercase tracking-widest mb-1">
           Free Compliance Assessment
         </p>
-        <h3 className="text-white text-lg font-bold mb-1">
+        <h3 className="text-white text-lg font-semibold mb-1">
           See exactly where your business stands
         </h3>
         <p className="text-slate-300 text-sm leading-relaxed">
@@ -244,7 +244,7 @@ function MidPageCTA() {
 function StatusLegend() {
   return (
     <div className="bg-white rounded-xl border border-slate-200 p-5 mb-8">
-      <h2 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3 flex items-center gap-2">
+      <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-3 flex items-center gap-2">
         <Info size={13} />
         How to read this checklist
       </h2>
@@ -285,7 +285,7 @@ function KeyGuardrails() {
     <div className="mb-8">
       <div className="flex items-center gap-2 mb-4">
         <AlertTriangle size={16} className="text-teal-500" />
-        <h2 className="text-base font-bold text-navy-700">
+        <h2 className="text-base font-semibold text-navy-700">
           Key Guardrails for This Checklist
         </h2>
       </div>
@@ -295,7 +295,7 @@ function KeyGuardrails() {
             key={g.id}
             className="bg-white border-l-4 border-l-teal-400 border border-slate-100 rounded-r-xl p-4"
           >
-            <h3 className="text-sm font-bold text-navy-700 mb-1.5">
+            <h3 className="text-sm font-semibold text-navy-700 mb-1.5">
               {g.id}. {g.heading}
             </h3>
             <p className="text-sm text-slate-600 leading-relaxed">
@@ -352,7 +352,7 @@ function RelatedResources() {
 
   return (
     <div className="mb-8">
-      <h2 className="text-base font-bold text-navy-700 mb-4">
+      <h2 className="text-base font-semibold text-navy-700 mb-4">
         Related Compliance Resources
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -368,7 +368,7 @@ function RelatedResources() {
             >
               <Icon size={17} className={accent} />
             </div>
-            <h3 className="text-sm font-bold text-navy-700 group-hover:text-green-600 transition-colors mb-1">
+            <h3 className="text-sm font-semibold text-navy-700 group-hover:text-green-600 transition-colors mb-1">
               {label}
             </h3>
             <p className="text-xs text-slate-500 mb-3 leading-relaxed">{desc}</p>
@@ -422,7 +422,7 @@ export default function ChecklistContent() {
             </span>
           </div>
           <div className="max-w-3xl">
-            <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">
+            <h1 className="text-3xl sm:text-4xl font-semibold text-white mb-3">
               DPDPA Compliance Checklist
             </h1>
             <p className="text-slate-300 text-lg leading-relaxed mb-2">

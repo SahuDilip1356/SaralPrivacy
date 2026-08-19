@@ -58,7 +58,7 @@ export default function ResourcesPage() {
           <p className="text-xs font-bold text-[#E07B39] uppercase tracking-widest mb-2">
             Free Downloads
           </p>
-          <h1 className="text-3xl font-black text-[#1E3A5F] mb-3">
+          <h1 className="text-3xl font-semibold text-[#1E3A5F] mb-3">
             DPDPA Compliance Templates
           </h1>
           <p className="text-slate-500 text-sm leading-relaxed max-w-lg mx-auto">
@@ -79,7 +79,7 @@ export default function ResourcesPage() {
 
         {/* Templates */}
         <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-6">
-          <h2 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">
+          <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-4">
             Available Templates
           </h2>
           <ResourceTemplateGate templates={TEMPLATES} />
@@ -87,7 +87,7 @@ export default function ResourcesPage() {
 
         {/* White paper */}
         <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-6">
-          <h2 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">
+          <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-4">
             Guides & Reports
           </h2>
           <a
@@ -115,7 +115,7 @@ export default function ResourcesPage() {
 
         {/* Assessment CTA */}
         <div className="bg-[#1E3A5F] rounded-2xl p-6 text-center">
-          <h2 className="text-base font-bold text-white mb-1">
+          <h2 className="text-base font-semibold text-white mb-1">
             Not sure which templates you need?
           </h2>
           <p className="text-sm text-white/70 mb-4">

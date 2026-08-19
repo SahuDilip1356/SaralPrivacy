@@ -20,7 +20,7 @@ export function NoticeCTA() {
               </span>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+            <h2 className="text-3xl sm:text-4xl font-semibold text-white mb-4">
               Your privacy notice, written for you.
             </h2>
 

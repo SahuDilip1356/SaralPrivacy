@@ -254,7 +254,7 @@ export function BriefingsExplorer({ briefings }: { briefings: ExplorerBriefing[]
 
       {/* Closing conversion CTA */}
       <div className="mt-12 text-center rounded-2xl border border-slate-200 bg-white py-10 px-6">
-        <h2 className="text-xl font-bold text-navy-700 mb-2">Not sure where to start?</h2>
+        <h2 className="text-xl font-semibold text-navy-700 mb-2">Not sure where to start?</h2>
         <p className="text-slate-500 text-sm max-w-md mx-auto mb-5">
           Take the free 5-minute readiness assessment and get a personalised DPDPA roadmap for your business type.
         </p>
@@ -295,7 +295,7 @@ function BriefingCard({ b }: { b: ExplorerBriefing }) {
         </div>
 
         <Link href={`/briefings/${b.slug}`} className="block">
-          <h3 className="font-bold text-navy-700 text-base leading-snug mb-2 group-hover:text-green-600 line-clamp-2">{b.title}</h3>
+          <h3 className="font-semibold text-navy-700 text-base leading-snug mb-2 group-hover:text-green-600 line-clamp-2">{b.title}</h3>
         </Link>
         <p className="text-slate-500 text-sm leading-relaxed line-clamp-2 mb-3">{b.excerpt}</p>
 
@@ -340,7 +340,7 @@ function FeaturedCard({ tone, eyebrow, b, cta }:
       <span className={`inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wide ${t.text} mb-2`}>
         {FEATURED_ICON[tone]} {eyebrow}
       </span>
-      <h3 className="font-bold text-navy-700 text-[15px] leading-snug mb-1.5 line-clamp-2">{b.title}</h3>
+      <h3 className="font-semibold text-navy-700 text-[15px] leading-snug mb-1.5 line-clamp-2">{b.title}</h3>
       <p className="text-slate-500 text-xs leading-relaxed line-clamp-2 mb-3">{b.excerpt}</p>
       <span className={`inline-flex items-center gap-1 text-xs font-semibold ${t.text}`}>{cta} <ArrowRight size={13} /></span>
     </Link>

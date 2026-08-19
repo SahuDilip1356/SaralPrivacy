@@ -305,7 +305,7 @@ export default function RealEstateAssessmentClient() {
               <ReadinessGauge readiness={result.readinessScore} color={result.bandColor} band={result.band} />
               <div className="text-center sm:text-left">
                 <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Your real estate firm result</div>
-                <h2 className="mt-1 text-xl font-bold text-navy-700">DPDPA Readiness: {result.readinessScore} / 100</h2>
+                <h2 className="mt-1 text-xl font-semibold text-navy-700">DPDPA Readiness: {result.readinessScore} / 100</h2>
                 <div
                   className="mt-2 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-bold text-white"
                   style={{ backgroundColor: result.bandColor }}
@@ -326,7 +326,7 @@ export default function RealEstateAssessmentClient() {
           {/* Top red flags */}
           {result.redFlags.length > 0 && (
             <div className="mt-5 rounded-xl border border-slate-200 bg-white p-6">
-              <h3 className="mb-3 text-sm font-bold text-navy-700">Top {result.redFlags.length} risk areas</h3>
+              <h3 className="mb-3 text-sm font-semibold text-navy-700">Top {result.redFlags.length} risk areas</h3>
               <ul className="space-y-2.5">
                 {result.redFlags.map((flag, i) => (
                   <li key={i} className="flex items-start gap-2.5 text-sm text-slate-700">
@@ -340,7 +340,7 @@ export default function RealEstateAssessmentClient() {
 
           {/* Bucket map (4-tier) */}
           <div className="mt-5 rounded-xl border border-slate-200 bg-white p-6">
-            <h3 className="mb-4 text-sm font-bold text-navy-700">Your client &amp; property-data risk map</h3>
+            <h3 className="mb-4 text-sm font-semibold text-navy-700">Your client &amp; property-data risk map</h3>
             <div className="space-y-4">
               {pack.buckets.map((b) => (
                 <div key={b.key}>
@@ -362,7 +362,7 @@ export default function RealEstateAssessmentClient() {
             <form onSubmit={unlockReport} className="mt-5 rounded-xl border border-green-200 bg-green-50 p-6">
               <div className="mb-1 flex items-center gap-2">
                 <Lock size={16} className="text-green-600" />
-                <h3 className="text-sm font-bold text-navy-700">Unlock your priority fixes + Real Estate DPDPA Starter Checklist</h3>
+                <h3 className="text-sm font-semibold text-navy-700">Unlock your priority fixes + Real Estate DPDPA Starter Checklist</h3>
               </div>
               <p className="mb-4 text-xs text-slate-600">See your recommended next steps and get the checklist emailed to you. This scan collects no client documents — only your contact details and answers.</p>
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -396,7 +396,7 @@ export default function RealEstateAssessmentClient() {
             </form>
           ) : (
             <div className="mt-5 rounded-xl border border-slate-200 bg-white p-6">
-              <h3 className="mb-3 text-sm font-bold text-navy-700">Your priority fixes</h3>
+              <h3 className="mb-3 text-sm font-semibold text-navy-700">Your priority fixes</h3>
               <ul className="space-y-2.5">
                 {result.recommendations.map((rec, i) => (
                   <li key={i} className="flex items-start gap-2.5 text-sm text-slate-700">
@@ -418,7 +418,7 @@ export default function RealEstateAssessmentClient() {
 
           {/* Primary CTA */}
           <div className="mt-5 rounded-xl bg-navy-700 p-6">
-            <h3 className="text-sm font-bold text-white">Get a Real Estate DPDPA Gap Review</h3>
+            <h3 className="text-sm font-semibold text-white">Get a Real Estate DPDPA Gap Review</h3>
             <p className="mb-4 mt-1 text-sm text-slate-300">
               We&apos;ll review your buyer/tenant data flows, KYC handling, WhatsApp sharing, broker networks, lead sheets, property-document storage, loan/vendor sharing, staff access and old record-retention practices.
             </p>
@@ -477,7 +477,7 @@ export default function RealEstateAssessmentClient() {
         <fieldset className="rounded-xl border border-slate-200 bg-white p-6 sm:p-7">
           <div className="mb-3 inline-block rounded-full bg-teal-50 px-3 py-1 text-xs font-semibold text-teal-700">{q.badge}</div>
           <legend className="contents">
-            <h2 className="text-lg font-bold leading-snug text-navy-700 sm:text-xl">{q.question}</h2>
+            <h2 className="text-lg font-semibold leading-snug text-navy-700 sm:text-xl">{q.question}</h2>
           </legend>
           {q.helpText && <p className="mt-2 text-sm leading-relaxed text-slate-500">{q.helpText}</p>}
           {q.type === "multi" && <p className="mt-1 text-xs font-medium text-slate-400">Select all that apply.</p>}

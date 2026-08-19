@@ -88,7 +88,7 @@ export default async function CitationsAdmin() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
-      <h1 className="text-2xl font-bold text-navy-700 mb-2">AEO Citation Panel</h1>
+      <h1 className="text-2xl font-semibold text-navy-700 mb-2">AEO Citation Panel</h1>
       <p className="text-slate-600 mb-6">
         Weekly automated cite-rate measurement across ChatGPT, Claude, Perplexity, Gemini via OpenRouter.
         Latest run: <strong>{latestDate || '—'}</strong>.

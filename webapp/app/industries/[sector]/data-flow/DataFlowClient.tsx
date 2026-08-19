@@ -363,7 +363,7 @@ export default function DataFlowClient({ pack }: Props) {
       </section>
 
       <section aria-labelledby="hotspots-heading">
-        <h2 id="hotspots-heading" className="text-xl font-bold text-navy-800">
+        <h2 id="hotspots-heading" className="text-xl font-semibold text-navy-800">
           Top risk hotspots - where control usually breaks
         </h2>
         {/* Pack-driven: the count is the pack's own (5-8), and the noun is its
@@ -387,7 +387,7 @@ export default function DataFlowClient({ pack }: Props) {
           a pack with one journey. Nothing here is industry-specific. */}
       {pack.rightsScenarios?.length ? (
         <section aria-labelledby="rights-heading">
-          <h2 id="rights-heading" className="text-xl font-bold text-navy-800">
+          <h2 id="rights-heading" className="text-xl font-semibold text-navy-800">
             What happens when someone asks
           </h2>
           <p className="mt-1 max-w-2xl text-sm leading-relaxed text-slate-600">
@@ -409,7 +409,7 @@ export default function DataFlowClient({ pack }: Props) {
 
       {pack.incidentScenarios?.length ? (
         <section aria-labelledby="incident-heading">
-          <h2 id="incident-heading" className="text-xl font-bold text-navy-800">
+          <h2 id="incident-heading" className="text-xl font-semibold text-navy-800">
             When it has already gone wrong
           </h2>
           <p className="mt-1 max-w-2xl text-sm leading-relaxed text-slate-600">

@@ -125,7 +125,7 @@ function RuleSection({
 }) {
   return (
     <section id={id} className="scroll-mt-24 pt-8 pb-6 border-b border-slate-100 last:border-0">
-      <h2 className="text-lg font-bold text-navy-700 mb-1">
+      <h2 className="text-lg font-semibold text-navy-700 mb-1">
         <span className="text-green-500 text-sm font-semibold mr-2">{ruleNumber}</span>
         {title}
       </h2>
@@ -235,7 +235,7 @@ export default function DpdpRules2025Page() {
                   <FileText size={12} className="text-green-600" />
                   <span className="text-green-600 text-xs font-semibold">Rules Reference</span>
                 </div>
-                <h1 className="text-2xl sm:text-3xl font-bold text-navy-700 mb-3">
+                <h1 className="text-2xl sm:text-3xl font-semibold text-navy-700 mb-3">
                   DPDP Rules 2025: Section-by-Section Plain-English Guide
                 </h1>
                 <Byline lastReviewed={FRESHNESS.learn} className="mb-3" />
@@ -255,7 +255,7 @@ export default function DpdpRules2025Page() {
 
                 {/* What this page covers */}
                 <div className="mt-8" id="what-this-page-covers">
-                  <h2 className="text-lg font-bold text-navy-700 mb-3">What this page covers</h2>
+                  <h2 className="text-lg font-semibold text-navy-700 mb-3">What this page covers</h2>
                   <BulletList
                     items={[
                       "Rule 1 to Rule 23 of the DPDP Rules, 2025",
@@ -708,7 +708,7 @@ export default function DpdpRules2025Page() {
                 {/* ── SCHEDULES ── */}
 
                 <section id="schedules" className="scroll-mt-24 pt-10 pb-4">
-                  <h2 className="text-xl font-bold text-navy-700 mb-1">
+                  <h2 className="text-xl font-semibold text-navy-700 mb-1">
                     Schedules under the DPDP Rules, 2025
                   </h2>
                   <p className="text-sm text-slate-500">
@@ -911,7 +911,7 @@ export default function DpdpRules2025Page() {
 
                 {/* ── FAQ ── */}
                 <section id="faq" className="scroll-mt-24 pt-10">
-                  <h2 className="text-xl font-bold text-navy-700 mb-5">
+                  <h2 className="text-xl font-semibold text-navy-700 mb-5">
                     Frequently Asked Questions
                   </h2>
                   <div className="space-y-5">

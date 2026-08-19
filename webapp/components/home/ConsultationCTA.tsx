@@ -24,7 +24,7 @@ export function ConsultationCTA() {
                 <span className="text-teal-300 text-xs font-semibold">Free 30-minute consultation</span>
               </div>
 
-              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+              <h2 className="text-3xl sm:text-4xl font-semibold text-white mb-4">
                 Not sure where to start?
                 <span className="block text-teal-400 mt-1">We can help you figure it out.</span>
               </h2>
@@ -58,7 +58,7 @@ export function ConsultationCTA() {
 
             {/* Right: mini form teaser */}
             <div className="bg-white/5 border border-white/10 rounded-xl p-6">
-              <h3 className="font-bold text-white text-base mb-4">What the consultation covers</h3>
+              <h3 className="font-semibold text-white text-base mb-4">What the consultation covers</h3>
               <div className="space-y-3">
                 {[
                   "Whether and how DPDPA applies to your specific business model",

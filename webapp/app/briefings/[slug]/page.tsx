@@ -384,7 +384,7 @@ export default async function BriefingDetailPage({ params }: Props) {
                         </span>
                       )}
                     </div>
-                    <h1 className="text-2xl sm:text-3xl font-bold text-navy-700 leading-snug mb-4">
+                    <h1 className="text-2xl sm:text-3xl font-semibold text-navy-700 leading-snug mb-4">
                       {briefing.title}
                     </h1>
                     <div className="flex flex-wrap items-center gap-3 text-sm text-slate-500">
@@ -425,7 +425,7 @@ export default async function BriefingDetailPage({ params }: Props) {
                   {/* BLOCK 4 — SIMPLE EXPLAINER */}
                   {(briefing.explainerConcept || briefing.explainerExample || briefing.explainerMistake) && (
                     <div className="bg-white border border-slate-200 rounded-xl p-6 mb-4">
-                      <h2 className="text-base font-bold text-navy-700 mb-4">In simple words</h2>
+                      <h2 className="text-base font-semibold text-navy-700 mb-4">In simple words</h2>
                       <div className="space-y-3">
                         {briefing.explainerConcept && (
                           <div className="flex gap-3">
@@ -452,7 +452,7 @@ export default async function BriefingDetailPage({ params }: Props) {
                   {/* BLOCK 5 — ACTION CHECKLIST (format-aware) */}
                   {briefing.actionItems?.length > 0 && (
                     <div className="bg-navy-700 rounded-xl p-6 mb-4">
-                      <h2 className="text-white font-bold text-base mb-4">
+                      <h2 className="text-white font-semibold text-base mb-4">
                         {briefing.actionFormat === "today"   && "✅ Do this today"}
                         {briefing.actionFormat === "team"    && "💬 Ask your team"}
                         {briefing.actionFormat === "mistake" && "🔍 Spot the mistake"}
@@ -520,7 +520,7 @@ export default async function BriefingDetailPage({ params }: Props) {
                   {/* Survey CTA */}
                   <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 mb-4 text-center">
                     <p className="text-green-100 text-xs font-bold mb-2 uppercase tracking-wide">Free · 3 minutes</p>
-                    <h2 className="text-xl font-bold text-white mb-2">Is YOUR business DPDPA-ready?</h2>
+                    <h2 className="text-xl font-semibold text-white mb-2">Is YOUR business DPDPA-ready?</h2>
                     <p className="text-green-100 text-sm mb-4 max-w-xs mx-auto">Answer a few simple questions. Get your free Readiness Score.</p>
                     <Link href="/assessment" className="inline-block py-2.5 px-6 bg-white text-green-600 font-bold rounded-xl hover:bg-green-50 transition-colors">
                       Check My Readiness →
@@ -544,7 +544,7 @@ export default async function BriefingDetailPage({ params }: Props) {
                   {/* More on this topic — mobile only (sidebar handles desktop) */}
                   {related.length > 0 && (
                     <div className="lg:hidden bg-white rounded-xl border border-slate-200 p-5 mb-4">
-                      <h3 className="font-bold text-navy-700 text-sm mb-4">More on this topic</h3>
+                      <h3 className="font-semibold text-navy-700 text-sm mb-4">More on this topic</h3>
                       <div className="space-y-1">
                         {related.map((rel: any) => (
                           <Link
@@ -595,7 +595,7 @@ export default async function BriefingDetailPage({ params }: Props) {
                       {briefing.featured && <Badge variant="teal">Featured</Badge>}
                     </div>
 
-                    <h1 className="text-2xl sm:text-3xl font-bold text-navy-700 leading-snug mb-4">
+                    <h1 className="text-2xl sm:text-3xl font-semibold text-navy-700 leading-snug mb-4">
                       {briefing.title}
                     </h1>
 
@@ -645,7 +645,7 @@ export default async function BriefingDetailPage({ params }: Props) {
 
                   {(briefing.overviewBody || briefing.whyItMatters) && (
                     <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 mb-5">
-                      <h2 className="flex items-center gap-2 font-bold text-amber-900 text-base mb-3">
+                      <h2 className="flex items-center gap-2 font-semibold text-amber-900 text-base mb-3">
                         <AlertTriangle size={18} className="text-amber-600" />
                         {briefing.overviewHeading || "Why this matters for your business"}
                       </h2>
@@ -659,7 +659,7 @@ export default async function BriefingDetailPage({ params }: Props) {
                   <div className="bg-white rounded-xl border border-slate-200 p-7 mb-5 space-y-6">
                     {briefing.keyPoints?.length > 0 && (
                       <div>
-                        <h2 className="text-xl font-bold text-navy-700 mb-4">
+                        <h2 className="text-xl font-semibold text-navy-700 mb-4">
                           {briefing.keyPointsHeading || "Key things to know"}
                         </h2>
                         <ul className="space-y-3">
@@ -677,7 +677,7 @@ export default async function BriefingDetailPage({ params }: Props) {
 
                     {(briefing.bodyText || briefing.businessImpact) && (
                       <div className={briefing.keyPoints?.length > 0 ? "border-t border-slate-100 pt-5" : ""}>
-                        <h2 className="text-xl font-bold text-navy-700 mb-3">
+                        <h2 className="text-xl font-semibold text-navy-700 mb-3">
                           {briefing.bodyHeading || "What does this mean for YOUR business?"}
                         </h2>
                         <p className="text-slate-600 leading-relaxed text-sm">
@@ -689,14 +689,14 @@ export default async function BriefingDetailPage({ params }: Props) {
                     {/* Fallback for static briefings */}
                     {!briefing.keyPoints?.length && !briefing.bodyText && briefing.summary && (
                       <div>
-                        <h2 className="text-xl font-bold text-navy-700 mb-3">Plain-English Summary</h2>
+                        <h2 className="text-xl font-semibold text-navy-700 mb-3">Plain-English Summary</h2>
                         <p className="text-slate-600 leading-relaxed">{briefing.summary}</p>
                       </div>
                     )}
 
                     {briefing.whoIsAffected?.length > 0 && (
                       <div className="border-t border-slate-100 pt-5">
-                        <h2 className="text-xl font-bold text-navy-700 mb-3">Who Is Affected</h2>
+                        <h2 className="text-xl font-semibold text-navy-700 mb-3">Who Is Affected</h2>
                         <ul className="space-y-2">
                           {(briefing.whoIsAffected as string[]).map((item: string, i: number) => (
                             <li key={i} className="flex items-start gap-2.5 text-slate-600 text-sm">
@@ -712,7 +712,7 @@ export default async function BriefingDetailPage({ params }: Props) {
                   {/* ── CTA — action checklist + survey prompt ────────────── */}
                   {briefing.actionChecklist?.length > 0 && (
                     <div className="bg-navy-700 rounded-xl p-7 mb-5">
-                      <h2 className="text-xl font-bold text-white mb-4">3 things you can do this week</h2>
+                      <h2 className="text-xl font-semibold text-white mb-4">3 things you can do this week</h2>
                       <div className="space-y-3">
                         {(briefing.actionChecklist as string[]).map((action: string, i: number) => (
                           <div key={i} className="flex items-start gap-3">
@@ -740,7 +740,7 @@ export default async function BriefingDetailPage({ params }: Props) {
                     <p className="text-green-100 text-sm font-semibold mb-2 uppercase tracking-wide">
                       Free — takes 3 minutes
                     </p>
-                    <h2 className="text-2xl font-bold text-white mb-2">
+                    <h2 className="text-2xl font-semibold text-white mb-2">
                       Is YOUR business ready for DPDPA?
                     </h2>
                     <p className="text-green-100 text-sm mb-5 max-w-sm mx-auto leading-relaxed">
@@ -788,7 +788,7 @@ export default async function BriefingDetailPage({ params }: Props) {
                   {/* More on this topic — mobile only (sidebar handles desktop) */}
                   {related.length > 0 && (
                     <div className="lg:hidden bg-white rounded-xl border border-slate-200 p-5 mb-6">
-                      <h3 className="font-bold text-navy-700 text-sm mb-4">More on this topic</h3>
+                      <h3 className="font-semibold text-navy-700 text-sm mb-4">More on this topic</h3>
                       <div className="space-y-1">
                         {related.map((rel: any) => (
                           <Link
@@ -823,7 +823,7 @@ export default async function BriefingDetailPage({ params }: Props) {
                   Only this card is hidden: everything else in the sidebar must stay on mobile. */}
               {related.length > 0 && (
                 <div className="hidden lg:block bg-white rounded-xl border border-slate-200 p-5">
-                  <h3 className="font-bold text-navy-700 text-sm mb-4">Related Briefings</h3>
+                  <h3 className="font-semibold text-navy-700 text-sm mb-4">Related Briefings</h3>
                   <div className="space-y-3">
                     {related.map((rel: any) => (
                       <Link
@@ -846,7 +846,7 @@ export default async function BriefingDetailPage({ params }: Props) {
 
               {/* Industry tags */}
               <div className="bg-white rounded-xl border border-slate-200 p-5">
-                <h3 className="font-bold text-navy-700 text-sm mb-3">Industries Affected</h3>
+                <h3 className="font-semibold text-navy-700 text-sm mb-3">Industries Affected</h3>
                 <div className="flex flex-wrap gap-2">
                   {(briefing.industries as string[]).map((ind: string) => (
                     <span
@@ -861,7 +861,7 @@ export default async function BriefingDetailPage({ params }: Props) {
 
               {/* Assessment CTA */}
               <div className="bg-green-50 border border-green-200 rounded-xl p-5">
-                <h3 className="font-bold text-navy-700 text-sm mb-2">
+                <h3 className="font-semibold text-navy-700 text-sm mb-2">
                   Is your business DPDPA-ready?
                 </h3>
                 <p className="text-slate-600 text-xs leading-relaxed mb-4">

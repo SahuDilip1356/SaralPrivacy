@@ -14,7 +14,7 @@ export default function LearnTopicNotFound() {
         <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-3">
           404 · Topic Not Found
         </p>
-        <h1 className="text-2xl font-bold text-navy-700 mb-3">
+        <h1 className="text-2xl font-semibold text-navy-700 mb-3">
           We couldn&apos;t find that DPDPA topic
         </h1>
         <p className="text-slate-600 mb-6 leading-relaxed">

@@ -50,7 +50,7 @@ export default function MagicSubscribeClient({ token }: { token: string }) {
           <CheckCircle size={32} className="text-green-500" />
         </div>
         <div>
-          <h2 className="text-2xl font-bold text-navy-700 mb-2">You&rsquo;re in, {firstName}!</h2>
+          <h2 className="text-2xl font-semibold text-navy-700 mb-2">You&rsquo;re in, {firstName}!</h2>
           <p className="text-slate-600 text-sm max-w-md mx-auto leading-relaxed">
             Your first DPDPA daily briefing will arrive tomorrow morning.
             One email per day — practical, plain English, India-specific.
@@ -70,7 +70,7 @@ export default function MagicSubscribeClient({ token }: { token: string }) {
           <CheckCircle size={32} className="text-blue-500" />
         </div>
         <div>
-          <h2 className="text-2xl font-bold text-navy-700 mb-2">You&rsquo;re already subscribed!</h2>
+          <h2 className="text-2xl font-semibold text-navy-700 mb-2">You&rsquo;re already subscribed!</h2>
           <p className="text-slate-600 text-sm max-w-md mx-auto">
             Good news — you&rsquo;re already receiving the daily DPDPA briefings.
           </p>
@@ -88,7 +88,7 @@ export default function MagicSubscribeClient({ token }: { token: string }) {
         <XCircle size={32} className="text-red-500" />
       </div>
       <div>
-        <h2 className="text-2xl font-bold text-navy-700 mb-2">Something went wrong</h2>
+        <h2 className="text-2xl font-semibold text-navy-700 mb-2">Something went wrong</h2>
         <p className="text-slate-500 text-sm max-w-md mx-auto">{error}</p>
       </div>
       <Link href="/subscribe" className="mt-2 text-sm text-navy-700 underline hover:text-green-600">

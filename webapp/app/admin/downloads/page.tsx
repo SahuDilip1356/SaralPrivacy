@@ -44,7 +44,7 @@ export default function DownloadsPage() {
           <Download size={18} className="text-brand-700" />
         </div>
         <div>
-          <h1 className="text-2xl font-bold text-brand-700">Downloads</h1>
+          <h1 className="text-2xl font-semibold text-brand-700">Downloads</h1>
           <p className="text-slate-500 text-sm">{downloads.length} total white paper downloads</p>
         </div>
       </div>

@@ -79,7 +79,7 @@ export async function TrustStrip() {
                 <Icon size={18} className="text-teal-600" />
               </div>
               <div>
-                <h3 className="font-bold text-navy-700 text-sm mb-1">{title}</h3>
+                <h3 className="font-semibold text-navy-700 text-sm mb-1">{title}</h3>
                 <p className="text-slate-500 text-sm leading-relaxed">{description}</p>
               </div>
             </div>

@@ -125,7 +125,7 @@ export default function TrainingInstitutesIndustryPage() {
             <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-teal-300">
               <ShieldCheck size={18} /> Industry Guide · Training Institutes
             </div>
-            <h1 className="max-w-3xl text-3xl font-bold leading-tight text-white sm:text-4xl">
+            <h1 className="max-w-3xl text-3xl font-semibold leading-tight text-white sm:text-4xl">
               {p.hero}
             </h1>
             <div
@@ -162,7 +162,7 @@ export default function TrainingInstitutesIndustryPage() {
             <div className="space-y-10 lg:col-span-2">
               {/* Risk map (the 5 buckets = the spine of the scan) */}
               <section>
-                <h2 className="text-2xl font-bold text-navy-700">Your student-data risk map</h2>
+                <h2 className="text-2xl font-semibold text-navy-700">Your student-data risk map</h2>
                 <p className="mt-1 text-sm text-slate-600">
                   The free scan scores your institute across these five areas. Here is what each one looks at.
                 </p>
@@ -173,7 +173,7 @@ export default function TrainingInstitutesIndustryPage() {
                       <div key={b.key} className="rounded-xl border border-slate-200 bg-white p-5">
                         <div className="mb-2 flex items-center gap-2.5">
                           <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-teal-50 text-teal-700">{d.icon}</span>
-                          <h3 className="font-bold text-navy-700">{b.label}</h3>
+                          <h3 className="font-semibold text-navy-700">{b.label}</h3>
                         </div>
                         <p className="text-sm text-slate-600">{d.example}</p>
                         <div className="mt-3 rounded-lg border border-teal-100 bg-teal-50 p-3">
@@ -196,12 +196,12 @@ export default function TrainingInstitutesIndustryPage() {
 
               {/* How it works */}
               <section>
-                <h2 className="text-2xl font-bold text-navy-700">How the 3-minute scan works</h2>
+                <h2 className="text-2xl font-semibold text-navy-700">How the 3-minute scan works</h2>
                 <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-3">
                   {STEPS.map((s) => (
                     <div key={s.n} className="rounded-xl border border-slate-200 bg-white p-5">
                       <div className="mb-2 flex h-8 w-8 items-center justify-center rounded-full bg-green-100 font-bold text-green-700">{s.n}</div>
-                      <h3 className="text-sm font-bold text-navy-700">{s.title}</h3>
+                      <h3 className="text-sm font-semibold text-navy-700">{s.title}</h3>
                       <p className="mt-1 text-xs leading-relaxed text-slate-600">{s.body}</p>
                     </div>
                   ))}
@@ -216,7 +216,7 @@ export default function TrainingInstitutesIndustryPage() {
 
               {/* What the scan checks */}
               <section>
-                <h2 className="text-2xl font-bold text-navy-700">What the scan checks</h2>
+                <h2 className="text-2xl font-semibold text-navy-700">What the scan checks</h2>
                 <p className="mt-1 text-sm text-slate-600">Ten plain-English questions across your real student-data workflows.</p>
                 <div className="mt-4 rounded-xl border border-slate-200 bg-white p-6">
                   {scanChecks.map((item, i) => (
@@ -230,7 +230,7 @@ export default function TrainingInstitutesIndustryPage() {
 
               {/* FAQ (visible + schema) */}
               <section className="answer-block">
-                <h2 className="text-2xl font-bold text-navy-700">Training institute DPDPA questions</h2>
+                <h2 className="text-2xl font-semibold text-navy-700">Training institute DPDPA questions</h2>
                 <div className="mt-4 space-y-3">
                   {faqs.map((f) => (
                     <details key={f.question} className="rounded-xl border border-slate-200 bg-white p-5">
@@ -245,21 +245,21 @@ export default function TrainingInstitutesIndustryPage() {
             {/* Sidebar */}
             <div className="space-y-5">
               <div className="rounded-xl bg-teal-700 p-5 text-white">
-                <h3 className="font-bold">Take the free scan</h3>
+                <h3 className="font-semibold">Take the free scan</h3>
                 <p className="mt-2 text-sm text-teal-100">10 questions · 3 minutes · free · no login. Get your institute&apos;s DPDPA readiness score.</p>
                 <Link href="/assessment/training-institutes" className="mt-4 block rounded-lg bg-white py-2.5 text-center text-sm font-bold text-teal-800 hover:bg-teal-50">
                   Start Training Institute Risk Scan →
                 </Link>
               </div>
               <div className="rounded-xl border border-slate-200 bg-white p-5">
-                <h3 className="mb-2 text-sm font-bold text-navy-700">Free Guide</h3>
+                <h3 className="mb-2 text-sm font-semibold text-navy-700">Free Guide</h3>
                 <p className="mb-3 text-xs text-slate-600">DPDPA compliance guide for Indian businesses.</p>
                 <Link href="/white-paper" className="block rounded-lg bg-navy-700 py-2.5 text-center text-sm font-semibold text-white transition-colors hover:bg-navy-800">
                   Download the Guide →
                 </Link>
               </div>
               <div className="rounded-xl border border-slate-200 bg-white p-5">
-                <h3 className="mb-3 text-sm font-bold text-navy-700">Related Briefings</h3>
+                <h3 className="mb-3 text-sm font-semibold text-navy-700">Related Briefings</h3>
                 <div className="space-y-2">
                   <Link href="/briefings/training-institutes-student-data-dpdpa" className="block text-sm text-green-600 hover:underline">→ Student Data and DPDPA</Link>
                   <Link href="/briefings/dpdpa-consent-notice-requirements-2025" className="block text-sm text-green-600 hover:underline">→ Consent Notice Requirements</Link>
@@ -267,7 +267,7 @@ export default function TrainingInstitutesIndustryPage() {
                 </div>
               </div>
               <div className="rounded-xl border border-slate-200 bg-pearl-100 p-5">
-                <h3 className="mb-2 text-sm font-bold text-navy-700">Need advice?</h3>
+                <h3 className="mb-2 text-sm font-semibold text-navy-700">Need advice?</h3>
                 <Link href="/contact" className="block rounded-lg bg-navy-700 py-2.5 text-center text-sm font-semibold text-white hover:bg-navy-800">Request Consultation →</Link>
               </div>
             </div>

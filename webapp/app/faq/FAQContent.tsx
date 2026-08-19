@@ -26,7 +26,7 @@ export default function FAQContent() {
       {/* Header */}
       <div className="bg-navy-700 py-14">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">
+          <h1 className="text-3xl sm:text-4xl font-semibold text-white mb-3">
             Frequently Asked Questions
           </h1>
           <p className="text-slate-300 text-lg mb-6">
@@ -126,7 +126,7 @@ export default function FAQContent() {
 
         {/* CTA */}
         <div className="mt-6 bg-green-50 border border-green-200 rounded-xl p-6 text-center">
-          <h3 className="font-bold text-navy-700 text-lg mb-2">
+          <h3 className="font-semibold text-navy-700 text-lg mb-2">
             Still have questions?
           </h3>
           <p className="text-slate-600 text-sm mb-4">

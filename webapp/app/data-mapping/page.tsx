@@ -40,7 +40,7 @@ export default function DataMappingPage() {
             <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-teal-300">
               <MapPin size={18} aria-hidden="true" /> Where your data travels
             </div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">
+            <h1 className="text-3xl sm:text-4xl font-semibold text-white mb-3">
               Personal Data Flow Mapping
             </h1>
             <p className="text-slate-300 text-lg leading-relaxed">
@@ -66,7 +66,7 @@ export default function DataMappingPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
         {/* Where this sits in the journey */}
         <section aria-labelledby="journey-heading" className="mb-12">
-          <h2 id="journey-heading" className="text-2xl font-bold text-navy-700">
+          <h2 id="journey-heading" className="text-2xl font-semibold text-navy-700">
             Where data mapping fits
           </h2>
           <p className="mt-1 text-sm text-slate-600">
@@ -93,7 +93,7 @@ export default function DataMappingPage() {
                   >
                     {step.n}
                   </div>
-                  <h3 className="mt-2.5 text-sm font-bold text-navy-700">{step.title}</h3>
+                  <h3 className="mt-2.5 text-sm font-semibold text-navy-700">{step.title}</h3>
                   <p className="mt-1 text-[13px] leading-relaxed text-slate-600">{step.body}</p>
                   {step.href ? (
                     <Link
@@ -117,7 +117,7 @@ export default function DataMappingPage() {
 
         {/* Live maps */}
         <section aria-labelledby="live-maps-heading">
-          <h2 id="live-maps-heading" className="text-2xl font-bold text-navy-700">
+          <h2 id="live-maps-heading" className="text-2xl font-semibold text-navy-700">
             Available maps
           </h2>
           <p className="mt-1 text-sm text-slate-600">
@@ -166,7 +166,7 @@ export default function DataMappingPage() {
                       </span>
                     )}
                   </div>
-                  <h3 className="mt-3 text-xl font-bold">{sector.navLabel}</h3>
+                  <h3 className="mt-3 text-xl font-semibold">{sector.navLabel}</h3>
                   <p className="mt-1.5 text-sm leading-relaxed text-slate-300">
                     Follow one person&apos;s record through {stages.length} stages and{" "}
                     {external} outside parties - and see the {pack!.hotspots.length} points where
@@ -208,7 +208,7 @@ export default function DataMappingPage() {
         {/* Roadmap - named honestly so a visitor knows what does not exist yet */}
         {PLANNED_DATA_MAPS.length > 0 && (
           <section aria-labelledby="planned-maps-heading" className="mt-12">
-            <h2 id="planned-maps-heading" className="text-2xl font-bold text-navy-700">
+            <h2 id="planned-maps-heading" className="text-2xl font-semibold text-navy-700">
               Coming next
             </h2>
             <p className="mt-1 text-sm text-slate-600">

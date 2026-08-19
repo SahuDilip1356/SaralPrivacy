@@ -73,7 +73,7 @@ export default async function DataFlowPage({ params }: Params) {
             <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-teal-300">
               <ShieldCheck size={18} aria-hidden="true" /> Where your data travels · {p.eyebrow}
             </div>
-            <h1 className="max-w-3xl text-3xl font-bold leading-tight text-white sm:text-4xl">
+            <h1 className="max-w-3xl text-3xl font-semibold leading-tight text-white sm:text-4xl">
               {p.h1}
             </h1>
             <p className="mt-4 max-w-2xl text-sm leading-relaxed text-slate-200">{p.intro}</p>
@@ -85,7 +85,7 @@ export default async function DataFlowPage({ params }: Params) {
 
           {/* How to read this journey */}
           <section aria-labelledby="how-to-read" className="mt-12">
-            <h2 id="how-to-read" className="text-xl font-bold text-navy-800">
+            <h2 id="how-to-read" className="text-xl font-semibold text-navy-800">
               How to read this journey
             </h2>
             <div className="mt-4 grid gap-4 sm:grid-cols-3">
@@ -95,7 +95,7 @@ export default async function DataFlowPage({ params }: Params) {
                 return (
                   <div key={card.title} className="rounded-xl border border-slate-200 bg-white p-5">
                     <Icon size={18} className={tone} aria-hidden="true" />
-                    <h3 className="mt-2 text-sm font-bold text-navy-800">{card.title}</h3>
+                    <h3 className="mt-2 text-sm font-semibold text-navy-800">{card.title}</h3>
                     <p className="mt-1.5 text-[13px] leading-relaxed text-slate-600">{card.body}</p>
                   </div>
                 );
@@ -108,7 +108,7 @@ export default async function DataFlowPage({ params }: Params) {
             aria-label="Next steps"
             className="mt-12 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8"
           >
-            <h2 className="text-xl font-bold text-navy-800">{p.ctaHeading}</h2>
+            <h2 className="text-xl font-semibold text-navy-800">{p.ctaHeading}</h2>
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-600">{p.ctaBody}</p>
             <div className="mt-5 flex flex-col gap-3 sm:flex-row">
               <Link

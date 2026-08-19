@@ -36,7 +36,7 @@ export default function ConsultationsPage() {
           <Clock size={18} className="text-amber-600" />
         </div>
         <div>
-          <h1 className="text-2xl font-bold text-brand-700">Consultations</h1>
+          <h1 className="text-2xl font-semibold text-brand-700">Consultations</h1>
           <p className="text-slate-500 text-sm">{consultations.length} consultation request{consultations.length !== 1 ? "s" : ""}</p>
         </div>
       </div>

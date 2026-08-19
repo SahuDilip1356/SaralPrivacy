@@ -50,7 +50,7 @@ export function FlowCrossLink({
         <div className="text-[11px] font-bold uppercase tracking-wide text-teal-800 mb-1">
           Next step · Free · No email
         </div>
-        <h3 className="text-navy-700 font-bold text-base sm:text-lg leading-snug">{heading}</h3>
+        <h3 className="text-navy-700 font-semibold text-base sm:text-lg leading-snug">{heading}</h3>
         <p className="text-slate-600 text-sm mt-1">{body}</p>
       </div>
       <Link

@@ -105,7 +105,7 @@ function SectionCard({ section }: { section: ActSection }) {
       id={`section-${section.sectionNumber}`}
       className="scroll-mt-24 pt-7 pb-6 border-b border-slate-100 last:border-0"
     >
-      <h3 className="text-base font-bold text-navy-700">
+      <h3 className="text-base font-semibold text-navy-700">
         <span className="text-green-500 font-semibold mr-2">#{section.sectionNumber}.</span>
         {section.title}
       </h3>
@@ -125,7 +125,7 @@ function ChapterBlock({ chapter }: { chapter: ActChapter }) {
         <p className="text-xs font-semibold text-green-300 uppercase tracking-widest mb-0.5">
           Chapter {chapter.chapterNumber}
         </p>
-        <h2 className="text-lg font-bold">{chapter.chapterTitle}</h2>
+        <h2 className="text-lg font-semibold">{chapter.chapterTitle}</h2>
         <p className="text-xs text-slate-300 mt-1">
           {chapter.sections.length} section{chapter.sections.length !== 1 ? "s" : ""} —{" "}
           #{chapter.sections[0].sectionNumber}
@@ -207,7 +207,7 @@ export default function DpdpAct2023Page() {
                   <Scale size={12} className="text-navy-600" />
                   <span className="text-navy-600 text-xs font-semibold">Act Reference</span>
                 </div>
-                <h1 className="text-2xl sm:text-3xl font-bold text-navy-700 mb-3">
+                <h1 className="text-2xl sm:text-3xl font-semibold text-navy-700 mb-3">
                   Digital Personal Data Protection Act, 2023
                 </h1>
                 <Byline lastReviewed={FRESHNESS.learn} className="mb-3" />
@@ -236,7 +236,7 @@ export default function DpdpAct2023Page() {
 
                 {/* What this page covers */}
                 <div className="mt-8">
-                  <h2 className="text-base font-bold text-navy-700 mb-3">
+                  <h2 className="text-base font-semibold text-navy-700 mb-3">
                     What this page covers
                   </h2>
                   <ul className="space-y-2">
@@ -272,7 +272,7 @@ export default function DpdpAct2023Page() {
                   <p className="text-xs font-semibold text-green-300 uppercase tracking-widest mb-0.5">
                     Schedule
                   </p>
-                  <h2 className="text-lg font-bold">{schedule.title}</h2>
+                  <h2 className="text-lg font-semibold">{schedule.title}</h2>
                   <p className="text-xs text-slate-300 mt-1">{schedule.reference}</p>
                 </div>
                 <p className="text-sm text-slate-600 mb-5 leading-relaxed">

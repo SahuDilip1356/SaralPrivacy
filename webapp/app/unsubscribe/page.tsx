@@ -31,7 +31,7 @@ function UnsubscribeInner() {
       {state === "loading" && (
         <>
           <Loader2 size={40} className="text-slate-400 animate-spin mx-auto mb-4" />
-          <h1 className="text-xl font-bold text-slate-700">Unsubscribing…</h1>
+          <h1 className="text-xl font-semibold text-slate-700">Unsubscribing…</h1>
           <p className="text-slate-400 text-sm mt-2">Please wait a moment.</p>
         </>
       )}
@@ -39,7 +39,7 @@ function UnsubscribeInner() {
       {state === "done" && (
         <>
           <CheckCircle size={44} className="text-green-500 mx-auto mb-4" />
-          <h1 className="text-xl font-bold text-slate-800 mb-2">You&apos;ve been unsubscribed</h1>
+          <h1 className="text-xl font-semibold text-slate-800 mb-2">You&apos;ve been unsubscribed</h1>
           <p className="text-slate-500 text-sm leading-relaxed">
             <span className="font-medium text-slate-700">{email}</span> has been removed from
             SaralPrivacy Daily Briefings. You won&apos;t receive any more emails from us.
@@ -54,7 +54,7 @@ function UnsubscribeInner() {
       {state === "error" && (
         <>
           <AlertCircle size={44} className="text-red-400 mx-auto mb-4" />
-          <h1 className="text-xl font-bold text-slate-800 mb-2">Something went wrong</h1>
+          <h1 className="text-xl font-semibold text-slate-800 mb-2">Something went wrong</h1>
           <p className="text-slate-500 text-sm leading-relaxed">
             We couldn&apos;t process your request. Please email{" "}
             <a href="mailto:privacy@saralprivacy.com" className="text-[#1E3A5F] underline">

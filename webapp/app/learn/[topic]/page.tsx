@@ -67,13 +67,13 @@ function renderContent(content: string) {
 
     if (line.startsWith("## ")) {
       elements.push(
-        <h2 key={i} className="text-xl font-bold text-navy-700 mt-8 mb-3">
+        <h2 key={i} className="text-xl font-semibold text-navy-700 mt-8 mb-3">
           {line.replace("## ", "")}
         </h2>
       );
     } else if (line.startsWith("### ")) {
       elements.push(
-        <h3 key={i} className="text-lg font-bold text-navy-700 mt-6 mb-2">
+        <h3 key={i} className="text-lg font-semibold text-navy-700 mt-6 mb-2">
           {line.replace("### ", "")}
         </h3>
       );
@@ -215,7 +215,7 @@ export default async function LearnTopicPage({ params }: Props) {
             </Link>
 
             <div className="bg-white rounded-xl border border-slate-200 p-7 mb-5">
-              <h1 className="text-2xl sm:text-3xl font-bold text-navy-700 mb-2">{content.title}</h1>
+              <h1 className="text-2xl sm:text-3xl font-semibold text-navy-700 mb-2">{content.title}</h1>
               <Byline lastReviewed={FRESHNESS.learn} className="mb-3" />
               {topic === 'what-is-dpdpa' ? (
                 <AnswerBlock

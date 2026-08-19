@@ -48,7 +48,7 @@ export default function SubscribersPage() {
           <Mail size={18} className="text-saffron-500" />
         </div>
         <div>
-          <h1 className="text-2xl font-bold text-brand-700">Subscribers</h1>
+          <h1 className="text-2xl font-semibold text-brand-700">Subscribers</h1>
           <p className="text-slate-500 text-sm">{subscribers.length} total newsletter subscribers</p>
         </div>
       </div>

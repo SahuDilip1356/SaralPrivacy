@@ -17,7 +17,7 @@ export function DiscoveryCrossLink({ className = "" }: { className?: string }) {
         <div className="text-[11px] font-bold uppercase tracking-wide text-teal-700 mb-1">
           Start here · Free · No email
         </div>
-        <h3 className="text-navy-700 font-bold text-base sm:text-lg leading-snug">
+        <h3 className="text-navy-700 font-semibold text-base sm:text-lg leading-snug">
           Not sure what personal data you hold?
         </h3>
         <p className="text-slate-600 text-sm mt-1">

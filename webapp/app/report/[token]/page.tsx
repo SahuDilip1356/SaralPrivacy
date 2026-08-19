@@ -50,7 +50,7 @@ function ScoreBar({ label, score, dpdpa }: { label: string; score: number; dpdpa
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="bg-white rounded-2xl border border-slate-200 p-6 mb-5">
-      <h2 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">{title}</h2>
+      <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-4">{title}</h2>
       {children}
     </section>
   );
@@ -118,7 +118,7 @@ function IndustryReport({
         {/* Header */}
         <div className="mb-6">
           <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">{pack.positioning.title} — Your Report</p>
-          <h1 className="text-2xl font-bold text-[#1E3A5F]">
+          <h1 className="text-2xl font-semibold text-[#1E3A5F]">
             {businessName ? `${businessName}'s DPDPA Report` : "Your DPDPA Readiness Report"}
           </h1>
           {name && <p className="text-sm text-slate-500 mt-0.5">Prepared for {name}</p>}
@@ -231,7 +231,7 @@ function IndustryReport({
 
         {/* Consultation + reassessment */}
         <div className="bg-[#1E3A5F] rounded-2xl p-6 mb-5 text-center">
-          <h2 className="text-lg font-bold text-white mb-1">Move from diagnosis to execution</h2>
+          <h2 className="text-lg font-semibold text-white mb-1">Move from diagnosis to execution</h2>
           <p className="text-sm text-white/70 mb-4">Our experts help you close these gaps — consent, access, retention and vendor controls.</p>
           <a href="https://saralprivacy.com/contact" className="inline-block bg-[#E07B39] text-white font-bold px-6 py-3 rounded-xl text-sm hover:bg-[#c96a2e] transition-colors">
             Book Expert Consultation →
@@ -283,7 +283,7 @@ export default async function ReportPage({ params }: { params: Promise<{ token: 
       <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
         <div className="max-w-md text-center">
           <div className="text-5xl mb-4">⏰</div>
-          <h1 className="text-2xl font-bold text-slate-800 mb-2">This report has expired</h1>
+          <h1 className="text-2xl font-semibold text-slate-800 mb-2">This report has expired</h1>
           <p className="text-slate-500 mb-6">Report links are valid for 90 days. Retake the assessment to get a fresh report.</p>
           <a href="/assessment" className="inline-block bg-[#1E3A5F] text-white font-semibold px-6 py-3 rounded-xl text-sm">
             Retake Assessment →
@@ -376,7 +376,7 @@ export default async function ReportPage({ params }: { params: Promise<{ token: 
         {/* Report header */}
         <div className="mb-6">
           <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">DPDPA Readiness Assessment — Your Report</p>
-          <h1 className="text-2xl font-bold text-[#1E3A5F]">
+          <h1 className="text-2xl font-semibold text-[#1E3A5F]">
             {businessName ? `${businessName}'s Readiness Report` : "Your DPDPA Readiness Report"}
           </h1>
           {name && <p className="text-sm text-slate-500 mt-0.5">Prepared for {name}</p>}
@@ -561,7 +561,7 @@ export default async function ReportPage({ params }: { params: Promise<{ token: 
 
         {/* Section 9: Reassessment CTA */}
         <div className="bg-[#1E3A5F] rounded-2xl p-6 mb-5 text-center">
-          <h2 className="text-lg font-bold text-white mb-1">Track Your Improvement</h2>
+          <h2 className="text-lg font-semibold text-white mb-1">Track Your Improvement</h2>
           <p className="text-sm text-white/70 mb-4">
             Implement the quick wins, then retake the assessment in 14 days to measure your progress.
           </p>
@@ -573,7 +573,7 @@ export default async function ReportPage({ params }: { params: Promise<{ token: 
 
         {/* Section 10: Implementation Support */}
         <div className="bg-white border border-slate-200 rounded-2xl p-6 mb-5 text-center">
-          <h2 className="text-base font-bold text-[#1E3A5F] mb-1">Need help moving from diagnosis to execution?</h2>
+          <h2 className="text-base font-semibold text-[#1E3A5F] mb-1">Need help moving from diagnosis to execution?</h2>
           <p className="text-sm text-slate-500 mb-4">
             Our experts help Indian businesses implement DPDPA-ready practices — from privacy notices to data inventory.
           </p>

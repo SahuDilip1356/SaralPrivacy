@@ -32,7 +32,7 @@ export function DataFlowPreview({ pack, href }: Props) {
   ];
   return (
     <section aria-labelledby="data-flow-preview-heading">
-      <h2 id="data-flow-preview-heading" className="text-2xl font-bold text-navy-700">
+      <h2 id="data-flow-preview-heading" className="text-2xl font-semibold text-navy-700">
         See where {pack.lexicon.subject} data actually travels
       </h2>
       <p className="mt-1 text-sm text-slate-600">{pack.presentation.previewBlurb}</p>

@@ -89,7 +89,7 @@ export default function ContactContent() {
       <div className="bg-navy-700 py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="max-w-2xl">
-            <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">
+            <h1 className="text-3xl sm:text-4xl font-semibold text-white mb-3">
               Request a Free Consultation
             </h1>
             <p className="text-slate-300 text-lg leading-relaxed">
@@ -106,7 +106,7 @@ export default function ContactContent() {
           <div className="space-y-5">
             {/* What to expect */}
             <div className="bg-white border border-slate-200 rounded-xl p-5">
-              <h3 className="font-bold text-navy-700 text-sm mb-4">What to expect</h3>
+              <h3 className="font-semibold text-navy-700 text-sm mb-4">What to expect</h3>
               <div className="space-y-4">
                 {[
                   { icon: Calendar, title: "Response within 1 business day", desc: "We confirm a time that works for you." },
@@ -128,7 +128,7 @@ export default function ContactContent() {
 
             {/* Contact alternatives */}
             <div className="bg-white border border-slate-200 rounded-xl p-5">
-              <h3 className="font-bold text-navy-700 text-sm mb-3">Direct contact</h3>
+              <h3 className="font-semibold text-navy-700 text-sm mb-3">Direct contact</h3>
               <div className="space-y-3">
                 <a
                   href="mailto:privacy@saralprivacy.com"
@@ -162,7 +162,7 @@ export default function ContactContent() {
             {submitted ? (
               <div className="bg-green-50 border border-green-200 rounded-2xl p-10 text-center">
                 <CheckCircle size={40} className="text-green-600 mx-auto mb-4" />
-                <h3 className="font-bold text-green-800 text-xl mb-2">Request received</h3>
+                <h3 className="font-semibold text-green-800 text-xl mb-2">Request received</h3>
                 <p className="text-green-700 text-sm leading-relaxed">
                   Thank you for reaching out. We will review your details and respond within one
                   business day to confirm a call time. Check your inbox — including your spam
@@ -171,7 +171,7 @@ export default function ContactContent() {
               </div>
             ) : (
               <div className="bg-white border border-slate-200 rounded-2xl p-7 shadow-sm">
-                <h2 className="font-bold text-navy-700 text-lg mb-1">Consultation Request</h2>
+                <h2 className="font-semibold text-navy-700 text-lg mb-1">Consultation Request</h2>
                 <p className="text-slate-500 text-sm mb-6">
                   All fields marked * are required. We will use this information to prepare for your call.
                 </p>

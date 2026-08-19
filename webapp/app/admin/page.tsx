@@ -196,7 +196,7 @@ export default async function AdminDashboard() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-brand-700">Dashboard</h1>
+          <h1 className="text-2xl font-semibold text-brand-700">Dashboard</h1>
           <p className="text-pearl-500 text-sm flex items-center gap-1.5 mt-0.5">
             <Calendar size={12} />
             {new Date().toLocaleDateString("en-IN", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}
@@ -226,7 +226,7 @@ export default async function AdminDashboard() {
         <div className="flex items-center justify-between px-5 py-4 border-b border-pearl-100">
           <div className="flex items-center gap-2">
             <Activity size={16} className="text-brand-600" />
-            <h2 className="font-bold text-brand-700 text-sm">Live Activity Feed</h2>
+            <h2 className="font-semibold text-brand-700 text-sm">Live Activity Feed</h2>
           </div>
           <span className="text-xs text-pearl-400">Last 25 actions across all channels</span>
         </div>
@@ -282,7 +282,7 @@ export default async function AdminDashboard() {
 
         <div className="lg:col-span-2 bg-white rounded-xl border border-pearl-200 shadow-sm">
           <div className="flex items-center justify-between px-5 py-4 border-b border-pearl-100">
-            <h2 className="font-bold text-brand-700 text-sm">Recent Consultation Requests</h2>
+            <h2 className="font-semibold text-brand-700 text-sm">Recent Consultation Requests</h2>
             <a href="/admin/consultations" className="text-xs text-brand-500 hover:text-brand-700">{leadCount} total →</a>
           </div>
           {recentLeads.length === 0 ? (
@@ -313,7 +313,7 @@ export default async function AdminDashboard() {
 
         <div className="bg-white rounded-xl border border-pearl-200 shadow-sm">
           <div className="px-5 py-4 border-b border-pearl-100">
-            <h2 className="font-bold text-brand-700 text-sm">Assessment Risk Distribution</h2>
+            <h2 className="font-semibold text-brand-700 text-sm">Assessment Risk Distribution</h2>
             <p className="text-xs text-pearl-500 mt-0.5">{asCount} assessments completed</p>
           </div>
           <div className="p-5 space-y-4">
@@ -335,7 +335,7 @@ export default async function AdminDashboard() {
 
           {/* Survey score distribution */}
           <div className="px-5 pb-5 border-t border-pearl-100 pt-4">
-            <h3 className="font-bold text-brand-700 text-xs mb-3">Survey Score Bands</h3>
+            <h3 className="font-semibold text-brand-700 text-xs mb-3">Survey Score Bands</h3>
             {surveyCount === 0 ? (
               <p className="text-xs text-pearl-400">No survey responses yet.</p>
             ) : (
@@ -360,7 +360,7 @@ export default async function AdminDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <div className="bg-white rounded-xl border border-pearl-200 shadow-sm">
           <div className="flex items-center justify-between px-5 py-4 border-b border-pearl-100">
-            <h2 className="font-bold text-brand-700 text-sm">Recent Subscribers</h2>
+            <h2 className="font-semibold text-brand-700 text-sm">Recent Subscribers</h2>
             <a href="/admin/subscribers" className="text-xs text-brand-500 hover:text-brand-700">{subCount} total →</a>
           </div>
           {recentSubs.length === 0 ? (
@@ -387,7 +387,7 @@ export default async function AdminDashboard() {
 
         <div className="bg-white rounded-xl border border-pearl-200 shadow-sm">
           <div className="flex items-center justify-between px-5 py-4 border-b border-pearl-100">
-            <h2 className="font-bold text-brand-700 text-sm">Recent White Paper Downloads</h2>
+            <h2 className="font-semibold text-brand-700 text-sm">Recent White Paper Downloads</h2>
             <a href="/admin/downloads" className="text-xs text-brand-500 hover:text-brand-700">{dlCount} total →</a>
           </div>
           {recentDls.length === 0 ? (

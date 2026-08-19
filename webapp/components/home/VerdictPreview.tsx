@@ -23,7 +23,7 @@ export function VerdictPreview() {
           <span className="inline-block text-xs font-semibold uppercase tracking-wide text-teal-600 mb-3">
             The report
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-navy-700 mb-3">
+          <h2 className="text-3xl sm:text-4xl font-semibold text-navy-700 mb-3">
             See what your verdict looks like
           </h2>
           <p className="text-slate-600 text-base max-w-md mx-auto leading-relaxed">

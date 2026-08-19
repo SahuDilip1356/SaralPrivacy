@@ -41,7 +41,7 @@ export default function ConsentPreferencesContent() {
             <Shield size={20} className="text-green-400" />
             <span className="text-green-300 text-sm font-semibold">Your Privacy Rights</span>
           </div>
-          <h1 className="text-3xl font-bold text-white">Consent Preferences</h1>
+          <h1 className="text-3xl font-semibold text-white">Consent Preferences</h1>
           <p className="text-slate-300 mt-2">
             Withdraw your consent to our emails at any time — as easily as you gave it.
           </p>
@@ -52,7 +52,7 @@ export default function ConsentPreferencesContent() {
         {state === "done" ? (
           <div className="bg-green-50 border border-green-200 rounded-xl p-8 text-center">
             <CheckCircle size={40} className="text-green-600 mx-auto mb-3" />
-            <h2 className="font-bold text-green-800 text-xl mb-2">You&apos;ve been unsubscribed</h2>
+            <h2 className="font-semibold text-green-800 text-xl mb-2">You&apos;ve been unsubscribed</h2>
             <p className="text-green-700 text-sm">
               <span className="font-medium">{email}</span> has been removed from SaralPrivacy
               emails. You won&apos;t receive any more from us. Changes take effect within 24 hours.
@@ -67,7 +67,7 @@ export default function ConsentPreferencesContent() {
           </div>
         ) : (
           <div className="bg-white border border-slate-200 rounded-xl p-7">
-            <h2 className="font-bold text-navy-700 text-lg mb-2">Stop receiving our emails</h2>
+            <h2 className="font-semibold text-navy-700 text-lg mb-2">Stop receiving our emails</h2>
             <p className="text-slate-600 text-sm mb-5">
               Enter the email address you subscribed with. We&apos;ll remove it from our
               briefings and any other marketing email.

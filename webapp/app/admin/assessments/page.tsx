@@ -199,7 +199,7 @@ function PreviewPanel({
         {/* Panel header */}
         <div className="sticky top-0 bg-white border-b border-slate-200 px-5 py-4 flex items-center justify-between z-10">
           <div>
-            <h2 className="text-base font-bold text-slate-800">Report Preview</h2>
+            <h2 className="text-base font-semibold text-slate-800">Report Preview</h2>
             <p className="text-xs text-slate-500 mt-0.5 truncate max-w-xs">{assessment.email}</p>
           </div>
           <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500">
@@ -488,7 +488,7 @@ export default function AssessmentsPage() {
           <CheckCircle size={18} className="text-green-600" />
         </div>
         <div>
-          <h1 className="text-2xl font-bold text-brand-700">Assessments</h1>
+          <h1 className="text-2xl font-semibold text-brand-700">Assessments</h1>
           <p className="text-slate-500 text-sm">
             {assessments.length} total · {newAssessments.length} scored · Avg score: <span className="font-semibold text-slate-700">{avgScore || "—"}/100</span>
           </p>

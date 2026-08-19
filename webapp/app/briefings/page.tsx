@@ -105,7 +105,7 @@ export default async function BriefingsPage() {
               <div className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
               <span className="text-green-300 text-xs font-semibold">Published daily</span>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">
+            <h1 className="text-3xl sm:text-4xl font-semibold text-white mb-3">
               DPDPA Daily Briefings
             </h1>
             <p className="text-slate-300 text-lg leading-relaxed mb-6">

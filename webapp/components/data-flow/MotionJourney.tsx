@@ -407,7 +407,7 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
                 )}
               >
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  <h3 className="flex items-center gap-2 text-[17px] font-bold tracking-tight text-navy-800">
+                  <h3 className="flex items-center gap-2 text-[17px] font-semibold tracking-tight text-navy-800">
                     {row.stage.name}
                     {isHot && (
                       <motion.span

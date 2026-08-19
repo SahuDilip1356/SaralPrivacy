@@ -112,7 +112,7 @@ export function AudienceCards() {
           <span className="inline-block text-xs font-semibold uppercase tracking-wide text-teal-600 mb-3">
             Explore DPDPA by your sector
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-navy-700 mb-4">
+          <h2 className="text-3xl sm:text-4xl font-semibold text-navy-700 mb-4">
             Same law. Different data. Different fixes.
           </h2>
           <p className="text-slate-600 max-w-2xl mx-auto leading-relaxed">
@@ -135,7 +135,7 @@ export function AudienceCards() {
                   <a.icon size={20} className={a.iconColor} />
                 </div>
 
-                <h3 className="font-bold text-navy-700 text-lg mb-2">{a.title}</h3>
+                <h3 className="font-semibold text-navy-700 text-lg mb-2">{a.title}</h3>
 
                 {/* semantic gold risk badge */}
                 <span className="inline-flex items-center gap-1.5 self-start text-2xs font-semibold text-navy-700 bg-gold-400/20 border border-gold-400/40 rounded-full px-2.5 py-1 mb-3">

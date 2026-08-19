@@ -495,7 +495,7 @@ function StrategyCard({
   return (
     <div className="bg-white rounded-xl border border-slate-200 p-5">
       <span className={cn("text-xs font-bold px-2 py-0.5 rounded-full", badge)}>{priority}</span>
-      <h4 className="font-bold text-slate-800 text-sm mt-3 mb-2 leading-snug">{finding}</h4>
+      <h4 className="font-semibold text-slate-800 text-sm mt-3 mb-2 leading-snug">{finding}</h4>
       <div className="text-xs text-slate-500 font-semibold uppercase tracking-wide mb-1">Why it matters</div>
       <p className="text-slate-600 text-xs leading-relaxed mb-3">{why}</p>
       <div className="text-xs text-slate-500 font-semibold uppercase tracking-wide mb-1">What to do</div>
@@ -699,7 +699,7 @@ export default function SurveyClient() {
             <div className="inline-block bg-green-100 text-green-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide mb-5">
               DPDPA READINESS ASSESSMENT
             </div>
-            <h1 className="text-4xl sm:text-5xl font-bold text-navy-900 leading-tight mb-5">
+            <h1 className="text-4xl sm:text-5xl font-semibold text-navy-900 leading-tight mb-5">
               Find your DPDPA readiness gaps in 3–5 minutes
             </h1>
             <p className="text-slate-600 text-lg leading-relaxed mb-7">
@@ -766,7 +766,7 @@ export default function SurveyClient() {
           {/* Right — Authorization card + press proof */}
           <div>
           <div className="bg-white rounded-2xl border border-slate-200 shadow-lg p-7">
-            <h2 className="text-xl font-bold text-navy-900 mb-1">Start your free DPDPA readiness check</h2>
+            <h2 className="text-xl font-semibold text-navy-900 mb-1">Start your free DPDPA readiness check</h2>
             <div className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-6">Before you begin</div>
 
             {/* Required consent */}
@@ -859,7 +859,7 @@ export default function SurveyClient() {
             <div className="space-y-8">
               <div>
                 <div className="text-xs font-bold text-green-600 uppercase tracking-widest mb-2">BUSINESS CONTEXT</div>
-                <h2 className="text-3xl font-bold text-navy-900 mb-1">Where privacy risk starts in your business</h2>
+                <h2 className="text-3xl font-semibold text-navy-900 mb-1">Where privacy risk starts in your business</h2>
                 <p className="text-slate-500 text-sm">This helps identify where privacy exposure is structurally built into your business model.</p>
               </div>
 
@@ -910,7 +910,7 @@ export default function SurveyClient() {
             <div className="space-y-6">
               <div>
                 <div className="text-xs font-bold text-green-600 uppercase tracking-widest mb-2">DATA EXPOSURE PROFILE</div>
-                <h2 className="text-3xl font-bold text-navy-900 mb-1">Does your business collect or store personal data digitally?</h2>
+                <h2 className="text-3xl font-semibold text-navy-900 mb-1">Does your business collect or store personal data digitally?</h2>
                 <p className="text-slate-500 text-sm">Even occasional digital data collection creates obligations under DPDPA if individuals are identifiable.</p>
               </div>
               <QuestionCardGrid
@@ -928,7 +928,7 @@ export default function SurveyClient() {
             <div className="space-y-8">
               <div>
                 <div className="text-xs font-bold text-green-600 uppercase tracking-widest mb-2">DATA ECOSYSTEM MAPPING</div>
-                <h2 className="text-3xl font-bold text-navy-900 mb-1">Define your compliance footprint by data handling practices.</h2>
+                <h2 className="text-3xl font-semibold text-navy-900 mb-1">Define your compliance footprint by data handling practices.</h2>
                 <div className="text-xs text-slate-400 font-mono">04 / 10</div>
               </div>
 
@@ -969,7 +969,7 @@ export default function SurveyClient() {
             <div className="space-y-6">
               <div>
                 <div className="text-xs font-bold text-green-600 uppercase tracking-widest mb-2">CONTROL MATURITY ASSESSMENT</div>
-                <h2 className="text-3xl font-bold text-navy-900 mb-1">Which privacy basics are already in place?</h2>
+                <h2 className="text-3xl font-semibold text-navy-900 mb-1">Which privacy basics are already in place?</h2>
                 <div className="text-xs text-slate-400 font-mono mb-2">06 / 10</div>
                 <div className="bg-slate-100 rounded-lg px-4 py-2.5 text-xs text-slate-500">
                   ℹ This section helps distinguish policy intent from operational controls.
@@ -988,7 +988,7 @@ export default function SurveyClient() {
             <div className="space-y-8">
               <div>
                 <div className="text-xs font-bold text-green-600 uppercase tracking-widest mb-2">COMPLIANCE MATURITY</div>
-                <h2 className="text-3xl font-bold text-navy-900 mb-1">How consent and requests are handled today</h2>
+                <h2 className="text-3xl font-semibold text-navy-900 mb-1">How consent and requests are handled today</h2>
                 <p className="text-slate-500 text-sm">Compliance maturity is 80% complete.</p>
               </div>
 
@@ -1029,7 +1029,7 @@ export default function SurveyClient() {
             <div className="space-y-8">
               <div>
                 <div className="text-xs font-bold text-green-600 uppercase tracking-widest mb-2">OWNERSHIP & READINESS</div>
-                <h2 className="text-3xl font-bold text-navy-900 mb-1">Who owns privacy decisions today</h2>
+                <h2 className="text-3xl font-semibold text-navy-900 mb-1">Who owns privacy decisions today</h2>
                 <p className="text-slate-500 text-sm">Final phase of the foundational audit.</p>
                 <div className="text-xs text-slate-400 font-mono mt-1">QUESTION 9–10 OF 10</div>
               </div>
@@ -1069,7 +1069,7 @@ export default function SurveyClient() {
             <div className="space-y-8">
               <div>
                 <div className="text-xs font-bold text-green-600 uppercase tracking-widest mb-2">PERSONALISATION</div>
-                <h2 className="text-3xl font-bold text-navy-900 mb-1">Help us prioritize the right fixes</h2>
+                <h2 className="text-3xl font-semibold text-navy-900 mb-1">Help us prioritize the right fixes</h2>
                 <p className="text-slate-500 text-sm">This tailors your report to your operating reality, not generic advice.</p>
                 <div className="mt-2 h-1.5 bg-slate-200 rounded-full overflow-hidden">
                   <div className="h-full bg-green-400 rounded-full" style={{ width: "95%" }} />
@@ -1200,7 +1200,7 @@ export default function SurveyClient() {
 
               {/* Right — unlock form */}
               <div className="bg-white rounded-2xl border border-slate-200 shadow-lg p-7">
-                <h2 className="text-xl font-bold text-navy-900 mb-1">Get your detailed report with top risks, quick wins, and next steps</h2>
+                <h2 className="text-xl font-semibold text-navy-900 mb-1">Get your detailed report with top risks, quick wins, and next steps</h2>
                 <div className="flex items-center gap-1.5 text-xs text-green-700 font-semibold mb-5">
                   <Shield size={12} /> SECURE DELIVERY MODE
                 </div>
@@ -1332,7 +1332,7 @@ export default function SurveyClient() {
 
             <div className="flex items-start justify-between mb-6">
               <div>
-                <h1 className="text-3xl font-bold text-navy-900">Your DPDPA readiness report</h1>
+                <h1 className="text-3xl font-semibold text-navy-900">Your DPDPA readiness report</h1>
                 <div className="flex items-center gap-2 mt-2">
                   <span className="text-sm font-bold px-3 py-1 rounded-full"
                     style={{ backgroundColor: result.verdictColor + "20", color: result.verdictColor }}>
@@ -1413,7 +1413,7 @@ export default function SurveyClient() {
 
             {/* CTA bar */}
             <div className="bg-navy-900 rounded-2xl p-6 text-center">
-              <h3 className="text-xl font-bold text-white mb-2">Elevate your readiness today.</h3>
+              <h3 className="text-xl font-semibold text-white mb-2">Elevate your readiness today.</h3>
               <p className="text-slate-400 text-sm mb-5">
                 The DPDP Rules require a compliance posture. Our experts help you build the DPDPA-aligned framework and implementation strategy.
               </p>
@@ -1505,7 +1505,7 @@ export default function SurveyClient() {
 
             {/* Immediate actions */}
             <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-5">
-              <h3 className="font-bold text-navy-700 text-base mb-4">3 things to do this week</h3>
+              <h3 className="font-semibold text-navy-700 text-base mb-4">3 things to do this week</h3>
               <div className="space-y-3">
                 {result.immediateActions.map((action, i) => (
                   <div key={i} className="flex items-start gap-3">
@@ -1519,7 +1519,7 @@ export default function SurveyClient() {
             {/* 30-day plan */}
             {result.thirtyDayActions.length > 0 && (
               <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-5">
-                <h3 className="font-bold text-navy-700 text-base mb-4">Your 30-day action plan</h3>
+                <h3 className="font-semibold text-navy-700 text-base mb-4">Your 30-day action plan</h3>
                 <div className="space-y-3">
                   {result.thirtyDayActions.map((action, i) => (
                     <div key={i} className="flex items-start gap-3">
@@ -1533,7 +1533,7 @@ export default function SurveyClient() {
 
             {/* CTAs */}
             <div className="bg-navy-900 rounded-2xl p-6 mb-5">
-              <h4 className="font-bold text-white text-base mb-1">Recommended next step</h4>
+              <h4 className="font-semibold text-white text-base mb-1">Recommended next step</h4>
               <p className="text-slate-400 text-sm mb-4">{result.blockerNote ?? "Start with the highest-priority action above."}</p>
               <div className="flex flex-col sm:flex-row gap-3">
                 {reportToken && (

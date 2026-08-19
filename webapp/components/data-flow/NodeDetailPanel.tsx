@@ -35,7 +35,7 @@ export function NodeDetailPanel({ pack, node, onClose, onAssessmentCta }: Props)
     >
       <div className="flex items-start justify-between gap-3 border-b border-slate-100 p-4">
         <div>
-          <h3 className="text-base font-bold leading-snug text-navy-800">{node.name}</h3>
+          <h3 className="text-base font-semibold leading-snug text-navy-800">{node.name}</h3>
           <div className="mt-1.5 flex flex-wrap gap-1">
             <span className="rounded-full border border-slate-300 bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-700">
               {type.label}
@@ -64,7 +64,7 @@ export function NodeDetailPanel({ pack, node, onClose, onAssessmentCta }: Props)
         <p className="leading-relaxed text-slate-600">{node.description}</p>
 
         <section aria-label="Data held here">
-          <h4 className="mb-1.5 text-[11px] font-bold uppercase tracking-wide text-slate-400">
+          <h4 className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-slate-400">
             What it holds
           </h4>
           <div className="flex flex-wrap gap-1">
@@ -86,7 +86,7 @@ export function NodeDetailPanel({ pack, node, onClose, onAssessmentCta }: Props)
         </section>
 
         <section aria-label="Who can access">
-          <h4 className="mb-1.5 text-[11px] font-bold uppercase tracking-wide text-slate-400">
+          <h4 className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-slate-400">
             Who can access
           </h4>
           <ul className="space-y-1">

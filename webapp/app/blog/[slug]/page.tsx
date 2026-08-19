@@ -161,10 +161,10 @@ function MarkdownContent({ content }: { content: string }) {
         // Brand v3.0 hierarchy: H2 32px, H3 24px, Body 16px. Source-MD H1s are
         // demoted to H2 to keep one true H1 (the article title) per page.
         h1: ({ children }) => (
-          <h2 className="text-2xl sm:text-3xl font-bold text-navy-700 mt-8 mb-3 leading-tight">{children}</h2>
+          <h2 className="text-2xl sm:text-3xl font-semibold text-navy-700 mt-8 mb-3 leading-tight">{children}</h2>
         ),
         h2: ({ children }) => (
-          <h2 className="text-2xl sm:text-3xl font-bold text-navy-700 mt-8 mb-3 leading-tight">{children}</h2>
+          <h2 className="text-2xl sm:text-3xl font-semibold text-navy-700 mt-8 mb-3 leading-tight">{children}</h2>
         ),
         h3: ({ children }) => (
           <h3 className="text-xl sm:text-2xl font-semibold text-navy-700 mt-6 mb-2 leading-snug">{children}</h3>
@@ -253,7 +253,7 @@ function SectionBlock({
   return (
     <div className="mb-8">
       <div className="flex items-center gap-2 mb-3">
-        <h2 className="text-lg font-bold text-navy-700">{heading}</h2>
+        <h2 className="text-lg font-semibold text-navy-700">{heading}</h2>
         {scopeLabel && (
           <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
             {scopeLabel}
@@ -346,7 +346,7 @@ export default async function BlogDetailPage({ params }: Props) {
             </div>
 
             {/* Title — brand H1 scale (Inter Display, sentence case enforced upstream) */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-navy-700 leading-tight tracking-tight mb-4">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-navy-700 leading-tight tracking-tight mb-4">
               {post.title}
             </h1>
 
@@ -400,7 +400,7 @@ export default async function BlogDetailPage({ params }: Props) {
             {/* Sources — numbered citation list */}
             {primarySources.length > 0 && (
               <div className="mb-8 pt-6 border-t border-slate-200">
-                <h2 className="text-base font-bold text-navy-700 mb-4">Sources</h2>
+                <h2 className="text-base font-semibold text-navy-700 mb-4">Sources</h2>
                 <ol className="space-y-3">
                   {primarySources.map((src, i) => (
                     <li key={i} className="flex gap-3 text-sm text-slate-600 leading-relaxed">
@@ -468,7 +468,7 @@ export default async function BlogDetailPage({ params }: Props) {
             <div className="bg-navy-700 rounded-xl p-5">
               <div className="flex items-center gap-2 mb-3">
                 <Shield size={16} className="text-green-500" />
-                <h3 className="font-bold text-white text-sm">Check your readiness</h3>
+                <h3 className="font-semibold text-white text-sm">Check your readiness</h3>
               </div>
               <p className="text-slate-400 text-xs mb-4 leading-relaxed">
                 Take our free 7-question DPDPA readiness assessment. Get a risk score and
@@ -490,7 +490,7 @@ export default async function BlogDetailPage({ params }: Props) {
               <div className="bg-white rounded-xl border border-slate-200 p-5">
                 <div className="flex items-center gap-2 mb-4">
                   <BookOpen size={14} className="text-navy-600" />
-                  <h3 className="font-bold text-navy-700 text-sm">Related insights</h3>
+                  <h3 className="font-semibold text-navy-700 text-sm">Related insights</h3>
                 </div>
                 <div className="space-y-4">
                   {relatedPosts.map((related) => (

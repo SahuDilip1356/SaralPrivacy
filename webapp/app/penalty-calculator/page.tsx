@@ -37,10 +37,10 @@ const breadcrumbSchema = {
 // ─── Reusable prose components ────────────────────────────────────────────────
 
 function H2({ children }: { children: React.ReactNode }) {
-  return <h2 className="text-xl font-bold text-navy-700 mt-10 mb-3">{children}</h2>;
+  return <h2 className="text-xl font-semibold text-navy-700 mt-10 mb-3">{children}</h2>;
 }
 function H3({ children }: { children: React.ReactNode }) {
-  return <h3 className="text-base font-bold text-navy-700 mt-6 mb-2">{children}</h3>;
+  return <h3 className="text-base font-semibold text-navy-700 mt-6 mb-2">{children}</h3>;
 }
 function P({ children }: { children: React.ReactNode }) {
   return <p className="text-slate-600 text-sm leading-relaxed mb-3">{children}</p>;
@@ -93,7 +93,7 @@ export default function PenaltyPage() {
               <span className="text-slate-300">Penalties</span>
             </nav>
             <div className="max-w-2xl">
-              <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3 leading-snug">
+              <h1 className="text-3xl sm:text-4xl font-semibold text-white mb-3 leading-snug">
                 Penalties Under DPDPA — Complete Guide
               </h1>
               <div className="answer-block bg-white/10 border border-white/20 rounded-xl px-5 py-4" data-speakable="true">

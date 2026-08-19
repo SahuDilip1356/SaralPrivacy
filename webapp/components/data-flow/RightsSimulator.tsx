@@ -115,7 +115,7 @@ export function RightsSimulator({ pack, model, onScenarioOpen }: Props) {
 
         <div className="grid gap-5 lg:grid-cols-2">
           <div>
-            <h4 className={cn("font-bold uppercase tracking-wide text-slate-500", TEXT.mini)}>
+            <h4 className={cn("font-semibold uppercase tracking-wide text-slate-500", TEXT.mini)}>
               Where you have to look
             </h4>
             <ul className="mt-2 flex flex-wrap gap-1.5">
@@ -126,7 +126,7 @@ export function RightsSimulator({ pack, model, onScenarioOpen }: Props) {
           </div>
           {blocked.length > 0 && (
             <div>
-              <h4 className={cn("font-bold uppercase tracking-wide text-red-600", TEXT.mini)}>
+              <h4 className={cn("font-semibold uppercase tracking-wide text-red-600", TEXT.mini)}>
                 Where this usually cannot reach
               </h4>
               <ul className="mt-2 flex flex-wrap gap-1.5">
@@ -139,7 +139,7 @@ export function RightsSimulator({ pack, model, onScenarioOpen }: Props) {
         </div>
 
         <div>
-          <h4 className={cn("font-bold uppercase tracking-wide text-slate-500", TEXT.mini)}>
+          <h4 className={cn("font-semibold uppercase tracking-wide text-slate-500", TEXT.mini)}>
             What has to happen
           </h4>
           <ol className="mt-2 space-y-1.5">

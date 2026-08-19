@@ -500,7 +500,7 @@ export default function BlogEditor({ initialData, docId, role = "admin", initial
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-brand-700">
+          <h1 className="text-2xl font-semibold text-brand-700">
             {docId ? "Edit Blog Post" : "New Blog Post"}
           </h1>
           <p className="text-sm text-slate-500 mt-0.5">

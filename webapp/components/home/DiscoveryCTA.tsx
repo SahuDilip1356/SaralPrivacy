@@ -20,7 +20,7 @@ export function DiscoveryCTA() {
               </span>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+            <h2 className="text-3xl sm:text-4xl font-semibold text-white mb-4">
               Not sure what personal data you even hold?
             </h2>
 

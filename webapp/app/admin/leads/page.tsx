@@ -51,7 +51,7 @@ export default function LeadsPage() {
             <Users size={18} className="text-brand-700" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-brand-700">Leads</h1>
+            <h1 className="text-2xl font-semibold text-brand-700">Leads</h1>
             <p className="text-slate-500 text-sm">{leads.length} total consultation requests</p>
           </div>
         </div>

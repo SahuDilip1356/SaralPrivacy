@@ -38,7 +38,7 @@ export function AssessmentCTA({
       <p className="text-green-100 text-xs font-bold mb-2 uppercase tracking-wide">
         {copy.eyebrow}
       </p>
-      <h2 className="text-xl font-bold text-white mb-2">{copy.heading}</h2>
+      <h2 className="text-xl font-semibold text-white mb-2">{copy.heading}</h2>
       <p className="text-green-100 text-sm mb-4 max-w-xs mx-auto">{copy.body}</p>
       <Link
         href={copy.href}

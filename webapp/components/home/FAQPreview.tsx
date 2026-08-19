@@ -14,7 +14,7 @@ export function FAQPreview() {
     <section className="py-20 bg-slate-50">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-10">
-          <h2 className="text-3xl font-bold text-navy-700 mb-3">
+          <h2 className="text-3xl font-semibold text-navy-700 mb-3">
             Frequently asked questions
           </h2>
           <p className="text-slate-600">

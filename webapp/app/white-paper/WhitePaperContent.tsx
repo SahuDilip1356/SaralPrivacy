@@ -108,7 +108,7 @@ export default function WhitePaperContent() {
               <span className="text-amber-400 text-xs font-semibold">Practitioner guide · Free</span>
             </div>
             <p className="text-amber-300 text-xs font-semibold mb-2 uppercase tracking-wide">2026 Edition · Updated for the DPDP Rules, 2025</p>
-            <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">
+            <h1 className="text-3xl sm:text-4xl font-semibold text-white mb-3">
               DPDPA: The Complete Guide for Indian Businesses
             </h1>
             <p className="text-slate-300 text-lg leading-relaxed">
@@ -130,7 +130,7 @@ export default function WhitePaperContent() {
             <div className="bg-white rounded-xl border border-slate-200 p-6 mb-6">
               <div className="flex items-center gap-2 mb-1">
                 <BookOpen size={16} className="text-green-600" />
-                <h2 className="text-base font-bold text-navy-700">Read online in your language</h2>
+                <h2 className="text-base font-semibold text-navy-700">Read online in your language</h2>
               </div>
               <p className="text-slate-500 text-sm mb-4">Free, no sign-up — opens the complete Guide.</p>
               <div className="flex flex-wrap gap-2">
@@ -150,7 +150,7 @@ export default function WhitePaperContent() {
               </div>
             </div>
 
-            <h2 className="text-2xl font-bold text-navy-700 mb-5">
+            <h2 className="text-2xl font-semibold text-navy-700 mb-5">
               What&apos;s inside the Guide
             </h2>
 
@@ -169,7 +169,7 @@ export default function WhitePaperContent() {
 
             {/* Who it is for */}
             <div className="bg-navy-700 rounded-xl p-6">
-              <h3 className="font-bold text-white text-base mb-3">Who this is for</h3>
+              <h3 className="font-semibold text-white text-base mb-3">Who this is for</h3>
               <div className="space-y-2">
                 {[
                   "Founders and CEOs of Indian SMEs",
@@ -195,7 +195,7 @@ export default function WhitePaperContent() {
                 <div className="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                   <CheckCircle size={28} className="text-green-600" />
                 </div>
-                <h3 className="font-bold text-green-800 text-xl mb-2">
+                <h3 className="font-semibold text-green-800 text-xl mb-2">
                   Your Guide is ready{selectedLang.code !== "en" ? ` — ${selectedLang.roman}` : ""}
                 </h3>
                 <p className="text-green-700 text-sm mb-2">
@@ -231,7 +231,7 @@ export default function WhitePaperContent() {
               </div>
             ) : (
               <div className="bg-white border border-slate-200 rounded-2xl p-7 shadow-sm">
-                <h2 className="font-bold text-navy-700 text-lg mb-1">
+                <h2 className="font-semibold text-navy-700 text-lg mb-1">
                   Get the Guide — free
                 </h2>
                 <p className="text-slate-500 text-sm mb-6">

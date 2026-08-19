@@ -59,7 +59,7 @@ export function TemplatesCTA({ variant = "full" }: TemplatesCTAProps) {
         <p className="text-xs font-bold text-navy-700 uppercase tracking-wide mb-1">
           {ctaCopy.templates.eyebrow}
         </p>
-        <h3 className="text-navy-700 font-bold text-base leading-snug mb-1">
+        <h3 className="text-navy-700 font-semibold text-base leading-snug mb-1">
           {ctaCopy.templates.heading}
         </h3>
         <p className="text-slate-500 text-sm leading-relaxed">

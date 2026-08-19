@@ -122,7 +122,7 @@ export default function PressWallPage() {
             <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
             Press Coverage · June 2026
           </span>
-          <h1 className="mt-4 text-2xl sm:text-3xl font-bold text-navy-700 leading-tight">
+          <h1 className="mt-4 text-2xl sm:text-3xl font-semibold text-navy-700 leading-tight">
             SaralPrivacy in the Press
           </h1>
           <p className="mt-2 text-sm text-slate-600 max-w-xl">

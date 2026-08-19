@@ -200,7 +200,7 @@ export default function LearnPage() {
               <BookOpen size={12} className="text-green-300" />
               <span className="text-green-300 text-xs font-semibold">DPDPA Learning Hub</span>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">
+            <h1 className="text-3xl sm:text-4xl font-semibold text-white mb-3">
               DPDPA Guide — Plain English for Indian Businesses
             </h1>
             <p className="text-slate-300 text-lg leading-relaxed">
@@ -217,7 +217,7 @@ export default function LearnPage() {
 
           {/* Row 1 — Beginner learning path */}
           <div>
-            <h2 className="font-bold text-navy-700 text-sm mb-2.5">
+            <h2 className="font-semibold text-navy-700 text-sm mb-2.5">
               New to DPDPA? Start here →
             </h2>
             <div className="flex flex-wrap gap-2">
@@ -239,7 +239,7 @@ export default function LearnPage() {
 
           {/* Row 2 — Key reference documents */}
           <div>
-            <h2 className="font-bold text-navy-700 text-sm mb-2.5">
+            <h2 className="font-semibold text-navy-700 text-sm mb-2.5">
               Key Reference Documents
             </h2>
             <div className="flex flex-wrap gap-2">
@@ -261,7 +261,7 @@ export default function LearnPage() {
 
           {/* Row 3 — Compliance tools */}
           <div>
-            <h2 className="font-bold text-navy-700 text-sm mb-2.5">
+            <h2 className="font-semibold text-navy-700 text-sm mb-2.5">
               Compliance Tools
             </h2>
             <div className="flex flex-wrap gap-2">
@@ -293,7 +293,7 @@ export default function LearnPage() {
                     {tag}
                   </span>
                 </div>
-                <h3 className="font-bold text-navy-700 text-base mb-2 group-hover:text-green-600 transition-colors">
+                <h3 className="font-semibold text-navy-700 text-base mb-2 group-hover:text-green-600 transition-colors">
                   {title}
                 </h3>
                 <p className="text-slate-500 text-sm leading-relaxed mb-4">{description}</p>

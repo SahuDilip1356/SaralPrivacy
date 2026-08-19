@@ -38,7 +38,7 @@ export default function OutreachUnsubscribeClient({ token }: { token: string }) 
       <div className="flex flex-col items-center gap-5 py-12 text-center px-6">
         <CheckCircle size={36} className="text-green-500" />
         <div>
-          <h2 className="text-xl font-bold text-slate-800 mb-2">You&rsquo;ve been removed.</h2>
+          <h2 className="text-xl font-semibold text-slate-800 mb-2">You&rsquo;ve been removed.</h2>
           <p className="text-slate-500 text-sm leading-relaxed max-w-xs mx-auto">
             We will not contact you again. Your data will be handled per our{" "}
             <Link href="/privacy-policy" className="underline hover:text-navy-700">Privacy Policy</Link>.
@@ -53,7 +53,7 @@ export default function OutreachUnsubscribeClient({ token }: { token: string }) 
       <div className="flex flex-col items-center gap-5 py-12 text-center px-6">
         <CheckCircle size={36} className="text-blue-400" />
         <div>
-          <h2 className="text-xl font-bold text-slate-800 mb-2">Already removed.</h2>
+          <h2 className="text-xl font-semibold text-slate-800 mb-2">Already removed.</h2>
           <p className="text-slate-500 text-sm">You were already removed from this list.</p>
         </div>
       </div>
@@ -65,7 +65,7 @@ export default function OutreachUnsubscribeClient({ token }: { token: string }) 
       <div className="flex flex-col items-center gap-5 py-12 text-center px-6">
         <XCircle size={36} className="text-red-400" />
         <div>
-          <h2 className="text-xl font-bold text-slate-800 mb-2">Invalid link</h2>
+          <h2 className="text-xl font-semibold text-slate-800 mb-2">Invalid link</h2>
           <p className="text-slate-500 text-sm">This unsubscribe link is missing required information.</p>
         </div>
       </div>
@@ -76,7 +76,7 @@ export default function OutreachUnsubscribeClient({ token }: { token: string }) 
     <div className="flex flex-col items-center gap-5 py-12 text-center px-6">
       <XCircle size={36} className="text-red-400" />
       <div>
-        <h2 className="text-xl font-bold text-slate-800 mb-2">Something went wrong</h2>
+        <h2 className="text-xl font-semibold text-slate-800 mb-2">Something went wrong</h2>
         <p className="text-slate-500 text-sm">{error}</p>
       </div>
     </div>

@@ -39,7 +39,7 @@ export default function AboutPage() {
         {/* Hero */}
         <div className="bg-navy-700 py-14">
           <div className="max-w-4xl mx-auto px-4 sm:px-6">
-            <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">About SaralPrivacy</h1>
+            <h1 className="text-3xl sm:text-4xl font-semibold text-white mb-3">About SaralPrivacy</h1>
             <p className="text-slate-300 text-lg leading-relaxed">
               India&apos;s practical DPDPA education, assessment, and advisory platform.
             </p>
@@ -60,7 +60,7 @@ export default function AboutPage() {
 
           {/* How it works — 4-stage strip */}
           <div className="bg-white rounded-xl border border-slate-200 p-7">
-            <h2 className="text-xl font-bold text-navy-700 mb-5">How SaralPrivacy Works</h2>
+            <h2 className="text-xl font-semibold text-navy-700 mb-5">How SaralPrivacy Works</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {[
                 { step: "1", title: "Understand", body: "What DPDPA means for your business — in plain English, not legalese." },
@@ -81,7 +81,7 @@ export default function AboutPage() {
 
           {/* What SaralPrivacy Does */}
           <div className="bg-white rounded-xl border border-slate-200 p-7">
-            <h2 className="text-xl font-bold text-navy-700 mb-4">What SaralPrivacy Does</h2>
+            <h2 className="text-xl font-semibold text-navy-700 mb-4">What SaralPrivacy Does</h2>
             <ul className="space-y-3 text-sm text-slate-600 leading-relaxed">
               <li className="flex items-start gap-3">
                 <span className="w-2 h-2 rounded-full bg-green-500 mt-1.5 shrink-0" />
@@ -108,7 +108,7 @@ export default function AboutPage() {
 
           {/* Who It Serves */}
           <div className="bg-white rounded-xl border border-slate-200 p-7">
-            <h2 className="text-xl font-bold text-navy-700 mb-4">Who It Serves</h2>
+            <h2 className="text-xl font-semibold text-navy-700 mb-4">Who It Serves</h2>
             <p className="text-sm text-slate-600 leading-relaxed mb-4">
               SaralPrivacy is built for Indian businesses that process personal data as a routine part of their operations — not data protection specialists, but founders, operations leads, compliance managers, and senior staff who need to understand what to do and in what order.
             </p>
@@ -131,7 +131,7 @@ export default function AboutPage() {
 
           {/* Built with a practitioner's lens */}
           <div className="bg-white rounded-xl border border-slate-200 p-7">
-            <h2 className="text-xl font-bold text-navy-700 mb-4">Built With a Practitioner&apos;s Lens</h2>
+            <h2 className="text-xl font-semibold text-navy-700 mb-4">Built With a Practitioner&apos;s Lens</h2>
             <p className="text-sm text-slate-600 leading-relaxed">
               SaralPrivacy is built with a practitioner&apos;s lens — by a digital-transformation and enterprise-applications leader with two decades across ERP, finance systems, workflow automation, governance, and system integration. The conviction behind it is simple: DPDPA readiness isn&apos;t only about reading the law — it&apos;s about translating it into the systems, workflows, access controls, vendor handoffs, and retention practices where personal data actually lives.
             </p>
@@ -142,7 +142,7 @@ export default function AboutPage() {
 
           {/* Editorial Methodology */}
           <div className="bg-white rounded-xl border border-slate-200 p-7">
-            <h2 className="text-xl font-bold text-navy-700 mb-4">Editorial Methodology</h2>
+            <h2 className="text-xl font-semibold text-navy-700 mb-4">Editorial Methodology</h2>
             <p className="text-sm text-slate-600 leading-relaxed mb-4">
               All guidance on SaralPrivacy is produced against primary sources only. We do not treat secondary commentary, news coverage, or social media posts as authoritative.
             </p>
@@ -173,7 +173,7 @@ export default function AboutPage() {
 
           {/* What SaralPrivacy Is Not */}
           <div className="bg-slate-100 rounded-xl border border-slate-200 p-7">
-            <h2 className="text-xl font-bold text-navy-700 mb-4">What SaralPrivacy Is Not</h2>
+            <h2 className="text-xl font-semibold text-navy-700 mb-4">What SaralPrivacy Is Not</h2>
             <ul className="space-y-2 text-sm text-slate-600">
               <li className="flex items-start gap-3">
                 <span className="w-2 h-2 rounded-full bg-slate-400 mt-1.5 shrink-0" />
@@ -192,7 +192,7 @@ export default function AboutPage() {
 
           {/* Contact */}
           <div className="bg-white rounded-xl border border-slate-200 p-7">
-            <h2 className="text-xl font-bold text-navy-700 mb-4">Contact</h2>
+            <h2 className="text-xl font-semibold text-navy-700 mb-4">Contact</h2>
             <div className="space-y-3 text-sm text-slate-600">
               <div>
                 <p className="font-semibold text-navy-700 mb-1">For content questions and editorial enquiries</p>

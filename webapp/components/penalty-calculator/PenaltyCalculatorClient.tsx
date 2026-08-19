@@ -470,7 +470,7 @@ export default function PenaltyCalculatorClient() {
 
         {/* Breach + cap */}
         <div className="bg-white rounded-xl border border-slate-200 p-5 mb-4">
-          <h3 className="font-bold text-navy-700 text-sm mb-3">Applicable Schedule Entry</h3>
+          <h3 className="font-semibold text-navy-700 text-sm mb-3">Applicable Schedule Entry</h3>
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-xs text-slate-500">{selectedBreach.section} · {selectedBreach.scheduleItem}</span>
             <span className="text-xs font-semibold text-navy-700">{selectedBreach.title}</span>
@@ -483,7 +483,7 @@ export default function PenaltyCalculatorClient() {
         {/* Factor summary */}
         {(highFactors.length > 0 || mediumFactors.length > 0) && (
           <div className="bg-white rounded-xl border border-slate-200 p-5 mb-4">
-            <h3 className="font-bold text-navy-700 text-sm mb-3">Your Section 33(2) Assessment</h3>
+            <h3 className="font-semibold text-navy-700 text-sm mb-3">Your Section 33(2) Assessment</h3>
             {highFactors.length > 0 && (
               <div className="mb-3">
                 <div className="text-xs font-semibold text-red-600 mb-1.5">High — most likely to weigh against you</div>
@@ -515,7 +515,7 @@ export default function PenaltyCalculatorClient() {
 
         {/* Recommended actions */}
         <div className="bg-white rounded-xl border border-slate-200 p-5 mb-5">
-          <h3 className="font-bold text-navy-700 text-sm mb-3">Recommended Immediate Steps</h3>
+          <h3 className="font-semibold text-navy-700 text-sm mb-3">Recommended Immediate Steps</h3>
           <ul className="space-y-2">
             {[
               "Document the non-compliance event — timeline, scope, data affected, and individuals impacted.",

@@ -64,7 +64,7 @@ export async function BriefingsSection() {
               <div className="w-1.5 h-1.5 rounded-full bg-navy-700" />
               <span className="text-navy-700 text-xs font-semibold">Daily Briefings</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-bold text-navy-700">
+            <h2 className="text-3xl sm:text-4xl font-semibold text-navy-700">
               Stay ahead of DPDPA developments
             </h2>
             <p className="text-slate-600 mt-2 max-w-xl">
@@ -102,7 +102,7 @@ export async function BriefingsSection() {
                         <Badge variant="teal">Latest</Badge>
                         <Badge variant="amber">{getCategoryLabel(featured.category)}</Badge>
                       </div>
-                      <h3 className="text-xl font-bold text-white leading-snug mb-3 group-hover:text-teal-300 transition-colors">
+                      <h3 className="text-xl font-semibold text-white leading-snug mb-3 group-hover:text-teal-300 transition-colors">
                         {featured.title}
                       </h3>
                       <p className="text-slate-300 text-sm leading-relaxed mb-4">

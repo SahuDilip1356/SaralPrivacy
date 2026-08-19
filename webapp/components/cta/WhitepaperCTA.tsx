@@ -37,7 +37,7 @@ export function WhitepaperCTA({ variant = "full" }: WhitepaperCTAProps) {
         <p className="text-xs font-bold text-green-400 uppercase tracking-wide mb-1">
           {ctaCopy.whitepaper.eyebrow}
         </p>
-        <h3 className="text-white font-bold text-base leading-snug mb-1">
+        <h3 className="text-white font-semibold text-base leading-snug mb-1">
           {ctaCopy.whitepaper.heading}
         </h3>
         <p className="text-slate-300 text-sm leading-relaxed">

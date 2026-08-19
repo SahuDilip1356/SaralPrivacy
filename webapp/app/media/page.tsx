@@ -52,7 +52,7 @@ export default function MediaPage() {
 
           {/* Head */}
           <div className="flex flex-wrap items-end justify-between gap-5 mt-5 pb-6 border-b border-slate-200">
-            <h1 className="text-2xl sm:text-3xl font-bold text-navy-700 leading-tight">
+            <h1 className="text-2xl sm:text-3xl font-semibold text-navy-700 leading-tight">
               SaralPrivacy&apos;s DPDPA readiness work,
               <br />
               <span className="text-green-500">seen across India&apos;s press</span>

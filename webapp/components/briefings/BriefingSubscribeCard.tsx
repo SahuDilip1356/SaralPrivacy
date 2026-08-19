@@ -48,7 +48,7 @@ export function BriefingSubscribeCard() {
 
   return (
     <div className="bg-navy-700 rounded-xl p-5">
-      <h3 className="font-bold text-white text-sm mb-1">Get daily briefings by email</h3>
+      <h3 className="font-semibold text-white text-sm mb-1">Get daily briefings by email</h3>
       <p className="text-slate-400 text-xs mb-4">
         2-min reads, plain English, every morning. Free forever.
       </p>

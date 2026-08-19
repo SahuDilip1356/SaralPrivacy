@@ -91,7 +91,7 @@ export function IncidentSimulator({ pack, model, onScenarioOpen }: Props) {
         </p>
 
         <div>
-          <h4 className={cn("font-bold uppercase tracking-wide text-slate-500", TEXT.mini)}>
+          <h4 className={cn("font-semibold uppercase tracking-wide text-slate-500", TEXT.mini)}>
             Systems involved
           </h4>
           <ul className="mt-2 flex flex-wrap gap-1.5">
@@ -112,7 +112,7 @@ export function IncidentSimulator({ pack, model, onScenarioOpen }: Props) {
 
         <div className="grid gap-5 lg:grid-cols-2">
           <div>
-            <h4 className={cn("font-bold uppercase tracking-wide text-red-600", TEXT.mini)}>
+            <h4 className={cn("font-semibold uppercase tracking-wide text-red-600", TEXT.mini)}>
               First - stop it spreading
             </h4>
             <ol className="mt-2 space-y-1.5">
@@ -130,7 +130,7 @@ export function IncidentSimulator({ pack, model, onScenarioOpen }: Props) {
             </ol>
           </div>
           <div>
-            <h4 className={cn("font-bold uppercase tracking-wide text-slate-500", TEXT.mini)}>
+            <h4 className={cn("font-semibold uppercase tracking-wide text-slate-500", TEXT.mini)}>
               Then - correct it and record it
             </h4>
             <ol className="mt-2 space-y-1.5">

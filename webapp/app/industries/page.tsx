@@ -141,7 +141,7 @@ export default function IndustriesPage() {
       <div className="bg-navy-700 py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="max-w-2xl">
-            <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">
+            <h1 className="text-3xl sm:text-4xl font-semibold text-white mb-3">
               DPDPA by Industry
             </h1>
             <p className="text-slate-300 text-lg leading-relaxed">
@@ -272,7 +272,7 @@ export default function IndustriesPage() {
                   <ind.icon size={24} className={a.iconColor} />
                 </div>
                 <div>
-                  <h2 className="font-bold text-navy-700 text-xl leading-snug">{ind.title}</h2>
+                  <h2 className="font-semibold text-navy-700 text-xl leading-snug">{ind.title}</h2>
                   <p className={`text-sm ${a.iconColor} mt-1`}>{ind.tagline}</p>
                 </div>
               </div>

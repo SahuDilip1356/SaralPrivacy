@@ -141,7 +141,7 @@ export default function PrivacyPage() {
             <Shield size={20} className="text-green-400" />
             <span className="text-green-300 text-sm font-semibold">Privacy Notice v2.0</span>
           </div>
-          <h1 className="text-3xl font-bold text-white">Privacy Notice</h1>
+          <h1 className="text-3xl font-semibold text-white">Privacy Notice</h1>
           <p className="text-slate-300 mt-2">
             What {DPO.org} collects, why, who we share it with, and where it is stored.
           </p>
@@ -165,7 +165,7 @@ export default function PrivacyPage() {
 
           {/* 2. What we collect — table */}
           <div id="what-we-collect" className="bg-white rounded-xl border border-slate-200 p-6 scroll-mt-28">
-            <h2 className="font-bold text-navy-700 text-xl mb-3">2. What We Collect</h2>
+            <h2 className="font-semibold text-navy-700 text-xl mb-3">2. What We Collect</h2>
             <p className="text-slate-600 text-sm leading-relaxed mb-4">
               Only what the thing you asked for actually needs:
             </p>
@@ -206,7 +206,7 @@ export default function PrivacyPage() {
 
           {/* 5. Sub-processors */}
           <div id="sub-processors" className="bg-white rounded-xl border border-slate-200 p-6 scroll-mt-28">
-            <h2 className="font-bold text-navy-700 text-xl mb-3">5. Who We Share It With</h2>
+            <h2 className="font-semibold text-navy-700 text-xl mb-3">5. Who We Share It With</h2>
             <p className="text-slate-600 text-sm leading-relaxed mb-4">
               These are every third party that touches your personal data. Each acts as a Data
               Processor on our instructions — none may use your data for their own purposes.
@@ -259,7 +259,7 @@ export default function PrivacyPage() {
 
           {/* 6. Cross-border */}
           <div id="cross-border" className="bg-white rounded-xl border border-slate-200 p-6 scroll-mt-28">
-            <h2 className="font-bold text-navy-700 text-xl mb-3">6. Where Your Data Is Stored</h2>
+            <h2 className="font-semibold text-navy-700 text-xl mb-3">6. Where Your Data Is Stored</h2>
             <div className="text-slate-600 text-sm leading-relaxed space-y-2">
               <p>
                 <strong className="text-slate-800">
@@ -291,7 +291,7 @@ export default function PrivacyPage() {
 
           {/* 7. Retention */}
           <div id="retention" className="bg-white rounded-xl border border-slate-200 p-6 scroll-mt-28">
-            <h2 className="font-bold text-navy-700 text-xl mb-3">7. How Long We Keep It</h2>
+            <h2 className="font-semibold text-navy-700 text-xl mb-3">7. How Long We Keep It</h2>
             <div className="overflow-x-auto -mx-2 px-2">
               <table className="w-full text-sm min-w-[420px]">
                 <thead>
@@ -324,7 +324,7 @@ export default function PrivacyPage() {
 
           {/* 9. Rights — summary, canonical detail lives on /rights */}
           <div id="data-rights" className="bg-white rounded-xl border border-slate-200 p-6 scroll-mt-28">
-            <h2 className="font-bold text-navy-700 text-xl mb-3">9. Your Rights</h2>
+            <h2 className="font-semibold text-navy-700 text-xl mb-3">9. Your Rights</h2>
             <p className="text-slate-600 text-sm leading-relaxed mb-3">
               Under the DPDPA you can ask us to show you your data, correct it, delete it,
               nominate someone to act for you, or hear your complaint. You can withdraw consent at
@@ -367,7 +367,7 @@ export default function PrivacyPage() {
 
           {/* 12. Contact */}
           <div id="contact" className="bg-white rounded-xl border border-slate-200 p-6 scroll-mt-28">
-            <h2 className="font-bold text-navy-700 text-xl mb-3">12. Contact and Grievances</h2>
+            <h2 className="font-semibold text-navy-700 text-xl mb-3">12. Contact and Grievances</h2>
             <div className="text-slate-600 text-sm leading-relaxed space-y-2">
               <p>
                 For any privacy question, request, or complaint, our Data Protection Officer is{" "}
@@ -426,7 +426,7 @@ export default function PrivacyPage() {
 function Section({ id, title, content }: { id: string; title: string; content: string }) {
   return (
     <div id={id} className="bg-white rounded-xl border border-slate-200 p-6 scroll-mt-28">
-      <h2 className="font-bold text-navy-700 text-xl mb-3">{title}</h2>
+      <h2 className="font-semibold text-navy-700 text-xl mb-3">{title}</h2>
       <div className="text-slate-600 text-sm leading-relaxed whitespace-pre-line space-y-2">
         {renderProse(content)}
       </div>

@@ -45,7 +45,7 @@ export default function MediaCoveragePage() {
           {/* Header card */}
           <div className="bg-navy-700 rounded-2xl px-6 sm:px-8 py-7 flex flex-wrap items-center justify-between gap-5">
             <div>
-              <h1 className="text-xl sm:text-2xl font-bold text-white">
+              <h1 className="text-xl sm:text-2xl font-semibold text-white">
                 SaralPrivacy — PR Publication Links
               </h1>
               <p className="text-sm text-slate-400 mt-1">

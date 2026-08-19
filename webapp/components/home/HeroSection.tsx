@@ -50,7 +50,7 @@ export function HeroSection() {
               </span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl font-bold text-white leading-tight mb-5">
+            <h1 className="text-4xl sm:text-5xl font-semibold text-white leading-tight mb-5">
               See exactly where your business stands on{" "}
               <span className="text-green-400">DPDPA</span>
             </h1>

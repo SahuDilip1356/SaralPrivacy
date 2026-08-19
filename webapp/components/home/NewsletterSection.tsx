@@ -50,7 +50,7 @@ export function NewsletterSection() {
             <Mail size={24} className="text-teal-600" />
           </div>
 
-          <h2 className="text-3xl font-bold text-navy-700 mb-3">
+          <h2 className="text-3xl font-semibold text-navy-700 mb-3">
             DPDPA briefings, delivered to your inbox
           </h2>
           <p className="text-slate-600 mb-8 leading-relaxed">
@@ -61,7 +61,7 @@ export function NewsletterSection() {
           {submitted ? (
             <div className="bg-green-50 border border-green-200 rounded-xl p-8">
               <CheckCircle size={40} className="text-green-600 mx-auto mb-3" />
-              <h3 className="font-bold text-green-800 text-xl mb-2">You&apos;re subscribed!</h3>
+              <h3 className="font-semibold text-green-800 text-xl mb-2">You&apos;re subscribed!</h3>
               <p className="text-green-700 text-sm">
                 You&apos;ll receive your first DPDPA briefing at the next dispatch. You can manage
                 your preferences any time from the link in any email we send.

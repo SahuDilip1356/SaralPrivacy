@@ -77,7 +77,7 @@ export function AssessmentWizard({ title, industry, questions }: Props) {
                   ? "Moderate Exposure"
                   : "High-Priority Action Needed"}
               </div>
-              <h2 className={`text-xl font-bold leading-snug ${getRiskTextColor(result.riskLevel)}`}>
+              <h2 className={`text-xl font-semibold leading-snug ${getRiskTextColor(result.riskLevel)}`}>
                 {result.headline}
               </h2>
             </div>
@@ -86,7 +86,7 @@ export function AssessmentWizard({ title, industry, questions }: Props) {
 
         {/* Score breakdown */}
         <div className="bg-white rounded-xl border border-slate-200 p-6 mb-5">
-          <h3 className="font-bold text-navy-700 text-sm mb-4">Your Score Breakdown</h3>
+          <h3 className="font-semibold text-navy-700 text-sm mb-4">Your Score Breakdown</h3>
           <div className="grid grid-cols-2 gap-4">
             {[
               { label: "Applicability", score: result.applicabilityScore, color: "bg-blue-500" },
@@ -112,10 +112,10 @@ export function AssessmentWizard({ title, industry, questions }: Props) {
 
         {/* Summary */}
         <div className="bg-white rounded-xl border border-slate-200 p-6 mb-5">
-          <h3 className="font-bold text-navy-700 text-lg mb-3">Assessment Summary</h3>
+          <h3 className="font-semibold text-navy-700 text-lg mb-3">Assessment Summary</h3>
           <p className="text-slate-600 text-sm leading-relaxed mb-5">{result.summary}</p>
 
-          <h4 className="font-bold text-navy-700 text-sm mb-3">Key Recommendations</h4>
+          <h4 className="font-semibold text-navy-700 text-sm mb-3">Key Recommendations</h4>
           <ul className="space-y-2">
             {result.recommendations.map((rec, i) => (
               <li key={i} className="flex items-start gap-2.5 text-sm text-slate-600">
@@ -130,7 +130,7 @@ export function AssessmentWizard({ title, industry, questions }: Props) {
 
         {/* Next step CTA */}
         <div className="bg-navy-700 rounded-xl p-6 mb-5">
-          <h4 className="font-bold text-white text-sm mb-2">Recommended next step</h4>
+          <h4 className="font-semibold text-white text-sm mb-2">Recommended next step</h4>
           <p className="text-slate-300 text-sm mb-4">{result.nextStep}</p>
           <div className="flex flex-col sm:flex-row gap-3">
             <Link
@@ -151,7 +151,7 @@ export function AssessmentWizard({ title, industry, questions }: Props) {
         {/* Email capture */}
         {!emailSaved ? (
           <div className="bg-green-50 border border-green-200 rounded-xl p-5">
-            <h4 className="font-bold text-navy-700 text-sm mb-1">
+            <h4 className="font-semibold text-navy-700 text-sm mb-1">
               Save your results and get a detailed report
             </h4>
             <p className="text-slate-600 text-xs mb-3">
@@ -222,7 +222,7 @@ export function AssessmentWizard({ title, industry, questions }: Props) {
           {currentQuestion.category.replace(/-/g, " ")}
         </div>
 
-        <h2 className="text-lg sm:text-xl font-bold text-navy-700 leading-snug mb-2">
+        <h2 className="text-lg sm:text-xl font-semibold text-navy-700 leading-snug mb-2">
           {currentQuestion.text}
         </h2>
 

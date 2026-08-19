@@ -142,7 +142,7 @@ function PostCard({ post }: { post: BlogPost }) {
             {laneCfg.label}
           </span>
         </div>
-        <h2 className="font-bold text-navy-700 text-sm leading-snug mb-3 line-clamp-2 group-hover:text-navy-900 transition-colors">
+        <h2 className="font-semibold text-navy-700 text-sm leading-snug mb-3 line-clamp-2 group-hover:text-navy-900 transition-colors">
           {post.title}
         </h2>
         <div className="flex items-center justify-between mb-1.5">
@@ -185,7 +185,7 @@ export default async function BlogPage({ searchParams }: PageProps) {
               <CheckCircle size={11} /> Verified Insights
             </span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3 leading-snug">
+          <h1 className="text-3xl sm:text-4xl font-semibold text-white mb-3 leading-snug">
             Verified DPDPA Insights
           </h1>
           <p className="text-slate-300 text-lg leading-relaxed max-w-3xl">
@@ -244,7 +244,7 @@ export default async function BlogPage({ searchParams }: PageProps) {
         {posts.length === 0 ? (
           <div className="text-center py-20">
             <BookOpen size={48} className="text-slate-300 mx-auto mb-4" />
-            <h2 className="text-xl font-bold text-slate-600 mb-2">
+            <h2 className="text-xl font-semibold text-slate-600 mb-2">
               First verified insights coming soon.
             </h2>
             <p className="text-slate-400 text-sm mb-8">Subscribe to be notified.</p>

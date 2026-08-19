@@ -63,7 +63,7 @@ function SetPasswordForm() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h2 className="text-xl font-bold text-slate-800 mb-2">Account activated!</h2>
+        <h2 className="text-xl font-semibold text-slate-800 mb-2">Account activated!</h2>
         <p className="text-sm text-slate-500">Redirecting you to the login page…</p>
       </div>
     );
@@ -72,7 +72,7 @@ function SetPasswordForm() {
   return (
     <>
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-slate-800">Set your password</h1>
+        <h1 className="text-2xl font-semibold text-slate-800">Set your password</h1>
         <p className="text-sm text-slate-500 mt-1">
           You&apos;re setting up your SaralPrivacy contributor account
           {email && <> for <span className="font-medium text-slate-700">{email}</span></>}.

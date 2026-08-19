@@ -145,7 +145,7 @@ export default function BloggersClient({ initialBloggers }: Props) {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-xl font-bold text-slate-800">Blog Contributors</h1>
+          <h1 className="text-xl font-semibold text-slate-800">Blog Contributors</h1>
           <p className="text-sm text-slate-500 mt-0.5">
             Manage invite-only blogger accounts. Bloggers can write and submit posts; you approve &amp; publish.
           </p>
@@ -184,7 +184,7 @@ export default function BloggersClient({ initialBloggers }: Props) {
       {showInvite && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
-            <h2 className="text-base font-bold text-slate-800 mb-1">Invite a Blogger</h2>
+            <h2 className="text-base font-semibold text-slate-800 mb-1">Invite a Blogger</h2>
             <p className="text-xs text-slate-500 mb-5">
               They&apos;ll receive an email with a link to set their password and activate their account.
             </p>

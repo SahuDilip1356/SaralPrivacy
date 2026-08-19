@@ -92,7 +92,7 @@ export default function RightsPage() {
               Data Principal Rights
             </span>
           </div>
-          <h1 className="text-3xl font-bold text-white">Exercise Your Rights</h1>
+          <h1 className="text-3xl font-semibold text-white">Exercise Your Rights</h1>
           <p className="text-slate-300 mt-2 max-w-2xl">
             This page is how you make a data request to {DPO.org} — access, correction,
             erasure, and more. Under India&apos;s DPDPA, 2023 you have these rights over the
@@ -141,7 +141,7 @@ export default function RightsPage() {
                   </div>
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-2">
-                      <h2 className="font-bold text-navy-700 text-xl">{right.title}</h2>
+                      <h2 className="font-semibold text-navy-700 text-xl">{right.title}</h2>
                       <span className="text-[11px] font-semibold text-slate-500 bg-slate-100 border border-slate-200 rounded-full px-2 py-0.5">
                         DPDPA {right.section}
                       </span>
@@ -182,7 +182,7 @@ export default function RightsPage() {
 
         {/* What to include */}
         <div className="mt-8 bg-white rounded-xl border border-slate-200 p-6">
-          <h2 className="font-bold text-navy-700 text-xl mb-3">
+          <h2 className="font-semibold text-navy-700 text-xl mb-3">
             What to include in your request
           </h2>
           <p className="text-slate-600 text-sm leading-relaxed mb-3">
@@ -206,7 +206,7 @@ export default function RightsPage() {
           <div className="bg-white rounded-xl border border-slate-200 p-6">
             <div className="flex items-center gap-2 mb-2">
               <Clock size={16} className="text-teal-500" />
-              <h2 className="font-bold text-navy-700 text-base">Our timeline</h2>
+              <h2 className="font-semibold text-navy-700 text-base">Our timeline</h2>
             </div>
             <p className="text-slate-600 text-sm leading-relaxed">
               We acknowledge requests as soon as we can and complete them within{" "}
@@ -217,7 +217,7 @@ export default function RightsPage() {
           <div className="bg-white rounded-xl border border-slate-200 p-6">
             <div className="flex items-center gap-2 mb-2">
               <Scale size={16} className="text-teal-500" />
-              <h2 className="font-bold text-navy-700 text-base">If we get it wrong</h2>
+              <h2 className="font-semibold text-navy-700 text-base">If we get it wrong</h2>
             </div>
             <p className="text-slate-600 text-sm leading-relaxed">
               Raise a grievance with our DPO first — that is your right under Section 13. If you

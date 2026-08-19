@@ -40,7 +40,7 @@ export function WhitePaperSection() {
               <span className="text-gold-400 text-xs font-semibold">Practitioner guide · Free download</span>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+            <h2 className="text-3xl sm:text-4xl font-semibold text-white mb-4">
               The complete DPDPA guide
               <span className="block text-teal-400 mt-1">for Indian businesses</span>
             </h2>

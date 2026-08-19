@@ -55,7 +55,7 @@ export default function GlossaryClient() {
             <span className="mx-2">›</span>
             <span className="text-slate-300">Glossary</span>
           </nav>
-          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3 leading-snug">
+          <h1 className="text-3xl sm:text-4xl font-semibold text-white mb-3 leading-snug">
             DPDPA Glossary
           </h1>
           <p className="text-slate-300 text-base leading-relaxed max-w-2xl">
