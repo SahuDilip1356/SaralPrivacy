@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowRight, CheckCircle, AlertTriangle } from "lucide-react";
+import { ArrowRight, CheckCircle } from "lucide-react";
 import { HERO_VERDICTS, getHeroVerdict } from "@/lib/data/hero-verdicts";
 import { ScoreDial } from "@/components/home/ScoreDial";
 import { trackEvent } from "@/lib/analytics";
@@ -11,6 +11,8 @@ import { trackEvent } from "@/lib/analytics";
 // right = a scorecard (illustrative sample by default, live verdict on select).
 // Stats live in the Trust ribbon (Beat 3). Brand tokens via Tailwind.
 
+// One muted line, not five ticked badges. The same five facts read as
+// reassurance in a row and as clutter when each gets its own icon.
 const frictionKillers = [
   "Free",
   "3–5 minutes",
@@ -50,11 +52,10 @@ export function HeroSection() {
               </span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl font-semibold text-white leading-tight mb-5">
+            <h1 className="text-4xl sm:text-5xl font-semibold text-white leading-tight tracking-tight mb-5">
               See exactly where your business stands on{" "}
               <span className="text-green-400">DPDPA</span>
             </h1>
-            <div className="w-16 h-0.5 bg-gold-400 mb-6" />
             <p className="text-lg text-slate-300 leading-relaxed mb-8 max-w-xl">
               Pick your business type for an instant read on what applies, where
               you&apos;re exposed, and what to do next — in plain English, no legal
@@ -80,9 +81,9 @@ export function HeroSection() {
                         setSlug(v.slug);
                       }}
                       aria-pressed={active}
-                      className={`inline-flex items-center justify-center text-sm rounded-full border transition-colors px-4 py-2.5 min-h-[44px] sm:px-3.5 sm:py-1.5 sm:min-h-0 ${
+                      className={`inline-flex items-center justify-center text-sm rounded-full border transition-colors px-4 py-2.5 min-h-[44px] sm:px-3.5 sm:py-1.5 sm:min-h-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-700 ${
                         active
-                          ? "bg-green-500 border-green-500 text-white"
+                          ? "bg-green-400 border-green-400 text-navy-950 font-medium"
                           : "bg-white/5 border-white/15 text-slate-200 hover:border-white/30"
                       }`}
                     >
@@ -93,12 +94,14 @@ export function HeroSection() {
               </div>
             </div>
 
-            {/* CTAs — Discovery-first */}
-            <div className="flex flex-col sm:flex-row gap-3 mb-6">
+            {/* One filled action. The assessment stays reachable as a link
+                rather than a second button competing for the same glance —
+                green-400 on navy-950 is 9.72:1, the brightest thing here. */}
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 mb-6">
               <Link
                 href={discoverHref}
                 onClick={() => trackEvent.landingCtaClick({ cta: "discover", sector: slug ?? "" })}
-                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl transition-colors text-base"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-green-400 hover:bg-green-300 text-navy-950 font-semibold rounded-lg transition-colors text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-700"
               >
                 {slug ? "See my data map" : "Discover my personal data"}
                 <ArrowRight size={18} />
@@ -106,28 +109,15 @@ export function HeroSection() {
               <Link
                 href={assessHref}
                 onClick={() => trackEvent.landingCtaClick({ cta: "assess", sector: slug ?? "" })}
-                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white hover:bg-slate-100 text-navy-700 font-semibold rounded-xl border border-white transition-colors text-base"
+                className="inline-flex items-center gap-1.5 text-base font-medium text-slate-200 hover:text-white underline underline-offset-4 decoration-white/30 hover:decoration-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-700 rounded"
               >
-                Take the assessment
+                or take the assessment
               </Link>
             </div>
 
-            <div className="flex flex-wrap gap-x-5 gap-y-2">
-              {frictionKillers.map((f) => (
-                <div key={f} className="flex items-center gap-1.5">
-                  <CheckCircle size={14} className="text-green-400 shrink-0" />
-                  <span
-                    className={`text-sm ${
-                      f === "No email to start"
-                        ? "text-slate-300 font-semibold"
-                        : "text-slate-400"
-                    }`}
-                  >
-                    {f}
-                  </span>
-                </div>
-              ))}
-            </div>
+            <p className="text-sm text-slate-400">
+              {frictionKillers.join(" · ")}
+            </p>
           </div>
 
           {/* RIGHT — scorecard (sample by default, live verdict on select).
@@ -135,10 +125,10 @@ export function HeroSection() {
               doesn't change the wrapper height and re-centre the hero row. */}
           <div aria-live="polite" className="lg:pl-4 lg:min-h-[340px]">
             {verdict ? (
-              <div className="bg-white rounded-2xl p-6 shadow-elevated max-w-md mx-auto lg:ml-auto animate-fade-up motion-reduce:animate-none">
+              <div className="bg-white rounded-xl p-6 max-w-md mx-auto lg:ml-auto animate-fade-up motion-reduce:animate-none">
                 <div className="flex items-center justify-between mb-4">
-                  <span className="font-bold text-navy-700">{cap(verdict.chipLabel)}</span>
-                  <span className="text-2xs font-semibold text-teal-700 bg-teal-50 rounded-full px-2.5 py-1">
+                  <span className="font-semibold text-navy-700">{cap(verdict.chipLabel)}</span>
+                  <span className="text-xs font-medium text-teal-800 bg-teal-50 rounded-full px-2.5 py-1">
                     Your sector
                   </span>
                 </div>
@@ -163,19 +153,22 @@ export function HeroSection() {
                 </p>
               </div>
             ) : (
-              <div className="bg-white rounded-2xl p-6 shadow-elevated max-w-md mx-auto lg:ml-auto">
+              /* A teaser, not the demonstration. The full scored report — five
+                 dimensions, top gap, first fix — is its own section further
+                 down; showing it twice made the second one read as déjà vu. */
+              <div className="bg-white rounded-xl p-6 max-w-md mx-auto lg:ml-auto">
                 <div className="flex items-center justify-between mb-4">
-                  <span className="font-bold text-navy-700">Clinics &amp; Diagnostic Labs</span>
-                  <span className="text-2xs font-semibold text-slate-500 bg-slate-100 rounded-full px-2.5 py-1 whitespace-nowrap">
-                    Sample · illustrative
+                  <span className="font-semibold text-navy-700">Clinics &amp; Diagnostic Labs</span>
+                  <span className="text-xs font-medium text-slate-500 bg-slate-100 rounded-full px-2.5 py-1 whitespace-nowrap">
+                    Sample
                   </span>
                 </div>
-                <div className="flex items-center gap-4 mb-4">
+                <div className="flex items-center gap-4">
                   <div className="shrink-0">
                     <ScoreDial value={41} size={66} animate />
                   </div>
                   <div>
-                    <span className="inline-block text-xs font-semibold text-navy-700 bg-gold-400 rounded-full px-3 py-1 mb-1.5">
+                    <span className="inline-block text-xs font-semibold text-navy-800 bg-gold-300 rounded-full px-3 py-1 mb-1.5">
                       High-priority action
                     </span>
                     <p className="text-sm text-slate-600 leading-snug">
@@ -183,23 +176,7 @@ export function HeroSection() {
                     </p>
                   </div>
                 </div>
-                <div className="border-t border-slate-100 pt-4 space-y-2.5">
-                  <div className="flex gap-2.5">
-                    <AlertTriangle size={17} className="text-gold-500 shrink-0 mt-0.5" />
-                    <p className="text-sm text-slate-600 leading-snug">
-                      <span className="font-semibold text-navy-700">Top gap:</span> reports
-                      shared over WhatsApp with no consent or retention limit.
-                    </p>
-                  </div>
-                  <div className="flex gap-2.5">
-                    <CheckCircle size={17} className="text-green-600 shrink-0 mt-0.5" />
-                    <p className="text-sm text-slate-600 leading-snug">
-                      <span className="font-semibold text-navy-700">First fix:</span> add a
-                      consent line and a 6-month retention rule.
-                    </p>
-                  </div>
-                </div>
-                <p className="text-xs text-slate-400 mt-4 text-center">
+                <p className="text-xs text-slate-500 mt-4">
                   Pick your business on the left to see your own read.
                 </p>
               </div>
