@@ -33,6 +33,21 @@ export const metadata: Metadata = {
 
 // Homepage — 10-beat Discovery-first structure (see LANDING_PAGE_MASTER.md).
 // Built incrementally; beats marked TODO are wired in as their components land.
+//
+// Beat rhythm. W1.3 put every beat on one canvas at a uniform py-24, which
+// removed the nine-flip zebra but left ten sections that all read as equally
+// important. Rhythm now comes from silhouette rather than fill — the canvas is
+// still continuous, so this is not a return to alternating backgrounds.
+//
+//   STATEMENT  py-32  narrow, large type, no cards   — a held breath
+//   DEMO       py-24  visual leads, wide             — a product moment
+//   UTILITY    py-20  quiet, narrow                  — reference material
+//   EVIDENCE   py-16  dense, tight grid              — receipts
+//   DECISION   py-16  one line, one action           — a fork in the road
+//
+// The 2x gap between STATEMENT and EVIDENCE is what the eye actually reads;
+// white-vs-cloud-50 is 1.05:1 and would register as banding, not structure.
+// Keep adjacent beats on different types — that, not colour, is the pacing.
 export default function HomePage() {
   return (
     <>
@@ -52,7 +67,7 @@ export default function HomePage() {
           insert interrupting the story. Still server-rendered and still the
           speakable target — the schema above points at .answer-block. */}
       <div className="bg-cloud-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-16">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 pb-16">
           <AnswerBlock
             question="What is DPDPA?"
             answer="DPDPA is India's framework for handling digital personal data, and the DPDP Rules, 2025 have now been notified. For Indian businesses, the real work is operational: fix your notices, consent flows, rights handling, retention logic, and vendor controls. SaralPrivacy helps you understand what matters, assess your risk, and prioritise the next 30 to 90 days."

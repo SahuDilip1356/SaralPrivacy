@@ -54,7 +54,7 @@ export async function TrustStrip() {
   ];
 
   return (
-    <section className="py-24 bg-cloud-50">
+    <section className="py-16 bg-cloud-50">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Scale stats. Quiet by design — these are context for the pillars
             below, not a scoreboard, so no icon tiles and no bold weights. */}

@@ -11,8 +11,8 @@ export function FAQPreview() {
   const previewFaqs = faqs.slice(0, 5);
 
   return (
-    <section className="py-24 bg-cloud-50">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+    <section className="py-20 bg-cloud-50">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-10">
           <h2 className="text-3xl font-semibold text-navy-700 mb-3">
             Frequently asked questions

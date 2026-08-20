@@ -92,7 +92,7 @@ export function PressProofStrip({ variant = "banner" }: { variant?: Variant }) {
      band, which made it a third dark stripe on a page budgeted for two. The
      logos carry the proof; the ground does not need to shout. ── */
   return (
-    <section aria-label="Press coverage proof" className="bg-cloud-50 py-16">
+    <section aria-label="Press coverage proof" className="bg-cloud-50 py-10">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 text-center">
         <p className="text-xs font-medium uppercase tracking-[0.08em] text-slate-600 mb-5">
           As seen in
