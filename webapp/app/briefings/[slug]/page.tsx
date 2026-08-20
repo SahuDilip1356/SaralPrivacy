@@ -13,6 +13,7 @@ import { AnswerBlock } from "@/components/seo/AnswerBlock";
 import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 import { WhitepaperCTA } from "@/components/cta/WhitepaperCTA";
 import { TemplatesCTA } from "@/components/cta/TemplatesCTA";
+import { InBodyToolLink } from "@/components/briefings/InBodyToolLink";
 
 export const revalidate = 1800; // ISR — re-render at most every 30 min
 
@@ -357,7 +358,7 @@ export default async function BriefingDetailPage({ params }: Props) {
         { name: briefing.title,   url: `https://saralprivacy.com/briefings/${briefing.slug}` },
       ])}
 
-      <div className="min-h-screen bg-slate-50">
+      <div className="min-h-screen bg-cloud-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
@@ -491,7 +492,7 @@ export default async function BriefingDetailPage({ params }: Props) {
                         href={`https://wa.me/?text=${encodeURIComponent(`"${briefing.saveLine}"\n\nRead more: https://saralprivacy.com/briefings/${briefing.slug}`)}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 bg-green-500 text-white text-sm font-semibold px-4 py-2.5 rounded-lg hover:bg-green-600 transition-colors"
+                        className="inline-flex items-center gap-2 bg-green-700 text-white text-sm font-semibold px-4 py-2.5 rounded-lg hover:bg-green-800 transition-colors"
                       >
                         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                         Share on WhatsApp
@@ -518,11 +519,11 @@ export default async function BriefingDetailPage({ params }: Props) {
                   </div>
 
                   {/* Survey CTA */}
-                  <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 mb-4 text-center">
+                  <div className="bg-gradient-to-br from-green-700 to-green-800 rounded-xl p-6 mb-4 text-center">
                     <p className="text-green-100 text-xs font-bold mb-2 uppercase tracking-wide">Free · 3 minutes</p>
                     <h2 className="text-xl font-semibold text-white mb-2">Is YOUR business DPDPA-ready?</h2>
                     <p className="text-green-100 text-sm mb-4 max-w-xs mx-auto">Answer a few simple questions. Get your free Readiness Score.</p>
-                    <Link href="/assessment" className="inline-block py-2.5 px-6 bg-white text-green-600 font-bold rounded-xl hover:bg-green-50 transition-colors">
+                    <Link href="/assessment" className="inline-block py-2.5 px-6 bg-white text-green-800 font-semibold rounded-xl hover:bg-green-50 transition-colors">
                       Check My Readiness →
                     </Link>
                   </div>
@@ -535,7 +536,7 @@ export default async function BriefingDetailPage({ params }: Props) {
                   {/* Industry tags */}
                   <div className="flex flex-wrap gap-1.5 mb-6">
                     {(briefing.industries as string[]).map((ind: string) => (
-                      <span key={ind} className="text-xs font-semibold text-green-600 bg-green-50 px-2.5 py-1 rounded-full border border-green-200">
+                      <span key={ind} className="text-xs font-semibold text-green-800 bg-green-50 px-2.5 py-1 rounded-full border border-green-200">
                         {getIndustryLabel(ind as any)}
                       </span>
                     ))}
@@ -550,7 +551,7 @@ export default async function BriefingDetailPage({ params }: Props) {
                           <Link
                             key={rel.id}
                             href={`/briefings/${rel.slug}`}
-                            className="flex items-start justify-between gap-3 hover:bg-slate-50 -mx-2 px-2 py-2.5 rounded-lg transition-colors group"
+                            className="flex items-start justify-between gap-3 hover:bg-cloud-50 -mx-2 px-2 py-2.5 rounded-lg transition-colors group"
                           >
                             <div>
                               <div className="text-xs text-green-600 font-semibold mb-0.5">
@@ -617,7 +618,7 @@ export default async function BriefingDetailPage({ params }: Props) {
                       {(briefing.industries as string[]).map((ind: string) => (
                         <span
                           key={ind}
-                          className="text-xs font-semibold text-green-600 bg-green-50 px-2.5 py-1 rounded-full border border-green-200"
+                          className="text-xs font-semibold text-green-800 bg-green-50 px-2.5 py-1 rounded-full border border-green-200"
                         >
                           {getIndustryLabel(ind as any)}
                         </span>
@@ -674,6 +675,14 @@ export default async function BriefingDetailPage({ params }: Props) {
                         </ul>
                       </div>
                     )}
+
+                    {/* The one in-body way into the tools. Sits between the
+                        facts and the "so what does this mean for me" section,
+                        which is the point in the read where that question is
+                        live. Every other tool link on this page is chrome. */}
+                    <InBodyToolLink
+                      sector={(briefing.industries as string[] | undefined)?.[0]}
+                    />
 
                     {(briefing.bodyText || briefing.businessImpact) && (
                       <div className={briefing.keyPoints?.length > 0 ? "border-t border-slate-100 pt-5" : ""}>
@@ -736,8 +745,8 @@ export default async function BriefingDetailPage({ params }: Props) {
                   )}
 
                   {/* Survey CTA — primary */}
-                  <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-7 mb-5 text-center">
-                    <p className="text-green-100 text-sm font-semibold mb-2 uppercase tracking-wide">
+                  <div className="bg-gradient-to-br from-green-700 to-green-800 rounded-xl p-7 mb-5 text-center">
+                    <p className="text-green-50 text-sm font-semibold mb-2 uppercase tracking-wide">
                       Free — takes 3 minutes
                     </p>
                     <h2 className="text-2xl font-semibold text-white mb-2">
@@ -748,7 +757,7 @@ export default async function BriefingDetailPage({ params }: Props) {
                     </p>
                     <Link
                       href="/assessment"
-                      className="inline-block py-3 px-8 bg-white text-green-600 font-bold rounded-xl hover:bg-green-50 transition-colors text-base shadow-sm"
+                      className="inline-block py-3 px-8 bg-white text-green-800 font-semibold rounded-xl hover:bg-green-50 transition-colors text-base shadow-sm"
                     >
                       Check My Readiness →
                     </Link>
@@ -765,11 +774,11 @@ export default async function BriefingDetailPage({ params }: Props) {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
                     <Link
                       href="/assessment"
-                      className="flex flex-col p-5 bg-green-500 text-white rounded-xl hover:bg-green-600 transition-colors"
+                      className="flex flex-col p-5 bg-green-700 text-white rounded-xl hover:bg-green-800 transition-colors"
                     >
-                      <span className="text-green-200 text-xs font-semibold mb-1">Free check</span>
+                      <span className="text-green-50 text-xs font-semibold mb-1">Free check</span>
                       <span className="font-bold text-base">Check your readiness</span>
-                      <span className="text-green-200 text-sm mt-1">
+                      <span className="text-green-50 text-sm mt-1">
                         Get your free Readiness Score →
                       </span>
                     </Link>
@@ -794,7 +803,7 @@ export default async function BriefingDetailPage({ params }: Props) {
                           <Link
                             key={rel.id}
                             href={`/briefings/${rel.slug}`}
-                            className="flex items-start justify-between gap-3 hover:bg-slate-50 -mx-2 px-2 py-2.5 rounded-lg transition-colors group"
+                            className="flex items-start justify-between gap-3 hover:bg-cloud-50 -mx-2 px-2 py-2.5 rounded-lg transition-colors group"
                           >
                             <div>
                               <div className="text-xs text-green-600 font-semibold mb-0.5">
@@ -829,7 +838,7 @@ export default async function BriefingDetailPage({ params }: Props) {
                       <Link
                         key={rel.id}
                         href={`/briefings/${rel.slug}`}
-                        className="block hover:bg-slate-50 -mx-2 px-2 py-2 rounded-lg transition-colors group"
+                        className="block hover:bg-cloud-50 -mx-2 px-2 py-2 rounded-lg transition-colors group"
                       >
                         <div className="text-xs text-green-600 font-semibold mb-1">
                           {getCategoryLabel(rel.category)}
@@ -851,7 +860,7 @@ export default async function BriefingDetailPage({ params }: Props) {
                   {(briefing.industries as string[]).map((ind: string) => (
                     <span
                       key={ind}
-                      className="text-xs font-semibold text-green-600 bg-green-50 px-2.5 py-1.5 rounded-full border border-green-200"
+                      className="text-xs font-semibold text-green-800 bg-green-50 px-2.5 py-1.5 rounded-full border border-green-200"
                     >
                       {getIndustryLabel(ind as any)}
                     </span>
@@ -869,7 +878,7 @@ export default async function BriefingDetailPage({ params }: Props) {
                 </p>
                 <Link
                   href="/assessment"
-                  className="block text-center py-2.5 px-4 bg-green-500 text-white text-sm font-semibold rounded-lg hover:bg-green-600 transition-colors"
+                  className="block text-center py-2.5 px-4 bg-green-700 text-white text-sm font-semibold rounded-lg hover:bg-green-800 transition-colors"
                 >
                   Take Free Assessment →
                 </Link>

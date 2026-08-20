@@ -184,7 +184,7 @@ export function Footer() {
               >
                 {DPO.email}
               </a>
-              <p className="text-xs text-slate-500 mt-1">
+              <p className="text-xs text-slate-400 mt-1">
                 {DPO.name} — for access, correction, erasure, or complaints
               </p>
             </div>
@@ -200,21 +200,21 @@ export function Footer() {
       {/* Bottom bar */}
       <div data-nosnippet className="border-t border-navy-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-slate-400">
             © {new Date().getFullYear()} SaralPrivacy. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
-            <span className="text-xs text-slate-600">Privacy Notice v2.0 · Updated July 2026</span>
-            <Link href="/privacy" className="text-xs text-slate-500 hover:text-slate-300 transition-colors">
+            <span className="text-xs text-slate-400">Privacy Notice v2.0 · Updated July 2026</span>
+            <Link href="/privacy" className="text-xs text-slate-400 hover:text-white transition-colors">
               Privacy
             </Link>
-            <Link href="/rights" className="text-xs text-slate-500 hover:text-slate-300 transition-colors">
+            <Link href="/rights" className="text-xs text-slate-400 hover:text-white transition-colors">
               Rights
             </Link>
-            <Link href="/terms" className="text-xs text-slate-500 hover:text-slate-300 transition-colors">
+            <Link href="/terms" className="text-xs text-slate-400 hover:text-white transition-colors">
               Terms
             </Link>
-            <Link href="/consent-preferences" className="text-xs text-slate-500 hover:text-slate-300 transition-colors">
+            <Link href="/consent-preferences" className="text-xs text-slate-400 hover:text-white transition-colors">
               Consent
             </Link>
           </div>

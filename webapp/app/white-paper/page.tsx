@@ -31,7 +31,7 @@ export default function WhitePaperPage() {
       {/* Server-rendered summary — ensures crawlers and AI systems can index
           what the Guide covers even though the download form is client-side. */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-8">
-        <div className="bg-slate-50 border-l-4 border-green-400 rounded-r-xl px-5 py-4 mb-6">
+        <div className="bg-cloud-50 border-l-4 border-green-400 rounded-r-xl px-5 py-4 mb-6">
           <p className="text-slate-700 text-sm leading-relaxed">
             The SaralPrivacy DPDPA Guide covers India&apos;s Digital Personal Data Protection
             Act obligations for businesses — consent framework, data principal rights, breach

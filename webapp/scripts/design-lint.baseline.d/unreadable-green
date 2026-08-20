@@ -1,6 +1,5 @@
 app/learn/[topic]/not-found.tsx:27:          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-green-500 hover:bg-green-600 text-white text-sm font-semibold transition-colors"
 app/compliance-checklist/ChecklistContent.tsx:225:          className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white text-sm font-bold px-5 py-2.5 rounded-lg transition-colors whitespace-nowrap"
-app/faq/FAQContent.tsx:137:            className="inline-flex items-center gap-2 px-6 py-2.5 bg-green-500 text-white font-semibold rounded-lg text-sm hover:bg-green-600 transition-colors"
 app/admin/blog/page.tsx:97:            className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white text-sm font-semibold rounded-lg hover:bg-green-600 transition-colors"
 app/admin/blog/page.tsx:134:              className="inline-flex items-center gap-2 px-6 py-3 bg-green-500 text-white text-sm font-semibold rounded-lg hover:bg-green-600 transition-colors"
 app/admin/citations/RunButton.tsx:107:              : 'bg-green-500 hover:bg-green-600 text-white'
@@ -56,12 +55,6 @@ app/assessment/schools-colleges/SchoolAssessmentClient.tsx:427:              cla
 app/assessment/fintech-nbfc/FintechNbfcAssessmentClient.tsx:393:                className="mt-4 w-full rounded-lg bg-green-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-green-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-300 disabled:cursor-not-allowed disabled:opacity-60"
 app/assessment/fintech-nbfc/FintechNbfcAssessmentClient.tsx:429:              className="inline-flex items-center gap-2 rounded-lg bg-green-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-green-600"
 app/penalty-calculator/page.tsx:557:                  className="flex-1 py-3 bg-green-500 text-white text-sm font-semibold rounded-lg hover:bg-green-600 transition-colors text-center"
-app/briefings/[slug]/page.tsx:494:                        className="inline-flex items-center gap-2 bg-green-500 text-white text-sm font-semibold px-4 py-2.5 rounded-lg hover:bg-green-600 transition-colors"
-app/briefings/[slug]/page.tsx:768:                      className="flex flex-col p-5 bg-green-500 text-white rounded-xl hover:bg-green-600 transition-colors"
-app/briefings/[slug]/page.tsx:872:                  className="block text-center py-2.5 px-4 bg-green-500 text-white text-sm font-semibold rounded-lg hover:bg-green-600 transition-colors"
-app/blog/page.tsx:184:            <span className="inline-flex items-center gap-1.5 bg-green-500 text-white text-xs font-bold px-2.5 py-1 rounded-full">
-app/blog/[slug]/page.tsx:457:                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-green-500 text-white text-sm font-semibold rounded-lg hover:bg-green-600 transition-colors"
-app/blog/[slug]/page.tsx:479:                className="block w-full text-center py-2 bg-green-500 text-white text-sm font-semibold rounded-lg hover:bg-green-600 transition-colors"
 app/media/press-wall/page.tsx:67:        <span className="absolute top-2 left-2 inline-flex items-center gap-1 text-[10px] font-semibold bg-green-500 text-white px-2 py-0.5 rounded-full shadow-sm">
 app/media/press-wall/page.tsx:176:            className="inline-flex items-center gap-2 bg-green-500 text-white text-sm font-semibold px-6 py-3 rounded-xl hover:bg-green-600 transition-colors whitespace-nowrap"
 app/media/page.tsx:148:              className="inline-flex items-center gap-2 bg-green-500 text-white text-sm font-semibold px-5 py-3 rounded-xl hover:bg-green-600 transition-colors whitespace-nowrap"

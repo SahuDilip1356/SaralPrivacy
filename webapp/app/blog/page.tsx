@@ -176,12 +176,12 @@ export default async function BlogPage({ searchParams }: PageProps) {
   const posts = await getPublishedPosts(lane);
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-cloud-50">
       {/* Hero header */}
       <div className="bg-navy-700 py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center gap-2 mb-3">
-            <span className="inline-flex items-center gap-1.5 bg-green-500 text-white text-xs font-bold px-2.5 py-1 rounded-full">
+            <span className="inline-flex items-center gap-1.5 bg-green-700 text-white text-xs font-bold px-2.5 py-1 rounded-full">
               <CheckCircle size={11} /> Verified Insights
             </span>
           </div>
@@ -203,7 +203,7 @@ export default async function BlogPage({ searchParams }: PageProps) {
 
       {/* SSR answer block — crawlable anchor for snippet and AI extraction */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-7 pb-2">
-        <div className="bg-slate-50 border-l-4 border-green-400 rounded-r-xl px-5 py-4">
+        <div className="bg-cloud-50 border-l-4 border-green-400 rounded-r-xl px-5 py-4">
           <p className="text-slate-700 text-sm leading-relaxed">
             SaralPrivacy Insights publishes verified, long-form articles on India&apos;s DPDPA
             regime — covering the law itself, compliance playbooks, sector-specific obligations,

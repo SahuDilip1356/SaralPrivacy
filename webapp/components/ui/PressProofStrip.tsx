@@ -31,7 +31,7 @@ export function PressProofStrip({ variant = "banner" }: { variant?: Variant }) {
   if (variant === "compact") {
     return (
       <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-        <span className="text-[11px] text-slate-600 font-medium">As seen in:</span>
+        <span className="text-[11px] text-slate-400 font-medium">As seen in:</span>
         {PUBS.map((p, i) => (
           <span key={p.name} className="inline-flex items-center gap-2">
             <a

@@ -87,7 +87,7 @@ export default async function BriefingsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-cloud-50">
       {/* ItemList JSON-LD — helps crawlers/LLMs enumerate the archive (latest 50) */}
       {all.length > 0 && itemListSchema(
         all.slice(0, 50).map((b) => ({

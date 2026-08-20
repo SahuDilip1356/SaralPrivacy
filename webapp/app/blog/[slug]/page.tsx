@@ -14,6 +14,7 @@ import { PressProofStrip } from "@/components/ui/PressProofStrip";
 import { articleSchema, breadcrumbSchema } from "@/lib/schema";
 import BlogImage from "@/components/BlogImage";
 import { isVerifiable } from "@/lib/content/editorial-guard";
+import { InBodyToolLink } from "@/components/briefings/InBodyToolLink";
 
 export const revalidate = 3600;
 
@@ -217,7 +218,7 @@ function MarkdownContent({ content }: { content: string }) {
           </th>
         ),
         tbody: ({ children }) => <tbody>{children}</tbody>,
-        tr: ({ children }) => <tr className="odd:bg-white even:bg-slate-50">{children}</tr>,
+        tr: ({ children }) => <tr className="odd:bg-white even:bg-cloud-50">{children}</tr>,
         td: ({ children }) => (
           <td className="px-3 py-2 text-slate-700 border border-slate-200 align-top">
             {children}
@@ -294,7 +295,7 @@ export default async function BlogDetailPage({ params }: Props) {
   const liText   = encodeURIComponent(post.title);
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-cloud-50">
       {articleSchema(
         post.title,
         post.excerpt,
@@ -377,7 +378,7 @@ export default async function BlogDetailPage({ params }: Props) {
                   fetchPriority="high"
                   fallbackClassName="hidden"
                 />
-                <div className="bg-slate-50 px-4 py-2 text-xs text-slate-400 text-right border-t border-slate-200">
+                <div className="bg-cloud-50 px-4 py-2 text-xs text-slate-400 text-right border-t border-slate-200">
                   © SaralPrivacy — Verified DPDPA insights
                 </div>
               </div>
@@ -393,6 +394,12 @@ export default async function BlogDetailPage({ params }: Props) {
             {/* Content sections */}
             <SectionBlock heading="What Changed" content={post.section_what_changed} />
             <SectionBlock heading="What the Law Actually Says" content={post.section_law_says} />
+
+            {/* The one in-body way into the tools, placed where the reader has
+                just learned what the law says and is about to be told what to
+                do. Blog posts carry no sector, so this is the general form. */}
+            <InBodyToolLink className="mb-8" />
+
             <SectionBlock heading="What Businesses Should Do Now" content={section_do_now} />
             <SectionBlock heading="What Is Still Uncertain" content={section_uncertain} />
             <SectionBlock heading="Top Mistakes to Avoid" content={section_mistakes} />
@@ -454,7 +461,7 @@ export default async function BlogDetailPage({ params }: Props) {
                 </p>
                 <Link
                   href="/contact"
-                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-green-500 text-white text-sm font-semibold rounded-lg hover:bg-green-600 transition-colors"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-green-700 text-white text-sm font-semibold rounded-lg hover:bg-green-800 transition-colors"
                 >
                   Get Consultation →
                 </Link>
@@ -476,7 +483,7 @@ export default async function BlogDetailPage({ params }: Props) {
               </p>
               <Link
                 href="/assessment"
-                className="block w-full text-center py-2 bg-green-500 text-white text-sm font-semibold rounded-lg hover:bg-green-600 transition-colors"
+                className="block w-full text-center py-2 bg-green-700 text-white text-sm font-semibold rounded-lg hover:bg-green-800 transition-colors"
               >
                 Take Free Assessment →
               </Link>

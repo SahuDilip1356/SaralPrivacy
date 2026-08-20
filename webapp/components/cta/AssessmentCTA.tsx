@@ -34,7 +34,7 @@ export function AssessmentCTA({
   }
 
   return (
-    <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 text-center">
+    <div className="bg-gradient-to-br from-green-700 to-green-800 rounded-xl p-6 text-center">
       <p className="text-green-100 text-xs font-bold mb-2 uppercase tracking-wide">
         {copy.eyebrow}
       </p>
@@ -42,7 +42,7 @@ export function AssessmentCTA({
       <p className="text-green-100 text-sm mb-4 max-w-xs mx-auto">{copy.body}</p>
       <Link
         href={copy.href}
-        className="inline-block py-2.5 px-6 bg-white text-green-600 font-bold rounded-xl hover:bg-green-50 transition-colors"
+        className="inline-block py-2.5 px-6 bg-white text-green-800 font-semibold rounded-xl hover:bg-green-50 transition-colors"
       >
         {copy.cta}
       </Link>

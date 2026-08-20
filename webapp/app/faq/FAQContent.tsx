@@ -22,7 +22,7 @@ export default function FAQContent() {
   });
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-cloud-50">
       {/* Header */}
       <div className="bg-navy-700 py-14">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
@@ -95,7 +95,7 @@ export default function FAQContent() {
               >
                 <button
                   onClick={() => setOpenId(openId === faq.id ? null : faq.id)}
-                  className="w-full flex items-start justify-between gap-4 p-5 text-left hover:bg-slate-50 transition-colors"
+                  className="w-full flex items-start justify-between gap-4 p-5 text-left hover:bg-cloud-50 transition-colors"
                 >
                   <span className="font-semibold text-navy-700 text-sm leading-snug pr-2">
                     {faq.question}
@@ -134,7 +134,7 @@ export default function FAQContent() {
           </p>
           <a
             href="/contact"
-            className="inline-flex items-center gap-2 px-6 py-2.5 bg-green-500 text-white font-semibold rounded-lg text-sm hover:bg-green-600 transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-2.5 bg-green-700 text-white font-semibold rounded-lg text-sm hover:bg-green-800 transition-colors"
           >
             Contact Us
           </a>

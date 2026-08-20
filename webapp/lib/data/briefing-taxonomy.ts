@@ -121,6 +121,43 @@ export const BRIEFING_SECTORS: readonly TaxonomyOption[] = [
   { slug: "multi-location",     label: "Multi-location service businesses" },
 ] as const;
 
+/**
+ * Bridge from a briefing sector to the assessment sector that serves it.
+ *
+ * The two vocabularies are deliberately different sizes — 30 editorial
+ * verticals against 12 products — and where they overlap the slugs are not
+ * always spelled the same ("recruitment" here, "recruitment-agencies" in
+ * sectors.ts). A briefing vertical with no assessment maps to nothing on
+ * purpose: callers fall back to a general prompt rather than inventing a link
+ * to a product that does not exist. Keep the right-hand side in sync with
+ * sectors.ts.
+ */
+const SECTOR_TO_ASSESSMENT: Record<string, string> = {
+  // same sector, different spelling
+  recruitment:          "recruitment-agencies",
+  "clinics-labs":       "clinics-diagnostic-labs",
+  hospitality:          "hotels-travel",
+  "travel-tech":        "hotels-travel",
+  nbfc:                 "fintech-nbfc",
+  fintech:              "fintech-nbfc",
+  "fitness-wellness":   "gyms-salons-spas",
+  // near neighbours — the closest assessment that actually covers this data
+  hospitals:            "clinics-diagnostic-labs",
+  edtech:               "training-institutes",
+  // identical on both sides
+  "ca-firms":            "ca-firms",
+  "training-institutes": "training-institutes",
+  "d2c-brands":          "d2c-brands",
+  "schools-colleges":    "schools-colleges",
+  "law-firms":           "law-firms",
+  "real-estate":         "real-estate",
+  pharmacies:            "pharmacies",
+};
+
+/** The assessment sector slug for a briefing sector, or undefined if we have none. */
+export const assessmentSectorFor = (briefingSector?: string): string | undefined =>
+  briefingSector ? SECTOR_TO_ASSESSMENT[briefingSector] : undefined;
+
 const STAGE_MAP = new Map(STAGES.map((s) => [s.slug, s]));
 const FORMAT_MAP = new Map(FORMATS.map((f) => [f.slug, f]));
 const SECTOR_MAP = new Map(BRIEFING_SECTORS.map((s) => [s.slug, s]));

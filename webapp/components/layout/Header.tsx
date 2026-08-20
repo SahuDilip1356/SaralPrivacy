@@ -152,7 +152,7 @@ export function Header() {
                   className={cn(
                     "flex items-center gap-1 whitespace-nowrap px-3 py-2 rounded-lg text-sm font-medium transition-colors",
                     pathname === item.href || pathname.startsWith(item.href + "/")
-                      ? "text-green-600 bg-green-50"
+                      ? "text-green-800 bg-green-50"
                       : "text-slate-700 hover:text-navy-700 hover:bg-cloud-50"
                   )}
                 >
@@ -229,7 +229,7 @@ export function Header() {
                 className={cn(
                   "flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium",
                   pathname === item.href
-                    ? "text-green-600 bg-green-50"
+                    ? "text-green-800 bg-green-50"
                     : "text-slate-700 hover:bg-cloud-50"
                 )}
               >
