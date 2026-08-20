@@ -52,7 +52,7 @@ function NodeChip({
         <CircleCheck size={11} className="shrink-0 text-teal-600" aria-hidden="true" />
       )}
       <span className="truncate font-semibold">{node.name}</span>
-      <span className="shrink-0 text-slate-400">{boundaryLabel(pack, node.boundary)}</span>
+      <span className="shrink-0 text-slate-600">{boundaryLabel(pack, node.boundary)}</span>
     </li>
   );
 }
@@ -106,7 +106,7 @@ export function RightsSimulator({ pack, model, onScenarioOpen }: Props) {
           or screen-reader user gets no other signal that it changed. */}
       <div className="mt-5 space-y-5" aria-live="polite">
         <p className="flex items-start gap-2 text-[13px] leading-relaxed text-slate-600">
-          <UserRound size={15} className="mt-0.5 shrink-0 text-slate-400" aria-hidden="true" />
+          <UserRound size={15} className="mt-0.5 shrink-0 text-slate-600" aria-hidden="true" />
           <span>
             <span className="font-semibold text-navy-800">Who asks: </span>
             {active.who}

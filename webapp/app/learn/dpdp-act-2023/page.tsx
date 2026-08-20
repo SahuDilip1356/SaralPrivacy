@@ -60,7 +60,7 @@ const tocChapters = dpdpAct2023.chapters.map((ch) => ({
 function OfficialText({ text }: { text: string }) {
   return (
     <div className="bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 mt-3">
-      <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-widest mb-2">
+      <p className="text-[11px] font-semibold text-slate-600 uppercase tracking-widest mb-2">
         Official Text
       </p>
       <div className="text-sm text-slate-700 leading-relaxed whitespace-pre-line">
@@ -106,7 +106,7 @@ function SectionCard({ section }: { section: ActSection }) {
       className="scroll-mt-24 pt-7 pb-6 border-b border-slate-100 last:border-0"
     >
       <h3 className="text-base font-semibold text-navy-700">
-        <span className="text-green-500 font-semibold mr-2">#{section.sectionNumber}.</span>
+        <span className="text-green-700 font-semibold mr-2">#{section.sectionNumber}.</span>
         {section.title}
       </h3>
       <OfficialText text={section.officialText} />
@@ -125,7 +125,7 @@ function ChapterBlock({ chapter }: { chapter: ActChapter }) {
         <p className="text-xs font-semibold text-green-300 uppercase tracking-widest mb-0.5">
           Chapter {chapter.chapterNumber}
         </p>
-        <h2 className="text-lg font-semibold">{chapter.chapterTitle}</h2>
+        <h2 className="text-lg font-semibold text-white">{chapter.chapterTitle}</h2>
         <p className="text-xs text-slate-300 mt-1">
           {chapter.sections.length} section{chapter.sections.length !== 1 ? "s" : ""} —{" "}
           #{chapter.sections[0].sectionNumber}
@@ -222,7 +222,7 @@ export default function DpdpAct2023Page() {
                   section. Scroll to read in order, or use the table of contents on the right to
                   jump to any section.
                 </p>
-                <p className="text-xs text-slate-400 mb-5">
+                <p className="text-xs text-slate-600 mb-5">
                   Act No. {dpdpAct2023.actNumber} · Presidential assent: {dpdpAct2023.assentDate} ·
                   Source: {dpdpAct2023.source} · Last verified: {dpdpAct2023.lastVerified}
                 </p>
@@ -272,7 +272,7 @@ export default function DpdpAct2023Page() {
                   <p className="text-xs font-semibold text-green-300 uppercase tracking-widest mb-0.5">
                     Schedule
                   </p>
-                  <h2 className="text-lg font-semibold">{schedule.title}</h2>
+                  <h2 className="text-lg font-semibold text-white">{schedule.title}</h2>
                   <p className="text-xs text-slate-300 mt-1">{schedule.reference}</p>
                 </div>
                 <p className="text-sm text-slate-600 mb-5 leading-relaxed">
@@ -312,7 +312,7 @@ export default function DpdpAct2023Page() {
                     </tbody>
                   </table>
                 </div>
-                <p className="text-xs text-slate-400 mt-4">
+                <p className="text-xs text-slate-600 mt-4">
                   Source: The Schedule to the Digital Personal Data Protection Act, 2023 — No. 22
                   of 2023, Gazette of India Extraordinary.
                 </p>

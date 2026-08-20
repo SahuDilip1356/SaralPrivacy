@@ -126,7 +126,7 @@ function RuleSection({
   return (
     <section id={id} className="scroll-mt-24 pt-8 pb-6 border-b border-slate-100 last:border-0">
       <h2 className="text-lg font-semibold text-navy-700 mb-1">
-        <span className="text-green-500 text-sm font-semibold mr-2">{ruleNumber}</span>
+        <span className="text-green-700 text-sm font-semibold mr-2">{ruleNumber}</span>
         {title}
       </h2>
       <div className="mt-3 space-y-3 text-sm text-slate-600 leading-relaxed">{children}</div>
@@ -927,7 +927,7 @@ export default function DpdpRules2025Page() {
                 </section>
 
                 {/* Source note */}
-                <div className="mt-10 pt-6 border-t border-slate-200 space-y-1 text-xs text-slate-400">
+                <div className="mt-10 pt-6 border-t border-slate-200 space-y-1 text-xs text-slate-600">
                   <p>
                     <strong>Source note:</strong> This page is based on the official text of the
                     Digital Personal Data Protection Rules, 2025 and should be read together with
@@ -938,7 +938,7 @@ export default function DpdpRules2025Page() {
               </div>
 
               {/* Disclaimer */}
-              <div className="bg-slate-100 rounded-lg p-4 text-xs text-slate-500 mb-5">
+              <div className="bg-cloud-100 rounded-lg p-4 text-xs text-slate-600 mb-5">
                 <strong>Educational content only.</strong> This guide is for educational purposes
                 and does not constitute legal advice. Please consult a qualified data protection
                 lawyer for formal legal opinions specific to your business situation.
@@ -967,7 +967,7 @@ export default function DpdpRules2025Page() {
                   >
                     What this page covers
                   </a>
-                  <p className="px-2 pt-2 pb-1 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                  <p className="px-2 pt-2 pb-1 text-xs font-semibold text-slate-600 uppercase tracking-wider">
                     Rules
                   </p>
                   {tocRules.map((item) => (
@@ -979,7 +979,7 @@ export default function DpdpRules2025Page() {
                       {item.label}
                     </a>
                   ))}
-                  <p className="px-2 pt-3 pb-1 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                  <p className="px-2 pt-3 pb-1 text-xs font-semibold text-slate-600 uppercase tracking-wider">
                     Schedules
                   </p>
                   {tocSchedules.map((item) => (

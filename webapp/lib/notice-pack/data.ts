@@ -133,7 +133,7 @@ export const SCORE_WEIGHTS = { businessType: 5, dataCategories: 10, purposeMappe
 
 export const SCORE_BANDS: NPBand[] = [
   { min: 85, label: "Strong", color: "#059669", bg: "#E6F7F0", msg: "Your notice pack is well-structured and ready for final review." },
-  { min: 70, label: "Good", color: "#0E9F73", bg: "#E6F7F0", msg: "Your notice covers most practical requirements. Review before publishing." },
-  { min: 40, label: "Basic", color: "#B98A1E", bg: "#FBF3E2", msg: "You have a usable draft, but important gaps remain." },
-  { min: 0, label: "Weak", color: "#E24B4A", bg: "#FCEBEB", msg: "Your notice is incomplete. Add missing data, purpose, contact and withdrawal details." },
+  { min: 70, label: "Good", color: "#047857", bg: "#E6F7F0", msg: "Your notice covers most practical requirements. Review before publishing." },
+  { min: 40, label: "Basic", color: "#8A5A10", bg: "#FBF3E2", msg: "You have a usable draft, but important gaps remain." },
+  { min: 0, label: "Weak", color: "#B91C1C", bg: "#FCEBEB", msg: "Your notice is incomplete. Add missing data, purpose, contact and withdrawal details." },
 ];

@@ -64,7 +64,7 @@ export function NodeDetailPanel({ pack, node, onClose, onAssessmentCta }: Props)
         <p className="leading-relaxed text-slate-600">{node.description}</p>
 
         <section aria-label="Data held here">
-          <h4 className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+          <h4 className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-slate-600">
             What it holds
           </h4>
           <div className="flex flex-wrap gap-1">
@@ -86,7 +86,7 @@ export function NodeDetailPanel({ pack, node, onClose, onAssessmentCta }: Props)
         </section>
 
         <section aria-label="Who can access">
-          <h4 className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+          <h4 className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-slate-600">
             Who can access
           </h4>
           <ul className="space-y-1">

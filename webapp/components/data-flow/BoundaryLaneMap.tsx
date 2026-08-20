@@ -170,7 +170,7 @@ export function BoundaryLaneMap({ pack, model, wires, risks, selectedId, onSelec
           {/* header row */}
           <div className="sticky left-0 z-20 border-b border-r border-slate-200 bg-slate-50 px-3 py-2.5">
             <span className="block text-[12px] font-bold text-navy-800">Trust boundary</span>
-            <span className="block text-[10px] text-slate-400">
+            <span className="block text-[10px] text-slate-600">
               {view.stages.length} stages &rarr;
             </span>
           </div>
@@ -189,7 +189,7 @@ export function BoundaryLaneMap({ pack, model, wires, risks, selectedId, onSelec
                 <span className="mt-1.5 block text-[11px] font-semibold leading-tight text-navy-800">
                   {s.name}
                 </span>
-                <span className="mt-0.5 block text-[10px] tabular-nums text-slate-400">
+                <span className="mt-0.5 block text-[10px] tabular-nums text-slate-600">
                   {n ? `+${n} ${n === 1 ? "place" : "places"}` : "no new place"}
                 </span>
               </div>
@@ -291,7 +291,7 @@ function FragmentRow({
           <LaneIcon size={13} className="shrink-0 opacity-70" aria-hidden="true" />
           {meta.label}
         </span>
-        <span className="text-[10px] leading-tight text-slate-400">{LANE_SUB[boundary]}</span>
+        <span className="text-[10px] leading-tight text-slate-600">{LANE_SUB[boundary]}</span>
       </div>
 
       {stages.map((s) => {

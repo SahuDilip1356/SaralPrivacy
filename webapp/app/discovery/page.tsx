@@ -211,9 +211,9 @@ export default function DiscoveryPage() {
               </div>
               <div className="aside-card alt">
                 <div className="aside-h">Risk levels explained</div>
-                <div className="aside-band"><span className="ab-pill" style={{ background: "#07B981" }}>Low</span> Controls look proportionate.</div>
-                <div className="aside-band"><span className="ab-pill" style={{ background: "#E8AB42" }}>Moderate</span> A few quick gaps to close.</div>
-                <div className="aside-band"><span className="ab-pill" style={{ background: "#E8704A" }}>High</span> Act soon on key data areas.</div>
+                <div className="aside-band"><span className="ab-pill" style={{ background: "#047857" }}>Low</span> Controls look proportionate.</div>
+                <div className="aside-band"><span className="ab-pill" style={{ background: "#8A5A10" }}>Moderate</span> A few quick gaps to close.</div>
+                <div className="aside-band"><span className="ab-pill" style={{ background: "#9A3412" }}>High</span> Act soon on key data areas.</div>
                 <div className="aside-band"><span className="ab-pill" style={{ background: "#C2413A" }}>Critical</span> Sensitive data, weak safeguards.</div>
               </div>
             </aside>

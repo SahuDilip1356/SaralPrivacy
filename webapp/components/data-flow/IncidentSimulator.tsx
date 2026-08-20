@@ -104,7 +104,7 @@ export function IncidentSimulator({ pack, model, onScenarioOpen }: Props) {
                 )}
               >
                 <span className="truncate font-semibold">{n.name}</span>
-                <span className="shrink-0 text-slate-400">{boundaryLabel(pack, n.boundary)}</span>
+                <span className="shrink-0 text-slate-600">{boundaryLabel(pack, n.boundary)}</span>
               </li>
             ))}
           </ul>

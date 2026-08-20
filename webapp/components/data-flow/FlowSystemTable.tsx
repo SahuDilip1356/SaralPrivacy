@@ -78,7 +78,7 @@ export function FlowSystemTable({ pack, model, risks, onSelect }: Props) {
                       TEXT.tiny,
                     )}
                   >
-                    <TypeIcon size={12} className="mt-0.5 shrink-0 text-slate-400" aria-hidden="true" />
+                    <TypeIcon size={12} className="mt-0.5 shrink-0 text-slate-600" aria-hidden="true" />
                     <span>
                       {node.name}
                       {node.shadowIt && (

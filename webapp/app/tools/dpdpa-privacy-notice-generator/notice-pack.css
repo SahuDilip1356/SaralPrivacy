@@ -3,8 +3,10 @@
 .npb{
   --navy:#121A2E; --navy-2:#1B2540; --navy-line:#2B3654;
   --green:#07B981; --green-d:#059669; --green-tint:#E6F7F0;
-  --teal:#35B6AE; --gold:#E8AB42; --gold-d:#B98A1E; --gold-bg:#FBF3E2;
-  --slate:#334155; --slate-2:#5B6B82; --muted:#94A3B8;
+  /* --teal paints fills; --teal-t is the same hue at a weight that is
+     readable as text (4.92:1 on white vs 2.48:1 for the fill shade). */
+  --teal:#35B6AE; --teal-t:#207D78; --gold:#E8AB42; --gold-d:#8A5A10; --gold-bg:#FBF3E2;
+  --slate:#334155; --slate-2:#5B6B82; --muted:#475569;
   --cloud:#F7F9FC; --cloud-2:#EEF2F8; --line:#E4E9F1;
   --risk:#E24B4A; --risk-bg:#FCEBEB;
   --r-md:12px; --r-lg:18px; --pill:100px;
@@ -23,7 +25,7 @@
 .npb .arr{transition:transform .2s var(--ease)} .npb .btn:hover .arr{transform:translateX(3px)}
 
 .npb .head{padding:24px 0 6px}
-.npb .eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--teal)}
+.npb .eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--teal-t)}
 .npb .eyebrow::before{content:"";width:16px;height:2px;background:var(--teal);border-radius:2px}
 .npb .head h1{font-size:clamp(24px,3.2vw,34px);margin:12px 0 8px}
 .npb .head .sub{font-size:16px;color:var(--slate-2);max-width:660px}
@@ -122,7 +124,7 @@
 .npb .out__top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
 .npb .out__top h3{font-size:16px}
 .npb .mini{border:1px solid var(--line);border-radius:var(--r-md);padding:13px 15px;margin-bottom:10px}
-.npb .mini__t{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--teal);margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.npb .mini__t{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--teal-t);margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;gap:8px}
 .npb .mini p{font-size:13px;color:var(--slate)}
 .npb .codeblk{background:var(--cloud);border:1px solid var(--line);border-radius:var(--r-md);padding:12px 14px;font-size:12.5px;color:var(--slate);white-space:pre-wrap;font-family:ui-monospace,Menlo,monospace;line-height:1.5;max-height:320px;overflow:auto}
 .npb .copy{background:none;border:1px solid #CBD5E1;border-radius:var(--pill);padding:5px 12px;font-size:12px;font-weight:600;color:var(--slate);cursor:pointer;font-family:inherit}

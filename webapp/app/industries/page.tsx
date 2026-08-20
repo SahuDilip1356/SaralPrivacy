@@ -284,7 +284,7 @@ export default function IndustriesPage() {
 
               {/* Risk areas */}
               <div className="mb-5">
-                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Common Risk Areas</p>
+                <p className="text-xs font-semibold text-slate-600 uppercase tracking-wide mb-2">Common Risk Areas</p>
                 <div className="grid grid-cols-2 gap-2">
                   {ind.risks.map((risk) => (
                     <div key={risk} className="flex items-start gap-1.5 text-xs text-slate-600">

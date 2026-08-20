@@ -166,7 +166,12 @@ export default function DataMappingPage() {
                       </span>
                     )}
                   </div>
-                  <h3 className="mt-3 text-xl font-semibold">{sector.navLabel}</h3>
+                  {/* text-white has to sit on the heading itself. The card's
+                      text-white is only inherited, and the base layer's
+                      `h3 { color: navy }` is a declared value — declared beats
+                      inherited, so this rendered navy on navy and all twelve
+                      sector names were invisible. */}
+                  <h3 className="mt-3 text-xl font-semibold text-white">{sector.navLabel}</h3>
                   <p className="mt-1.5 text-sm leading-relaxed text-slate-300">
                     Follow one person&apos;s record through {stages.length} stages and{" "}
                     {external} outside parties - and see the {pack!.hotspots.length} points where

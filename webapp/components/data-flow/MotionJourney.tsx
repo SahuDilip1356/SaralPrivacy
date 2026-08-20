@@ -355,7 +355,7 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
             </dl>
           </div>
         </div>
-        <p className="mt-2 px-1 text-[11px] leading-relaxed text-slate-400">{pack.disclaimer}</p>
+        <p className="mt-2 px-1 text-[11px] leading-relaxed text-slate-600">{pack.disclaimer}</p>
       </aside>
 
       {/* The journey */}
@@ -483,7 +483,7 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
                       );
                     })}
                     {row.moving.length > MAX_CATEGORY_CHIPS && (
-                      <span className="text-[11px] text-slate-400">
+                      <span className="text-[11px] text-slate-600">
                         +{row.moving.length - MAX_CATEGORY_CHIPS} more
                       </span>
                     )}

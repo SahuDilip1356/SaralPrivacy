@@ -11,7 +11,7 @@ export default function LearnTopicNotFound() {
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
       <div className="text-center max-w-md">
-        <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-3">
+        <p className="text-xs font-semibold text-slate-600 uppercase tracking-widest mb-3">
           404 · Topic Not Found
         </p>
         <h1 className="text-2xl font-semibold text-navy-700 mb-3">

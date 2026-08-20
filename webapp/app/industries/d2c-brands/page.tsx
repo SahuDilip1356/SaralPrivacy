@@ -225,9 +225,9 @@ export default function D2CBrandsPage() {
 
             {/* Sidebar */}
             <div className="space-y-5">
-              <div className="rounded-xl bg-teal-700 p-5 text-white">
-                <h3 className="font-semibold">Take the free scan</h3>
-                <p className="mt-2 text-sm text-teal-100">10 questions · 3 minutes · free · no login. Get your brand&apos;s DPDPA readiness score.</p>
+              <div className="rounded-xl bg-teal-800 p-5 text-white">
+                <h3 className="font-semibold text-white">Take the free scan</h3>
+                <p className="mt-2 text-sm text-teal-50">10 questions · 3 minutes · free · no login. Get your brand&apos;s DPDPA readiness score.</p>
                 <Link href="/assessment/d2c-brands" className="mt-4 block rounded-lg bg-white py-2.5 text-center text-sm font-bold text-teal-800 hover:bg-teal-50">
                   Start D2C Brand Risk Scan →
                 </Link>
@@ -254,7 +254,7 @@ export default function D2CBrandsPage() {
             </div>
           </div>
 
-          <div data-nosnippet className="mt-10 space-y-1 border-t border-slate-200 pt-6 text-xs text-slate-400">
+          <div data-nosnippet className="mt-10 space-y-1 border-t border-slate-200 pt-6 text-xs text-slate-600">
             <p><strong>Legal baseline:</strong> DPDP Rules, 2025 notified on 14 November 2025, with phased commencement.</p>
             <p>This page is for educational purposes and does not constitute legal advice.</p>
           </div>

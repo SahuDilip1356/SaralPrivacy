@@ -33,7 +33,7 @@ export function EdgeDetailPanel({ pack, edge, onClose, onAssessmentCta }: Props)
       <div className="flex items-start justify-between gap-3 border-b border-slate-100 p-4">
         <div>
           <h3 className="text-sm font-semibold leading-snug text-navy-800">
-            {source?.name} <span className="text-slate-400">→</span> {target?.name}
+            {source?.name} <span className="text-slate-600">→</span> {target?.name}
           </h3>
           <p className="mt-1 text-[11px] font-medium text-slate-500">
             {ACTION_LABEL[edge.action]} · {CHANNEL_LABEL[edge.channel]}
@@ -54,7 +54,7 @@ export function EdgeDetailPanel({ pack, edge, onClose, onAssessmentCta }: Props)
         <p className="leading-relaxed text-slate-600">{edge.purpose}.</p>
 
         <section aria-label="Data transferred">
-          <h4 className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+          <h4 className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-slate-600">
             Data that moves
           </h4>
           <div className="flex flex-wrap gap-1">

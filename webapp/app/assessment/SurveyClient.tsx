@@ -696,7 +696,7 @@ export default function SurveyClient() {
 
           {/* Left — Hero */}
           <div>
-            <div className="inline-block bg-green-100 text-green-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide mb-5">
+            <div className="inline-block bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide mb-5">
               DPDPA READINESS ASSESSMENT
             </div>
             <h1 className="text-4xl sm:text-5xl font-semibold text-navy-900 leading-tight mb-5">
@@ -767,7 +767,7 @@ export default function SurveyClient() {
           <div>
           <div className="bg-white rounded-2xl border border-slate-200 shadow-lg p-7">
             <h2 className="text-xl font-semibold text-navy-900 mb-1">Start your free DPDPA readiness check</h2>
-            <div className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-6">Before you begin</div>
+            <div className="text-xs font-semibold text-slate-600 uppercase tracking-widest mb-6">Before you begin</div>
 
             {/* Required consent */}
             <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
@@ -811,7 +811,7 @@ export default function SurveyClient() {
             >
               Take free assessment <ArrowRight size={18} />
             </button>
-            <div className="text-center text-xs text-slate-400 mb-5">Free · No payment required</div>
+            <div className="text-center text-xs text-slate-600 mb-5">Free · No payment required</div>
 
             {/* Optional consents */}
             <div className="space-y-2.5 border-t border-slate-100 pt-4">

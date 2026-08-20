@@ -28,7 +28,7 @@ export function HotspotRail({ pack, onHotspotSelect, onAssessmentCta }: Props) {
           <li key={h.id} className="flex">
             <div className="flex w-full flex-col rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md">
               <div className="flex items-center justify-between gap-2">
-                <span className="text-[11px] font-bold uppercase tracking-wide text-slate-400">
+                <span className="text-[11px] font-bold uppercase tracking-wide text-slate-600">
                   Hotspot {h.rank}
                 </span>
                 <span className={cn("inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-semibold", risk.chip)}>

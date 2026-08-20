@@ -124,7 +124,7 @@ export default async function DataFlowPage({ params }: Params) {
                 Map your own data with Discovery
               </Link>
             </div>
-            <p className="mt-4 text-xs leading-relaxed text-slate-400">
+            <p className="mt-4 text-xs leading-relaxed text-slate-600">
               Educational reference model - not legal advice, and not a scan of your actual systems.
             </p>
           </section>
