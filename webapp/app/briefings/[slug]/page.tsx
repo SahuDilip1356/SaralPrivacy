@@ -450,6 +450,16 @@ export default async function BriefingDetailPage({ params }: Props) {
                     </div>
                   )}
 
+                  {/* The in-body way into the tools, v2's copy of it. Sits
+                      after the explainer and before the action checklist —
+                      same beat in the read as on a v1 briefing: the reader now
+                      understands the issue and is about to be told what to do. */}
+                  <div className="mb-4">
+                    <InBodyToolLink
+                      sector={(briefing.industries as string[] | undefined)?.[0]}
+                    />
+                  </div>
+
                   {/* BLOCK 5 — ACTION CHECKLIST (format-aware) */}
                   {briefing.actionItems?.length > 0 && (
                     <div className="bg-navy-700 rounded-xl p-6 mb-4">
