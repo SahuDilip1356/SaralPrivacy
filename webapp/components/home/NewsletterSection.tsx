@@ -45,7 +45,7 @@ export function NewsletterSection() {
     /* The closing act, and the page's second and last navy band. The dark
        ground both ends the scroll and isolates the one thing being asked for
        here. */
-    <section className="py-24 bg-navy-700">
+    <section className="py-16 bg-navy-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="max-w-2xl mx-auto text-center">
           {/* Icon */}

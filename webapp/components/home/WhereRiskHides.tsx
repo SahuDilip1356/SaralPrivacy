@@ -67,7 +67,7 @@ export function WhereRiskHides() {
     }`;
 
   return (
-    <section className="bg-cloud-50 border-t border-pearl-100 py-24">
+    <section className="bg-cloud-50 border-t border-pearl-100 py-32">
       <div ref={ref} className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* header */}
         <div className="text-center mb-12">

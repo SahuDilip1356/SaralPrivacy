@@ -204,7 +204,7 @@ export function HowItWorks() {
     }`;
 
   return (
-    <section className="bg-cloud-50 py-24">
+    <section className="bg-cloud-50 py-16">
       <div ref={ref} className="max-w-3xl mx-auto px-4 sm:px-6">
         {/* header */}
         <div className="text-center mb-12">

@@ -105,7 +105,7 @@ const FLOW_HREFS = new Map(
 
 export function AudienceCards() {
   return (
-    <section id="sectors" className="py-24 bg-cloud-50 scroll-mt-20">
+    <section id="sectors" className="py-16 bg-cloud-50 scroll-mt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Heading */}
         <div className="text-center mb-12">

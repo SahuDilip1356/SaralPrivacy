@@ -65,7 +65,7 @@ export function VerdictPreview() {
         {/* report card */}
         <div
           aria-live="polite"
-          className="max-w-md mx-auto bg-white rounded-2xl border border-slate-200 shadow-card p-6"
+          className="max-w-2xl mx-auto bg-white rounded-2xl border border-slate-200 shadow-card p-6"
         >
           <div
             key={v.slug}
