@@ -49,7 +49,7 @@ const steps: Step[] = [
     href: "/discovery",
     badge: "bg-teal-500",
     ring: "bg-teal-50",
-    iconColor: "text-teal-700",
+    iconColor: "text-teal-800",
   },
   {
     n: 2,
@@ -62,7 +62,7 @@ const steps: Step[] = [
     href: "/data-mapping",
     badge: "bg-teal-500",
     ring: "bg-teal-50",
-    iconColor: "text-teal-700",
+    iconColor: "text-teal-800",
   },
   {
     n: 3,
@@ -260,7 +260,7 @@ export function HowItWorks() {
                   </span>
                   <ArrowRight
                     size={16}
-                    className="order-3 sm:order-4 text-slate-400 group-hover:text-teal-700 transition-colors shrink-0"
+                    className="order-3 sm:order-4 text-slate-400 group-hover:text-teal-900 transition-colors shrink-0"
                   />
                 </Link>
                 {/* connector */}
@@ -340,7 +340,7 @@ export function HowItWorks() {
                   >
                     <Icon
                       size={18}
-                      className={comingSoon ? "text-slate-400" : "text-teal-700"}
+                      className={comingSoon ? "text-slate-400" : "text-teal-800"}
                     />
                   </span>
                   <span className="min-w-0">
@@ -364,7 +364,7 @@ export function HowItWorks() {
                     className={`ml-auto shrink-0 transition-colors ${
                       comingSoon
                         ? "text-slate-600"
-                        : "text-slate-400 group-hover:text-teal-700"
+                        : "text-slate-400 group-hover:text-teal-900"
                     }`}
                   />
                 </>

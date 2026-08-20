@@ -196,13 +196,13 @@ export default function AboutPage() {
             <div className="space-y-3 text-sm text-slate-600">
               <div>
                 <p className="font-semibold text-navy-700 mb-1">For content questions and editorial enquiries</p>
-                <a href="mailto:privacy@saralprivacy.com" className="text-green-600 hover:underline">
+                <a href="mailto:privacy@saralprivacy.com" className="text-green-800 hover:underline">
                   privacy@saralprivacy.com
                 </a>
               </div>
               <div>
                 <p className="font-semibold text-navy-700 mb-1">For data access, correction, erasure, or privacy complaints</p>
-                <a href="mailto:privacy@saralprivacy.com" className="text-green-600 hover:underline">
+                <a href="mailto:privacy@saralprivacy.com" className="text-green-800 hover:underline">
                   privacy@saralprivacy.com
                 </a>
               </div>
@@ -210,7 +210,7 @@ export default function AboutPage() {
           </div>
 
           {/* Legal */}
-          <div className="mt-10 pt-6 border-t border-slate-200 text-xs text-slate-400 space-y-1">
+          <div className="mt-10 pt-6 border-t border-slate-200 text-xs text-slate-600 space-y-1">
             <p><strong>Legal baseline:</strong> DPDP Rules, 2025 notified on 14 November 2025, with phased commencement.</p>
             <p>This page is for educational purposes and does not constitute legal advice.</p>
           </div>

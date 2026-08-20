@@ -136,7 +136,7 @@ function ScorecardBar({ label, score, dpdpaRef }: { label: string; score: number
   const pct = Math.min(100, Math.max(0, score));
   const color = pct >= 65 ? "bg-green-500" : pct >= 45 ? "bg-amber-400" : "bg-red-400";
   const status = pct >= 65 ? "On Track" : pct >= 45 ? "Needs Work" : "At Risk";
-  const statusColor = pct >= 65 ? "text-green-600 bg-green-50" : pct >= 45 ? "text-amber-700 bg-amber-50" : "text-red-600 bg-red-50";
+  const statusColor = pct >= 65 ? "text-green-800 bg-green-50" : pct >= 45 ? "text-amber-700 bg-amber-50" : "text-red-600 bg-red-50";
   return (
     <div className="mb-3">
       <div className="flex items-center justify-between mb-1">
@@ -348,7 +348,7 @@ function PreviewPanel({
         {/* Send action footer */}
         <div className="sticky bottom-0 bg-white border-t border-slate-200 px-5 py-4">
           {sendState === "sent" ? (
-            <div className="flex items-center gap-2 text-green-600 text-sm font-semibold">
+            <div className="flex items-center gap-2 text-green-800 text-sm font-semibold">
               <CheckCircle size={16} /> Report sent successfully
             </div>
           ) : sendState === "error" ? (
@@ -485,7 +485,7 @@ export default function AssessmentsPage() {
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <div className="w-9 h-9 bg-green-50 rounded-lg flex items-center justify-center">
-          <CheckCircle size={18} className="text-green-600" />
+          <CheckCircle size={18} className="text-green-800" />
         </div>
         <div>
           <h1 className="text-2xl font-semibold text-brand-700">Assessments</h1>
@@ -670,7 +670,7 @@ export default function AssessmentsPage() {
                     {/* Email Sent */}
                     <td className="px-4 py-3 whitespace-nowrap">
                       {a.email_sent_at ? (
-                        <span className="inline-flex items-center gap-1 text-xs text-green-600 font-medium">
+                        <span className="inline-flex items-center gap-1 text-xs text-green-800 font-medium">
                           <CheckCircle size={11} />
                           {new Date(a.email_sent_at).toLocaleDateString("en-IN")}
                         </span>
@@ -694,7 +694,7 @@ export default function AssessmentsPage() {
                           {/* Quick send (outside panel) */}
                           {(() => {
                             const state = sendState[a.$id] ?? "idle";
-                            if (state === "sent" || a.email_sent_at) return <span className="text-xs text-green-600 font-semibold">Sent ✓</span>;
+                            if (state === "sent" || a.email_sent_at) return <span className="text-xs text-green-800 font-semibold">Sent ✓</span>;
                             if (state === "error") return (
                               <span className="text-xs text-red-500" title={sendError[a.$id] || "Unknown error"}>
                                 Failed

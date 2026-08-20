@@ -153,7 +153,7 @@ function ChecklistSectionAccordion({
               </span>
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-navy-700 group-hover:text-green-600 transition-colors">
+              <h3 className="text-sm font-semibold text-navy-700 group-hover:text-green-900 transition-colors">
                 {section.title}
               </h3>
               <div className="flex items-center gap-2 mt-0.5 flex-wrap">
@@ -368,11 +368,11 @@ function RelatedResources() {
             >
               <Icon size={17} className={accent} />
             </div>
-            <h3 className="text-sm font-semibold text-navy-700 group-hover:text-green-600 transition-colors mb-1">
+            <h3 className="text-sm font-semibold text-navy-700 group-hover:text-green-900 transition-colors mb-1">
               {label}
             </h3>
             <p className="text-xs text-slate-500 mb-3 leading-relaxed">{desc}</p>
-            <span className="text-xs font-semibold text-green-600 flex items-center gap-1 group-hover:gap-2 transition-all">
+            <span className="text-xs font-semibold text-green-800 flex items-center gap-1 group-hover:gap-2 transition-all">
               {cta} <ArrowRight size={11} />
             </span>
           </Link>

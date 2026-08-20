@@ -141,7 +141,7 @@ export default function FAQContent() {
         </div>
 
         {/* Legal */}
-        <div data-nosnippet className="mt-10 pt-6 border-t border-slate-200 text-xs text-slate-400 space-y-1">
+        <div data-nosnippet className="mt-10 pt-6 border-t border-slate-200 text-xs text-slate-600 space-y-1">
           <p><strong>Legal baseline:</strong> DPDP Rules, 2025 notified on 14 November 2025, with phased commencement.</p>
           <p>This page is for educational purposes and does not constitute legal advice.</p>
         </div>

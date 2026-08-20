@@ -14,7 +14,7 @@ export function DiscoveryCrossLink({ className = "" }: { className?: string }) {
         <Compass size={22} className="text-teal-600" />
       </div>
       <div className="flex-1">
-        <div className="text-[11px] font-bold uppercase tracking-wide text-teal-700 mb-1">
+        <div className="text-[11px] font-bold uppercase tracking-wide text-teal-800 mb-1">
           Start here · Free · No email
         </div>
         <h3 className="text-navy-700 font-semibold text-base sm:text-lg leading-snug">
@@ -26,7 +26,7 @@ export function DiscoveryCrossLink({ className = "" }: { className?: string }) {
       </div>
       <Link
         href="/discovery"
-        className="shrink-0 inline-flex items-center justify-center gap-2 px-6 py-3 bg-green-500 text-white font-semibold rounded-xl hover:bg-green-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:ring-offset-2 transition-colors text-sm whitespace-nowrap"
+        className="shrink-0 inline-flex items-center justify-center gap-2 px-6 py-3 bg-green-700 text-white font-semibold rounded-xl hover:bg-green-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:ring-offset-2 transition-colors text-sm whitespace-nowrap"
       >
         Personal Data Discovery
         <ArrowRight size={16} />

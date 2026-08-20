@@ -42,7 +42,7 @@ export default function FAQPage() {
           The accordion above has data-nosnippet; these blocks are the crawlable source. */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-12">
         <div className="border-t-2 border-slate-200 pt-8 mb-6">
-          <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-4">Complete Answer Reference</p>
+          <p className="text-xs font-semibold text-slate-600 uppercase tracking-widest mb-4">Complete Answer Reference</p>
           <Byline lastReviewed={FRESHNESS.faq} className="mb-4" />
           <AnswerBlock
             answer="These are the DPDPA questions Indian businesses ask when privacy stops being theory and starts affecting forms, marketing, payroll, candidate files, student records, and customer data. The DPDP Rules, 2025 have been notified, so the useful question is no longer whether the law is coming, but what you need to fix first. Start here for clear, practical answers."

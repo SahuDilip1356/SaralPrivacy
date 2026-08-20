@@ -129,7 +129,7 @@ export default function WhitePaperContent() {
             {/* Ungated reading — the front door. No form, opens the full Guide. */}
             <div className="bg-white rounded-xl border border-slate-200 p-6 mb-6">
               <div className="flex items-center gap-2 mb-1">
-                <BookOpen size={16} className="text-green-600" />
+                <BookOpen size={16} className="text-green-800" />
                 <h2 className="text-base font-semibold text-navy-700">Read online in your language</h2>
               </div>
               <p className="text-slate-500 text-sm mb-4">Free, no sign-up — opens the complete Guide.</p>
@@ -159,7 +159,7 @@ export default function WhitePaperContent() {
                 {whitePaperSections.map((section, i) => (
                   <li key={i} className="flex items-start gap-3 text-sm text-slate-600">
                     <div className="w-6 h-6 rounded-lg bg-green-50 border border-green-200 flex items-center justify-center shrink-0 mt-0.5">
-                      <span className="text-green-600 text-xs font-bold">{String(i + 1).padStart(2, "0")}</span>
+                      <span className="text-green-800 text-xs font-bold">{String(i + 1).padStart(2, "0")}</span>
                     </div>
                     {section}
                   </li>
@@ -193,7 +193,7 @@ export default function WhitePaperContent() {
             {submitted ? (
               <div className="bg-green-50 border border-green-200 rounded-2xl p-8 text-center">
                 <div className="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <CheckCircle size={28} className="text-green-600" />
+                  <CheckCircle size={28} className="text-green-800" />
                 </div>
                 <h3 className="font-semibold text-green-800 text-xl mb-2">
                   Your Guide is ready{selectedLang.code !== "en" ? ` — ${selectedLang.roman}` : ""}
@@ -268,7 +268,7 @@ export default function WhitePaperContent() {
                                 : "border border-slate-300 bg-white text-slate-600 font-medium hover:border-slate-400 hover:bg-slate-50"
                             }`}
                           >
-                            {active && <CheckCircle size={13} className="text-green-600" />}
+                            {active && <CheckCircle size={13} className="text-green-800" />}
                             {lang.native}
                             {!live && (
                               <span className="text-[10px] font-normal text-slate-400">soon</span>
@@ -379,10 +379,10 @@ export default function WhitePaperContent() {
 
                     <p className="text-xs text-slate-400 pt-1">
                       Your data is processed under our{" "}
-                      <a href="/privacy" className="text-green-500 underline">Privacy Notice</a>{" "}
+                      <a href="/privacy" className="text-green-700 underline">Privacy Notice</a>{" "}
                       (v{PRIVACY_NOTICE_VERSION}). You can request access, correction, or erasure
                       at any time by emailing{" "}
-                      <a href="mailto:privacy@saralprivacy.com" className="text-green-500 underline">
+                      <a href="mailto:privacy@saralprivacy.com" className="text-green-700 underline">
                         privacy@saralprivacy.com
                       </a>.
                     </p>

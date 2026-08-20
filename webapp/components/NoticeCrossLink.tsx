@@ -12,7 +12,7 @@ export function NoticeCrossLink({ className = "" }: { className?: string }) {
       className={`flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 rounded-2xl border border-green-200 bg-gradient-to-r from-green-50 to-teal-50 p-5 sm:p-6 ${className}`}
     >
       <div className="shrink-0 w-11 h-11 rounded-xl bg-white border border-green-200 grid place-items-center">
-        <FileText size={22} className="text-green-600" />
+        <FileText size={22} className="text-green-800" />
       </div>
       <div className="flex-1">
         <div className="text-[11px] font-bold uppercase tracking-wide text-green-700 mb-1">
@@ -27,7 +27,7 @@ export function NoticeCrossLink({ className = "" }: { className?: string }) {
       </div>
       <Link
         href="/tools/dpdpa-privacy-notice-generator"
-        className="shrink-0 inline-flex items-center justify-center gap-2 px-6 py-3 bg-green-500 text-white font-semibold rounded-xl hover:bg-green-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:ring-offset-2 transition-colors text-sm whitespace-nowrap"
+        className="shrink-0 inline-flex items-center justify-center gap-2 px-6 py-3 bg-green-700 text-white font-semibold rounded-xl hover:bg-green-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:ring-offset-2 transition-colors text-sm whitespace-nowrap"
       >
         Notice Generator
         <ArrowRight size={16} />

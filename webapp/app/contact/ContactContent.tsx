@@ -115,7 +115,7 @@ export default function ContactContent() {
                 ].map(({ icon: Icon, title, desc }) => (
                   <div key={title} className="flex gap-3">
                     <div className="w-8 h-8 rounded-lg bg-green-50 border border-green-200 flex items-center justify-center shrink-0">
-                      <Icon size={15} className="text-green-600" />
+                      <Icon size={15} className="text-green-800" />
                     </div>
                     <div>
                       <div className="text-sm font-semibold text-navy-700">{title}</div>
@@ -132,14 +132,14 @@ export default function ContactContent() {
               <div className="space-y-3">
                 <a
                   href="mailto:privacy@saralprivacy.com"
-                  className="flex items-center gap-2 text-sm text-slate-600 hover:text-green-600 transition-colors"
+                  className="flex items-center gap-2 text-sm text-slate-600 hover:text-green-900 transition-colors"
                 >
                   <Mail size={14} className="text-green-500" />
                   privacy@saralprivacy.com
                 </a>
                 <a
                   href="mailto:privacy@saralprivacy.com"
-                  className="flex items-center gap-2 text-sm text-slate-600 hover:text-green-600 transition-colors"
+                  className="flex items-center gap-2 text-sm text-slate-600 hover:text-green-900 transition-colors"
                 >
                   <Shield size={14} className="text-green-500" />
                   privacy@saralprivacy.com (data requests)
@@ -161,7 +161,7 @@ export default function ContactContent() {
           <div className="lg:col-span-2">
             {submitted ? (
               <div className="bg-green-50 border border-green-200 rounded-2xl p-10 text-center">
-                <CheckCircle size={40} className="text-green-600 mx-auto mb-4" />
+                <CheckCircle size={40} className="text-green-800 mx-auto mb-4" />
                 <h3 className="font-semibold text-green-800 text-xl mb-2">Request received</h3>
                 <p className="text-green-700 text-sm leading-relaxed">
                   Thank you for reaching out. We will review your details and respond within one
@@ -292,7 +292,7 @@ export default function ContactContent() {
                     />
                     <p className="text-xs text-slate-400 mt-2 pl-7">
                       Your data is handled under our{" "}
-                      <a href="/privacy" className="text-green-500 underline">Privacy Notice</a>.
+                      <a href="/privacy" className="text-green-700 underline">Privacy Notice</a>.
                       You can withdraw this consent by emailing privacy@saralprivacy.com.
                     </p>
                   </div>

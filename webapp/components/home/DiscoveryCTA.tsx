@@ -72,7 +72,7 @@ export function DiscoveryCTA() {
                       tag === "Core"
                         ? "bg-green-100 text-green-700"
                         : tag === "Operational"
-                          ? "bg-teal-100 text-teal-700"
+                          ? "bg-teal-100 text-teal-800"
                           : "bg-orange-100 text-orange-600"
                     }`}
                   >

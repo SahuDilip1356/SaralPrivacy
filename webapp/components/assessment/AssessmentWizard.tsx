@@ -44,7 +44,7 @@ export function AssessmentWizard({ title, industry, questions }: Props) {
   };
 
   const getRiskIcon = (level: string) => {
-    if (level === "green") return <CheckCircle size={28} className="text-green-600" />;
+    if (level === "green") return <CheckCircle size={28} className="text-green-800" />;
     if (level === "amber") return <AlertTriangle size={28} className="text-amber-600" />;
     return <XCircle size={28} className="text-red-600" />;
   };
@@ -119,7 +119,7 @@ export function AssessmentWizard({ title, industry, questions }: Props) {
           <ul className="space-y-2">
             {result.recommendations.map((rec, i) => (
               <li key={i} className="flex items-start gap-2.5 text-sm text-slate-600">
-                <span className="w-5 h-5 rounded-full bg-green-100 text-green-600 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+                <span className="w-5 h-5 rounded-full bg-green-100 text-green-800 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
                   {i + 1}
                 </span>
                 {rec}
@@ -179,7 +179,7 @@ export function AssessmentWizard({ title, industry, questions }: Props) {
           </div>
         ) : (
           <div className="bg-green-50 border border-green-200 rounded-xl p-5 text-center">
-            <CheckCircle size={24} className="text-green-600 mx-auto mb-2" />
+            <CheckCircle size={24} className="text-green-800 mx-auto mb-2" />
             <p className="text-green-800 font-semibold text-sm">Results saved! Check your inbox.</p>
           </div>
         )}
@@ -205,7 +205,7 @@ export function AssessmentWizard({ title, industry, questions }: Props) {
       <div className="mb-7">
         <div className="flex items-center justify-between text-sm text-slate-500 mb-2">
           <span>Question {step + 1} of {questions.length}</span>
-          <span className="font-semibold text-green-600">{progress}% complete</span>
+          <span className="font-semibold text-green-800">{progress}% complete</span>
         </div>
         <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
           <div
@@ -218,7 +218,7 @@ export function AssessmentWizard({ title, industry, questions }: Props) {
       {/* Question card */}
       <div className="bg-white rounded-xl border border-slate-200 p-7 mb-5">
         {/* Category label */}
-        <div className="text-xs font-semibold text-green-600 uppercase tracking-wide mb-3">
+        <div className="text-xs font-semibold text-green-800 uppercase tracking-wide mb-3">
           {currentQuestion.category.replace(/-/g, " ")}
         </div>
 

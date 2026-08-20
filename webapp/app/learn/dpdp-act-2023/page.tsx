@@ -73,7 +73,7 @@ function OfficialText({ text }: { text: string }) {
 function PlainEnglishBox({ text }: { text: string }) {
   return (
     <div className="bg-green-50 border-l-4 border-green-400 rounded-r-lg px-4 py-3 mt-3">
-      <p className="text-[11px] font-semibold text-green-600 uppercase tracking-widest mb-1.5">
+      <p className="text-[11px] font-semibold text-green-800 uppercase tracking-widest mb-1.5">
         Plain English
       </p>
       <p className="text-sm text-slate-700 leading-relaxed">{linkifyText(text)}</p>
@@ -180,7 +180,7 @@ export default function DpdpAct2023Page() {
                       href={t.href ?? `/learn/${t.slug}`}
                       className={
                         t.active
-                          ? "block px-3 py-2 rounded-lg text-sm bg-green-50 text-green-600 font-semibold"
+                          ? "block px-3 py-2 rounded-lg text-sm bg-green-50 text-green-800 font-semibold"
                           : "block px-3 py-2 rounded-lg text-sm text-slate-600 hover:text-navy-700 hover:bg-slate-50 transition-colors"
                       }
                     >
@@ -195,7 +195,7 @@ export default function DpdpAct2023Page() {
             <div className="min-w-0">
               <Link
                 href="/learn"
-                className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-green-600 mb-5 transition-colors"
+                className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-green-900 mb-5 transition-colors"
               >
                 <ArrowLeft size={14} />
                 DPDPA Guide
@@ -360,7 +360,7 @@ export default function DpdpAct2023Page() {
                           <a
                             key={s.id}
                             href={`#${s.id}`}
-                            className="block text-xs text-slate-500 hover:text-green-600 py-0.5 transition-colors truncate"
+                            className="block text-xs text-slate-500 hover:text-green-900 py-0.5 transition-colors truncate"
                             title={s.label}
                           >
                             {s.label}
@@ -380,7 +380,7 @@ export default function DpdpAct2023Page() {
                     <div className="space-y-0.5 pl-2">
                       <a
                         href="#schedule"
-                        className="block text-xs text-slate-500 hover:text-green-600 py-0.5 transition-colors"
+                        className="block text-xs text-slate-500 hover:text-green-900 py-0.5 transition-colors"
                       >
                         Penalty Table (7 items)
                       </a>

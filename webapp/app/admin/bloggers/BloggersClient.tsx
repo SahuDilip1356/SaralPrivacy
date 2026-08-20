@@ -310,7 +310,7 @@ export default function BloggersClient({ initialBloggers }: Props) {
                             onClick={() => toggleActive(blogger.$id, blogger.active)}
                             disabled={actionLoading === blogger.$id + "-toggle"}
                             title="Restore access"
-                            className="p-1.5 rounded-lg text-green-600 hover:bg-green-50 transition-colors disabled:opacity-40"
+                            className="p-1.5 rounded-lg text-green-800 hover:bg-green-50 transition-colors disabled:opacity-40"
                           >
                             <CheckCircle size={14} />
                           </button>

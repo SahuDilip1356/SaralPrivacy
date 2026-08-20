@@ -76,7 +76,7 @@ export function BriefingSubscribeCard() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-2.5 bg-green-500 hover:bg-green-600 text-white text-sm font-semibold rounded-lg transition-colors disabled:opacity-60"
+          className="w-full py-2.5 bg-green-700 hover:bg-green-800 text-white text-sm font-semibold rounded-lg transition-colors disabled:opacity-60"
         >
           {loading ? "Subscribing…" : "Subscribe Free →"}
         </button>

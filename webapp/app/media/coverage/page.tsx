@@ -48,7 +48,7 @@ export default function MediaCoveragePage() {
               <h1 className="text-xl sm:text-2xl font-semibold text-white">
                 SaralPrivacy — PR Publication Links
               </h1>
-              <p className="text-sm text-slate-400 mt-1">
+              <p className="text-sm text-slate-300 mt-1">
                 DPDPA compliance press release · Distributed {mediaStats.distributedOn}
               </p>
             </div>
@@ -57,7 +57,7 @@ export default function MediaCoveragePage() {
                 <div className="text-2xl font-bold text-green-400 leading-none">
                   {mediaStats.totalPlacements}
                 </div>
-                <div className="text-[11px] text-slate-400 mt-1.5 uppercase tracking-wide">
+                <div className="text-[11px] text-slate-300 mt-1.5 uppercase tracking-wide">
                   Publishers
                 </div>
               </div>
@@ -65,13 +65,13 @@ export default function MediaCoveragePage() {
                 <div className="text-2xl font-bold text-green-400 leading-none">
                   {mediaStats.potentialReach}
                 </div>
-                <div className="text-[11px] text-slate-400 mt-1.5 uppercase tracking-wide">Reach</div>
+                <div className="text-[11px] text-slate-300 mt-1.5 uppercase tracking-wide">Reach</div>
               </div>
               <div>
                 <div className="text-2xl font-bold text-green-400 leading-none">
                   {mediaStats.liveLinks}
                 </div>
-                <div className="text-[11px] text-slate-400 mt-1.5 uppercase tracking-wide">
+                <div className="text-[11px] text-slate-300 mt-1.5 uppercase tracking-wide">
                   Live links
                 </div>
               </div>
@@ -84,7 +84,7 @@ export default function MediaCoveragePage() {
           </div>
 
 
-          <p className="mt-6 text-xs text-slate-400">
+          <p className="mt-6 text-xs text-slate-600">
             For informational purposes; not legal advice.
           </p>
         </div>

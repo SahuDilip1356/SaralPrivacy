@@ -158,7 +158,7 @@ export default async function LearnTopicPage({ params }: Props) {
                     href={t.href ?? `/learn/${t.slug}`}
                     className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
                       t.slug === topic
-                        ? "bg-green-50 text-green-600 font-semibold"
+                        ? "bg-green-50 text-green-800 font-semibold"
                         : "text-slate-600 hover:text-navy-700 hover:bg-slate-50"
                     }`}
                   >
@@ -170,27 +170,27 @@ export default async function LearnTopicPage({ params }: Props) {
 
             {/* Compliance Tools widget */}
             <div className="bg-teal-50 border border-teal-200 rounded-xl p-4 mt-4">
-              <h3 className="text-xs font-semibold text-teal-700 uppercase tracking-wider mb-3">
+              <h3 className="text-xs font-semibold text-teal-800 uppercase tracking-wider mb-3">
                 Compliance Tools
               </h3>
               <nav className="space-y-1">
                 <Link
                   href="/compliance-checklist"
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-teal-100 hover:text-teal-700 transition-colors"
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-teal-100 hover:text-teal-900 transition-colors"
                 >
                   <ClipboardList size={14} className="text-teal-500 shrink-0" />
                   Compliance Checklist
                 </Link>
                 <Link
                   href="/assessment"
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-teal-100 hover:text-teal-700 transition-colors"
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-teal-100 hover:text-teal-900 transition-colors"
                 >
                   <FileSearch size={14} className="text-teal-500 shrink-0" />
                   DPDPA Assessment
                 </Link>
                 <Link
                   href="/white-paper"
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-teal-100 hover:text-teal-700 transition-colors"
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-teal-100 hover:text-teal-900 transition-colors"
                 >
                   <CheckSquare size={14} className="text-teal-500 shrink-0" />
                   Guide
@@ -208,7 +208,7 @@ export default async function LearnTopicPage({ params }: Props) {
           <div className="lg:col-span-3">
             <Link
               href="/learn"
-              className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-green-600 mb-5 transition-colors"
+              className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-green-900 mb-5 transition-colors"
             >
               <ArrowLeft size={14} />
               DPDPA Guide
@@ -228,14 +228,14 @@ export default async function LearnTopicPage({ params }: Props) {
               <div className="mt-5 pt-5 border-t border-slate-100">
                 {renderContent(content.content)}
               </div>
-              <div className="mt-10 pt-6 border-t border-slate-200 text-xs text-slate-400 space-y-1">
+              <div className="mt-10 pt-6 border-t border-slate-200 text-xs text-slate-600 space-y-1">
                 <p><strong>Legal baseline:</strong> DPDP Rules, 2025 notified on 14 November 2025, with phased commencement.</p>
                 <p>This page is for educational purposes and does not constitute legal advice.</p>
               </div>
             </div>
 
             {/* Disclaimer */}
-            <div className="bg-slate-100 rounded-lg p-4 text-xs text-slate-500 mb-5">
+            <div className="bg-cloud-100 rounded-lg p-4 text-xs text-slate-600 mb-5">
               <strong>Educational content only.</strong> This guide is for educational purposes and
               does not constitute legal advice. Please consult a qualified data protection lawyer
               for formal legal opinions specific to your business situation.
@@ -276,7 +276,7 @@ export default async function LearnTopicPage({ params }: Props) {
               {prev ? (
                 <Link
                   href={`/learn/${prev.slug}`}
-                  className="flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-green-600 transition-colors"
+                  className="flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-green-900 transition-colors"
                 >
                   <ArrowLeft size={16} />
                   {prev.label}
@@ -287,7 +287,7 @@ export default async function LearnTopicPage({ params }: Props) {
               {next ? (
                 <Link
                   href={`/learn/${next.slug}`}
-                  className="flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-green-600 transition-colors"
+                  className="flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-green-900 transition-colors"
                 >
                   {next.label}
                   <ArrowRight size={16} />

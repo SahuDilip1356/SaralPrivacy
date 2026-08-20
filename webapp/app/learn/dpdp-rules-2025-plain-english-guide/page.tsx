@@ -208,7 +208,7 @@ export default function DpdpRules2025Page() {
                       href={t.href ?? `/learn/${t.slug}`}
                       className={
                         t.slug === "dpdp-rules-2025-plain-english-guide"
-                          ? "block px-3 py-2 rounded-lg text-sm bg-green-50 text-green-600 font-semibold"
+                          ? "block px-3 py-2 rounded-lg text-sm bg-green-50 text-green-800 font-semibold"
                           : "block px-3 py-2 rounded-lg text-sm text-slate-600 hover:text-navy-700 hover:bg-slate-50 transition-colors"
                       }
                     >
@@ -223,7 +223,7 @@ export default function DpdpRules2025Page() {
             <div className="min-w-0">
               <Link
                 href="/learn"
-                className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-green-600 mb-5 transition-colors"
+                className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-green-900 mb-5 transition-colors"
               >
                 <ArrowLeft size={14} />
                 DPDPA Guide
@@ -232,8 +232,8 @@ export default function DpdpRules2025Page() {
               {/* Hero block */}
               <div className="bg-white rounded-xl border border-slate-200 p-7 mb-5">
                 <div className="inline-flex items-center gap-2 bg-green-50 border border-green-200 rounded-full px-3 py-1 mb-4">
-                  <FileText size={12} className="text-green-600" />
-                  <span className="text-green-600 text-xs font-semibold">Rules Reference</span>
+                  <FileText size={12} className="text-green-800" />
+                  <span className="text-green-800 text-xs font-semibold">Rules Reference</span>
                 </div>
                 <h1 className="text-2xl sm:text-3xl font-semibold text-navy-700 mb-3">
                   DPDP Rules 2025: Section-by-Section Plain-English Guide
@@ -896,7 +896,7 @@ export default function DpdpRules2025Page() {
                       "Assessment for notifying any Data Fiduciary or class of Data Fiduciaries as a Significant Data Fiduciary",
                     ].map((item, i) => (
                       <div key={i} className="flex items-start gap-3">
-                        <span className="w-5 h-5 rounded-full bg-green-100 text-green-600 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+                        <span className="w-5 h-5 rounded-full bg-green-100 text-green-800 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
                           {i + 1}
                         </span>
                         <p>{item}</p>
@@ -947,7 +947,7 @@ export default function DpdpRules2025Page() {
               {/* Back link */}
               <Link
                 href="/learn"
-                className="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-600 hover:text-green-600 transition-colors"
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-600 hover:text-green-900 transition-colors"
               >
                 <ArrowLeft size={16} />
                 Back to DPDPA Guide
@@ -963,7 +963,7 @@ export default function DpdpRules2025Page() {
                 <nav className="space-y-0.5">
                   <a
                     href="#what-this-page-covers"
-                    className="block px-2 py-1.5 rounded text-xs text-slate-500 hover:text-green-600 hover:bg-green-50 transition-colors"
+                    className="block px-2 py-1.5 rounded text-xs text-slate-500 hover:text-green-900 hover:bg-green-50 transition-colors"
                   >
                     What this page covers
                   </a>
@@ -974,7 +974,7 @@ export default function DpdpRules2025Page() {
                     <a
                       key={item.id}
                       href={`#${item.id}`}
-                      className="block px-2 py-1 rounded text-xs text-slate-500 hover:text-green-600 hover:bg-green-50 transition-colors leading-tight"
+                      className="block px-2 py-1 rounded text-xs text-slate-500 hover:text-green-900 hover:bg-green-50 transition-colors leading-tight"
                     >
                       {item.label}
                     </a>
@@ -986,14 +986,14 @@ export default function DpdpRules2025Page() {
                     <a
                       key={item.id}
                       href={`#${item.id}`}
-                      className="block px-2 py-1 rounded text-xs text-slate-500 hover:text-green-600 hover:bg-green-50 transition-colors leading-tight"
+                      className="block px-2 py-1 rounded text-xs text-slate-500 hover:text-green-900 hover:bg-green-50 transition-colors leading-tight"
                     >
                       {item.label}
                     </a>
                   ))}
                   <a
                     href="#faq"
-                    className="block px-2 py-1.5 mt-1 rounded text-xs text-slate-500 hover:text-green-600 hover:bg-green-50 transition-colors font-medium"
+                    className="block px-2 py-1.5 mt-1 rounded text-xs text-slate-500 hover:text-green-900 hover:bg-green-50 transition-colors font-medium"
                   >
                     FAQ
                   </a>

@@ -55,7 +55,7 @@ const LANE_CONFIG: Record<string, { label: string; color: string; bg: string }> 
   "law-explained":       { label: "Law explained",       color: "text-navy-700",  bg: "bg-cloud-100" },
   "compliance-playbook": { label: "Compliance playbook", color: "text-green-700", bg: "bg-green-50"  },
   "myth-fact":           { label: "Myth vs fact",        color: "text-gold-700",  bg: "bg-gold-50"   },
-  "sector-notes":        { label: "Sector notes",        color: "text-teal-700",  bg: "bg-teal-50"   },
+  "sector-notes":        { label: "Sector notes",        color: "text-teal-800",  bg: "bg-teal-50"   },
   "governance-watch":    { label: "Governance watch",    color: "text-navy-700",  bg: "bg-navy-100"  },
 };
 
@@ -352,7 +352,7 @@ export default async function BlogDetailPage({ params }: Props) {
             </h1>
 
             {/* Metadata row */}
-            <div className="flex items-center gap-4 text-xs text-slate-400 mb-5 flex-wrap">
+            <div className="flex items-center gap-4 text-xs text-slate-600 mb-5 flex-wrap">
               {post.author && <span>{post.author}</span>}
               {pubDate && (
                 <span className="flex items-center gap-1">
@@ -378,7 +378,7 @@ export default async function BlogDetailPage({ params }: Props) {
                   fetchPriority="high"
                   fallbackClassName="hidden"
                 />
-                <div className="bg-cloud-50 px-4 py-2 text-xs text-slate-400 text-right border-t border-slate-200">
+                <div className="bg-cloud-50 px-4 py-2 text-xs text-slate-600 text-right border-t border-slate-200">
                   © SaralPrivacy — Verified DPDPA insights
                 </div>
               </div>
@@ -411,12 +411,12 @@ export default async function BlogDetailPage({ params }: Props) {
                 <ol className="space-y-3">
                   {primarySources.map((src, i) => (
                     <li key={i} className="flex gap-3 text-sm text-slate-600 leading-relaxed">
-                      <span className="shrink-0 w-5 text-right font-semibold text-slate-400 mt-0.5">
+                      <span className="shrink-0 w-5 text-right font-semibold text-slate-600 mt-0.5">
                         {i + 1}.
                       </span>
                       <span>
                         {src.citation}
-                        <span className="ml-2 text-xs text-slate-400 font-medium">
+                        <span className="ml-2 text-xs text-slate-600 font-medium">
                           [{src.sourceType}]
                         </span>
                       </span>
@@ -509,10 +509,10 @@ export default async function BlogDetailPage({ params }: Props) {
                       <p className="text-sm font-medium text-navy-700 group-hover:text-navy-800 leading-snug mb-1 line-clamp-2">
                         {related.title}
                       </p>
-                      <div className="flex items-center gap-2 text-xs text-slate-400">
+                      <div className="flex items-center gap-2 text-xs text-slate-600">
                         <span>{related.read_time || 5} min</span>
                         {isPostVerified(related) && (
-                          <span className="flex items-center gap-0.5 text-green-600">
+                          <span className="flex items-center gap-0.5 text-green-800">
                             <CheckCircle size={9} /> Verified
                           </span>
                         )}

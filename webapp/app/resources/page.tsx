@@ -55,7 +55,7 @@ export default function ResourcesPage() {
 
         {/* Header */}
         <div className="mb-8 text-center">
-          <p className="text-xs font-bold text-[#E07B39] uppercase tracking-widest mb-2">
+          <p className="text-xs font-bold text-[#B45309] uppercase tracking-widest mb-2">
             Free Downloads
           </p>
           <h1 className="text-3xl font-semibold text-[#1E3A5F] mb-3">
@@ -101,7 +101,7 @@ export default function ResourcesPage() {
                 <p className="text-sm font-semibold text-slate-800 group-hover:text-[#1E3A5F]">
                   DPDPA Guide
                 </p>
-                <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-slate-100 text-slate-500">
+                <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">
                   PDF Guide
                 </span>
               </div>
@@ -124,7 +124,7 @@ export default function ResourcesPage() {
           </p>
           <a
             href="/assessment"
-            className="inline-block bg-[#E07B39] text-white font-bold px-6 py-3 rounded-xl text-sm hover:bg-[#c96a2e] transition-colors"
+            className="inline-block bg-[#92400E] text-white font-semibold px-6 py-3 rounded-xl text-sm hover:bg-[#7C2D12] transition-colors"
           >
             Take Free Assessment →
           </a>

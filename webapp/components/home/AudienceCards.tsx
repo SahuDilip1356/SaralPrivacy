@@ -15,7 +15,7 @@ const audiences = [
     risk: "Candidate ID & CV risk",
     painPoints: ["CV databases & candidate data", "Client profile sharing", "Background check documents", "Cross-border data flows"],
     promise: "Find out whether your recruitment workflows create DPDPA exposure in 3–5 minutes.",
-    accentBg: "bg-teal-50", accentBorder: "border-teal-200", iconBg: "bg-teal-100", iconColor: "text-teal-700", flowLink: "text-teal-800",
+    accentBg: "bg-teal-50", accentBorder: "border-teal-200", iconBg: "bg-teal-100", iconColor: "text-teal-800", flowLink: "text-teal-800",
   },
   {
     icon: Calculator, title: "CA Firms", href: "/industries/ca-firms", assessmentHref: "/assessment/ca-firms",
@@ -161,7 +161,7 @@ export function AudienceCards() {
                   <div className="flex items-center justify-between">
                     <Link
                       href={a.assessmentHref}
-                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-teal-700 hover:text-teal-800 transition-colors"
+                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-teal-800 hover:text-teal-900 transition-colors"
                     >
                       Take the assessment
                       <ArrowRight size={14} />

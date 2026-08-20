@@ -120,7 +120,7 @@ export default function AdminBriefingsPage() {
           { label: "Total",    value: briefings.length, icon: FileText,    color: "text-brand-700" },
           { label: "Draft",    value: draft,            icon: Clock,       color: "text-amber-600" },
           { label: "Approved", value: approved,         icon: CheckCircle, color: "text-blue-600"  },
-          { label: "Sent",     value: sent,             icon: Send,        color: "text-green-600" },
+          { label: "Sent",     value: sent,             icon: Send,        color: "text-green-800" },
         ].map(({ label, value, icon: Icon, color }) => (
           <div key={label} className="bg-white rounded-xl border border-pearl-200 shadow-sm p-5">
             <div className={`text-3xl font-bold ${color}`}>{value}</div>

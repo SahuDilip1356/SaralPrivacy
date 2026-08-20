@@ -171,7 +171,7 @@ export function BriefingsExplorer({ briefings }: { briefings: ExplorerBriefing[]
       {/* Facets — plain-English, jobs-to-be-done labels */}
       <div className="space-y-2.5 mb-3">
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-xs text-slate-400 w-32 shrink-0">{FACET_HEADERS.sector}</span>
+          <span className="text-xs text-slate-600 w-32 shrink-0">{FACET_HEADERS.sector}</span>
           <select aria-label="Filter by business type" value={sector} onChange={(e) => setSector(e.target.value)}
             className="text-xs h-8 px-2 rounded-md border border-slate-200 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-500">
             <option value="">All business types</option>
@@ -184,7 +184,7 @@ export function BriefingsExplorer({ briefings }: { briefings: ExplorerBriefing[]
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-xs text-slate-400 w-32 shrink-0">{FACET_HEADERS.stage}</span>
+          <span className="text-xs text-slate-600 w-32 shrink-0">{FACET_HEADERS.stage}</span>
           {STAGES.map((s) => {
             const on = stages.has(s.slug);
             const c = stageCounts.get(s.slug) ?? 0;
@@ -199,7 +199,7 @@ export function BriefingsExplorer({ briefings }: { briefings: ExplorerBriefing[]
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-xs text-slate-400 w-32 shrink-0">{FACET_HEADERS.format}</span>
+          <span className="text-xs text-slate-600 w-32 shrink-0">{FACET_HEADERS.format}</span>
           {FORMATS.map((f) => {
             const on = formats.has(f.slug);
             const c = formatCounts.get(f.slug) ?? 0;
@@ -234,7 +234,7 @@ export function BriefingsExplorer({ briefings }: { briefings: ExplorerBriefing[]
           </button>
         ))}
         {isFiltered && (
-          <button onClick={clearAll} className="text-xs font-semibold text-teal-700 hover:text-teal-800">Clear all</button>
+          <button onClick={clearAll} className="text-xs font-semibold text-teal-800 hover:text-teal-900">Clear all</button>
         )}
       </div>
 
@@ -283,7 +283,7 @@ function BriefingCard({ b }: { b: ExplorerBriefing }) {
         <div className="flex items-center gap-1.5 mb-2.5 flex-wrap">
           <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${RISK_CHIP[risk]}`}>{RISK_LABEL[risk]}</span>
           {b.sector !== "general" && (
-            <span className="text-[10px] font-semibold text-teal-700 bg-teal-100 px-2 py-0.5 rounded-full">{sectorLabel(b.sector)}</span>
+            <span className="text-[10px] font-semibold text-teal-800 bg-teal-100 px-2 py-0.5 rounded-full">{sectorLabel(b.sector)}</span>
           )}
           {STAGE_SLUGS.includes(b.stage) && (
             <span className="text-[10px] font-semibold text-navy-700 bg-navy-100 px-2 py-0.5 rounded-full">{stageLabel(b.stage)}</span>
@@ -295,7 +295,7 @@ function BriefingCard({ b }: { b: ExplorerBriefing }) {
         </div>
 
         <Link href={`/briefings/${b.slug}`} className="block">
-          <h3 className="font-semibold text-navy-700 text-base leading-snug mb-2 group-hover:text-green-600 line-clamp-2">{b.title}</h3>
+          <h3 className="font-semibold text-navy-700 text-base leading-snug mb-2 group-hover:text-green-900 line-clamp-2">{b.title}</h3>
         </Link>
         <p className="text-slate-500 text-sm leading-relaxed line-clamp-2 mb-3">{b.excerpt}</p>
 
@@ -307,10 +307,10 @@ function BriefingCard({ b }: { b: ExplorerBriefing }) {
         )}
 
         <div className="mt-auto flex items-center justify-between gap-2 pt-3 border-t border-slate-100">
-          <Link href={`/briefings/${b.slug}`} className="inline-flex items-center gap-1 text-xs font-semibold text-navy-700 hover:text-green-600">
+          <Link href={`/briefings/${b.slug}`} className="inline-flex items-center gap-1 text-xs font-semibold text-navy-700 hover:text-green-900">
             Read briefing <ArrowRight size={13} />
           </Link>
-          <Link href={cta.href} className="inline-flex items-center gap-1 text-xs font-semibold text-teal-700 hover:text-teal-800 bg-teal-50 hover:bg-teal-100 px-2.5 py-1.5 rounded-lg transition-colors">
+          <Link href={cta.href} className="inline-flex items-center gap-1 text-xs font-semibold text-teal-800 hover:text-teal-900 bg-teal-50 hover:bg-teal-100 px-2.5 py-1.5 rounded-lg transition-colors">
             {cta.label}
           </Link>
         </div>
@@ -341,7 +341,7 @@ function FeaturedCard({ tone, eyebrow, b, cta }:
         {FEATURED_ICON[tone]} {eyebrow}
       </span>
       <h3 className="font-semibold text-navy-700 text-[15px] leading-snug mb-1.5 line-clamp-2">{b.title}</h3>
-      <p className="text-slate-500 text-xs leading-relaxed line-clamp-2 mb-3">{b.excerpt}</p>
+      <p className="text-slate-600 text-xs leading-relaxed line-clamp-2 mb-3">{b.excerpt}</p>
       <span className={`inline-flex items-center gap-1 text-xs font-semibold ${t.text}`}>{cta} <ArrowRight size={13} /></span>
     </Link>
   );

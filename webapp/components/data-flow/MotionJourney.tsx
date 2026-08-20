@@ -445,7 +445,7 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
                     throbs is a page people stop reading. */}
                 {row.moving.length > 0 && (
                   <div className="mt-3 flex flex-wrap items-center gap-1.5">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-teal-700">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-teal-800">
                       Moving here
                     </span>
                     {row.moving.slice(0, MAX_CATEGORY_CHIPS).map((c, k) => {
@@ -558,7 +558,7 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
                                   ? "text-amber-600"
                                   : n.riskLevel === "medium"
                                     ? "text-slate-400"
-                                    : "text-green-600",
+                                    : "text-green-800",
                             )}
                             aria-hidden="true"
                           />
@@ -577,7 +577,7 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
                 )}
 
                 <p className="mt-3 flex items-start gap-1.5 border-t border-slate-100 pt-2.5 text-[12px] leading-relaxed text-teal-900">
-                  <span className="mt-px shrink-0 rounded bg-teal-50 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-teal-700">
+                  <span className="mt-px shrink-0 rounded bg-teal-50 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-teal-800">
                     DPDPA
                   </span>
                   {row.stage.dpdpaNote}

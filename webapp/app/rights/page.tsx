@@ -137,12 +137,12 @@ export default function RightsPage() {
               >
                 <div className="flex items-start gap-4">
                   <div className="h-10 w-10 rounded-lg bg-green-50 border border-green-100 flex items-center justify-center shrink-0">
-                    <Icon size={18} className="text-green-600" />
+                    <Icon size={18} className="text-green-800" />
                   </div>
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-2">
                       <h2 className="font-semibold text-navy-700 text-xl">{right.title}</h2>
-                      <span className="text-[11px] font-semibold text-slate-500 bg-slate-100 border border-slate-200 rounded-full px-2 py-0.5">
+                      <span className="text-[11px] font-semibold text-slate-600 bg-slate-100 border border-slate-200 rounded-full px-2 py-0.5">
                         DPDPA {right.section}
                       </span>
                     </div>
@@ -157,7 +157,7 @@ export default function RightsPage() {
                           <Link
                             key={a.href}
                             href={a.href}
-                            className="inline-flex items-center gap-1 text-sm font-semibold text-green-700 hover:text-green-800 underline underline-offset-2"
+                            className="inline-flex items-center gap-1 text-sm font-semibold text-green-700 hover:text-green-900 underline underline-offset-2"
                           >
                             {a.label}
                             <ArrowUpRight size={13} />
@@ -167,7 +167,7 @@ export default function RightsPage() {
                     ) : (
                       <a
                         href={`mailto:${DPO.email}?subject=${encodeURIComponent(right.title)}`}
-                        className="inline-flex items-center gap-1 text-sm font-semibold text-green-700 hover:text-green-800 underline underline-offset-2 mt-3"
+                        className="inline-flex items-center gap-1 text-sm font-semibold text-green-700 hover:text-green-900 underline underline-offset-2 mt-3"
                       >
                         Email the DPO
                         <ArrowUpRight size={13} />
@@ -237,13 +237,13 @@ export default function RightsPage() {
             <p className="font-semibold text-green-700 text-sm">
               Data Protection Officer — {DPO.name}
             </p>
-            <p className="text-green-600 text-sm">
+            <p className="text-green-800 text-sm">
               For access, correction, erasure, nomination, or any complaint:{" "}
               <a href={`mailto:${DPO.email}`} className="underline">
                 {DPO.email}
               </a>
             </p>
-            <p className="text-green-600/80 text-xs mt-1">
+            <p className="text-green-900 text-xs mt-1">
               {DPO.org} is the Data Fiduciary for the personal data described in our{" "}
               <Link href="/privacy" className="underline">
                 Privacy Notice

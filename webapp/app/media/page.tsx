@@ -45,7 +45,7 @@ export default function MediaPage() {
           className="max-w-5xl mx-auto bg-white border border-slate-200 rounded-3xl shadow-sm p-7 sm:p-10"
         >
           {/* Eyebrow */}
-          <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-green-600 bg-green-50 px-3 py-1.5 rounded-full">
+          <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-green-800 bg-green-50 px-3 py-1.5 rounded-full">
             <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
             As seen in
           </span>
@@ -55,7 +55,7 @@ export default function MediaPage() {
             <h1 className="text-2xl sm:text-3xl font-semibold text-navy-700 leading-tight">
               SaralPrivacy&apos;s DPDPA readiness work,
               <br />
-              <span className="text-green-500">seen across India&apos;s press</span>
+              <span className="text-green-700">seen across India&apos;s press</span>
             </h1>
             <div className="flex flex-wrap items-center gap-5">
             <Link
@@ -86,7 +86,7 @@ export default function MediaPage() {
             {featuredPlacements.map((p) => {
               const Tile = (
                 <>
-                  <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-green-600">
+                  <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-green-800">
                     <ShieldCheck size={11} /> Verified live
                   </span>
                   <span className="text-[15px] font-bold text-navy-700">{p.name}</span>
@@ -94,7 +94,7 @@ export default function MediaPage() {
                     {p.meta ?? tierLabels[p.tier]}
                   </span>
                   {p.da != null && (
-                    <span className="inline-block text-[10px] font-semibold text-teal-600 border border-teal-200 rounded-full px-2 py-0.5 mt-0.5">
+                    <span className="inline-block text-[10px] font-semibold text-teal-800 border border-teal-200 rounded-full px-2 py-0.5 mt-0.5">
                       DA {p.da}
                     </span>
                   )}
@@ -130,7 +130,7 @@ export default function MediaPage() {
           <div className="mt-5 text-center">
             <Link
               href="/media/coverage"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-teal-600 hover:text-teal-700"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-teal-600 hover:text-teal-900"
             >
               See all {mediaStats.totalPlacements} placements
               <ArrowRight size={15} />
@@ -152,7 +152,7 @@ export default function MediaPage() {
           </div>
 
           {/* Reviewed */}
-          <p className="mt-6 pt-5 border-t border-slate-100 text-xs text-slate-400">
+          <p className="mt-6 pt-5 border-t border-slate-100 text-xs text-slate-600">
             For informational purposes; not legal advice.
           </p>
         </section>

@@ -32,8 +32,8 @@ const SCREENSHOTS: Record<number, string> = {
 };
 
 const categoryPill: Record<MediaTier, string> = {
-  tier1:      "bg-green-100 text-green-700",
-  tier2:      "bg-teal-100 text-teal-700",
+  tier1:      "bg-green-100 text-green-800",
+  tier2:      "bg-teal-100 text-teal-900",
   tier3:      "bg-slate-100 text-slate-600",
   tier4:      "bg-slate-100 text-slate-600",
   aggregator: "bg-navy-100 text-navy-700",
@@ -80,12 +80,12 @@ function PressCard({ serial, size }: { serial: number; size: "hero" | "secondary
               {tierLabels[pub.tier]}
             </span>
             {pub.da != null && (
-              <span className="text-[10px] font-medium text-teal-600">
+              <span className="text-[10px] font-medium text-teal-800">
                 DA {pub.da}
               </span>
             )}
             {pub.reach != null && (
-              <span className="text-[10px] text-slate-400">· {pub.reach}</span>
+              <span className="text-[10px] text-slate-600">· {pub.reach}</span>
             )}
           </div>
         </div>
@@ -94,7 +94,7 @@ function PressCard({ serial, size }: { serial: number; size: "hero" | "secondary
             href={pub.url}
             target="_blank"
             rel="nofollow noopener"
-            className="flex-shrink-0 inline-flex items-center gap-1 text-[11px] font-semibold text-teal-600 border border-teal-200 rounded-lg px-2.5 py-1.5 hover:bg-teal-500 hover:text-white hover:border-teal-500 transition-colors"
+            className="flex-shrink-0 inline-flex items-center gap-1 text-[11px] font-semibold text-teal-800 border border-teal-200 rounded-lg px-2.5 py-1.5 hover:bg-teal-500 hover:text-white hover:border-teal-500 transition-colors"
           >
             Open <ExternalLink size={10} />
           </a>
@@ -118,7 +118,7 @@ export default function PressWallPage() {
 
         {/* Page header */}
         <div className="mb-8">
-          <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-green-600 bg-green-50 px-3 py-1.5 rounded-full">
+          <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-green-800 bg-green-50 px-3 py-1.5 rounded-full">
             <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
             Press Coverage · June 2026
           </span>
@@ -183,7 +183,7 @@ export default function PressWallPage() {
         <div className="mt-6 flex flex-wrap items-center justify-end gap-4">
           <Link
             href="/media/coverage"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-teal-600 hover:text-teal-700"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-teal-600 hover:text-teal-900"
           >
             See all 171 placements <ArrowRight size={13} />
           </Link>

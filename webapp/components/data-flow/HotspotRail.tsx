@@ -68,7 +68,7 @@ export function HotspotRail({ pack, onHotspotSelect, onAssessmentCta }: Props) {
               <Link
                 href={`${pack.assessmentRoute}?from=data-flow&bucket=${h.assessmentBucket}`}
                 onClick={() => onAssessmentCta?.(h.assessmentBucket)}
-                className="mt-3 inline-flex items-center gap-1 text-[12px] font-semibold text-teal-700 hover:text-teal-800"
+                className="mt-3 inline-flex items-center gap-1 text-[12px] font-semibold text-teal-800 hover:text-teal-900"
               >
                 Check this in the assessment <ArrowRight size={13} aria-hidden="true" />
               </Link>

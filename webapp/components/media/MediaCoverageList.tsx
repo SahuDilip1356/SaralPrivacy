@@ -7,9 +7,9 @@ import { mediaPlacements, tierLabels, type MediaTier } from "@/lib/mediaData";
 type FilterKey = "all" | "tier1" | "tier2" | "verified";
 
 const tierPillClass: Record<MediaTier, string> = {
-  tier1: "bg-green-100 text-green-700",
-  tier2: "bg-teal-100 text-teal-700",
-  tier3: "bg-gold-100 text-gold-700",
+  tier1: "bg-green-100 text-green-800",
+  tier2: "bg-teal-100 text-teal-900",
+  tier3: "bg-gold-100 text-gold-800",
   tier4: "bg-slate-100 text-slate-600",
   aggregator: "bg-navy-100 text-navy-700",
 };
@@ -99,11 +99,11 @@ export function MediaCoverageList() {
                 key={p.serial}
                 className="border-b border-slate-100 last:border-0 hover:bg-green-50/40 transition-colors"
               >
-                <td className="px-4 py-3 text-xs text-slate-400 tabular-nums">{p.serial}</td>
+                <td className="px-4 py-3 text-xs text-slate-600 tabular-nums">{p.serial}</td>
                 <td className="px-4 py-3 text-sm">
                   <span className="font-semibold text-navy-700">{p.name}</span>
                   {p.verified && (
-                    <span className="ml-2 text-[10px] font-semibold text-green-600">
+                    <span className="ml-2 text-[10px] font-semibold text-green-800">
                       ✓ verified
                     </span>
                   )}
@@ -124,19 +124,19 @@ export function MediaCoverageList() {
                       href={p.url}
                       target="_blank"
                       rel="nofollow noopener"
-                      className="inline-flex items-center gap-1 text-xs font-medium text-teal-600 border border-teal-200 rounded-md px-2.5 py-1 hover:bg-teal-500 hover:text-white hover:border-teal-500 transition-colors"
+                      className="inline-flex items-center gap-1 text-xs font-medium text-teal-800 border border-teal-200 rounded-md px-2.5 py-1 hover:bg-teal-500 hover:text-white hover:border-teal-500 transition-colors"
                     >
                       Open <ExternalLink size={12} />
                     </a>
                   ) : (
-                    <span className="text-xs text-slate-400 italic">Syndicated</span>
+                    <span className="text-xs text-slate-600 italic">Syndicated</span>
                   )}
                 </td>
               </tr>
             ))}
             {rows.length === 0 && (
               <tr>
-                <td colSpan={4} className="px-4 py-10 text-center text-sm text-slate-400">
+                <td colSpan={4} className="px-4 py-10 text-center text-sm text-slate-600">
                   No publishers match your search.
                 </td>
               </tr>

@@ -74,7 +74,7 @@ export async function BriefingsSection() {
           </div>
           <Link
             href="/briefings"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-green-600 hover:text-green-700 shrink-0"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-green-800 hover:text-green-700 shrink-0"
           >
             All briefings
             <ArrowRight size={16} />
@@ -172,7 +172,7 @@ export async function BriefingsSection() {
                     <Badge variant="gray" size="sm">
                       {getCategoryLabel(briefing.category)}
                     </Badge>
-                    <h4 className="text-sm font-semibold text-navy-700 mt-2 leading-snug group-hover:text-green-600 transition-colors line-clamp-2">
+                    <h4 className="text-sm font-semibold text-navy-700 mt-2 leading-snug group-hover:text-green-900 transition-colors line-clamp-2">
                       {briefing.title}
                     </h4>
                     <div className="flex items-center gap-3 text-slate-400 text-xs mt-2">
@@ -189,7 +189,7 @@ export async function BriefingsSection() {
                 ))}
                 <Link
                   href="/briefings"
-                  className="block text-center py-3 text-sm font-semibold text-green-700 hover:text-green-800 border border-dashed border-green-300 rounded-xl hover:bg-green-50 transition-colors"
+                  className="block text-center py-3 text-sm font-semibold text-green-700 hover:text-green-900 border border-dashed border-green-300 rounded-xl hover:bg-green-50 transition-colors"
                 >
                   Browse all briefings →
                 </Link>

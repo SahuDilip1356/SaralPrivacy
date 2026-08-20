@@ -121,7 +121,7 @@ export default function PenaltyPage() {
                       href={t.href ?? `/learn/${t.slug}`}
                       className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
                         t.slug === "penalties"
-                          ? "bg-green-50 text-green-600 font-semibold"
+                          ? "bg-green-50 text-green-800 font-semibold"
                           : "text-slate-600 hover:text-navy-700 hover:bg-slate-50"
                       }`}
                     >
@@ -554,7 +554,7 @@ export default function PenaltyPage() {
               <div className="mt-6 flex flex-col sm:flex-row gap-3">
                 <Link
                   href="/assessment"
-                  className="flex-1 py-3 bg-green-500 text-white text-sm font-semibold rounded-lg hover:bg-green-600 transition-colors text-center"
+                  className="flex-1 py-3 bg-green-700 text-white text-sm font-semibold rounded-lg hover:bg-green-800 transition-colors text-center"
                 >
                   Take Free DPDPA Readiness Assessment →
                 </Link>

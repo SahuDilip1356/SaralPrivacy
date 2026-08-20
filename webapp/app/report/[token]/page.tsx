@@ -338,7 +338,7 @@ export default async function ReportPage({ params }: { params: Promise<{ token: 
     "Early Stage":           "text-orange-500",
     "Building Foundations":  "text-yellow-600",
     "Progressing Well":      "text-lime-600",
-    "Operationally Strong":  "text-green-600",
+    "Operationally Strong":  "text-green-800",
   };
   const BAND_HEX: Record<string, string> = {
     "Not Started":           "#DC2626",

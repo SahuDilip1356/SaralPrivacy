@@ -44,7 +44,7 @@ function StandardSubscribePage() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-2">
         <Link
           href="/briefings"
-          className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-green-600 transition-colors"
+          className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-green-900 transition-colors"
         >
           <ArrowLeft size={14} />
           Back to Daily Briefings

@@ -63,7 +63,7 @@ export function NewsletterSection() {
 
           {submitted ? (
             <div className="bg-green-50 border border-green-200 rounded-xl p-8">
-              <CheckCircle size={40} className="text-green-600 mx-auto mb-3" />
+              <CheckCircle size={40} className="text-green-800 mx-auto mb-3" />
               <h3 className="font-semibold text-green-800 text-xl mb-2">You&apos;re subscribed!</h3>
               <p className="text-green-700 text-sm">
                 You&apos;ll receive your first DPDPA briefing at the next dispatch. You can manage

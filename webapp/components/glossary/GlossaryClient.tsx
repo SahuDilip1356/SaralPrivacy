@@ -131,7 +131,7 @@ export default function GlossaryClient() {
                     href={t.href ?? `/learn/${t.slug}`}
                     className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
                       t.slug === "glossary"
-                        ? "bg-green-50 text-green-600 font-semibold"
+                        ? "bg-green-50 text-green-800 font-semibold"
                         : "text-slate-600 hover:text-navy-700 hover:bg-slate-50"
                     }`}
                   >
@@ -180,7 +180,7 @@ export default function GlossaryClient() {
 
         {/* Term list */}
         {filtered.length === 0 ? (
-          <div className="text-center py-20 text-slate-400">
+          <div className="text-center py-20 text-slate-600">
             <p className="text-lg font-medium mb-2">No terms found</p>
             <p className="text-sm">Try a different search or select a different category.</p>
           </div>
@@ -190,7 +190,7 @@ export default function GlossaryClient() {
               <div key={letter}>
                 {/* Letter heading */}
                 <div id={`letter-${letter}`} className="sticky top-[calc(4rem+108px)] bg-slate-50 z-10 py-2 mb-1">
-                  <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">{letter}</span>
+                  <span className="text-xs font-bold text-slate-600 uppercase tracking-widest">{letter}</span>
                 </div>
 
                 {terms.map((term) => (
@@ -219,7 +219,7 @@ export default function GlossaryClient() {
                       <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100">
                         {term.relatedIds && term.relatedIds.length > 0 && (
                           <div className="flex flex-wrap items-center gap-1.5">
-                            <span className="text-xs text-slate-400 font-medium">See also:</span>
+                            <span className="text-xs text-slate-600 font-medium">See also:</span>
                             {term.relatedIds.map((id) =>
                               termMap[id] ? (
                                 <a
@@ -236,7 +236,7 @@ export default function GlossaryClient() {
                         {term.learnHref && (
                           <Link
                             href={term.learnHref}
-                            className="shrink-0 text-xs font-semibold text-green-600 hover:text-green-700 transition-colors"
+                            className="shrink-0 text-xs font-semibold text-green-800 hover:text-green-700 transition-colors"
                           >
                             Read more in the Guide →
                           </Link>

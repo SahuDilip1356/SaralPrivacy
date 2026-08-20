@@ -354,7 +354,7 @@ export default function PrivacyPage() {
             </ul>
             <Link
               href="/rights"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-green-700 hover:text-green-800 underline underline-offset-2"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-green-700 hover:text-green-900 underline underline-offset-2"
             >
               How to exercise each right
               <ArrowUpRight size={14} />
@@ -396,23 +396,23 @@ export default function PrivacyPage() {
             <p className="font-semibold text-green-700 text-sm">
               Data Protection Officer — {DPO.name}
             </p>
-            <p className="text-green-600 text-sm">
+            <p className="text-green-800 text-sm">
               For access, correction, erasure, or any privacy question:{" "}
               <a href={`mailto:${DPO.email}`} className="underline">
                 {DPO.email}
               </a>
             </p>
             <div className="flex flex-wrap gap-3 mt-2">
-              <Link href="/rights" className="text-xs text-green-600 underline">
+              <Link href="/rights" className="text-xs text-green-800 underline">
                 Your Rights
               </Link>
-              <Link href="/consent-preferences" className="text-xs text-green-600 underline">
+              <Link href="/consent-preferences" className="text-xs text-green-800 underline">
                 Manage Consent
               </Link>
-              <Link href="/rights#erasure" className="text-xs text-green-600 underline">
+              <Link href="/rights#erasure" className="text-xs text-green-800 underline">
                 Request Erasure
               </Link>
-              <Link href="/unsubscribe" className="text-xs text-green-600 underline">
+              <Link href="/unsubscribe" className="text-xs text-green-800 underline">
                 Unsubscribe
               </Link>
             </div>

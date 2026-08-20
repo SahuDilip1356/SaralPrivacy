@@ -116,7 +116,7 @@ export function WhitePaperSection() {
                       {s.n}
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block text-sm font-semibold text-navy-700 leading-snug group-hover:text-teal-700">
+                      <span className="block text-sm font-semibold text-navy-700 leading-snug group-hover:text-teal-900">
                         {s.title}
                       </span>
                       <span className="block text-xs text-slate-600 leading-snug mt-0.5">
@@ -125,7 +125,7 @@ export function WhitePaperSection() {
                     </span>
                     <ArrowUpRight
                       size={15}
-                      className="text-slate-400 group-hover:text-teal-700 transition-colors shrink-0 mt-0.5"
+                      className="text-slate-400 group-hover:text-teal-900 transition-colors shrink-0 mt-0.5"
                     />
                   </a>
                 ))}

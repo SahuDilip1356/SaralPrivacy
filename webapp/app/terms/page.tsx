@@ -14,7 +14,7 @@ export default function TermsPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <h1 className="text-3xl font-semibold text-white">Terms of Use</h1>
           <p className="text-slate-300 mt-2">SaralPrivacy Terms of Use</p>
-          <p className="text-sm text-slate-500 mt-1">Last updated: March 2026 | Version 1.0</p>
+          <p className="text-sm text-slate-400 mt-1">Last updated: March 2026 | Version 1.0</p>
         </div>
       </div>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
@@ -35,8 +35,8 @@ export default function TermsPage() {
         </div>
         <div className="mt-6 text-sm text-slate-500">
           Questions about these terms?{" "}
-          <Link href="/contact" className="text-green-500 hover:underline">Contact us</Link> or email{" "}
-          <a href="mailto:privacy@saralprivacy.com" className="text-green-500 hover:underline">privacy@saralprivacy.com</a>
+          <Link href="/contact" className="text-green-700 hover:underline">Contact us</Link> or email{" "}
+          <a href="mailto:privacy@saralprivacy.com" className="text-green-700 hover:underline">privacy@saralprivacy.com</a>
         </div>
       </div>
     </div>

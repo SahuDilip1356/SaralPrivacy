@@ -146,7 +146,7 @@ export function RightsSimulator({ pack, model, onScenarioOpen }: Props) {
             {active.steps.map((step, i) => (
               <li key={step} className="flex gap-2.5 text-[13px] leading-relaxed text-slate-700">
                 <span
-                  className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-teal-50 text-[10px] font-bold text-teal-700 ring-1 ring-teal-200"
+                  className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-teal-50 text-[10px] font-bold text-teal-800 ring-1 ring-teal-200"
                   aria-hidden="true"
                 >
                   {i + 1}
@@ -164,7 +164,7 @@ export function RightsSimulator({ pack, model, onScenarioOpen }: Props) {
 
         <a
           href={`${pack.assessmentRoute}?from=data-flow`}
-          className="inline-flex items-center gap-1 text-[12.5px] font-semibold text-teal-700 hover:text-teal-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
+          className="inline-flex items-center gap-1 text-[12.5px] font-semibold text-teal-800 hover:text-teal-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
         >
           Check whether you could answer this today <ArrowRight size={13} aria-hidden="true" />
         </a>

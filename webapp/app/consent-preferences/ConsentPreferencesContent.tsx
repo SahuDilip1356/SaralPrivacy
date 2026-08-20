@@ -51,13 +51,13 @@ export default function ConsentPreferencesContent() {
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-10">
         {state === "done" ? (
           <div className="bg-green-50 border border-green-200 rounded-xl p-8 text-center">
-            <CheckCircle size={40} className="text-green-600 mx-auto mb-3" />
+            <CheckCircle size={40} className="text-green-800 mx-auto mb-3" />
             <h2 className="font-semibold text-green-800 text-xl mb-2">You&apos;ve been unsubscribed</h2>
             <p className="text-green-700 text-sm">
               <span className="font-medium">{email}</span> has been removed from SaralPrivacy
               emails. You won&apos;t receive any more from us. Changes take effect within 24 hours.
             </p>
-            <p className="text-green-600/80 text-xs mt-4">
+            <p className="text-green-800/80 text-xs mt-4">
               Changed your mind?{" "}
               <Link href="/subscribe" className="underline">
                 Resubscribe here

@@ -59,7 +59,7 @@ const learnTopics = [
     description: "An overview of the Digital Personal Data Protection Act, 2023 — why it was passed, what it governs, and what it means for Indian businesses.",
     time: "5 min",
     tag: "Start here",
-    tagColor: "bg-green-100 text-green-600",
+    tagColor: "bg-green-100 text-green-800",
   },
   {
     icon: Users,
@@ -140,7 +140,7 @@ const learnTopics = [
     description: "How long can you keep personal data? What are the rules around deletion? Learn to define and document your retention policies.",
     time: "4 min",
     tag: "Practical",
-    tagColor: "bg-green-100 text-green-600",
+    tagColor: "bg-green-100 text-green-800",
   },
   {
     icon: Globe,
@@ -185,7 +185,7 @@ const learnTopics = [
     description: "Statutory and operational controls across 27 sections — applicability, consent, notice, rights, breach, SDF obligations, and evidence requirements. Based on DPDPA Act 2023 + DPDP Rules 2025.",
     time: "Checklist",
     tag: "Tools",
-    tagColor: "bg-teal-100 text-teal-700",
+    tagColor: "bg-teal-100 text-teal-800",
   },
 ];
 
@@ -269,7 +269,7 @@ export default function LearnPage() {
                 <Link
                   key={href}
                   href={href}
-                  className="inline-flex items-center gap-1.5 text-xs text-teal-700 bg-white border border-teal-300 rounded-full px-3 py-1 hover:bg-teal-50 hover:border-teal-500 hover:shadow-sm transition-all"
+                  className="inline-flex items-center gap-1.5 text-xs text-teal-800 bg-white border border-teal-300 rounded-full px-3 py-1 hover:bg-teal-50 hover:border-teal-500 hover:shadow-sm transition-all"
                 >
                   <Icon size={11} className="text-teal-500 shrink-0" />
                   {label}
@@ -293,12 +293,12 @@ export default function LearnPage() {
                     {tag}
                   </span>
                 </div>
-                <h3 className="font-semibold text-navy-700 text-base mb-2 group-hover:text-green-600 transition-colors">
+                <h3 className="font-semibold text-navy-700 text-base mb-2 group-hover:text-green-900 transition-colors">
                   {title}
                 </h3>
                 <p className="text-slate-500 text-sm leading-relaxed mb-4">{description}</p>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-slate-400">{time} read</span>
+                  <span className="text-xs text-slate-600">{time} read</span>
                   <span className="text-green-500 text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
                     Read <ArrowRight size={14} />
                   </span>

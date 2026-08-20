@@ -115,7 +115,7 @@ export default function ConsentLogPage() {
           <div className="text-xs text-slate-500 mt-1">Total Consent Records</div>
         </div>
         <div className="bg-white rounded-xl border border-pearl-200 shadow-sm p-5">
-          <div className="text-3xl font-bold text-green-600">{active}</div>
+          <div className="text-3xl font-bold text-green-800">{active}</div>
           <div className="text-xs text-slate-500 mt-1">Active Consents</div>
         </div>
         <div className="bg-white rounded-xl border border-pearl-200 shadow-sm p-5">

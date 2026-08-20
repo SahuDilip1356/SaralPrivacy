@@ -184,7 +184,7 @@ export default async function AdminDashboard() {
   const stats = [
     { label: "Subscribers",      value: subCount,     icon: Mail,          color: "text-saffron-500", bg: "bg-saffron-50",  href: "/admin/subscribers"      },
     { label: "Downloads",        value: dlCount,      icon: Download,      color: "text-brand-500",   bg: "bg-brand-50",    href: "/admin/downloads"        },
-    { label: "Assessments",      value: asCount,      icon: CheckCircle,   color: "text-green-600",   bg: "bg-green-50",    href: "/admin/assessments"      },
+    { label: "Assessments",      value: asCount,      icon: CheckCircle,   color: "text-green-800",   bg: "bg-green-50",    href: "/admin/assessments"      },
     { label: "Survey Responses", value: surveyCount,  icon: ClipboardList, color: "text-purple-600",  bg: "bg-purple-50",   href: "/admin/survey-responses" },
     { label: "Consultations",    value: leadCount,    icon: Users,         color: "text-amber-600",   bg: "bg-amber-50",    href: "/admin/consultations"    },
     { label: "Briefings",        value: briefingCount,icon: FileText,      color: "text-blue-600",    bg: "bg-blue-50",     href: "/admin/briefings"        },

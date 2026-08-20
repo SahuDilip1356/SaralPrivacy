@@ -52,8 +52,8 @@ export function VerdictPreview() {
                 }}
                 className={`text-sm rounded-full border px-4 py-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 ${
                   on
-                    ? "bg-teal-600 border-teal-600 text-white font-semibold"
-                    : "bg-white border-slate-200 text-slate-600 hover:border-teal-400 hover:text-teal-700"
+                    ? "bg-teal-800 border-teal-800 text-white font-semibold"
+                    : "bg-white border-slate-200 text-slate-600 hover:border-teal-400 hover:text-teal-900"
                 }`}
               >
                 {p.tab}

@@ -169,7 +169,7 @@ export default function CAFirmsIndustryPage() {
                     return (
                       <div key={b.key} className="rounded-xl border border-slate-200 bg-white p-5">
                         <div className="mb-2 flex items-center gap-2.5">
-                          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-teal-50 text-teal-700">{d.icon}</span>
+                          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-teal-50 text-teal-800">{d.icon}</span>
                           <h3 className="font-semibold text-navy-700">{b.label}</h3>
                         </div>
                         <p className="text-sm text-slate-600">{d.example}</p>
@@ -258,9 +258,9 @@ export default function CAFirmsIndustryPage() {
               <div className="rounded-xl border border-slate-200 bg-white p-5">
                 <h3 className="mb-3 text-sm font-semibold text-navy-700">Related Briefings</h3>
                 <div className="space-y-2">
-                  <Link href="/briefings/ca-firms-pan-aadhaar-obligations-dpdpa" className="block text-sm text-green-600 hover:underline">→ CA Firms: PAN, Aadhaar &amp; DPDPA Obligations</Link>
-                  <Link href="/briefings/dpdpa-consent-notice-requirements-2025" className="block text-sm text-green-600 hover:underline">→ Consent Notice Requirements</Link>
-                  <Link href="/briefings/data-breach-notification-obligations-dpdpa" className="block text-sm text-green-600 hover:underline">→ Data Breach Notification</Link>
+                  <Link href="/briefings/ca-firms-pan-aadhaar-obligations-dpdpa" className="block text-sm text-green-800 hover:underline">→ CA Firms: PAN, Aadhaar &amp; DPDPA Obligations</Link>
+                  <Link href="/briefings/dpdpa-consent-notice-requirements-2025" className="block text-sm text-green-800 hover:underline">→ Consent Notice Requirements</Link>
+                  <Link href="/briefings/data-breach-notification-obligations-dpdpa" className="block text-sm text-green-800 hover:underline">→ Data Breach Notification</Link>
                 </div>
               </div>
               <div className="rounded-xl border border-slate-200 bg-pearl-100 p-5">

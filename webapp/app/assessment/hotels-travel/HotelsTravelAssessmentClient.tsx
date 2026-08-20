@@ -362,7 +362,7 @@ export default function HotelsTravelAssessmentClient() {
           {!reportUnlocked ? (
             <form onSubmit={unlockReport} className="mt-5 rounded-xl border border-green-200 bg-green-50 p-6">
               <div className="mb-1 flex items-center gap-2">
-                <Lock size={16} className="text-green-600" />
+                <Lock size={16} className="text-green-800" />
                 <h3 className="text-sm font-semibold text-navy-700">Unlock your priority fixes + Hotels &amp; Travel DPDPA Starter Checklist</h3>
               </div>
               <p className="mb-4 text-xs text-slate-600">See your recommended next steps and get the checklist emailed to you. This scan collects no guest documents — only your contact details and answers.</p>
@@ -380,7 +380,7 @@ export default function HotelsTravelAssessmentClient() {
                 <input type="checkbox" checked={form.consent} onChange={(e) => setForm({ ...form, consent: e.target.checked })} className="mt-0.5" />
                 <span>
                   I agree to receive my assessment results and related resources. See our{" "}
-                  <Link href="/privacy" className="text-green-600 underline">Privacy Notice</Link>.
+                  <Link href="/privacy" className="text-green-800 underline">Privacy Notice</Link>.
                 </span>
               </label>
               <input
@@ -447,7 +447,7 @@ export default function HotelsTravelAssessmentClient() {
     <div className="min-h-screen bg-pearl-50">
       <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6">
         {/* Context strip — the marketing page is the landing; this just anchors the scan */}
-        <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-teal-700">
+        <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-teal-800">
           <ShieldCheck size={16} /> {pack.positioning.title}
           <span className="font-normal text-slate-400">· {pack.positioning.microline}</span>
         </div>
@@ -457,7 +457,7 @@ export default function HotelsTravelAssessmentClient() {
         <div className="mb-7">
           <div className="mb-2 flex items-center justify-between text-sm text-slate-500">
             <span>{`Question ${requiredPos} of ${TOTAL_REQUIRED}`}</span>
-            <span className="font-semibold text-green-600">{progress}% complete</span>
+            <span className="font-semibold text-green-800">{progress}% complete</span>
           </div>
           <div className="h-2 overflow-hidden rounded-full bg-slate-200">
             <div className="h-full rounded-full bg-green-500 motion-safe:transition-all motion-safe:duration-300" style={{ width: `${progress}%` }} />
@@ -476,7 +476,7 @@ export default function HotelsTravelAssessmentClient() {
 
         {/* Question */}
         <fieldset className="rounded-xl border border-slate-200 bg-white p-6 sm:p-7">
-          <div className="mb-3 inline-block rounded-full bg-teal-50 px-3 py-1 text-xs font-semibold text-teal-700">{q.badge}</div>
+          <div className="mb-3 inline-block rounded-full bg-teal-50 px-3 py-1 text-xs font-semibold text-teal-800">{q.badge}</div>
           <legend className="contents">
             <h2 className="text-lg font-semibold leading-snug text-navy-700 sm:text-xl">{q.question}</h2>
           </legend>

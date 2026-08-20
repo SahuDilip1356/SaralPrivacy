@@ -367,7 +367,7 @@ export default async function BriefingDetailPage({ params }: Props) {
               {briefing.isV2 ? (
                 <>
                   {/* Back link */}
-                  <Link href="/briefings" className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-green-600 mb-6 transition-colors">
+                  <Link href="/briefings" className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-green-900 mb-6 transition-colors">
                     <ArrowLeft size={14} /> Back to Daily Briefings
                   </Link>
 
@@ -475,7 +475,7 @@ export default async function BriefingDetailPage({ params }: Props) {
                   {/* BLOCK 6 — SAVE THIS LINE */}
                   {briefing.saveLine && (
                     <div className="border-l-4 border-green-400 bg-green-50 px-5 py-4 rounded-r-xl mb-4">
-                      <p className="text-xs font-bold text-green-600 uppercase tracking-wide mb-1">Save this</p>
+                      <p className="text-xs font-bold text-green-800 uppercase tracking-wide mb-1">Save this</p>
                       <p className="text-green-800 font-semibold text-sm leading-relaxed">
                         &ldquo;{briefing.saveLine}&rdquo;
                       </p>
@@ -520,16 +520,16 @@ export default async function BriefingDetailPage({ params }: Props) {
 
                   {/* Survey CTA */}
                   <div className="bg-gradient-to-br from-green-700 to-green-800 rounded-xl p-6 mb-4 text-center">
-                    <p className="text-green-100 text-xs font-bold mb-2 uppercase tracking-wide">Free · 3 minutes</p>
+                    <p className="text-green-50 text-xs font-bold mb-2 uppercase tracking-wide">Free · 3 minutes</p>
                     <h2 className="text-xl font-semibold text-white mb-2">Is YOUR business DPDPA-ready?</h2>
-                    <p className="text-green-100 text-sm mb-4 max-w-xs mx-auto">Answer a few simple questions. Get your free Readiness Score.</p>
+                    <p className="text-green-50 text-sm mb-4 max-w-xs mx-auto">Answer a few simple questions. Get your free Readiness Score.</p>
                     <Link href="/assessment" className="inline-block py-2.5 px-6 bg-white text-green-800 font-semibold rounded-xl hover:bg-green-50 transition-colors">
                       Check My Readiness →
                     </Link>
                   </div>
 
                   {/* Disclaimer */}
-                  <div className="bg-slate-100 rounded-lg p-4 text-xs text-slate-500 mb-6">
+                  <div className="bg-cloud-100 rounded-lg p-4 text-xs text-slate-600 mb-6">
                     <strong>Disclaimer:</strong> This briefing is for educational purposes only and does not constitute legal advice. Consult a qualified data protection lawyer for formal legal opinions specific to your business.
                   </div>
 
@@ -554,13 +554,13 @@ export default async function BriefingDetailPage({ params }: Props) {
                             className="flex items-start justify-between gap-3 hover:bg-cloud-50 -mx-2 px-2 py-2.5 rounded-lg transition-colors group"
                           >
                             <div>
-                              <div className="text-xs text-green-600 font-semibold mb-0.5">
+                              <div className="text-xs text-green-800 font-semibold mb-0.5">
                                 {getCategoryLabel(rel.category)}
                               </div>
-                              <div className="text-sm font-medium text-navy-700 leading-snug group-hover:text-green-600 transition-colors">
+                              <div className="text-sm font-medium text-navy-700 leading-snug group-hover:text-green-900 transition-colors">
                                 {rel.title}
                               </div>
-                              <div className="text-xs text-slate-400 mt-1">{formatDateShort(rel.date)}</div>
+                              <div className="text-xs text-slate-600 mt-1">{formatDateShort(rel.date)}</div>
                             </div>
                             <ArrowRight size={14} className="text-slate-300 shrink-0 mt-1 group-hover:text-green-500 transition-colors" />
                           </Link>
@@ -575,7 +575,7 @@ export default async function BriefingDetailPage({ params }: Props) {
                   {/* Breadcrumb */}
                   <Link
                     href="/briefings"
-                    className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-green-600 mb-6 transition-colors"
+                    className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-green-900 mb-6 transition-colors"
                   >
                     <ArrowLeft size={14} />
                     Back to Daily Briefings
@@ -752,7 +752,7 @@ export default async function BriefingDetailPage({ params }: Props) {
                     <h2 className="text-2xl font-semibold text-white mb-2">
                       Is YOUR business ready for DPDPA?
                     </h2>
-                    <p className="text-green-100 text-sm mb-5 max-w-sm mx-auto leading-relaxed">
+                    <p className="text-green-50 text-sm mb-5 max-w-sm mx-auto leading-relaxed">
                       Answer a few simple questions. Get your free Readiness Score — sent to your email or WhatsApp.
                     </p>
                     <Link
@@ -764,7 +764,7 @@ export default async function BriefingDetailPage({ params }: Props) {
                   </div>
 
                   {/* Disclaimer */}
-                  <div className="bg-slate-100 rounded-lg p-4 text-xs text-slate-500 mb-6">
+                  <div className="bg-cloud-100 rounded-lg p-4 text-xs text-slate-600 mb-6">
                     <strong>Disclaimer:</strong> This briefing is for educational purposes only and does
                     not constitute formal legal advice. Consult a qualified data protection lawyer for
                     formal legal opinions specific to your business.
@@ -806,13 +806,13 @@ export default async function BriefingDetailPage({ params }: Props) {
                             className="flex items-start justify-between gap-3 hover:bg-cloud-50 -mx-2 px-2 py-2.5 rounded-lg transition-colors group"
                           >
                             <div>
-                              <div className="text-xs text-green-600 font-semibold mb-0.5">
+                              <div className="text-xs text-green-800 font-semibold mb-0.5">
                                 {getCategoryLabel(rel.category)}
                               </div>
-                              <div className="text-sm font-medium text-navy-700 leading-snug group-hover:text-green-600 transition-colors">
+                              <div className="text-sm font-medium text-navy-700 leading-snug group-hover:text-green-900 transition-colors">
                                 {rel.title}
                               </div>
-                              <div className="text-xs text-slate-400 mt-1">{formatDateShort(rel.date)}</div>
+                              <div className="text-xs text-slate-600 mt-1">{formatDateShort(rel.date)}</div>
                             </div>
                             <ArrowRight size={14} className="text-slate-300 shrink-0 mt-1 group-hover:text-green-500 transition-colors" />
                           </Link>
@@ -840,13 +840,13 @@ export default async function BriefingDetailPage({ params }: Props) {
                         href={`/briefings/${rel.slug}`}
                         className="block hover:bg-cloud-50 -mx-2 px-2 py-2 rounded-lg transition-colors group"
                       >
-                        <div className="text-xs text-green-600 font-semibold mb-1">
+                        <div className="text-xs text-green-800 font-semibold mb-1">
                           {getCategoryLabel(rel.category)}
                         </div>
-                        <div className="text-sm font-medium text-navy-700 leading-snug group-hover:text-green-600 transition-colors">
+                        <div className="text-sm font-medium text-navy-700 leading-snug group-hover:text-green-900 transition-colors">
                           {rel.title}
                         </div>
-                        <div className="text-xs text-slate-400 mt-1">{formatDateShort(rel.date)}</div>
+                        <div className="text-xs text-slate-600 mt-1">{formatDateShort(rel.date)}</div>
                       </Link>
                     ))}
                   </div>

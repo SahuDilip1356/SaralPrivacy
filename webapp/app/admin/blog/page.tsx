@@ -30,7 +30,7 @@ const LANE_MAP: Record<string, { label: string; color: string }> = {
   "law-explained":      { label: "Law Explained",       color: "bg-blue-100 text-blue-700"    },
   "compliance-playbook":{ label: "Compliance Playbook", color: "bg-purple-100 text-purple-700" },
   "myth-fact":          { label: "Myth vs Fact",        color: "bg-orange-100 text-orange-700" },
-  "sector-notes":       { label: "Sector Notes",        color: "bg-teal-100 text-teal-700"    },
+  "sector-notes":       { label: "Sector Notes",        color: "bg-teal-100 text-teal-800"    },
   "governance-watch":   { label: "Governance Watch",    color: "bg-red-100 text-red-700"      },
 };
 
@@ -107,7 +107,7 @@ export default function AdminBlogPage() {
           { label: "Total",     value: counts.total,     icon: FileText,    color: "text-brand-700" },
           { label: "Draft",     value: counts.draft,     icon: Clock,       color: "text-slate-600" },
           { label: "In Review", value: counts.review,    icon: Send,        color: "text-amber-600" },
-          { label: "Published", value: counts.published, icon: CheckCircle, color: "text-green-600" },
+          { label: "Published", value: counts.published, icon: CheckCircle, color: "text-green-800" },
         ].map(({ label, value, icon: Icon, color }) => (
           <div key={label} className="bg-white rounded-xl border border-pearl-200 shadow-sm p-5">
             <div className={`text-3xl font-bold ${color}`}>{value}</div>
@@ -198,7 +198,7 @@ export default function AdminBlogPage() {
                               href={`/blog/${post.slug}`}
                               target="_blank"
                               rel="noopener"
-                              className="text-xs text-green-600 hover:text-green-800 font-medium"
+                              className="text-xs text-green-800 hover:text-green-900 font-medium"
                             >
                               View →
                             </a>

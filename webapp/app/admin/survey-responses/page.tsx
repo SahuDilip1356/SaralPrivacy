@@ -85,7 +85,7 @@ export default function SurveyResponsesPage() {
           { label: "Total",        value: responses.length, icon: ClipboardList, color: "text-brand-700" },
           { label: "High Risk",    value: high,             icon: AlertTriangle, color: "text-red-600"   },
           { label: "Moderate",     value: moderate,         icon: TrendingUp,    color: "text-amber-600" },
-          { label: "Low Risk",     value: low,              icon: CheckCircle,   color: "text-green-600" },
+          { label: "Low Risk",     value: low,              icon: CheckCircle,   color: "text-green-800" },
           { label: "Want Report",  value: wantReport,       icon: ClipboardList, color: "text-brand-600" },
         ].map(({ label, value, icon: Icon, color }) => (
           <div key={label} className="bg-white rounded-xl border border-pearl-200 shadow-sm p-4">
@@ -176,7 +176,7 @@ export default function SurveyResponsesPage() {
                     </td>
                     <td className="px-4 py-3 text-center">
                       {r.wants_report
-                        ? <span className="text-green-600 text-xs font-medium">✓ Yes</span>
+                        ? <span className="text-green-800 text-xs font-medium">✓ Yes</span>
                         : <span className="text-slate-300 text-xs">—</span>}
                     </td>
                     <td className="px-4 py-3 text-xs text-slate-400 whitespace-nowrap">

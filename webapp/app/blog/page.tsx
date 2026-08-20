@@ -41,7 +41,7 @@ const LANE_CONFIG: Record<string, { label: string; color: string; bg: string }> 
   "law-explained":       { label: "Law Explained",       color: "text-blue-700",   bg: "bg-blue-100"   },
   "compliance-playbook": { label: "Compliance Playbook", color: "text-purple-700", bg: "bg-purple-100" },
   "myth-fact":           { label: "Myth vs Fact",        color: "text-orange-700", bg: "bg-orange-100" },
-  "sector-notes":        { label: "Sector Notes",        color: "text-teal-700",   bg: "bg-teal-100"   },
+  "sector-notes":        { label: "Sector Notes",        color: "text-teal-800",   bg: "bg-teal-100"   },
   "governance-watch":    { label: "Governance Watch",    color: "text-red-700",    bg: "bg-red-100"    },
 };
 
@@ -147,7 +147,7 @@ function PostCard({ post }: { post: BlogPost }) {
         </h2>
         <div className="flex items-center justify-between mb-1.5">
           {date && (
-            <span className="text-xs text-slate-400">
+            <span className="text-xs text-slate-600">
               {new Date(date).toLocaleDateString("en-IN", {
                 day: "numeric", month: "short", year: "numeric",
               })}
@@ -156,7 +156,7 @@ function PostCard({ post }: { post: BlogPost }) {
           <span className="text-slate-300 group-hover:text-navy-600 text-sm transition-colors">→</span>
         </div>
         {post.validation_score > 0 && (
-          <p className="text-xs text-green-600 font-medium">
+          <p className="text-xs text-green-800 font-medium">
             ✓ Verified · {post.validation_score}/100
           </p>
         )}

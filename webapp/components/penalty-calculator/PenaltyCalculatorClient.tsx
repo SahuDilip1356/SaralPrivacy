@@ -340,7 +340,7 @@ export default function PenaltyCalculatorClient() {
                 <div className="text-xs font-semibold text-slate-400 mb-1">
                   {cat.section} · {cat.scheduleItem}
                 </div>
-                <div className="font-bold text-navy-700 text-sm mb-2 group-hover:text-green-600 transition-colors">
+                <div className="font-bold text-navy-700 text-sm mb-2 group-hover:text-green-900 transition-colors">
                   {cat.title}
                 </div>
                 <p className="text-xs text-slate-500 leading-relaxed">{cat.description}</p>
@@ -525,7 +525,7 @@ export default function PenaltyCalculatorClient() {
               "Engage a DPDPA-qualified lawyer before any communication with, or response to, the Data Protection Board.",
             ].map((action, i) => (
               <li key={i} className="flex items-start gap-2 text-xs text-slate-700 leading-relaxed">
-                <span className="shrink-0 w-4 h-4 rounded-full bg-green-100 text-green-600 flex items-center justify-center font-bold text-[10px] mt-0.5">
+                <span className="shrink-0 w-4 h-4 rounded-full bg-green-100 text-green-800 flex items-center justify-center font-bold text-[10px] mt-0.5">
                   {i + 1}
                 </span>
                 {action}

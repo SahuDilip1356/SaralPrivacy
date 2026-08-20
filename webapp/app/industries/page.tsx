@@ -179,84 +179,84 @@ export default function IndustriesPage() {
                 <td className="px-4 py-3 text-slate-600">CVs, candidate profiles, Aadhaar/PAN, background documents</td>
                 <td className="px-4 py-3 text-red-700 font-medium">CV databases without consent or deletion policy</td>
                 <td className="px-4 py-3 text-slate-600">Add consent at submission; define retention periods</td>
-                <td className="px-4 py-3"><a href="/assessment/recruitment" className="text-green-600 font-semibold hover:underline">Start →</a></td>
+                <td className="px-4 py-3"><a href="/assessment/recruitment" className="text-green-800 font-semibold hover:underline">Start →</a></td>
               </tr>
               <tr className="hover:bg-slate-50 transition-colors">
                 <td className="px-4 py-3 font-semibold text-navy-700">CA Firms</td>
                 <td className="px-4 py-3 text-slate-600">PAN, Aadhaar, payroll records, bank details, tax filings</td>
                 <td className="px-4 py-3 text-red-700 font-medium">Broad staff access to sensitive client documents</td>
                 <td className="px-4 py-3 text-slate-600">Role-based access controls and DPAs with cloud vendors</td>
-                <td className="px-4 py-3"><a href="/assessment/ca-firms" className="text-green-600 font-semibold hover:underline">Start →</a></td>
+                <td className="px-4 py-3"><a href="/assessment/ca-firms" className="text-green-800 font-semibold hover:underline">Start →</a></td>
               </tr>
               <tr className="hover:bg-slate-50 transition-colors">
                 <td className="px-4 py-3 font-semibold text-navy-700">Training Institutes</td>
                 <td className="px-4 py-3 text-slate-600">Student names, contacts, minor data, placement records</td>
                 <td className="px-4 py-3 text-red-700 font-medium">Processing minors&#39; data without verifiable parental consent</td>
                 <td className="px-4 py-3 text-slate-600">Implement parental consent mechanism for under-18 students</td>
-                <td className="px-4 py-3"><a href="/assessment/training-institutes" className="text-green-600 font-semibold hover:underline">Start →</a></td>
+                <td className="px-4 py-3"><a href="/assessment/training-institutes" className="text-green-800 font-semibold hover:underline">Start →</a></td>
               </tr>
               <tr className="hover:bg-slate-50 transition-colors">
                 <td className="px-4 py-3 font-semibold text-navy-700">D2C Brands</td>
                 <td className="px-4 py-3 text-slate-600">Checkout details, marketing lists, behavioural and loyalty data</td>
                 <td className="px-4 py-3 text-red-700 font-medium">Bundled marketing consent at checkout</td>
                 <td className="px-4 py-3 text-slate-600">Separate marketing consent from purchase processing</td>
-                <td className="px-4 py-3"><a href="/assessment/d2c-brands" className="text-green-600 font-semibold hover:underline">Start →</a></td>
+                <td className="px-4 py-3"><a href="/assessment/d2c-brands" className="text-green-800 font-semibold hover:underline">Start →</a></td>
               </tr>
               <tr className="hover:bg-slate-50 transition-colors">
                 <td className="px-4 py-3 font-semibold text-navy-700">Clinics &amp; Diagnostic Labs</td>
                 <td className="px-4 py-3 text-slate-600">Prescriptions, lab reports, diagnostic images, patient and family contacts</td>
                 <td className="px-4 py-3 text-red-700 font-medium">Sharing reports over WhatsApp without verifying the recipient</td>
                 <td className="px-4 py-3 text-slate-600">Verify recipient identity before sharing; control WhatsApp/email sharing</td>
-                <td className="px-4 py-3"><a href="/assessment/clinics-diagnostic-labs" className="text-green-600 font-semibold hover:underline">Start →</a></td>
+                <td className="px-4 py-3"><a href="/assessment/clinics-diagnostic-labs" className="text-green-800 font-semibold hover:underline">Start →</a></td>
               </tr>
               <tr className="hover:bg-slate-50 transition-colors">
                 <td className="px-4 py-3 font-semibold text-navy-700">Schools &amp; Colleges</td>
                 <td className="px-4 py-3 text-slate-600">Children&#39;s data, parent records, admission/ID docs, marks, photos, transport and CCTV</td>
                 <td className="px-4 py-3 text-red-700 font-medium">Minors&#39; data and public student photos without parental consent</td>
                 <td className="px-4 py-3 text-slate-600">Document parent/guardian consent and a photo-consent + removal process</td>
-                <td className="px-4 py-3"><a href="/assessment/schools-colleges" className="text-green-600 font-semibold hover:underline">Start →</a></td>
+                <td className="px-4 py-3"><a href="/assessment/schools-colleges" className="text-green-800 font-semibold hover:underline">Start →</a></td>
               </tr>
               <tr className="hover:bg-slate-50 transition-colors">
                 <td className="px-4 py-3 font-semibold text-navy-700">Law Firms &amp; Legal Consultants</td>
                 <td className="px-4 py-3 text-slate-600">Client KYC, PAN/Aadhaar, contracts, affidavits, evidence files, court and sensitive records</td>
                 <td className="px-4 py-3 text-red-700 font-medium">Sensitive case files unrestricted and ex-staff/intern access lingering</td>
                 <td className="px-4 py-3 text-slate-600">Classify sensitive matters; move to matter-based, need-based access</td>
-                <td className="px-4 py-3"><a href="/assessment/law-firms" className="text-green-600 font-semibold hover:underline">Start →</a></td>
+                <td className="px-4 py-3"><a href="/assessment/law-firms" className="text-green-800 font-semibold hover:underline">Start →</a></td>
               </tr>
               <tr className="hover:bg-slate-50 transition-colors">
                 <td className="px-4 py-3 font-semibold text-navy-700">Real Estate Brokers &amp; Property Firms</td>
                 <td className="px-4 py-3 text-slate-600">Buyer/tenant KYC, PAN/Aadhaar, income/loan docs, rent &amp; sale agreements, property papers</td>
                 <td className="px-4 py-3 text-red-700 font-medium">KYC and leads forwarded through WhatsApp broker groups</td>
                 <td className="px-4 py-3 text-slate-600">Secure KYC intake; share leads only with instruction or documented purpose</td>
-                <td className="px-4 py-3"><a href="/assessment/real-estate" className="text-green-600 font-semibold hover:underline">Start →</a></td>
+                <td className="px-4 py-3"><a href="/assessment/real-estate" className="text-green-800 font-semibold hover:underline">Start →</a></td>
               </tr>
               <tr className="hover:bg-slate-50 transition-colors">
                 <td className="px-4 py-3 font-semibold text-navy-700">Hotels, Hospitality &amp; Travel</td>
                 <td className="px-4 py-3 text-slate-600">Guest IDs, passport/visa copies, booking records, itineraries, C-Form data, CCTV and access logs</td>
                 <td className="px-4 py-3 text-red-700 font-medium">Passport copies over WhatsApp and indefinite guest-record retention</td>
                 <td className="px-4 py-3 text-slate-600">Secure ID/passport intake; set retention &amp; deletion rules for guest records and CCTV</td>
-                <td className="px-4 py-3"><a href="/assessment/hotels-travel" className="text-green-600 font-semibold hover:underline">Start →</a></td>
+                <td className="px-4 py-3"><a href="/assessment/hotels-travel" className="text-green-800 font-semibold hover:underline">Start →</a></td>
               </tr>
               <tr className="hover:bg-slate-50 transition-colors">
                 <td className="px-4 py-3 font-semibold text-navy-700">Pharmacies &amp; Online Pharmacies</td>
                 <td className="px-4 py-3 text-slate-600">Prescriptions, medicine history, doctor details, delivery addresses, health indicators</td>
                 <td className="px-4 py-3 text-red-700 font-medium">Prescription images on WhatsApp and medicine-history used without consent</td>
                 <td className="px-4 py-3 text-slate-600">Secure prescription intake; limit delivery/vendor access; consent for refill messaging</td>
-                <td className="px-4 py-3"><a href="/assessment/pharmacies" className="text-green-600 font-semibold hover:underline">Start →</a></td>
+                <td className="px-4 py-3"><a href="/assessment/pharmacies" className="text-green-800 font-semibold hover:underline">Start →</a></td>
               </tr>
               <tr className="hover:bg-slate-50 transition-colors">
                 <td className="px-4 py-3 font-semibold text-navy-700">Fintech, NBFC &amp; Digital Payments</td>
                 <td className="px-4 py-3 text-slate-600">KYC, PAN/Aadhaar, bank statements, bureau data, UPI, repayment history, collection notes</td>
                 <td className="px-4 py-3 text-red-700 font-medium">Bank/bureau data via WhatsApp/DSAs and profiling on bundled consent</td>
                 <td className="px-4 py-3 text-slate-600">Secure KYC intake; traceable consent; role-based, monitored agent access</td>
-                <td className="px-4 py-3"><a href="/assessment/fintech-nbfc" className="text-green-600 font-semibold hover:underline">Start →</a></td>
+                <td className="px-4 py-3"><a href="/assessment/fintech-nbfc" className="text-green-800 font-semibold hover:underline">Start →</a></td>
               </tr>
               <tr className="hover:bg-slate-50 transition-colors">
                 <td className="px-4 py-3 font-semibold text-navy-700">Gyms, Salons &amp; Spas</td>
                 <td className="px-4 py-3 text-slate-600">Membership data, fitness/body measurements, health declarations, consultation notes, customer photos</td>
                 <td className="px-4 py-3 text-red-700 font-medium">Customer photos used without consent and health/body data without access control</td>
                 <td className="px-4 py-3 text-slate-600">Photo consent + removal process; restrict health-data access; control staff phones</td>
-                <td className="px-4 py-3"><a href="/assessment/gyms-salons-spas" className="text-green-600 font-semibold hover:underline">Start →</a></td>
+                <td className="px-4 py-3"><a href="/assessment/gyms-salons-spas" className="text-green-800 font-semibold hover:underline">Start →</a></td>
               </tr>
             </tbody>
           </table>
@@ -314,7 +314,7 @@ export default function IndustriesPage() {
           })}
         </div>
 
-        <div className="mt-10 pt-6 border-t border-slate-200 text-xs text-slate-400 space-y-1">
+        <div className="mt-10 pt-6 border-t border-slate-200 text-xs text-slate-600 space-y-1">
           <p><strong>Legal baseline:</strong> DPDP Rules, 2025 notified on 14 November 2025, with phased commencement.</p>
           <p>This page is for educational purposes and does not constitute legal advice.</p>
         </div>

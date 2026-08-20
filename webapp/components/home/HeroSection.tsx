@@ -133,7 +133,7 @@ export function HeroSection() {
                   </span>
                 </div>
                 <div className="flex items-start gap-3 mb-3">
-                  <CheckCircle size={20} className="text-green-600 shrink-0 mt-0.5" />
+                  <CheckCircle size={20} className="text-green-800 shrink-0 mt-0.5" />
                   <p className="text-navy-700 font-semibold text-sm leading-snug">
                     DPDPA applies to your {verdict.chipLabel}.
                   </p>

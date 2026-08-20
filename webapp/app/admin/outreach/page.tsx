@@ -93,7 +93,7 @@ export default function OutreachPage() {
           { label: "Total",      value: stats.total,      icon: Send,        color: "text-brand-700"  },
           { label: "Pending",    value: stats.pending,    icon: Clock,       color: "text-slate-500"  },
           { label: "Sent",       value: stats.sent,       icon: CheckCircle, color: "text-blue-600"   },
-          { label: "Subscribed", value: stats.subscribed, icon: UserCheck,   color: "text-green-600"  },
+          { label: "Subscribed", value: stats.subscribed, icon: UserCheck,   color: "text-green-800"  },
           { label: "Bounced",    value: stats.bounced,    icon: XCircle,     color: "text-red-500"    },
         ].map(({ label, value, icon: Icon, color }) => (
           <div key={label} className="bg-white rounded-xl border border-pearl-200 shadow-sm p-4 flex items-center gap-3">

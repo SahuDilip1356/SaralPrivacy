@@ -54,6 +54,25 @@ check "chrome-badges" \
   "Site chrome carries one action and no badges; 'free' is said once, in the hero." \
   "$(grep -rn "Badge" components/layout/ --include="*.tsx" 2>/dev/null)"
 
+# The three shades below measured under 4.5:1 on this palette's light surfaces
+# (teal-600 3.24, teal-700 4.48-4.67, green-600 3.47-3.77). They are legal on a
+# NAVY surface, so this is a ratchet, not a ban — the baseline holds the dark-
+# surface uses and only new ones have to justify themselves.
+check "low-contrast-teal" \
+  "teal-600/700 text measures 3.2-4.7:1 on light surfaces. Use teal-800 (7.05:1) unless the surface is navy." \
+  "$(grep -rEn 'text-teal-(600|700)' app components --include="*.tsx" 2>/dev/null)"
+
+check "low-contrast-green-text" \
+  "green-600 text measures 3.4-3.8:1 on light surfaces. Use green-700 (5.48:1) or green-800." \
+  "$(grep -rEn 'text-green-600' app components --include="*.tsx" 2>/dev/null)"
+
+# slate-400 is CORRECT on navy (6.75:1) and wrong on light (2.4-2.6:1), so the
+# baseline carries the legitimate dark-surface uses. A rise means someone added
+# muted text to a light surface.
+check "muted-text-on-light" \
+  "slate-400 is 2.4-2.6:1 on light surfaces (it is correct on navy). Use slate-600 on light." \
+  "$(grep -rEn 'text-slate-400' app components --include="*.tsx" 2>/dev/null)"
+
 if [ "$UPDATE" -eq 1 ]; then
   : > "$BASELINE_FILE"
   rm -rf "$BASELINE_DIR"; mkdir -p "$BASELINE_DIR"

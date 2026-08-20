@@ -98,12 +98,12 @@ export default function DataMappingPage() {
                   {step.href ? (
                     <Link
                       href={step.href}
-                      className="mt-3 inline-flex items-center gap-1.5 text-[13px] font-semibold text-green-700 hover:text-green-800"
+                      className="mt-3 inline-flex items-center gap-1.5 text-[13px] font-semibold text-green-700 hover:text-green-900"
                     >
                       {step.cta} <ArrowRight size={13} aria-hidden="true" />
                     </Link>
                   ) : (
-                    <span className="mt-3 inline-block text-[13px] font-semibold text-teal-700">
+                    <span className="mt-3 inline-block text-[13px] font-semibold text-teal-800">
                       You are here
                     </span>
                   )}
@@ -240,7 +240,7 @@ export default function DataMappingPage() {
 
         <NoticeCrossLink className="mt-12" />
 
-        <div className="mt-10 pt-6 border-t border-slate-200 text-xs text-slate-400 space-y-1">
+        <div className="mt-10 pt-6 border-t border-slate-200 text-xs text-slate-600 space-y-1">
           <p>
             <strong>Legal baseline:</strong> DPDP Rules, 2025 notified on 14 November 2025, with
             phased commencement.

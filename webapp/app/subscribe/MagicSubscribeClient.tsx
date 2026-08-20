@@ -91,7 +91,7 @@ export default function MagicSubscribeClient({ token }: { token: string }) {
         <h2 className="text-2xl font-semibold text-navy-700 mb-2">Something went wrong</h2>
         <p className="text-slate-500 text-sm max-w-md mx-auto">{error}</p>
       </div>
-      <Link href="/subscribe" className="mt-2 text-sm text-navy-700 underline hover:text-green-600">
+      <Link href="/subscribe" className="mt-2 text-sm text-navy-700 underline hover:text-green-900">
         Subscribe manually instead
       </Link>
     </div>

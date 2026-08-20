@@ -83,7 +83,7 @@ function ProgressBar({ step, total }: { step: number; total: number }) {
           Step {step} of {total}
           {section ? <span className="text-slate-400 font-normal"> · {section}</span> : null}
         </span>
-        <span className="text-green-600 font-semibold">{pct}% complete</span>
+        <span className="text-green-800 font-semibold">{pct}% complete</span>
       </div>
       <div className="h-1 bg-slate-200 rounded-full overflow-hidden">
         <div className="h-full bg-green-400 rounded-full transition-all duration-500" style={{ width: `${pct}%` }} />
@@ -858,7 +858,7 @@ export default function SurveyClient() {
           {step === 1 && (
             <div className="space-y-8">
               <div>
-                <div className="text-xs font-bold text-green-600 uppercase tracking-widest mb-2">BUSINESS CONTEXT</div>
+                <div className="text-xs font-bold text-green-800 uppercase tracking-widest mb-2">BUSINESS CONTEXT</div>
                 <h2 className="text-3xl font-semibold text-navy-900 mb-1">Where privacy risk starts in your business</h2>
                 <p className="text-slate-500 text-sm">This helps identify where privacy exposure is structurally built into your business model.</p>
               </div>
@@ -909,7 +909,7 @@ export default function SurveyClient() {
           {step === 2 && (
             <div className="space-y-6">
               <div>
-                <div className="text-xs font-bold text-green-600 uppercase tracking-widest mb-2">DATA EXPOSURE PROFILE</div>
+                <div className="text-xs font-bold text-green-800 uppercase tracking-widest mb-2">DATA EXPOSURE PROFILE</div>
                 <h2 className="text-3xl font-semibold text-navy-900 mb-1">Does your business collect or store personal data digitally?</h2>
                 <p className="text-slate-500 text-sm">Even occasional digital data collection creates obligations under DPDPA if individuals are identifiable.</p>
               </div>
@@ -927,7 +927,7 @@ export default function SurveyClient() {
           {step === 3 && (
             <div className="space-y-8">
               <div>
-                <div className="text-xs font-bold text-green-600 uppercase tracking-widest mb-2">DATA ECOSYSTEM MAPPING</div>
+                <div className="text-xs font-bold text-green-800 uppercase tracking-widest mb-2">DATA ECOSYSTEM MAPPING</div>
                 <h2 className="text-3xl font-semibold text-navy-900 mb-1">Define your compliance footprint by data handling practices.</h2>
                 <div className="text-xs text-slate-400 font-mono">04 / 10</div>
               </div>
@@ -968,7 +968,7 @@ export default function SurveyClient() {
           {step === 4 && (
             <div className="space-y-6">
               <div>
-                <div className="text-xs font-bold text-green-600 uppercase tracking-widest mb-2">CONTROL MATURITY ASSESSMENT</div>
+                <div className="text-xs font-bold text-green-800 uppercase tracking-widest mb-2">CONTROL MATURITY ASSESSMENT</div>
                 <h2 className="text-3xl font-semibold text-navy-900 mb-1">Which privacy basics are already in place?</h2>
                 <div className="text-xs text-slate-400 font-mono mb-2">06 / 10</div>
                 <div className="bg-slate-100 rounded-lg px-4 py-2.5 text-xs text-slate-500">
@@ -987,7 +987,7 @@ export default function SurveyClient() {
           {step === 5 && (
             <div className="space-y-8">
               <div>
-                <div className="text-xs font-bold text-green-600 uppercase tracking-widest mb-2">COMPLIANCE MATURITY</div>
+                <div className="text-xs font-bold text-green-800 uppercase tracking-widest mb-2">COMPLIANCE MATURITY</div>
                 <h2 className="text-3xl font-semibold text-navy-900 mb-1">How consent and requests are handled today</h2>
                 <p className="text-slate-500 text-sm">Compliance maturity is 80% complete.</p>
               </div>
@@ -1028,7 +1028,7 @@ export default function SurveyClient() {
           {step === 6 && (
             <div className="space-y-8">
               <div>
-                <div className="text-xs font-bold text-green-600 uppercase tracking-widest mb-2">OWNERSHIP & READINESS</div>
+                <div className="text-xs font-bold text-green-800 uppercase tracking-widest mb-2">OWNERSHIP & READINESS</div>
                 <h2 className="text-3xl font-semibold text-navy-900 mb-1">Who owns privacy decisions today</h2>
                 <p className="text-slate-500 text-sm">Final phase of the foundational audit.</p>
                 <div className="text-xs text-slate-400 font-mono mt-1">QUESTION 9–10 OF 10</div>
@@ -1068,7 +1068,7 @@ export default function SurveyClient() {
           {step === 7 && (
             <div className="space-y-8">
               <div>
-                <div className="text-xs font-bold text-green-600 uppercase tracking-widest mb-2">PERSONALISATION</div>
+                <div className="text-xs font-bold text-green-800 uppercase tracking-widest mb-2">PERSONALISATION</div>
                 <h2 className="text-3xl font-semibold text-navy-900 mb-1">Help us prioritize the right fixes</h2>
                 <p className="text-slate-500 text-sm">This tailors your report to your operating reality, not generic advice.</p>
                 <div className="mt-2 h-1.5 bg-slate-200 rounded-full overflow-hidden">
@@ -1322,7 +1322,7 @@ export default function SurveyClient() {
 
             {submitted && (
               <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-6 flex items-center gap-3">
-                <CheckCircle size={18} className="text-green-600 shrink-0" />
+                <CheckCircle size={18} className="text-green-800 shrink-0" />
                 <div>
                   <div className="font-semibold text-green-800 text-sm">Report on its way!</div>
                   <div className="text-green-700 text-xs">We will send your detailed report to <strong>{contactEmail}</strong> shortly.</div>
@@ -1461,7 +1461,7 @@ export default function SurveyClient() {
 
             {submitted && (
               <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-6 flex items-center gap-3">
-                <CheckCircle size={18} className="text-green-600 shrink-0" />
+                <CheckCircle size={18} className="text-green-800 shrink-0" />
                 <div>
                   <div className="font-semibold text-green-800 text-sm">Report on its way!</div>
                   <div className="text-green-700 text-xs">We will send your detailed report to <strong>{contactEmail}</strong> shortly.</div>
