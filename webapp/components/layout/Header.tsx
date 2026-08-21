@@ -163,6 +163,39 @@ export function Header() {
 
   useEffect(() => () => clearTimers(), [clearTimers]);
 
+  // Lock the page behind the mobile drawer. Without this, scrolling inside the
+  // drawer scrolls the page underneath once the drawer's own list hits its
+  // end — on a 26-screen homepage that reads as the drawer being broken.
+  //
+  // `position: fixed` on body rather than `overflow: hidden`: iOS Safari
+  // ignores overflow-hidden on body, and the fixed approach also has to
+  // restore the scroll offset by hand, since fixing the body drops it to 0.
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const y = window.scrollY;
+    const { body } = document;
+    const prev = {
+      position: body.style.position,
+      top: body.style.top,
+      width: body.style.width,
+    };
+    body.style.position = "fixed";
+    body.style.top = `-${y}px`;
+    body.style.width = "100%";
+    return () => {
+      body.style.position = prev.position;
+      body.style.top = prev.top;
+      body.style.width = prev.width;
+      // `behavior: "instant"` is load-bearing, not decoration. globals.css sets
+      // `html { scroll-behavior: smooth }`, which makes the two-argument
+      // scrollTo() animate over ~600ms — so closing the drawer would slide the
+      // page back to where it already was, which is the exact jump this lock
+      // exists to hide. Restoring an offset is not navigation; it must not
+      // animate.
+      window.scrollTo({ top: y, behavior: "instant" });
+    };
+  }, [mobileOpen]);
+
   /** Move focus between triggers with the arrow keys, wrapping at both ends. */
   function focusTriggerByOffset(label: string, offset: number) {
     const i = navMenus.findIndex((m) => m.label === label);

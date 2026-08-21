@@ -275,6 +275,48 @@ const check = (name, pass, detail = '') => {
     await rm.close();
   }
 
+  // ── 6. Mobile body scroll lock ──────────────────────────────────────────
+  console.log('\n6. Mobile drawer scroll lock at 390px\n');
+  {
+    const page = await browser.newPage({
+      viewport: { width: 390, height: 800 }, isMobile: true, hasTouch: true,
+    });
+    await page.goto(URL, { waitUntil: 'networkidle' });
+    // `behavior: 'instant'` because globals.css sets html{scroll-behavior:smooth}:
+    // a plain scrollTo animates for ~600ms, and the drawer would then open
+    // against a scroll offset still in flight. A real reader has already
+    // stopped scrolling before they reach for the menu, so settle it first.
+    await page.evaluate(() => window.scrollTo({ top: 600, behavior: 'instant' }));
+    await page.waitForTimeout(120);
+    const startY = await page.evaluate(() => Math.round(window.scrollY));
+    check('fixture: page is scrolled before the drawer opens', startY === 600, `scrollY=${startY}`);
+
+    await page.locator('header button[aria-controls="mobile-nav"]').click();
+    await page.waitForTimeout(200);
+    const locked = await page.evaluate(() => getComputedStyle(document.body).position);
+    check('body is locked while the drawer is open', locked === 'fixed', locked);
+
+    // Scrolling with the drawer open must not move the page behind it.
+    await page.evaluate(() => window.scrollTo(0, 2000));
+    await page.waitForTimeout(120);
+    const movedWhileOpen = await page.evaluate(() => window.scrollY);
+    check('the page behind does not scroll', movedWhileOpen === 0, `scrollY=${movedWhileOpen}`);
+
+    // Closing restores both the lock and the original offset. The 60ms window
+    // is deliberate: a smooth-scrolled restore is only ~a third of the way home
+    // by then, so this fails if anyone drops the `behavior: 'instant'`.
+    await page.locator('header button[aria-controls="mobile-nav"]').click();
+    await page.waitForTimeout(60);
+    const after = await page.evaluate(() => ({
+      pos: getComputedStyle(document.body).position,
+      y: Math.round(window.scrollY),
+    }));
+    check('body unlocks on close', after.pos !== 'fixed', after.pos);
+    check('scroll position is restored instantly, not reset or animated',
+      Math.abs(after.y - 600) < 5, `scrollY at +60ms=${after.y}`);
+    await page.close();
+  }
+
   console.log(`\n${failures === 0 ? '✓ all navbar acceptance checks passed' : `✗ ${failures} check(s) failed`}\n`);
   await browser.close();
   process.exit(failures === 0 ? 0 : 1);
