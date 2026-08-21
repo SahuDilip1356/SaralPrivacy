@@ -151,7 +151,17 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             type="checkbox"
             id={checkboxId}
             className={cn(
-              "mt-0.5 h-4 w-4 rounded border-slate-300 text-green-500",
+              // The label carries `htmlFor`, so the real tap target is the
+              // label text, not this 16px box — which is why it passes 2.5.8
+              // despite the measurement. The touch-only bump to 20px is for
+              // the people who aim at the box anyway.
+              // `shrink-0` because this is a flex child next to a long label:
+              // without it the box was measuring 13px wide against its
+              // declared 16, so the control rendered visibly non-square.
+              // The label carries `htmlFor`, so the real tap target is the
+              // label text — which is why it passes 2.5.8 despite the size.
+              // The touch-only bump to 20px is for people who aim at the box.
+              "mt-0.5 h-4 w-4 shrink-0 pointer-coarse:h-5 pointer-coarse:w-5 rounded border-slate-300 text-green-500",
               "focus:ring-2 focus:ring-green-500 focus:ring-offset-0",
               "transition-colors duration-200 cursor-pointer",
               className

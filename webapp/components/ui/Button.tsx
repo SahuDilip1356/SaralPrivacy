@@ -84,8 +84,15 @@ const sizeClasses: Record<Size, string> = {
   lg: "px-7 py-3.5 text-base font-semibold rounded-lg gap-2",
 };
 
+// `pointer-coarse:min-h-11` is the touch floor, and it belongs here rather
+// than in sizeClasses because it is a property of the input device, not of
+// the size. Measured: sm renders 32px and md 40px — both under the 44px
+// touch minimum, and md is the default, so the majority of the site's
+// buttons were a 40px target on a phone. Scoping it to `(pointer: coarse)`
+// buys the 44px where a finger is involved and leaves mouse-driven density
+// exactly as designed; `lg` is already 52px and unaffected either way.
 const base =
-  "inline-flex items-center justify-center transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-green-700 disabled:opacity-50 disabled:cursor-not-allowed";
+  "inline-flex items-center justify-center pointer-coarse:min-h-11 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-green-700 disabled:opacity-50 disabled:cursor-not-allowed";
 
 const Spinner = () => (
   <>

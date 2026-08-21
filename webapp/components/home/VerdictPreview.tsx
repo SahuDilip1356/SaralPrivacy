@@ -121,7 +121,7 @@ export function VerdictPreview() {
             <Link
               href={`/assessment/${v.slug}`}
               onClick={() => trackEvent.beat5CtaClick({ sector: v.slug })}
-              className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 bg-green-700 hover:bg-green-800 text-white text-sm font-semibold rounded-xl transition-colors"
+              className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 pointer-coarse:min-h-11 bg-green-700 hover:bg-green-800 text-white text-sm font-semibold rounded-xl transition-colors"
             >
               Get your real score
               <ArrowRight size={16} />

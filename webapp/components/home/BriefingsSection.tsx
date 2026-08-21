@@ -74,7 +74,7 @@ export async function BriefingsSection() {
           </div>
           <Link
             href="/briefings"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-green-800 hover:text-green-700 shrink-0"
+            className="inline-flex items-center gap-1.5 pointer-coarse:min-h-11 text-sm font-semibold text-green-800 hover:text-green-700 shrink-0"
           >
             All briefings
             <ArrowRight size={16} />

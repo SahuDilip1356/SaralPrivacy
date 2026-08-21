@@ -106,7 +106,7 @@ export function PressProofStrip({ variant = "banner" }: { variant?: Variant }) {
               href={p.url}
               target="_blank"
               rel="nofollow noopener"
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-700 bg-white border border-pearl-200 rounded-full px-4 py-1.5 hover:border-pearl-300 hover:text-navy-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-700 bg-white border border-pearl-200 rounded-full px-4 py-1.5 pointer-coarse:min-h-11 hover:border-pearl-300 hover:text-navy-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2"
             >
               {p.name}
               <ExternalLink size={10} className="text-slate-400" />
@@ -124,13 +124,13 @@ export function PressProofStrip({ variant = "banner" }: { variant?: Variant }) {
         <div className="flex flex-wrap justify-center items-center gap-x-6 gap-y-3">
           <Link
             href="/assessment"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-green-700 underline underline-offset-4 decoration-green-700/30 hover:decoration-green-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2 rounded"
+            className="inline-flex items-center gap-1.5 pointer-coarse:min-h-11 text-sm font-medium text-green-700 underline underline-offset-4 decoration-green-700/30 hover:decoration-green-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2 rounded"
           >
             Take the free DPDPA readiness assessment <ArrowRight size={14} />
           </Link>
           <Link
             href="/media/press-wall"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-600 underline underline-offset-4 decoration-slate-400 hover:text-navy-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2 rounded"
+            className="inline-flex items-center gap-1.5 pointer-coarse:min-h-11 text-sm font-medium text-slate-600 underline underline-offset-4 decoration-slate-400 hover:text-navy-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2 rounded"
           >
             See press coverage
           </Link>

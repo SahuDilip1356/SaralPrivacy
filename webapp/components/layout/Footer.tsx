@@ -83,7 +83,7 @@ export function Footer() {
             </p>
             <div className="flex items-center gap-2 text-sm">
               <Mail size={14} className="text-teal-400" />
-              <a href="mailto:privacy@saralprivacy.com" className="text-slate-400 hover:text-white transition-colors">
+              <a href="mailto:privacy@saralprivacy.com" className="inline-flex items-center pointer-coarse:min-h-11 text-slate-400 hover:text-white transition-colors">
                 privacy@saralprivacy.com
               </a>
             </div>
@@ -104,7 +104,7 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-slate-400 hover:text-white transition-colors"
+                    className="inline-flex items-center pointer-coarse:min-h-11 text-sm text-slate-400 hover:text-white transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -121,7 +121,7 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-slate-400 hover:text-white transition-colors"
+                    className="inline-flex items-center pointer-coarse:min-h-11 text-sm text-slate-400 hover:text-white transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -138,7 +138,7 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-slate-400 hover:text-white transition-colors"
+                    className="inline-flex items-center pointer-coarse:min-h-11 text-sm text-slate-400 hover:text-white transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -151,7 +151,7 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-slate-400 hover:text-white transition-colors"
+                    className="inline-flex items-center pointer-coarse:min-h-11 text-sm text-slate-400 hover:text-white transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -168,7 +168,7 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-slate-400 hover:text-white transition-colors"
+                    className="inline-flex items-center pointer-coarse:min-h-11 text-sm text-slate-400 hover:text-white transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -180,7 +180,7 @@ export function Footer() {
               <p className="text-xs text-teal-300 font-semibold mb-1">Data Protection Officer</p>
               <a
                 href={`mailto:${DPO.email}`}
-                className="text-xs text-teal-400 hover:text-teal-300"
+                className="inline-flex items-center pointer-coarse:min-h-11 text-xs text-teal-400 hover:text-teal-300"
               >
                 {DPO.email}
               </a>
@@ -205,16 +205,16 @@ export function Footer() {
           </p>
           <div className="flex items-center gap-4">
             <span className="text-xs text-slate-400">Privacy Notice v2.0 · Updated July 2026</span>
-            <Link href="/privacy" className="text-xs text-slate-400 hover:text-white transition-colors">
+            <Link href="/privacy" className="inline-flex items-center pointer-coarse:min-h-11 text-xs text-slate-400 hover:text-white transition-colors">
               Privacy
             </Link>
-            <Link href="/rights" className="text-xs text-slate-400 hover:text-white transition-colors">
+            <Link href="/rights" className="inline-flex items-center pointer-coarse:min-h-11 text-xs text-slate-400 hover:text-white transition-colors">
               Rights
             </Link>
-            <Link href="/terms" className="text-xs text-slate-400 hover:text-white transition-colors">
+            <Link href="/terms" className="inline-flex items-center pointer-coarse:min-h-11 text-xs text-slate-400 hover:text-white transition-colors">
               Terms
             </Link>
-            <Link href="/consent-preferences" className="text-xs text-slate-400 hover:text-white transition-colors">
+            <Link href="/consent-preferences" className="inline-flex items-center pointer-coarse:min-h-11 text-xs text-slate-400 hover:text-white transition-colors">
               Consent
             </Link>
           </div>
