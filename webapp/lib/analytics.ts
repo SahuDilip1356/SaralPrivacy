@@ -218,6 +218,32 @@ export const trackEvent = {
     page_location:   params.location,
   }),
 
+  // ── Header navigation ───────────────────────────────────────────────────
+  // ⚠️ UNVERIFIED. The rule at the top of this file says never add an event
+  // without confirming on preview that it reaches the dashboard, and that
+  // confirmation cannot be done from the build container — saralprivacy.com
+  // is blocked by its egress policy. Both events below are written to the
+  // same `gtag` helper every working event uses, so there is no reason to
+  // expect them to fail, but "no reason to expect" is exactly what left 23
+  // events silently dead for months. Check the network tab for
+  // POST /_vercel/insights/event on the first preview deploy, then delete
+  // this notice.
+  //
+  // Why these two: the four-menu IA is a bet that the labels match how people
+  // actually look for things. navMenuOpen says which of the four they reach
+  // for; navItemClick says whether the panel then answered them or they left.
+  // Without the pair, the restructure cannot be evaluated, only asserted.
+  navMenuOpen: (params: { menu: string }) => gtag("nav_menu_open", {
+    event_category: "navigation",
+    menu:           params.menu,
+  }),
+
+  navItemClick: (params: { menu: string; item: string }) => gtag("nav_item_click", {
+    event_category: "navigation",
+    menu:           params.menu,
+    item:           params.item,
+  }),
+
   // ── Assessment funnel (PR-traffic measurement) ──────────────────────────
   assessmentStart: () => gtag("assessment_start", {
     event_category: "engagement",
