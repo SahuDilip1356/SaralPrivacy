@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, Calendar, Clock, CheckCircle } from "lucide-react";
 import { formatDateShort, getCategoryLabel } from "@/lib/utils";
 import { Badge } from "@/components/ui/Badge";
+import { Surface, surfaceClasses } from "@/components/ui/Surface";
 import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 
 function tryParseArray(v: unknown): string[] {
@@ -83,10 +84,10 @@ export async function BriefingsSection() {
 
         {/* Empty state */}
         {briefings.length === 0 && (
-          <div className="bg-white border border-slate-200 rounded-xl p-10 text-center text-slate-400">
+          <Surface rung="card" className="p-10 text-center text-slate-400">
             <p className="text-base font-medium mb-1">Briefings coming soon</p>
             <p className="text-sm">Daily DPDPA briefings will appear here automatically.</p>
-          </div>
+          </Surface>
         )}
 
         {briefings.length > 0 && (
@@ -167,7 +168,7 @@ export async function BriefingsSection() {
                   <Link
                     key={briefing.id}
                     href={`/briefings/${briefing.slug}`}
-                    className="block bg-white border border-slate-200 rounded-xl p-4 hover:border-teal-300 hover:shadow-sm transition-all group"
+                    className={`block p-4 hover:border-teal-300 group ${surfaceClasses("card", { interactive: true })}`}
                   >
                     <Badge variant="gray" size="sm">
                       {getCategoryLabel(briefing.category)}

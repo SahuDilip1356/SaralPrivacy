@@ -5,6 +5,7 @@ import Link from "next/link";
 import { AlertTriangle, ArrowRight } from "lucide-react";
 import { VERDICT_PREVIEWS } from "@/lib/data/verdict-previews";
 import { trackEvent } from "@/lib/analytics";
+import { Surface } from "@/components/ui/Surface";
 
 // Beat 5 — "See a real verdict". Previews the REPORT OUTPUT (category breakdown
 // + band + top gap), not the hero's applicability card — that dedupe rule is
@@ -63,9 +64,10 @@ export function VerdictPreview() {
         </div>
 
         {/* report card */}
-        <div
+        <Surface
+          rung="card"
           aria-live="polite"
-          className="max-w-2xl mx-auto bg-white rounded-2xl border border-slate-200 shadow-card p-6"
+          className="max-w-2xl mx-auto p-6"
         >
           <div
             key={v.slug}
@@ -87,8 +89,12 @@ export function VerdictPreview() {
               </div>
             </div>
 
-            {/* category breakdown — the "real report" signal */}
-            <div className="space-y-2.5 mb-5">
+            {/* Category breakdown — the "real report" signal, and the first
+                place the ladder earns its keep: this is scored data being
+                read, not acted on, so it sits in a well INSIDE the card.
+                Before there were only two rungs, a panel nested in a card had
+                nowhere to go and this was a bare stack on white. */}
+            <Surface rung="sunken" className="space-y-2.5 mb-5 p-4">
               {v.categories.map((c) => (
                 <div key={c.label} className="flex items-center gap-3">
                   <span className="text-xs text-slate-600 w-32 shrink-0 leading-tight">
@@ -107,7 +113,7 @@ export function VerdictPreview() {
                   </span>
                 </div>
               ))}
-            </div>
+            </Surface>
 
             {/* top gap — fixed min-height so tab swaps don't shift the CTA */}
             <div className="border-t border-slate-100 pt-4 flex gap-2.5 min-h-[3.5rem]">
@@ -127,7 +133,7 @@ export function VerdictPreview() {
               <ArrowRight size={16} />
             </Link>
           </div>
-        </div>
+        </Surface>
       </div>
     </section>
   );

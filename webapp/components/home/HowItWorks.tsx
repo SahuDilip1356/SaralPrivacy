@@ -15,6 +15,8 @@ import {
 } from "lucide-react";
 import { ScoreDial } from "@/components/home/ScoreDial";
 import { trackEvent } from "@/lib/analytics";
+import { surfaceClasses } from "@/components/ui/Surface";
+import { cn } from "@/lib/utils";
 
 // Beat 4 — "How it works = do it now". The conversion spine: 4 live steps →
 // a DPDPA-ready milestone → a 3-way "keep it living" branch. Ported from the
@@ -230,7 +232,12 @@ export function HowItWorks() {
                   href={step.href}
                   onClick={() => trackEvent.hiwStepClick({ step: step.key })}
                   style={{ transitionDelay: `${i * 140}ms` }}
-                  className={`group relative w-full max-w-lg flex flex-wrap items-center gap-x-3.5 gap-y-2 rounded-xl border border-pearl-200 bg-white hover:border-pearl-300 px-4 py-3.5 ${reveal(i)}`}
+                  className={cn(
+                    "group relative w-full max-w-lg flex flex-wrap items-center gap-x-3.5 gap-y-2 px-4 py-3.5",
+                    surfaceClasses("card", { interactive: true }),
+                    "hover:border-pearl-300",
+                    reveal(i)
+                  )}
                 >
                   <span
                     className={`absolute -top-2 -right-2 w-6 h-6 rounded-full grid place-items-center text-xs font-semibold text-navy-700 ${step.badge}`}
@@ -369,12 +376,20 @@ export function HowItWorks() {
                   />
                 </>
               );
-              const base =
-                "flex items-center gap-2.5 rounded-xl border px-3.5 py-3";
+              const base = "flex items-center gap-2.5 px-3.5 py-3";
+              // Coming-soon sits in a well rather than on a card: the ladder's
+              // `sunken` rung already means "recessed, not actionable", which
+              // is exactly what a disabled leaf is. The dashed edge then reads
+              // as one more signal on top of a surface that already agrees
+              // with it, instead of carrying the whole message alone.
               return comingSoon ? (
                 <div
                   key={leaf.title}
-                  className={`${base} border-dashed border-pearl-300 bg-cloud-100 cursor-not-allowed opacity-75`}
+                  className={cn(
+                    base,
+                    surfaceClasses("sunken"),
+                    "rounded-xl border-dashed border-pearl-300 cursor-not-allowed opacity-75"
+                  )}
                   title="Coming soon"
                 >
                   {inner}
@@ -383,7 +398,12 @@ export function HowItWorks() {
                 <Link
                   key={leaf.title}
                   href={leaf.href as string}
-                  className={`group ${base} border-pearl-200 bg-white hover:border-teal-400 transition-colors`}
+                  className={cn(
+                    "group",
+                    base,
+                    surfaceClasses("card", { interactive: true }),
+                    "hover:border-teal-400 transition-colors"
+                  )}
                 >
                   {inner}
                 </Link>
