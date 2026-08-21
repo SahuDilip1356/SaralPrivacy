@@ -268,7 +268,7 @@ Twelve weekly themes taking a reader from *what is this law* to *what do I do th
 
 ## Phase 2 — Industry verticals (days 91–240)
 
-Thirty verticals, five consecutive days each, always in the same three beats: **what data you hold** (Assess) → **where it leaks** (Fix) → **what to do when someone asks** (Sustain). Shoot a vertical in one sitting.
+Thirty verticals, five consecutive days each. **A vertical sits in exactly one stage for all five of its days** — verticals 1–10 are Assess (*what data you hold*), 11–20 are Fix (*where it leaks*), 21–30 are Sustain (*what to do when someone asks*). So the stage sets the angle for the whole block and the five days vary the format. That also means a vertical never gets the other two angles: CA firms are Assess-only, fintech is Sustain-only. Shoot a vertical in one sitting.
 
 | Vertical | Days | Dates | Risk |
 |---|---|---|---|
