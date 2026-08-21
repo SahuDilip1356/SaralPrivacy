@@ -66,3 +66,62 @@ test("frequency caps: once per session, 7-day dismissal, permanent mute", () => 
     "mute is permanent"
   );
 });
+
+// ── Outcome layer §7.1/§7.3 ────────────────────────────────────────────────
+
+test("every sector page gets its own authored opener, not the generic line", () => {
+  const SLUGS = [
+    "ca-firms", "recruitment-agencies", "training-institutes", "d2c-brands",
+    "clinics-diagnostic-labs", "schools-colleges", "law-firms", "real-estate",
+    "hotels-travel", "pharmacies", "fintech-nbfc", "gyms-salons-spas",
+  ];
+  const seen = new Set<string>();
+  for (const slug of SLUGS) {
+    const trig = triggerForPage(`/industries/${slug}`);
+    assert.ok(trig, `${slug} has no trigger`);
+    assert.notEqual(
+      trig!.message,
+      "Would you like to check what this means for your business?",
+      `${slug} still shows the generic opener`
+    );
+    assert.ok(!seen.has(trig!.message), `${slug} reuses another sector's line`);
+    seen.add(trig!.message);
+  }
+});
+
+test("an unknown sector slug falls back rather than throwing", () => {
+  const trig = triggerForPage("/industries/not-a-real-sector");
+  assert.ok(trig);
+  assert.equal(trig!.message, "Would you like to check what this means for your business?");
+});
+
+test("the homepage opener is a question with answerable chips that fill slots", () => {
+  const trig = triggerForPage("/");
+  assert.ok(trig?.chips, "homepage opener has no chips");
+  assert.equal(trig!.chips!.length, 3);
+  for (const chip of trig!.chips!) {
+    assert.ok(chip.slot.length > 0, "chip writes no slot");
+    assert.ok(chip.value.length > 0);
+    assert.ok(chip.message.length > 0, "chip sends no message");
+  }
+});
+
+test("opener selection is a pure function of the path — no other source is read", () => {
+  // The no-tracking boundary (§7.3), enforced rather than merely documented.
+  // If someone later reaches for a visitor profile or a cross-session history
+  // to pick an opener, repeated calls stop agreeing and this fails.
+  for (const path of ["/", "/industries/pharmacies", "/learn/consent", "/faq", "/contact"]) {
+    const a = triggerForPage(path);
+    const b = triggerForPage(path);
+    assert.deepEqual(a, b, `${path} is not deterministic`);
+  }
+});
+
+test("suppression list survived the opener rewrite", () => {
+  for (const p of [
+    "/privacy", "/terms", "/consent-preferences", "/rights", "/subscribe",
+    "/unsubscribe", "/contact", "/assessment/ca-firms", "/tools/dpdpa-privacy-notice-generator",
+  ]) {
+    assert.equal(triggerForPage(p), null, `${p} is no longer suppressed`);
+  }
+});

@@ -645,6 +645,57 @@
         "/industries/hotels-travel",
         "/data-mapping"
       ]
+    },
+    {
+      "id": "lane-1",
+      "category": "outcome-lane",
+      "query": "Where does my business stand on DPDPA readiness?",
+      "accept": [
+        "/assessment",
+        "/learn/applicability"
+      ]
+    },
+    {
+      "id": "opener-1",
+      "category": "outcome-lane",
+      "query": "We already have a privacy notice. What should we do next for DPDPA?",
+      "accept": [
+        "/assessment",
+        "/learn/consent",
+        "/tools/dpdpa-privacy-notice-generator",
+        "/learn/applicability",
+        "/discovery"
+      ]
+    },
+    {
+      "id": "opener-2",
+      "category": "outcome-lane",
+      "query": "We already have a data inventory. What should we do next for DPDPA?",
+      "accept": [
+        "/assessment",
+        "/discovery",
+        "/data-mapping",
+        "/learn/applicability"
+      ]
+    },
+    {
+      "id": "opener-3",
+      "category": "outcome-lane",
+      "query": "We have neither a privacy notice nor a data inventory. Where should we begin?",
+      "accept": [
+        "/assessment",
+        "/learn/applicability",
+        "/discovery",
+        "/learn/what-is-dpdpa"
+      ]
+    },
+    {
+      "id": "esc-1",
+      "category": "escalation",
+      "query": "I want to talk to a human about this",
+      "accept": [
+        "/contact"
+      ]
     }
   ]
 }

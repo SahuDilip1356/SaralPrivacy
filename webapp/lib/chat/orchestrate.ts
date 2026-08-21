@@ -30,6 +30,16 @@ export interface ChatAction {
   url: string;
 }
 
+/**
+ * Why the human door opened this turn (outcome-layer spec §4.2/§6.1).
+ * Server-computed like every other ChatMeta field — the model cannot reach it.
+ */
+export type EscalationReason =
+  | "explicit_ask"
+  | "journey_stalled"
+  | "repeat_refusal"
+  | "negative_feedback";
+
 export interface ChatMeta {
   citations: ChatCitation[];
   actions: ChatAction[];
@@ -41,6 +51,12 @@ export interface ChatMeta {
   industry?: IndustrySlug;
   animation: { state: "pointing" | "unsure" | "speaking" };
   disclaimer: string;
+  /**
+   * Present when this turn should offer the human door. Absent when it should
+   * not — including when the session has already been offered once, which is
+   * the §2.1 rule that keeps Setu a guide rather than a closer.
+   */
+  escalation?: { reason: EscalationReason };
   /** HMAC over this answer, so the next turn can tell our transcript from a
    *  forged one. Empty when CHAT_HISTORY_SECRET is unset (see guard.ts). */
   sig?: string;
@@ -100,6 +116,8 @@ export interface TurnPlan {
   escalate: boolean;
   refuse: boolean;
   piiWarning: boolean;
+  /** Set when the human door should open this turn (§6.1). */
+  escalationReason?: EscalationReason;
 }
 
 /** Router rescue: an exact trigger phrase in the message is navigation-grade
@@ -152,7 +170,51 @@ export function planTurn(
   const refuse =
     retrieval.confidence === "low" && !glossary.best && routerRoutes.length === 0 && !escalate;
 
-  return { journey, industry, retrieval, glossary, routerRoutes, navIntent, escalate, refuse, piiWarning };
+  return {
+    journey,
+    industry,
+    retrieval,
+    glossary,
+    routerRoutes,
+    navIntent,
+    escalate,
+    refuse,
+    piiWarning,
+    escalationReason: detectEscalation({ escalate, refuse, journey, state }),
+  };
+}
+
+/**
+ * Outcome-layer §6.1. Three server-visible triggers, checked in order of how
+ * certain they are that a person is actually wanted. The fourth
+ * (negative_feedback) originates from a 👎 in the client and arrives by its
+ * own path.
+ *
+ * The offer-discipline gate comes first and is absolute: once a session has
+ * been offered the human door, it is never offered again. Setu asking twice
+ * is Setu selling, which §2.1 forbids.
+ */
+function detectEscalation(args: {
+  escalate: boolean;
+  refuse: boolean;
+  journey?: JourneyId;
+  state: ChatSessionState;
+}): EscalationReason | undefined {
+  const { escalate, refuse, journey, state } = args;
+  if (state.handoffOffered) return undefined;
+
+  if (escalate) return "explicit_ask";
+
+  // Two refusals back to back: the corpus does not cover what they need.
+  if (refuse && state.consecutiveRefusals >= 1) return "repeat_refusal";
+
+  // Same journey, still missing a slot, for a second turn running.
+  if (journey && state.stalledSlotTurns >= 1) {
+    const missing = journeyById(journey).slots.some((s) => !(s in state.factsConfirmed));
+    if (missing) return "journey_stalled";
+  }
+
+  return undefined;
 }
 
 /** Production entry point: Pinecone semantic search + rerank as the primary
@@ -296,5 +358,6 @@ export function buildMeta(plan: TurnPlan): ChatMeta {
     industry: plan.industry,
     animation: { state: refusal ? "unsure" : "pointing" },
     disclaimer: DISCLAIMER,
+    ...(plan.escalationReason ? { escalation: { reason: plan.escalationReason } } : {}),
   };
 }

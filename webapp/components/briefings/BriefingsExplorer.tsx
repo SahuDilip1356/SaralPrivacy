@@ -8,9 +8,9 @@ import {
 } from "lucide-react";
 import { formatDateShort } from "@/lib/utils";
 import {
-  STAGES, FORMATS, BRIEFING_SECTORS, FORMAT_SLUGS,
-  stageLabel, sectorLabel, formatLabel, stageJtbd, stageCta,
-  riskFor, RISK_LABEL, FACET_HEADERS, type RiskTier,
+  STAGES, FORMATS, BRIEFING_SECTORS,
+  stageLabel, sectorLabel, formatLabel, stageCta,
+  FACET_HEADERS,
 } from "@/lib/data/briefing-taxonomy";
 
 export interface ExplorerBriefing {
@@ -21,6 +21,7 @@ export interface ExplorerBriefing {
   date: string;
   readTime: number;
   image: string;    // infographic URL (or data URI); "" when none
+  infTitle: string; // infographic headline — the image's alt text; "" when none
   fixToday: string; // first action-checklist item; "" when none
   stage: string;    // from category
   sector: string;   // from industries[0]
@@ -28,12 +29,6 @@ export interface ExplorerBriefing {
 }
 
 const STAGE_SLUGS = STAGES.map((s) => s.slug);
-
-const RISK_CHIP: Record<RiskTier, string> = {
-  high:   "text-red-700 bg-red-100",
-  medium: "text-amber-800 bg-amber-100",
-  low:    "text-slate-600 bg-slate-100",
-};
 
 // Inline conversion bands, rotated through the results list.
 const INLINE_CTAS = [
@@ -188,11 +183,16 @@ export function BriefingsExplorer({ briefings }: { briefings: ExplorerBriefing[]
           {STAGES.map((s) => {
             const on = stages.has(s.slug);
             const c = stageCounts.get(s.slug) ?? 0;
+            // Same rule the format chips already use. It matters more here: every
+            // industry vertical carries exactly one stage, so most sector+stage
+            // pairs are empty and always will be — without this, picking a sector
+            // leaves three chips that lead nowhere.
+            if (c === 0 && !on) return null;
             return (
               <button key={s.slug} type="button" aria-pressed={on} title={s.hint}
                 onClick={() => toggle(stages, s.slug, setStages)}
                 className={`${chipBase} ${on ? "bg-navy-700 text-white" : "bg-slate-100 text-slate-600 hover:bg-slate-200"}`}>
-                {stageJtbd(s.slug)} {c}
+                {stageLabel(s.slug)} {c}
               </button>
             );
           })}
@@ -225,7 +225,7 @@ export function BriefingsExplorer({ briefings }: { briefings: ExplorerBriefing[]
         )}
         {[...stages].map((s) => (
           <button key={s} onClick={() => toggle(stages, s, setStages)} className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-navy-700 text-white">
-            {stageJtbd(s)} <X size={13} />
+            {stageLabel(s)} <X size={13} />
           </button>
         ))}
         {[...formats].map((f) => (
@@ -267,28 +267,53 @@ export function BriefingsExplorer({ briefings }: { briefings: ExplorerBriefing[]
   );
 }
 
-/** Action-desk briefing card: thumbnail + risk/sector/stage badges + fix-today + dual CTA. */
+/**
+ * Action-desk briefing card: navy infographic mat + sector/stage/format badges +
+ * fix-today + dual CTA.
+ *
+ * The mat is not decoration. Infographics are generated white-ground and
+ * text-dense (tools/generate_infographic.py), so `object-cover` cropped a ~4:3
+ * image to a 2:1 strip and lost a third of it — usually the headline. Containing
+ * the image shows all of it, and the 12px mat is what makes the hover zoom safe:
+ * scale-[1.04] grows into the padding and stops, so it never takes away something
+ * that was visible a moment earlier. The two only work as a pair.
+ *
+ * 16:9 rather than 4:3 because a contained image makes card height independent of
+ * the image's own aspect — the row stays level whatever shape the generator returns.
+ */
 function BriefingCard({ b }: { b: ExplorerBriefing }) {
-  const risk = riskFor(b.sector);
   const cta = stageCta(b.stage);
   const [imgOk, setImgOk] = useState(Boolean(b.image));
   return (
     <div className="group h-full flex flex-col rounded-xl border border-slate-200 bg-white overflow-hidden hover:border-teal-300 hover:shadow-sm transition-all">
-      {imgOk && b.image && (
-        /* eslint-disable-next-line @next/next/no-img-element */
-        <img src={b.image} alt="" loading="lazy" onError={() => setImgOk(false)}
-          className="w-full aspect-[2/1] object-cover bg-slate-100 border-b border-slate-100" />
-      )}
+      <div className="w-full aspect-[16/9] overflow-hidden bg-navy-700 group-hover:bg-navy-800 transition-colors p-3">
+        {imgOk && b.image ? (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img src={b.image} alt={b.infTitle ? `${b.infTitle} — DPDPA infographic` : `${b.title} — DPDPA infographic`}
+            loading="lazy" decoding="async" onError={() => setImgOk(false)}
+            className="w-full h-full object-contain rounded-md ring-1 ring-white/10 motion-safe:transition-transform motion-safe:duration-300 motion-safe:group-hover:scale-[1.04]" />
+        ) : (
+          /* No infographic that morning — a typographic panel keeps the row level. */
+          <div className="w-full h-full rounded-md flex flex-col items-center justify-center text-center px-4">
+            {STAGE_SLUGS.includes(b.stage) && (
+              <span className="text-teal-300 text-[11px] font-semibold uppercase tracking-wider">{stageLabel(b.stage)}</span>
+            )}
+            <span className="text-white/70 text-xs mt-1">DPDPA Daily Briefing</span>
+          </div>
+        )}
+      </div>
       <div className="p-5 flex flex-col flex-1">
         <div className="flex items-center gap-1.5 mb-2.5 flex-wrap">
-          <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${RISK_CHIP[risk]}`}>{RISK_LABEL[risk]}</span>
-          {b.sector !== "general" && (
-            <span className="text-[10px] font-semibold text-teal-800 bg-teal-100 px-2 py-0.5 rounded-full">{sectorLabel(b.sector)}</span>
-          )}
+          <span className="text-[10px] font-semibold text-teal-800 bg-teal-100 px-2 py-0.5 rounded-full">
+            {b.sector === "general" ? "All sectors" : sectorLabel(b.sector)}
+          </span>
           {STAGE_SLUGS.includes(b.stage) && (
             <span className="text-[10px] font-semibold text-navy-700 bg-navy-100 px-2 py-0.5 rounded-full">{stageLabel(b.stage)}</span>
           )}
-          <span className="ml-auto inline-flex items-center gap-2 text-[11px] text-slate-400">
+          {b.format && (
+            <span className="text-[10px] font-semibold text-slate-600 bg-slate-50 border border-slate-200 px-2 py-0.5 rounded-full">{formatLabel(b.format)}</span>
+          )}
+          <span className="ml-auto inline-flex items-center gap-2 text-[11px] text-slate-600">
             <span className="inline-flex items-center gap-1"><Calendar size={11} />{formatDateShort(b.date)}</span>
             <span className="inline-flex items-center gap-1"><Clock size={11} />{b.readTime} min</span>
           </span>

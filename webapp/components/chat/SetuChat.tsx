@@ -5,10 +5,11 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import Image from "next/image";
 import { X } from "lucide-react";
 import { ChatPanel } from "./ChatPanel";
+import { SetuStage } from "./SetuStage";
 import { useSetuChat } from "./useSetuChat";
+import { SETU_SURFACE } from "@/lib/chat/theme";
 import { t } from "@/lib/chat/strings";
 import { trackEvent } from "@/lib/analytics";
 import {
@@ -16,6 +17,7 @@ import {
   afterShown,
   canShowProactive,
   triggerForPage,
+  type PageTrigger,
   type ProactiveStore,
 } from "@/lib/chat/triggers";
 
@@ -55,9 +57,21 @@ function saveStore(store: ProactiveStore) {
 export default function SetuChat() {
   const pathname = usePathname() ?? "/";
   const [open, setOpen] = useState(false);
-  const [nudge, setNudge] = useState<string | null>(null);
+  // Carries the whole trigger, not just its text, so a qualification opener
+  // can offer its answer chips inline (§7.2).
+  const [nudge, setNudge] = useState<PageTrigger | null>(null);
   const launcherRef = useRef<HTMLButtonElement>(null);
-  const { messages, status, send, sendFeedback } = useSetuChat(pathname);
+  const {
+    messages,
+    status,
+    send,
+    sendFeedback,
+    state,
+    submitHandoff,
+    markHandoffOffered,
+    confirmFact,
+    clearSession,
+  } = useSetuChat(pathname);
 
   const openPanel = useCallback(
     (proactive: boolean) => {
@@ -80,7 +94,7 @@ export default function SetuChat() {
       const s = loadStore();
       if (!canShowProactive(s, Date.now())) return;
       saveStore(afterShown(s));
-      setNudge(trigger.message);
+      setNudge(trigger);
       trackEvent.chatProactiveShown({ page: pathname });
     };
 
@@ -123,7 +137,7 @@ export default function SetuChat() {
           className="fixed bottom-24 right-5 z-[70] w-[280px] rounded-xl border border-slate-200 bg-white p-3 shadow-xl"
         >
           <div className="flex items-start justify-between gap-2">
-            <p className="text-[15px] leading-snug text-[#121A2E]">{nudge}</p>
+            <p className="text-[15px] leading-snug text-[#121A2E]">{nudge.message}</p>
             <button
               type="button"
               onClick={() => dismissNudge(false)}
@@ -133,6 +147,27 @@ export default function SetuChat() {
               <X className="h-4 w-4" aria-hidden="true" />
             </button>
           </div>
+          {/* Qualification chips: answering fills a journey slot AND opens the
+              panel with the question already asked, so the opener costs the
+              visitor one tap instead of a typed sentence. */}
+          {nudge.chips && (
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {nudge.chips.map((chip) => (
+                <button
+                  key={chip.label}
+                  type="button"
+                  onClick={() => {
+                    confirmFact(chip.slot, chip.value);
+                    openPanel(true);
+                    send(chip.message);
+                  }}
+                  className="rounded-full border border-slate-300 bg-white px-2.5 py-1 text-[13px] font-medium text-[#121A2E] transition hover:bg-teal-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#207D78]"
+                >
+                  {chip.label}
+                </button>
+              ))}
+            </div>
+          )}
           <div className="mt-2 flex items-center gap-3">
             <button
               type="button"
@@ -159,9 +194,13 @@ export default function SetuChat() {
           onClick={() => openPanel(false)}
           aria-label={t("en", "launcherLabel")}
           aria-haspopup="dialog"
-          className="fixed bottom-5 right-5 z-[70] flex h-14 w-14 items-center justify-center rounded-full bg-[#121A2E] shadow-lg ring-2 ring-[#35B6AE]/40 transition hover:-translate-y-0.5 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#207D78] active:scale-95"
+          className="fixed bottom-5 right-5 z-[70] flex h-16 w-16 items-center justify-center rounded-full shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#207D78] active:scale-95"
+          style={{ backgroundColor: SETU_SURFACE }}
         >
-          <Image src="/setu-avatar.png" alt="" width={48} height={48} className="rounded-full" />
+          {/* The orb replaces the old static ring — its fresnel rim and halo
+              are the presence signal now, so no ring-2 class here. 64px rather
+              than the old 56: the halo needs room or it clips to a hairline. */}
+          <SetuStage state="idle" size={64} orb />
         </button>
       )}
       <ChatPanel
@@ -172,6 +211,10 @@ export default function SetuChat() {
         onSend={send}
         onFeedback={sendFeedback}
         pageUrl={pathname}
+        state={state}
+        onSubmitHandoff={submitHandoff}
+        onMarkHandoffOffered={markHandoffOffered}
+        onClearSession={clearSession}
       />
     </>
   );

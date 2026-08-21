@@ -6,6 +6,8 @@
 
 | Priority | File | What it is |
 |----------|------|------------|
+| **0 — Canonical** | `SETU_BINDU_CHATBOT_SPEC.md` | **The shipped spec (v2.4).** Supersedes the V2 motion spec below for anything build-related |
+| **0 — Canonical** | `SETU_OUTCOME_LAYER_SPEC.md` | Enhancement spec v1.0 — outcome lanes, human handoff, contextual openers, trust chrome. Extends v2.4; branch `feature/setu-outcome-layer` |
 | **1 — Read first** | `SaralPrivacy_Motion_Graphic_Chatbot_Spec_V2.md` | Strong product + motion + site-only spec |
 | 2 | `config/site-routing.json` | Topic → URL map |
 | 3 | `config/motion-states.json` | Rive animation state bridge |

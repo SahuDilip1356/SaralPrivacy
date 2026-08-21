@@ -29,10 +29,84 @@ export type TriggerCondition =
   | { kind: "dwell"; ms: number }
   | { kind: "scroll"; percent: number };
 
+/**
+ * A qualification opener (outcome-layer §7.2). Adapted from the AI-SDR
+ * pattern, with one change that matters: the question has to be genuinely
+ * useful to answer, not merely revealing. Each reply fills a journey slot the
+ * system prompt then never re-asks.
+ */
+export interface OpenerChip {
+  label: string;
+  /** Slot written into ChatSessionState.factsConfirmed. */
+  slot: string;
+  value: string;
+  /** Message sent on the user's behalf so the answer enters the normal loop. */
+  message: string;
+}
+
 export interface PageTrigger {
   condition: TriggerCondition;
   message: string;
+  chips?: OpenerChip[];
 }
+
+/**
+ * Authored per sector — never generated, same rule spec §2.3 already applies
+ * to chips. Each line names the sector's single biggest exposure, taken from
+ * the ranked hotspots in that sector's data-flow pack, so the opener is
+ * anchored to indexed content rather than to a guess.
+ */
+const SECTOR_OPENERS: Record<string, string> = {
+  "ca-firms":
+    "Client financial records are the biggest DPDPA exposure for most CA firms. Want to see where yours sit?",
+  "recruitment-agencies":
+    "Candidate CVs sitting in an ATS long after a role closes is the usual DPDPA gap for recruiters. Shall I show you what to check?",
+  "training-institutes":
+    "Student enrolment data is where most training institutes carry DPDPA risk. Want to see what applies to yours?",
+  "d2c-brands":
+    "Marketing consent and old order data are where D2C brands usually trip on DPDPA. Want me to walk you through it?",
+  "clinics-diagnostic-labs":
+    "Patient records carry the heaviest DPDPA obligations of any data a clinic holds. Want to see which ones apply to you?",
+  "schools-colleges":
+    "Children's data has stricter DPDPA rules than most schools expect. Shall I show you what changes?",
+  "law-firms":
+    "Client matter files are the DPDPA pressure point for law firms. Want to see how retention should work?",
+  "real-estate":
+    "Buyer and tenant KYC data is where real-estate businesses usually carry DPDPA risk. Want me to explain?",
+  "hotels-travel":
+    "Guest ID scans kept after checkout are the classic DPDPA problem in hospitality. Shall I show you what to do instead?",
+  pharmacies:
+    "Prescription records are the biggest DPDPA exposure most pharmacies have. Want to see where yours sit?",
+  "fintech-nbfc":
+    "Borrower KYC and credit data put fintechs and NBFCs among the most exposed under DPDPA. Want to see why?",
+  "gyms-salons-spas":
+    "Member contact lists used for marketing are where gyms and salons usually need DPDPA consent. Want me to explain?",
+};
+
+/**
+ * The homepage qualification question (§7.2). Answering it is useful in its
+ * own right, which is what separates this from a sales bot's opener.
+ */
+const HOME_OPENER_CHIPS: OpenerChip[] = [
+  {
+    label: "A privacy notice",
+    slot: "hasNotice",
+    value: "yes",
+    message: "We already have a privacy notice. What should we do next for DPDPA?",
+  },
+  {
+    label: "A data inventory",
+    slot: "hasInventory",
+    value: "yes",
+    message: "We already have a data inventory. What should we do next for DPDPA?",
+  },
+  {
+    label: "Neither yet",
+    slot: "hasNotice",
+    value: "no",
+    message: "We have neither a privacy notice nor a data inventory. Where should we begin?",
+  },
+];
 
 /** §2.4 table — which invitation fits this page, and when it may fire. */
 export function triggerForPage(pathname: string): PageTrigger | null {
@@ -44,13 +118,16 @@ export function triggerForPage(pathname: string): PageTrigger | null {
   if (path === "/") {
     return {
       condition: { kind: "dwell", ms: 35_000 },
-      message: "Not sure where to begin? I can point you to the right DPDPA tool.",
+      message: "Which of these does your business already have?",
+      chips: HOME_OPENER_CHIPS,
     };
   }
-  if (/^\/industries\/[a-z0-9-]+$/.test(path)) {
+  const sector = path.match(/^\/industries\/([a-z0-9-]+)$/)?.[1];
+  if (sector) {
     return {
       condition: { kind: "scroll", percent: 50 },
-      message: "Would you like to check what this means for your business?",
+      message:
+        SECTOR_OPENERS[sector] ?? "Would you like to check what this means for your business?",
     };
   }
   if (path.startsWith("/learn/") || path === "/learn") {
