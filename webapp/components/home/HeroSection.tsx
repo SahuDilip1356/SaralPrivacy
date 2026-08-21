@@ -94,29 +94,38 @@ export function HeroSection() {
               </div>
             </div>
 
-            {/* One filled action. The assessment stays reachable as a link
-                rather than a second button competing for the same glance —
+            {/* One filled action, and it has to be the one the headline
+                promised. The h1 offers a readiness verdict, so sending the
+                heaviest glance to Discovery made the visitor choose between
+                two tools before acting. Discovery is still here, but as the
+                escape hatch it actually is: the answer to "I can't assess
+                what I haven't mapped yet."
                 green-400 on navy-950 is 9.72:1, the brightest thing here. */}
-            <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 mb-6">
-              <Link
-                href={discoverHref}
-                onClick={() => trackEvent.landingCtaClick({ cta: "discover", sector: slug ?? "" })}
-                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-green-400 hover:bg-green-300 text-navy-950 font-semibold rounded-lg transition-colors text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-700"
-              >
-                {slug ? "See my data map" : "Discover my personal data"}
-                <ArrowRight size={18} />
-              </Link>
+            <div className="mb-5">
               <Link
                 href={assessHref}
                 onClick={() => trackEvent.landingCtaClick({ cta: "assess", sector: slug ?? "" })}
-                className="inline-flex items-center gap-1.5 text-base font-medium text-slate-200 hover:text-white underline underline-offset-4 decoration-white/30 hover:decoration-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-700 rounded"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-green-400 hover:bg-green-300 text-navy-950 font-semibold rounded-lg transition-colors text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-700"
               >
-                or take the assessment
+                Take free assessment
+                <ArrowRight size={18} />
               </Link>
             </div>
 
-            <p className="text-sm text-slate-400">
+            <p className="text-sm text-cloud-400">
               {frictionKillers.join(" · ")}
+            </p>
+
+            <p className="mt-4 text-sm text-cloud-400">
+              Not sure what personal data you hold?{" "}
+              <Link
+                href={discoverHref}
+                onClick={() => trackEvent.landingCtaClick({ cta: "discover", sector: slug ?? "" })}
+                className="font-medium text-slate-200 hover:text-white underline underline-offset-4 decoration-white/30 hover:decoration-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-700 rounded"
+              >
+                {slug ? "See my data map" : "Map it first"}
+                <span aria-hidden="true"> →</span>
+              </Link>
             </p>
           </div>
 
