@@ -30,6 +30,21 @@ import { trackEvent } from "@/lib/analytics";
 
 const MENU_CLOSE_DELAY_MS = 150;
 
+/**
+ * Hover-intent delay before a panel opens.
+ *
+ * Without it, dragging the pointer from the logo across to Resources flashes
+ * Readiness, Tools and Industries open on the way — the "diagonal problem".
+ * A trigger is ~90px wide, so a pointer crossing the bar at a normal 800+px/s
+ * dwells under 110ms on each one; 120ms filters the pass-through while still
+ * feeling immediate on a deliberate hover.
+ *
+ * It applies ONLY to the first open. Once a panel is up, moving along the bar
+ * switches instantly — by then the reader is clearly browsing the menu, and a
+ * delay there would feel broken rather than considered.
+ */
+const MENU_OPEN_DELAY_MS = 120;
+
 /** Panel ids are derived once so trigger and panel always agree. */
 const panelId = (label: string) => `nav-panel-${label.toLowerCase()}`;
 
@@ -41,27 +56,65 @@ export function Header() {
   const [templateModalOpen, setTemplateModalOpen] = useState(false);
 
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const openTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const triggerRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const navRef = useRef<HTMLDivElement | null>(null);
   const pathname = usePathname();
 
-  const open = useCallback((label: string) => {
+  // Mirrors openMenu so the hover-intent path can read the current value
+  // without taking it as a dependency — otherwise every open rebuilds the
+  // handlers and the pending timer is cancelled by the re-render.
+  const openMenuRef = useRef<string | null>(null);
+
+  const clearTimers = useCallback(() => {
     if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
-    setOpenMenu((current) => {
-      if (current !== label) trackEvent.navMenuOpen({ menu: label });
-      return label;
-    });
+    if (openTimerRef.current) clearTimeout(openTimerRef.current);
   }, []);
 
+  const open = useCallback(
+    (label: string) => {
+      clearTimers();
+      openMenuRef.current = label;
+      setOpenMenu((current) => {
+        if (current !== label) trackEvent.navMenuOpen({ menu: label });
+        return label;
+      });
+    },
+    [clearTimers]
+  );
+
   const close = useCallback(() => {
-    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+    clearTimers();
+    openMenuRef.current = null;
     setOpenMenu(null);
+  }, [clearTimers]);
+
+  /** Hover only. Click and keyboard call `open` directly — those are intent. */
+  const scheduleOpen = useCallback(
+    (label: string) => {
+      clearTimers();
+      // Already browsing the menu: switch now, no delay.
+      if (openMenuRef.current) {
+        open(label);
+        return;
+      }
+      openTimerRef.current = setTimeout(() => open(label), MENU_OPEN_DELAY_MS);
+    },
+    [clearTimers, open]
+  );
+
+  /** The pointer left a trigger before the intent delay elapsed. */
+  const cancelScheduledOpen = useCallback(() => {
+    if (openTimerRef.current) clearTimeout(openTimerRef.current);
   }, []);
 
   const scheduleClose = useCallback(() => {
-    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
-    closeTimerRef.current = setTimeout(() => setOpenMenu(null), MENU_CLOSE_DELAY_MS);
-  }, []);
+    clearTimers();
+    closeTimerRef.current = setTimeout(() => {
+      openMenuRef.current = null;
+      setOpenMenu(null);
+    }, MENU_CLOSE_DELAY_MS);
+  }, [clearTimers]);
 
   /** Escape closes and hands focus back to the trigger, per WAI-ARIA disclosure. */
   const closeAndRestoreFocus = useCallback(
@@ -78,11 +131,14 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // `close()` rather than a bare setState: it also clears the pending timers.
+  // A hover-intent timer that outlived a route change would pop a panel open
+  // on the page the reader just navigated to.
   useEffect(() => {
     setMobileOpen(false);
     setMobileSection(null);
-    setOpenMenu(null);
-  }, [pathname]);
+    close();
+  }, [pathname, close]);
 
   // Clicking anywhere outside the bar closes an open panel. Without this the
   // panel survives a click on page content, because the only close paths were
@@ -90,11 +146,11 @@ export function Header() {
   useEffect(() => {
     if (!openMenu) return;
     const onPointerDown = (e: PointerEvent) => {
-      if (navRef.current && !navRef.current.contains(e.target as Node)) setOpenMenu(null);
+      if (navRef.current && !navRef.current.contains(e.target as Node)) close();
     };
     document.addEventListener("pointerdown", onPointerDown);
     return () => document.removeEventListener("pointerdown", onPointerDown);
-  }, [openMenu]);
+  }, [openMenu, close]);
 
   // Allow any page CTA (e.g. TemplatesCTA component) to open the modal
   // by dispatching a "openTemplatesModal" CustomEvent — avoids prop-drilling
@@ -105,9 +161,7 @@ export function Header() {
     return () => window.removeEventListener("openTemplatesModal", handler);
   }, []);
 
-  useEffect(() => () => {
-    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
-  }, []);
+  useEffect(() => () => clearTimers(), [clearTimers]);
 
   /** Move focus between triggers with the arrow keys, wrapping at both ends. */
   function focusTriggerByOffset(label: string, offset: number) {
@@ -217,7 +271,13 @@ export function Header() {
                         // Guard on mouse: on touch, pointerenter fires with the
                         // tap and would open the panel a frame before the click
                         // handler toggles it shut again.
-                        if (e.pointerType === "mouse") open(menu.label);
+                        if (e.pointerType === "mouse") scheduleOpen(menu.label);
+                      }}
+                      onPointerLeave={(e) => {
+                        // The pointer was only passing through. Drop the pending
+                        // open; the panel-close path is handled by the bar's own
+                        // onMouseLeave so a hover into the panel still survives.
+                        if (e.pointerType === "mouse") cancelScheduledOpen();
                       }}
                     >
                       <button

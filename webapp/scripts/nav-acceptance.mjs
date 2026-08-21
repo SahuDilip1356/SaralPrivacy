@@ -180,6 +180,63 @@ const check = (name, pass, detail = '') => {
     await page.close();
   }
 
+  // ── 4. Hover intent ─────────────────────────────────────────────────────
+  // The diagonal problem: dragging the pointer across the bar must not flash
+  // every panel open on the way. Driven with synthetic pointer events rather
+  // than mouse.move() so the dwell time on each trigger is exact.
+  console.log('\n4. Hover intent (the diagonal problem)\n');
+  {
+    const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+    await page.goto(URL, { waitUntil: 'networkidle' });
+
+    // Real mouse movement, not synthetic PointerEvents: React synthesises
+    // onPointerEnter from pointerover delegation at the root, so a raw
+    // `dispatchEvent(new PointerEvent('pointerenter'))` never reaches the
+    // handler and the test would pass for the wrong reason.
+    const boxOf = async (label) => {
+      const b = await page.evaluateHandle((l) => {
+        return [...document.querySelectorAll('header nav[aria-label="Main"] button')]
+          .find((x) => x.textContent.trim().startsWith(l));
+      }, label);
+      return (await b.asElement().boundingBox());
+    };
+
+    const hover = async (label) => {
+      const b = await boxOf(label);
+      await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2);
+    };
+    /** Park the pointer well below the bar. */
+    const leaveBar = () => page.mouse.move(720, 600);
+
+    const openCount = () => page.evaluate(() =>
+      document.querySelectorAll('header nav[aria-label="Main"] button[aria-expanded="true"]').length);
+
+    // Pass through: dwell 60ms (under the 120ms threshold), then leave.
+    await leaveBar();
+    await hover('Readiness');
+    await page.waitForTimeout(60);
+    await leaveBar();
+    await page.waitForTimeout(300);
+    check('a pointer passing through opens nothing', (await openCount()) === 0);
+
+    // Deliberate hover: dwell past the threshold.
+    await hover('Readiness');
+    await page.waitForTimeout(320);
+    check('a deliberate hover does open', (await openCount()) === 1);
+
+    // Already browsing: switching must be immediate, not delayed again.
+    await hover('Tools');
+    await page.waitForTimeout(40);
+    const onTools = await page.evaluate(() => {
+      const b = [...document.querySelectorAll('header nav[aria-label="Main"] button')]
+        .find((x) => x.textContent.trim().startsWith('Tools'));
+      return b?.getAttribute('aria-expanded') === 'true';
+    });
+    check('switching between menus is instant once one is open', onTools);
+
+    await page.close();
+  }
+
   console.log(`\n${failures === 0 ? '✓ all navbar acceptance checks passed' : `✗ ${failures} check(s) failed`}\n`);
   await browser.close();
   process.exit(failures === 0 ? 0 : 1);
