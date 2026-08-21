@@ -85,6 +85,17 @@ export interface ChatSessionState {
   entryPageUrl: string;
   messageCount: number;
   consentToContact: boolean;
+  /**
+   * Escalation memory (outcome-layer spec §6.1). The server holds no
+   * transcript, so turn-to-turn signals ride in the client state that already
+   * round-trips on every request. These are HINTS, not authority: the worst a
+   * tampered value can do is open the human door a turn early, which is
+   * harmless. Both are clamped in sanitizeState.
+   */
+  consecutiveRefusals: number; // reset to 0 on any answered turn
+  stalledSlotTurns: number;    // reset to 0 when the journey moves or a slot fills
+  /** One handoff offer per session — set once offered, never re-offered (§2.1). */
+  handoffOffered: boolean;
 }
 
 export function createInitialState(sessionId: string, entryPageUrl: string): ChatSessionState {
@@ -95,7 +106,15 @@ export function createInitialState(sessionId: string, entryPageUrl: string): Cha
     entryPageUrl,
     messageCount: 0,
     consentToContact: false,
+    consecutiveRefusals: 0,
+    stalledSlotTurns: 0,
+    handoffOffered: false,
   };
+}
+
+/** Clamp an untrusted client counter into a small non-negative integer. */
+function counter(v: unknown, max = 10): number {
+  return typeof v === "number" && Number.isFinite(v) ? Math.min(Math.max(Math.trunc(v), 0), max) : 0;
 }
 
 /** Sanitize an untrusted client-supplied state object into a safe shape. */
@@ -130,5 +149,8 @@ export function sanitizeState(raw: unknown, sessionId: string, pageUrl: string):
       : [],
     messageCount: typeof s.messageCount === "number" ? Math.min(s.messageCount, 500) : 0,
     consentToContact: s.consentToContact === true,
+    consecutiveRefusals: counter(s.consecutiveRefusals),
+    stalledSlotTurns: counter(s.stalledSlotTurns),
+    handoffOffered: s.handoffOffered === true,
   };
 }

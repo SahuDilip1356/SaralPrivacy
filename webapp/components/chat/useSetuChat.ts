@@ -57,10 +57,15 @@ export function useSetuChat(pageUrl: string) {
   const [status, setStatus] = useState<ChatStatus>("idle");
   const sessionIdRef = useRef<string>("");
   const stateRef = useRef<ChatSessionState | null>(null);
+  // A render-visible copy for the memory panel. The ref stays the source of
+  // truth for request payloads — mirroring it avoids threading state through
+  // every call site just so one disclosure panel can re-render.
+  const [stateSnapshot, setStateSnapshot] = useState<ChatSessionState | null>(null);
 
   useEffect(() => {
     sessionIdRef.current = loadSessionId();
     stateRef.current = loadState(sessionIdRef.current, pageUrl);
+    setStateSnapshot({ ...stateRef.current });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -70,6 +75,7 @@ export function useSetuChat(pageUrl: string) {
     } catch {
       /* private mode — state stays in memory */
     }
+    setStateSnapshot(stateRef.current ? { ...stateRef.current } : null);
   }, []);
 
   const send = useCallback(
@@ -144,12 +150,28 @@ export function useSetuChat(pageUrl: string) {
 
         if (meta && stateRef.current) {
           const s = stateRef.current;
+          const priorJourney = s.journey;
           s.messageCount += 1;
           if (meta.industry) s.industry = meta.industry;
           if (meta.journey) s.journey = meta.journey;
           s.lastTopic = meta.citations[0]?.title ?? s.lastTopic;
           for (const c of meta.citations) {
             if (!s.pagesShown.includes(c.url)) s.pagesShown.push(c.url);
+          }
+
+          // Escalation memory (spec §6.1). The server holds no transcript, so
+          // these two counters are how a "second turn running" signal survives
+          // between requests. Both are re-clamped server-side on arrival.
+          s.consecutiveRefusals = meta.refusal ? s.consecutiveRefusals + 1 : 0;
+          s.stalledSlotTurns =
+            meta.journey && meta.journey === priorJourney ? s.stalledSlotTurns + 1 : 0;
+
+          // The event fires when the door OPENS, not when it is walked
+          // through — a user who is offered a human and declines is exactly
+          // the signal that was missing before (chatEscalation was defined in
+          // lib/analytics.ts and called from nowhere).
+          if (meta.escalation) {
+            trackEvent.chatEscalation({ reason: meta.escalation.reason });
           }
           persistState();
         }
@@ -183,5 +205,91 @@ export function useSetuChat(pageUrl: string) {
     [messages, pageUrl]
   );
 
-  return { messages, status, send, sendFeedback };
+  /**
+   * Post the consented handoff. The packet itself is assembled server-side
+   * from sanitised state — the client sends raw inputs and never authors the
+   * object, the same rule that keeps ChatMeta trustworthy.
+   */
+  const submitHandoff = useCallback(
+    async (contact: { name: string; email: string }, reason: string) => {
+      const lastUser = [...messages].reverse().find((m) => m.role === "user");
+      try {
+        const res = await fetch("/api/chat/handoff", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            sessionId: sessionIdRef.current,
+            name: contact.name,
+            email: contact.email,
+            consent: true,
+            state: stateRef.current,
+            pageUrl,
+            reason,
+            lastUserMessage: lastUser?.text ?? "",
+          }),
+        });
+        if (!res.ok) return { ok: false };
+        if (stateRef.current) {
+          stateRef.current.consentToContact = true;
+          stateRef.current.handoffOffered = true;
+          persistState();
+        }
+        trackEvent.chatHandoffSubmitted({
+          journey: stateRef.current?.journey,
+          industry: stateRef.current?.industry,
+        });
+        return { ok: true };
+      } catch {
+        return { ok: false };
+      }
+    },
+    [messages, pageUrl, persistState]
+  );
+
+  /** One offer per session (§6.1) — set whether they accept or decline. */
+  const markHandoffOffered = useCallback(() => {
+    if (stateRef.current && !stateRef.current.handoffOffered) {
+      stateRef.current.handoffOffered = true;
+      persistState();
+    }
+  }, [persistState]);
+
+  /** Record an answer to a qualification opener without a model round-trip. */
+  const confirmFact = useCallback(
+    (slot: string, value: string) => {
+      if (!stateRef.current) return;
+      stateRef.current.factsConfirmed[slot] = value;
+      stateRef.current.stalledSlotTurns = 0;
+      persistState();
+      trackEvent.chatOpenerAnswered({ page: pageUrl, slot });
+    },
+    [pageUrl, persistState]
+  );
+
+  /** "Forget this session" (§8.1) — everything Setu holds, gone. */
+  const clearSession = useCallback(() => {
+    try {
+      localStorage.removeItem(STATE_KEY);
+      localStorage.removeItem(SESSION_KEY);
+    } catch {
+      /* private mode — in-memory reset below still applies */
+    }
+    sessionIdRef.current = loadSessionId();
+    stateRef.current = createInitialState(sessionIdRef.current, pageUrl);
+    setStateSnapshot({ ...stateRef.current });
+    setMessages([]);
+    trackEvent.chatMemoryCleared();
+  }, [pageUrl]);
+
+  return {
+    messages,
+    status,
+    send,
+    sendFeedback,
+    state: stateSnapshot,
+    submitHandoff,
+    markHandoffOffered,
+    confirmFact,
+    clearSession,
+  };
 }

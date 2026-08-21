@@ -154,6 +154,23 @@ async function main() {
     { key: "infographic_url",      type: "string",  size: 500,   required: false },
   ]);
 
+  // Setu chatbot feedback (SETU_BINDU_CHATBOT_SPEC §9.2). Declared in
+  // lib/appwrite.ts as COLLECTIONS.CHAT_FEEDBACK and written by
+  // /api/chat/feedback since launch, but never actually created — the route
+  // degrades gracefully on failure, so every 👍/👎 has been silently dropped
+  // with no visible symptom. Defining it here makes it reproducible rather
+  // than a console artefact someone has to remember to hand-make.
+  await createCollection("chat_feedback", "Setu Chat Feedback", [
+    { key: "sessionId",         type: "string", size: 64,   required: true  },
+    { key: "turnId",            type: "string", size: 64,   required: true  },
+    { key: "helpful",           type: "boolean",            required: false },
+    { key: "reason",            type: "string", size: 500,  required: false },
+    { key: "pageUrl",           type: "string", size: 200,  required: false },
+    { key: "failureKind",       type: "string", size: 20,   required: false },
+    { key: "redactedQuestion",  type: "string", size: 2000, required: false },
+    { key: "ts",                type: "string", size: 30,   required: true  },
+  ]);
+
   console.log("\n✅ Setup complete. Collections are ready in Appwrite.");
 }
 

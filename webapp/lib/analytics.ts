@@ -294,4 +294,31 @@ export const trackEvent = {
 
   chatProactiveDismissed: (params: { page: string; muted: boolean }) =>
     gtag("chat_proactive_dismissed", { event_category: "engagement", ...params }),
+
+  // ── Outcome layer (SETU_OUTCOME_LAYER_SPEC §4.3) ────────────────────────
+  // Same rule as above: no message text, no PII. Lane, reason, slot and
+  // counts only. Each one verified on preview before merge — the 23 silent
+  // no-ops this file already carries the scar of are the reason that is a gate
+  // and not a nicety.
+  chatLaneSelected: (params: { lane: "learn" | "assess" | "human"; page: string }) =>
+    gtag("chat_lane_selected", { event_category: "engagement", ...params }),
+
+  chatHandoffOpened: (params: { reason: string; journey?: string; industry?: string }) =>
+    gtag("chat_handoff_opened", { event_category: "lead", ...params }),
+
+  chatHandoffSubmitted: (params: { journey?: string; industry?: string }) =>
+    gtag("chat_handoff_submitted", { event_category: "lead", ...params }),
+
+  /** Form shown, panel closed without submitting. fieldsFilled 0–3 locates drop-off. */
+  chatHandoffAbandoned: (params: { reason: string; fieldsFilled: number }) =>
+    gtag("chat_handoff_abandoned", { event_category: "lead", ...params }),
+
+  chatOpenerAnswered: (params: { page: string; slot: string }) =>
+    gtag("chat_opener_answered", { event_category: "engagement", ...params }),
+
+  chatMemoryViewed: () =>
+    gtag("chat_memory_viewed", { event_category: "engagement" }),
+
+  chatMemoryCleared: () =>
+    gtag("chat_memory_cleared", { event_category: "engagement" }),
 };

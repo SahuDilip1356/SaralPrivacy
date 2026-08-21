@@ -13,6 +13,7 @@
 // prefers-reduced-motion removes all of it (spec §8.6).
 
 import Image from "next/image";
+import { SetuOrb } from "./SetuOrb";
 
 export type AvatarState =
   | "idle"
@@ -35,19 +36,48 @@ const RING: Record<AvatarState, string> = {
   error: "ring-red-400/70",
 };
 
-export function SetuStage({ state, size = 40 }: { state: AvatarState; size?: number }) {
+/**
+ * `orb` opts this instance into the WebGL presence sphere (SetuOrb).
+ *
+ * Deliberately opt-in rather than default: MessageList mounts one SetuStage
+ * per Setu turn, so defaulting to on would spawn a WebGL context per message
+ * and hit the browser's ~16-context ceiling inside a normal conversation.
+ * The orb belongs where there is exactly one of it and it is big enough to
+ * read — the launcher and the panel header.
+ */
+export function SetuStage({
+  state,
+  size = 40,
+  orb = false,
+}: {
+  state: AvatarState;
+  size?: number;
+  orb?: boolean;
+}) {
+  // With the orb the character sits inboard, so the simmering rim reads all
+  // the way round and the orb's own fresnel replaces the flat ring.
+  const inset = Math.round(size * 0.64);
+
   return (
     <span
-      className={`sp-stage sp-${state} relative inline-block shrink-0 rounded-full ring-2 ${RING[state]}`}
+      className={`sp-stage sp-${state} relative inline-block shrink-0 rounded-full ${
+        orb ? "" : `ring-2 ${RING[state]}`
+      }`}
       style={{ width: size, height: size }}
       aria-hidden="true"
     >
+      {orb && <SetuOrb state={state} size={size} />}
       <Image
         src="/setu-avatar.png"
         alt=""
         width={size * 2}
         height={size * 2}
-        className="h-full w-full rounded-full object-cover"
+        className={
+          orb
+            ? "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full object-cover"
+            : "h-full w-full rounded-full object-cover"
+        }
+        style={orb ? { width: inset, height: inset } : undefined}
         priority={false}
       />
       <style jsx>{`
