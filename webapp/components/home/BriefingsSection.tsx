@@ -1,58 +1,48 @@
 import Link from "next/link";
-import { ArrowRight, Calendar, Clock, CheckCircle } from "lucide-react";
-import { formatDateShort, getCategoryLabel } from "@/lib/utils";
-import { Badge } from "@/components/ui/Badge";
+import { ArrowRight } from "lucide-react";
 import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
+import { BriefingsDeck, type DeckBriefing } from "@/components/home/BriefingsDeck";
 
-function tryParseArray(v: unknown): string[] {
-  if (Array.isArray(v)) return v as string[];
-  if (typeof v === "string") {
-    try {
-      const p = JSON.parse(v);
-      return Array.isArray(p) ? p : [];
-    } catch {
-      return [];
-    }
-  }
-  return [];
+/** How many briefings the deck fans. Its geometry is tuned for exactly this many. */
+const DECK_SIZE = 7;
+
+function tryParse<T>(v: unknown, fallback: T): T {
+  if (typeof v !== "string") return (v as T) ?? fallback;
+  try { return JSON.parse(v) as T; } catch { return fallback; }
 }
 
-// Normalise Appwrite doc to the shape the cards expect
-function normalise(doc: any) {
+// Normalise an Appwrite doc into the deck's shape. Facets ride on existing
+// attributes: Stage -> category, Sector -> industries[0] (see briefing-taxonomy).
+function normalise(doc: any): DeckBriefing {
   const raw = doc.infographic_base64 || "";
+  const industries = tryParse<string[]>(doc.industries, ["general"]);
   return {
     id:       doc.$id,
     slug:     doc.slug,
     title:    doc.title,
-    excerpt:  doc.excerpt || doc.summary?.slice(0, 200) || "",
     date:     doc.published_at || doc.created_at || doc.$createdAt,
-    category: doc.category || "compliance-guidance",
     readTime: doc.read_time || 5,
-    featured: doc.featured ?? false,
     // Appwrite Storage URL (new) or base64 data URI (legacy) — same unpack as the detail page
     image:    !raw ? "" : raw.startsWith("https://") ? raw : `data:image/jpeg;base64,${raw}`,
-    // top 2–3 action items for the featured card
-    bullets:  tryParseArray(doc.action_checklist).slice(0, 3),
+    infTitle: tryParse<{ inf_title?: string }>(doc.why_it_matters, {}).inf_title || "",
+    stage:    doc.category || "",
+    sector:   industries[0] || "general",
   };
 }
 
 export async function BriefingsSection() {
   // Fetch latest published briefings from Appwrite
-  let briefings: ReturnType<typeof normalise>[] = [];
+  let briefings: DeckBriefing[] = [];
   try {
     const result = await databases.listDocuments(DB_ID, COLLECTIONS.BRIEFINGS, [
       Query.equal("status", ["sent", "approved"]),
       Query.orderDesc("$createdAt"),
-      Query.limit(10),
+      Query.limit(DECK_SIZE),
     ]);
     briefings = result.documents.map(normalise);
   } catch (err) {
     console.error("[BriefingsSection] Appwrite fetch failed:", err);
   }
-
-  // Pick featured (explicit flag, else newest)
-  const featured = briefings.find((b) => b.featured) ?? briefings[0] ?? null;
-  const latest   = briefings.filter((b) => b !== featured).slice(0, 4);
 
   return (
     <section className="py-20 bg-cloud-50">
@@ -90,113 +80,17 @@ export async function BriefingsSection() {
         )}
 
         {briefings.length > 0 && (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Featured briefing — text + bullets + infographic (fills the card) */}
-            {featured && (
-              <div className={latest.length > 0 ? "lg:col-span-2" : "lg:col-span-3"}>
-                <Link href={`/briefings/${featured.slug}`} className="block h-full">
-                  <div className="bg-navy-700 rounded-xl overflow-hidden h-full flex flex-col lg:flex-row hover:bg-navy-800 transition-colors group">
-                    {/* text */}
-                    <div className={`p-7 flex flex-col min-w-0 ${featured.image ? "lg:w-3/5" : "w-full"}`}>
-                      <div className="flex items-center gap-2 mb-4">
-                        <Badge variant="teal">Latest</Badge>
-                        <Badge variant="amber">{getCategoryLabel(featured.category)}</Badge>
-                      </div>
-                      <h3 className="text-xl font-semibold text-white leading-snug mb-3 group-hover:text-teal-300 transition-colors">
-                        {featured.title}
-                      </h3>
-                      <p className="text-slate-300 text-sm leading-relaxed mb-4">
-                        {featured.excerpt}
-                      </p>
-
-                      {featured.bullets.length > 0 && (
-                        <ul className="space-y-2 mb-5">
-                          {featured.bullets.map((b) => (
-                            <li key={b} className="flex items-start gap-2 text-slate-300 text-sm">
-                              <CheckCircle size={15} className="text-teal-400 mt-0.5 shrink-0" />
-                              <span className="leading-snug">{b}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-
-                      <div className="mt-auto pt-2 flex items-center justify-between">
-                        <div className="flex items-center gap-3 text-slate-400 text-xs">
-                          <span className="flex items-center gap-1">
-                            <Calendar size={12} />
-                            {formatDateShort(featured.date)}
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <Clock size={12} />
-                            {featured.readTime} min read
-                          </span>
-                        </div>
-                        <span className="text-green-400 text-sm font-semibold group-hover:gap-2 flex items-center gap-1 transition-all">
-                          Read briefing
-                          <ArrowRight size={14} />
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* infographic — fills the right side (the old empty space).
-                        object-contain + navy panel: portrait infographics show
-                        whole (no crop), min-w-0 + overflow-hidden stops overlap. */}
-                    {featured.image && (
-                      <div className="lg:w-2/5 shrink-0 min-w-0 overflow-hidden bg-navy-900 flex items-center justify-center p-3">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={featured.image}
-                          alt={`${featured.title} — DPDPA infographic`}
-                          loading="lazy"
-                          className="max-w-full h-48 lg:h-full w-auto object-contain rounded-lg"
-                        />
-                      </div>
-                    )}
-                  </div>
-                </Link>
-              </div>
-            )}
-
-            {/* Latest updates list */}
-            {latest.length > 0 && (
-              <div className="space-y-3">
-                <h3 className="text-sm font-semibold text-slate-600 uppercase tracking-wider mb-4">
-                  Latest Updates
-                </h3>
-                {latest.map((briefing) => (
-                  <Link
-                    key={briefing.id}
-                    href={`/briefings/${briefing.slug}`}
-                    className="block bg-white border border-slate-200 rounded-xl p-4 hover:border-teal-300 hover:shadow-sm transition-all group"
-                  >
-                    <Badge variant="gray" size="sm">
-                      {getCategoryLabel(briefing.category)}
-                    </Badge>
-                    <h4 className="text-sm font-semibold text-navy-700 mt-2 leading-snug group-hover:text-green-900 transition-colors line-clamp-2">
-                      {briefing.title}
-                    </h4>
-                    <div className="flex items-center gap-3 text-slate-400 text-xs mt-2">
-                      <span className="flex items-center gap-1">
-                        <Calendar size={11} />
-                        {formatDateShort(briefing.date)}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Clock size={11} />
-                        {briefing.readTime} min
-                      </span>
-                    </div>
-                  </Link>
-                ))}
-                <Link
-                  href="/briefings"
-                  className="block text-center py-3 text-sm font-semibold text-green-700 hover:text-green-900 border border-dashed border-green-300 rounded-xl hover:bg-green-50 transition-colors"
-                >
-                  Browse all briefings →
-                </Link>
-              </div>
-            )}
-          </div>
+          <BriefingsDeck briefings={briefings} />
         )}
+
+        {briefings.length > 0 && (
+          <p className="text-slate-600 text-xs mt-6 text-center lg:text-left">
+            <span className="hidden lg:inline">Hover a card to bring it forward.</span>
+            <span className="lg:hidden">Swipe to browse.</span>
+            {" "}One briefing every morning, 9 AM IST.
+          </p>
+        )}
+
       </div>
     </section>
   );

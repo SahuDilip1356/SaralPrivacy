@@ -14,6 +14,9 @@ import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 import { WhitepaperCTA } from "@/components/cta/WhitepaperCTA";
 import { TemplatesCTA } from "@/components/cta/TemplatesCTA";
 import { InBodyToolLink } from "@/components/briefings/InBodyToolLink";
+import {
+  STAGE_SLUGS, FORMAT_SLUGS, stageLabel, sectorLabel, formatLabel,
+} from "@/lib/data/briefing-taxonomy";
 
 export const revalidate = 1800; // ISR — re-render at most every 30 min
 
@@ -343,6 +346,13 @@ export default async function BriefingDetailPage({ params }: Props) {
       .map((b) => ({ id: b.id, slug: b.slug, title: b.title, date: b.date, category: b.category }));
   }
 
+  // Discovery facets for the header chips. Sector rides on industries[0] and
+  // Format on the first tag that is a known format slug — the same unpacking
+  // the explorer does, so the chips can never disagree with the filters.
+  const briefingSector: string = (briefing.industries as string[] | undefined)?.[0] || "general";
+  const briefingFormat: string =
+    ((briefing.tags as string[] | undefined) ?? []).find((t) => FORMAT_SLUGS.has(t)) ?? "";
+
   return (
     <>
       {articleSchema(
@@ -382,6 +392,24 @@ export default async function BriefingDetailPage({ params }: Props) {
                       {briefing.themeLabel && (
                         <span className="text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full">
                           {briefing.themeLabel}
+                        </span>
+                      )}
+                    </div>
+                    {/* The same three facets the explorer filters on. Without these a
+                        reader who narrows to "Fix" and clicks through lands on a page
+                        with no sign of why it matched. */}
+                    <div className="flex flex-wrap items-center gap-1.5 mb-3">
+                      <span className="text-[11px] font-semibold text-teal-800 bg-teal-100 px-2.5 py-1 rounded-full">
+                        {briefingSector === "general" ? "All sectors" : sectorLabel(briefingSector)}
+                      </span>
+                      {STAGE_SLUGS.has(briefing.category) && (
+                        <span className="text-[11px] font-semibold text-navy-700 bg-navy-100 px-2.5 py-1 rounded-full">
+                          {stageLabel(briefing.category)}
+                        </span>
+                      )}
+                      {briefingFormat && (
+                        <span className="text-[11px] font-semibold text-slate-600 bg-slate-50 border border-slate-200 px-2.5 py-1 rounded-full">
+                          {formatLabel(briefingFormat)}
                         </span>
                       )}
                     </div>

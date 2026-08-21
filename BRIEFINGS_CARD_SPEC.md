@@ -1,9 +1,47 @@
 # Briefing cards + classification — assessment and spec
 
 **Branch:** `claude/briefings-card-design` (parallel to `claude/daily-briefings-topics-qe6lh6`)
-**Status:** assessment for decision. Nothing implemented yet.
+**Status:** decided; phase 1 built. Phases 2–4 open.
 **Scope:** the `/briefings` explorer card and its three facets — Stage, Sector, Format —
 plus the risk chip; the reference is the Pathlock *Featured Resources* card treatment.
+
+---
+
+## Decisions taken
+
+| # | Decision | Outcome |
+|---|---|---|
+| 1 | Risk chip | **Dropped** from the card. `riskFor()` stays for use elsewhere. |
+| 2 | Navy mat vs full navy card | **Mat only** (variant B). Variant C not built. |
+| 3 | Carousel | **Yes, on the homepage** — 7 briefings, overlapping, hover reveals. |
+| 4 | The diagonal | *Still open.* The one-line dead-chip fix shipped regardless, since every option needs it. |
+| 5 | Infographic palette | **No change.** The generator keeps `#1B3A5C` / `#F4941B`. |
+
+### Shipped in phase 1
+
+- Navy mat + `object-contain` + hover zoom on the archive card (§4.1, §4.2)
+- Typographic navy panel when a briefing has no infographic, so grid rows stay level
+- Risk chip out, Format chip in; `general` now reads *All sectors* instead of showing nothing
+- Zero-count stage chips hidden — closes the dead end in F1
+- One stage vocabulary: `Learn / Assess / Fix / Sustain` on chips **and** filters
+- The three facet chips echoed on `/briefings/[slug]`
+- Descriptive `alt` from the infographic's own headline (`inf_title`)
+- `BriefingsDeck` — the homepage fan (§4.5)
+
+`muted-text-on-light` went 279 → 276 and the ratchet was re-recorded to hold the gain.
+
+### Not shipped, and why
+
+Phases 2 and 3 change what the daily pipeline writes and need a backfill against
+production Appwrite. This environment has no credentials for it and
+`cloud.appwrite.io` is outside its egress allowlist, so the code change and the
+data migration could not be verified together. They are unchanged and still
+described below.
+
+**One consequence to know about:** the Format chip is now visible while its
+derivation is still the one F3 describes — it labels the infographic, not the
+article. On the new card that reads better than it did (the picture it describes
+is right there in the mat), but §4.3 is still the fix.
 
 ---
 

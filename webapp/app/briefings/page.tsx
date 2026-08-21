@@ -57,6 +57,10 @@ function normaliseDoc(doc: any): ExplorerBriefing {
   // "Fix this today" one-liner = the first action checklist item (already stored).
   const checklist: string[] = tryParse(doc.action_checklist, []);
   const fixToday = (checklist.find(Boolean) || "").toString();
+  // The infographic's own headline rides inside the why_it_matters envelope
+  // (the infographic_title attribute was at capacity). It is the honest alt text
+  // now that the image is the card's most prominent element.
+  const infTitle: string = tryParse(doc.why_it_matters, {})?.inf_title || "";
   return {
     id:       doc.$id,
     slug:     doc.slug,
@@ -64,6 +68,7 @@ function normaliseDoc(doc: any): ExplorerBriefing {
     excerpt:  doc.excerpt || doc.summary?.slice(0, 200) || "",
     date:     doc.published_at || doc.created_at || doc.$createdAt,
     image,
+    infTitle,
     fixToday,
     readTime: doc.read_time || 5,
     stage:    doc.category || "",          // Stage facet
