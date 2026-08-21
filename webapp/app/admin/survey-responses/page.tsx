@@ -8,7 +8,7 @@ function ScoreBadge({ band }: { band: string }) {
   const map: Record<string, string> = {
     "High Risk":     "bg-red-100 text-red-700",
     "Moderate Risk": "bg-amber-100 text-amber-700",
-    "Low Risk":      "bg-green-100 text-green-700",
+    "Low Risk":      "bg-green-100 text-green-800",
   };
   const cls = map[band] || "bg-slate-100 text-slate-500";
   return (

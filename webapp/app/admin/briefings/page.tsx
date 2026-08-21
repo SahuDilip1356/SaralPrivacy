@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 const STATUS_MAP: Record<string, { label: string; color: string }> = {
   draft:    { label: "Draft",    color: "bg-amber-100 text-amber-700"  },
   approved: { label: "Approved", color: "bg-blue-100 text-blue-700"    },
-  sent:     { label: "Sent",     color: "bg-green-100 text-green-700"  },
+  sent:     { label: "Sent",     color: "bg-green-100 text-green-800"  },
 };
 
 export default function AdminBriefingsPage() {

@@ -66,6 +66,14 @@ check "low-contrast-green-text" \
   "green-600 text measures 3.4-3.8:1 on light surfaces. Use green-700 (5.48:1) or green-800." \
   "$(grep -rEn 'text-green-600' app components --include="*.tsx" 2>/dev/null)"
 
+# green-700 is the right ink on WHITE (5.48:1) but not on the green-100 chip
+# fill, where it drops to 4.48:1 — under the bar by a hair, which is why it
+# survived every earlier sweep. Matched per line rather than inside one
+# className, so the { bg: "...", text: "..." } style maps are caught too.
+check "green-on-green" \
+  "text-green-700 on a green-100 fill is 4.48:1. Use text-green-800 (6.28:1)." \
+  "$(grep -rn 'bg-green-100' app components --include="*.tsx" 2>/dev/null | grep 'text-green-700')"
+
 # slate-400 is CORRECT on navy (6.75:1) and wrong on light (2.4-2.6:1), so the
 # baseline carries the legitimate dark-surface uses. A rise means someone added
 # muted text to a light surface.

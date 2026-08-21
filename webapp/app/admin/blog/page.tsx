@@ -23,7 +23,7 @@ interface BlogPost {
 const STATUS_MAP: Record<string, { label: string; color: string }> = {
   draft:     { label: "Draft",     color: "bg-slate-100 text-slate-600"  },
   review:    { label: "In Review", color: "bg-amber-100 text-amber-700"  },
-  published: { label: "Published", color: "bg-green-100 text-green-700"  },
+  published: { label: "Published", color: "bg-green-100 text-green-800"  },
 };
 
 const LANE_MAP: Record<string, { label: string; color: string }> = {

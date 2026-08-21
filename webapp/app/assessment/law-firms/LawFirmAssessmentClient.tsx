@@ -402,7 +402,7 @@ export default function LawFirmAssessmentClient() {
               <ul className="space-y-2.5">
                 {result.recommendations.map((rec, i) => (
                   <li key={i} className="flex items-start gap-2.5 text-sm text-slate-700">
-                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-100 text-xs font-bold text-green-700">{i + 1}</span>
+                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-100 text-xs font-bold text-green-800">{i + 1}</span>
                     {rec}
                   </li>
                 ))}

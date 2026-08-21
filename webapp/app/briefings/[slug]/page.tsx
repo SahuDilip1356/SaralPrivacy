@@ -676,7 +676,7 @@ export default async function BriefingDetailPage({ params }: Props) {
                         <ul className="space-y-3">
                           {(briefing.keyPoints as string[]).map((point: string, i: number) => (
                             <li key={i} className="flex items-start gap-3 text-slate-700 text-sm leading-relaxed">
-                              <span className="w-5 h-5 rounded-full bg-green-100 text-green-700 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+                              <span className="w-5 h-5 rounded-full bg-green-100 text-green-800 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
                                 {i + 1}
                               </span>
                               {point}

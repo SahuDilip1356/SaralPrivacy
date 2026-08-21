@@ -24,7 +24,7 @@ function ConsentTypeBadge({ type }: { type: string }) {
 
 function SourceBadge({ source }: { source: string }) {
   const map: Record<string, string> = {
-    download:   "bg-green-100 text-green-700",
+    download:   "bg-green-100 text-green-800",
     subscribe:  "bg-saffron-50 text-saffron-600",
     contact:    "bg-blue-100 text-blue-700",
     assessment: "bg-purple-100 text-purple-700",

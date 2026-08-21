@@ -183,7 +183,7 @@ export default function SchoolsCollegesPage() {
                 <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-3">
                   {STEPS.map((s) => (
                     <div key={s.n} className="rounded-xl border border-slate-200 bg-white p-5">
-                      <div className="mb-2 flex h-8 w-8 items-center justify-center rounded-full bg-green-100 font-bold text-green-700">{s.n}</div>
+                      <div className="mb-2 flex h-8 w-8 items-center justify-center rounded-full bg-green-100 font-bold text-green-800">{s.n}</div>
                       <h3 className="text-sm font-semibold text-navy-700">{s.title}</h3>
                       <p className="mt-1 text-xs leading-relaxed text-slate-600">{s.body}</p>
                     </div>

@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 
 function ConsentBadge({ value }: { value: boolean }) {
   return value ? (
-    <span className="px-2 py-0.5 rounded-full text-xs bg-green-100 text-green-700 font-medium">Yes</span>
+    <span className="px-2 py-0.5 rounded-full text-xs bg-green-100 text-green-800 font-medium">Yes</span>
   ) : (
     <span className="px-2 py-0.5 rounded-full text-xs bg-slate-100 text-slate-500 font-medium">No</span>
   );

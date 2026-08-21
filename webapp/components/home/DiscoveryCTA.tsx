@@ -70,7 +70,7 @@ export function DiscoveryCTA() {
                   <span
                     className={`text-[10px] font-bold px-2 py-0.5 rounded ${
                       tag === "Core"
-                        ? "bg-green-100 text-green-700"
+                        ? "bg-green-100 text-green-800"
                         : tag === "Operational"
                           ? "bg-teal-100 text-teal-800"
                           : "bg-orange-100 text-orange-600"
