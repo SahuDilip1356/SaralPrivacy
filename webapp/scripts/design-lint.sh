@@ -81,6 +81,16 @@ check "muted-text-on-light" \
   "slate-400 is 2.4-2.6:1 on light surfaces (it is correct on navy). Use slate-600 on light." \
   "$(grep -rEn 'text-slate-400' app components --include="*.tsx" 2>/dev/null)"
 
+# The lesson of Section.tsx: a primitive nothing enforces gets zero adoption.
+# Surface.tsx owns the depth ladder (fill + border + shadow per rung); a card
+# that spells its own fill and border out by hand is how the ladder drifts
+# apart again. Baseline carries the ones that are legitimately not cards —
+# VerdictPreview's tab buttons — and the ones on a NAVY band, where the light
+# ladder does not apply because white already separates without a hairline.
+check "hand-rolled-surface" \
+  "Card surfaces come from Surface.tsx / surfaceClasses(), not a hand-written bg-white + border pair." \
+  "$(grep -rn 'bg-white' components/home --include="*.tsx" 2>/dev/null | grep -E 'border-(slate|pearl|cloud)-[23]00')"
+
 if [ "$UPDATE" -eq 1 ]; then
   : > "$BASELINE_FILE"
   rm -rf "$BASELINE_DIR"; mkdir -p "$BASELINE_DIR"

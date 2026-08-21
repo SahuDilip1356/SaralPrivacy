@@ -157,18 +157,23 @@ export function AudienceCards() {
                 </p>
 
                 {/* Quiet per-card links — green reserved for the page's primary CTAs */}
+                {/* `py-3 -my-3` on each link buys a 44px-tall touch target out
+                    of 20px of text without moving anything: the padding grows
+                    the hit box, the equal negative margin hands the space back
+                    to the layout. Measured at 20px before — under even the AA
+                    24px floor, on the densest tap zone of the mobile page. */}
                 <div className="border-t border-black/5 pt-4 space-y-2.5">
                   <div className="flex items-center justify-between">
                     <Link
                       href={a.assessmentHref}
-                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-teal-800 hover:text-teal-900 transition-colors"
+                      className="inline-flex items-center gap-1.5 py-3 -my-3 text-sm font-semibold text-teal-800 hover:text-teal-900 transition-colors"
                     >
                       Take the assessment
                       <ArrowRight size={14} />
                     </Link>
                     <Link
                       href={a.href}
-                      className="text-sm font-medium text-slate-600 hover:text-navy-700 transition-colors"
+                      className="inline-flex items-center py-3 -my-3 text-sm font-medium text-slate-600 hover:text-navy-700 transition-colors"
                     >
                       Industry guide
                     </Link>

@@ -1,4 +1,3 @@
 components/home/ConsultationCTA.tsx:8:        <div className="bg-navy-700 rounded-2xl p-10 lg:p-14 relative overflow-hidden">
 components/home/NoticeCTA.tsx:54:          <div className="bg-white rounded-2xl shadow-2xl p-6">
 components/home/DiscoveryCTA.tsx:54:          <div className="bg-white rounded-2xl shadow-2xl p-6">
-components/home/VerdictPreview.tsx:68:          className="max-w-2xl mx-auto bg-white rounded-2xl border border-slate-200 shadow-card p-6"

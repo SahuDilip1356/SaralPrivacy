@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ChevronDown, ArrowRight } from "lucide-react";
 import { faqs } from "@/lib/data/faqs";
 import { cn } from "@/lib/utils";
+import { Surface } from "@/components/ui/Surface";
 
 export function FAQPreview() {
   const [openId, setOpenId] = useState<string | null>("f001");
@@ -24,9 +25,10 @@ export function FAQPreview() {
 
         <div className="space-y-3 mb-8">
           {previewFaqs.map((faq) => (
-            <div
+            <Surface
+              rung="card"
               key={faq.id}
-              className="bg-white border border-slate-200 rounded-xl overflow-hidden"
+              className="overflow-hidden"
             >
               <button
                 onClick={() => setOpenId(openId === faq.id ? null : faq.id)}
@@ -48,7 +50,7 @@ export function FAQPreview() {
                   <p className="text-slate-600 text-sm leading-relaxed pt-4">{faq.answer}</p>
                 </div>
               )}
-            </div>
+            </Surface>
           ))}
         </div>
 

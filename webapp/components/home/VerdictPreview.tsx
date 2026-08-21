@@ -5,6 +5,7 @@ import Link from "next/link";
 import { AlertTriangle, ArrowRight } from "lucide-react";
 import { VERDICT_PREVIEWS } from "@/lib/data/verdict-previews";
 import { trackEvent } from "@/lib/analytics";
+import { Surface } from "@/components/ui/Surface";
 
 // Beat 5 — "See a real verdict". Previews the REPORT OUTPUT (category breakdown
 // + band + top gap), not the hero's applicability card — that dedupe rule is
@@ -50,7 +51,7 @@ export function VerdictPreview() {
                   if (p.slug !== active) trackEvent.beat5TabSelect({ sector: p.slug });
                   setActive(p.slug);
                 }}
-                className={`text-sm rounded-full border px-4 py-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 ${
+                className={`inline-flex items-center justify-center min-h-11 text-sm rounded-full border px-4 py-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 ${
                   on
                     ? "bg-teal-800 border-teal-800 text-white font-semibold"
                     : "bg-white border-slate-200 text-slate-600 hover:border-teal-400 hover:text-teal-900"
@@ -63,15 +64,20 @@ export function VerdictPreview() {
         </div>
 
         {/* report card */}
-        <div
+        <Surface
+          rung="card"
           aria-live="polite"
-          className="max-w-2xl mx-auto bg-white rounded-2xl border border-slate-200 shadow-card p-6"
+          className="max-w-2xl mx-auto p-6"
         >
           <div
             key={v.slug}
             className="animate-fade-up motion-reduce:animate-none min-h-[340px]"
           >
-            <div className="flex items-center justify-between gap-3 mb-5">
+            {/* Wraps, because it must. At 360px the label plus both pills
+                measure 285px inside a 280px content box, and `shrink-0` meant
+                the group pushed the document 5px wider than the viewport
+                instead of yielding. Wrapping keeps both pills' full text. */}
+            <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 mb-5">
               <span className="font-bold text-navy-700">{v.label}</span>
               <div className="flex items-center gap-2 shrink-0">
                 <span className="text-2xs font-semibold text-slate-600 bg-cloud-50 border border-slate-200 rounded-full px-2.5 py-1 whitespace-nowrap">
@@ -83,8 +89,12 @@ export function VerdictPreview() {
               </div>
             </div>
 
-            {/* category breakdown — the "real report" signal */}
-            <div className="space-y-2.5 mb-5">
+            {/* Category breakdown — the "real report" signal, and the first
+                place the ladder earns its keep: this is scored data being
+                read, not acted on, so it sits in a well INSIDE the card.
+                Before there were only two rungs, a panel nested in a card had
+                nowhere to go and this was a bare stack on white. */}
+            <Surface rung="sunken" className="space-y-2.5 mb-5 p-4">
               {v.categories.map((c) => (
                 <div key={c.label} className="flex items-center gap-3">
                   <span className="text-xs text-slate-600 w-32 shrink-0 leading-tight">
@@ -103,7 +113,7 @@ export function VerdictPreview() {
                   </span>
                 </div>
               ))}
-            </div>
+            </Surface>
 
             {/* top gap — fixed min-height so tab swaps don't shift the CTA */}
             <div className="border-t border-slate-100 pt-4 flex gap-2.5 min-h-[3.5rem]">
@@ -117,13 +127,13 @@ export function VerdictPreview() {
             <Link
               href={`/assessment/${v.slug}`}
               onClick={() => trackEvent.beat5CtaClick({ sector: v.slug })}
-              className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 bg-green-700 hover:bg-green-800 text-white text-sm font-semibold rounded-xl transition-colors"
+              className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 pointer-coarse:min-h-11 bg-green-700 hover:bg-green-800 text-white text-sm font-semibold rounded-xl transition-colors"
             >
               Get your real score
               <ArrowRight size={16} />
             </Link>
           </div>
-        </div>
+        </Surface>
       </div>
     </section>
   );

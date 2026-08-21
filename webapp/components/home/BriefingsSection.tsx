@@ -1,5 +1,9 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+// Only `Surface` survives the merge with main's deck: the briefing cards that
+// used `surfaceClasses` are gone, replaced by BriefingsDeck, which owns its
+// own geometry. The empty state is still a card and still uses the ladder.
+import { Surface } from "@/components/ui/Surface";
 import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 import { BriefingsDeck, type DeckBriefing } from "@/components/home/BriefingsDeck";
 
@@ -64,7 +68,7 @@ export async function BriefingsSection() {
           </div>
           <Link
             href="/briefings"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-green-800 hover:text-green-700 shrink-0"
+            className="inline-flex items-center gap-1.5 pointer-coarse:min-h-11 text-sm font-semibold text-green-800 hover:text-green-700 shrink-0"
           >
             All briefings
             <ArrowRight size={16} />
@@ -73,10 +77,10 @@ export async function BriefingsSection() {
 
         {/* Empty state */}
         {briefings.length === 0 && (
-          <div className="bg-white border border-slate-200 rounded-xl p-10 text-center text-slate-400">
+          <Surface rung="card" className="p-10 text-center text-slate-400">
             <p className="text-base font-medium mb-1">Briefings coming soon</p>
             <p className="text-sm">Daily DPDPA briefings will appear here automatically.</p>
-          </div>
+          </Surface>
         )}
 
         {briefings.length > 0 && (

@@ -105,6 +105,9 @@
   --shadow-card:        0 1px 3px 0 rgb(18 26 46 / 0.06), 0 1px 2px -1px rgb(18 26 46 / 0.05);
   --shadow-card-hover:  0 4px 8px -1px rgb(18 26 46 / 0.10), 0 2px 4px -2px rgb(18 26 46 / 0.06);
   --shadow-elevated:    0 10px 25px -5px rgb(18 26 46 / 0.12), 0 4px 10px -5px rgb(18 26 46 / 0.06);
+  /* The one direction the set was missing: a well, not a lift. Rung 1 of the
+     surface ladder (see below) is the only consumer. */
+  --shadow-sunken:      inset 0 1px 2px 0 rgb(18 26 46 / 0.05);
 }
 
 /* ── SaralPrivacy — CSS Custom Properties ─────────────────────────────────── */
@@ -123,7 +126,29 @@
   /* Ceremonial */
   --c-gold:          #E8AB42;
   --c-gold-light:    #FDF7E8;
-  /* Canvas */
+  /* Canvas.
+     These two are the whole depth story as originally shipped, and they sit
+     1.05:1 apart — which is why cards read flat and a panel nested in a card
+     had nowhere to go. The fix is NOT a longer fill ramp. Measured on this
+     canvas, every fill step available between #EEF2F7 and #FFFFFF lands at
+     1.03–1.07:1, below what a flat plane reliably shows on an SMB-grade
+     screen in daylight. A hairline does 1.28–1.59:1 against the same fills —
+     ten times the separation, counting contrast above 1.0.
+
+     So depth here is a TRIPLE — fill + border + shadow — and the border is
+     the load-bearing part. The ladder is defined in components/ui/Surface.tsx,
+     which owns the mapping; these tokens are its raw material. Rungs 2 and 3
+     deliberately share a fill and differ only in edge and lift, because on a
+     light canvas that is the honest way to say "this one is above that one".
+
+       rung 0  canvas   cloud-50   no border      no shadow
+       rung 1  sunken   cloud-100  cloud-200      shadow-sunken   (a well)
+       rung 2  card     white      cloud-200      shadow-card
+       rung 3  raised   white      cloud-300      shadow-elevated (overlays)
+
+     Do not add rungs by alternating white against cloud-50 per section: at
+     1.05:1 that reads as banding, not structure, and it rebuilds the
+     nine-flip zebra W1.3 removed. */
   --c-bg:            #F7F9FC;
   --c-surface:       #FFFFFF;
   /* Text */

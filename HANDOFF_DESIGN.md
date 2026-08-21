@@ -4,6 +4,12 @@ Written 21 Aug 2026, at `fe7ae74`. Picks up where `LANDING_PAGE_HANDOFF.md`
 and the W0–W3 commits left off. Everything below is verified against the tree
 at that SHA, not recalled.
 
+> **Superseded in part by W9** (`claude/design-w9-surface-depth`). Two things
+> in this document are now wrong, and both are corrected in §6 at the bottom:
+> the surface-depth proposal in §2a does not work as specced (its middle rungs
+> measure 1.027:1), and §2d's "mobile has never been verified" no longer
+> holds. Read §6 before acting on §2a or §2d.
+
 ---
 
 ## 1. Where things stand
@@ -192,3 +198,112 @@ named, restore, confirm exit 0. Both W0.3 and W7 did this.
 5. `card-radius` (2c) whenever those four files are open anyway.
 
 The header CTA (2b) is blocked on the owner, not on sequencing.
+
+---
+
+## 6. W9 — what changed, and what this document got wrong
+
+Branch `claude/design-w9-surface-depth`, three commits off `7f698da`.
+Everything here is measured against a production build, not recalled.
+
+### 6a. §2a's surface-depth proposal was wrong. Don't build it.
+
+The four-rung **fill** ladder proposed above does not survive measurement.
+Its adjacent steps land at **1.027:1** — a 2.7% luminance step — and
+`#FBFCFE` against `#FFFFFF` is not a rung, it is a rounding error. The
+entire range from `#EEF2F7` to white is 1.124:1. There is no fifth grey
+hiding on a canvas this light.
+
+The hairline measures 1.279:1 against white, 1.592:1 at `cloud-300`.
+Counting contrast above 1.0 — the visible part — **the edge carries about
+ten times the signal of any fill step available.**
+
+So the shipped ladder is fill + border + shadow triples, with the border
+load-bearing. It lives in `components/ui/Surface.tsx`, which owns the
+mapping; `surfaceClasses()` is the escape hatch for surfaces that must
+render an `<a>`. Rungs 2 and 3 share a fill on purpose.
+
+Guarded by a `hand-rolled-surface` ratchet at baseline 7 — the lesson of
+`Section.tsx` being that an unenforced primitive gets zero adoption. The 7
+are VerdictPreview's tab buttons (not cards) and the navy-band surfaces,
+**where the light ladder does not apply**: white on navy already separates
+without a hairline. Do not "finish the job" by applying rungs there.
+
+`card-radius` is now **3**, not 4 — VerdictPreview's `rounded-2xl` went
+with the migration. `--shadow-sunken` was the only new token needed.
+
+### 6b. §2d's "mobile has never been verified" is done
+
+Verified at 360/390/430px. Two real defects, both fixed:
+
+- **The page was 6px wider than a 360px phone.** VerdictPreview's card
+  header had `shrink-0` on its pill group, so it pushed the document wider
+  rather than yielding. Note the trap: `<header>` *looks* like the culprit
+  in a naive walk because a fixed element stretches to the overflowed
+  scroll area. Trace non-fixed elements first.
+- **64 tap targets under 44px, now 14.** The mechanism is
+  `pointer-coarse:min-h-11` — a floor on the *pointer*, not the breakpoint,
+  since a 1024px tablet is touch and a narrow desktop window is not.
+  `Button`'s own scale was the systemic offender: `sm` renders 32px and
+  `md` — the default — renders 40px.
+
+The 14 remaining are documented exemptions, not misses: six footer links
+that are 44px tall but 27–42px wide (a 24×24 target fits, so they pass
+2.5.8 AA), the compact press row (inline sentence flow, explicitly
+exempt), and the consent checkbox (its label carries `htmlFor`).
+
+### 6c. New, and the top of the list
+
+**The mobile footer is 3202px** — 30% taller than its 2458px desktop self,
+because 25 stacked links each take a real touch target. That is the honest
+cost of 6b, accepted for the accessibility, but it is the argument for a
+collapsible mobile footer. **This is now the highest-value mobile item.**
+
+**The homepage is 26 screens on a phone**, and `AudienceCards` alone is
+~5800px of it — the 12-card sector wall at one column. Padding is only 8%
+of page height, so the beat ladder is *not* the mobile problem; the card
+wall is. Worth a "show 4, expand" treatment before anything else.
+
+**The beat ladder has no responsive scaling.** All 12 beat paddings are
+unqualified — `py-32` is 256px of vertical padding at 360px exactly as at
+1440px. Less urgent than the two above, given the 8% figure.
+
+**`pearl-50..300` and `cloud-50..300` are the same four hex values** under
+two names, and cards in the wild pick between `border-slate-200`,
+`border-pearl-200` and `border-cloud-200`. One ramp, three spellings.
+
+**Container widths are a 4-value vocabulary chosen ad hoc** — `max-w-7xl`,
+`6xl`, `5xl`, `3xl` across 13 beats. This is why `Section.tsx` can't simply
+be adopted: its hardcoded `max-w-6xl` is wrong for 11 of the 13. Migrating
+beats onto `Section` needs that decision made first, or `bleed` used
+throughout, which leaves `Section` owning almost nothing.
+
+### 6d. Traps W9 added to §3
+
+- **A stale `next-server` survives `pkill -f "next start"`** and will serve
+  the old bundle through an entire verification pass. Kill by PID, confirm
+  with `pgrep`, and grep the *served HTML* for a marker from your change
+  before trusting a measurement.
+- **`npm install` rewrites `package-lock.json`** (drops `peer: true` flags)
+  with no dependency change. Unstage it.
+- **Appwrite is blocked by this environment's egress**, so
+  `BriefingsSection` renders empty locally and the page measures shorter
+  than production.
+- **`pointer-coarse:` compiles fine in Tailwind 4.2** — verified against
+  the real PostCSS pipeline before relying on it, which is worth doing for
+  any variant you have not used in this repo before.
+- **Polymorphic `as` props need `React.HTMLAttributes<HTMLElement>`**, not
+  `<HTMLDivElement>`, or `as="li"` fails to compile on event handlers alone.
+
+### 6e. Verification recipes W9 used
+
+- **Desktop neutrality proof.** Load the same page at `pointer: fine` and
+  `pointer: coarse` in one run and compare page height. W9.2 claimed
+  "desktop untouched" and could show 19670px both before and after, with
+  the whole +826px isolated to touch.
+- **Ladder-as-rendered.** Probe each rung by the classes `Surface` emits,
+  resolve fill and border through a canvas, and report `edge:fill` beside
+  `fill:beneath`. That is the check that makes the design thesis falsifiable
+  rather than assertable.
+- **Prove the new lint rule fails**, per §4. `hand-rolled-surface` was
+  injected, confirmed exit 1 naming file and line, restored, confirmed 0.
