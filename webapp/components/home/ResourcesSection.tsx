@@ -1,10 +1,8 @@
 import Link from "next/link";
-import { ArrowRight, BookOpen, Newspaper, FileDown } from "lucide-react";
+import { ArrowRight, BookOpen, ListChecks, FileDown } from "lucide-react";
 import { Surface } from "@/components/ui/Surface";
 import { Section, Eyebrow } from "@/components/ui/Section";
 import { GUIDE_LANGUAGES } from "@/lib/data/guide-languages";
-import { getBriefingCountLabel } from "@/lib/data/briefings-source";
-import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 
 // S8 — Resources. Three cards, and that is the whole section.
 //
@@ -21,24 +19,12 @@ import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 /** Downloadable assets in /public/templates — 5 generic + one checklist per sector. */
 const TEMPLATE_COUNT = 17;
 
-export async function ResourcesSection() {
-  // Both are best-effort: Appwrite is unreachable in some preview builds, and a
-  // resources card is never worth failing a page render over.
-  const briefingCount = await getBriefingCountLabel();
-
-  let latest: { slug: string; title: string } | null = null;
-  try {
-    const result = await databases.listDocuments(DB_ID, COLLECTIONS.BRIEFINGS, [
-      Query.equal("status", ["sent", "approved"]),
-      Query.orderDesc("$createdAt"),
-      Query.limit(1),
-    ]);
-    const doc = result.documents[0] as { slug?: string; title?: string } | undefined;
-    if (doc?.slug && doc?.title) latest = { slug: doc.slug, title: doc.title };
-  } catch {
-    // Fall through to the generic briefings card.
-  }
-
+export function ResourcesSection() {
+  // No briefings card here. The deck immediately above already shows the latest
+  // seven with their infographics — a "latest briefing" card underneath it would
+  // be the same content twice in the same chapter. These three are the reference
+  // assets a reader who is not ready to act actually wants, and none of them
+  // overlaps the deck.
   const cards = [
     {
       icon: BookOpen,
@@ -48,13 +34,12 @@ export async function ResourcesSection() {
       cta: "Read the guide",
     },
     {
-      icon: Newspaper,
-      title: latest ? "Latest briefing" : "Daily briefings",
-      description: latest
-        ? latest.title
-        : "A short daily read on what changed in DPDPA and what to do about it.",
-      href: latest ? `/briefings/${latest.slug}` : "/briefings",
-      cta: briefingCount ? `Browse ${briefingCount} briefings` : "Browse briefings",
+      icon: ListChecks,
+      title: "Compliance checklist",
+      description:
+        "The statutory and operational controls, laid out as a list you can work through and tick off.",
+      href: "/compliance-checklist",
+      cta: "Open the checklist",
     },
     {
       icon: FileDown,
@@ -66,7 +51,7 @@ export async function ResourcesSection() {
   ];
 
   return (
-    <Section surface="deep" type="utility">
+    <Section surface="deep" type="utility" divider>
       <div className="text-center mb-9">
         <Eyebrow surface="deep" className="mb-3">
           Learn more

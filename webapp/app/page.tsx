@@ -5,6 +5,7 @@ import { ReportPreview } from "@/components/home/ReportPreview";
 import { RecognitionBand } from "@/components/home/RecognitionBand";
 import { HowItWorks } from "@/components/home/HowItWorks";
 import { AudienceCards } from "@/components/home/AudienceCards";
+import { BriefingsSection } from "@/components/home/BriefingsSection";
 import { ResourcesSection } from "@/components/home/ResourcesSection";
 import { FAQPreview } from "@/components/home/FAQPreview";
 import { FinalAssessmentBand } from "@/components/home/FinalAssessmentBand";
@@ -65,9 +66,10 @@ export const metadata: Metadata = {
 //   S5  Recognition        navy   decision   who's behind this
 //   S6  How it works       white  utility    how much work is this
 //   S7  Sector examples    white  evidence   does it fit my business
-//   S8  Resources          deep   utility    I'd rather read first
-//   S9  FAQ                deep   evidence   what's stopping me
-//   S10 Final CTA          navy   decision   close
+//   S8  Briefings deck     deep   demo       are these people actually on it
+//   S9  Resources          deep   utility    I'd rather read first
+//   S10 FAQ                deep   evidence   what's stopping me
+//   S11 Final CTA          navy   decision   close
 export default function HomePage() {
   return (
     <>
@@ -110,13 +112,18 @@ export default function HomePage() {
 
       {/* ── Chapter 3: resolve and close ────────────────────────────────── */}
 
-      {/* S8 — three resources for the reader who isn't ready to act. */}
+      {/* S8 — the briefings deck. The one place on the page where the reader
+          sees what we publish rather than what we assess, and the reason the
+          resources section below carries no briefings card. */}
+      <BriefingsSection />
+
+      {/* S9 — three reference assets for the reader who isn't ready to act. */}
       <ResourcesSection />
 
-      {/* S9 — the objections that stop a click, answered. */}
+      {/* S10 — the objections that stop a click, answered. */}
       <FAQPreview />
 
-      {/* S10 — the close. The newsletter used to sit here; it now lives in the
+      {/* S11 — the close. The newsletter used to sit here; it now lives in the
           footer and on /briefings. */}
       <FinalAssessmentBand />
     </>

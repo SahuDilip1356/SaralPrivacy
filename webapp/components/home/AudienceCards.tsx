@@ -69,7 +69,8 @@ const audiences: Audience[] = [
       "Background check documents",
       "Cross-border data flows",
     ],
-    workflow: "CVs forwarded to clients over email and WhatsApp.",
+    workflow:
+      "A client asks for a shortlist, and you forward three CVs straight from your inbox.",
   },
   {
     icon: Calculator,
@@ -85,7 +86,8 @@ const audiences: Audience[] = [
       "Cloud drives & shared folders",
       "Sensitive financial documents",
     ],
-    workflow: "Client PAN and Aadhaar files shared through email and Drive.",
+    workflow:
+      "A client WhatsApps their PAN card, and it ends up in the firm's shared Drive.",
   },
   {
     icon: ShoppingBag,
@@ -101,7 +103,8 @@ const audiences: Audience[] = [
       "Customer loyalty data",
       "Retention of inactive customers",
     ],
-    workflow: "Marketing opt-in bundled into the checkout flow.",
+    workflow:
+      "A customer completes checkout, and your marketing list quietly gains a subscriber.",
   },
 ];
 
