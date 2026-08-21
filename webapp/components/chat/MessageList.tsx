@@ -180,7 +180,11 @@ export function MessageList({
   const lastSetu = [...messages].reverse().find((m) => m.role === "setu");
 
   return (
-    <div className="flex-1 space-y-4 overflow-y-auto px-4 py-3" role="log" aria-label="Conversation with Setu">
+    <div
+      className="min-h-0 flex-1 space-y-4 overflow-y-auto px-4 py-3"
+      role="log"
+      aria-label="Conversation with Setu"
+    >
       <div aria-live="polite" className="sr-only">
         {announced ? `Setu says: ${announced}` : ""}
       </div>

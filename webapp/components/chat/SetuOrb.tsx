@@ -87,7 +87,11 @@ float fbm(vec3 p) {
 void main() {
   vec2 uv = (gl_FragCoord.xy * 2.0 - u_res) / min(u_res.x, u_res.y);
   float r = length(uv);
-  float R = 0.66;
+  // Body radius in uv half-extents. SetuStage sizes the character to ~0.50 of
+  // the canvas against this, leaving roughly a fifth of the sphere visible as
+  // a simmering rim all the way round. Change one without the other and the
+  // character either swallows the orb or floats inside it.
+  float R = 0.72;
 
   vec3 col = vec3(0.0);
   float alpha = 0.0;
@@ -119,11 +123,12 @@ void main() {
     alpha = smoothstep(R, R - 0.035, r);
   }
 
-  // Emissive halo beyond the body, breathing slightly out of phase.
-  float pulse = 0.86 + 0.14 * sin(u_time * (0.7 + u_energy * 1.5));
-  float halo = exp(-max(0.0, r - R) * 6.2) * (0.42 + u_energy * 0.62) * pulse;
-  col += u_glow * halo * 0.55;
-  alpha = max(alpha, halo * 0.80);
+  // Emissive halo beyond the body, breathing slightly out of phase so the
+  // glow never lands on the same beat as the surface simmer.
+  float pulse = 0.82 + 0.18 * sin(u_time * (0.7 + u_energy * 1.5));
+  float halo = exp(-max(0.0, r - R) * 4.6) * (0.62 + u_energy * 0.75) * pulse;
+  col += u_glow * halo * 0.85;
+  alpha = max(alpha, halo * 0.92);
 
   gl_FragColor = vec4(col * alpha, alpha);
 }

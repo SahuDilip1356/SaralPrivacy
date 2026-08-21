@@ -194,12 +194,13 @@ export default function SetuChat() {
           onClick={() => openPanel(false)}
           aria-label={t("en", "launcherLabel")}
           aria-haspopup="dialog"
-          className="fixed bottom-5 right-5 z-[70] flex h-14 w-14 items-center justify-center rounded-full shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#207D78] active:scale-95"
+          className="fixed bottom-5 right-5 z-[70] flex h-16 w-16 items-center justify-center rounded-full shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#207D78] active:scale-95"
           style={{ backgroundColor: SETU_SURFACE }}
         >
           {/* The orb replaces the old static ring — its fresnel rim and halo
-              are the presence signal now, so no ring-2 class here. */}
-          <SetuStage state="idle" size={56} orb />
+              are the presence signal now, so no ring-2 class here. 64px rather
+              than the old 56: the halo needs room or it clips to a hairline. */}
+          <SetuStage state="idle" size={64} orb />
         </button>
       )}
       <ChatPanel

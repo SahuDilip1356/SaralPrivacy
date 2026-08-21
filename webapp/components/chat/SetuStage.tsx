@@ -55,8 +55,10 @@ export function SetuStage({
   orb?: boolean;
 }) {
   // With the orb the character sits inboard, so the simmering rim reads all
-  // the way round and the orb's own fresnel replaces the flat ring.
-  const inset = Math.round(size * 0.64);
+  // the way round and the orb's own fresnel replaces the flat ring. Paired
+  // with SetuOrb's R = 0.72 — at 0.64 the character covered the whole sphere
+  // and the orb showed only as a hairline.
+  const inset = Math.round(size * 0.5);
 
   return (
     <span
