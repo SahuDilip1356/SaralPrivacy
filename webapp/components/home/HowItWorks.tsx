@@ -110,10 +110,10 @@ export function HowItWorks() {
       <div ref={ref}>
         <div className="text-center mb-10">
           <Eyebrow className="mb-3">How it works</Eyebrow>
-          <h2 className="text-3xl sm:text-4xl font-semibold text-navy-700 mb-3">
+          <h2 className="type-display-3 text-navy-700 mb-4">
             Three steps. No account, no upload.
           </h2>
-          <p className="text-slate-600 text-base max-w-md mx-auto leading-relaxed">
+          <p className="type-intro text-slate-600 max-w-md mx-auto">
             You can finish this before your next call ends.
           </p>
         </div>

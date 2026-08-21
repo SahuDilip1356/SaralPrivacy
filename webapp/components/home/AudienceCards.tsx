@@ -140,10 +140,10 @@ export function AudienceCards() {
     <Section id="sectors" surface="white" type="evidence" divider className="scroll-mt-20">
       <div className="text-center mb-10">
         <Eyebrow className="mb-3">Your sector</Eyebrow>
-        <h2 className="text-3xl sm:text-4xl font-semibold text-navy-700 mb-3">
+        <h2 className="type-display-3 text-navy-700 mb-4">
           Same law. Different data. Different fixes.
         </h2>
-        <p className="text-slate-600 max-w-2xl mx-auto leading-relaxed">
+        <p className="type-intro text-slate-600 max-w-2xl mx-auto">
           A clinic, a CA firm and a D2C brand all hold personal data — but the
           risks, obligations and fixes are completely different.
         </p>

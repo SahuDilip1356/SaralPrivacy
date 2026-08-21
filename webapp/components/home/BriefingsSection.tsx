@@ -60,10 +60,10 @@ export async function BriefingsSection() {
           <Eyebrow surface="deep" className="mb-3">
             Daily briefings
           </Eyebrow>
-          <h2 className="text-3xl sm:text-4xl font-semibold text-navy-700">
+          <h2 className="type-display-3 text-navy-700">
             Stay ahead of DPDPA developments
           </h2>
-          <p className="text-slate-600 mt-2 max-w-xl">
+          <p className="type-intro text-slate-600 mt-2 max-w-xl">
             Clear, actionable briefings on DPDPA updates, enforcement signals, and compliance
             guidance, written for business owners, not lawyers.
           </p>

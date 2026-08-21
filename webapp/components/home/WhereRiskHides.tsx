@@ -88,15 +88,25 @@ export function WhereRiskHides() {
     }`;
 
   return (
-    <Section surface="white" type="statement" width="wide">
+    /* Authority Moment 1 (Quiet Authority spec §6). The master spec always
+       wanted this beat dark ("dark zones = Hero+Scatter") and the W-waves lost
+       it; with the hero now light, the risk map is where navy first appears —
+       the page's thesis delivered on its most serious surface.
+       Inks are pre-measured for this ground: teal-400 lines 7.41:1 ·
+       gold-400 marks 8.52:1 · slate-300 body 11.66:1 · white on navy-600
+       chips 12.65:1. teal-700 (the light-surface line ink) manages only
+       3.52:1 here and must not be used. */
+    <Section surface="navy" type="statement" width="wide">
       <div ref={ref}>
         {/* header */}
         <div className="text-center mb-12">
-          <Eyebrow className="mb-3">The everyday data ecosystem</Eyebrow>
-          <h2 className="text-3xl sm:text-4xl font-semibold text-navy-700 mb-3">
+          <Eyebrow surface="navy" className="mb-3">
+            The everyday data ecosystem
+          </Eyebrow>
+          <h2 className="type-display-2 text-white mb-4">
             The tools are ordinary. The gaps hide between them.
           </h2>
-          <p className="text-slate-600 text-base max-w-xl mx-auto leading-relaxed">
+          <p className="type-intro text-slate-300 max-w-xl mx-auto">
             Most Indian businesses don&apos;t lack a privacy policy. They lack
             visibility into where personal data actually lives.
           </p>
@@ -120,14 +130,14 @@ export function WhereRiskHides() {
                 <g key={i}>
                   <path
                     d={`M168 ${HUB_Y} C 240 ${HUB_Y}, 250 ${cy}, 300 ${cy}`}
-                    className={`sp-dash-flow stroke-teal-700 fill-none transition-opacity duration-700 motion-reduce:!opacity-60 motion-reduce:!transition-none ${inView ? "opacity-60" : "opacity-0"}`}
+                    className={`sp-dash-flow stroke-teal-400 fill-none transition-opacity duration-700 motion-reduce:!opacity-70 motion-reduce:!transition-none ${inView ? "opacity-70" : "opacity-0"}`}
                     style={{ transitionDelay: `${i * 110}ms` }}
                     strokeWidth={1.6}
                     strokeDasharray="5 6"
                   />
                   <path
                     d={`M510 ${cy} L 524 ${cy}`}
-                    className={`stroke-gold-700 fill-none transition-opacity duration-500 motion-reduce:!opacity-70 motion-reduce:!transition-none ${inView ? "opacity-70" : "opacity-0"}`}
+                    className={`stroke-gold-400 fill-none transition-opacity duration-500 motion-reduce:!opacity-80 motion-reduce:!transition-none ${inView ? "opacity-80" : "opacity-0"}`}
                     style={{ transitionDelay: `${i * 110 + 260}ms` }}
                     strokeWidth={1.4}
                     strokeDasharray="3 3"
@@ -137,19 +147,21 @@ export function WhereRiskHides() {
             })}
           </svg>
 
-          {/* enters label + hub — both hang off HUB_Y so they track the fan */}
+          {/* enters label + hub — both hang off HUB_Y so they track the fan.
+              The hub INVERTS on navy: "your business" is the one light object
+              in the dark frame, which is what the section is about. */}
           <span
-            className="absolute text-xs text-slate-600"
+            className="absolute text-xs text-slate-400"
             style={{ left: 18, top: HUB_Y - HUB_H / 2 - 24 }}
           >
             Personal data enters here
           </span>
           <div
-            className="absolute flex items-center gap-2.5 rounded-xl bg-navy-700 px-3.5 z-10"
+            className="absolute flex items-center gap-2.5 rounded-xl bg-white px-3.5 z-10"
             style={{ left: 18, top: HUB_Y - HUB_H / 2, width: 150, height: HUB_H }}
           >
-            <Building2 size={22} className="text-white shrink-0" />
-            <span className="text-white font-semibold text-sm leading-tight">
+            <Building2 size={22} className="text-navy-700 shrink-0" />
+            <span className="text-navy-700 font-semibold text-sm leading-tight">
               Your business
             </span>
           </div>
@@ -161,18 +173,18 @@ export function WhereRiskHides() {
             return (
               <div key={t.name}>
                 <div
-                  className={`absolute flex items-center gap-2.5 rounded-lg bg-cloud-25 border border-cloud-200 px-3 z-10 ${fade()}`}
+                  className={`absolute flex items-center gap-2.5 rounded-lg bg-navy-600 border border-white/10 px-3 z-10 ${fade()}`}
                   style={{ left: 300, top, width: 210, height: CHIP_H, transitionDelay: `${i * 110}ms` }}
                 >
-                  <Icon size={17} className="text-slate-600 shrink-0" />
-                  <span className="text-slate-700 text-[13px]">{t.name}</span>
+                  <Icon size={17} className="text-slate-300 shrink-0" />
+                  <span className="text-white text-[13px]">{t.name}</span>
                 </div>
                 <div
                   className={`absolute flex items-center gap-1.5 z-10 ${fade()}`}
                   style={{ left: 528, top: top + 9, transitionDelay: `${i * 110 + 260}ms` }}
                 >
-                  <AlertCircle size={13} className="text-gold-700 shrink-0" />
-                  <span className="text-gold-700 text-xs font-medium">{t.gap}</span>
+                  <AlertCircle size={13} className="text-gold-400 shrink-0" />
+                  <span className="text-gold-400 text-xs font-medium">{t.gap}</span>
                 </div>
               </div>
             );
@@ -181,13 +193,13 @@ export function WhereRiskHides() {
 
         {/* ── Mobile: stacked list (<lg) ── */}
         <div className="lg:hidden max-w-md mx-auto">
-          <div className="flex items-center gap-2.5 rounded-xl bg-navy-700 px-4 py-3 mb-2">
-            <Building2 size={20} className="text-white shrink-0" />
-            <span className="text-white font-semibold text-sm">
+          <div className="flex items-center gap-2.5 rounded-xl bg-white px-4 py-3 mb-2">
+            <Building2 size={20} className="text-navy-700 shrink-0" />
+            <span className="text-navy-700 font-semibold text-sm">
               Personal data enters your business
             </span>
           </div>
-          <div className="text-center text-xs text-slate-600 mb-2">
+          <div className="text-center text-xs text-slate-400 mb-2">
             …and scatters to:
           </div>
           <ul className="space-y-2">
@@ -196,14 +208,14 @@ export function WhereRiskHides() {
               return (
                 <li
                   key={t.name}
-                  className={`flex items-center gap-3 rounded-lg bg-cloud-25 border border-cloud-200 px-3.5 py-2.5 ${fade()}`}
+                  className={`flex items-center gap-3 rounded-lg bg-navy-600 border border-white/10 px-3.5 py-2.5 ${fade()}`}
                   style={{ transitionDelay: `${i * 80}ms` }}
                 >
-                  <Icon size={17} className="text-slate-600 shrink-0" />
-                  <span className="text-slate-700 text-sm">{t.name}</span>
+                  <Icon size={17} className="text-slate-300 shrink-0" />
+                  <span className="text-white text-sm">{t.name}</span>
                   <span className="ml-auto flex items-center gap-1.5 shrink-0">
-                    <AlertCircle size={13} className="text-gold-700" />
-                    <span className="text-gold-700 text-xs font-medium">{t.gap}</span>
+                    <AlertCircle size={13} className="text-gold-400" />
+                    <span className="text-gold-400 text-xs font-medium">{t.gap}</span>
                   </span>
                 </li>
               );
@@ -211,18 +223,59 @@ export function WhereRiskHides() {
           </ul>
         </div>
 
-        <p className="text-center text-slate-600 text-sm mt-10 max-w-xl mx-auto">
+        <p className="text-center text-slate-400 text-sm mt-10 max-w-xl mx-auto">
           These are ordinary workflows, not integrations — SaralPrivacy does not
           connect to any of them. DPDPA risk usually hides here, not in legal
           documents.
         </p>
 
+        {/* ── The Privacy Thread — the signature motif, introduced at the
+            centrepiece (spec §7). The data lifecycle as six nodes on the same
+            teal dashed line the fan uses; the one green node is a controlled
+            stage — the quiet promise that control is possible. Decorative to a
+            screen reader (the fan above carries the content), so aria-hidden. */}
+        <div className="max-w-2xl mx-auto mt-14" aria-hidden="true">
+          <p className="text-center text-2xs font-semibold uppercase tracking-[0.09em] text-slate-400 mb-5">
+            The data lifecycle — where each gap lives
+          </p>
+          <div className="flex items-start">
+            {[
+              { label: "Collect", on: false },
+              { label: "Use", on: false },
+              { label: "Share", on: false },
+              { label: "Store", on: true },
+              { label: "Retain", on: false },
+              { label: "Delete", on: false },
+            ].map((n, i, arr) => (
+              <div key={n.label} className="contents">
+                <div className="flex flex-col items-center gap-1.5 shrink-0">
+                  <span
+                    className={`w-2.5 h-2.5 rounded-full border-2 ${
+                      n.on
+                        ? "bg-green-400 border-green-400"
+                        : "bg-transparent border-teal-400"
+                    }`}
+                  />
+                  <span className="text-[10px] sm:text-[11px] text-slate-300">
+                    {n.label}
+                  </span>
+                </div>
+                {i < arr.length - 1 && (
+                  <span className="flex-1 border-t-2 border-dashed border-teal-400/60 mt-[4px] mx-1.5 sm:mx-2.5" />
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* "What is DPDPA?" is the education on-ramp for the risk story above,
             so it sits at the foot of it rather than as its own strip. It is
             still the speakable target — the schema on the page points at
-            `.answer-block` by class, not by position. */}
+            `.answer-block` by class, not by position; the on-dark variant keeps
+            both the class and data-speakable. */}
         <div className="max-w-3xl mx-auto mt-16">
           <AnswerBlock
+            variant="on-dark"
             question="What is DPDPA?"
             answer="DPDPA is India's framework for handling digital personal data, and the DPDP Rules, 2025 have now been notified. For Indian businesses, the real work is operational: fix your notices, consent flows, rights handling, retention logic, and vendor controls. SaralPrivacy helps you understand what matters, assess your risk, and prioritise the next 30 to 90 days."
           />

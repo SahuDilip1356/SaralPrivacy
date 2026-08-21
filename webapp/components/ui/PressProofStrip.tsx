@@ -93,7 +93,7 @@ export function PressProofStrip({ variant = "banner" }: { variant?: Variant }) {
               href={p.url}
               target="_blank"
               rel="nofollow noopener"
-              className="text-[11px] text-slate-400 hover:text-white transition-colors"
+              className="inline-flex items-center pointer-coarse:min-h-11 text-[11px] text-slate-400 hover:text-white transition-colors"
             >
               {p.name}
             </a>
@@ -105,7 +105,7 @@ export function PressProofStrip({ variant = "banner" }: { variant?: Variant }) {
         <span className="text-navy-600" aria-hidden>·</span>
         <Link
           href="/media/press-wall"
-          className="text-[11px] font-medium text-teal-400 hover:text-teal-300 transition-colors"
+          className="inline-flex items-center pointer-coarse:min-h-11 text-[11px] font-medium text-teal-400 hover:text-teal-300 transition-colors"
         >
           Press wall →
         </Link>

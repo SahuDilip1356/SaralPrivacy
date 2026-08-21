@@ -211,7 +211,7 @@ components/TemplateGateModal.tsx:131:              className="absolute top-4 rig
 components/TemplateGateModal.tsx:232:            <p className="text-[10px] text-slate-400 text-center mt-3 leading-relaxed">
 components/ui/dialog.tsx:52:      <DialogPrimitive.Close className="absolute right-4 top-4 rounded-lg p-1 text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500">
 components/ui/PressProofStrip.tsx:89:        <span className="text-[11px] text-slate-400 font-medium">As seen in:</span>
-components/ui/PressProofStrip.tsx:96:              className="text-[11px] text-slate-400 hover:text-white transition-colors"
+components/ui/PressProofStrip.tsx:96:              className="inline-flex items-center pointer-coarse:min-h-11 text-[11px] text-slate-400 hover:text-white transition-colors"
 components/ui/PressProofStrip.tsx:167:              <ExternalLink size={10} className="text-slate-400" />
 components/ui/select.tsx:20:      "text-sm text-slate-700 placeholder:text-slate-400",
 components/ui/select.tsx:23:      "data-[placeholder]:text-slate-400",
@@ -226,34 +226,33 @@ components/glossary/GlossaryClient.tsx:87:                className="absolute ri
 components/chat/SetuChat.tsx:145:              className="shrink-0 rounded p-0.5 text-slate-400 transition hover:text-[#121A2E] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#207D78]"
 components/chat/HandoffForm.tsx:60:    "w-full rounded-lg border border-slate-300 px-3 py-2 text-[15px] text-[#121A2E] placeholder:text-slate-400 focus:outline-none focus:ring-2";
 components/chat/ChatPanel.tsx:359:            className="max-h-28 min-h-[42px] flex-1 resize-none rounded-lg border border-slate-300 px-3 py-2 text-[15px] placeholder:text-slate-400 focus:outline-none focus:ring-1"
-components/layout/Footer.tsx:75:                <div className="text-[10px] text-slate-400 leading-none mt-0.5">
-components/layout/Footer.tsx:80:            <p className="text-sm text-slate-400 leading-relaxed mb-5 max-w-xs">
-components/layout/Footer.tsx:86:              <a href="mailto:privacy@saralprivacy.com" className="inline-flex items-center pointer-coarse:min-h-11 text-slate-400 hover:text-white transition-colors">
-components/layout/Footer.tsx:91:              <p className="text-xs text-slate-400">
-components/layout/Footer.tsx:107:                    className="inline-flex items-center pointer-coarse:min-h-11 text-sm text-slate-400 hover:text-white transition-colors"
-components/layout/Footer.tsx:124:                    className="inline-flex items-center pointer-coarse:min-h-11 text-sm text-slate-400 hover:text-white transition-colors"
-components/layout/Footer.tsx:141:                    className="inline-flex items-center pointer-coarse:min-h-11 text-sm text-slate-400 hover:text-white transition-colors"
-components/layout/Footer.tsx:154:                    className="inline-flex items-center pointer-coarse:min-h-11 text-sm text-slate-400 hover:text-white transition-colors"
-components/layout/Footer.tsx:171:                    className="inline-flex items-center pointer-coarse:min-h-11 text-sm text-slate-400 hover:text-white transition-colors"
-components/layout/Footer.tsx:187:              <p className="text-xs text-slate-400 mt-1">
-components/layout/Footer.tsx:210:            <p className="text-xs text-slate-400 mt-0.5">
-components/layout/Footer.tsx:232:          <p className="text-xs text-slate-400">
-components/layout/Footer.tsx:236:            <span className="text-xs text-slate-400">Privacy Notice v2.0 · Updated July 2026</span>
-components/layout/Footer.tsx:237:            <Link href="/privacy" className="inline-flex items-center pointer-coarse:min-h-11 text-xs text-slate-400 hover:text-white transition-colors">
-components/layout/Footer.tsx:240:            <Link href="/rights" className="inline-flex items-center pointer-coarse:min-h-11 text-xs text-slate-400 hover:text-white transition-colors">
-components/layout/Footer.tsx:243:            <Link href="/terms" className="inline-flex items-center pointer-coarse:min-h-11 text-xs text-slate-400 hover:text-white transition-colors">
-components/layout/Footer.tsx:246:            <Link href="/consent-preferences" className="inline-flex items-center pointer-coarse:min-h-11 text-xs text-slate-400 hover:text-white transition-colors">
+components/layout/Footer.tsx:76:        className="inline-flex items-center pointer-coarse:min-h-11 text-sm text-slate-400 hover:text-white transition-colors"
+components/layout/Footer.tsx:113:            <p className="text-sm text-slate-400 leading-relaxed max-w-xs">
+components/layout/Footer.tsx:143:                      className="inline-flex items-center pointer-coarse:min-h-11 text-slate-400 hover:text-white transition-colors"
+components/layout/Footer.tsx:205:              <p className="text-xs text-slate-400 mb-1">General</p>
+components/layout/Footer.tsx:214:              <p className="text-xs text-slate-400 mb-1">
+components/layout/Footer.tsx:223:              <p className="text-xs text-slate-400 mt-1">
+components/layout/Footer.tsx:228:              <p className="text-xs text-slate-400 leading-relaxed">
+components/layout/Footer.tsx:248:            <p className="text-xs text-slate-400 mt-0.5">
+components/layout/Footer.tsx:272:          <p className="text-xs text-slate-400">
+components/layout/Footer.tsx:276:            <span className="text-xs text-slate-400">Privacy Notice v2.0 · Updated July 2026</span>
+components/layout/Footer.tsx:277:            <Link href="/privacy" className="inline-flex items-center pointer-coarse:min-h-11 text-xs text-slate-400 hover:text-white transition-colors">
+components/layout/Footer.tsx:280:            <Link href="/rights" className="inline-flex items-center pointer-coarse:min-h-11 text-xs text-slate-400 hover:text-white transition-colors">
+components/layout/Footer.tsx:283:            <Link href="/terms" className="inline-flex items-center pointer-coarse:min-h-11 text-xs text-slate-400 hover:text-white transition-colors">
+components/layout/Footer.tsx:286:            <Link href="/consent-preferences" className="inline-flex items-center pointer-coarse:min-h-11 text-xs text-slate-400 hover:text-white transition-colors">
 components/briefings/BriefingsExplorer.tsx:149:        <Search size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" aria-hidden />
 components/briefings/BriefingsExplorer.tsx:160:            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
 components/briefings/BriefingSubscribeCard.tsx:44:        <p className="text-slate-400 text-xs">Daily briefings will arrive in your inbox from tomorrow.</p>
 components/briefings/BriefingSubscribeCard.tsx:52:      <p className="text-slate-400 text-xs mb-4">
 components/briefings/BriefingSubscribeCard.tsx:85:          <a href="/privacy" className="text-slate-400 underline">Privacy Notice</a>.
-components/home/HeroSection.tsx:93:              <span className="block text-sm text-slate-400 mb-2.5">I run a…</span>
-components/home/HeroSection.tsx:196:                <p className="text-xs text-slate-400 mt-3">
 components/home/ConsultationCTA.tsx:78:                <p className="text-slate-400 text-xs">
-components/home/AudienceCards.tsx:279:                <s.icon size={14} className="text-slate-400 shrink-0" />
+components/home/AudienceCards.tsx:282:                <s.icon size={14} className="text-slate-400 shrink-0" />
 components/home/NewsletterSection.tsx:109:                <p className="text-xs text-slate-400 pl-7">
 components/home/HowItWorks.tsx:198:                    className="ml-auto shrink-0 text-slate-400 group-hover:text-teal-900 transition-colors"
+components/home/WhereRiskHides.tsx:154:            className="absolute text-xs text-slate-400"
+components/home/WhereRiskHides.tsx:202:          <div className="text-center text-xs text-slate-400 mb-2">
+components/home/WhereRiskHides.tsx:226:        <p className="text-center text-slate-400 text-sm mt-10 max-w-xl mx-auto">
+components/home/WhereRiskHides.tsx:238:          <p className="text-center text-2xs font-semibold uppercase tracking-[0.09em] text-slate-400 mb-5">
 components/home/NoticeCTA.tsx:87:                <div className="text-[11px] uppercase tracking-wide text-slate-400 font-semibold">
 components/home/DiscoveryCTA.tsx:84:                      on ? "bg-green-700 text-white" : "bg-slate-100 text-slate-400"
 components/home/DiscoveryCTA.tsx:101:                <div className="text-[11px] uppercase tracking-wide text-slate-400 font-semibold">

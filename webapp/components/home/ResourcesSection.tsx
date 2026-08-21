@@ -56,10 +56,10 @@ export function ResourcesSection() {
         <Eyebrow surface="deep" className="mb-3">
           Learn more
         </Eyebrow>
-        <h2 className="text-3xl sm:text-4xl font-semibold text-navy-700 mb-3">
+        <h2 className="type-display-3 text-navy-700 mb-4">
           If you&apos;d rather read first
         </h2>
-        <p className="text-slate-600 max-w-lg mx-auto leading-relaxed">
+        <p className="type-intro text-slate-600 max-w-lg mx-auto">
           The assessment is faster. But if you want the background, start here.
         </p>
       </div>

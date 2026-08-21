@@ -19,7 +19,7 @@ export function FinalAssessmentBand() {
   return (
     <Section surface="navy" type="decision" width="narrow" aria-label="Take the free assessment">
       <div className="text-center">
-        <h2 className="text-3xl sm:text-4xl font-semibold text-white leading-tight mb-7">
+        <h2 className="type-display-2 text-white mb-8">
           Know your gaps. Fix what matters. Signal trust.
         </h2>
 

@@ -28,7 +28,7 @@ export function FAQPreview() {
         <Eyebrow surface="deep" className="mb-3">
           Before you start
         </Eyebrow>
-        <h2 className="text-3xl font-semibold text-navy-700 mb-3">
+        <h2 className="type-display-3 text-navy-700 mb-4">
           The questions people ask first
         </h2>
         <p className="text-slate-600">
@@ -57,11 +57,14 @@ export function FAQPreview() {
                   )}
                 />
               </button>
-              {open && (
-                <div className="px-5 pb-5 border-t border-cloud-200">
-                  <p className="text-slate-600 text-sm leading-relaxed pt-4">{faq.answer}</p>
-                </div>
-              )}
+              {/* Always in the DOM, toggled with `hidden` — collapsed answers
+                  used to be conditionally rendered, which meant AI crawlers and
+                  anything else that reads raw HTML without running JS saw eight
+                  questions and one answer. The content is the point of an
+                  objection FAQ; it has to be in the server HTML. */}
+              <div hidden={!open} className="px-5 pb-5 border-t border-cloud-200">
+                <p className="text-slate-600 text-sm leading-relaxed pt-4">{faq.answer}</p>
+              </div>
             </Surface>
           );
         })}

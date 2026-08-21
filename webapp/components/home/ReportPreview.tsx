@@ -29,13 +29,13 @@ export function ReportPreview() {
   const v = VERDICT_PREVIEWS.find((p) => p.slug === active) ?? VERDICT_PREVIEWS[0];
 
   return (
-    <Section surface="white" type="demo" divider>
+    <Section id="report" surface="white" type="demo" className="scroll-mt-20">
       <div className="text-center mb-8">
         <Eyebrow className="mb-3">Your report</Eyebrow>
-        <h2 className="text-3xl sm:text-4xl font-semibold text-navy-700 mb-3">
+        <h2 className="type-display-3 text-navy-700 mb-4">
           This is what you get at the end
         </h2>
-        <p className="text-slate-600 text-base max-w-lg mx-auto leading-relaxed">
+        <p className="type-intro text-slate-600 max-w-lg mx-auto">
           Every assessment ends in a scored, sector-specific report. Here is the
           shape of one — pick a sector to see how it changes.
         </p>
