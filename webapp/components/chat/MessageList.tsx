@@ -8,6 +8,7 @@ import { ExternalLink, ThumbsDown, ThumbsUp, BadgeCheck } from "lucide-react";
 import type { ChatMessage } from "./useSetuChat";
 import { SetuStage, type AvatarState } from "./SetuStage";
 import { ThinkingIndicator } from "./ThinkingIndicator";
+import { SETU_SURFACE } from "@/lib/chat/theme";
 import { t } from "@/lib/chat/strings";
 import { trackEvent } from "@/lib/analytics";
 
@@ -179,7 +180,11 @@ export function MessageList({
   const lastSetu = [...messages].reverse().find((m) => m.role === "setu");
 
   return (
-    <div className="flex-1 space-y-4 overflow-y-auto px-4 py-3" role="log" aria-label="Conversation with Setu">
+    <div
+      className="min-h-0 flex-1 space-y-4 overflow-y-auto px-4 py-3"
+      role="log"
+      aria-label="Conversation with Setu"
+    >
       <div aria-live="polite" className="sr-only">
         {announced ? `Setu says: ${announced}` : ""}
       </div>
@@ -187,7 +192,10 @@ export function MessageList({
       {messages.map((msg) =>
         msg.role === "user" ? (
           <div key={msg.id} className="flex justify-end">
-            <div className="max-w-[85%] rounded-2xl rounded-br-sm bg-[#121A2E] px-3.5 py-2 text-[15px] leading-relaxed text-white">
+            <div
+              className="max-w-[85%] rounded-2xl rounded-br-sm px-3.5 py-2 text-[15px] leading-relaxed text-white"
+              style={{ backgroundColor: SETU_SURFACE }}
+            >
               {msg.text}
             </div>
           </div>
