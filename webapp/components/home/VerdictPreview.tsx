@@ -50,7 +50,7 @@ export function VerdictPreview() {
                   if (p.slug !== active) trackEvent.beat5TabSelect({ sector: p.slug });
                   setActive(p.slug);
                 }}
-                className={`text-sm rounded-full border px-4 py-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 ${
+                className={`inline-flex items-center justify-center min-h-11 text-sm rounded-full border px-4 py-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 ${
                   on
                     ? "bg-teal-800 border-teal-800 text-white font-semibold"
                     : "bg-white border-slate-200 text-slate-600 hover:border-teal-400 hover:text-teal-900"
@@ -71,7 +71,11 @@ export function VerdictPreview() {
             key={v.slug}
             className="animate-fade-up motion-reduce:animate-none min-h-[340px]"
           >
-            <div className="flex items-center justify-between gap-3 mb-5">
+            {/* Wraps, because it must. At 360px the label plus both pills
+                measure 285px inside a 280px content box, and `shrink-0` meant
+                the group pushed the document 5px wider than the viewport
+                instead of yielding. Wrapping keeps both pills' full text. */}
+            <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 mb-5">
               <span className="font-bold text-navy-700">{v.label}</span>
               <div className="flex items-center gap-2 shrink-0">
                 <span className="text-2xs font-semibold text-slate-600 bg-cloud-50 border border-slate-200 rounded-full px-2.5 py-1 whitespace-nowrap">

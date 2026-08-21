@@ -111,7 +111,7 @@ export function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 group">
+          <Link href="/" className="flex items-center gap-2.5 group min-h-11">
             {/* SP circle emblem — shown on all screen sizes */}
             <Image
               src="/logo-emblem.png"
@@ -209,7 +209,7 @@ export function Header() {
               DPDPA Guide
             </Link>
             <button
-              className="xl:hidden p-2 text-slate-600 hover:text-slate-900"
+              className="xl:hidden inline-flex items-center justify-center min-h-11 min-w-11 p-2 text-slate-600 hover:text-slate-900"
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label="Toggle menu"
             >

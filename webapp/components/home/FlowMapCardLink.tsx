@@ -25,7 +25,7 @@ export function FlowMapCardLink({
     <Link
       href={href}
       onClick={() => trackEvent.flowCrosslinkClick({ source: "home_cards", sector })}
-      className={`inline-flex items-center gap-1.5 text-sm font-medium hover:underline underline-offset-2 transition-colors ${className}`}
+      className={`inline-flex items-center gap-1.5 py-3 -my-3 text-sm font-medium hover:underline underline-offset-2 transition-colors ${className}`}
     >
       See the data flow
       <ArrowRight size={14} />
