@@ -43,7 +43,7 @@ export function DiscoveryCTA() {
 
             <Link
               href="/discovery"
-              className="inline-flex items-center gap-2 px-7 py-3.5 bg-green-500 text-white font-semibold rounded-xl hover:bg-green-600 transition-colors text-base"
+              className="inline-flex items-center gap-2 px-7 py-3.5 bg-green-700 text-white font-semibold rounded-xl hover:bg-green-800 transition-colors text-base"
             >
               Discover My Personal Data
               <ArrowRight size={18} />
@@ -81,7 +81,7 @@ export function DiscoveryCTA() {
                   <span className="flex-1 text-slate-600">{label}</span>
                   <span
                     className={`w-5 h-5 rounded grid place-items-center text-xs font-bold ${
-                      on ? "bg-green-500 text-white" : "bg-slate-100 text-slate-400"
+                      on ? "bg-green-700 text-white" : "bg-slate-100 text-slate-400"
                     }`}
                   >
                     {on ? "✓" : "+"}

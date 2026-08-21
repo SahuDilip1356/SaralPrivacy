@@ -865,7 +865,7 @@ export default function SurveyClient() {
 
               <div>
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0">1</span>
+                  <span className="w-6 h-6 rounded-full bg-green-700 text-white text-xs font-bold flex items-center justify-center shrink-0">1</span>
                   <span className="text-navy-800 font-semibold text-base">Which sector best describes your business?</span>
                 </div>
                 <QuestionCardGrid
@@ -891,7 +891,7 @@ export default function SurveyClient() {
 
               <div>
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0">2</span>
+                  <span className="w-6 h-6 rounded-full bg-green-700 text-white text-xs font-bold flex items-center justify-center shrink-0">2</span>
                   <span className="text-navy-800 font-semibold text-base">Where do you mainly operate?</span>
                 </div>
                 <QuestionCardGrid
@@ -934,7 +934,7 @@ export default function SurveyClient() {
 
               <div>
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0">4</span>
+                  <span className="w-6 h-6 rounded-full bg-green-700 text-white text-xs font-bold flex items-center justify-center shrink-0">4</span>
                   <span className="text-navy-800 font-semibold text-base">What data do you handle? <span className="text-slate-500 text-xs font-normal">Select all that apply</span></span>
                 </div>
                 <QuestionCardGrid
@@ -949,7 +949,7 @@ export default function SurveyClient() {
 
               <div>
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0">5</span>
+                  <span className="w-6 h-6 rounded-full bg-green-700 text-white text-xs font-bold flex items-center justify-center shrink-0">5</span>
                   <span className="text-navy-800 font-semibold text-base">Where is this data usually stored? <span className="text-slate-500 text-xs font-normal">Select all that apply</span></span>
                 </div>
                 <QuestionCardGrid
@@ -995,7 +995,7 @@ export default function SurveyClient() {
               <div>
                 <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">RIGHTS MANAGEMENT</div>
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0">7</span>
+                  <span className="w-6 h-6 rounded-full bg-green-700 text-white text-xs font-bold flex items-center justify-center shrink-0">7</span>
                   <span className="text-navy-800 font-semibold text-base">How well can your business handle requests to access, correct, or delete data?</span>
                 </div>
                 <QuestionCardGrid
@@ -1010,7 +1010,7 @@ export default function SurveyClient() {
               <div>
                 <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">CONSENT PRACTICE</div>
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0">8</span>
+                  <span className="w-6 h-6 rounded-full bg-green-700 text-white text-xs font-bold flex items-center justify-center shrink-0">8</span>
                   <span className="text-navy-800 font-semibold text-base">How does your business ask for permission before collecting personal data?</span>
                 </div>
                 <QuestionCardGrid
@@ -1036,7 +1036,7 @@ export default function SurveyClient() {
 
               <div>
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0">9</span>
+                  <span className="w-6 h-6 rounded-full bg-green-700 text-white text-xs font-bold flex items-center justify-center shrink-0">9</span>
                   <span className="text-navy-800 font-semibold text-base">Who is primarily responsible for privacy or data protection in your business today?</span>
                 </div>
                 <QuestionCardGrid
@@ -1050,7 +1050,7 @@ export default function SurveyClient() {
 
               <div>
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0">10</span>
+                  <span className="w-6 h-6 rounded-full bg-green-700 text-white text-xs font-bold flex items-center justify-center shrink-0">10</span>
                   <span className="text-navy-800 font-semibold text-base">Which statement best describes your current DPDPA readiness?</span>
                 </div>
                 <QuestionCardGrid
@@ -1124,7 +1124,7 @@ export default function SurveyClient() {
             <button
               onClick={handleNext}
               disabled={!canProceed()}
-              className="inline-flex items-center gap-2 px-7 py-3 bg-green-500 text-white text-sm font-bold rounded-xl hover:bg-green-400 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+              className="inline-flex items-center gap-2 px-7 py-3 bg-green-700 text-white text-sm font-bold rounded-xl hover:bg-green-800 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
             >
               {step === 6 ? "See my readiness score" : isOptionalStep ? "Next →" : "Next question"}
               {step !== 6 && <ArrowRight size={16} />}
@@ -1282,7 +1282,7 @@ export default function SurveyClient() {
                 <button
                   onClick={handleSubmit}
                   disabled={!contactEmail || !consentDelivery || submitting}
-                  className="w-full py-3.5 bg-green-500 text-white font-bold rounded-xl text-sm hover:bg-green-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
+                  className="w-full py-3.5 bg-green-700 text-white font-bold rounded-xl text-sm hover:bg-green-800 disabled:opacity-40 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
                 >
                   {submitting ? "Sending…" : "Unlock detailed report"} {!submitting && <ArrowRight size={16} />}
                 </button>
@@ -1419,7 +1419,7 @@ export default function SurveyClient() {
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 {reportToken && (
-                  <a href={`/report/${reportToken}`} target="_blank" rel="noopener noreferrer" className="px-6 py-3 bg-green-500 text-white font-bold rounded-xl text-sm hover:bg-green-400 transition-colors flex items-center justify-center gap-2">
+                  <a href={`/report/${reportToken}`} target="_blank" rel="noopener noreferrer" className="px-6 py-3 bg-green-400 text-navy-950 font-bold rounded-xl text-sm hover:bg-green-300 transition-colors flex items-center justify-center gap-2">
                     View Full Report →
                   </a>
                 )}
@@ -1509,7 +1509,7 @@ export default function SurveyClient() {
               <div className="space-y-3">
                 {result.immediateActions.map((action, i) => (
                   <div key={i} className="flex items-start gap-3">
-                    <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">{i + 1}</span>
+                    <span className="w-6 h-6 rounded-full bg-green-700 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">{i + 1}</span>
                     <p className="text-slate-600 text-sm leading-relaxed">{action}</p>
                   </div>
                 ))}
@@ -1541,7 +1541,7 @@ export default function SurveyClient() {
                     href={`/report/${reportToken}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 text-center py-3 px-5 bg-green-500 hover:bg-green-400 text-white font-semibold rounded-xl text-sm transition-colors"
+                    className="flex-1 text-center py-3 px-5 bg-green-400 hover:bg-green-300 text-navy-950 font-semibold rounded-xl text-sm transition-colors"
                   >
                     View Full Report →
                   </a>

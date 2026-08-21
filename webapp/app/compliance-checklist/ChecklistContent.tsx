@@ -222,7 +222,7 @@ function MidPageCTA() {
       <div className="flex flex-col gap-2 shrink-0">
         <Link
           href="/assessment"
-          className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white text-sm font-bold px-5 py-2.5 rounded-lg transition-colors whitespace-nowrap"
+          className="inline-flex items-center gap-2 bg-green-400 hover:bg-green-300 text-navy-950 text-sm font-bold px-5 py-2.5 rounded-lg transition-colors whitespace-nowrap"
           aria-label="Take the free DPDPA compliance assessment"
         >
           Take Free Assessment <ArrowRight size={14} />

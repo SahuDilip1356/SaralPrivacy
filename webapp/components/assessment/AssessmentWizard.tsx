@@ -135,7 +135,7 @@ export function AssessmentWizard({ title, industry, questions }: Props) {
           <div className="flex flex-col sm:flex-row gap-3">
             <Link
               href="/contact"
-              className="flex-1 text-center py-2.5 px-5 bg-green-500 hover:bg-green-500 text-white font-semibold rounded-lg text-sm transition-colors"
+              className="flex-1 text-center py-2.5 px-5 bg-green-400 hover:bg-green-300 text-navy-950 font-semibold rounded-lg text-sm transition-colors"
             >
               Request Free Consultation
             </Link>
@@ -167,7 +167,7 @@ export function AssessmentWizard({ title, industry, questions }: Props) {
               />
               <button
                 onClick={() => setEmailSaved(true)}
-                className="px-4 py-2.5 bg-green-500 text-white font-semibold rounded-lg text-sm hover:bg-green-600"
+                className="px-4 py-2.5 bg-green-700 text-white font-semibold rounded-lg text-sm hover:bg-green-800"
               >
                 Save
               </button>

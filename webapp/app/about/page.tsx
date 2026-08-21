@@ -69,7 +69,7 @@ export default function AboutPage() {
                 { step: "4", title: "Act", body: "Prioritise consent, notices, access, vendors, retention, and breach readiness." },
               ].map((s) => (
                 <div key={s.step} className="rounded-lg bg-slate-50 border border-slate-200 p-4">
-                  <div className="flex items-center justify-center w-8 h-8 rounded-full bg-green-500 text-white text-sm font-bold mb-3">
+                  <div className="flex items-center justify-center w-8 h-8 rounded-full bg-green-700 text-white text-sm font-bold mb-3">
                     {s.step}
                   </div>
                   <p className="font-semibold text-navy-700 text-sm mb-1">{s.title}</p>

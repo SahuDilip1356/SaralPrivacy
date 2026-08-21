@@ -111,7 +111,7 @@ export function EdgeDetailPanel({ pack, edge, onClose, onAssessmentCta }: Props)
         <Link
           href={`${pack.assessmentRoute}?from=data-flow`}
           onClick={onAssessmentCta}
-          className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-green-500 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-green-600"
+          className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-green-700 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-green-800"
         >
           Check this in the assessment <ArrowRight size={15} aria-hidden="true" />
         </Link>

@@ -21,7 +21,7 @@ export function WhitepaperCTA({ variant = "full" }: WhitepaperCTAProps) {
         </p>
         <Link
           href={ctaCopy.whitepaper.href}
-          className="flex items-center justify-center gap-2 bg-green-500 text-white text-sm font-bold py-2.5 rounded-lg hover:bg-green-600 transition-colors"
+          className="flex items-center justify-center gap-2 bg-green-400 text-navy-950 text-sm font-bold py-2.5 rounded-lg hover:bg-green-300 transition-colors"
         >
           <Download size={14} />
           {ctaCopy.whitepaper.cta}
@@ -46,7 +46,7 @@ export function WhitepaperCTA({ variant = "full" }: WhitepaperCTAProps) {
       </div>
       <Link
         href={ctaCopy.whitepaper.href}
-        className="shrink-0 inline-flex items-center gap-2 bg-green-500 text-white font-bold px-5 py-3 rounded-xl hover:bg-green-600 transition-colors"
+        className="shrink-0 inline-flex items-center gap-2 bg-green-400 text-navy-950 font-bold px-5 py-3 rounded-xl hover:bg-green-300 transition-colors"
       >
         <Download size={15} />
         Download Free

@@ -104,7 +104,7 @@ export default function RunButton() {
           className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-lg font-semibold text-sm transition-colors ${
             state === 'running'
               ? 'bg-slate-200 text-slate-500 cursor-not-allowed'
-              : 'bg-green-500 hover:bg-green-600 text-white'
+              : 'bg-green-700 hover:bg-green-800 text-white'
           }`}
         >
           {state === 'running' ? (

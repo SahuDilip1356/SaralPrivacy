@@ -24,7 +24,7 @@ export default function LearnTopicNotFound() {
         </p>
         <Link
           href="/learn"
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-green-500 hover:bg-green-600 text-white text-sm font-semibold transition-colors"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-green-700 hover:bg-green-800 text-white text-sm font-semibold transition-colors"
         >
           <ArrowLeft size={16} />
           Back to DPDPA Guide
