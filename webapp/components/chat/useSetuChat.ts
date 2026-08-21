@@ -4,6 +4,7 @@
 // streaming fetch to /api/chat and the U+001E two-phase split.
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { HONEYPOT_FIELD } from "@/lib/abuseGuard";
 import { META_SENTINEL, parseChatResponse } from "@/lib/chat/protocol";
 import type { ChatMeta } from "@/lib/chat/orchestrate";
 import {
@@ -211,7 +212,7 @@ export function useSetuChat(pageUrl: string) {
    * object, the same rule that keeps ChatMeta trustworthy.
    */
   const submitHandoff = useCallback(
-    async (contact: { name: string; email: string }, reason: string) => {
+    async (contact: { name: string; email: string; honeypot: string }, reason: string) => {
       const lastUser = [...messages].reverse().find((m) => m.role === "user");
       try {
         const res = await fetch("/api/chat/handoff", {
@@ -222,6 +223,9 @@ export function useSetuChat(pageUrl: string) {
             name: contact.name,
             email: contact.email,
             consent: true,
+            // Field name comes from the shared constant; the server checks the
+            // same one, so the two cannot drift apart again.
+            [HONEYPOT_FIELD]: contact.honeypot,
             state: stateRef.current,
             pageUrl,
             reason,

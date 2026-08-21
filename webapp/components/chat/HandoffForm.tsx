@@ -10,6 +10,7 @@
 // anywhere in the flow.
 
 import { useRef, useState } from "react";
+import { HONEYPOT_FIELD } from "@/lib/abuseGuard";
 import { SETU_ACTION, SETU_FOCUS, SETU_INK } from "@/lib/chat/theme";
 import { t } from "@/lib/chat/strings";
 
@@ -21,13 +22,18 @@ export function HandoffForm({
   onSubmit,
   onFieldsChange,
 }: {
-  onSubmit: (contact: { name: string; email: string }) => Promise<HandoffSubmitResult>;
+  onSubmit: (contact: {
+    name: string;
+    email: string;
+    honeypot: string;
+  }) => Promise<HandoffSubmitResult>;
   /** Reports 0–3 filled fields so an abandon event can locate the drop-off. */
   onFieldsChange: (count: number) => void;
 }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [consent, setConsent] = useState(false);
+  const [honeypot, setHoneypot] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const honeypotRef = useRef<HTMLInputElement>(null);
@@ -41,7 +47,7 @@ export function HandoffForm({
     if (!ready) return;
     setBusy(true);
     setError(null);
-    const res = await onSubmit({ name: name.trim(), email: email.trim() });
+    const res = await onSubmit({ name: name.trim(), email: email.trim(), honeypot });
     if (!res.ok) {
       setError(t("en", "handoffError"));
       setBusy(false);
@@ -56,11 +62,18 @@ export function HandoffForm({
   return (
     <div className="mt-2 rounded-lg border border-slate-200 bg-white p-3 shadow-sm">
       <div className="flex flex-col gap-2">
-        {/* Honeypot — visually hidden, never announced, only bots fill it. */}
+        {/* Honeypot — visually hidden, never announced, only bots fill it.
+            The name comes from the HONEYPOT_FIELD constant rather than a
+            literal: this shipped as name="website" while abuseGuard checks
+            "hp_url", so the field being checked was never rendered and the
+            honeypot could not fire. Importing the constant makes that drift
+            impossible. */}
         <input
           ref={honeypotRef}
           type="text"
-          name="website"
+          name={HONEYPOT_FIELD}
+          value={honeypot}
+          onChange={(e) => setHoneypot(e.target.value)}
           tabIndex={-1}
           autoComplete="off"
           aria-hidden="true"

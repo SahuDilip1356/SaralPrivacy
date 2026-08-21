@@ -36,13 +36,22 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid JSON body." }, { status: 400 });
   }
 
-  // Tighter than /api/contact's 6/min: higher intent, far lower legitimate volume.
+  // Two ceilings, because one does not fit both jobs.
+  //
+  // A single tight limit checked up front counts rejected requests too, so a
+  // visitor who mistypes their email three times is locked out for ten minutes
+  // and cannot ask for the callback they wanted. Found by probing the running
+  // route: three 400s and every subsequent valid request came back 429.
+  //
+  // So: a generous ceiling on raw requests stops hammering, and a tight one
+  // consumed only by a submission that is actually about to create a lead
+  // stops lead flooding. Typos cost the first budget, never the second.
   const ip = getClientIp(request);
-  const rl = rateLimit(`chat-handoff:${ip}`, 3, 10 * 60_000);
-  if (!rl.ok) {
+  const burst = rateLimit(`chat-handoff-req:${ip}`, 15, 10 * 60_000);
+  if (!burst.ok) {
     return NextResponse.json(
       { error: "Too many requests. Please wait a moment and try again." },
-      { status: 429, headers: { "Retry-After": String(rl.retryAfter) } }
+      { status: 429, headers: { "Retry-After": String(burst.retryAfter) } }
     );
   }
 
@@ -66,6 +75,16 @@ export async function POST(request: NextRequest) {
   const reason = isEscalationReason(body.reason) ? body.reason : "explicit_ask";
   const lastUserMessage =
     typeof body.lastUserMessage === "string" ? body.lastUserMessage.slice(0, MAX_MESSAGE_CHARS) : "";
+
+  // Past validation, so this request is about to become a lead. Only now does
+  // it consume the spam ceiling.
+  const submit = rateLimit(`chat-handoff-submit:${ip}`, 3, 10 * 60_000);
+  if (!submit.ok) {
+    return NextResponse.json(
+      { error: "Too many requests. Please wait a moment and try again." },
+      { status: 429, headers: { "Retry-After": String(submit.retryAfter) } }
+    );
+  }
 
   const state = sanitizeState(body.state, sessionId, pageUrl);
   const packet = buildHandoffPacket({ state, pageUrl, reason, lastUserMessage });

@@ -47,7 +47,7 @@ export function ChatPanel({
   pageUrl: string;
   state: ChatSessionState | null;
   onSubmitHandoff: (
-    contact: { name: string; email: string },
+    contact: { name: string; email: string; honeypot: string },
     reason: string
   ) => Promise<{ ok: boolean }>;
   onMarkHandoffOffered: () => void;
