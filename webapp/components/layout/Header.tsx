@@ -1,77 +1,76 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Menu, X, ChevronDown, Download } from "lucide-react";
+import { Menu, X, ChevronDown, Download, ArrowRight } from "lucide-react";
 import { TemplateDownloadModal } from "@/components/TemplateDownloadModal";
-import { sectorNavLinks } from "@/lib/data/sectors";
+import { surfaceClasses } from "@/components/ui/Surface";
+import { navMenus, primaryAction, secondaryAction, type NavItem, type NavMenu } from "@/lib/data/navigation";
+import { trackEvent } from "@/lib/analytics";
 
 // No badges here on purpose. Three gold "Free" chips plus "Daily" plus a
 // "7 Indian languages" chip put five competing emphasis devices in 64px of
 // chrome; "free" is now said once, in the hero trust line.
-const navigation = [
-  {
-    label: "Data Discovery",
-    href: "/discovery",
-  },
-  {
-    label: "Data Flow",
-    href: "/data-mapping",
-  },
-  {
-    label: "Assessment",
-    href: "/assessment",
-  },
-  {
-    label: "Industries",
-    href: "/industries",
-    children: sectorNavLinks,
-  },
-  {
-    label: "Learn DPDPA",
-    href: "/learn",
-    children: [
-      { label: "DPDP Act 2023 (Full Text)",   href: "/learn/dpdp-act-2023" },
-      { label: "DPDP Rules 2025",             href: "/learn/dpdp-rules-2025-plain-english-guide" },
-      { label: "What is DPDPA?",             href: "/learn/what-is-dpdpa" },
-      { label: "Who Does It Apply To?",      href: "/learn/applicability" },
-      { label: "Key Terms Explained",        href: "/learn/key-terms" },
-      { label: "Consent Under DPDPA",        href: "/learn/consent" },
-      { label: "Rights of Individuals",      href: "/learn/rights" },
-      { label: "Data Breach Basics",         href: "/learn/data-breach" },
-      { label: "Penalties Under DPDPA",      href: "/penalty-calculator" },
-      { label: "DPDPA Glossary (50+ Terms)", href: "/glossary" },
-    ],
-  },
-  {
-    label: "Briefings",
-    href: "/briefings",
-  },
-  {
-    label: "Blog",
-    href: "/blog",
-  },
-];
+//
+// The IA itself lives in lib/data/navigation.ts, with a node --test suite
+// asserting every href resolves to a real page. This file renders it.
+//
+// ── Why the triggers are <button>, not <Link>
+//
+// They used to be links with onMouseEnter/onMouseLeave and nothing else,
+// which meant the menus could not be opened by keyboard at all: Tab focused
+// the trigger, Enter navigated away, and the panel never appeared. There was
+// no aria-expanded, no aria-haspopup, and no Escape. A button that owns
+// aria-expanded is the disclosure pattern this actually is, and the section
+// hub it used to link to is now the panel's featured item — reachable in one
+// keystroke instead of being the only thing the trigger could do.
+
+const MENU_CLOSE_DELAY_MS = 150;
+
+/** Panel ids are derived once so trigger and panel always agree. */
+const panelId = (label: string) => `nav-panel-${label.toLowerCase()}`;
 
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileSection, setMobileSection] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [templateModalOpen, setTemplateModalOpen] = useState(false);
+
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const triggerRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const navRef = useRef<HTMLDivElement | null>(null);
   const pathname = usePathname();
 
-  function openMenu(label: string) {
+  const open = useCallback((label: string) => {
     if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
-    setOpenDropdown(label);
-  }
+    setOpenMenu((current) => {
+      if (current !== label) trackEvent.navMenuOpen({ menu: label });
+      return label;
+    });
+  }, []);
 
-  function scheduleClose() {
-    closeTimerRef.current = setTimeout(() => setOpenDropdown(null), 150);
-  }
+  const close = useCallback(() => {
+    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+    setOpenMenu(null);
+  }, []);
+
+  const scheduleClose = useCallback(() => {
+    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+    closeTimerRef.current = setTimeout(() => setOpenMenu(null), MENU_CLOSE_DELAY_MS);
+  }, []);
+
+  /** Escape closes and hands focus back to the trigger, per WAI-ARIA disclosure. */
+  const closeAndRestoreFocus = useCallback(
+    (label: string) => {
+      close();
+      triggerRefs.current[label]?.focus();
+    },
+    [close]
+  );
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 8);
@@ -81,8 +80,21 @@ export function Header() {
 
   useEffect(() => {
     setMobileOpen(false);
-    setOpenDropdown(null);
+    setMobileSection(null);
+    setOpenMenu(null);
   }, [pathname]);
+
+  // Clicking anywhere outside the bar closes an open panel. Without this the
+  // panel survives a click on page content, because the only close paths were
+  // mouseleave and route change.
+  useEffect(() => {
+    if (!openMenu) return;
+    const onPointerDown = (e: PointerEvent) => {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) setOpenMenu(null);
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [openMenu]);
 
   // Allow any page CTA (e.g. TemplatesCTA component) to open the modal
   // by dispatching a "openTemplatesModal" CustomEvent — avoids prop-drilling
@@ -93,193 +105,456 @@ export function Header() {
     return () => window.removeEventListener("openTemplatesModal", handler);
   }, []);
 
+  useEffect(() => () => {
+    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+  }, []);
+
+  /** Move focus between triggers with the arrow keys, wrapping at both ends. */
+  function focusTriggerByOffset(label: string, offset: number) {
+    const i = navMenus.findIndex((m) => m.label === label);
+    const next = navMenus[(i + offset + navMenus.length) % navMenus.length];
+    triggerRefs.current[next.label]?.focus();
+  }
+
+  function onTriggerKeyDown(e: React.KeyboardEvent<HTMLButtonElement>, menu: NavMenu) {
+    switch (e.key) {
+      case "Escape":
+        if (openMenu === menu.label) {
+          e.preventDefault();
+          closeAndRestoreFocus(menu.label);
+        }
+        break;
+      case "ArrowDown": {
+        e.preventDefault();
+        open(menu.label);
+        // The panel mounts on state change, so defer the focus a frame.
+        requestAnimationFrame(() => {
+          document
+            .getElementById(panelId(menu.label))
+            ?.querySelector<HTMLElement>('a[href], button:not([disabled])')
+            ?.focus();
+        });
+        break;
+      }
+      case "ArrowRight":
+        e.preventDefault();
+        focusTriggerByOffset(menu.label, 1);
+        break;
+      case "ArrowLeft":
+        e.preventDefault();
+        focusTriggerByOffset(menu.label, -1);
+        break;
+    }
+  }
+
+  function handleItemActivate(menu: string, item: NavItem) {
+    trackEvent.navItemClick({ menu, item: item.label });
+    close();
+    if (item.action === "templates") setTemplateModalOpen(true);
+  }
+
+  const isActive = (href: string) =>
+    pathname === href || pathname.startsWith(href + "/");
+
+  /** A menu counts as current when any of its destinations is the open page. */
+  const menuIsActive = (menu: NavMenu) =>
+    [menu.featured, ...menu.items].some((i) => !i.comingSoon && isActive(i.href));
+
   return (
     <>
-    <header
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        scrolled
-          ? "bg-white border-b border-slate-200 shadow-sm"
-          : "bg-white/95 backdrop-blur-sm border-b border-slate-100"
-      )}
-    >
-      {/* The urgency strip that used to sit here said the same thing as the
-          hero eyebrow 90px below it. The message now lives in the hero only.
-          Removing it also removes the 32px of extra top padding <main> was
-          carrying to clear it — see app/layout.tsx. */}
+      <header
+        className={cn(
+          "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+          scrolled || openMenu
+            ? "bg-white border-b border-slate-200 shadow-sm"
+            : "bg-white/95 backdrop-blur-sm border-b border-slate-100"
+        )}
+      >
+        <div ref={navRef} onMouseLeave={scheduleClose}>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="flex items-center justify-between h-16 gap-2">
+              {/* Logo */}
+              <Link
+                href="/"
+                className="flex items-center gap-2.5 group min-h-11 pointer-coarse:min-w-11 shrink-0"
+              >
+                <Image
+                  src="/logo-emblem.png"
+                  alt="SaralPrivacy emblem"
+                  width={40}
+                  height={40}
+                  className="h-10 w-10 object-contain shrink-0 self-center"
+                  priority
+                />
+                {/* Wordmark + tagline — hidden on mobile */}
+                <div className="hidden sm:flex flex-col justify-center">
+                  <div className="font-bold text-base leading-tight tracking-tight">
+                    <span className="text-green-500">saral</span>
+                    <span className="text-navy-700">Privacy</span>
+                  </div>
+                  <div className="text-[10px] text-navy-700 leading-tight tracking-wide">
+                    Privacy Made Practical for India
+                  </div>
+                </div>
+              </Link>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 group min-h-11 pointer-coarse:min-w-11">
-            {/* SP circle emblem — shown on all screen sizes */}
-            <Image
-              src="/logo-emblem.png"
-              alt="SaralPrivacy emblem"
-              width={40}
-              height={40}
-              className="h-10 w-10 object-contain shrink-0 self-center"
-              priority
-            />
-            {/* Wordmark + tagline — hidden on mobile */}
-            <div className="hidden sm:flex flex-col justify-center">
-              <div className="font-bold text-base leading-tight tracking-tight">
-                <span className="text-green-500">saral</span><span className="text-navy-700">Privacy</span>
-              </div>
-              <div className="text-[10px] text-navy-700 leading-tight tracking-wide">
-                Privacy Made Practical for India
+              {/* Desktop bar.
+                  Now `lg`, not `xl`. Seven top-level items previously measured
+                  0px of slack at 1024-1279px, so that whole band — most work
+                  laptops — got the hamburger. Four menus give the row roughly
+                  190px back, which is what buys the breakpoint. */}
+              <nav
+                className="hidden lg:flex items-center gap-0.5 xl:gap-1"
+                aria-label="Main"
+              >
+                {navMenus.map((menu) => {
+                  const isOpen = openMenu === menu.label;
+                  return (
+                    <div
+                      key={menu.label}
+                      className="relative"
+                      onPointerEnter={(e) => {
+                        // Guard on mouse: on touch, pointerenter fires with the
+                        // tap and would open the panel a frame before the click
+                        // handler toggles it shut again.
+                        if (e.pointerType === "mouse") open(menu.label);
+                      }}
+                    >
+                      <button
+                        type="button"
+                        ref={(el) => {
+                          triggerRefs.current[menu.label] = el;
+                        }}
+                        aria-expanded={isOpen}
+                        aria-haspopup="true"
+                        aria-controls={panelId(menu.label)}
+                        onClick={() => (isOpen ? close() : open(menu.label))}
+                        onKeyDown={(e) => onTriggerKeyDown(e, menu)}
+                        className={cn(
+                          // px-2.5 at lg, px-3 from xl: at 1024px the row has
+                          // roughly 14px of true free space once the flex gaps
+                          // are counted, and the tighter padding buys ~16px
+                          // more without being visible at that width.
+                          "flex items-center gap-1 whitespace-nowrap px-2.5 xl:px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2",
+                          isOpen || menuIsActive(menu)
+                            ? "text-green-800 bg-green-50"
+                            : "text-slate-700 hover:text-navy-700 hover:bg-cloud-50"
+                        )}
+                      >
+                        {menu.label}
+                        <ChevronDown
+                          size={14}
+                          className={cn(
+                            "transition-transform duration-200",
+                            isOpen && "rotate-180"
+                          )}
+                        />
+                      </button>
+                    </div>
+                  );
+                })}
+              </nav>
+
+              {/* Actions. Exactly one filled button, and it is the assessment.
+                  The guide used to carry the fill, which put two green CTAs
+                  above the fold competing for the same click. */}
+              <div className="flex items-center gap-2 shrink-0">
+                <Link
+                  href={secondaryAction.href}
+                  className="hidden md:inline-flex items-center gap-1.5 px-3 py-2 pointer-coarse:min-h-11 text-sm font-medium whitespace-nowrap text-slate-700 rounded-lg hover:text-navy-700 hover:bg-cloud-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2"
+                >
+                  <Download size={14} />
+                  {secondaryAction.label}
+                </Link>
+                <Link
+                  href={primaryAction.href}
+                  onClick={() => trackEvent.navItemClick({ menu: "chrome", item: primaryAction.label })}
+                  className="hidden sm:inline-flex items-center px-4 py-2 pointer-coarse:min-h-11 text-sm font-semibold whitespace-nowrap bg-green-700 text-white rounded-lg hover:bg-green-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2"
+                >
+                  {primaryAction.label}
+                </Link>
+                <button
+                  className="lg:hidden inline-flex items-center justify-center min-h-11 min-w-11 p-2 text-slate-600 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2 rounded-lg"
+                  onClick={() => setMobileOpen(!mobileOpen)}
+                  aria-expanded={mobileOpen}
+                  aria-controls="mobile-nav"
+                  aria-label="Toggle menu"
+                >
+                  {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+                </button>
               </div>
             </div>
+          </div>
+
+          {/* Mega panels live outside the flex row so they can span the bar's
+              full container width rather than hang off one trigger. Rendering
+              all four and hiding the closed ones would put every link in the
+              tab order at once, so only the open one mounts. */}
+          {navMenus.map((menu) =>
+            openMenu === menu.label ? (
+              <MegaPanel
+                key={menu.label}
+                menu={menu}
+                onEscape={() => closeAndRestoreFocus(menu.label)}
+                onActivate={(item) => handleItemActivate(menu.label, item)}
+                isActive={isActive}
+              />
+            ) : null
+          )}
+        </div>
+
+        {/* Mobile drawer — the desktop panels as accordions. */}
+        {mobileOpen && (
+          <div
+            id="mobile-nav"
+            className="lg:hidden bg-white border-t border-slate-200 py-4 px-4 space-y-1 max-h-[80vh] overflow-y-auto"
+          >
+            {navMenus.map((menu) => {
+              const expanded = mobileSection === menu.label;
+              return (
+                <div key={menu.label}>
+                  <button
+                    type="button"
+                    onClick={() => setMobileSection(expanded ? null : menu.label)}
+                    aria-expanded={expanded}
+                    aria-controls={`m-${panelId(menu.label)}`}
+                    className={cn(
+                      "flex w-full items-center justify-between gap-2 px-3 py-2.5 min-h-11 rounded-lg text-sm font-medium transition-colors",
+                      expanded ? "text-green-800 bg-green-50" : "text-slate-700 hover:bg-cloud-50"
+                    )}
+                  >
+                    <span>{menu.label}</span>
+                    <ChevronDown
+                      size={16}
+                      className={cn("transition-transform duration-200", expanded && "rotate-180")}
+                    />
+                  </button>
+
+                  {expanded && (
+                    <div id={`m-${panelId(menu.label)}`} className="ml-3 mt-1 space-y-0.5">
+                      <MobileItem
+                        item={menu.featured}
+                        featured
+                        onActivate={() => {
+                          handleItemActivate(menu.label, menu.featured);
+                          setMobileOpen(false);
+                        }}
+                      />
+                      {menu.items.map((item) => (
+                        <MobileItem
+                          key={item.label + item.href}
+                          item={item}
+                          onActivate={() => {
+                            handleItemActivate(menu.label, item);
+                            setMobileOpen(false);
+                          }}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+
+            <div className="pt-3 border-t border-slate-100 space-y-2">
+              <Link
+                href={primaryAction.href}
+                onClick={() => trackEvent.navItemClick({ menu: "chrome", item: primaryAction.label })}
+                className="flex w-full items-center justify-center px-4 py-2.5 min-h-11 text-sm font-semibold bg-green-700 text-white rounded-lg hover:bg-green-800 transition-colors"
+              >
+                {primaryAction.label}
+              </Link>
+              <Link
+                href={secondaryAction.href}
+                className="flex w-full items-center justify-center gap-2 px-4 py-2.5 min-h-11 text-sm font-semibold border border-pearl-300 text-navy-700 rounded-lg hover:bg-cloud-50 transition-colors"
+              >
+                <Download size={14} />
+                {secondaryAction.label}
+              </Link>
+              <Link
+                href="/contact"
+                className="flex w-full items-center justify-center px-4 py-2.5 min-h-11 text-sm font-semibold border border-pearl-300 text-navy-700 rounded-lg hover:bg-cloud-50 transition-colors"
+              >
+                Get Consultation
+              </Link>
+            </div>
+          </div>
+        )}
+      </header>
+
+      {/* Template download modal — mounted outside <header> to avoid z-index conflicts */}
+      <TemplateDownloadModal open={templateModalOpen} onOpenChange={setTemplateModalOpen} />
+    </>
+  );
+}
+
+/* ── Desktop mega panel ──────────────────────────────────────────────────── */
+
+function MegaPanel({
+  menu,
+  onEscape,
+  onActivate,
+  isActive,
+}: {
+  menu: NavMenu;
+  onEscape: () => void;
+  onActivate: (item: NavItem) => void;
+  isActive: (href: string) => boolean;
+}) {
+  // Descriptions are all-or-nothing per menu (asserted in the test suite), so
+  // one probe decides the grid's density for the whole panel.
+  const described = menu.items[0]?.description !== "";
+
+  return (
+    <div
+      id={panelId(menu.label)}
+      onKeyDown={(e) => {
+        if (e.key === "Escape") {
+          e.preventDefault();
+          onEscape();
+        }
+      }}
+      className="hidden lg:block absolute left-0 right-0 top-full"
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-4">
+        <div className={cn(surfaceClasses("raised"), "overflow-hidden")}>
+          {/* Featured — the panel's one lead. Sits in a well so it reads as
+              the ground the rest of the menu stands on, not another card. */}
+          <Link
+            href={menu.featured.href}
+            onClick={() => onActivate(menu.featured)}
+            className={cn(
+              surfaceClasses("sunken", { flush: true }),
+              "group block border-0 border-b px-6 py-5 transition-colors hover:bg-cloud-200/50",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-green-700"
+            )}
+          >
+            <span className="inline-flex items-center gap-2 text-base font-semibold text-navy-700">
+              {menu.featured.label}
+              <ArrowRight
+                size={16}
+                className="transition-transform duration-200 group-hover:translate-x-0.5"
+              />
+            </span>
+            <span className="mt-1 block max-w-2xl text-sm leading-relaxed text-slate-600">
+              {menu.featured.description}
+            </span>
           </Link>
 
-          {/* Desktop nav.
-              Shown from xl, not lg: at 1024-1279 the six items + two CTAs + logo
-              measured exactly 0px of slack, so labels wrapped to two lines
-              ("Data Discovery", "Learn DPDPA") and squeezed the wordmark. The
-              mobile menu is the better experience in that band than a wrapped
-              bar. `whitespace-nowrap` makes any future overflow visible as
-              overflow instead of silently re-wrapping. */}
-          <nav className="hidden xl:flex items-center gap-0.5 2xl:gap-1">
-            {navigation.map((item) => (
-              <div
-                key={item.label}
-                className="relative"
-                onMouseEnter={() => item.children && openMenu(item.label)}
-                onMouseLeave={() => item.children && scheduleClose()}
-              >
-                <Link
-                  href={item.href}
-                  className={cn(
-                    "flex items-center gap-1 whitespace-nowrap px-3 py-2 rounded-lg text-sm font-medium transition-colors",
-                    pathname === item.href || pathname.startsWith(item.href + "/")
-                      ? "text-green-800 bg-green-50"
-                      : "text-slate-700 hover:text-navy-700 hover:bg-cloud-50"
-                  )}
-                >
-                  {item.label}
-                  {item.children && (
-                    <ChevronDown
-                      size={14}
-                      className={cn(
-                        "transition-transform duration-200",
-                        openDropdown === item.label && "rotate-180"
-                      )}
-                    />
-                  )}
-                </Link>
-
-                {/* Dropdown */}
-                {item.children && openDropdown === item.label && (
-                  <div
-                    className="absolute top-full left-0 mt-1 w-64 bg-white rounded-xl border border-slate-200 shadow-xl py-1.5 z-50"
-                    onMouseEnter={() => openMenu(item.label)}
-                    onMouseLeave={() => scheduleClose()}
-                  >
-                    {item.children.map((child) => (
-                      <Link
-                        key={child.href}
-                        href={child.href}
-                        className="block px-4 py-2.5 text-sm text-slate-700 hover:bg-cloud-50 hover:text-navy-700 transition-colors"
-                      >
-                        {child.label}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
+          <div
+            className={cn(
+              "grid gap-x-8 px-6 py-5",
+              described ? "gap-y-5" : "gap-y-1",
+              menu.columns === 3 ? "grid-cols-3" : "grid-cols-2"
+            )}
+          >
+            {menu.items.map((item) => (
+              <PanelItem
+                key={item.label + item.href}
+                item={item}
+                described={described}
+                current={!item.comingSoon && isActive(item.href)}
+                onActivate={() => onActivate(item)}
+              />
             ))}
-          </nav>
-
-          {/* One filled action in the chrome. Templates steps down to a text
-              button; the guide keeps the fill because it is the one thing here
-              that isn't already a nav link. */}
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setTemplateModalOpen(true)}
-              className="hidden md:inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium whitespace-nowrap text-slate-700 rounded-lg hover:text-navy-700 hover:bg-cloud-50 transition-colors"
-            >
-              <Download size={14} />
-              Templates
-            </button>
-            <Link
-              href="/white-paper#download"
-              className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold whitespace-nowrap bg-green-700 text-white rounded-lg hover:bg-green-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2"
-            >
-              <Download size={14} />
-              DPDPA Guide
-            </Link>
-            <button
-              className="xl:hidden inline-flex items-center justify-center min-h-11 min-w-11 p-2 text-slate-600 hover:text-slate-900"
-              onClick={() => setMobileOpen(!mobileOpen)}
-              aria-label="Toggle menu"
-            >
-              {mobileOpen ? <X size={22} /> : <Menu size={22} />}
-            </button>
           </div>
         </div>
       </div>
+    </div>
+  );
+}
 
-      {/* Mobile menu */}
-      {mobileOpen && (
-        <div className="xl:hidden bg-white border-t border-slate-200 py-4 px-4 space-y-1 max-h-[80vh] overflow-y-auto">
-          {navigation.map((item) => (
-            <div key={item.label}>
-              <Link
-                href={item.href}
-                className={cn(
-                  "flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium",
-                  pathname === item.href
-                    ? "text-green-800 bg-green-50"
-                    : "text-slate-700 hover:bg-cloud-50"
-                )}
-              >
-                <span>{item.label}</span>
-              </Link>
-              {item.children && (
-                <div className="ml-4 mt-0.5 space-y-0.5">
-                  {item.children.map((child) => (
-                    <Link
-                      key={child.href}
-                      href={child.href}
-                      className="block px-3 py-2 text-sm text-slate-600 hover:text-navy-700 rounded-lg hover:bg-cloud-50"
-                    >
-                      {child.label}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-          <div className="pt-3 border-t border-slate-100 space-y-2">
-            <Link
-              href="/white-paper#download"
-              className="flex w-full items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold bg-green-700 text-white rounded-lg hover:bg-green-800 transition-colors"
-            >
-              <Download size={14} />
-              DPDPA Guide
-            </Link>
-            <button
-              onClick={() => { setMobileOpen(false); setTemplateModalOpen(true); }}
-              className="block w-full text-center px-4 py-2.5 text-sm font-semibold border border-pearl-300 text-navy-700 rounded-lg hover:bg-cloud-50 transition-colors"
-            >
-              Download DPDPA Templates
-            </button>
-            <Link
-              href="/contact"
-              className="block w-full text-center px-4 py-2.5 text-sm font-semibold border border-pearl-300 text-navy-700 rounded-lg hover:bg-cloud-50 transition-colors"
-            >
-              Get Consultation
-            </Link>
-          </div>
-        </div>
+function PanelItem({
+  item,
+  described,
+  current,
+  onActivate,
+}: {
+  item: NavItem;
+  described: boolean;
+  current: boolean;
+  onActivate: () => void;
+}) {
+  // A menu entry that navigates nowhere is worse than no entry at all, so
+  // coming-soon renders as inert text — not a link, not in the tab order.
+  if (item.comingSoon) {
+    // slate-500 (4.76:1 on white), not slate-400 (2.56:1). "De-emphasised"
+    // and "unreadable" are different things, and the design-lint ratchet
+    // caught the first draft of this doing the second. The chip takes
+    // slate-600 because slate-500 drops to 4.23:1 on the cloud-100 fill.
+    return (
+      <div className="cursor-not-allowed">
+        <span className="flex items-center gap-2 text-sm font-semibold text-slate-500">
+          {item.label}
+          <span className="rounded-full bg-cloud-100 px-2 py-0.5 text-2xs font-medium text-slate-600">
+            Coming soon
+          </span>
+        </span>
+        {described && (
+          <span className="mt-0.5 block text-sm leading-snug text-slate-500">
+            {item.description}
+          </span>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <Link
+      href={item.href}
+      onClick={onActivate}
+      className="group block rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2"
+    >
+      <span
+        className={cn(
+          "block text-sm font-semibold transition-colors",
+          current ? "text-green-800" : "text-navy-700 group-hover:text-green-800"
+        )}
+      >
+        {item.label}
+      </span>
+      {described && (
+        <span className="mt-0.5 block text-sm leading-snug text-slate-600">
+          {item.description}
+        </span>
       )}
-    </header>
+    </Link>
+  );
+}
 
-    {/* Template download modal — mounted outside <header> to avoid z-index conflicts */}
-    <TemplateDownloadModal
-      open={templateModalOpen}
-      onOpenChange={setTemplateModalOpen}
-    />
-    </>
+/* ── Mobile accordion row ────────────────────────────────────────────────── */
+
+function MobileItem({
+  item,
+  featured = false,
+  onActivate,
+}: {
+  item: NavItem;
+  featured?: boolean;
+  onActivate: () => void;
+}) {
+  if (item.comingSoon) {
+    return (
+      <div className="flex items-center gap-2 px-3 py-2 min-h-11 text-sm text-slate-500">
+        {item.label}
+        <span className="rounded-full bg-cloud-100 px-2 py-0.5 text-2xs font-medium text-slate-600">
+          Coming soon
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <Link
+      href={item.href}
+      onClick={onActivate}
+      className={cn(
+        "flex items-center px-3 py-2 min-h-11 rounded-lg text-sm transition-colors hover:bg-cloud-50",
+        featured ? "font-semibold text-navy-700" : "text-slate-600 hover:text-navy-700"
+      )}
+    >
+      {item.label}
+    </Link>
   );
 }
