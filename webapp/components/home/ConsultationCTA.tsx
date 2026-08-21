@@ -49,7 +49,7 @@ export function ConsultationCTA() {
 
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 px-7 py-3.5 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl transition-colors text-base"
+                className="inline-flex items-center gap-2 px-7 py-3.5 bg-green-400 hover:bg-green-300 text-navy-950 font-semibold rounded-xl transition-colors text-base"
               >
                 Request free gap review
                 <ArrowRight size={18} />

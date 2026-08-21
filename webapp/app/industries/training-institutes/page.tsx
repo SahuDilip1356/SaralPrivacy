@@ -140,7 +140,7 @@ export default function TrainingInstitutesIndustryPage() {
             <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
               <Link
                 href="/assessment/training-institutes"
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-green-500 px-6 py-3 font-semibold text-white transition-colors hover:bg-green-600"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-green-700 px-6 py-3 font-semibold text-white transition-colors hover:bg-green-800"
               >
                 {p.cta} <ArrowRight size={18} />
               </Link>

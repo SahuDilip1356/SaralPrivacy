@@ -64,7 +64,7 @@ function PressCard({ serial, size }: { serial: number; size: "hero" | "secondary
           />
         )}
         {/* Verified badge overlay */}
-        <span className="absolute top-2 left-2 inline-flex items-center gap-1 text-[10px] font-semibold bg-green-500 text-white px-2 py-0.5 rounded-full shadow-sm">
+        <span className="absolute top-2 left-2 inline-flex items-center gap-1 text-[10px] font-semibold bg-green-700 text-white px-2 py-0.5 rounded-full shadow-sm">
           <ShieldCheck size={9} /> Verified live
         </span>
       </a>
@@ -173,7 +173,7 @@ export default function PressWallPage() {
           </div>
           <Link
             href="/assessment"
-            className="inline-flex items-center gap-2 bg-green-500 text-white text-sm font-semibold px-6 py-3 rounded-xl hover:bg-green-600 transition-colors whitespace-nowrap"
+            className="inline-flex items-center gap-2 bg-green-400 text-navy-950 text-sm font-semibold px-6 py-3 rounded-xl hover:bg-green-300 transition-colors whitespace-nowrap"
           >
             Take the free assessment <ArrowRight size={16} />
           </Link>

@@ -380,7 +380,7 @@ export default function D2CAssessmentClient() {
               {formError && <p className="mt-2 text-xs font-medium text-red-600">{formError}</p>}
               <button
                 type="submit" disabled={submitting}
-                className="mt-4 w-full rounded-lg bg-green-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-green-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-300 disabled:cursor-not-allowed disabled:opacity-60"
+                className="mt-4 w-full rounded-lg bg-green-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-green-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-300 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {submitting ? "Saving your results…" : "Show my priority fixes"}
               </button>
@@ -416,7 +416,7 @@ export default function D2CAssessmentClient() {
             <Link
               href="/contact"
               onClick={() => trackEvent.callBookingClicked({ band: result.band, location: "d2c-assessment-result" })}
-              className="inline-flex items-center gap-2 rounded-lg bg-green-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-green-600"
+              className="inline-flex items-center gap-2 rounded-lg bg-green-400 px-5 py-2.5 text-sm font-semibold text-navy-950 hover:bg-green-300"
             >
               Book a D2C Brand Gap Review <ArrowRight size={16} />
             </Link>

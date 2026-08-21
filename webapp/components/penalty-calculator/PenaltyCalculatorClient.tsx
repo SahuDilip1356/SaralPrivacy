@@ -407,7 +407,7 @@ export default function PenaltyCalculatorClient() {
                     : rating === "medium" ? factor.mediumLabel
                     : factor.highLabel;
                   const colorMap = {
-                    low:    isSelected ? "bg-green-500 text-white border-green-500"  : "bg-white text-slate-600 border-slate-200 hover:border-green-300",
+                    low:    isSelected ? "bg-green-700 text-white border-green-700"  : "bg-white text-slate-600 border-slate-200 hover:border-green-300",
                     medium: isSelected ? "bg-amber-500 text-white border-amber-500"  : "bg-white text-slate-600 border-slate-200 hover:border-amber-300",
                     high:   isSelected ? "bg-red-500 text-white border-red-500"      : "bg-white text-slate-600 border-slate-200 hover:border-red-300",
                   };
@@ -433,7 +433,7 @@ export default function PenaltyCalculatorClient() {
             disabled={!allFactorsRated}
             className={`w-full py-3 rounded-lg font-semibold text-sm flex items-center justify-center gap-2 transition-all ${
               allFactorsRated
-                ? "bg-green-500 text-white hover:bg-green-600"
+                ? "bg-green-700 text-white hover:bg-green-800"
                 : "bg-slate-200 text-slate-400 cursor-not-allowed"
             }`}
           >
@@ -543,7 +543,7 @@ export default function PenaltyCalculatorClient() {
         <div className="flex flex-col sm:flex-row gap-3">
           <Link
             href="/contact"
-            className="flex-1 py-3 bg-green-500 text-white text-sm font-semibold rounded-lg hover:bg-green-600 transition-colors text-center flex items-center justify-center gap-2"
+            className="flex-1 py-3 bg-green-700 text-white text-sm font-semibold rounded-lg hover:bg-green-800 transition-colors text-center flex items-center justify-center gap-2"
           >
             Get Expert Consultation <ArrowRight size={14} />
           </Link>

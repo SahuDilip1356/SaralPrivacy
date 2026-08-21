@@ -113,7 +113,7 @@ export default async function DataFlowPage({ params }: Params) {
             <div className="mt-5 flex flex-col gap-3 sm:flex-row">
               <Link
                 href={`${pack.assessmentRoute}?from=data-flow`}
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-green-500 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-green-600"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-green-700 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-green-800"
               >
                 {p.ctaButton} <ArrowRight size={16} aria-hidden="true" />
               </Link>

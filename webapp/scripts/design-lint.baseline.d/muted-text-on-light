@@ -1,16 +1,54 @@
-app/contact/ContactContent.tsx:293:                    <p className="text-xs text-slate-400 mt-2 pl-7">
-app/learn/dpdp-act-2023/page.tsx:324:                  <BookOpen size={16} className="text-slate-400 mt-0.5 shrink-0" />
-app/privacy/page.tsx:148:          <p className="text-sm text-slate-400 mt-1">Last updated: July 2026 | Version 2.0</p>
-app/white-paper/WhitePaperContent.tsx:147:                    <span className="text-slate-400">→</span>
-app/white-paper/WhitePaperContent.tsx:274:                              <span className="text-[10px] font-normal text-slate-400">soon</span>
-app/white-paper/WhitePaperContent.tsx:380:                    <p className="text-xs text-slate-400 pt-1">
-app/compliance-checklist/ChecklistContent.tsx:80:          <span className="text-xs font-bold text-slate-400 font-mono">
-app/compliance-checklist/ChecklistContent.tsx:98:        <Scale size={11} className="text-slate-400 shrink-0" />
-app/compliance-checklist/ChecklistContent.tsx:160:                <span className="text-[11px] text-slate-400">
-app/compliance-checklist/ChecklistContent.tsx:188:            className="text-slate-400 shrink-0 transition-transform duration-200 group-data-[state=open]:rotate-180"
-app/faq/FAQContent.tsx:38:            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-app/faq/FAQContent.tsx:106:                      "text-slate-400 shrink-0 transition-transform duration-200 mt-0.5",
-app/terms/page.tsx:17:          <p className="text-sm text-slate-400 mt-1">Last updated: March 2026 | Version 1.0</p>
+app/subscribe/page.tsx:30:            <p className="text-xs text-slate-400 mt-0.5">DPDPA Daily Briefings</p>
+app/data-mapping/page.tsx:238:                    <ArrowRight size={15} className="shrink-0 text-slate-400" aria-hidden="true" />
+app/admin/consultations/page.tsx:47:          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+app/admin/consultations/page.tsx:61:          <div className="px-6 py-12 text-center text-sm text-slate-400">Loading...</div>
+app/admin/consultations/page.tsx:65:            <p className="text-slate-400 text-sm font-medium">No consultation requests yet</p>
+app/admin/consultations/page.tsx:66:            <p className="text-xs text-slate-400 mt-1">Consultation requests will appear here once users submit the contact form.</p>
+app/admin/consultations/page.tsx:96:                    <td className="px-4 py-3 text-slate-400 whitespace-nowrap">
+app/admin/downloads/page.tsx:55:          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+app/admin/downloads/page.tsx:69:          <div className="px-6 py-12 text-center text-sm text-slate-400">Loading...</div>
+app/admin/downloads/page.tsx:73:            <p className="text-slate-400 text-sm">No downloads found.</p>
+app/admin/downloads/page.tsx:100:                    <td className="px-4 py-3 text-slate-400 whitespace-nowrap">
+app/admin/discovery/page.tsx:71:        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+app/admin/citations/page.tsx:132:              <p className="text-xs text-slate-400">
+app/admin/blog/page.tsx:124:          <div className="px-6 py-12 text-center text-sm text-slate-400">Loading…</div>
+app/admin/blog/page.tsx:129:            <p className="text-sm text-slate-400 mb-6">
+app/admin/blog/page.tsx:167:                        <div className="text-xs text-slate-400 mt-0.5 font-mono">{post.slug}</div>
+app/admin/blog/page.tsx:182:                      <td className="px-4 py-3 text-xs text-slate-400 whitespace-nowrap">
+app/admin/subscribers/page.tsx:61:            <p className="text-xs text-slate-400">No data</p>
+app/admin/subscribers/page.tsx:76:            <p className="text-xs text-slate-400">No data</p>
+app/admin/subscribers/page.tsx:93:          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+app/admin/subscribers/page.tsx:107:          <div className="px-6 py-12 text-center text-sm text-slate-400">Loading...</div>
+app/admin/subscribers/page.tsx:111:            <p className="text-slate-400 text-sm">No subscribers found.</p>
+app/admin/subscribers/page.tsx:136:                    <td className="px-4 py-3 text-slate-400 whitespace-nowrap">
+app/admin/survey-responses/page.tsx:103:          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+app/admin/survey-responses/page.tsx:128:          <div className="px-6 py-12 text-center text-sm text-slate-400">Loading…</div>
+app/admin/survey-responses/page.tsx:132:            <p className="text-slate-400 text-sm font-medium">No survey responses yet</p>
+app/admin/survey-responses/page.tsx:133:            <p className="text-xs text-slate-400 mt-1">Responses appear here after users complete the assessment.</p>
+app/admin/survey-responses/page.tsx:150:                      <div className="text-xs text-slate-400 mt-0.5">{r.business_name || "—"}</div>
+app/admin/survey-responses/page.tsx:154:                      <div className="text-xs text-slate-400">{r.mobile_number || ""}</div>
+app/admin/survey-responses/page.tsx:158:                      <div className="text-xs text-slate-400">{r.employee_size || ""}</div>
+app/admin/survey-responses/page.tsx:182:                    <td className="px-4 py-3 text-xs text-slate-400 whitespace-nowrap">
+app/admin/set-password/page.tsx:137:          <p className="text-xs text-slate-400 mt-1">Blog Contributor Onboarding</p>
+app/admin/set-password/page.tsx:141:          <Suspense fallback={<p className="text-sm text-slate-400">Loading…</p>}>
+app/admin/set-password/page.tsx:146:        <p className="text-center text-xs text-slate-400 mt-6">
+app/admin/bloggers/BloggersClient.tsx:254:        <div className="text-center py-16 text-slate-400">
+app/admin/bloggers/BloggersClient.tsx:275:                    {blogger.bio && <div className="text-xs text-slate-400 truncate max-w-[180px]">{blogger.bio}</div>}
+app/admin/bloggers/BloggersClient.tsx:279:                  <td className="px-5 py-3.5 text-slate-400 text-xs">
+app/admin/outreach/page.tsx:112:        <p className="text-xs text-slate-400 mb-4">
+app/admin/outreach/page.tsx:176:          <div className="px-6 py-12 text-center text-sm text-slate-400">Loading contacts…</div>
+app/admin/outreach/page.tsx:180:            <p className="text-slate-400 text-sm">{contacts.length === 0 ? "No contacts yet. Upload your Excel file to get started." : "No contacts match your search."}</p>
+app/admin/outreach/page.tsx:208:                      <td className="px-4 py-3 text-slate-400 whitespace-nowrap text-xs">
+app/admin/outreach/page.tsx:211:                      <td className="px-4 py-3 text-slate-400 whitespace-nowrap text-xs">
+app/admin/briefings/page.tsx:154:          <div className="px-6 py-12 text-center text-sm text-slate-400">Loading…</div>
+app/admin/briefings/page.tsx:158:            <p className="text-slate-400 text-sm font-medium">No briefings yet</p>
+app/admin/briefings/page.tsx:159:            <p className="text-xs text-slate-400 mt-1">Click "Generate Now" or wait for the 9 AM IST cron.</p>
+app/admin/briefings/page.tsx:179:                        <div className="text-xs text-slate-400 mt-0.5 font-mono">{b.slug}</div>
+app/admin/briefings/page.tsx:192:                      <td className="px-4 py-3 text-slate-400 text-xs whitespace-nowrap">
+app/admin/leads/page.tsx:63:          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+app/admin/leads/page.tsx:77:          <div className="px-6 py-12 text-center text-sm text-slate-400">Loading...</div>
+app/admin/leads/page.tsx:81:            <p className="text-slate-400 text-sm">No leads found.</p>
+app/admin/leads/page.tsx:107:                    <td className="px-4 py-3 text-slate-400 whitespace-nowrap">
 app/admin/assessments/page.tsx:146:          <span className="text-xs text-slate-400">{dpdpaRef}</span>
 app/admin/assessments/page.tsx:222:                <p className="text-2xl font-bold text-slate-800">{assessment.final_score ?? "—"}<span className="text-sm font-normal text-slate-400">/100</span></p>
 app/admin/assessments/page.tsx:279:              <p className="text-xs text-slate-400 italic">Category scores not available for this assessment.</p>
@@ -23,23 +61,9 @@ app/admin/assessments/page.tsx:562:            <p className="text-slate-400 text
 app/admin/assessments/page.tsx:597:                        <span className="block text-xs text-slate-400 truncate max-w-[180px]">{a.name}</span>
 app/admin/assessments/page.tsx:611:                          ? <span className="text-xs text-slate-400">{a.overall_score} (legacy)</span>
 app/admin/assessments/page.tsx:666:                    <td className="px-4 py-3 text-slate-400 whitespace-nowrap text-xs">
-app/admin/bloggers/BloggersClient.tsx:254:        <div className="text-center py-16 text-slate-400">
-app/admin/bloggers/BloggersClient.tsx:275:                    {blogger.bio && <div className="text-xs text-slate-400 truncate max-w-[180px]">{blogger.bio}</div>}
-app/admin/bloggers/BloggersClient.tsx:279:                  <td className="px-5 py-3.5 text-slate-400 text-xs">
-app/admin/leads/page.tsx:63:          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-app/admin/leads/page.tsx:77:          <div className="px-6 py-12 text-center text-sm text-slate-400">Loading...</div>
-app/admin/leads/page.tsx:81:            <p className="text-slate-400 text-sm">No leads found.</p>
-app/admin/leads/page.tsx:107:                    <td className="px-4 py-3 text-slate-400 whitespace-nowrap">
-app/admin/discovery/page.tsx:71:        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-app/admin/briefings/page.tsx:154:          <div className="px-6 py-12 text-center text-sm text-slate-400">Loading…</div>
-app/admin/briefings/page.tsx:158:            <p className="text-slate-400 text-sm font-medium">No briefings yet</p>
-app/admin/briefings/page.tsx:159:            <p className="text-xs text-slate-400 mt-1">Click "Generate Now" or wait for the 9 AM IST cron.</p>
-app/admin/briefings/page.tsx:179:                        <div className="text-xs text-slate-400 mt-0.5 font-mono">{b.slug}</div>
-app/admin/briefings/page.tsx:192:                      <td className="px-4 py-3 text-slate-400 text-xs whitespace-nowrap">
-app/admin/blog/page.tsx:124:          <div className="px-6 py-12 text-center text-sm text-slate-400">Loading…</div>
-app/admin/blog/page.tsx:129:            <p className="text-sm text-slate-400 mb-6">
-app/admin/blog/page.tsx:167:                        <div className="text-xs text-slate-400 mt-0.5 font-mono">{post.slug}</div>
-app/admin/blog/page.tsx:182:                      <td className="px-4 py-3 text-xs text-slate-400 whitespace-nowrap">
+app/admin/login/page.tsx:62:              <span className="absolute inset-y-0 left-3 flex items-center text-slate-400 pointer-events-none">
+app/admin/login/page.tsx:95:                className="absolute inset-y-0 right-3 flex items-center text-slate-400"
+app/admin/login/page.tsx:118:        <p className="text-center text-xs text-slate-400 mt-6">
 app/admin/consent/page.tsx:134:              <div className="mt-2 text-lg font-bold text-brand-700">{a}<span className="text-sm font-normal text-slate-400">/{t}</span></div>
 app/admin/consent/page.tsx:163:            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
 app/admin/consent/page.tsx:196:          <div className="px-6 py-12 text-center text-sm text-slate-400">Loading...</div>
@@ -47,90 +71,66 @@ app/admin/consent/page.tsx:200:            <p className="text-slate-400 text-sm"
 app/admin/consent/page.tsx:222:                        <span className="flex items-center gap-1 text-slate-400"><XCircle size={14} /> No</span>
 app/admin/consent/page.tsx:230:                    <td className="px-4 py-3 text-slate-400 font-mono text-xs whitespace-nowrap">{r.ip_address || "—"}</td>
 app/admin/consent/page.tsx:231:                    <td className="px-4 py-3 text-slate-400 whitespace-nowrap text-xs">
-app/admin/consultations/page.tsx:47:          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-app/admin/consultations/page.tsx:61:          <div className="px-6 py-12 text-center text-sm text-slate-400">Loading...</div>
-app/admin/consultations/page.tsx:65:            <p className="text-slate-400 text-sm font-medium">No consultation requests yet</p>
-app/admin/consultations/page.tsx:66:            <p className="text-xs text-slate-400 mt-1">Consultation requests will appear here once users submit the contact form.</p>
-app/admin/consultations/page.tsx:96:                    <td className="px-4 py-3 text-slate-400 whitespace-nowrap">
 app/admin/layout.tsx:67:          <div className="text-slate-400 text-xs mt-0.5">
 app/admin/layout.tsx:84:          <Link href="/" className="text-xs text-slate-400 hover:text-white block transition-colors">← View Site</Link>
 app/admin/layout.tsx:91:            <button type="submit" className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-red-400 transition-colors">
-app/admin/citations/page.tsx:132:              <p className="text-xs text-slate-400">
-app/admin/set-password/page.tsx:137:          <p className="text-xs text-slate-400 mt-1">Blog Contributor Onboarding</p>
-app/admin/set-password/page.tsx:141:          <Suspense fallback={<p className="text-sm text-slate-400">Loading…</p>}>
-app/admin/set-password/page.tsx:146:        <p className="text-center text-xs text-slate-400 mt-6">
-app/admin/subscribers/page.tsx:61:            <p className="text-xs text-slate-400">No data</p>
-app/admin/subscribers/page.tsx:76:            <p className="text-xs text-slate-400">No data</p>
-app/admin/subscribers/page.tsx:93:          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-app/admin/subscribers/page.tsx:107:          <div className="px-6 py-12 text-center text-sm text-slate-400">Loading...</div>
-app/admin/subscribers/page.tsx:111:            <p className="text-slate-400 text-sm">No subscribers found.</p>
-app/admin/subscribers/page.tsx:136:                    <td className="px-4 py-3 text-slate-400 whitespace-nowrap">
-app/admin/downloads/page.tsx:55:          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-app/admin/downloads/page.tsx:69:          <div className="px-6 py-12 text-center text-sm text-slate-400">Loading...</div>
-app/admin/downloads/page.tsx:73:            <p className="text-slate-400 text-sm">No downloads found.</p>
-app/admin/downloads/page.tsx:100:                    <td className="px-4 py-3 text-slate-400 whitespace-nowrap">
-app/admin/outreach/page.tsx:112:        <p className="text-xs text-slate-400 mb-4">
-app/admin/outreach/page.tsx:176:          <div className="px-6 py-12 text-center text-sm text-slate-400">Loading contacts…</div>
-app/admin/outreach/page.tsx:180:            <p className="text-slate-400 text-sm">{contacts.length === 0 ? "No contacts yet. Upload your Excel file to get started." : "No contacts match your search."}</p>
-app/admin/outreach/page.tsx:208:                      <td className="px-4 py-3 text-slate-400 whitespace-nowrap text-xs">
-app/admin/outreach/page.tsx:211:                      <td className="px-4 py-3 text-slate-400 whitespace-nowrap text-xs">
-app/admin/survey-responses/page.tsx:103:          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-app/admin/survey-responses/page.tsx:128:          <div className="px-6 py-12 text-center text-sm text-slate-400">Loading…</div>
-app/admin/survey-responses/page.tsx:132:            <p className="text-slate-400 text-sm font-medium">No survey responses yet</p>
-app/admin/survey-responses/page.tsx:133:            <p className="text-xs text-slate-400 mt-1">Responses appear here after users complete the assessment.</p>
-app/admin/survey-responses/page.tsx:150:                      <div className="text-xs text-slate-400 mt-0.5">{r.business_name || "—"}</div>
-app/admin/survey-responses/page.tsx:154:                      <div className="text-xs text-slate-400">{r.mobile_number || ""}</div>
-app/admin/survey-responses/page.tsx:158:                      <div className="text-xs text-slate-400">{r.employee_size || ""}</div>
-app/admin/survey-responses/page.tsx:182:                    <td className="px-4 py-3 text-xs text-slate-400 whitespace-nowrap">
-app/admin/login/page.tsx:62:              <span className="absolute inset-y-0 left-3 flex items-center text-slate-400 pointer-events-none">
-app/admin/login/page.tsx:95:                className="absolute inset-y-0 right-3 flex items-center text-slate-400"
-app/admin/login/page.tsx:118:        <p className="text-center text-xs text-slate-400 mt-6">
-app/industries/[sector]/data-flow/DataFlowClient.tsx:200:            className={cn("shrink-0 text-slate-400 transition-transform", mapOpen && "rotate-180")}
 app/industries/training-institutes/page.tsx:147:              <span className="text-xs text-slate-400">{p.microline}</span>
-app/industries/d2c-brands/page.tsx:138:              <span className="text-xs text-slate-400">{p.microline}</span>
-app/industries/law-firms/page.tsx:137:              <span className="text-xs text-slate-400">{p.microline}</span>
-app/industries/clinics-diagnostic-labs/page.tsx:137:              <span className="text-xs text-slate-400">{p.microline}</span>
 app/industries/hotels-travel/page.tsx:137:              <span className="text-xs text-slate-400">{p.microline}</span>
-app/industries/real-estate/page.tsx:137:              <span className="text-xs text-slate-400">{p.microline}</span>
-app/industries/gyms-salons-spas/page.tsx:137:              <span className="text-xs text-slate-400">{p.microline}</span>
-app/industries/ca-firms/page.tsx:144:              <span className="text-xs text-slate-400">{p.microline}</span>
-app/industries/recruitment-agencies/page.tsx:138:              <span className="text-xs text-slate-400">{p.microline}</span>
-app/industries/pharmacies/page.tsx:137:              <span className="text-xs text-slate-400">{p.microline}</span>
+app/industries/clinics-diagnostic-labs/page.tsx:137:              <span className="text-xs text-slate-400">{p.microline}</span>
 app/industries/schools-colleges/page.tsx:137:              <span className="text-xs text-slate-400">{p.microline}</span>
+app/industries/d2c-brands/page.tsx:138:              <span className="text-xs text-slate-400">{p.microline}</span>
+app/industries/gyms-salons-spas/page.tsx:137:              <span className="text-xs text-slate-400">{p.microline}</span>
+app/industries/pharmacies/page.tsx:137:              <span className="text-xs text-slate-400">{p.microline}</span>
+app/industries/real-estate/page.tsx:137:              <span className="text-xs text-slate-400">{p.microline}</span>
+app/industries/recruitment-agencies/page.tsx:138:              <span className="text-xs text-slate-400">{p.microline}</span>
+app/industries/[sector]/data-flow/DataFlowClient.tsx:200:            className={cn("shrink-0 text-slate-400 transition-transform", mapOpen && "rotate-180")}
+app/industries/ca-firms/page.tsx:144:              <span className="text-xs text-slate-400">{p.microline}</span>
 app/industries/fintech-nbfc/page.tsx:137:              <span className="text-xs text-slate-400">{p.microline}</span>
-app/data-mapping/page.tsx:238:                    <ArrowRight size={15} className="shrink-0 text-slate-400" aria-hidden="true" />
+app/industries/law-firms/page.tsx:137:              <span className="text-xs text-slate-400">{p.microline}</span>
 app/assessment/training-institutes/TrainingAssessmentClient.tsx:467:          <span className="font-normal text-slate-400">· {pack.positioning.microline}</span>
 app/assessment/training-institutes/TrainingAssessmentClient.tsx:498:          {q.type === "multi" && <p className="mt-1 text-xs font-medium text-slate-400">Select all that apply.</p>}
 app/assessment/training-institutes/TrainingAssessmentClient.tsx:571:        <p className="mt-4 text-center text-xs text-slate-400">All responses are confidential. This scan is educational and not legal advice.</p>
-app/assessment/d2c-brands/D2CAssessmentClient.tsx:442:          <span className="font-normal text-slate-400">· {pack.positioning.microline}</span>
-app/assessment/d2c-brands/D2CAssessmentClient.tsx:473:          {q.type === "multi" && <p className="mt-1 text-xs font-medium text-slate-400">Select all that apply.</p>}
-app/assessment/d2c-brands/D2CAssessmentClient.tsx:542:        <p className="mt-4 text-center text-xs text-slate-400">All responses are confidential. This scan is educational and not legal advice.</p>
-app/assessment/law-firms/LawFirmAssessmentClient.tsx:453:          <span className="font-normal text-slate-400">· {pack.positioning.microline}</span>
-app/assessment/law-firms/LawFirmAssessmentClient.tsx:455:        <p className="mb-5 text-xs text-slate-400">This scan collects no client documents — only your answers about your processes.</p>
-app/assessment/law-firms/LawFirmAssessmentClient.tsx:485:          {q.type === "multi" && <p className="mt-1 text-xs font-medium text-slate-400">Select all that apply.</p>}
-app/assessment/law-firms/LawFirmAssessmentClient.tsx:566:        <p className="mt-4 text-center text-xs text-slate-400">All responses are confidential. This scan is educational and not legal advice.</p>
-app/assessment/clinics-diagnostic-labs/ClinicAssessmentClient.tsx:444:          <span className="font-normal text-slate-400">· {pack.positioning.microline}</span>
-app/assessment/clinics-diagnostic-labs/ClinicAssessmentClient.tsx:446:        <p className="mb-5 text-xs text-slate-400">This scan collects no patient data — only your answers about your processes.</p>
-app/assessment/clinics-diagnostic-labs/ClinicAssessmentClient.tsx:476:          {q.type === "multi" && <p className="mt-1 text-xs font-medium text-slate-400">Select all that apply.</p>}
-app/assessment/clinics-diagnostic-labs/ClinicAssessmentClient.tsx:545:        <p className="mt-4 text-center text-xs text-slate-400">All responses are confidential. This scan is educational and not legal or medical advice.</p>
-app/assessment/recruitment/RecruitmentAssessmentClient.tsx:465:          <span className="font-normal text-slate-400">· {pack.positioning.microline}</span>
-app/assessment/recruitment/RecruitmentAssessmentClient.tsx:497:          {q.type === "multi" && <p className="mt-1 text-xs font-medium text-slate-400">Select all that apply.</p>}
-app/assessment/recruitment/RecruitmentAssessmentClient.tsx:566:        <p className="mt-4 text-center text-xs text-slate-400">All responses are confidential. This scan is educational and not legal advice.</p>
 app/assessment/hotels-travel/HotelsTravelAssessmentClient.tsx:452:          <span className="font-normal text-slate-400">· {pack.positioning.microline}</span>
 app/assessment/hotels-travel/HotelsTravelAssessmentClient.tsx:454:        <p className="mb-5 text-xs text-slate-400">This scan collects no guest documents — only your answers about your processes.</p>
 app/assessment/hotels-travel/HotelsTravelAssessmentClient.tsx:484:          {q.type === "multi" && <p className="mt-1 text-xs font-medium text-slate-400">Select all that apply.</p>}
 app/assessment/hotels-travel/HotelsTravelAssessmentClient.tsx:553:        <p className="mt-4 text-center text-xs text-slate-400">All responses are confidential. This scan is educational and not legal advice.</p>
-app/assessment/real-estate/RealEstateAssessmentClient.tsx:451:          <span className="font-normal text-slate-400">· {pack.positioning.microline}</span>
-app/assessment/real-estate/RealEstateAssessmentClient.tsx:453:        <p className="mb-5 text-xs text-slate-400">This scan collects no client documents — only your answers about your processes.</p>
-app/assessment/real-estate/RealEstateAssessmentClient.tsx:483:          {q.type === "multi" && <p className="mt-1 text-xs font-medium text-slate-400">Select all that apply.</p>}
-app/assessment/real-estate/RealEstateAssessmentClient.tsx:552:        <p className="mt-4 text-center text-xs text-slate-400">All responses are confidential. This scan is educational and not legal advice.</p>
+app/assessment/clinics-diagnostic-labs/ClinicAssessmentClient.tsx:444:          <span className="font-normal text-slate-400">· {pack.positioning.microline}</span>
+app/assessment/clinics-diagnostic-labs/ClinicAssessmentClient.tsx:446:        <p className="mb-5 text-xs text-slate-400">This scan collects no patient data — only your answers about your processes.</p>
+app/assessment/clinics-diagnostic-labs/ClinicAssessmentClient.tsx:476:          {q.type === "multi" && <p className="mt-1 text-xs font-medium text-slate-400">Select all that apply.</p>}
+app/assessment/clinics-diagnostic-labs/ClinicAssessmentClient.tsx:545:        <p className="mt-4 text-center text-xs text-slate-400">All responses are confidential. This scan is educational and not legal or medical advice.</p>
+app/assessment/schools-colleges/SchoolAssessmentClient.tsx:450:          <span className="font-normal text-slate-400">· {pack.positioning.microline}</span>
+app/assessment/schools-colleges/SchoolAssessmentClient.tsx:452:        <p className="mb-5 text-xs text-slate-400">This scan collects no student data — only your answers about your processes.</p>
+app/assessment/schools-colleges/SchoolAssessmentClient.tsx:482:          {q.type === "multi" && <p className="mt-1 text-xs font-medium text-slate-400">Select all that apply.</p>}
+app/assessment/schools-colleges/SchoolAssessmentClient.tsx:563:        <p className="mt-4 text-center text-xs text-slate-400">All responses are confidential. This scan is educational and not legal advice.</p>
+app/assessment/d2c-brands/D2CAssessmentClient.tsx:442:          <span className="font-normal text-slate-400">· {pack.positioning.microline}</span>
+app/assessment/d2c-brands/D2CAssessmentClient.tsx:473:          {q.type === "multi" && <p className="mt-1 text-xs font-medium text-slate-400">Select all that apply.</p>}
+app/assessment/d2c-brands/D2CAssessmentClient.tsx:542:        <p className="mt-4 text-center text-xs text-slate-400">All responses are confidential. This scan is educational and not legal advice.</p>
 app/assessment/gyms-salons-spas/GymsSalonsSpasAssessmentClient.tsx:452:          <span className="font-normal text-slate-400">· {pack.positioning.microline}</span>
 app/assessment/gyms-salons-spas/GymsSalonsSpasAssessmentClient.tsx:454:        <p className="mb-5 text-xs text-slate-400">This scan collects no customer photos, health notes or records — only your answers about your processes.</p>
 app/assessment/gyms-salons-spas/GymsSalonsSpasAssessmentClient.tsx:484:          {q.type === "multi" && <p className="mt-1 text-xs font-medium text-slate-400">Select all that apply.</p>}
 app/assessment/gyms-salons-spas/GymsSalonsSpasAssessmentClient.tsx:553:        <p className="mt-4 text-center text-xs text-slate-400">All responses are confidential. This scan is educational and not legal advice.</p>
+app/assessment/pharmacies/PharmaciesAssessmentClient.tsx:456:          <span className="font-normal text-slate-400">· {pack.positioning.microline}</span>
+app/assessment/pharmacies/PharmaciesAssessmentClient.tsx:458:        <p className="mb-5 text-xs text-slate-400">This scan collects no prescriptions or patient records — only your answers about your processes.</p>
+app/assessment/pharmacies/PharmaciesAssessmentClient.tsx:488:          {q.type === "multi" && <p className="mt-1 text-xs font-medium text-slate-400">Select all that apply.</p>}
+app/assessment/pharmacies/PharmaciesAssessmentClient.tsx:557:        <p className="mt-4 text-center text-xs text-slate-400">All responses are confidential. This scan is educational and not legal advice.</p>
+app/assessment/real-estate/RealEstateAssessmentClient.tsx:451:          <span className="font-normal text-slate-400">· {pack.positioning.microline}</span>
+app/assessment/real-estate/RealEstateAssessmentClient.tsx:453:        <p className="mb-5 text-xs text-slate-400">This scan collects no client documents — only your answers about your processes.</p>
+app/assessment/real-estate/RealEstateAssessmentClient.tsx:483:          {q.type === "multi" && <p className="mt-1 text-xs font-medium text-slate-400">Select all that apply.</p>}
+app/assessment/real-estate/RealEstateAssessmentClient.tsx:552:        <p className="mt-4 text-center text-xs text-slate-400">All responses are confidential. This scan is educational and not legal advice.</p>
+app/assessment/recruitment/RecruitmentAssessmentClient.tsx:465:          <span className="font-normal text-slate-400">· {pack.positioning.microline}</span>
+app/assessment/recruitment/RecruitmentAssessmentClient.tsx:497:          {q.type === "multi" && <p className="mt-1 text-xs font-medium text-slate-400">Select all that apply.</p>}
+app/assessment/recruitment/RecruitmentAssessmentClient.tsx:566:        <p className="mt-4 text-center text-xs text-slate-400">All responses are confidential. This scan is educational and not legal advice.</p>
 app/assessment/ca-firms/CAAssessmentClient.tsx:469:          <span className="font-normal text-slate-400">· {caFirmPack.positioning.microline}</span>
 app/assessment/ca-firms/CAAssessmentClient.tsx:500:          {q.type === "multi" && <p className="mt-1 text-xs font-medium text-slate-400">Select all that apply.</p>}
 app/assessment/ca-firms/CAAssessmentClient.tsx:580:        <p className="mt-4 text-center text-xs text-slate-400">All responses are confidential. This scan is educational and not legal advice.</p>
+app/assessment/fintech-nbfc/FintechNbfcAssessmentClient.tsx:452:          <span className="font-normal text-slate-400">· {pack.positioning.microline}</span>
+app/assessment/fintech-nbfc/FintechNbfcAssessmentClient.tsx:454:        <p className="mb-5 text-xs text-slate-400">This scan collects no customer financial data — only your answers about your processes.</p>
+app/assessment/fintech-nbfc/FintechNbfcAssessmentClient.tsx:484:          {q.type === "multi" && <p className="mt-1 text-xs font-medium text-slate-400">Select all that apply.</p>}
+app/assessment/fintech-nbfc/FintechNbfcAssessmentClient.tsx:553:        <p className="mt-4 text-center text-xs text-slate-400">All responses are confidential. This scan is educational and not legal advice.</p>
+app/assessment/law-firms/LawFirmAssessmentClient.tsx:453:          <span className="font-normal text-slate-400">· {pack.positioning.microline}</span>
+app/assessment/law-firms/LawFirmAssessmentClient.tsx:455:        <p className="mb-5 text-xs text-slate-400">This scan collects no client documents — only your answers about your processes.</p>
+app/assessment/law-firms/LawFirmAssessmentClient.tsx:485:          {q.type === "multi" && <p className="mt-1 text-xs font-medium text-slate-400">Select all that apply.</p>}
+app/assessment/law-firms/LawFirmAssessmentClient.tsx:566:        <p className="mt-4 text-center text-xs text-slate-400">All responses are confidential. This scan is educational and not legal advice.</p>
 app/assessment/SurveyClient.tsx:35:        <div className="text-slate-400 text-xs">PRIVACY MADE PRACTICAL FOR INDIA</div>
 app/assessment/SurveyClient.tsx:84:          {section ? <span className="text-slate-400 font-normal"> · {section}</span> : null}
 app/assessment/SurveyClient.tsx:184:        <span className="text-slate-400 font-medium">{label}</span>
@@ -154,34 +154,10 @@ app/assessment/SurveyClient.tsx:1417:              <p className="text-slate-400 
 app/assessment/SurveyClient.tsx:1439:                className="text-sm text-slate-400 hover:text-slate-600 underline transition-colors"
 app/assessment/SurveyClient.tsx:1537:              <p className="text-slate-400 text-sm mb-4">{result.blockerNote ?? "Start with the highest-priority action above."}</p>
 app/assessment/SurveyClient.tsx:1592:              className="w-full text-center text-sm text-slate-400 hover:text-slate-600 underline transition-colors"
-app/assessment/pharmacies/PharmaciesAssessmentClient.tsx:456:          <span className="font-normal text-slate-400">· {pack.positioning.microline}</span>
-app/assessment/pharmacies/PharmaciesAssessmentClient.tsx:458:        <p className="mb-5 text-xs text-slate-400">This scan collects no prescriptions or patient records — only your answers about your processes.</p>
-app/assessment/pharmacies/PharmaciesAssessmentClient.tsx:488:          {q.type === "multi" && <p className="mt-1 text-xs font-medium text-slate-400">Select all that apply.</p>}
-app/assessment/pharmacies/PharmaciesAssessmentClient.tsx:557:        <p className="mt-4 text-center text-xs text-slate-400">All responses are confidential. This scan is educational and not legal advice.</p>
-app/assessment/schools-colleges/SchoolAssessmentClient.tsx:450:          <span className="font-normal text-slate-400">· {pack.positioning.microline}</span>
-app/assessment/schools-colleges/SchoolAssessmentClient.tsx:452:        <p className="mb-5 text-xs text-slate-400">This scan collects no student data — only your answers about your processes.</p>
-app/assessment/schools-colleges/SchoolAssessmentClient.tsx:482:          {q.type === "multi" && <p className="mt-1 text-xs font-medium text-slate-400">Select all that apply.</p>}
-app/assessment/schools-colleges/SchoolAssessmentClient.tsx:563:        <p className="mt-4 text-center text-xs text-slate-400">All responses are confidential. This scan is educational and not legal advice.</p>
-app/assessment/fintech-nbfc/FintechNbfcAssessmentClient.tsx:452:          <span className="font-normal text-slate-400">· {pack.positioning.microline}</span>
-app/assessment/fintech-nbfc/FintechNbfcAssessmentClient.tsx:454:        <p className="mb-5 text-xs text-slate-400">This scan collects no customer financial data — only your answers about your processes.</p>
-app/assessment/fintech-nbfc/FintechNbfcAssessmentClient.tsx:484:          {q.type === "multi" && <p className="mt-1 text-xs font-medium text-slate-400">Select all that apply.</p>}
-app/assessment/fintech-nbfc/FintechNbfcAssessmentClient.tsx:553:        <p className="mt-4 text-center text-xs text-slate-400">All responses are confidential. This scan is educational and not legal advice.</p>
-app/penalty-calculator/page.tsx:88:            <nav className="text-xs text-slate-400 mb-4 flex items-center gap-1.5">
-app/unsubscribe/page.tsx:33:          <Loader2 size={40} className="text-slate-400 animate-spin mx-auto mb-4" />
-app/unsubscribe/page.tsx:35:          <p className="text-slate-400 text-sm mt-2">Please wait a moment.</p>
-app/unsubscribe/page.tsx:47:          <p className="text-slate-400 text-xs mt-5">
-app/unsubscribe/page.tsx:77:            <Loader2 size={40} className="text-slate-400 animate-spin mx-auto mb-4" />
-app/unsubscribe/page.tsx:78:            <p className="text-slate-400 text-sm">Loading…</p>
-app/unsubscribe/outreach/page.tsx:20:          <p className="text-xs text-slate-400 mt-0.5">Unsubscribe</p>
-app/unsubscribe/outreach/OutreachUnsubscribeClient.tsx:30:        <Loader2 size={28} className="animate-spin text-slate-400" />
-app/briefings/page.tsx:136:          <div className="text-center py-16 text-slate-400">
-app/briefings/[slug]/page.tsx:622:                      <span className="text-slate-400">·</span>
-app/briefings/[slug]/page.tsx:650:                        <p className="text-xs text-slate-400 text-center py-2 border-t border-slate-100">
-app/blog/page.tsx:196:          <div className="mt-6 flex items-center gap-4 text-sm text-slate-400">
-app/blog/page.tsx:250:            <p className="text-slate-400 text-sm mb-8">Subscribe to be notified.</p>
 app/blog/[slug]/page.tsx:459:                <p className="text-slate-400 text-xs mb-3">
 app/blog/[slug]/page.tsx:480:              <p className="text-slate-400 text-xs mb-4 leading-relaxed">
-app/subscribe/page.tsx:30:            <p className="text-xs text-slate-400 mt-0.5">DPDPA Daily Briefings</p>
+app/blog/page.tsx:196:          <div className="mt-6 flex items-center gap-4 text-sm text-slate-400">
+app/blog/page.tsx:250:            <p className="text-slate-400 text-sm mb-8">Subscribe to be notified.</p>
 app/report/[token]/page.tsx:36:          <span className="ml-2 text-xs text-slate-400">{dpdpa}</span>
 app/report/[token]/page.tsx:120:          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">{pack.positioning.title} — Your Report</p>
 app/report/[token]/page.tsx:144:          {expiryDate && <p className="text-xs text-slate-400 text-right">Report valid until {expiryDate}</p>}
@@ -193,6 +169,46 @@ app/report/[token]/page.tsx:429:                  <p className="text-xs text-sla
 app/report/[token]/page.tsx:501:          <p className="text-xs text-slate-400 leading-relaxed">
 app/report/[token]/page.tsx:588:          <p className="text-xs text-slate-400 leading-relaxed max-w-lg mx-auto">
 app/media/press-wall/page.tsx:170:            <p className="text-slate-400 text-sm mt-1">
+app/unsubscribe/page.tsx:33:          <Loader2 size={40} className="text-slate-400 animate-spin mx-auto mb-4" />
+app/unsubscribe/page.tsx:35:          <p className="text-slate-400 text-sm mt-2">Please wait a moment.</p>
+app/unsubscribe/page.tsx:47:          <p className="text-slate-400 text-xs mt-5">
+app/unsubscribe/page.tsx:77:            <Loader2 size={40} className="text-slate-400 animate-spin mx-auto mb-4" />
+app/unsubscribe/page.tsx:78:            <p className="text-slate-400 text-sm">Loading…</p>
+app/unsubscribe/outreach/page.tsx:20:          <p className="text-xs text-slate-400 mt-0.5">Unsubscribe</p>
+app/unsubscribe/outreach/OutreachUnsubscribeClient.tsx:30:        <Loader2 size={28} className="animate-spin text-slate-400" />
+app/briefings/[slug]/page.tsx:622:                      <span className="text-slate-400">·</span>
+app/briefings/[slug]/page.tsx:650:                        <p className="text-xs text-slate-400 text-center py-2 border-t border-slate-100">
+app/briefings/page.tsx:136:          <div className="text-center py-16 text-slate-400">
+app/contact/ContactContent.tsx:293:                    <p className="text-xs text-slate-400 mt-2 pl-7">
+app/terms/page.tsx:17:          <p className="text-sm text-slate-400 mt-1">Last updated: March 2026 | Version 1.0</p>
+app/white-paper/WhitePaperContent.tsx:147:                    <span className="text-slate-400">→</span>
+app/white-paper/WhitePaperContent.tsx:274:                              <span className="text-[10px] font-normal text-slate-400">soon</span>
+app/white-paper/WhitePaperContent.tsx:380:                    <p className="text-xs text-slate-400 pt-1">
+app/learn/dpdp-act-2023/page.tsx:324:                  <BookOpen size={16} className="text-slate-400 mt-0.5 shrink-0" />
+app/compliance-checklist/ChecklistContent.tsx:80:          <span className="text-xs font-bold text-slate-400 font-mono">
+app/compliance-checklist/ChecklistContent.tsx:98:        <Scale size={11} className="text-slate-400 shrink-0" />
+app/compliance-checklist/ChecklistContent.tsx:160:                <span className="text-[11px] text-slate-400">
+app/compliance-checklist/ChecklistContent.tsx:188:            className="text-slate-400 shrink-0 transition-transform duration-200 group-data-[state=open]:rotate-180"
+app/privacy/page.tsx:148:          <p className="text-sm text-slate-400 mt-1">Last updated: July 2026 | Version 2.0</p>
+app/penalty-calculator/page.tsx:88:            <nav className="text-xs text-slate-400 mb-4 flex items-center gap-1.5">
+app/faq/FAQContent.tsx:38:            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+app/faq/FAQContent.tsx:106:                      "text-slate-400 shrink-0 transition-transform duration-200 mt-0.5",
+components/ResourceTemplateGate.tsx:131:              className="absolute top-4 right-4 p-1.5 rounded-lg hover:bg-slate-100 text-slate-400"
+components/ResourceTemplateGate.tsx:244:            <p className="text-[10px] text-slate-400 text-center mt-3 leading-relaxed">
+components/admin/BlogEditor.tsx:565:                <span className={`font-normal ${data.excerpt.length > 580 ? "text-red-500" : "text-slate-400"}`}>
+components/admin/BlogEditor.tsx:634:                    <p className="text-xs text-slate-400 mt-0.5">{section.hint}</p>
+components/admin/BlogEditor.tsx:672:                <p className="text-xs text-slate-400 mt-0.5">
+components/admin/BlogEditor.tsx:740:                <p className="text-xs text-slate-400 mt-0.5">Document every source used. This is the editorial integrity log.</p>
+components/admin/BlogEditor.tsx:751:              <p className="text-xs text-slate-400 text-center py-4">No sources added yet. Use &ldquo;Validate&rdquo; to get suggestions or click &ldquo;Add Source&rdquo;.</p>
+components/admin/BlogEditor.tsx:791:            <p className="text-xs text-slate-400 mb-3">Date validated against official sources. Required before publishing. Auto-set by the Validate button.</p>
+components/admin/BlogEditor.tsx:807:            <p className="text-xs text-slate-400 mb-4">Publish threshold: 75/100. Auto-filled by Validate.</p>
+components/admin/BlogEditor.tsx:904:                          : "bg-slate-100 text-slate-400 cursor-not-allowed"
+components/admin/BlogEditor.tsx:929:                    <p className="text-xs text-slate-400 text-center">
+components/admin/BlogEditor.tsx:941:            <p className="text-xs text-slate-400 mb-3">
+components/admin/BlogEditor.tsx:953:                    : "bg-slate-100 text-slate-400 cursor-not-allowed"
+components/admin/BlogEditor.tsx:979:                <div className="bg-slate-50 px-3 py-1.5 text-xs text-slate-400 text-right">
+components/TemplateGateModal.tsx:131:              className="absolute top-4 right-4 p-1.5 rounded-lg hover:bg-slate-100 text-slate-400"
+components/TemplateGateModal.tsx:232:            <p className="text-[10px] text-slate-400 text-center mt-3 leading-relaxed">
 components/ui/dialog.tsx:52:      <DialogPrimitive.Close className="absolute right-4 top-4 rounded-lg p-1 text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500">
 components/ui/PressProofStrip.tsx:34:        <span className="text-[11px] text-slate-400 font-medium">As seen in:</span>
 components/ui/PressProofStrip.tsx:41:              className="text-[11px] text-slate-400 hover:text-white transition-colors"
@@ -202,25 +218,13 @@ components/ui/select.tsx:23:      "data-[placeholder]:text-slate-400",
 components/ui/select.tsx:31:      <ChevronDown className="h-4 w-4 text-slate-400 shrink-0" />
 components/ui/select.tsx:46:    <ChevronUp className="h-4 w-4 text-slate-400" />
 components/ui/select.tsx:60:    <ChevronDown className="h-4 w-4 text-slate-400" />
-components/home/FAQPreview.tsx:41:                    "text-slate-400 shrink-0 transition-transform duration-200 mt-0.5",
-components/home/HowItWorks.tsx:263:                    className="order-3 sm:order-4 text-slate-400 group-hover:text-teal-900 transition-colors shrink-0"
-components/home/HowItWorks.tsx:343:                      className={comingSoon ? "text-slate-400" : "text-teal-800"}
-components/home/HowItWorks.tsx:367:                        : "text-slate-400 group-hover:text-teal-900"
-components/home/DiscoveryCTA.tsx:84:                      on ? "bg-green-500 text-white" : "bg-slate-100 text-slate-400"
-components/home/DiscoveryCTA.tsx:101:                <div className="text-[11px] uppercase tracking-wide text-slate-400 font-semibold">
-components/home/WhitePaperSection.tsx:128:                      className="text-slate-400 group-hover:text-teal-900 transition-colors shrink-0 mt-0.5"
-components/home/NewsletterSection.tsx:109:                <p className="text-xs text-slate-400 pl-7">
-components/home/HeroSection.tsx:67:              <span className="block text-sm text-slate-400 mb-2.5">I run a…</span>
-components/home/HeroSection.tsx:118:            <p className="text-sm text-slate-400">
-components/home/HeroSection.tsx:151:                <p className="text-xs text-slate-400 mt-3">
-components/home/BriefingsSection.tsx:86:          <div className="bg-white border border-slate-200 rounded-xl p-10 text-center text-slate-400">
-components/home/BriefingsSection.tsx:124:                        <div className="flex items-center gap-3 text-slate-400 text-xs">
-components/home/BriefingsSection.tsx:178:                    <div className="flex items-center gap-3 text-slate-400 text-xs mt-2">
-components/home/NoticeCTA.tsx:87:                <div className="text-[11px] uppercase tracking-wide text-slate-400 font-semibold">
-components/home/ConsultationCTA.tsx:78:                <p className="text-slate-400 text-xs">
-components/TemplateDownloadForm.tsx:314:        <p className="text-[11px] text-slate-400 text-center leading-relaxed">
-components/TemplateGateModal.tsx:131:              className="absolute top-4 right-4 p-1.5 rounded-lg hover:bg-slate-100 text-slate-400"
-components/TemplateGateModal.tsx:232:            <p className="text-[10px] text-slate-400 text-center mt-3 leading-relaxed">
+components/industries/DataFlowPreview.tsx:71:        <p className="mt-3 text-[11px] text-slate-400">{pack.disclaimer}</p>
+components/assessment/AssessmentWizard.tsx:175:            <p className="text-xs text-slate-400 mt-2">
+components/assessment/AssessmentWizard.tsx:286:      <p className="text-center text-xs text-slate-400 mt-4">
+components/glossary/GlossaryClient.tsx:53:          <nav className="text-xs text-slate-400 mb-4">
+components/glossary/GlossaryClient.tsx:67:            className="mt-4 text-slate-400 [&_a]:text-slate-200 [&_a:hover]:text-green-300 [&_time]:text-slate-300"
+components/glossary/GlossaryClient.tsx:76:            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+components/glossary/GlossaryClient.tsx:87:                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
 components/chat/SetuChat.tsx:131:              className="shrink-0 rounded p-0.5 text-slate-400 transition hover:text-[#121A2E] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#207D78]"
 components/chat/ChatPanel.tsx:157:            className="max-h-28 min-h-[42px] flex-1 resize-none rounded-lg border border-slate-300 px-3 py-2 text-[15px] text-[#121A2E] placeholder:text-slate-400 focus:border-[#207D78] focus:outline-none focus:ring-1 focus:ring-[#207D78]"
 components/layout/Footer.tsx:75:                <div className="text-[10px] text-slate-400 leading-none mt-0.5">
@@ -239,21 +243,32 @@ components/layout/Footer.tsx:208:            <Link href="/privacy" className="te
 components/layout/Footer.tsx:211:            <Link href="/rights" className="text-xs text-slate-400 hover:text-white transition-colors">
 components/layout/Footer.tsx:214:            <Link href="/terms" className="text-xs text-slate-400 hover:text-white transition-colors">
 components/layout/Footer.tsx:217:            <Link href="/consent-preferences" className="text-xs text-slate-400 hover:text-white transition-colors">
-components/admin/BlogEditor.tsx:565:                <span className={`font-normal ${data.excerpt.length > 580 ? "text-red-500" : "text-slate-400"}`}>
-components/admin/BlogEditor.tsx:634:                    <p className="text-xs text-slate-400 mt-0.5">{section.hint}</p>
-components/admin/BlogEditor.tsx:672:                <p className="text-xs text-slate-400 mt-0.5">
-components/admin/BlogEditor.tsx:740:                <p className="text-xs text-slate-400 mt-0.5">Document every source used. This is the editorial integrity log.</p>
-components/admin/BlogEditor.tsx:751:              <p className="text-xs text-slate-400 text-center py-4">No sources added yet. Use &ldquo;Validate&rdquo; to get suggestions or click &ldquo;Add Source&rdquo;.</p>
-components/admin/BlogEditor.tsx:791:            <p className="text-xs text-slate-400 mb-3">Date validated against official sources. Required before publishing. Auto-set by the Validate button.</p>
-components/admin/BlogEditor.tsx:807:            <p className="text-xs text-slate-400 mb-4">Publish threshold: 75/100. Auto-filled by Validate.</p>
-components/admin/BlogEditor.tsx:904:                          : "bg-slate-100 text-slate-400 cursor-not-allowed"
-components/admin/BlogEditor.tsx:929:                    <p className="text-xs text-slate-400 text-center">
-components/admin/BlogEditor.tsx:941:            <p className="text-xs text-slate-400 mb-3">
-components/admin/BlogEditor.tsx:953:                    : "bg-slate-100 text-slate-400 cursor-not-allowed"
-components/admin/BlogEditor.tsx:979:                <div className="bg-slate-50 px-3 py-1.5 text-xs text-slate-400 text-right">
-components/industries/DataFlowPreview.tsx:71:        <p className="mt-3 text-[11px] text-slate-400">{pack.disclaimer}</p>
-components/assessment/AssessmentWizard.tsx:175:            <p className="text-xs text-slate-400 mt-2">
-components/assessment/AssessmentWizard.tsx:286:      <p className="text-center text-xs text-slate-400 mt-4">
+components/briefings/BriefingsExplorer.tsx:154:        <Search size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" aria-hidden />
+components/briefings/BriefingsExplorer.tsx:165:            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+components/briefings/BriefingsExplorer.tsx:291:          <span className="ml-auto inline-flex items-center gap-2 text-[11px] text-slate-400">
+components/briefings/BriefingSubscribeCard.tsx:44:        <p className="text-slate-400 text-xs">Daily briefings will arrive in your inbox from tomorrow.</p>
+components/briefings/BriefingSubscribeCard.tsx:52:      <p className="text-slate-400 text-xs mb-4">
+components/briefings/BriefingSubscribeCard.tsx:85:          <a href="/privacy" className="text-slate-400 underline">Privacy Notice</a>.
+components/home/HeroSection.tsx:67:              <span className="block text-sm text-slate-400 mb-2.5">I run a…</span>
+components/home/HeroSection.tsx:160:                <p className="text-xs text-slate-400 mt-3">
+components/home/ConsultationCTA.tsx:78:                <p className="text-slate-400 text-xs">
+components/home/NewsletterSection.tsx:109:                <p className="text-xs text-slate-400 pl-7">
+components/home/HowItWorks.tsx:263:                    className="order-3 sm:order-4 text-slate-400 group-hover:text-teal-900 transition-colors shrink-0"
+components/home/HowItWorks.tsx:343:                      className={comingSoon ? "text-slate-400" : "text-teal-800"}
+components/home/HowItWorks.tsx:367:                        : "text-slate-400 group-hover:text-teal-900"
+components/home/NoticeCTA.tsx:87:                <div className="text-[11px] uppercase tracking-wide text-slate-400 font-semibold">
+components/home/DiscoveryCTA.tsx:84:                      on ? "bg-green-700 text-white" : "bg-slate-100 text-slate-400"
+components/home/DiscoveryCTA.tsx:101:                <div className="text-[11px] uppercase tracking-wide text-slate-400 font-semibold">
+components/home/WhitePaperSection.tsx:128:                      className="text-slate-400 group-hover:text-teal-900 transition-colors shrink-0 mt-0.5"
+components/home/BriefingsSection.tsx:86:          <div className="bg-white border border-slate-200 rounded-xl p-10 text-center text-slate-400">
+components/home/BriefingsSection.tsx:124:                        <div className="flex items-center gap-3 text-slate-400 text-xs">
+components/home/BriefingsSection.tsx:178:                    <div className="flex items-center gap-3 text-slate-400 text-xs mt-2">
+components/home/FAQPreview.tsx:41:                    "text-slate-400 shrink-0 transition-transform duration-200 mt-0.5",
+components/data-flow/EdgeDetailPanel.tsx:47:          className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
+components/data-flow/NodeDetailPanel.tsx:57:          className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
+components/data-flow/MotionJourney.tsx:325:              <dt className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+components/data-flow/MotionJourney.tsx:351:              <p className="mt-2.5 text-[11px] leading-snug text-slate-400">
+components/data-flow/MotionJourney.tsx:560:                                    ? "text-slate-400"
 components/penalty-calculator/PenaltyCalculatorClient.tsx:340:                <div className="text-xs font-semibold text-slate-400 mb-1">
 components/penalty-calculator/PenaltyCalculatorClient.tsx:365:            <div className="text-xs text-slate-400 font-medium mb-0.5">
 components/penalty-calculator/PenaltyCalculatorClient.tsx:391:                <div className="text-xs font-semibold text-slate-400 mb-1">Factor {idx + 1} of 7 · Section 33(2)</div>
@@ -261,20 +276,4 @@ components/penalty-calculator/PenaltyCalculatorClient.tsx:393:                <d
 components/penalty-calculator/PenaltyCalculatorClient.tsx:437:                : "bg-slate-200 text-slate-400 cursor-not-allowed"
 components/penalty-calculator/PenaltyCalculatorClient.tsx:443:            <p className="text-xs text-slate-400 text-center mt-2">Rate all 7 factors to continue</p>
 components/penalty-calculator/PenaltyCalculatorClient.tsx:560:          className="mt-4 w-full flex items-center justify-center gap-2 text-xs text-slate-400 hover:text-slate-600 transition-colors py-2"
-components/briefings/BriefingsExplorer.tsx:154:        <Search size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" aria-hidden />
-components/briefings/BriefingsExplorer.tsx:165:            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
-components/briefings/BriefingsExplorer.tsx:291:          <span className="ml-auto inline-flex items-center gap-2 text-[11px] text-slate-400">
-components/briefings/BriefingSubscribeCard.tsx:44:        <p className="text-slate-400 text-xs">Daily briefings will arrive in your inbox from tomorrow.</p>
-components/briefings/BriefingSubscribeCard.tsx:52:      <p className="text-slate-400 text-xs mb-4">
-components/briefings/BriefingSubscribeCard.tsx:85:          <a href="/privacy" className="text-slate-400 underline">Privacy Notice</a>.
-components/ResourceTemplateGate.tsx:131:              className="absolute top-4 right-4 p-1.5 rounded-lg hover:bg-slate-100 text-slate-400"
-components/ResourceTemplateGate.tsx:244:            <p className="text-[10px] text-slate-400 text-center mt-3 leading-relaxed">
-components/glossary/GlossaryClient.tsx:53:          <nav className="text-xs text-slate-400 mb-4">
-components/glossary/GlossaryClient.tsx:67:            className="mt-4 text-slate-400 [&_a]:text-slate-200 [&_a:hover]:text-green-300 [&_time]:text-slate-300"
-components/glossary/GlossaryClient.tsx:76:            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
-components/glossary/GlossaryClient.tsx:87:                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
-components/data-flow/MotionJourney.tsx:325:              <dt className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-components/data-flow/MotionJourney.tsx:351:              <p className="mt-2.5 text-[11px] leading-snug text-slate-400">
-components/data-flow/MotionJourney.tsx:560:                                    ? "text-slate-400"
-components/data-flow/NodeDetailPanel.tsx:57:          className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
-components/data-flow/EdgeDetailPanel.tsx:47:          className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
+components/TemplateDownloadForm.tsx:314:        <p className="text-[11px] text-slate-400 text-center leading-relaxed">

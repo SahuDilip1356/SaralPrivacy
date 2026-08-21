@@ -43,7 +43,7 @@ export function NoticeCTA() {
 
             <Link
               href="/tools/dpdpa-privacy-notice-generator"
-              className="inline-flex items-center gap-2 px-7 py-3.5 bg-green-500 text-white font-semibold rounded-xl hover:bg-green-600 transition-colors text-base"
+              className="inline-flex items-center gap-2 px-7 py-3.5 bg-green-700 text-white font-semibold rounded-xl hover:bg-green-800 transition-colors text-base"
             >
               Generate My Notice Pack
               <ArrowRight size={18} />
@@ -68,7 +68,7 @@ export function NoticeCTA() {
                 "9. Your rights",
               ].map((h) => (
                 <div key={h} className="flex items-center gap-3 text-sm">
-                  <span className="w-5 h-5 rounded grid place-items-center text-xs font-bold bg-green-500 text-white">
+                  <span className="w-5 h-5 rounded grid place-items-center text-xs font-bold bg-green-700 text-white">
                     ✓
                   </span>
                   <span className="flex-1 text-slate-600">{h}</span>
@@ -87,7 +87,7 @@ export function NoticeCTA() {
                 <div className="text-[11px] uppercase tracking-wide text-slate-400 font-semibold">
                   Notice readiness
                 </div>
-                <div className="inline-block mt-1 bg-green-500 text-white font-bold text-sm px-3.5 py-1 rounded-full">
+                <div className="inline-block mt-1 bg-green-700 text-white font-bold text-sm px-3.5 py-1 rounded-full">
                   Strong
                 </div>
               </div>

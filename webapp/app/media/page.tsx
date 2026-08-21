@@ -145,7 +145,7 @@ export default function MediaPage() {
             </p>
             <Link
               href="/assessment"
-              className="inline-flex items-center gap-2 bg-green-500 text-white text-sm font-semibold px-5 py-3 rounded-xl hover:bg-green-600 transition-colors whitespace-nowrap"
+              className="inline-flex items-center gap-2 bg-green-700 text-white text-sm font-semibold px-5 py-3 rounded-xl hover:bg-green-800 transition-colors whitespace-nowrap"
             >
               Take the free assessment <ArrowRight size={16} />
             </Link>
