@@ -478,7 +478,7 @@ function MegaPanel({
       className="hidden lg:block absolute left-0 right-0 top-full"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-4">
-        <div className={cn(surfaceClasses("raised"), "overflow-hidden")}>
+        <div className={cn(surfaceClasses("raised"), "overflow-hidden", "sp-panel-in")}>
           {/* Featured — the panel's one lead. Sits in a well so it reads as
               the ground the rest of the menu stands on, not another card. */}
           <Link

@@ -237,6 +237,44 @@ const check = (name, pass, detail = '') => {
     await page.close();
   }
 
+  // ── 5. Panel entry animation ────────────────────────────────────────────
+  console.log('\n5. Panel entry\n');
+  {
+    const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+    await page.goto(URL, { waitUntil: 'networkidle' });
+    await page.evaluate(() => {
+      [...document.querySelectorAll('header nav[aria-label="Main"] button')]
+        .find((b) => b.textContent.trim().startsWith('Readiness'))?.click();
+    });
+    await page.waitForTimeout(20);
+    const anim = await page.evaluate(() => {
+      const p = document.querySelector('#nav-panel-readiness .sp-panel-in');
+      if (!p) return null;
+      const cs = getComputedStyle(p);
+      return { name: cs.animationName, duration: cs.animationDuration };
+    });
+    check('panel carries the entry animation', anim?.name === 'sp-panel-in', anim?.duration || 'missing');
+    await page.close();
+
+    // Reduced motion must collapse it, not leave the from-state stuck.
+    const rm = await browser.newPage({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });
+    await rm.goto(URL, { waitUntil: 'networkidle' });
+    await rm.evaluate(() => {
+      [...document.querySelectorAll('header nav[aria-label="Main"] button')]
+        .find((b) => b.textContent.trim().startsWith('Readiness'))?.click();
+    });
+    await rm.waitForTimeout(120);
+    const settled = await rm.evaluate(() => {
+      const p = document.querySelector('#nav-panel-readiness .sp-panel-in');
+      if (!p) return null;
+      const cs = getComputedStyle(p);
+      return { duration: cs.animationDuration, opacity: +cs.opacity };
+    });
+    check('reduced motion collapses the duration', settled?.duration === '0.001s', settled?.duration || 'missing');
+    check('reduced motion still ends fully opaque', settled?.opacity === 1, String(settled?.opacity));
+    await rm.close();
+  }
+
   console.log(`\n${failures === 0 ? '✓ all navbar acceptance checks passed' : `✗ ${failures} check(s) failed`}\n`);
   await browser.close();
   process.exit(failures === 0 ? 0 : 1);
