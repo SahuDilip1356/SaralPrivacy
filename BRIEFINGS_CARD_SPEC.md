@@ -222,6 +222,12 @@ into. At `scale-[1.04]` the image expands ~14px total — it consumes the paddin
 the zoom reads as *stepping forward*, and, unlike a zoom on `object-cover`, it never crops
 content that was visible a moment ago. This is the whole reason to pair the two changes.
 
+**Why 16:9 and not 4:3.** A 4:3 mat would almost erase the side bars, but it makes every panel
+a third taller — across 149 cards in a three-column grid that is a lot of scrolling. More
+importantly, a contained image makes card height independent of the image's own aspect, so a
+mat fixed at 16:9 keeps every row level whatever shape the generator returns that morning. The
+side bars are the price, and they read as a frame.
+
 **No-image fallback.** Some days publish without an infographic (`image === ""` — the card
 currently renders no panel at all, so those cards are visibly shorter than their neighbours and
 the grid goes ragged). Give them the same navy panel carrying the briefing's verdict line in
