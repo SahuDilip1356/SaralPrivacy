@@ -114,3 +114,81 @@ test("escalation reasons are a closed set", () => {
   assert.ok(!isEscalationReason("because_i_said_so"));
   assert.ok(!isEscalationReason(undefined));
 });
+
+// ── Markup cannot reach the admin email (security review finding) ───────────
+// consultationAlertTemplate interpolates every field raw — labelRow does
+// `${value}` and the issue-summary block does `${lead.issue_summary}` with no
+// escaping. redact() strips PII but not markup, so the packet is the last
+// place to stop it.
+
+test("HTML in a confirmed fact is escaped, not passed through", () => {
+  const p = buildHandoffPacket({
+    state: state({ factsConfirmed: { note: '<a href="http://evil">click</a>' } }),
+    pageUrl: "/",
+    reason: "explicit_ask",
+    lastUserMessage: "hi",
+  });
+  assert.ok(!p.summary.includes("<a href"), "raw anchor survived into the packet");
+  assert.ok(p.summary.includes("&lt;a href"), "not escaped");
+});
+
+test("HTML in the user's last message is escaped", () => {
+  const p = buildHandoffPacket({
+    state: state(),
+    pageUrl: "/",
+    reason: "explicit_ask",
+    lastUserMessage: '<img src=x onerror="alert(1)">',
+  });
+  for (const f of [p.summary, p.unresolvedQuestion]) {
+    assert.ok(!f.includes("<img"), "raw img tag survived");
+    assert.ok(!f.includes('onerror="'), "raw attribute survived");
+  }
+});
+
+test("pagesShown drops anything that is not a site path", () => {
+  const p = buildHandoffPacket({
+    state: state({
+      pagesShown: [
+        "/learn/consent",
+        '</div><a href="http://evil">phish</a>',
+        "javascript:alert(1)",
+        "https://evil.example/x",
+        "/assessment",
+      ],
+    }),
+    pageUrl: "/",
+    reason: "explicit_ask",
+    lastUserMessage: "hi",
+  });
+  assert.deepEqual(p.sourcesShown, ["/learn/consent", "/assessment"]);
+});
+
+test("an invented industry is dropped rather than trusted from the cast", () => {
+  // sanitizeState casts industry to IndustrySlug without checking membership.
+  const p = buildHandoffPacket({
+    state: state({ industry: '<b>x</b>' as never }),
+    pageUrl: "/",
+    reason: "explicit_ask",
+    lastUserMessage: "hi",
+  });
+  assert.equal(p.industry, undefined);
+
+  const real = buildHandoffPacket({
+    state: state({ industry: "pharmacies" }),
+    pageUrl: "/",
+    reason: "explicit_ask",
+    lastUserMessage: "hi",
+  });
+  assert.equal(real.industry, "pharmacies");
+});
+
+test("escaping still leaves PII redaction working", () => {
+  const p = buildHandoffPacket({
+    state: state(),
+    pageUrl: "/",
+    reason: "explicit_ask",
+    lastUserMessage: "<b>call 9876543210</b>",
+  });
+  assert.ok(p.unresolvedQuestion.includes("[phone]"), "redaction broke");
+  assert.ok(!p.unresolvedQuestion.includes("<b>"), "escaping broke");
+});

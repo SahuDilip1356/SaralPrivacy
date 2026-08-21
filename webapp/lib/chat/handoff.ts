@@ -36,6 +36,41 @@ export interface HandoffPacket {
 const MAX_FREETEXT = 500;
 const MAX_SOURCES = 10;
 
+/**
+ * The packet's destination is an HTML email (lib/email-templates.ts
+ * consultationAlertTemplate), which interpolates every field raw — labelRow
+ * and the issue-summary block both do `${value}` with no escaping.
+ *
+ * redact() strips PII patterns; it does not touch markup. So without this,
+ * anything a caller can put into ChatSessionState arrives as live HTML in an
+ * internal alert: factsConfirmed keys and values, and pagesShown, none of
+ * which sanitizeState validates beyond "is a string" — it was written to make
+ * state safe for the model's context, not for an HTML sink.
+ *
+ * Escaping here rather than in the template because the template is shared
+ * with /api/contact and out of this branch's scope. The template should grow
+ * its own escaping too; this closes the path Setu opens.
+ */
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+/**
+ * pagesShown is machine-populated with site paths, so anything that is not a
+ * site path is a caller inventing one. Dropping rather than escaping keeps the
+ * lead readable — an admin should see the guides Setu showed, not a mangled
+ * payload.
+ */
+const SITE_PATH_RE = /^\/[A-Za-z0-9\-_/]{0,120}$/;
+
+/** Industry slugs are lowercase-hyphen only; anything else is invented. */
+const SITE_SLUG_RE = /^[a-z0-9-]{1,40}$/;
+
 export const ESCALATION_REASONS: readonly EscalationReason[] = [
   "explicit_ask",
   "journey_stalled",
@@ -62,7 +97,10 @@ function summarise(state: ChatSessionState, lastUserMessage: string): string {
   }
   bits.push(`Turns: ${state.messageCount}`);
   if (lastUserMessage.trim()) bits.push(`Last asked: ${lastUserMessage.trim()}`);
-  return redactText(bits.join(" · ")).slice(0, MAX_FREETEXT);
+  // Redact first (PII), then escape (markup) — both before the string can
+  // reach the email template. Order matters only in that escaping first would
+  // let &lt;-encoded text hide a pattern from the redactor.
+  return escapeHtml(redactText(bits.join(" · "))).slice(0, MAX_FREETEXT);
 }
 
 /**
@@ -81,11 +119,13 @@ export function buildHandoffPacket(args: {
   const { state, pageUrl, reason, lastUserMessage } = args;
   return {
     summary: summarise(state, lastUserMessage),
-    unresolvedQuestion: redactText(lastUserMessage).slice(0, MAX_FREETEXT),
+    unresolvedQuestion: escapeHtml(redactText(lastUserMessage)).slice(0, MAX_FREETEXT),
     intent: state.journey ? journeyById(state.journey).name : "general enquiry",
     journey: state.journey,
-    industry: state.industry,
-    sourcesShown: state.pagesShown.slice(0, MAX_SOURCES),
+    // sanitizeState casts industry to IndustrySlug without checking membership,
+    // so treat it as untrusted here rather than trusting the type.
+    industry: state.industry && SITE_SLUG_RE.test(state.industry) ? state.industry : undefined,
+    sourcesShown: state.pagesShown.filter((p) => SITE_PATH_RE.test(p)).slice(0, MAX_SOURCES),
     pageUrl: pageUrl.slice(0, 200),
     reason,
     consentToContact: true,
