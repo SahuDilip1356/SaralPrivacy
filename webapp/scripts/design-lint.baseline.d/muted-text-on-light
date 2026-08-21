@@ -178,7 +178,6 @@ app/unsubscribe/outreach/page.tsx:20:          <p className="text-xs text-slate-
 app/unsubscribe/outreach/OutreachUnsubscribeClient.tsx:30:        <Loader2 size={28} className="animate-spin text-slate-400" />
 app/briefings/[slug]/page.tsx:650:                      <span className="text-slate-400">·</span>
 app/briefings/[slug]/page.tsx:678:                        <p className="text-xs text-slate-400 text-center py-2 border-t border-slate-100">
-app/briefings/page.tsx:141:          <div className="text-center py-16 text-slate-400">
 app/contact/ContactContent.tsx:293:                    <p className="text-xs text-slate-400 mt-2 pl-7">
 app/terms/page.tsx:17:          <p className="text-sm text-slate-400 mt-1">Last updated: March 2026 | Version 1.0</p>
 app/white-paper/WhitePaperContent.tsx:147:                    <span className="text-slate-400">→</span>
