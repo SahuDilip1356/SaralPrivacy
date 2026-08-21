@@ -3,175 +3,76 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import {
+  ListChecks,
+  MessageSquareText,
+  FileText,
   Search,
   Workflow,
-  ClipboardCheck,
-  FileText,
-  ShieldCheck,
-  Newspaper,
-  Telescope,
-  Microscope,
+  FilePlus2,
   ArrowRight,
 } from "lucide-react";
-import { ScoreDial } from "@/components/home/ScoreDial";
 import { trackEvent } from "@/lib/analytics";
 import { surfaceClasses } from "@/components/ui/Surface";
+import { Section, Eyebrow } from "@/components/ui/Section";
 import { cn } from "@/lib/utils";
 
-// Beat 4 — "How it works = do it now". The conversion spine: 4 live steps →
-// a DPDPA-ready milestone → a 3-way "keep it living" branch. Ported from the
-// approved `how_it_works_centered_fixed` mockup; step 2 "Map" added per
-// LANDING_TRUST_REACH_SPEC.md so the spine matches the /data-mapping journey
-// (Discover → Map → Assess → Fix). Brand tokens via Tailwind:
-// teal-500 #35B6AE · green-500 #07B981 · gold-400 #E8AB42 · navy-700 #121A2E.
+// S6 — "How it works". THREE steps, and all three are the assessment.
+//
+// This used to teach a four-product spine (Discover → Map → Assess → Fix) with
+// each step a live link. It was accurate about the platform and wrong about the
+// page: a visitor reading it concluded the 3-minute check was step three of
+// four, and that they owed us two tools' worth of work before getting a score.
+//
+// So the four-product story moves below, under "Continue after your
+// assessment", where it is a menu rather than a prerequisite. Every destination
+// stays live and `hiw_step_click` still fires for each.
 
-type Step = {
-  n: number;
-  key: "discover" | "map" | "assess" | "fix";
-  icon: typeof Search;
-  title: string;
-  sub: string;
-  tag: string; // product name kept discoverable (Data Discovery / Notice Pack …)
-  cap: string; // caps micro-outcome (what you walk away with)
-  href: string;
-  badge: string; // number-badge bg (full class for Tailwind purge-safety)
-  ring: string; // icon tint bg
-  iconColor: string;
-};
-
-const steps: Step[] = [
+const steps = [
   {
     n: 1,
-    key: "discover",
-    icon: Search,
-    title: "Discover",
-    sub: "Find where your personal data sits",
-    tag: "Data Discovery",
-    cap: "Know where your data sits",
-    href: "/discovery",
-    badge: "bg-teal-500",
-    ring: "bg-teal-50",
-    iconColor: "text-teal-800",
+    key: "choose",
+    icon: ListChecks,
+    title: "Choose your industry",
+    sub: "Twelve sectors, each with its own questions — a clinic and a CA firm are not asked the same things.",
   },
   {
     n: 2,
-    key: "map",
-    icon: Workflow,
-    title: "Map",
-    sub: "See where it travels — and where control breaks",
-    tag: "Data Flow",
-    cap: "Your sector's flow map",
-    href: "/data-mapping",
-    badge: "bg-teal-500",
-    ring: "bg-teal-50",
-    iconColor: "text-teal-800",
+    key: "answer",
+    icon: MessageSquareText,
+    title: "Answer practical workflow questions",
+    sub: "How you already work: where data sits, who can reach it, what happens when someone asks for theirs.",
   },
   {
     n: 3,
-    key: "assess",
-    icon: ClipboardCheck,
-    title: "Assess",
-    sub: "Score your current risk",
-    tag: "Assessment",
-    cap: "Your score in 3 minutes",
-    href: "/assessment",
-    badge: "bg-green-500",
-    ring: "bg-green-50",
-    iconColor: "text-green-700",
-  },
-  {
-    n: 4,
-    key: "fix",
+    key: "score",
     icon: FileText,
-    title: "Fix what matters",
-    sub: "Generate notices + first controls",
-    tag: "Notice Pack",
-    cap: "Notice pack as a branded PDF",
+    title: "Get your score, top gaps and first fixes",
+    sub: "A readiness score out of 100, your three biggest gaps, and what to do about them first.",
+  },
+] as const;
+
+// The rest of the platform — a menu after the score, not a queue before it.
+const afterSteps = [
+  {
+    icon: Search,
+    title: "Map where your data sits",
+    sub: "Data Discovery",
+    href: "/discovery",
+    key: "discover",
+  },
+  {
+    icon: Workflow,
+    title: "See where it travels",
+    sub: "Data Flow maps",
+    href: "/data-mapping",
+    key: "map",
+  },
+  {
+    icon: FilePlus2,
+    title: "Generate your notices",
+    sub: "Notice Pack",
     href: "/tools/dpdpa-privacy-notice-generator",
-    badge: "bg-gold-400",
-    ring: "bg-gold-50",
-    iconColor: "text-gold-700",
-  },
-];
-
-// Per-step artifact — supporting proof, kept deliberately quiet so the step
-// title stays the standout (design-review criterion: one standout per card).
-// Desktop: sits beside the title. Mobile: the card wraps it onto its own row
-// under the text (see the step map), so it shows on phones too. CSS/SVG only.
-function StepArtifact({ kind }: { kind: Step["key"] }) {
-  if (kind === "discover") {
-    return (
-      <div className="flex flex-wrap gap-1 justify-start sm:justify-end sm:max-w-[124px] shrink-0 opacity-85">
-        {["Customers", "Staff", "CCTV", "Vendors"].map((l) => (
-          <span
-            key={l}
-            className="text-[9px] font-medium text-teal-800 bg-teal-50 border border-teal-200 rounded-full px-1.5 py-0.5"
-          >
-            {l}
-          </span>
-        ))}
-      </div>
-    );
-  }
-  if (kind === "map") {
-    // three stage nodes on a flow line; the gold dot marks a hotspot
-    return (
-      <div className="flex items-center gap-1 shrink-0 opacity-85">
-        {[0, 1, 2].map((i) => (
-          <span key={i} className="flex items-center gap-1">
-            <span className="relative inline-block w-5 h-5 rounded-md bg-teal-50 border border-teal-300">
-              {i === 2 && (
-                <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-gold-400" />
-              )}
-            </span>
-            {i < 2 && <span className="inline-block w-2 h-px bg-teal-400" />}
-          </span>
-        ))}
-      </div>
-    );
-  }
-  if (kind === "assess") {
-    return (
-      <div className="block shrink-0 opacity-85">
-        <ScoreDial value={41} size={46} stroke={6} variant="quiet" showTotal={false} />
-      </div>
-    );
-  }
-  // fix — notice-PDF corner mock
-  return (
-    <div className="block shrink-0 opacity-85">
-      <div className="relative w-[62px] h-[46px] rounded-md bg-cloud-100 border border-pearl-300 p-2 overflow-hidden">
-        <div className="h-1 w-7 bg-slate-400 rounded-full mb-1.5" />
-        <div className="h-[3px] w-full bg-pearl-300 rounded-full mb-1" />
-        <div className="h-[3px] w-4/5 bg-pearl-300 rounded-full mb-1.5" />
-        <div className="text-[6.5px] leading-none text-slate-600">EN + हिन्दी</div>
-        <div
-          className="absolute top-0 right-0 w-3 h-3 bg-gold-400"
-          style={{ clipPath: "polygon(100% 0, 0 0, 100% 100%)" }}
-        />
-      </div>
-    </div>
-  );
-}
-
-const leaves = [
-  {
-    icon: Newspaper,
-    title: "Daily Brief",
-    sub: "5-min updates + actions",
-    href: "/briefings",
-  },
-  {
-    icon: Telescope,
-    title: "Sector Deep Dive",
-    sub: "Go deeper on your sector",
-    href: "/industries",
-  },
-  {
-    icon: Microscope,
-    title: "Deep Review",
-    sub: "Coming soon",
-    href: null,
+    key: "fix",
   },
 ] as const;
 
@@ -199,219 +100,109 @@ function useInView<T extends HTMLElement>() {
 export function HowItWorks() {
   const { ref, inView } = useInView<HTMLDivElement>();
 
-  // staggered reveal: each row fades up after its predecessor lands
-  const reveal = (i: number) =>
+  const reveal = () =>
     `transition-all duration-500 ease-out motion-reduce:!opacity-100 motion-reduce:!translate-y-0 motion-reduce:!transition-none ${
       inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
     }`;
 
   return (
-    <section className="bg-cloud-50 py-16">
-      <div ref={ref} className="max-w-3xl mx-auto px-4 sm:px-6">
-        {/* header */}
-        <div className="text-center mb-12">
-          <span className="inline-block text-xs font-medium uppercase tracking-[0.08em] text-slate-600 mb-3">
-            How it works
-          </span>
+    <Section surface="white" type="utility" width="narrow">
+      <div ref={ref}>
+        <div className="text-center mb-10">
+          <Eyebrow className="mb-3">How it works</Eyebrow>
           <h2 className="text-3xl sm:text-4xl font-semibold text-navy-700 mb-3">
-            Start anywhere. It&apos;s all free to try.
+            Three steps. No account, no upload.
           </h2>
           <p className="text-slate-600 text-base max-w-md mx-auto leading-relaxed">
-            Four steps to DPDPA-ready — follow them in order, or jump straight to
-            what you need.
+            You can finish this before your next call ends.
           </p>
         </div>
 
-        {/* spine */}
-        <div className="flex flex-col items-center">
+        {/* the three steps */}
+        <ol className="space-y-3">
           {steps.map((step, i) => {
             const Icon = step.icon;
             return (
-              <div key={step.n} className="w-full flex flex-col items-center">
-                <Link
-                  href={step.href}
-                  onClick={() => trackEvent.hiwStepClick({ step: step.key })}
-                  style={{ transitionDelay: `${i * 140}ms` }}
-                  className={cn(
-                    "group relative w-full max-w-lg flex flex-wrap items-center gap-x-3.5 gap-y-2 px-4 py-3.5",
-                    surfaceClasses("card", { interactive: true }),
-                    "hover:border-pearl-300",
-                    reveal(i)
-                  )}
-                >
-                  <span
-                    className={`absolute -top-2 -right-2 w-6 h-6 rounded-full grid place-items-center text-xs font-semibold text-navy-700 ${step.badge}`}
-                  >
-                    {step.n}
-                  </span>
-                  <span
-                    className={`order-1 shrink-0 w-11 h-11 rounded-lg grid place-items-center ${step.ring}`}
-                  >
-                    <Icon size={20} className={step.iconColor} />
-                  </span>
-                  <span className="order-2 min-w-0 flex-1">
-                    <span className="block text-navy-700 font-semibold text-[15px]">
+              <li
+                key={step.n}
+                style={{ transitionDelay: `${i * 140}ms` }}
+                className={cn(
+                  "flex items-start gap-4 px-5 py-4",
+                  surfaceClasses("card"),
+                  reveal(),
+                )}
+              >
+                <span className="shrink-0 w-11 h-11 rounded-lg grid place-items-center bg-teal-50">
+                  <Icon size={20} className="text-teal-800" />
+                </span>
+                <div className="min-w-0">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-xs font-bold text-slate-600 tabular-nums">
+                      {step.n}
+                    </span>
+                    <span className="text-navy-700 font-semibold text-[15px]">
                       {step.title}
                     </span>
-                    <span className="block text-slate-600 text-xs mt-0.5">
-                      {step.sub} <span className="text-slate-600">· {step.tag}</span>
-                    </span>
-                    <span className="block text-[10px] font-semibold tracking-wide uppercase text-slate-600 mt-1.5">
-                      {step.cap}
-                    </span>
-                  </span>
-                  {/* artifact: inline beside the text on desktop; wraps to its own
-                      row (indented under the text) on mobile via basis-full */}
-                  <span className="order-4 sm:order-3 basis-full sm:basis-auto pl-[58px] sm:pl-0">
-                    <StepArtifact kind={step.key} />
-                  </span>
-                  <ArrowRight
-                    size={16}
-                    className="order-3 sm:order-4 text-slate-400 group-hover:text-teal-900 transition-colors shrink-0"
-                  />
-                </Link>
-                {/* connector */}
-                <span
-                  aria-hidden
-                  className="my-2 h-8 w-0.5 rounded-full opacity-70 sp-line-flow"
-                />
-              </div>
+                  </div>
+                  <p className="text-slate-600 text-sm mt-1 leading-snug">{step.sub}</p>
+                </div>
+              </li>
             );
           })}
+        </ol>
 
-          {/* milestone */}
-          <div
-            style={{ transitionDelay: `${steps.length * 140}ms` }}
-            className={`w-full max-w-lg flex items-center gap-3.5 rounded-xl border-[1.5px] border-green-600/40 bg-green-50 px-4 py-4 ${reveal(steps.length)}`}
+        <div className="mt-8 text-center">
+          <Link
+            href="/assessment"
+            onClick={() => trackEvent.hiwStepClick({ step: "assess" })}
+            className="inline-flex items-center gap-1.5 pointer-coarse:min-h-11 text-sm font-semibold text-green-700 underline underline-offset-4 decoration-green-700/30 hover:decoration-green-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2 rounded"
           >
-            <span className="shrink-0 w-11 h-11 rounded-lg grid place-items-center bg-green-100">
-              <ShieldCheck size={22} className="text-green-700" />
-            </span>
-            <span className="min-w-0">
-              <span className="block text-navy-700 font-semibold text-base">
-                You&apos;re DPDPA-ready
-              </span>
-              <span className="block text-slate-600 text-xs mt-0.5">
-                Keep evidence ready for customers, vendors &amp; regulators
-              </span>
-            </span>
-          </div>
+            Start the free assessment
+            <ArrowRight size={15} />
+          </Link>
+        </div>
 
-          {/* branch connector — teal dashed-bezier fan flowing from the
-              milestone down to the three leaves (same aesthetic as the
-              "Where DPDPA risk hides" scatter). Mobile stacks → simple stem.
-              preserveAspectRatio="none" + non-scaling stroke keeps the dashes
-              crisp while the fan stretches to the container width. */}
-          <span
-            aria-hidden
-            className="my-2 h-6 w-px border-l-2 border-dashed border-teal-400 sm:hidden"
-          />
-          <svg
-            aria-hidden
-            viewBox="0 0 768 44"
-            height={44}
-            preserveAspectRatio="none"
-            style={{ transitionDelay: `${(steps.length + 1) * 140}ms` }}
-            className={`hidden sm:block w-full mt-1 mb-1 transition-opacity duration-500 motion-reduce:!opacity-100 ${
-              inView ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            {[
-              "M384 2 C 384 28, 128 16, 128 43",
-              "M384 2 L 384 43",
-              "M384 2 C 384 28, 640 16, 640 43",
-            ].map((d, i) => (
-              <path
-                key={i}
-                d={d}
-                className="sp-dash-flow stroke-teal-700 fill-none opacity-60"
-                strokeWidth={1.6}
-                strokeDasharray="5 6"
-                vectorEffect="non-scaling-stroke"
-              />
-            ))}
-          </svg>
-
-          {/* 3-way "keep it living" branch */}
-          <div
-            style={{ transitionDelay: `${(steps.length + 1) * 140}ms` }}
-            className={`w-full grid grid-cols-1 sm:grid-cols-3 gap-3 ${reveal(steps.length + 1)}`}
-          >
-            {leaves.map((leaf) => {
-              const Icon = leaf.icon;
-              const comingSoon = leaf.href === null;
-              const inner = (
-                <>
-                  <span
-                    className={`shrink-0 w-9 h-9 rounded-lg grid place-items-center ${comingSoon ? "bg-cloud-100" : "bg-teal-50"}`}
-                  >
-                    <Icon
-                      size={18}
-                      className={comingSoon ? "text-slate-400" : "text-teal-800"}
-                    />
+        {/* ── After the score: the rest of the platform, as a menu ── */}
+        <div className="mt-14 pt-8 border-t border-cloud-200">
+          <p className="text-center text-sm font-semibold text-navy-700 mb-1">
+            Continue after your assessment
+          </p>
+          <p className="text-center text-xs text-slate-600 mb-6">
+            Optional, free, and in any order you like.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {afterSteps.map((a) => {
+              const Icon = a.icon;
+              return (
+                <Link
+                  key={a.href}
+                  href={a.href}
+                  onClick={() => trackEvent.hiwStepClick({ step: a.key })}
+                  className={cn(
+                    "group flex items-center gap-2.5 px-3.5 py-3",
+                    surfaceClasses("card", { interactive: true }),
+                    "hover:border-teal-400 transition-colors",
+                  )}
+                >
+                  <span className="shrink-0 w-9 h-9 rounded-lg grid place-items-center bg-cloud-50">
+                    <Icon size={17} className="text-slate-600" />
                   </span>
                   <span className="min-w-0">
-                    <span
-                      className={`block font-semibold text-sm ${comingSoon ? "text-slate-600" : "text-navy-700"}`}
-                    >
-                      {leaf.title}
+                    <span className="block text-navy-700 font-medium text-sm leading-snug">
+                      {a.title}
                     </span>
-                    {comingSoon ? (
-                      <span className="inline-block mt-1 text-[10px] font-semibold text-gold-700 bg-gold-50 rounded-full px-2 py-0.5">
-                        Coming soon
-                      </span>
-                    ) : (
-                      <span className="block text-slate-600 text-xs mt-0.5">
-                        {leaf.sub}
-                      </span>
-                    )}
+                    <span className="block text-slate-600 text-xs mt-0.5">{a.sub}</span>
                   </span>
                   <ArrowRight
                     size={14}
-                    className={`ml-auto shrink-0 transition-colors ${
-                      comingSoon
-                        ? "text-slate-600"
-                        : "text-slate-400 group-hover:text-teal-900"
-                    }`}
+                    className="ml-auto shrink-0 text-slate-400 group-hover:text-teal-900 transition-colors"
                   />
-                </>
-              );
-              const base = "flex items-center gap-2.5 px-3.5 py-3";
-              // Coming-soon sits in a well rather than on a card: the ladder's
-              // `sunken` rung already means "recessed, not actionable", which
-              // is exactly what a disabled leaf is. The dashed edge then reads
-              // as one more signal on top of a surface that already agrees
-              // with it, instead of carrying the whole message alone.
-              return comingSoon ? (
-                <div
-                  key={leaf.title}
-                  className={cn(
-                    base,
-                    surfaceClasses("sunken"),
-                    "rounded-xl border-dashed border-pearl-300 cursor-not-allowed opacity-75"
-                  )}
-                  title="Coming soon"
-                >
-                  {inner}
-                </div>
-              ) : (
-                <Link
-                  key={leaf.title}
-                  href={leaf.href as string}
-                  className={cn(
-                    "group",
-                    base,
-                    surfaceClasses("card", { interactive: true }),
-                    "hover:border-teal-400 transition-colors"
-                  )}
-                >
-                  {inner}
                 </Link>
               );
             })}
           </div>
         </div>
       </div>
-    </section>
+    </Section>
   );
 }

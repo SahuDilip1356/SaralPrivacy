@@ -5,11 +5,19 @@ import { GraduationCap, Calculator, Building2 } from "lucide-react";
 // visitor actually came to ask. Restyled from a standalone section to a card so
 // it matches the About page's card system. Brand tokens via Tailwind.
 
-const credentials = [
+// Exported so the homepage's navy recognition band states the same credentials
+// from the same place. Two copies of a person's CV is exactly the kind of thing
+// that drifts apart and then contradicts itself.
+export const FOUNDER_CREDENTIALS = [
   { icon: Calculator, label: "Chartered Accountant" },
   { icon: GraduationCap, label: "IIM Bangalore alumnus" },
   { icon: Building2, label: "22+ years in enterprise systems" },
 ];
+
+export const FOUNDER_QUOTE =
+  "I built SaralPrivacy because Indian businesses don't need more legal theory — they need to know what to fix, in plain English. After two decades building finance, ERP and governance systems, I wanted DPDPA made genuinely practical for the people who actually run a business.";
+
+const credentials = FOUNDER_CREDENTIALS;
 
 export function FounderProof() {
   return (

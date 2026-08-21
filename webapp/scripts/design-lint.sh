@@ -50,6 +50,15 @@ check "card-radius" \
   "rounded-2xl exceeds the card cap; the radius vocabulary is 8 / 12 / pill." \
   "$(grep -rn "rounded-2xl" components/home app/page.tsx 2>/dev/null)"
 
+# The homepage rhythm ladder. W1.3 specified padding-as-structure and nothing
+# checked it, so it drifted to 16/16/32/24/16/16/20/10/20/20 — three py-20
+# sections in a row on ten identical fills. Baseline 0: this one is not debt
+# being burned down, it is a rule that starts clean and must stay clean.
+# `node scripts/section-rhythm.mjs --show` prints the resolved section order.
+check "section-rhythm" \
+  "Two adjacent sections on the same fill must differ in padding type — that gap IS the boundary." \
+  "$(node scripts/section-rhythm.mjs 2>/dev/null)"
+
 check "chrome-badges" \
   "Site chrome carries one action and no badges; 'free' is said once, in the hero." \
   "$(grep -rn "Badge" components/layout/ --include="*.tsx" 2>/dev/null)"

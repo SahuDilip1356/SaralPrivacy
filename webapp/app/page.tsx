@@ -1,17 +1,16 @@
 import type { Metadata } from "next";
 import { HeroSection } from "@/components/home/HeroSection";
 import { WhereRiskHides } from "@/components/home/WhereRiskHides";
-import { TrustStrip } from "@/components/home/TrustStrip";
+import { ReportPreview } from "@/components/home/ReportPreview";
+import { RecognitionBand } from "@/components/home/RecognitionBand";
 import { HowItWorks } from "@/components/home/HowItWorks";
-import { VerdictPreview } from "@/components/home/VerdictPreview";
 import { AudienceCards } from "@/components/home/AudienceCards";
-import { BriefingsSection } from "@/components/home/BriefingsSection";
-import { WhitePaperSection } from "@/components/home/WhitePaperSection";
+import { ResourcesSection } from "@/components/home/ResourcesSection";
 import { FAQPreview } from "@/components/home/FAQPreview";
-import { NewsletterSection } from "@/components/home/NewsletterSection";
+import { FinalAssessmentBand } from "@/components/home/FinalAssessmentBand";
 import { organizationSchema, websiteSchema, speakableSchema } from "@/lib/schema";
-import { AnswerBlock } from "@/components/seo/AnswerBlock";
 import { PressProofStrip } from "@/components/ui/PressProofStrip";
+import { Section } from "@/components/ui/Section";
 
 export const metadata: Metadata = {
   title: "DPDPA Compliance for Indian Businesses | SaralPrivacy",
@@ -31,23 +30,44 @@ export const metadata: Metadata = {
   },
 };
 
-// Homepage — 10-beat Discovery-first structure (see LANDING_PAGE_MASTER.md).
-// Built incrementally; beats marked TODO are wired in as their components land.
+// Homepage — ten sections, three chapters. See LANDING_PAGE_FINAL_SPEC.md.
 //
-// Beat rhythm. W1.3 put every beat on one canvas at a uniform py-24, which
-// removed the nine-flip zebra but left ten sections that all read as equally
-// important. Rhythm now comes from silhouette rather than fill — the canvas is
-// still continuous, so this is not a return to alternating backgrounds.
+// ── The rhythm system ────────────────────────────────────────────────────────
+// The page had twelve sections and two navy bands, both at the ends, with ten
+// consecutive cloud-50 sections in between. It read as one flat wash, because
+// white on cloud-50 is 1.05:1 — real, and invisible.
 //
-//   STATEMENT  py-32  narrow, large type, no cards   — a held breath
-//   DEMO       py-24  visual leads, wide             — a product moment
-//   UTILITY    py-20  quiet, narrow                  — reference material
-//   EVIDENCE   py-16  dense, tight grid              — receipts
-//   DECISION   py-16  one line, one action           — a fork in the road
+// Measured across the ramp: cloud-100 1.12:1, cloud-200 1.28:1, cloud-300
+// 1.59:1, navy-700 17.31:1. So there IS range here; the page just wasn't
+// spending it. cloud-200 is the useful step — 1.28:1 is exactly the ratio the
+// Surface ladder already trusts as a card hairline, and area discrimination is
+// an easier perceptual task than the small-text legibility WCAG ratios are
+// calibrated for.
 //
-// The 2x gap between STATEMENT and EVIDENCE is what the eye actually reads;
-// white-vs-cloud-50 is 1.05:1 and would register as banding, not structure.
-// Keep adjacent beats on different types — that, not colour, is the pacing.
+// Three jobs, three mechanisms:
+//   FILL      marks the group     navy = chapter · white ↔ deep = sub-group
+//   PADDING   marks the beat      statement 32 · demo 24 · utility 20 ·
+//                                 evidence/decision 16 · rail 10
+//   HAIRLINE  marks the boundary  between two beats that share a fill
+//
+// Sections that share a fill do so because they are one thought — the demo pair
+// (S3+S4), the process/sector pair (S6+S7), the reference pair (S8+S9). Flipping
+// every section is the zebra W1.3 killed, just louder.
+//
+// `scripts/design-lint.sh` enforces it: two adjacent light sections may not
+// share a padding type. Section.tsx got zero adoption the first time precisely
+// because nothing checked it.
+//
+//   S1  Hero               navy   —          the promise + one action
+//   S2  Proof rail         deep   rail       can I trust this enough to click
+//   S3  Where risk hides   white  statement  is this me
+//   S4  Report preview     white  demo       what do I actually get
+//   S5  Recognition        navy   decision   who's behind this
+//   S6  How it works       white  utility    how much work is this
+//   S7  Sector examples    white  evidence   does it fit my business
+//   S8  Resources          deep   utility    I'd rather read first
+//   S9  FAQ                deep   evidence   what's stopping me
+//   S10 Final CTA          navy   decision   close
 export default function HomePage() {
   return (
     <>
@@ -55,53 +75,50 @@ export default function HomePage() {
       {websiteSchema()}
       {speakableSchema(['.answer-block'], 'https://saralprivacy.com', 'DPDPA Compliance for Indian Businesses')}
 
-      {/* Beat 1 — Hero (interactive is-this-me verdict: TODO upgrade) */}
+      {/* ── Chapter 1: understand ───────────────────────────────────────── */}
+
+      {/* S1 — the promise, one action, and a sample read. */}
       <HeroSection />
 
-      {/* Beat 2 — Trust ribbon (stats + why-us pillars). */}
-      <TrustStrip />
+      {/* S2 — press marks + the three facts that reduce the anxiety of
+          STARTING. Directly under the hero, where scepticism peaks and the
+          visitor has not yet scrolled. The deeper press section still runs
+          inside S5, next to the founder: anxiety and authority are different
+          jobs and want different places. */}
+      <Section surface="deep" type="rail" aria-label="Press coverage and product facts">
+        <PressProofStrip variant="rail" />
+      </Section>
 
-      {/* Beat 2b — "What is DPDPA?" is the education on-ramp, so it sits
-          directly before the problem beat it sets up. It used to land between
-          the press logos and the risk narrative, where it read as an SEO
-          insert interrupting the story. Still server-rendered and still the
-          speakable target — the schema above points at .answer-block. */}
-      <div className="bg-cloud-50">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 pb-16">
-          <AnswerBlock
-            question="What is DPDPA?"
-            answer="DPDPA is India's framework for handling digital personal data, and the DPDP Rules, 2025 have now been notified. For Indian businesses, the real work is operational: fix your notices, consent flows, rights handling, retention logic, and vendor controls. SaralPrivacy helps you understand what matters, assess your risk, and prioritise the next 30 to 90 days."
-          />
-        </div>
-      </div>
-
-      {/* Beat 3 — Where DPDPA risk hides (Scatter) */}
+      {/* S3 — where the risk actually is, in tools they already use. Carries
+          the "What is DPDPA?" answer block at its foot (the speakable target —
+          the schema above points at `.answer-block` by class, not position). */}
       <WhereRiskHides />
 
-      {/* Beat 4 — See a real verdict (report-output preview, light).
-          Sits right after the problem beat: "here's where you're exposed" →
-          "here's the scored verdict that measures it." */}
-      <VerdictPreview />
+      {/* S4 — the product demonstration: the scored report, full width. */}
+      <ReportPreview />
 
-      {/* Beat 5 — How it works = do it now (Discover/Assess/Fix, dark) */}
+      {/* ── Chapter 2: trust and fit ────────────────────────────────────── */}
+
+      {/* S5 — the attention reset and the authority beat. */}
+      <RecognitionBand />
+
+      {/* S6 — three steps, all of them the assessment. */}
       <HowItWorks />
 
-      {/* Beat 6 — Explore DPDPA by your sector (the 12-card wall) */}
+      {/* S7 — three sector examples, plus a link row that keeps all twelve. */}
       <AudienceCards />
 
-      {/* Beat 8 — Get help: removed from landing (Phase 2); reachable via Header/Footer/contact/FAQ */}
+      {/* ── Chapter 3: resolve and close ────────────────────────────────── */}
 
-      {/* Beat 9 — Stay current (briefings + guide + FAQ + newsletter) */}
-      <BriefingsSection />
+      {/* S8 — three resources for the reader who isn't ready to act. */}
+      <ResourcesSection />
 
-      {/* Press proof moves here from the top of the page. Three trust sections
-          stacked before the reader had seen the problem or the product; the
-          logos do more work next to the capture zone, where scepticism peaks. */}
-      <PressProofStrip />
-
-      <WhitePaperSection />
+      {/* S9 — the objections that stop a click, answered. */}
       <FAQPreview />
-      <NewsletterSection />
+
+      {/* S10 — the close. The newsletter used to sit here; it now lives in the
+          footer and on /briefings. */}
+      <FinalAssessmentBand />
     </>
   );
 }

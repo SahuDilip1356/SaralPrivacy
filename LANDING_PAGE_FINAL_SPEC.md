@@ -21,22 +21,38 @@ _Normative. Branch `claude/landing-page-11-elements-htz97i`. Written against the
 
 ## 2. The page
 
-| # | Section | Component | Surface | Type / padding | Width | Eyebrow | Primary action |
+| # | Section | Component | Fill | Type / padding | Width | Eyebrow | Primary action |
 |---|---|---|---|---|---|---|---|
-| S1 | Hero | `HeroSection` | **navy-700** | `pt-16 pb-16` | 7xl | `Free DPDPA readiness check · 3–5 minutes` | **Take free assessment** (green) |
-| S2 | Proof rail | `PressProofStrip variant="rail"` | cloud-50 | EVIDENCE `py-10` | 6xl | — | none |
-| S3 | Where risk hides | `WhereRiskHides` | cloud-50 | STATEMENT `py-32` | 7xl | `Where DPDPA risk hides` | text link |
-| S4 | Report preview | `ReportPreview` | cloud-50 | DEMO `py-24` | 6xl | `Your report` | **Get my real score** (green) |
+| S1 | Hero | `HeroSection` | **navy-700** | own layout | 7xl | `Free DPDPA readiness check · 3–5 minutes` | **Take free assessment** (green) |
+| S2 | Proof rail | `PressProofStrip variant="rail"` | **deep** | RAIL `py-10` | 6xl | — | none |
+| S3 | Where risk hides | `WhereRiskHides` | white | STATEMENT `py-32` | 7xl | `The everyday data ecosystem` | — |
+| S4 | Report preview | `ReportPreview` | white | DEMO `py-24` | 6xl | `Your report` | **Get my real score** (green) |
 | S5 | Recognition band | `RecognitionBand` | **navy-700** | DECISION `py-16` | 6xl | `Who's behind this` | **Take free assessment** (green) |
-| S6 | How it works | `HowItWorks` | cloud-50 | UTILITY `py-20` | 3xl | `How it works` | text link |
-| S7 | Sector examples | `AudienceCards` | cloud-50 | EVIDENCE `py-16` | 7xl | `Your sector` | tab-scoped green |
-| S8 | Resources | `ResourcesSection` | cloud-50 | UTILITY `py-20` | 6xl | `Learn more` | none |
-| S9 | FAQ | `FAQPreview` | cloud-50 | EVIDENCE `py-16` | 3xl | `Before you start` | none |
-| S10 | Final CTA | `FinalAssessmentBand` | **navy-700** | DECISION `py-16` | 4xl | — | **Take free assessment** (green) |
+| S6 | How it works | `HowItWorks` | white | UTILITY `py-20` | 3xl | `How it works` | text link |
+| S7 | Sector examples | `AudienceCards` | white | EVIDENCE `py-16` | 6xl | `Your sector` | tab-scoped teal link |
+| S8 | Resources | `ResourcesSection` | **deep** | UTILITY `py-20` | 6xl | `Learn more` | none |
+| S9 | FAQ | `FAQPreview` | **deep** | EVIDENCE `py-16` | 3xl | `Before you start` | none |
+| S10 | Final CTA | `FinalAssessmentBand` | **navy-700** | DECISION `py-16` | 3xl | — | **Take free assessment** (green) |
 
-Rhythm check — no two adjacent sections share a type, and the padding sequence reads `16 · 10 · 32 · 24 · [navy 16] · 20 · 16 · 20 · 16 · [navy 16]`. Chapters: **S1–S4** (understand), **S5–S7** (trust + fit), **S8–S10** (resolve + convert).
+### The three light-fill decision
 
-Target length ≈ 6,500–7,500 desktop px, down from ~11,500.
+`cloud-50` is retired from this page. Measured against white: cloud-50 **1.05:1**, cloud-100 **1.12:1**, cloud-200 **1.28:1**, cloud-300 **1.59:1**, navy-700 **17.31:1**. W1.3 was right that cloud-50 cannot separate sections and wrong to generalise that to the whole ramp — 1.28:1 is exactly the ratio `Surface` already trusts as a card hairline, and area discrimination is an easier perceptual task than the small-text legibility WCAG ratios are calibrated for.
+
+So: **white ↔ cloud-200 ("deep")**, and three jobs get three mechanisms.
+
+| Mechanism | Marks | |
+|---|---|---|
+| Fill | the group | navy = chapter · white ↔ deep = sub-group |
+| Padding | the beat | the type ladder |
+| Hairline | the boundary | between two beats that share a fill |
+
+Adjacent sections may share a fill when they are one thought — the demo pair (S3+S4), the process/sector pair (S6+S7), the reference pair (S8+S9). Flipping every section is the zebra W1.3 killed, just louder.
+
+Two ink rules follow from the deeper fill: **`green-700` drops to 4.29:1 on it and must step to `green-800`** (6.01:1), and `slate-400` is 2.00:1 and is banned there as on any light fill. Cards on a deep section take `onDeep` on `Surface`, which steps their border to cloud-300 (1.24:1, where it sat on white).
+
+Chapters: **S1–S4** (understand), **S5–S7** (trust + fit), **S8–S10** (resolve + convert).
+
+**Measured after build:** 8,624 desktop px, down from ~11,500 — a 25% reduction, short of the 6,500–7,500 target. The three longest sections are S3 (1,177px), S4 (1,088px) and S9 (1,079px), and all three are earning their height. Closing the rest of the gap means cutting content, not padding; that is a separate decision.
 
 ---
 

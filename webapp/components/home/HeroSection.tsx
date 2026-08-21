@@ -3,13 +3,24 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ArrowRight, CheckCircle } from "lucide-react";
-import { HERO_VERDICTS, getHeroVerdict } from "@/lib/data/hero-verdicts";
+import { getHeroVerdict } from "@/lib/data/hero-verdicts";
 import { ScoreDial } from "@/components/home/ScoreDial";
 import { trackEvent } from "@/lib/analytics";
 
-// Beat 1 — Hero. 2-column: left = "is-this-me" selector + Discovery-first CTAs;
-// right = a scorecard (illustrative sample by default, live verdict on select).
-// Stats live in the Trust ribbon (Beat 3). Brand tokens via Tailwind.
+// S1 — Hero. 2-column: left = the score promise + a four-way selector + one
+// green action; right = a scorecard (illustrative sample by default, live
+// verdict on select). Proof lives in the rail directly below (S2).
+//
+// The selector shows THREE sectors, not twelve. Twelve equal chips made the
+// hero the tallest block on the mobile page and asked the visitor to classify
+// themselves before they had been told what they would get. The other nine
+// sectors are one scroll away in S7, and every one of them is still reachable.
+//
+// The right-hand card stays a TEASER. S4 owns the full scored report — showing
+// it twice made the second one read as déjà vu.
+
+/** The page's priority sectors. Must match AudienceCards and VERDICT_PREVIEWS. */
+const PRIORITY_SLUGS = ["recruitment", "ca-firms", "d2c-brands"];
 
 // One muted line, not five ticked badges. The same five facts read as
 // reassurance in a row and as clutter when each gets its own icon.
@@ -24,10 +35,23 @@ const frictionKillers = [
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 export function HeroSection() {
+  // null = nothing picked yet; "other" = picked, but no sector-specific read.
   const [slug, setSlug] = useState<string | null>(null);
-  const verdict = slug ? getHeroVerdict(slug) : null;
-  const discoverHref = slug ? `/discovery?sector=${slug}` : "/discovery";
-  const assessHref = slug ? `/assessment/${slug}` : "/assessment";
+  const sectorSlug = slug === "other" ? null : slug;
+  const verdict = sectorSlug ? getHeroVerdict(sectorSlug) : null;
+  const discoverHref = sectorSlug ? `/discovery?sector=${sectorSlug}` : "/discovery";
+  const assessHref = sectorSlug ? `/assessment/${sectorSlug}` : "/assessment";
+
+  // Three priority sectors, resolved from the single source, plus a generic
+  // fourth. "Other business" routes to the general pack at /assessment — which
+  // is a real, working assessment, but does NOT produce a sector verdict. So it
+  // deliberately leaves the sample card up rather than inventing a read.
+  const chips = [
+    ...PRIORITY_SLUGS.map((s) => getHeroVerdict(s)).filter(
+      (v): v is NonNullable<typeof v> => Boolean(v),
+    ),
+    { slug: "other", chipLabel: "other business" },
+  ];
 
   return (
     <section className="relative bg-navy-700 overflow-hidden">
@@ -48,18 +72,20 @@ export function HeroSection() {
             <div className="inline-flex items-center gap-2 bg-teal-700/30 border border-teal-500/40 rounded-full px-3.5 py-1.5 mb-6">
               <span className="w-2 h-2 rounded-full bg-teal-400 animate-pulse" aria-hidden="true" />
               <span className="text-teal-300 text-xs font-semibold">
-                DPDP Rules, 2025 are in effect — see where you stand in 3–5 minutes
+                Free DPDPA readiness check · 3–5 minutes
               </span>
             </div>
 
+            {/* The promise is the SCORE, not a position. "See where you stand"
+                described the feeling; this names the deliverable, which is what
+                the report actually hands over. */}
             <h1 className="text-4xl sm:text-5xl font-semibold text-white leading-tight tracking-tight mb-5">
-              See exactly where your business stands on{" "}
-              <span className="text-green-400">DPDPA</span>
+              Get your DPDPA readiness score in{" "}
+              <span className="text-green-400">3–5 minutes</span>
             </h1>
             <p className="text-lg text-slate-300 leading-relaxed mb-8 max-w-xl">
-              Pick your business type for an instant read on what applies, where
-              you&apos;re exposed, and what to do next — in plain English, no legal
-              degree required.
+              See your top gaps, first fixes and a sector-specific action plan
+              for your Indian business — in plain English.
             </p>
 
             {/* is-this-me selector */}
@@ -70,7 +96,7 @@ export function HeroSection() {
                 role="group"
                 aria-label="Select your business type"
               >
-                {HERO_VERDICTS.map((v) => {
+                {chips.map((v) => {
                   const active = v.slug === slug;
                   return (
                     <button
@@ -92,6 +118,16 @@ export function HeroSection() {
                   );
                 })}
               </div>
+              {/* The nine sectors not shown are one scroll away, not gone. */}
+              <p className="mt-2.5 text-sm text-cloud-400">
+                <a
+                  href="#sectors"
+                  className="inline-flex items-center pointer-coarse:min-h-11 underline underline-offset-4 decoration-white/25 hover:decoration-white hover:text-slate-200 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-700 rounded"
+                >
+                  See all 12 sectors
+                  <span aria-hidden="true"> ↓</span>
+                </a>
+              </p>
             </div>
 
             {/* One filled action, and it has to be the one the headline
@@ -186,7 +222,9 @@ export function HeroSection() {
                   </div>
                 </div>
                 <p className="text-xs text-slate-600 mt-4">
-                  Pick your business on the left to see your own read.
+                  {slug === "other"
+                    ? "The general check covers every business that handles personal data. Your real score is 3–5 minutes away."
+                    : "Pick your business on the left to see your own read."}
                 </p>
               </div>
             )}

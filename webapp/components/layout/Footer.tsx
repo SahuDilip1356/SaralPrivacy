@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Mail } from "lucide-react";
+import { Mail, ArrowRight } from "lucide-react";
 import { PressProofStrip } from "@/components/ui/PressProofStrip";
 import { sectorNavLinks } from "@/lib/data/sectors";
 import { dataMapFooterLinks } from "@/lib/data/data-flow";
@@ -189,6 +189,35 @@ export function Footer() {
               </p>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Briefings signup — moved here from the bottom of the homepage, where it
+          was the page's closing conversion. It asked the visitor to swap a free
+          score they could have in three minutes for an email subscription;
+          subscribing is a good outcome, just not the one that page is for.
+
+          A link, not an inline field. The real form carries a consent checkbox
+          that is never pre-checked plus the Privacy Notice reference, and a
+          one-field footer box could not carry those honestly. /subscribe and
+          /briefings both have the full, consent-correct version. */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 border-t border-navy-600 pt-5 pb-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <p className="text-sm font-semibold text-white">
+              DPDPA briefings, delivered to your inbox
+            </p>
+            <p className="text-xs text-slate-400 mt-0.5">
+              A short daily read for business owners, not lawyers. Unsubscribe any time.
+            </p>
+          </div>
+          <Link
+            href="/subscribe"
+            className="inline-flex items-center gap-1.5 shrink-0 pointer-coarse:min-h-11 text-sm font-semibold text-teal-400 hover:text-teal-300 transition-colors"
+          >
+            Subscribe to briefings
+            <ArrowRight size={14} />
+          </Link>
         </div>
       </div>
 

@@ -49,6 +49,29 @@ const radiusClasses: Record<Rung, string> = {
 };
 
 /**
+ * Border override for a card sitting on the DEEP section fill (cloud-200).
+ *
+ * The homepage separates its light sections with white ↔ cloud-200, measured at
+ * 1.28:1 — the same ratio this ladder already trusts as a card hairline, and
+ * five times the 1.05:1 of white ↔ cloud-50 it replaces. The cost is that the
+ * card's own cloud-200 border lands on a cloud-200 ground at 1.00:1 and
+ * disappears.
+ *
+ * The card does not actually break — its white fill now separates at 1.28:1
+ * where it used to manage 1.05:1, so the plane carries the edge's old job. But
+ * a card should have both, so on a deep section the border steps one rung to
+ * cloud-300: 1.24:1 against that ground, which is where the border sat on white
+ * to begin with. The ladder shifts down one; it does not flatten.
+ *
+ * Sunken needs no variant: in practice a well is always INSIDE a card, so it
+ * sits on the card's white fill, not on the section ground.
+ */
+const deepBorder: Partial<Record<Rung, string>> = {
+  card: "border-cloud-300",
+  sunken: "border-cloud-300",
+};
+
+/**
  * The rung mapping, for surfaces that cannot be a `<Surface>` — most often
  * because the whole card is a `next/link` and must render an `<a>`. Use this
  * rather than hand-copying the classes: a card that spells out its own fill
@@ -56,10 +79,16 @@ const radiusClasses: Record<Rung, string> = {
  */
 export function surfaceClasses(
   rung: Rung,
-  { interactive = false, flush = false }: { interactive?: boolean; flush?: boolean } = {}
+  {
+    interactive = false,
+    flush = false,
+    onDeep = false,
+  }: { interactive?: boolean; flush?: boolean; onDeep?: boolean } = {}
 ): string {
   return cn(
     rungClasses[rung],
+    // `cn` is tailwind-merge, so a later border-* wins over the rung's own.
+    onDeep && deepBorder[rung],
     !flush && radiusClasses[rung],
     interactive && rung === "card" && "transition-shadow hover:shadow-card-hover"
   );
@@ -77,6 +106,8 @@ interface SurfaceProps extends React.HTMLAttributes<HTMLElement> {
   interactive?: boolean;
   /** Drop the rung's default radius when a parent already clips. */
   flush?: boolean;
+  /** Set on cards sitting directly on a DEEP (cloud-200) section fill. */
+  onDeep?: boolean;
   as?: "div" | "article" | "aside" | "li";
   children?: React.ReactNode;
 }
@@ -85,13 +116,17 @@ export function Surface({
   rung,
   interactive = false,
   flush = false,
+  onDeep = false,
   as: Tag = "div",
   className,
   children,
   ...rest
 }: SurfaceProps) {
   return (
-    <Tag className={cn(surfaceClasses(rung, { interactive, flush }), className)} {...rest}>
+    <Tag
+      className={cn(surfaceClasses(rung, { interactive, flush, onDeep }), className)}
+      {...rest}
+    >
       {children}
     </Tag>
   );

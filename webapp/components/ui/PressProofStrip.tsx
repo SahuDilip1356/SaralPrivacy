@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, ExternalLink } from "lucide-react";
 
-type Variant = "banner" | "compact" | "sidebar";
+type Variant = "banner" | "compact" | "sidebar" | "rail";
 
 const PUBS = [
   {
@@ -26,7 +26,62 @@ const PUBS = [
   },
 ];
 
+/**
+ * The three facts that reduce the anxiety of STARTING. Deliberately not our
+ * publishing counts — "130+ briefings" and "17 templates" measure our activity,
+ * not the visitor's risk in clicking, and they used to sit in this position.
+ * They now live in the resources section, where they are the right claim.
+ */
+const START_FACTS = [
+  "12 sector-specific assessments",
+  "3–5 minutes",
+  "No email to start",
+  "Built for Indian workflows",
+];
+
 export function PressProofStrip({ variant = "banner" }: { variant?: Variant }) {
+  /* ── Rail — S2, directly under the hero. One band, no cards, no heading.
+     Its whole job is to answer "can I trust this enough to click" in the two
+     seconds after the promise lands, so it must not read as a section. ── */
+  if (variant === "rail") {
+    return (
+      <div className="flex flex-col items-center gap-3 text-center">
+        <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-sm">
+          <span className="text-slate-600">Featured in:</span>
+          {PUBS.map((p, i) => (
+            <span key={p.name} className="inline-flex items-center gap-2">
+              <a
+                href={p.url}
+                target="_blank"
+                rel="nofollow noopener"
+                className="inline-flex items-center pointer-coarse:min-h-11 font-medium text-navy-700 underline underline-offset-4 decoration-cloud-400 hover:decoration-navy-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-800 focus-visible:ring-offset-2 rounded"
+              >
+                {p.name}
+              </a>
+              {i < PUBS.length - 1 && (
+                <span className="text-cloud-400" aria-hidden>
+                  ·
+                </span>
+              )}
+            </span>
+          ))}
+        </p>
+        <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-sm text-slate-600">
+          {START_FACTS.map((f, i) => (
+            <span key={f} className="inline-flex items-center gap-2">
+              {f}
+              {i < START_FACTS.length - 1 && (
+                <span className="text-cloud-400" aria-hidden>
+                  ·
+                </span>
+              )}
+            </span>
+          ))}
+        </p>
+      </div>
+    );
+  }
+
   /* ── Compact — used inside the footer (already on navy bg, stays minimal) ── */
   if (variant === "compact") {
     return (
