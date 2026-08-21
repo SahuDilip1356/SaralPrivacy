@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 
 function RiskBadge({ level }: { level: string }) {
   const map: Record<string, string> = {
-    green: "bg-green-100 text-green-700",
+    green: "bg-green-100 text-green-800",
     amber: "bg-amber-100 text-amber-700",
     red:   "bg-red-100 text-red-700",
   };

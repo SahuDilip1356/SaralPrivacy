@@ -90,7 +90,7 @@ function buildActivity(docs: any[], type: ActivityEvent["type"]): ActivityEvent[
       badge:    `Assessment — ${d.risk_level ? d.risk_level.charAt(0).toUpperCase() + d.risk_level.slice(1) + " Risk" : "Completed"}`,
       badgeColor: d.risk_level === "red" ? "bg-red-100 text-red-700"
                 : d.risk_level === "amber" ? "bg-amber-100 text-amber-700"
-                : "bg-green-100 text-green-700",
+                : "bg-green-100 text-green-800",
       dot: d.risk_level === "red" ? "bg-red-400" : d.risk_level === "amber" ? "bg-amber-400" : "bg-green-400",
     };
 
@@ -120,7 +120,7 @@ function buildActivity(docs: any[], type: ActivityEvent["type"]): ActivityEvent[
       badge:    d.status === "sent" ? `Sent — ${d.subscriber_count ?? 0} subscribers`
               : d.status === "approved" ? "Approved — Ready to send"
               : "Draft — Awaiting approval",
-      badgeColor: d.status === "sent" ? "bg-green-100 text-green-700"
+      badgeColor: d.status === "sent" ? "bg-green-100 text-green-800"
                 : d.status === "approved" ? "bg-blue-100 text-blue-700"
                 : "bg-amber-100 text-amber-700",
       dot: d.status === "sent" ? "bg-green-400" : d.status === "approved" ? "bg-blue-400" : "bg-amber-400",

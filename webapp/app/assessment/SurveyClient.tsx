@@ -295,7 +295,7 @@ function QuestionCardGrid({
   const badgeColor = (c?: string) =>
     c === "red"   ? "bg-red-100 text-red-700" :
     c === "amber" ? "bg-amber-100 text-amber-700" :
-    c === "green" ? "bg-green-100 text-green-700" : "bg-slate-100 text-slate-600";
+    c === "green" ? "bg-green-100 text-green-800" : "bg-slate-100 text-slate-600";
 
   const gridClass = columns === 4
     ? "grid grid-cols-2 sm:grid-cols-4 gap-3"
@@ -489,7 +489,7 @@ function StrategyCard({
 }) {
   const badge =
     priority === "HIGH PRIORITY" ? "bg-red-100 text-red-700 border border-red-200" :
-    priority === "QUICK WIN"      ? "bg-green-100 text-green-700 border border-green-200" :
+    priority === "QUICK WIN"      ? "bg-green-100 text-green-800 border border-green-200" :
     "bg-slate-100 text-slate-600 border border-slate-200";
 
   return (

@@ -17,7 +17,7 @@ const BAND_COLORS: Record<string, { bg: string; text: string; dot: string }> = {
   "Early Stage":          { bg: "bg-orange-100", text: "text-orange-700", dot: "bg-orange-500" },
   "Building Foundations": { bg: "bg-yellow-100", text: "text-yellow-700", dot: "bg-yellow-500" },
   "Progressing Well":     { bg: "bg-lime-100",   text: "text-lime-700",   dot: "bg-lime-500"   },
-  "Operationally Strong": { bg: "bg-green-100",  text: "text-green-700",  dot: "bg-green-500"  },
+  "Operationally Strong": { bg: "bg-green-100",  text: "text-green-800",  dot: "bg-green-500"  },
 };
 
 function VerdictBadge({ band }: { band: string }) {
@@ -92,7 +92,7 @@ const BANDS_ORDERED = [
 
 // ── Industry (risk) band system — for the kind-aware distribution chart ───────
 const INDUSTRY_BAND_COLORS: Record<string, { bg: string; text: string; dot: string }> = {
-  "Controlled":     { bg: "bg-green-100",  text: "text-green-700",  dot: "bg-green-500"  },
+  "Controlled":     { bg: "bg-green-100",  text: "text-green-800",  dot: "bg-green-500"  },
   "Moderate Risk":  { bg: "bg-amber-100",  text: "text-amber-700",  dot: "bg-amber-500"  },
   "High Risk":      { bg: "bg-orange-100", text: "text-orange-700", dot: "bg-orange-500" },
   "Critical Risk":  { bg: "bg-red-100",    text: "text-red-700",    dot: "bg-red-500"    },
@@ -302,7 +302,7 @@ function PreviewPanel({
               <ul className="space-y-1.5">
                 {immediateActions.slice(0, 3).map((a, i) => (
                   <li key={i} className="flex items-start gap-2 text-xs text-slate-700">
-                    <span className="w-4 h-4 rounded-full bg-green-100 text-green-700 font-bold flex items-center justify-center shrink-0 text-[10px] mt-0.5">{i + 1}</span>
+                    <span className="w-4 h-4 rounded-full bg-green-100 text-green-800 font-bold flex items-center justify-center shrink-0 text-[10px] mt-0.5">{i + 1}</span>
                     {a}
                   </li>
                 ))}
