@@ -1,5 +1,7 @@
 # Homepage — final spec
 
+> **Superseded where it differs:** the canonical, founder-decided spec is now `LANDING_PAGE_SIGNOFF_SPEC.md` (2026-08-22). In particular, the hero is NAVY (Option A locked), the ladder is compressed to 96/80/64/56/24, and S7 is the sector ring deck. This file remains as the reasoning record.
+
 _Normative. Branch `claude/landing-page-11-elements-htz97i`. Written against the dev head (`bb97567`), not the live site._
 
 **Supersedes for the homepage only:** the 10-beat structure in `LANDING_PAGE_MASTER.md §4`. Everything else in that file — brand tokens, the conversion ladder, the "carried over / must keep" list — still stands. `LANDING_PAGE_STRUCTURE.md §3c` (brand tokens) remains canonical.

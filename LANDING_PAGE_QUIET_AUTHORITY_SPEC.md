@@ -1,5 +1,7 @@
 # Quiet Authority — the premium elevation spec
 
+> **Superseded where it differs:** the canonical, founder-decided spec is now `LANDING_PAGE_SIGNOFF_SPEC.md` (2026-08-22). In particular, the hero is NAVY (Option A locked), the ladder is compressed to 96/80/64/56/24, and S7 is the sector ring deck. This file remains as the reasoning record.
+
 _Normative for aesthetics. Sits on top of `LANDING_PAGE_FINAL_SPEC.md` (structure) — it changes how the eleven sections look, not what they contain. **Nothing is removed. One section gets content back.**_
 
 _Inputs: the two external assessments (the Brand-Bible-corrected one and the 30-point "Quiet Authority" direction) · the `saralprivacy-brand` skill (the in-repo brand authority — the Brand Bible HTML itself is not in the repo) · the measured contrast work from the rhythm rebuild. Where the assessments disagree with each other or with measurement, this spec says which wins and why._
