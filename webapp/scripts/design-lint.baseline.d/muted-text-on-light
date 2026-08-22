@@ -178,7 +178,6 @@ app/unsubscribe/outreach/page.tsx:20:          <p className="text-xs text-slate-
 app/unsubscribe/outreach/OutreachUnsubscribeClient.tsx:30:        <Loader2 size={28} className="animate-spin text-slate-400" />
 app/briefings/[slug]/page.tsx:650:                      <span className="text-slate-400">·</span>
 app/briefings/[slug]/page.tsx:678:                        <p className="text-xs text-slate-400 text-center py-2 border-t border-slate-100">
-app/briefings/page.tsx:141:          <div className="text-center py-16 text-slate-400">
 app/contact/ContactContent.tsx:293:                    <p className="text-xs text-slate-400 mt-2 pl-7">
 app/terms/page.tsx:17:          <p className="text-sm text-slate-400 mt-1">Last updated: March 2026 | Version 1.0</p>
 app/white-paper/WhitePaperContent.tsx:147:                    <span className="text-slate-400">→</span>
@@ -230,7 +229,7 @@ components/chat/ChatPanel.tsx:359:            className="max-h-28 min-h-[42px] f
 components/layout/Footer.tsx:71:        className="inline-flex items-center pointer-coarse:min-h-11 text-sm text-slate-400 hover:text-white transition-colors"
 components/layout/Footer.tsx:108:            <p className="text-sm text-slate-400 leading-relaxed max-w-xs">
 components/layout/Footer.tsx:181:                <span className="block text-xs text-slate-400 mt-0.5">
-components/layout/Footer.tsx:188:                  className="inline-flex items-center pointer-coarse:min-h-11 text-slate-400 hover:text-white transition-colors"
+components/layout/Footer.tsx:188:                  className="inline-block pointer-coarse:min-h-11 break-all text-slate-400 hover:text-white transition-colors"
 components/layout/Footer.tsx:192:                <span className="block text-xs text-slate-400 mt-0.5">General enquiries</span>
 components/layout/Footer.tsx:216:          <p className="text-xs text-slate-400">
 components/layout/Footer.tsx:224:            <Link href="/privacy" className="inline-flex items-center pointer-coarse:min-h-11 text-xs text-slate-400 hover:text-white transition-colors">
@@ -244,7 +243,7 @@ components/briefings/BriefingSubscribeCard.tsx:52:      <p className="text-slate
 components/briefings/BriefingSubscribeCard.tsx:85:          <a href="/privacy" className="text-slate-400 underline">Privacy Notice</a>.
 components/home/HeroSection.tsx:129:              <span className="block text-sm text-slate-400 mb-2.5">I run a…</span>
 components/home/ConsultationCTA.tsx:78:                <p className="text-slate-400 text-xs">
-components/home/AudienceCards.tsx:372:                      <p className="text-xs text-slate-400">
+components/home/AudienceCards.tsx:377:                      <p className="text-xs text-slate-400">
 components/home/NewsletterSection.tsx:109:                <p className="text-xs text-slate-400 pl-7">
 components/home/HowItWorks.tsx:266:                      {step.sub} <span className="text-slate-400">· {step.tag}</span>
 components/home/HowItWorks.tsx:268:                    <span className="block text-[10px] font-semibold tracking-wide uppercase text-slate-400 mt-1.5">

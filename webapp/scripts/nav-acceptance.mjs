@@ -180,6 +180,143 @@ const check = (name, pass, detail = '') => {
     await page.close();
   }
 
+  // ── 4. Hover intent ─────────────────────────────────────────────────────
+  // The diagonal problem: dragging the pointer across the bar must not flash
+  // every panel open on the way. Driven with synthetic pointer events rather
+  // than mouse.move() so the dwell time on each trigger is exact.
+  console.log('\n4. Hover intent (the diagonal problem)\n');
+  {
+    const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+    await page.goto(URL, { waitUntil: 'networkidle' });
+
+    // Real mouse movement, not synthetic PointerEvents: React synthesises
+    // onPointerEnter from pointerover delegation at the root, so a raw
+    // `dispatchEvent(new PointerEvent('pointerenter'))` never reaches the
+    // handler and the test would pass for the wrong reason.
+    const boxOf = async (label) => {
+      const b = await page.evaluateHandle((l) => {
+        return [...document.querySelectorAll('header nav[aria-label="Main"] button')]
+          .find((x) => x.textContent.trim().startsWith(l));
+      }, label);
+      return (await b.asElement().boundingBox());
+    };
+
+    const hover = async (label) => {
+      const b = await boxOf(label);
+      await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2);
+    };
+    /** Park the pointer well below the bar. */
+    const leaveBar = () => page.mouse.move(720, 600);
+
+    const openCount = () => page.evaluate(() =>
+      document.querySelectorAll('header nav[aria-label="Main"] button[aria-expanded="true"]').length);
+
+    // Pass through: dwell 60ms (under the 120ms threshold), then leave.
+    await leaveBar();
+    await hover('Readiness');
+    await page.waitForTimeout(60);
+    await leaveBar();
+    await page.waitForTimeout(300);
+    check('a pointer passing through opens nothing', (await openCount()) === 0);
+
+    // Deliberate hover: dwell past the threshold.
+    await hover('Readiness');
+    await page.waitForTimeout(320);
+    check('a deliberate hover does open', (await openCount()) === 1);
+
+    // Already browsing: switching must be immediate, not delayed again.
+    await hover('Tools');
+    await page.waitForTimeout(40);
+    const onTools = await page.evaluate(() => {
+      const b = [...document.querySelectorAll('header nav[aria-label="Main"] button')]
+        .find((x) => x.textContent.trim().startsWith('Tools'));
+      return b?.getAttribute('aria-expanded') === 'true';
+    });
+    check('switching between menus is instant once one is open', onTools);
+
+    await page.close();
+  }
+
+  // ── 5. Panel entry animation ────────────────────────────────────────────
+  console.log('\n5. Panel entry\n');
+  {
+    const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+    await page.goto(URL, { waitUntil: 'networkidle' });
+    await page.evaluate(() => {
+      [...document.querySelectorAll('header nav[aria-label="Main"] button')]
+        .find((b) => b.textContent.trim().startsWith('Readiness'))?.click();
+    });
+    await page.waitForTimeout(20);
+    const anim = await page.evaluate(() => {
+      const p = document.querySelector('#nav-panel-readiness .sp-panel-in');
+      if (!p) return null;
+      const cs = getComputedStyle(p);
+      return { name: cs.animationName, duration: cs.animationDuration };
+    });
+    check('panel carries the entry animation', anim?.name === 'sp-panel-in', anim?.duration || 'missing');
+    await page.close();
+
+    // Reduced motion must collapse it, not leave the from-state stuck.
+    const rm = await browser.newPage({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });
+    await rm.goto(URL, { waitUntil: 'networkidle' });
+    await rm.evaluate(() => {
+      [...document.querySelectorAll('header nav[aria-label="Main"] button')]
+        .find((b) => b.textContent.trim().startsWith('Readiness'))?.click();
+    });
+    await rm.waitForTimeout(120);
+    const settled = await rm.evaluate(() => {
+      const p = document.querySelector('#nav-panel-readiness .sp-panel-in');
+      if (!p) return null;
+      const cs = getComputedStyle(p);
+      return { duration: cs.animationDuration, opacity: +cs.opacity };
+    });
+    check('reduced motion collapses the duration', settled?.duration === '0.001s', settled?.duration || 'missing');
+    check('reduced motion still ends fully opaque', settled?.opacity === 1, String(settled?.opacity));
+    await rm.close();
+  }
+
+  // ── 6. Mobile body scroll lock ──────────────────────────────────────────
+  console.log('\n6. Mobile drawer scroll lock at 390px\n');
+  {
+    const page = await browser.newPage({
+      viewport: { width: 390, height: 800 }, isMobile: true, hasTouch: true,
+    });
+    await page.goto(URL, { waitUntil: 'networkidle' });
+    // `behavior: 'instant'` because globals.css sets html{scroll-behavior:smooth}:
+    // a plain scrollTo animates for ~600ms, and the drawer would then open
+    // against a scroll offset still in flight. A real reader has already
+    // stopped scrolling before they reach for the menu, so settle it first.
+    await page.evaluate(() => window.scrollTo({ top: 600, behavior: 'instant' }));
+    await page.waitForTimeout(120);
+    const startY = await page.evaluate(() => Math.round(window.scrollY));
+    check('fixture: page is scrolled before the drawer opens', startY === 600, `scrollY=${startY}`);
+
+    await page.locator('header button[aria-controls="mobile-nav"]').click();
+    await page.waitForTimeout(200);
+    const locked = await page.evaluate(() => getComputedStyle(document.body).position);
+    check('body is locked while the drawer is open', locked === 'fixed', locked);
+
+    // Scrolling with the drawer open must not move the page behind it.
+    await page.evaluate(() => window.scrollTo(0, 2000));
+    await page.waitForTimeout(120);
+    const movedWhileOpen = await page.evaluate(() => window.scrollY);
+    check('the page behind does not scroll', movedWhileOpen === 0, `scrollY=${movedWhileOpen}`);
+
+    // Closing restores both the lock and the original offset. The 60ms window
+    // is deliberate: a smooth-scrolled restore is only ~a third of the way home
+    // by then, so this fails if anyone drops the `behavior: 'instant'`.
+    await page.locator('header button[aria-controls="mobile-nav"]').click();
+    await page.waitForTimeout(60);
+    const after = await page.evaluate(() => ({
+      pos: getComputedStyle(document.body).position,
+      y: Math.round(window.scrollY),
+    }));
+    check('body unlocks on close', after.pos !== 'fixed', after.pos);
+    check('scroll position is restored instantly, not reset or animated',
+      Math.abs(after.y - 600) < 5, `scrollY at +60ms=${after.y}`);
+    await page.close();
+  }
+
   console.log(`\n${failures === 0 ? '✓ all navbar acceptance checks passed' : `✗ ${failures} check(s) failed`}\n`);
   await browser.close();
   process.exit(failures === 0 ? 0 : 1);

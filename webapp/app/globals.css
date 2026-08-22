@@ -287,7 +287,22 @@
   animation: sp-line-flow 0.9s linear infinite;
 }
 
+/* ── Nav mega panel entry ───────────────────────────────────────────────────
+   The panel mounts on state change, so there is no closing animation to pair
+   with this — an exit would need the element kept in the tree after it stops
+   being reachable, which costs more than it buys in a menu. 140ms and a 4px
+   rise: enough to read as "this belongs to the trigger above it", short
+   enough that a reader moving along the bar never waits on it. */
+@keyframes sp-panel-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.sp-panel-in { animation: sp-panel-in 140ms cubic-bezier(0.16, 1, 0.3, 1); }
+
 @media (prefers-reduced-motion: reduce) {
   .sp-dash-flow,
   .sp-line-flow { animation: none; }
+  /* Not `animation: none` — that would leave the from-state applied in some
+     engines. Collapse the duration so the end state lands immediately. */
+  .sp-panel-in { animation-duration: 1ms; }
 }
