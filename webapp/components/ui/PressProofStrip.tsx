@@ -39,39 +39,56 @@ const START_FACTS = [
   "Built for Indian workflows",
 ];
 
-export function PressProofStrip({ variant = "banner" }: { variant?: Variant }) {
-  /* ── Rail — S2, directly under the hero. One band, no cards, no heading.
-     Its whole job is to answer "can I trust this enough to click" in the two
-     seconds after the promise lands, so it must not read as a section. ── */
+export function PressProofStrip({
+  variant = "banner",
+  onDark = false,
+}: {
+  variant?: Variant;
+  /** rail only: dark register, for the navy-800 seam inside the dark chapter */
+  onDark?: boolean;
+}) {
+  /* ── Rail — S2, the seam between the hero and the risk map. One tight band,
+     no cards, no heading: its whole job is to answer "can I trust this enough
+     to click" in the two seconds after the promise lands, so it must read as a
+     seam in the dark chapter, never as a section of its own. ── */
   if (variant === "rail") {
+    const sep = onDark ? "text-white/25" : "text-cloud-400";
     return (
-      <div className="flex flex-col items-center gap-3 text-center">
-        <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-sm">
-          <span className="text-slate-600">Featured in:</span>
+      <div className="flex flex-col items-center gap-1.5 text-center">
+        <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-[13px]">
+          <span className={onDark ? "text-slate-400" : "text-slate-600"}>Featured in:</span>
           {PUBS.map((p, i) => (
             <span key={p.name} className="inline-flex items-center gap-2">
               <a
                 href={p.url}
                 target="_blank"
                 rel="nofollow noopener"
-                className="inline-flex items-center pointer-coarse:min-h-11 font-medium text-navy-700 underline underline-offset-4 decoration-cloud-400 hover:decoration-navy-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-800 focus-visible:ring-offset-2 rounded"
+                className={`inline-flex items-center pointer-coarse:min-h-11 font-medium underline underline-offset-4 transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${
+                  onDark
+                    ? "text-slate-200 decoration-white/25 hover:decoration-white hover:text-white focus-visible:ring-green-400 focus-visible:ring-offset-navy-800"
+                    : "text-navy-700 decoration-cloud-400 hover:decoration-navy-700 focus-visible:ring-green-800"
+                }`}
               >
                 {p.name}
               </a>
               {i < PUBS.length - 1 && (
-                <span className="text-cloud-400" aria-hidden>
+                <span className={sep} aria-hidden>
                   ·
                 </span>
               )}
             </span>
           ))}
         </p>
-        <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-sm text-slate-600">
+        <p
+          className={`flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-[13px] ${
+            onDark ? "text-slate-400" : "text-slate-600"
+          }`}
+        >
           {START_FACTS.map((f, i) => (
             <span key={f} className="inline-flex items-center gap-2">
               {f}
               {i < START_FACTS.length - 1 && (
-                <span className="text-cloud-400" aria-hidden>
+                <span className={sep} aria-hidden>
                   ·
                 </span>
               )}

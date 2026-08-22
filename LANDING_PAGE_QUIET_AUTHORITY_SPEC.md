@@ -188,7 +188,7 @@ The R0 analytics gate from the final spec still stands — `scroll_depth` plus a
 
 ## 14. Open for Dilip
 
-1. **The hero flip is the one reversible-but-visible call** — it retires the navy hero shipped two days ago. The case: both assessments, the Brand Bible's own light hero mock, the CTA lock resolving itself, and navy finally reaching its 45% proportion where it means something. Say the word and P0 builds; say keep-navy and everything else in this spec still applies.
+1. **DECIDED (2026-08-22): the hero stays NAVY — Option A locked by Dilip** after a rendered side-by-side of both options. The P0 upgrades survive the revert (display scale, chromed snapshot, geometry backdrop); the opening becomes one continuous dark chapter — hero → navy-800 proof seam → navy risk map — which is the master spec's original "dark zones = Hero+Scatter". CTA convention settled with it: dark surfaces = green-400 fill + navy-950 label (9.72:1); light surfaces = green-700 fill + white label (5.48:1). The ladder was also compressed one notch (96/80/64/56/24) after founder review: at the old scale, every beat boundary at a 900px viewport showed only empty ground, which read as the page fading out.
 2. Gold reconciliation for Brand Bible v3.1 (§11).
 3. GSC keyword check before any metadata rename (§11).
 4. The assessments' "Prove / Verified Digital Trust" narrative stage: the Trust Badge module has no live product yet, and the no-fake-doors rule holds — it enters S6's after-menu only when something real ships behind it.

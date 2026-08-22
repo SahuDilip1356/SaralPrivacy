@@ -77,18 +77,30 @@ export default function HomePage() {
       {websiteSchema()}
       {speakableSchema(['.answer-block'], 'https://saralprivacy.com', 'DPDPA Compliance for Indian Businesses')}
 
-      {/* ── Chapter 1: understand ───────────────────────────────────────── */}
+      {/* ── Chapter 1: understand — ONE CONTINUOUS DARK RUN ─────────────────
+          Hero (navy-700) → proof seam (navy-800) → risk map (navy-700).
+          This is the master spec's original "dark zones = Hero+Scatter",
+          finally shipped — and the founder's read of the old page named the
+          exact failure it fixes: below the hero everything faded, because the
+          first thing after the promise was empty light ground. Now the first
+          thing after the promise is the proof, then the problem, with no
+          drop in intensity until the product shows itself on white at S4. */}
 
       {/* S1 — the promise, one action, and a sample read. */}
       <HeroSection />
 
       {/* S2 — press marks + the three facts that reduce the anxiety of
-          STARTING. Directly under the hero, where scepticism peaks and the
-          visitor has not yet scrolled. The deeper press section still runs
-          inside S5, next to the founder: anxiety and authority are different
-          jobs and want different places. */}
-      <Section surface="deep" type="rail" aria-label="Press coverage and product facts">
-        <PressProofStrip variant="rail" />
+          STARTING. A navy-800 seam, one shade darker than its neighbours, so
+          it reads as a groove between hero and risk map rather than a section.
+          The deeper press block still runs inside S5, next to the founder:
+          anxiety and authority are different jobs and want different places. */}
+      <Section
+        surface="navy"
+        type="rail"
+        className="bg-navy-800 border-y border-white/5"
+        aria-label="Press coverage and product facts"
+      >
+        <PressProofStrip variant="rail" onDark />
       </Section>
 
       {/* S3 — where the risk actually is, in tools they already use. Carries

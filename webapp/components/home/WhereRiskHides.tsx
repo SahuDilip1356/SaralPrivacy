@@ -18,15 +18,13 @@ import {
 import { Section, Eyebrow } from "@/components/ui/Section";
 import { AnswerBlock } from "@/components/seo/AnswerBlock";
 
-// Beat 2 — "Where DPDPA risk hides" (the Scatter, the signature visual).
-// Sits on the light canvas: the navy hub chip is now the one dark object in
-// the frame, which is what "your business" should be. Personal data fans from
-// it to ~8 everyday tools, each carrying its own gold gap. Brand: gold = the
-// only attention colour (risk); teal = the data leaving; navy = structure.
-// Gold and teal step to the 700 shades — the 400/500 pair used on navy
-// measures 3.2-3.7:1 on this canvas.
-// Desktop: fixed-canvas SVG fan (660px, 1:1) so lines stay centred on the
-// chips. Mobile (<lg): a stacked list. Scroll-triggered reveal, play once,
+// S3 — "Where DPDPA risk hides" (the Scatter, the signature visual), the close
+// of the opening dark chapter: hero (navy-700) → proof seam (navy-800) → this.
+// Personal data fans from the white hub — the one light object in the dark
+// frame — to ten everyday tools, each carrying its own gold gap. Brand: gold =
+// the only attention colour (risk); teal = the data leaving; navy = structure.
+// Desktop: fixed-canvas SVG fan (derived geometry) so lines stay centred on
+// the chips. Mobile (<lg): a stacked list. Scroll-triggered reveal, play once,
 // prefers-reduced-motion → composed state instantly.
 
 // The everyday data ecosystem. These are COMMON WORKFLOWS, never claimed as
@@ -99,7 +97,7 @@ export function WhereRiskHides() {
     <Section surface="navy" type="statement" width="wide">
       <div ref={ref}>
         {/* header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-8">
           <Eyebrow surface="navy" className="mb-3">
             The everyday data ecosystem
           </Eyebrow>
@@ -223,7 +221,7 @@ export function WhereRiskHides() {
           </ul>
         </div>
 
-        <p className="text-center text-slate-400 text-sm mt-10 max-w-xl mx-auto">
+        <p className="text-center text-slate-400 text-sm mt-8 max-w-xl mx-auto">
           These are ordinary workflows, not integrations — SaralPrivacy does not
           connect to any of them. DPDPA risk usually hides here, not in legal
           documents.
@@ -234,7 +232,7 @@ export function WhereRiskHides() {
             teal dashed line the fan uses; the one green node is a controlled
             stage — the quiet promise that control is possible. Decorative to a
             screen reader (the fan above carries the content), so aria-hidden. */}
-        <div className="max-w-2xl mx-auto mt-14" aria-hidden="true">
+        <div className="max-w-2xl mx-auto mt-10" aria-hidden="true">
           <p className="text-center text-2xs font-semibold uppercase tracking-[0.09em] text-slate-400 mb-5">
             The data lifecycle — where each gap lives
           </p>
@@ -273,7 +271,7 @@ export function WhereRiskHides() {
             still the speakable target — the schema on the page points at
             `.answer-block` by class, not by position; the on-dark variant keeps
             both the class and data-speakable. */}
-        <div className="max-w-3xl mx-auto mt-16">
+        <div className="max-w-3xl mx-auto mt-10">
           <AnswerBlock
             variant="on-dark"
             question="What is DPDPA?"

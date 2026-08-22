@@ -79,13 +79,19 @@ const surfaceClasses: Record<SectionSurface, string> = {
   navy: "bg-navy-700 text-cloud-100",
 };
 
+// Compressed one notch from the original 128/96/80/64/64/40 after founder
+// review: at the old values, every section boundary at a 900px viewport showed
+// nothing but empty ground — which read as "the page faded out", not as
+// breathing room. The LADDER survives (each type still steps down, the rhythm
+// lint still bites); only the absolute scale changed. Scroll-pull now comes
+// from the next section peeking into the current viewport, not from air.
 const typePadding: Record<SectionType, string> = {
-  statement: "py-32",
-  demo: "py-24",
-  utility: "py-20",
-  evidence: "py-16",
-  decision: "py-16",
-  rail: "py-10",
+  statement: "py-24",
+  demo: "py-20",
+  utility: "py-16",
+  evidence: "py-14",
+  decision: "py-14",
+  rail: "py-6",
 };
 
 const widthClasses = {

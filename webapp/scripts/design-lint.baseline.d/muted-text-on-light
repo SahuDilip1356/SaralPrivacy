@@ -210,9 +210,11 @@ components/admin/BlogEditor.tsx:979:                <div className="bg-slate-50 
 components/TemplateGateModal.tsx:131:              className="absolute top-4 right-4 p-1.5 rounded-lg hover:bg-slate-100 text-slate-400"
 components/TemplateGateModal.tsx:232:            <p className="text-[10px] text-slate-400 text-center mt-3 leading-relaxed">
 components/ui/dialog.tsx:52:      <DialogPrimitive.Close className="absolute right-4 top-4 rounded-lg p-1 text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500">
-components/ui/PressProofStrip.tsx:89:        <span className="text-[11px] text-slate-400 font-medium">As seen in:</span>
-components/ui/PressProofStrip.tsx:96:              className="inline-flex items-center pointer-coarse:min-h-11 text-[11px] text-slate-400 hover:text-white transition-colors"
-components/ui/PressProofStrip.tsx:167:              <ExternalLink size={10} className="text-slate-400" />
+components/ui/PressProofStrip.tsx:59:          <span className={onDark ? "text-slate-400" : "text-slate-600"}>Featured in:</span>
+components/ui/PressProofStrip.tsx:84:            onDark ? "text-slate-400" : "text-slate-600"
+components/ui/PressProofStrip.tsx:106:        <span className="text-[11px] text-slate-400 font-medium">As seen in:</span>
+components/ui/PressProofStrip.tsx:113:              className="inline-flex items-center pointer-coarse:min-h-11 text-[11px] text-slate-400 hover:text-white transition-colors"
+components/ui/PressProofStrip.tsx:184:              <ExternalLink size={10} className="text-slate-400" />
 components/ui/select.tsx:20:      "text-sm text-slate-700 placeholder:text-slate-400",
 components/ui/select.tsx:23:      "data-[placeholder]:text-slate-400",
 components/ui/select.tsx:31:      <ChevronDown className="h-4 w-4 text-slate-400 shrink-0" />
@@ -245,14 +247,15 @@ components/briefings/BriefingsExplorer.tsx:160:            className="absolute r
 components/briefings/BriefingSubscribeCard.tsx:44:        <p className="text-slate-400 text-xs">Daily briefings will arrive in your inbox from tomorrow.</p>
 components/briefings/BriefingSubscribeCard.tsx:52:      <p className="text-slate-400 text-xs mb-4">
 components/briefings/BriefingSubscribeCard.tsx:85:          <a href="/privacy" className="text-slate-400 underline">Privacy Notice</a>.
+components/home/HeroSection.tsx:129:              <span className="block text-sm text-slate-400 mb-2.5">I run a…</span>
 components/home/ConsultationCTA.tsx:78:                <p className="text-slate-400 text-xs">
 components/home/AudienceCards.tsx:282:                <s.icon size={14} className="text-slate-400 shrink-0" />
 components/home/NewsletterSection.tsx:109:                <p className="text-xs text-slate-400 pl-7">
 components/home/HowItWorks.tsx:198:                    className="ml-auto shrink-0 text-slate-400 group-hover:text-teal-900 transition-colors"
-components/home/WhereRiskHides.tsx:154:            className="absolute text-xs text-slate-400"
-components/home/WhereRiskHides.tsx:202:          <div className="text-center text-xs text-slate-400 mb-2">
-components/home/WhereRiskHides.tsx:226:        <p className="text-center text-slate-400 text-sm mt-10 max-w-xl mx-auto">
-components/home/WhereRiskHides.tsx:238:          <p className="text-center text-2xs font-semibold uppercase tracking-[0.09em] text-slate-400 mb-5">
+components/home/WhereRiskHides.tsx:152:            className="absolute text-xs text-slate-400"
+components/home/WhereRiskHides.tsx:200:          <div className="text-center text-xs text-slate-400 mb-2">
+components/home/WhereRiskHides.tsx:224:        <p className="text-center text-slate-400 text-sm mt-8 max-w-xl mx-auto">
+components/home/WhereRiskHides.tsx:236:          <p className="text-center text-2xs font-semibold uppercase tracking-[0.09em] text-slate-400 mb-5">
 components/home/NoticeCTA.tsx:87:                <div className="text-[11px] uppercase tracking-wide text-slate-400 font-semibold">
 components/home/DiscoveryCTA.tsx:84:                      on ? "bg-green-700 text-white" : "bg-slate-100 text-slate-400"
 components/home/DiscoveryCTA.tsx:101:                <div className="text-[11px] uppercase tracking-wide text-slate-400 font-semibold">
