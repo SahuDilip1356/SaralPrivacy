@@ -15,6 +15,8 @@
 // about what "a route exists" means.
 // TIER 2 asserts the IA rules the design depends on: one featured item per
 // menu, exactly one filled action, descriptions where the design renders them.
+// TIER 3 asserts the grouping contract — headings, group sizes, column count,
+// and that the Industries menu never silently drops a sector.
 
 import test from "node:test";
 import assert from "node:assert/strict";
@@ -24,6 +26,7 @@ import { dirname, join } from "node:path";
 
 import { navMenus, primaryAction, secondaryAction } from "./navigation.ts";
 import { learnContent } from "./learn-content.ts";
+import { sectorNavLinks } from "./sectors.ts";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const APP_DIR = join(HERE, "..", "..", "app");
@@ -45,24 +48,23 @@ function pageExists(path: string): boolean {
   return false;
 }
 
+/** Every grid item in a menu, flattened across its groups. */
+function gridItems(menu: (typeof navMenus)[number]) {
+  return menu.groups.flatMap((g) => g.items);
+}
+
 function allItems() {
-  return navMenus.flatMap((m) => [m.featured, ...m.items]);
+  return navMenus.flatMap((m) => [m.featured, ...gridItems(m)]);
 }
 
 // ── TIER 1: the route contract ────────────────────────────────────────────
 
 test("every nav href resolves to a real page under app/", () => {
   for (const menu of navMenus) {
-    for (const item of [menu.featured, ...menu.items]) {
+    for (const item of [menu.featured, ...gridItems(menu)]) {
       assert.ok(
         pageExists(item.href),
         `dead link in ${menu.label} menu: ${item.label} -> ${item.href}`
-      );
-    }
-    if (menu.viewAll) {
-      assert.ok(
-        pageExists(menu.viewAll.href),
-        `dead viewAll link in ${menu.label}: ${menu.viewAll.href}`
       );
     }
   }
@@ -88,7 +90,7 @@ test("every menu has exactly one featured item", () => {
   for (const menu of navMenus) {
     assert.ok(menu.featured, `${menu.label} has no featured item`);
     assert.ok(
-      !menu.items.some((i) => i.href === menu.featured.href && !i.comingSoon),
+      !gridItems(menu).some((i) => i.href === menu.featured.href && !i.comingSoon),
       `${menu.label} repeats its featured href in the item grid`
     );
   }
@@ -107,13 +109,14 @@ test("featured items always carry a description", () => {
 
 test("grid items carry a description unless the menu opted out wholesale", () => {
   // Industries is the deliberate exception: twelve self-evident sector names
-  // in a three-column grid. The rule is all-or-nothing per menu, so a menu
-  // cannot half-describe its items and render a ragged panel.
+  // across four grouped columns. The rule is all-or-nothing per menu, so a
+  // menu cannot half-describe its items and render a ragged panel.
   for (const menu of navMenus) {
-    const described = menu.items.filter((i) => i.description.length > 0).length;
+    const items = gridItems(menu);
+    const described = items.filter((i) => i.description.length > 0).length;
     assert.ok(
-      described === 0 || described === menu.items.length,
-      `${menu.label} describes ${described} of ${menu.items.length} items; make it all or none`
+      described === 0 || described === items.length,
+      `${menu.label} describes ${described} of ${items.length} items; make it all or none`
     );
   }
 });
@@ -142,7 +145,82 @@ test("a coming-soon item never claims a unique destination", () => {
 
 test("no duplicate labels within a menu", () => {
   for (const menu of navMenus) {
-    const labels = [menu.featured, ...menu.items].map((i) => i.label);
+    const labels = [menu.featured, ...gridItems(menu)].map((i) => i.label);
     assert.equal(new Set(labels).size, labels.length, `${menu.label} has duplicate labels`);
   }
+});
+
+// ── TIER 3: the grouping contract ─────────────────────────────────────────
+//
+// Groups are what stopped the panels rendering as one flat list each. These
+// assert the shape the panel layout depends on, so a future edit cannot
+// reintroduce the ragged grid by adding a fourth item to a triad or an
+// unlabelled column.
+
+test("every group carries a heading", () => {
+  for (const menu of navMenus) {
+    for (const group of menu.groups) {
+      assert.ok(
+        group.heading.trim().length > 0,
+        `${menu.label} has a group with no heading`
+      );
+    }
+  }
+});
+
+test("every group has at least two items", () => {
+  // A one-item column is not a group; it is an item wearing a heading, and it
+  // reads as a mistake beside a column of three.
+  for (const menu of navMenus) {
+    for (const group of menu.groups) {
+      assert.ok(
+        group.items.length >= 2,
+        `${menu.label} / ${group.heading} has ${group.items.length} item(s); a group needs 2+`
+      );
+    }
+  }
+});
+
+test("no menu carries more than four groups", () => {
+  // Four columns is what the panel's max-w-7xl container fits without the
+  // headings crowding. Past four, the grouping stops helping.
+  for (const menu of navMenus) {
+    assert.ok(
+      menu.groups.length <= 4,
+      `${menu.label} has ${menu.groups.length} groups; the panel fits at most 4 columns`
+    );
+  }
+});
+
+test("no duplicate group headings within a menu", () => {
+  for (const menu of navMenus) {
+    const headings = menu.groups.map((g) => g.heading);
+    assert.equal(
+      new Set(headings).size,
+      headings.length,
+      `${menu.label} repeats a group heading`
+    );
+  }
+});
+
+test("the Industries menu still carries every live sector, exactly once", () => {
+  // sectorGroups() assigns each sector to a group by slug. A sector added to
+  // sectors.ts without being placed in a group would otherwise disappear from
+  // the bar silently — the one failure mode the grouping introduced.
+  const industries = navMenus.find((m) => m.label === "Industries");
+  assert.ok(industries, "no Industries menu");
+
+  const hrefs = gridItems(industries).map((i) => i.href);
+  const expected = sectorNavLinks.map((s) => s.href);
+
+  assert.equal(
+    hrefs.length,
+    expected.length,
+    `Industries lists ${hrefs.length} sectors; sectors.ts defines ${expected.length}`
+  );
+  assert.deepEqual(
+    [...hrefs].sort(),
+    [...expected].sort(),
+    "Industries menu and sectors.ts disagree about the sector list"
+  );
 });
