@@ -152,6 +152,16 @@ const FLOW_HREFS = new Map(
   DATA_MAPS.filter((m) => m.live).map((m) => [m.sector.slug, m.href]),
 );
 
+/** Shortest signed distance around the 12-card ring. The deck wraps, so it
+    is symmetric at every position — the sketch's shape at all times, and the
+    only honest way to "plot all 12": each card takes the stage in turn. */
+function ringDistance(i: number, active: number, n: number) {
+  let d = (i - active) % n;
+  if (d > n / 2) d -= n;
+  if (d < -n / 2) d += n;
+  return d;
+}
+
 /** Cover-flow geometry per signed distance from the active card. */
 function pose(d: number) {
   const abs = Math.abs(d);
@@ -190,9 +200,31 @@ function useInView<T extends HTMLElement>() {
 export function AudienceCards() {
   const { ref, inView } = useInView<HTMLDivElement>();
   const [active, setActive] = useState(0);
+  // Auto-rotation: founder-directed direction cue. It plays exactly ONE full
+  // revolution — every sector takes the stage once — and only while the deck
+  // is on screen. It pauses on hover, never starts for reduced-motion users,
+  // and the first real interaction (chip, arrow, spine, focus) ends it for
+  // good. Motion demonstrates the system, then hands over control.
+  const [engaged, setEngaged] = useState(false);
+  const [hovering, setHovering] = useState(false);
+  const spins = useRef(0);
+
+  useEffect(() => {
+    if (!inView || engaged || hovering) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (spins.current >= sectors.length) return;
+    const id = setInterval(() => {
+      if (document.hidden) return;
+      spins.current += 1;
+      if (spins.current >= sectors.length) clearInterval(id);
+      setActive((a) => (a + 1) % sectors.length);
+    }, 4000);
+    return () => clearInterval(id);
+  }, [inView, engaged, hovering]);
 
   const go = (i: number, via: string) => {
-    const next = Math.max(0, Math.min(sectors.length - 1, i));
+    setEngaged(true);
+    const next = (i + sectors.length) % sectors.length;
     if (next !== active) {
       trackEvent.beat5TabSelect({ sector: sectors[next].chip.toLowerCase() });
       setActive(next);
@@ -202,7 +234,7 @@ export function AudienceCards() {
 
   return (
     <Section id="sectors" surface="white" type="evidence" divider className="scroll-mt-20">
-      <div ref={ref}>
+      <div ref={ref} onFocusCapture={() => setEngaged(true)}>
         <div className="text-center mb-8">
           <Eyebrow className="mb-3">Your sector</Eyebrow>
           <h2 className="type-display-3 text-navy-700 mb-4">
@@ -244,9 +276,13 @@ export function AudienceCards() {
         {/* ── The stage: the sketch's five positions. Centre card full, ±1
             solid behind it, ±2 fading, the rest waiting off-stage. ── */}
         <div className="relative">
-          <div className="relative overflow-hidden h-[560px] sm:h-[440px]">
+          <div
+            className="relative overflow-hidden h-[560px] sm:h-[440px]"
+            onPointerEnter={() => setHovering(true)}
+            onPointerLeave={() => setHovering(false)}
+          >
             {sectors.map((s, i) => {
-              const d = i - active;
+              const d = ringDistance(i, active, sectors.length);
               const p = pose(d);
               const Icon = s.icon;
               const industrySlug = s.href.replace("/industries/", "");
@@ -265,9 +301,12 @@ export function AudienceCards() {
               return (
                 <div
                   key={s.href}
-                  inert={!centred}
-                  aria-hidden={!centred}
-                  className="absolute top-0 left-1/2 w-[min(560px,92vw)] transition-[transform,opacity] duration-500 ease-out motion-reduce:!transition-none motion-reduce:!opacity-100"
+                  onClick={centred ? undefined : () => go(i, "spine")}
+                  role={centred ? undefined : "button"}
+                  aria-label={centred ? undefined : `Show ${s.title}`}
+                  className={`absolute top-0 left-1/2 w-[min(560px,92vw)] transition-[transform,opacity] duration-500 ease-out motion-reduce:!transition-none motion-reduce:!opacity-100 ${
+                    centred ? "" : "cursor-pointer"
+                  }`}
                   style={{
                     transform: `translateX(calc(-50% + ${x}%)) scale(${sc})`,
                     opacity: op,
@@ -277,7 +316,8 @@ export function AudienceCards() {
                   }}
                 >
                   <div
-                    className={`rounded-xl bg-cloud-25 border p-6 sm:p-7 ${
+                    inert={!centred}
+                    className={`relative overflow-hidden rounded-xl bg-cloud-25 border p-6 sm:p-7 ${
                       centred ? "border-cloud-300 shadow-elevated" : "border-cloud-200 shadow-card"
                     }`}
                   >
@@ -349,6 +389,27 @@ export function AudienceCards() {
                         </Link>
                       </div>
                     </div>
+
+                    {/* The spine — founder note: "user should see the Industry
+                        caption clearly." Off-centre cards used to show clipped
+                        text fragments; now they read as labelled spines behind
+                        the open card, icon + name anchored to the exposed
+                        edge. Clicking a spine deals that card forward. */}
+                    <div
+                      aria-hidden="true"
+                      className={`absolute inset-0 bg-cloud-25 flex items-center transition-opacity duration-300 motion-reduce:!transition-none ${
+                        centred ? "opacity-0 pointer-events-none" : "opacity-100"
+                      } ${d < 0 ? "justify-start pl-7" : "justify-end pr-7"}`}
+                    >
+                      <span className={`flex items-center gap-3 ${d < 0 ? "" : "flex-row-reverse"}`}>
+                        <span className="w-10 h-10 rounded-lg bg-teal-50 grid place-items-center shrink-0">
+                          <Icon size={20} className="text-teal-800" />
+                        </span>
+                        <span className="text-sm font-semibold text-navy-700 whitespace-nowrap">
+                          {s.chip}
+                        </span>
+                      </span>
+                    </div>
                   </div>
                 </div>
               );
@@ -360,7 +421,6 @@ export function AudienceCards() {
             <button
               type="button"
               onClick={() => go(active - 1, "arrow")}
-              disabled={active === 0}
               aria-label="Previous sector"
               className="w-11 h-11 sm:w-9 sm:h-9 rounded-full border border-cloud-200 bg-cloud-25 grid place-items-center text-slate-600 hover:border-teal-400 hover:text-teal-900 transition-colors disabled:opacity-35 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2"
             >
@@ -372,7 +432,6 @@ export function AudienceCards() {
             <button
               type="button"
               onClick={() => go(active + 1, "arrow")}
-              disabled={active === sectors.length - 1}
               aria-label="Next sector"
               className="w-11 h-11 sm:w-9 sm:h-9 rounded-full border border-cloud-200 bg-cloud-25 grid place-items-center text-slate-600 hover:border-teal-400 hover:text-teal-900 transition-colors disabled:opacity-35 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2"
             >
