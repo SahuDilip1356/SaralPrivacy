@@ -48,6 +48,20 @@ const MENU_OPEN_DELAY_MS = 120;
 /** Panel ids are derived once so trigger and panel always agree. */
 const panelId = (label: string) => `nav-panel-${label.toLowerCase()}`;
 
+/** Every grid item in a menu, flattened across its groups. */
+const gridItems = (menu: NavMenu) => menu.groups.flatMap((g) => g.items);
+
+/**
+ * Tailwind needs the column count as a literal class, not an interpolation,
+ * or the JIT never emits it. The nav test caps groups at four.
+ */
+const COLS: Record<number, string> = {
+  1: "grid-cols-1",
+  2: "grid-cols-2",
+  3: "grid-cols-3",
+  4: "grid-cols-4",
+};
+
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileSection, setMobileSection] = useState<string | null>(null);
@@ -245,7 +259,7 @@ export function Header() {
 
   /** A menu counts as current when any of its destinations is the open page. */
   const menuIsActive = (menu: NavMenu) =>
-    [menu.featured, ...menu.items].some((i) => !i.comingSoon && isActive(i.href));
+    [menu.featured, ...gridItems(menu)].some((i) => !i.comingSoon && isActive(i.href));
 
   return (
     <>
@@ -434,15 +448,25 @@ export function Header() {
                           setMobileOpen(false);
                         }}
                       />
-                      {menu.items.map((item) => (
-                        <MobileItem
-                          key={item.label + item.href}
-                          item={item}
-                          onActivate={() => {
-                            handleItemActivate(menu.label, item);
-                            setMobileOpen(false);
-                          }}
-                        />
+                      {/* The drawer carries the same groups as the panel. It
+                          used to flatten them into one list, so the drawer and
+                          the desktop bar described the site differently. */}
+                      {menu.groups.map((group) => (
+                        <div key={group.heading} className="pt-2">
+                          <h3 className="px-3 pb-1 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                            {group.heading}
+                          </h3>
+                          {group.items.map((item) => (
+                            <MobileItem
+                              key={item.label + item.href}
+                              item={item}
+                              onActivate={() => {
+                                handleItemActivate(menu.label, item);
+                                setMobileOpen(false);
+                              }}
+                            />
+                          ))}
+                        </div>
                       ))}
                     </div>
                   )}
@@ -497,7 +521,7 @@ function MegaPanel({
 }) {
   // Descriptions are all-or-nothing per menu (asserted in the test suite), so
   // one probe decides the grid's density for the whole panel.
-  const described = menu.items[0]?.description !== "";
+  const described = gridItems(menu)[0]?.description !== "";
 
   return (
     <div
@@ -535,21 +559,40 @@ function MegaPanel({
             </span>
           </Link>
 
+          {/* One column per group. The old grid flowed a flat item list into a
+              declared column count, which is what left Readiness and Tools
+              with an empty fourth cell: three items never fill a 2x2. Columns
+              derived from the groups cannot disagree with their contents. */}
           <div
             className={cn(
-              "grid gap-x-8 px-6 py-5",
-              described ? "gap-y-5" : "gap-y-1",
-              menu.columns === 3 ? "grid-cols-3" : "grid-cols-2"
+              "grid gap-x-8 px-6 py-5 items-start",
+              COLS[menu.groups.length] ?? "grid-cols-2"
             )}
           >
-            {menu.items.map((item) => (
-              <PanelItem
-                key={item.label + item.href}
-                item={item}
-                described={described}
-                current={!item.comingSoon && isActive(item.href)}
-                onActivate={() => onActivate(item)}
-              />
+            {menu.groups.map((group) => (
+              <div key={group.heading}>
+                {/* The heading names the reader's intent. It is not a link:
+                    a clickable column header competes with the items under
+                    it for the same glance. */}
+                {/* text-xs, not text-2xs: `text-2xs` is used elsewhere in this
+                    file but is not defined by the v4 @theme in globals.css and
+                    emits no rule, so it silently renders at the inherited
+                    size. See the note on the coming-soon chips below. */}
+                <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                  {group.heading}
+                </h3>
+                <div className={cn("grid", described ? "gap-y-5" : "gap-y-1")}>
+                  {group.items.map((item) => (
+                    <PanelItem
+                      key={item.label + item.href}
+                      item={item}
+                      described={described}
+                      current={!item.comingSoon && isActive(item.href)}
+                      onActivate={() => onActivate(item)}
+                    />
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         </div>
@@ -638,16 +681,29 @@ function MobileItem({
     );
   }
 
+  // The drawer used to render bare labels while the desktop panel carried a
+  // description under each one — so the exact ambiguity descriptions exist to
+  // resolve ("Data flow maps" vs "Data discovery") came back on the smaller
+  // screen, where there is less context to recover it from. Same copy, both
+  // places. Industries opts out of descriptions wholesale, so its rows stay
+  // single-line here too.
+  const described = item.description.length > 0;
+
   return (
     <Link
       href={item.href}
       onClick={onActivate}
       className={cn(
-        "flex items-center px-3 py-2 min-h-11 rounded-lg text-sm transition-colors hover:bg-cloud-50",
+        "flex flex-col justify-center px-3 py-2 min-h-11 rounded-lg text-sm transition-colors hover:bg-cloud-50",
         featured ? "font-semibold text-navy-700" : "text-slate-600 hover:text-navy-700"
       )}
     >
-      {item.label}
+      <span>{item.label}</span>
+      {described && (
+        <span className="mt-0.5 text-xs leading-snug text-slate-500">
+          {item.description}
+        </span>
+      )}
     </Link>
   );
 }

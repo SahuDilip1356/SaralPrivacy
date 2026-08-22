@@ -11,10 +11,12 @@
 // this into CI. Nothing runs it automatically today, on purpose: a check
 // that needs a running server is a poor fit for a pre-commit hook.
 //
-// The claim most likely to be wrong is that four menus buy the lg (1024px)
+// The claim most likely to be wrong is that a short bar buys the lg (1024px)
 // breakpoint, so it is measured at the exact width rather than estimated
-// from label lengths — the previous seven-item bar had exactly 0px of slack
-// there, which is what pinned it to xl.
+// from label lengths — the original seven-item bar had exactly 0px of slack
+// there, which is what pinned it to xl. The bar has since gone seven -> four
+// -> three top-level menus; the measurement is what keeps that claim honest
+// rather than the item count.
 import { createRequire } from 'node:module';
 const { chromium } = createRequire(import.meta.url)('playwright');
 
@@ -24,6 +26,26 @@ const check = (name, pass, detail = '') => {
   console.log(`  ${pass ? '✓' : '✗'} ${name}${detail ? `  — ${detail}` : ''}`);
   if (!pass) failures++;
 };
+
+/**
+ * The bar's trigger labels, read from the live DOM.
+ *
+ * These used to be hardcoded ('Readiness', 'Tools'). When the IA regrouped and
+ * those two menus merged into one, every check naming them started failing on
+ * menus that no longer existed — the harness reported a broken navbar when
+ * what had actually changed was a label. A rename in lib/data/navigation.ts is
+ * not a regression, so the script asks the page which menus it has. These
+ * checks only ever needed "the first menu" and "a different one".
+ */
+const menuLabels = (page) =>
+  page.evaluate(() =>
+    [...document.querySelectorAll('header nav[aria-label="Main"] button')].map((b) =>
+      b.textContent.trim()
+    )
+  );
+
+/** The panel id Header.tsx derives for a given trigger label. */
+const panelSelector = (label) => `#nav-panel-${label.toLowerCase()}`;
 
 (async () => {
   const browser = await chromium.launch({
@@ -121,10 +143,11 @@ const check = (name, pass, detail = '') => {
     check('ArrowRight moves to the next trigger', before !== after, `${before} -> ${after}`);
 
     // Coming-soon must not be reachable by keyboard.
-    await page.evaluate(() => {
+    const [comingSoonMenu] = await menuLabels(page);
+    await page.evaluate((label) => {
       const btns = [...document.querySelectorAll('header nav[aria-label="Main"] button')];
-      btns.find((b) => b.textContent.includes('Readiness'))?.click();
-    });
+      btns.find((b) => b.textContent.trim().startsWith(label))?.click();
+    }, comingSoonMenu);
     await page.waitForTimeout(150);
     const comingSoonFocusable = await page.evaluate(() => {
       const el = [...document.querySelectorAll('header a, header button')]
@@ -211,28 +234,34 @@ const check = (name, pass, detail = '') => {
     const openCount = () => page.evaluate(() =>
       document.querySelectorAll('header nav[aria-label="Main"] button[aria-expanded="true"]').length);
 
+    const [firstMenu, secondMenu] = await menuLabels(page);
+
     // Pass through: dwell 60ms (under the 120ms threshold), then leave.
     await leaveBar();
-    await hover('Readiness');
+    await hover(firstMenu);
     await page.waitForTimeout(60);
     await leaveBar();
     await page.waitForTimeout(300);
     check('a pointer passing through opens nothing', (await openCount()) === 0);
 
     // Deliberate hover: dwell past the threshold.
-    await hover('Readiness');
+    await hover(firstMenu);
     await page.waitForTimeout(320);
     check('a deliberate hover does open', (await openCount()) === 1);
 
     // Already browsing: switching must be immediate, not delayed again.
-    await hover('Tools');
+    await hover(secondMenu);
     await page.waitForTimeout(40);
-    const onTools = await page.evaluate(() => {
+    const onSecond = await page.evaluate((label) => {
       const b = [...document.querySelectorAll('header nav[aria-label="Main"] button')]
-        .find((x) => x.textContent.trim().startsWith('Tools'));
+        .find((x) => x.textContent.trim().startsWith(label));
       return b?.getAttribute('aria-expanded') === 'true';
-    });
-    check('switching between menus is instant once one is open', onTools);
+    }, secondMenu);
+    check(
+      'switching between menus is instant once one is open',
+      onSecond,
+      `${firstMenu} -> ${secondMenu}`
+    );
 
     await page.close();
   }
@@ -242,34 +271,36 @@ const check = (name, pass, detail = '') => {
   {
     const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
     await page.goto(URL, { waitUntil: 'networkidle' });
-    await page.evaluate(() => {
+    const [animMenu] = await menuLabels(page);
+    await page.evaluate((label) => {
       [...document.querySelectorAll('header nav[aria-label="Main"] button')]
-        .find((b) => b.textContent.trim().startsWith('Readiness'))?.click();
-    });
+        .find((b) => b.textContent.trim().startsWith(label))?.click();
+    }, animMenu);
     await page.waitForTimeout(20);
-    const anim = await page.evaluate(() => {
-      const p = document.querySelector('#nav-panel-readiness .sp-panel-in');
+    const anim = await page.evaluate((sel) => {
+      const p = document.querySelector(`${sel} .sp-panel-in`);
       if (!p) return null;
       const cs = getComputedStyle(p);
       return { name: cs.animationName, duration: cs.animationDuration };
-    });
+    }, panelSelector(animMenu));
     check('panel carries the entry animation', anim?.name === 'sp-panel-in', anim?.duration || 'missing');
     await page.close();
 
     // Reduced motion must collapse it, not leave the from-state stuck.
     const rm = await browser.newPage({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });
     await rm.goto(URL, { waitUntil: 'networkidle' });
-    await rm.evaluate(() => {
+    const [rmMenu] = await menuLabels(rm);
+    await rm.evaluate((label) => {
       [...document.querySelectorAll('header nav[aria-label="Main"] button')]
-        .find((b) => b.textContent.trim().startsWith('Readiness'))?.click();
-    });
+        .find((b) => b.textContent.trim().startsWith(label))?.click();
+    }, rmMenu);
     await rm.waitForTimeout(120);
-    const settled = await rm.evaluate(() => {
-      const p = document.querySelector('#nav-panel-readiness .sp-panel-in');
+    const settled = await rm.evaluate((sel) => {
+      const p = document.querySelector(`${sel} .sp-panel-in`);
       if (!p) return null;
       const cs = getComputedStyle(p);
       return { duration: cs.animationDuration, opacity: +cs.opacity };
-    });
+    }, panelSelector(rmMenu));
     check('reduced motion collapses the duration', settled?.duration === '0.001s', settled?.duration || 'missing');
     check('reduced motion still ends fully opaque', settled?.opacity === 1, String(settled?.opacity));
     await rm.close();
