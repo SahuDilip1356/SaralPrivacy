@@ -239,36 +239,57 @@
 /* SVG dashed connectors that "flow" outward */
 .sp-dash-flow { animation: sp-dash-flow 1s linear infinite; }
 
-/* ── Guide cover: pages opening one by one (S8 Resources) ──────────────────
-   Three leaves start hidden behind the cover and fan out past its right edge,
-   each a little further and a beat later than the last — the page edges of a
-   book being opened, seen front-on.
+/* ── Guide cover: the riffle (S8 Resources) ────────────────────────────────
+   Founder reference: a real book with its pages flipping over one after
+   another, right to left, each blurring slightly as it sweeps. This is that,
+   in CSS.
 
-   First attempt used a 3D rotateY hinge on the spine, which is the physically
-   correct motion and completely invisible: the leaves swung BEHIND the cover
-   face, which is opaque and stacked above them. Translation past the visible
-   edge is the version a reader can actually see.
+   Three earlier attempts are worth recording so nobody repeats them:
+   1. A rotateY hinge on the spine with the leaves BEHIND an opaque cover —
+      physically correct and completely invisible.
+   2. Leaves translating out past the cover's right edge — visible, but it
+      reads as "a book with thick pages", not as pages turning.
+   3. Leaves hinged on the spine and left UNCLIPPED — they completed the arc
+      out in the left gutter, which reads as sheets flying off the book, not
+      as pages turning inside it. A page you can still see at 170° is a page
+      that has left the object.
 
-   Runs once when the card first reaches the viewport (JS adds .sp-open), and
-   again on hover. Nothing loops: the motion inventory allows an entrance, not
-   an idle. */
-@keyframes sp-page-open {
-  from { transform: translateX(0) rotate(0deg); opacity: 0; }
-  to   { transform: translateX(var(--leaf-x)) rotate(var(--leaf-r)); opacity: 1; }
+   What works: the pages sit ON TOP of the cover face, inside a stage clipped
+   to that face (`.sp-cover-stage`). Each fades in at the fore-edge and swings
+   around the spine; somewhere past 90° it crosses the spine and the clip eats
+   it, which is exactly what a turning page does when you can only see the
+   right-hand board. Opacity therefore stays at 1 for the whole visible arc —
+   a translucent page shows the cover title through itself, and paper is not
+   translucent. It drops to 0 only in the last 8%, long after the clip has
+   taken over, so `animation-fill-mode: both` does not park five sheets on the
+   spine forever. `brightness` dips through the middle, which is what sells
+   the turn: a page catches less light edge-on; the leftward box-shadow on
+   each sheet is the same idea one layer down — a lifted page shades the ones
+   still lying under it, which is what makes five identical sheets read as
+   five rather than as one white slab.
+
+   Plays once on first view (JS adds .sp-open) and again on hover. Nothing
+   loops: the motion inventory allows an entrance, not an idle. */
+@keyframes sp-riffle {
+  0%   { transform: rotateY(0deg);    opacity: 0; filter: brightness(1); }
+  8%   {                              opacity: 1; }
+  55%  {                                          filter: brightness(0.74); }
+  92%  {                              opacity: 1; }
+  100% { transform: rotateY(-165deg); opacity: 0; filter: brightness(1); }
 }
 
+/* At rest a page is not there at all — the cover is the object. */
 .sp-cover-leaf {
-  transform-origin: left bottom;
-  transform: translateX(0) rotate(0deg);
+  transform-origin: left center;
+  transform: rotateY(0deg);
   opacity: 0;
+  will-change: transform, opacity;
 }
 
 .sp-open .sp-cover-leaf,
 .sp-cover:hover .sp-cover-leaf {
-  animation: sp-page-open 560ms cubic-bezier(0.22, 0.68, 0.35, 1) both;
+  animation: sp-riffle 780ms cubic-bezier(0.42, 0.02, 0.35, 1) both;
   animation-delay: var(--leaf-delay);
-  transform: translateX(var(--leaf-x)) rotate(var(--leaf-r));
-  opacity: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -276,8 +297,7 @@
   .sp-open .sp-cover-leaf,
   .sp-cover:hover .sp-cover-leaf {
     animation: none;
-    transform: translateX(var(--leaf-x)) rotate(var(--leaf-r));
-    opacity: 1;
+    opacity: 0;
   }
 }
 
