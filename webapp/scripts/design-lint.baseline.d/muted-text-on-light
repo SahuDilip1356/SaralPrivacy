@@ -249,16 +249,19 @@ components/briefings/BriefingSubscribeCard.tsx:52:      <p className="text-slate
 components/briefings/BriefingSubscribeCard.tsx:85:          <a href="/privacy" className="text-slate-400 underline">Privacy Notice</a>.
 components/home/HeroSection.tsx:129:              <span className="block text-sm text-slate-400 mb-2.5">I run a…</span>
 components/home/ConsultationCTA.tsx:78:                <p className="text-slate-400 text-xs">
-components/home/AudienceCards.tsx:282:                <s.icon size={14} className="text-slate-400 shrink-0" />
 components/home/NewsletterSection.tsx:109:                <p className="text-xs text-slate-400 pl-7">
-components/home/HowItWorks.tsx:198:                    className="ml-auto shrink-0 text-slate-400 group-hover:text-teal-900 transition-colors"
-components/home/WhereRiskHides.tsx:152:            className="absolute text-xs text-slate-400"
-components/home/WhereRiskHides.tsx:200:          <div className="text-center text-xs text-slate-400 mb-2">
-components/home/WhereRiskHides.tsx:224:        <p className="text-center text-slate-400 text-sm mt-8 max-w-xl mx-auto">
-components/home/WhereRiskHides.tsx:236:          <p className="text-center text-2xs font-semibold uppercase tracking-[0.09em] text-slate-400 mb-5">
+components/home/HowItWorks.tsx:178:                    className="ml-auto shrink-0 text-slate-400 group-hover:text-teal-900 transition-colors"
+components/home/WhereRiskHides.tsx:175:            className="absolute text-xs text-slate-400"
+components/home/WhereRiskHides.tsx:249:          <div className="text-center text-xs text-slate-400 mb-2">
+components/home/WhereRiskHides.tsx:304:              <span className="sm:ml-auto text-2xs text-slate-400">
+components/home/WhereRiskHides.tsx:316:                  ink: "text-slate-400",
+components/home/WhereRiskHides.tsx:334:                    <span className="text-2xs font-semibold uppercase tracking-[0.08em] text-slate-400">
+components/home/WhereRiskHides.tsx:355:          <p className="text-center text-2xs font-semibold uppercase tracking-[0.09em] text-slate-400 mb-5">
+components/home/WhereRiskHides.tsx:388:        <p className="text-center text-slate-400 text-sm mt-10 max-w-xl mx-auto">
 components/home/NoticeCTA.tsx:87:                <div className="text-[11px] uppercase tracking-wide text-slate-400 font-semibold">
 components/home/DiscoveryCTA.tsx:84:                      on ? "bg-green-700 text-white" : "bg-slate-100 text-slate-400"
 components/home/DiscoveryCTA.tsx:101:                <div className="text-[11px] uppercase tracking-wide text-slate-400 font-semibold">
+components/home/BriefingsSection.tsx:124:        <p className="text-slate-400 text-xs mt-6 text-center lg:text-left">
 components/data-flow/EdgeDetailPanel.tsx:47:          className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
 components/data-flow/NodeDetailPanel.tsx:57:          className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
 components/data-flow/MotionJourney.tsx:325:              <dt className="text-[10px] font-bold uppercase tracking-wider text-slate-400">

@@ -5,7 +5,6 @@ import Link from "next/link";
 import { ChevronDown, ArrowRight } from "lucide-react";
 import { faqs, getHomepageFaqs } from "@/lib/data/faqs";
 import { cn } from "@/lib/utils";
-import { Surface } from "@/components/ui/Surface";
 import { Section, Eyebrow } from "@/components/ui/Section";
 
 // S9 — the objection FAQ, and the last thing before the close.
@@ -17,6 +16,13 @@ import { Section, Eyebrow } from "@/components/ui/Section";
 // answers, and whether the result is worth anything. Those are the questions.
 //
 // The full library still lives at /faq. See `homepageFaqIds`.
+//
+// Presented as hairline rows, not cards. Eight bordered cards stacked with 12px
+// gaps is eight objects for one list — the deep fill was already separating the
+// section, so each card's own hairline was drawing a box the reader has to
+// parse before reading the question inside it. Rules between rows do the whole
+// job with one line each, which is how a printed Q&A has always set this, and
+// it buys back ~90px in the bargain.
 
 export function FAQPreview() {
   const homepageFaqs = getHomepageFaqs();
@@ -36,17 +42,26 @@ export function FAQPreview() {
         </p>
       </div>
 
-      <div className="space-y-3 mb-8">
+      {/* The rule above the first row closes the list at the top; each row
+          carries its own below. cloud-300 is 1.24:1 on this fill — the same
+          edge a card border gets here, which is the point: the hairline moved
+          from around each item to between them. */}
+      <div className="border-t border-cloud-300 mb-8">
         {homepageFaqs.map((faq) => {
           const open = openId === faq.id;
           return (
-            <Surface rung="card" onDeep key={faq.id} className="overflow-hidden">
+            <div key={faq.id} className="border-b border-cloud-300">
               <button
                 onClick={() => setOpenId(open ? null : faq.id)}
                 aria-expanded={open}
-                className="w-full flex items-start justify-between gap-4 p-5 text-left hover:bg-cloud-50 transition-colors"
+                className="w-full flex items-start justify-between gap-4 py-4 text-left group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 focus-visible:ring-offset-cloud-200 rounded-sm"
               >
-                <span className="font-semibold text-navy-700 text-sm leading-snug">
+                <span
+                  className={cn(
+                    "font-semibold text-[15px] leading-snug transition-colors",
+                    open ? "text-navy-700" : "text-navy-700 group-hover:text-teal-900",
+                  )}
+                >
                   {faq.question}
                 </span>
                 <ChevronDown
@@ -62,10 +77,10 @@ export function FAQPreview() {
                   anything else that reads raw HTML without running JS saw eight
                   questions and one answer. The content is the point of an
                   objection FAQ; it has to be in the server HTML. */}
-              <div hidden={!open} className="px-5 pb-5 border-t border-cloud-200">
-                <p className="text-slate-600 text-sm leading-relaxed pt-4">{faq.answer}</p>
+              <div hidden={!open} className="pb-5 pr-8">
+                <p className="text-slate-600 text-sm leading-relaxed">{faq.answer}</p>
               </div>
-            </Surface>
+            </div>
           );
         })}
       </div>

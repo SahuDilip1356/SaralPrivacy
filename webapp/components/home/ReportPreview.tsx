@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { AlertTriangle, ArrowRight, Check, Mail } from "lucide-react";
 import {
@@ -11,6 +11,7 @@ import { trackEvent } from "@/lib/analytics";
 import { Surface } from "@/components/ui/Surface";
 import { Section, Eyebrow } from "@/components/ui/Section";
 import { ScoreDial } from "@/components/home/ScoreDial";
+import { useInView } from "@/lib/hooks/useInView";
 
 // S4 — "Your report". The page's product demonstration, and its largest
 // section. Previously a max-w-3xl card among other cards; the report is the
@@ -24,9 +25,58 @@ import { ScoreDial } from "@/components/home/ScoreDial";
 //
 // Illustrative sample, labelled in every state. Never fake "your" data.
 
+/**
+ * One dimension bar. It fills from zero the first time the report is on screen,
+ * and again on a tab change (the card is keyed by sector, so this remounts with
+ * it) — the same rule the score dial next to it already follows.
+ *
+ * The fill is what makes the five dimensions read as a MEASUREMENT rather than
+ * five decorative rules: the eye follows the travel and lands on where it
+ * stopped. Width is transitioned, not animated, so reduced motion just paints
+ * the final value.
+ */
+function DimensionBar({ label, pct, run, delay }: {
+  label: string; pct: number; run: boolean; delay: number;
+}) {
+  // Mount at zero, fill on the next frame. `run ? pct : 0` alone would be
+  // wrong for the tab change: by then `run` has been true for a while, so the
+  // bar would mount already full and never travel. Two frames, because a
+  // single rAF can still land inside the same style flush as the mount.
+  const [filled, setFilled] = useState(false);
+  useEffect(() => {
+    if (!run) return;
+    let inner = 0;
+    const outer = requestAnimationFrame(() => {
+      inner = requestAnimationFrame(() => setFilled(true));
+    });
+    return () => {
+      cancelAnimationFrame(outer);
+      cancelAnimationFrame(inner);
+    };
+  }, [run]);
+
+  return (
+    <div className="flex items-center gap-3">
+      <span className="text-xs text-slate-600 w-32 shrink-0 leading-tight">{label}</span>
+      <span className="flex-1 h-2 rounded-full bg-cloud-200 overflow-hidden">
+        <span
+          className={`block h-full rounded-full transition-[width] duration-700 ease-out motion-reduce:!transition-none ${
+            pct < 40 ? "bg-gold-400" : "bg-teal-500"
+          }`}
+          style={{ width: filled ? `${pct}%` : 0, transitionDelay: `${delay}ms` }}
+        />
+      </span>
+      <span className="text-xs font-semibold text-slate-600 w-8 text-right tabular-nums">
+        {pct}
+      </span>
+    </div>
+  );
+}
+
 export function ReportPreview() {
   const [active, setActive] = useState(VERDICT_PREVIEWS[0].slug);
   const v = VERDICT_PREVIEWS.find((p) => p.slug === active) ?? VERDICT_PREVIEWS[0];
+  const { ref, inView } = useInView<HTMLDivElement>(0.25);
 
   return (
     <Section id="report" surface="white" type="demo" className="scroll-mt-20">
@@ -71,16 +121,33 @@ export function ReportPreview() {
         })}
       </div>
 
-      <Surface rung="card" aria-live="polite" className="p-6 sm:p-8">
-        {/* `key` remounts on tab change so the dial re-counts and the fade
-            replays. min-h holds the tallest variant so the CTA never jumps. */}
-        <div key={v.slug} className="animate-fade-up motion-reduce:animate-none">
+      {/* The observer target is this wrapper, not the Surface: `Surface` is a
+          plain function component that spreads HTML attributes and does not
+          take a ref, and giving it one to satisfy one animation is how a
+          primitive starts growing exceptions. */}
+      <div ref={ref}>
+      <Surface rung="card" aria-live="polite" className="overflow-hidden">
+        {/* Chrome. The same navy-950 title bar the hero's snapshot wears, for
+            the same reason and now at full size: it frames the panel as an
+            INSTRUMENT READING rather than as another marketing card, and it
+            ties the page's two product surfaces to one object. The sample
+            label lives up here because it qualifies the whole panel — inside
+            the body it was a chip competing with the sector name. */}
+        <div className="flex items-center justify-between gap-3 bg-navy-950 px-5 py-3">
+          <span className="text-2xs font-semibold uppercase tracking-[0.08em] text-cloud-400">
+            Privacy readiness report
+          </span>
+          <span className="text-2xs font-semibold text-white whitespace-nowrap">
+            Sample · illustrative
+          </span>
+        </div>
+
+        {/* `key` remounts on tab change so the dial re-counts, the bars refill
+            and the fade replays. */}
+        <div key={v.slug} className="p-6 sm:p-8 animate-fade-up motion-reduce:animate-none">
           {/* header */}
           <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 mb-6">
             <span className="font-bold text-navy-700 text-lg">{v.label}</span>
-            <span className="text-2xs font-semibold text-slate-600 bg-cloud-50 border border-cloud-200 rounded-full px-2.5 py-1 whitespace-nowrap">
-              Sample · illustrative
-            </span>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
@@ -102,23 +169,14 @@ export function ReportPreview() {
                 <div className="text-2xs font-semibold uppercase tracking-wide text-slate-600 mb-1">
                   Five dimensions
                 </div>
-                {v.categories.map((c) => (
-                  <div key={c.label} className="flex items-center gap-3">
-                    <span className="text-xs text-slate-600 w-32 shrink-0 leading-tight">
-                      {c.label}
-                    </span>
-                    <span className="flex-1 h-2 rounded-full bg-cloud-200 overflow-hidden">
-                      <span
-                        className={`block h-full rounded-full ${
-                          c.pct < 40 ? "bg-gold-400" : "bg-teal-500"
-                        }`}
-                        style={{ width: `${c.pct}%` }}
-                      />
-                    </span>
-                    <span className="text-xs font-semibold text-slate-600 w-8 text-right tabular-nums">
-                      {c.pct}
-                    </span>
-                  </div>
+                {v.categories.map((c, i) => (
+                  <DimensionBar
+                    key={c.label}
+                    label={c.label}
+                    pct={c.pct}
+                    run={inView}
+                    delay={i * 90}
+                  />
                 ))}
               </Surface>
             </div>
@@ -207,6 +265,7 @@ export function ReportPreview() {
           </div>
         </div>
       </Surface>
+      </div>
     </Section>
   );
 }

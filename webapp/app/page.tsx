@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import { HeroSection } from "@/components/home/HeroSection";
 import { WhereRiskHides } from "@/components/home/WhereRiskHides";
 import { ReportPreview } from "@/components/home/ReportPreview";
-import { RecognitionBand } from "@/components/home/RecognitionBand";
 import { HowItWorks } from "@/components/home/HowItWorks";
 import { AudienceCards } from "@/components/home/AudienceCards";
 import { BriefingsSection } from "@/components/home/BriefingsSection";
 import { ResourcesSection } from "@/components/home/ResourcesSection";
 import { FAQPreview } from "@/components/home/FAQPreview";
 import { FinalAssessmentBand } from "@/components/home/FinalAssessmentBand";
+import { ScrollDepth } from "@/components/home/ScrollDepth";
 import { organizationSchema, websiteSchema, speakableSchema } from "@/lib/schema";
 import { PressProofStrip } from "@/components/ui/PressProofStrip";
 import { Section } from "@/components/ui/Section";
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   },
 };
 
-// Homepage — ten sections, three chapters. See LANDING_PAGE_FINAL_SPEC.md.
+// Homepage — ten sections, three chapters. See LANDING_PAGE_SIGNOFF_SPEC.md.
 //
 // ── The rhythm system ────────────────────────────────────────────────────────
 // The page had twelve sections and two navy bands, both at the ends, with ten
@@ -60,22 +60,39 @@ export const metadata: Metadata = {
 // because nothing checked it.
 //
 //   S1  Hero               navy   —          the promise + one action
-//   S2  Proof rail         deep   rail       can I trust this enough to click
-//   S3  Where risk hides   white  statement  is this me
+//   S2  Proof seam         navy   rail       can I trust this enough to click
+//   S3  Where risk hides   navy   statement  is this me
 //   S4  Report preview     white  demo       what do I actually get
-//   S5  Recognition        navy   decision   who's behind this
-//   S6  How it works       white  utility    how much work is this
-//   S7  Sector examples    white  evidence   does it fit my business
-//   S8  Briefings deck     deep   demo       are these people actually on it
-//   S9  Resources          deep   utility    I'd rather read first
-//   S10 FAQ                deep   evidence   what's stopping me
-//   S11 Final CTA          navy   decision   close
+//   S5  How it works       white  utility    how much work is this
+//   S6  Sector ring        white  evidence   does it fit my business
+//   S7  Briefings deck     navy   demo       are these people actually on it
+//   S8  Resources          deep   utility    I'd rather read first
+//   S9  FAQ                deep   evidence   what's stopping me
+//   S10 Final CTA          navy   decision   close
+//
+// ── Where the recognition band went ──────────────────────────────────────────
+// A navy "who's behind this" band used to sit between the report and the three
+// steps. Founder call (2026-08-22): that question belongs on /about, where a
+// visitor who asks it has already gone looking. Its four "how we work" pillars
+// moved there with it; the founder card and press strip were already on that
+// page, which is what made the homepage copy a second source of truth for one
+// person's CV.
+//
+// Removing it cost the page its mid-page dark reset, so the architecture
+// rebalanced rather than just closing the gap: the briefings deck (S7) takes
+// navy and becomes Authority Moment 2. The page now reads dark-open (S1–S3),
+// light-middle (S4–S6, the product and the fit), dark-turn (S7), quiet close
+// (S8–S9) into the dark CTA — symmetric, and one fewer beat.
 export default function HomePage() {
   return (
     <>
       {organizationSchema()}
       {websiteSchema()}
       {speakableSchema(['.answer-block'], 'https://saralprivacy.com', 'DPDPA Compliance for Indian Businesses')}
+
+      {/* Renders nothing. The R0 baseline for the rebuild: whether readers
+          actually get further down this page than they did. */}
+      <ScrollDepth />
 
       {/* ── Chapter 1: understand — ONE CONTINUOUS DARK RUN ─────────────────
           Hero (navy-700) → proof seam (navy-800) → risk map (navy-700).
@@ -111,31 +128,35 @@ export default function HomePage() {
       {/* S4 — the product demonstration: the scored report, full width. */}
       <ReportPreview />
 
-      {/* ── Chapter 2: trust and fit ────────────────────────────────────── */}
+      {/* ── Chapter 2: the product, and whether it fits ──────────────────
+          Three white beats in a row, held apart by hairlines and the padding
+          ladder rather than by a fill flip. They are one thought — here is the
+          thing, here is what it costs you, here is your sector — and the chapter
+          break that used to interrupt them was answering a question (who are
+          you) that nobody asks between "what do I get" and "how long does it
+          take". */}
 
-      {/* S5 — the attention reset and the authority beat. */}
-      <RecognitionBand />
-
-      {/* S6 — three steps, all of them the assessment. */}
+      {/* S5 — three steps, all of them the assessment. */}
       <HowItWorks />
 
-      {/* S7 — three sector examples, plus a link row that keeps all twelve. */}
+      {/* S6 — the sector ring: all twelve, one at a time. */}
       <AudienceCards />
 
       {/* ── Chapter 3: resolve and close ────────────────────────────────── */}
 
-      {/* S8 — the briefings deck. The one place on the page where the reader
-          sees what we publish rather than what we assess, and the reason the
-          resources section below carries no briefings card. */}
+      {/* S7 — the briefings deck, on navy. The one place on the page where the
+          reader sees what we publish rather than what we assess — so it is also
+          where authority is asserted a second time, and the reason the resources
+          section below carries no briefings card. */}
       <BriefingsSection />
 
-      {/* S9 — three reference assets for the reader who isn't ready to act. */}
+      {/* S8 — three reference assets for the reader who isn't ready to act. */}
       <ResourcesSection />
 
-      {/* S10 — the objections that stop a click, answered. */}
+      {/* S9 — the objections that stop a click, answered. */}
       <FAQPreview />
 
-      {/* S11 — the close. The newsletter used to sit here; it now lives in the
+      {/* S10 — the close. The newsletter used to sit here; it now lives in the
           footer and on /briefings. */}
       <FinalAssessmentBand />
     </>

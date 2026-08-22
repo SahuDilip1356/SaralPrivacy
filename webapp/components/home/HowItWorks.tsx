@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import {
   ListChecks,
@@ -14,6 +13,7 @@ import {
 import { trackEvent } from "@/lib/analytics";
 import { surfaceClasses } from "@/components/ui/Surface";
 import { Section, Eyebrow } from "@/components/ui/Section";
+import { useInView } from "@/lib/hooks/useInView";
 import { cn } from "@/lib/utils";
 
 // S6 — "How it works". THREE steps, and all three are the assessment.
@@ -76,26 +76,6 @@ const afterSteps = [
   },
 ] as const;
 
-function useInView<T extends HTMLElement>() {
-  const ref = useRef<T>(null);
-  const [inView, setInView] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setInView(true);
-          obs.disconnect();
-        }
-      },
-      { threshold: 0.2 },
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-  return { ref, inView };
-}
 
 export function HowItWorks() {
   const { ref, inView } = useInView<HTMLDivElement>();
@@ -106,7 +86,7 @@ export function HowItWorks() {
     }`;
 
   return (
-    <Section surface="white" type="utility" width="narrow">
+    <Section surface="white" type="utility" width="narrow" divider>
       <div ref={ref}>
         <div className="text-center mb-10">
           <Eyebrow className="mb-3">How it works</Eyebrow>

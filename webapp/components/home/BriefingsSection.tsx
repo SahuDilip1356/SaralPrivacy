@@ -1,12 +1,23 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-// Only `Surface` survives the merge with main's deck: the briefing cards that
-// used `surfaceClasses` are gone, replaced by BriefingsDeck, which owns its
-// own geometry. The empty state is still a card and still uses the ladder.
-import { Surface } from "@/components/ui/Surface";
 import { Section, Eyebrow } from "@/components/ui/Section";
+import { formatDateShort } from "@/lib/utils";
 import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 import { BriefingsDeck, type DeckBriefing } from "@/components/home/BriefingsDeck";
+
+// S7 — the briefings deck, on navy: the intelligence desk.
+//
+// It was a deep-fill reference beat until the recognition band left the page
+// (founder call, 2026-08-22). That band was the mid-page dark reset, and a page
+// that opens dark, runs light for three long beats and then closes dark has no
+// turn in it. This section takes the navy instead — and it earns it better than
+// the band did, because "here is what we published this week, dated" is a
+// stronger authority claim than "here is who we are".
+//
+// Inks are the measured navy set: white heads, slate-300 body (11.66:1),
+// teal-300 links and stamp, slate-400 for the footnote (6.75:1 — correct here,
+// banned on any light fill). The deck's own cards stay white: seven lit objects
+// on a dark desk, the same figure/ground move the risk map makes with its hub.
 
 /** How many briefings the deck fans. Its geometry is tuned for exactly this many. */
 const DECK_SIZE = 7;
@@ -49,48 +60,68 @@ export async function BriefingsSection() {
     console.error("[BriefingsSection] Appwrite fetch failed:", err);
   }
 
+  const latest = briefings[0];
+
   return (
-    <Section surface="deep" type="demo" width="wide">
+    <Section surface="navy" type="demo" width="wide">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5 mb-9">
         <div>
-          {/* The pill this used to open with was cloud-100 on cloud-200 —
-              1.07:1, a chip you cannot see. The shared Eyebrow does the same
-              job and is what every other section on the page opens with. */}
-          <Eyebrow surface="deep" className="mb-3">
+          <Eyebrow surface="navy" className="mb-3">
             Daily briefings
           </Eyebrow>
-          <h2 className="type-display-3 text-navy-700">
+          <h2 className="type-display-3 text-white">
             Stay ahead of DPDPA developments
           </h2>
-          <p className="type-intro text-slate-600 mt-2 max-w-xl">
+          <p className="type-intro text-slate-300 mt-2 max-w-xl">
             Clear, actionable briefings on DPDPA updates, enforcement signals, and compliance
             guidance, written for business owners, not lawyers.
           </p>
         </div>
-        {/* green-800, not green-700: on the deep fill green-700 measures
-            4.29:1 and misses AA. green-800 is 6.01:1. */}
-        <Link
-          href="/briefings"
-          className="inline-flex items-center gap-1.5 pointer-coarse:min-h-11 text-sm font-semibold text-green-800 hover:text-green-900 shrink-0"
-        >
-          All briefings
-          <ArrowRight size={16} />
-        </Link>
+
+        <div className="flex flex-col items-start sm:items-end gap-3 shrink-0">
+          {/* The dateline. It is the whole authority claim of this section in one
+              line — not "we publish daily" but the actual date of the actual
+              most recent piece, which is a claim that goes stale in public if it
+              is not true. Rendered only when there IS a briefing; an empty desk
+              does not get to stamp itself. */}
+          {latest && (
+            <span className="inline-flex items-center gap-2 rounded-full border border-teal-400/30 bg-white/5 px-3 py-1">
+              <span aria-hidden className="w-1.5 h-1.5 rounded-full bg-teal-300" />
+              <span className="text-2xs font-semibold uppercase tracking-[0.09em] text-teal-300">
+                Latest
+              </span>
+              <span className="text-2xs text-slate-300 tabular-nums">
+                {formatDateShort(latest.date)}
+              </span>
+            </span>
+          )}
+          <Link
+            href="/briefings"
+            className="inline-flex items-center gap-1.5 pointer-coarse:min-h-11 text-sm font-semibold text-teal-300 hover:text-teal-200 transition-colors"
+          >
+            All briefings
+            <ArrowRight size={16} />
+          </Link>
+        </div>
       </div>
 
-      {/* Empty state */}
+      {/* Empty state. Not a Surface — that ladder is built for light fills; on
+          navy the card rung would paint a white block where a quiet well
+          belongs. */}
       {briefings.length === 0 && (
-        <Surface rung="card" onDeep className="p-10 text-center text-slate-600">
-          <p className="text-base font-medium mb-1">Briefings coming soon</p>
-          <p className="text-sm">Daily DPDPA briefings will appear here automatically.</p>
-        </Surface>
+        <div className="rounded-xl border border-white/10 bg-white/5 p-10 text-center">
+          <p className="text-base font-medium text-white mb-1">Briefings coming soon</p>
+          <p className="text-sm text-slate-300">
+            Daily DPDPA briefings will appear here automatically.
+          </p>
+        </div>
       )}
 
       {briefings.length > 0 && <BriefingsDeck briefings={briefings} />}
 
       {briefings.length > 0 && (
-        <p className="text-slate-600 text-xs mt-6 text-center lg:text-left">
+        <p className="text-slate-400 text-xs mt-6 text-center lg:text-left">
           <span className="hidden lg:inline">Hover a card to bring it forward.</span>
           <span className="lg:hidden">Swipe to browse.</span>{" "}
           One briefing every morning, 9 AM IST.

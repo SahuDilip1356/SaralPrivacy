@@ -5,19 +5,18 @@ import { GraduationCap, Calculator, Building2 } from "lucide-react";
 // visitor actually came to ask. Restyled from a standalone section to a card so
 // it matches the About page's card system. Brand tokens via Tailwind.
 
-// Exported so the homepage's navy recognition band states the same credentials
-// from the same place. Two copies of a person's CV is exactly the kind of thing
-// that drifts apart and then contradicts itself.
-export const FOUNDER_CREDENTIALS = [
+// One source for one person's CV. The homepage's navy recognition band used to
+// import these; that band is gone (founder call, 2026-08-22 — "who's behind
+// this" is an About-page question), so this is now the only place either string
+// is stated, which is the arrangement they should have had from the start.
+const credentials = [
   { icon: Calculator, label: "Chartered Accountant" },
   { icon: GraduationCap, label: "IIM Bangalore alumnus" },
   { icon: Building2, label: "22+ years in enterprise systems" },
 ];
 
-export const FOUNDER_QUOTE =
+const FOUNDER_QUOTE =
   "I built SaralPrivacy because Indian businesses don't need more legal theory — they need to know what to fix, in plain English. After two decades building finance, ERP and governance systems, I wanted DPDPA made genuinely practical for the people who actually run a business.";
-
-const credentials = FOUNDER_CREDENTIALS;
 
 export function FounderProof() {
   return (
@@ -37,10 +36,7 @@ export function FounderProof() {
       </div>
 
       <p className="text-slate-700 text-base leading-relaxed mb-6 max-w-2xl">
-        I built SaralPrivacy because Indian businesses don&apos;t need more legal
-        theory — they need to know what to fix, in plain English. After two
-        decades building finance, ERP and governance systems, I wanted DPDPA made
-        genuinely practical for the people who actually run a business.
+        {FOUNDER_QUOTE}
       </p>
 
       <div className="flex flex-wrap items-center gap-x-6 gap-y-3">

@@ -1,2 +1,2 @@
 components/home/NewsletterSection.tsx:76:              className="bg-white border border-pearl-200 rounded-xl p-6 text-left"
-components/home/FounderProof.tsx:24:    <div className="bg-white rounded-xl border border-slate-200 p-7">
+components/home/FounderProof.tsx:23:    <div className="bg-white rounded-xl border border-slate-200 p-7">

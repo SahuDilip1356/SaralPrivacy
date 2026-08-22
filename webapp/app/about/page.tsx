@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BookOpen, Target, Users, MessageSquare } from "lucide-react";
 import { PressProofStrip } from "@/components/ui/PressProofStrip";
 import { FounderProof } from "@/components/home/FounderProof";
 
@@ -57,6 +58,51 @@ export default function AboutPage() {
 
           {/* Founder proof — moved here from the landing page (Phase 2) */}
           <FounderProof />
+
+          {/* How we work — the four pillars, moved off the homepage with the
+              recognition band (2026-08-22). They answer "why you" rather than
+              "what is this", which is an About-page question. */}
+          <div className="bg-white rounded-xl border border-slate-200 p-7">
+            <h2 className="text-xl font-semibold text-navy-700 mb-5">How We Work</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
+              {[
+                {
+                  icon: BookOpen,
+                  title: "Educational, not alarmist",
+                  description:
+                    "We explain what DPDPA actually requires in language founders and ops teams can act on.",
+                },
+                {
+                  icon: Target,
+                  title: "Practical and actionable",
+                  description:
+                    "Every briefing ends with a checklist. Every assessment ends with a roadmap.",
+                },
+                {
+                  icon: Users,
+                  title: "Built for Indian businesses",
+                  description:
+                    "Not a GDPR guide repurposed for India — written for Indian workflows and data practices.",
+                },
+                {
+                  icon: MessageSquare,
+                  title: "Not legal advice",
+                  description:
+                    "We are an intelligence and education platform. For formal opinions, engage a lawyer.",
+                },
+              ].map(({ icon: Icon, title, description }) => (
+                <div key={title} className="flex gap-3.5">
+                  <div className="w-9 h-9 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-center shrink-0 mt-0.5">
+                    <Icon size={18} className="text-teal-800" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-navy-700 text-sm mb-1">{title}</h3>
+                    <p className="text-sm text-slate-600 leading-relaxed">{description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
 
           {/* How it works — 4-stage strip */}
           <div className="bg-white rounded-xl border border-slate-200 p-7">

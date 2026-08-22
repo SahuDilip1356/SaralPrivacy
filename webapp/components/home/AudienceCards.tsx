@@ -23,6 +23,7 @@ import { getHeroVerdict } from "@/lib/data/hero-verdicts";
 import { DATA_MAPS } from "@/lib/data/data-flow";
 import { trackEvent } from "@/lib/analytics";
 import { Section, Eyebrow } from "@/components/ui/Section";
+import { useInView } from "@/lib/hooks/useInView";
 import { FlowMapCardLink } from "./FlowMapCardLink";
 
 // S7 — "Your sector", as a cover-flow deck. Founder-directed design
@@ -176,26 +177,6 @@ function pose(d: number) {
   return { x: d < 0 ? -table.x : table.x, s: table.s, o: table.o, z: table.z };
 }
 
-function useInView<T extends HTMLElement>() {
-  const ref = useRef<T>(null);
-  const [inView, setInView] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) {
-          setInView(true);
-          obs.disconnect();
-        }
-      },
-      { threshold: 0.2 },
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-  return { ref, inView };
-}
 
 export function AudienceCards() {
   const { ref, inView } = useInView<HTMLDivElement>();
@@ -222,14 +203,25 @@ export function AudienceCards() {
     return () => clearInterval(id);
   }, [inView, engaged, hovering]);
 
-  const go = (i: number, via: string) => {
+  // Every visitor-initiated move through the ring. The auto-revolution calls
+  // setActive directly and never comes through here — an advance we performed
+  // is not a preference the visitor expressed, and mixing the two would make
+  // twelve sectors look uniformly popular in the dashboard no matter what
+  // anyone clicked.
+  //
+  // `via` used to be accepted and thrown away (`void via`), and the event that
+  // did fire was the REPORT preview's `beat5_tab_select` — so ring interest was
+  // landing in another section's metric. Both fixed here.
+  const go = (i: number, via: "chip" | "arrow" | "spine") => {
     setEngaged(true);
     const next = (i + sectors.length) % sectors.length;
     if (next !== active) {
-      trackEvent.beat5TabSelect({ sector: sectors[next].chip.toLowerCase() });
+      trackEvent.sectorRingSelect({
+        sector: sectors[next].href.replace("/industries/", ""),
+        via,
+      });
       setActive(next);
     }
-    void via;
   };
 
   return (
