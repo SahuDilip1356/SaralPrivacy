@@ -87,7 +87,7 @@ export function ReportPreview() {
         </h2>
         <p className="type-intro text-slate-600 max-w-lg mx-auto">
           Every assessment ends in a scored, sector-specific report. Here is the
-          shape of one — pick a sector to see how it changes.
+          shape of one. Pick a sector to see how it changes.
         </p>
       </div>
 
@@ -262,7 +262,7 @@ export function ReportPreview() {
                 <p className="flex items-start gap-2 text-xs text-slate-600 leading-snug mb-4">
                   <Mail size={14} className="text-slate-600 shrink-0 mt-0.5" />
                   Want it in writing? You can have the full report emailed to you
-                  at the end — optional, and only if you ask.
+                  at the end. Optional, and only if you ask.
                 </p>
                 <Link
                   href={`/assessment/${v.slug}`}

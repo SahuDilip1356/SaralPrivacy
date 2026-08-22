@@ -163,7 +163,7 @@ export function ResourcesSection() {
                 The complete DPDPA guide
               </h3>
               <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                What the Act requires, who it applies to, and a 90-day plan —
+                What the Act requires, who it applies to, and a 90-day plan,
                 written against the DPDP Rules, 2025 as notified.
               </p>
               <Link

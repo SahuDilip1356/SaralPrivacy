@@ -69,7 +69,7 @@ export const VERDICT_PREVIEWS: VerdictPreview[] = [
     topGaps: [
       "CVs forwarded to clients over email and WhatsApp, with no record of candidate permission.",
       "Candidate profiles stay with multiple recipients after the role closes.",
-      "No deletion period for unsuccessful applicants — databases grow indefinitely.",
+      "No deletion period for unsuccessful applicants, so databases grow indefinitely.",
     ],
     firstActions: [
       "Record candidate permission at the point you collect the CV, not at placement.",
@@ -93,7 +93,7 @@ export const VERDICT_PREVIEWS: VerdictPreview[] = [
     topGaps: [
       "Client PAN and Aadhaar files shared through email and Drive with no access review.",
       "Former staff and interns may still reach shared folders.",
-      "Client financial records kept indefinitely — no retention or disposal schedule.",
+      "Client financial records kept indefinitely, with no retention or disposal schedule.",
     ],
     firstActions: [
       "Review shared-folder access and remove inactive accounts.",
@@ -139,7 +139,7 @@ export const VERDICT_PREVIEWS: VerdictPreview[] = [
       { label: "Retention & preferences", pct: 43 },
     ],
     topGaps: [
-      "Marketing opt-in bundled into checkout — consent is not separate or withdrawable.",
+      "Marketing opt-in bundled into checkout, so consent is not separate or withdrawable.",
       "Analytics and ad pixels pass customer data to vendors with no written terms.",
       "Inactive customer records and abandoned-cart data are never cleared.",
     ],
@@ -187,7 +187,7 @@ export const VERDICT_PREVIEWS: VerdictPreview[] = [
       { label: "Retention, sharing & rights", pct: 34 },
     ],
     topGaps: [
-      "Student data is children's data — verifiable parental consent is not recorded at admission.",
+      "Student data is children's data, and verifiable parental consent is not recorded at admission.",
       "Class WhatsApp groups carry names, photographs and results to every parent in the group.",
       "Learning platforms and transport trackers receive student data with no written terms.",
     ],
@@ -237,7 +237,7 @@ export const VERDICT_PREVIEWS: VerdictPreview[] = [
     topGaps: [
       "Buyer PAN, Aadhaar and bank documents circulate in broker groups with no record of who holds them.",
       "Purchased and scraped lead lists are called without any consent for that contact.",
-      "Lead databases are never cleared — enquiries from years ago are still marketed to.",
+      "Lead databases are never cleared, so enquiries from years ago are still marketed to.",
     ],
     firstActions: [
       "Stop sending KYC documents into broker groups; use one controlled channel per transaction.",
@@ -288,7 +288,7 @@ export const VERDICT_PREVIEWS: VerdictPreview[] = [
       "Refill reminders are sent from purchase history with no consent for marketing.",
     ],
     firstActions: [
-      "Stop keeping prescription images on personal handsets — move them to one controlled system.",
+      "Stop keeping prescription images on personal handsets, and move them to one controlled system.",
       "Share only what the delivery partner needs, and put terms in place with them.",
       "Get separate consent before using purchase history for reminders.",
     ],

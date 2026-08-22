@@ -120,7 +120,7 @@ export function HeroSection() {
             </h1>
             <p className="type-intro text-slate-300 mb-8 max-w-xl">
               See your top gaps, first fixes and a sector-specific action plan
-              for your Indian business — in plain English.
+              for your Indian business, in plain English.
             </p>
 
             {/* is-this-me selector — one interaction grammar, dark register:
@@ -262,7 +262,7 @@ export function HeroSection() {
                         High-priority action
                       </span>
                       <p className="text-sm text-slate-600 leading-snug">
-                        Significant gaps — start a focused fix plan now.
+                        Significant gaps. Start a focused fix plan now.
                       </p>
                     </div>
                   </div>

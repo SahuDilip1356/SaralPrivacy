@@ -58,7 +58,7 @@ export const WORKFLOW_RISKS: WorkflowRisk[] = [
     gap: "Consent gap",
     lifecycle: "Collect",
     dataFound:
-      "Customer and candidate names, phone numbers, and photographs of documents — PAN cards, Aadhaar, prescriptions, invoices — sent into ordinary chats and groups.",
+      "Customer and candidate names, phone numbers, and photographs of documents (PAN cards, Aadhaar, prescriptions, invoices) sent into ordinary chats and groups.",
     exposure:
       "Data is collected with no notice and no recorded consent, on personal handsets the business does not control, and it stays on those handsets after the staff member leaves.",
     control:
@@ -69,7 +69,7 @@ export const WORKFLOW_RISKS: WorkflowRisk[] = [
     gap: "Access gap",
     lifecycle: "Use",
     dataFound:
-      "Shared folders of CVs, ID scans, salary sheets and client files — usually inherited from whoever set them up years ago.",
+      "Shared folders of CVs, ID scans, salary sheets and client files, usually inherited from whoever set them up years ago.",
     exposure:
       "Links set to “anyone with the link”, and access lists that only ever grow: people are added when a project starts and never removed when it ends.",
     control:
@@ -80,7 +80,7 @@ export const WORKFLOW_RISKS: WorkflowRisk[] = [
     gap: "Retention gap",
     lifecycle: "Retain",
     dataFound:
-      "Master trackers of customers, candidates or patients — copied and re-copied as “final_v3” across desktops, mailboxes and pen drives.",
+      "Master trackers of customers, candidates or patients, copied and re-copied as “final_v3” across desktops, mailboxes and pen drives.",
     exposure:
       "No one owns the copies, so nothing is ever deleted. A single tracker outlives the purpose it was collected for by years, and no one can say how many versions exist.",
     control:
@@ -91,7 +91,7 @@ export const WORKFLOW_RISKS: WorkflowRisk[] = [
     gap: "Vendor gap",
     lifecycle: "Share",
     dataFound:
-      "The full customer record — contact details, transaction history, internal notes, support conversations — held on your behalf by a third-party processor.",
+      "The full customer record (contact details, transaction history, internal notes, support conversations), held on your behalf by a third-party processor.",
     exposure:
       "Signed on click-through terms with no data-processing clause, no breach-notification commitment, and no clear answer to where the data is actually stored.",
     control:
@@ -102,7 +102,7 @@ export const WORKFLOW_RISKS: WorkflowRisk[] = [
     gap: "Access gap",
     lifecycle: "Store",
     dataFound:
-      "Years of attachments — offer letters, KYC documents, invoices, lab reports — sitting in individual mailboxes as the de facto filing system.",
+      "Years of attachments (offer letters, KYC documents, invoices, lab reports) sitting in individual mailboxes as the de facto filing system.",
     exposure:
       "Shared credentials, auto-forwarding rules and delegate access mean the real reach of that data is much wider than the org chart, and invisible to any review.",
     control:
@@ -113,7 +113,7 @@ export const WORKFLOW_RISKS: WorkflowRisk[] = [
     gap: "Notice gap",
     lifecycle: "Collect",
     dataFound:
-      "Enquiry and contact submissions — name, phone, city, and free text in which people describe a personal situation in far more detail than the form asked for.",
+      "Enquiry and contact submissions: name, phone, city, and free text in which people describe a personal situation in far more detail than the form asked for.",
     exposure:
       "The form collects before it explains: no notice at the point of collection, consent bundled into the submit button, and entries emailed onward in plain text.",
     control:
@@ -124,7 +124,7 @@ export const WORKFLOW_RISKS: WorkflowRisk[] = [
     gap: "Vendor gap",
     lifecycle: "Share",
     dataFound:
-      "Payer name, contact details and transaction records held by the gateway — plus the reconciliation exports finance pulls out of it every month.",
+      "Payer name, contact details and transaction records held by the gateway, plus the reconciliation exports finance pulls out of it every month.",
     exposure:
       "Those exports leave the gateway's controls and land in shared drives, and nobody has checked what the gateway itself retains or which sub-processors it uses.",
     control:
@@ -135,7 +135,7 @@ export const WORKFLOW_RISKS: WorkflowRisk[] = [
     gap: "Evidence gap",
     lifecycle: "Store",
     dataFound:
-      "Continuous recording of staff, customers and visitors — and the visitor register at the entrance, which is personal data on paper.",
+      "Continuous recording of staff, customers and visitors, plus the visitor register at the entrance, which is personal data on paper.",
     exposure:
       "No signage saying what is recorded or for how long, retention set to whatever the disk holds, and playback available to anyone who knows the DVR password.",
     control:
@@ -146,7 +146,7 @@ export const WORKFLOW_RISKS: WorkflowRisk[] = [
     gap: "Retention gap",
     lifecycle: "Delete",
     dataFound:
-      "Boxes of forms and old server folders from closed projects, discontinued products and former employees — kept because nobody was ever asked to decide.",
+      "Boxes of forms and old server folders from closed projects, discontinued products and former employees, kept because nobody was ever asked to decide.",
     exposure:
       "Data held with no purpose left to justify it. This is the hardest position to defend under DPDPA: there is no live reason to have it, and no plan to remove it.",
     control:

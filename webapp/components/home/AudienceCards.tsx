@@ -241,7 +241,7 @@ export function AudienceCards() {
             Same law. Different data. Different fixes.
           </h2>
           <p className="type-intro text-slate-600 max-w-2xl mx-auto">
-            Twelve sectors, twelve different exposures. Pick yours — the deck
+            Twelve sectors, twelve different exposures. Pick yours and the deck
             brings it forward.
           </p>
         </div>

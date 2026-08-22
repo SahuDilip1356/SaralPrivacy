@@ -88,7 +88,7 @@ const steps: Step[] = [
     key: "map",
     icon: Workflow,
     title: "Map",
-    sub: "See where it travels — and where control breaks",
+    sub: "See where it travels, and where control breaks",
     tag: "Data Flow",
     cap: "Your sector's flow map",
     href: "/data-mapping",
@@ -227,7 +227,7 @@ export function HowItWorks() {
             Start anywhere. It&apos;s all free to try.
           </h2>
           <p className="type-intro text-slate-300 max-w-md mx-auto">
-            Four steps to DPDPA-ready — follow them in order, or jump straight to
+            Four steps to DPDPA-ready. Follow them in order, or jump straight to
             what you need.
           </p>
         </div>

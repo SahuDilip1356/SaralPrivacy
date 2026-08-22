@@ -12,14 +12,14 @@ export const faqs: FAQItem[] = [
     id: "f002",
     question: "Does DPDPA apply to my small business?",
     answer:
-      "If your business collects, stores, or processes personal data of Indian citizens — even just names, email addresses, or mobile numbers — it is likely covered by the DPDPA. There is no explicit exemption for small or micro businesses in the current text of the Act. However, the government may notify specific exemptions for certain categories of businesses through rules. Until then, all businesses collecting personal data should plan for compliance. The first step is understanding what data you collect and why.",
+      "If your business collects, stores, or processes personal data of Indian citizens (even just names, email addresses, or mobile numbers), it is likely covered by the DPDPA. There is no explicit exemption for small or micro businesses in the current text of the Act. However, the government may notify specific exemptions for certain categories of businesses through rules. Until then, all businesses collecting personal data should plan for compliance. The first step is understanding what data you collect and why.",
     category: "applicability",
   },
   {
     id: "f003",
     question: "What counts as 'personal data' under the DPDPA?",
     answer:
-      "Personal data means any data about an individual who is identifiable from that data. This includes obvious examples like name, email, mobile number, PAN, Aadhaar, and bank account details. It also includes less obvious data like IP addresses, device identifiers, location data, and behavioural data tied to a specific individual. If a piece of data can be linked back to a real, identifiable person — directly or in combination with other data — it is personal data under the Act.",
+      "Personal data means any data about an individual who is identifiable from that data. This includes obvious examples like name, email, mobile number, PAN, Aadhaar, and bank account details. It also includes less obvious data like IP addresses, device identifiers, location data, and behavioural data tied to a specific individual. If a piece of data can be linked back to a real, identifiable person, directly or in combination with other data, it is personal data under the Act.",
     category: "basics",
   },
   {
@@ -41,7 +41,7 @@ export const faqs: FAQItem[] = [
     id: "f006",
     question: "What rights do individuals have under DPDPA?",
     answer:
-      "Individuals (called 'Data Principals' in the Act) have four core rights: (1) Right to access information — they can ask what personal data you hold about them and for what purpose; (2) Right to correction and erasure — they can request inaccurate data to be corrected or data that is no longer necessary to be deleted; (3) Right to grievance redressal — every Data Fiduciary must have a designated contact to handle data-related complaints, and if unresolved, the individual can escalate to the Data Protection Board; (4) Right of nomination — individuals can nominate someone to exercise these rights on their behalf in case of death or incapacity. Businesses must have processes in place to receive, verify, and respond to these requests.",
+      "Individuals (called 'Data Principals' in the Act) have four core rights: (1) Right to access information: they can ask what personal data you hold about them and for what purpose; (2) Right to correction and erasure: they can request inaccurate data to be corrected or data that is no longer necessary to be deleted; (3) Right to grievance redressal: every Data Fiduciary must have a designated contact to handle data-related complaints, and if unresolved, the individual can escalate to the Data Protection Board; (4) Right of nomination: individuals can nominate someone to exercise these rights on their behalf in case of death or incapacity. Businesses must have processes in place to receive, verify, and respond to these requests.",
     category: "rights",
   },
   {
@@ -62,7 +62,7 @@ export const faqs: FAQItem[] = [
     id: "f009",
     question: "Do recruitment agencies need to get consent from candidates?",
     answer:
-      "Yes. When a candidate submits their CV or profile to your agency, they are sharing personal data. You need their consent to store that data, share it with clients, and retain it for future opportunities. Specifically: (1) If you share a candidate's resume with a client, the candidate must know this and have consented to it; (2) If you retain a rejected candidate's data for future matching, you need consent for that specific purpose; (3) If you use their contact details to market your services to them, that requires separate marketing consent. The consent must be obtained at the point of data collection — typically when they submit their application or profile.",
+      "Yes. When a candidate submits their CV or profile to your agency, they are sharing personal data. You need their consent to store that data, share it with clients, and retain it for future opportunities. Specifically: (1) If you share a candidate's resume with a client, the candidate must know this and have consented to it; (2) If you retain a rejected candidate's data for future matching, you need consent for that specific purpose; (3) If you use their contact details to market your services to them, that requires separate marketing consent. The consent must be obtained at the point of data collection, typically when they submit their application or profile.",
     category: "sector-specific",
     industries: ["recruitment"],
   },
@@ -70,7 +70,7 @@ export const faqs: FAQItem[] = [
     id: "f010",
     question: "How should a CA firm handle PAN and Aadhaar data?",
     answer:
-      "PAN and Aadhaar data are particularly sensitive. Aadhaar is additionally governed by the Aadhaar Act, 2016. For DPDPA purposes: (1) Collect only what you genuinely need for the specific engagement (data minimisation); (2) Store it securely with access limited to staff who need it; (3) Define retention periods — you should not keep PAN copies longer than required for the filing or audit they were collected for; (4) Inform clients (in your engagement letter or a separate notice) what data you are collecting and why; (5) If you use cloud storage or shared drives, ensure they are access-controlled and the vendor has appropriate security practices. Consider adding data handling terms to your standard client engagement letters.",
+      "PAN and Aadhaar data are particularly sensitive. Aadhaar is additionally governed by the Aadhaar Act, 2016. For DPDPA purposes: (1) Collect only what you genuinely need for the specific engagement (data minimisation); (2) Store it securely with access limited to staff who need it; (3) Define retention periods: you should not keep PAN copies longer than required for the filing or audit they were collected for; (4) Inform clients (in your engagement letter or a separate notice) what data you are collecting and why; (5) If you use cloud storage or shared drives, ensure they are access-controlled and the vendor has appropriate security practices. Consider adding data handling terms to your standard client engagement letters.",
     category: "sector-specific",
     industries: ["ca-firms"],
   },
@@ -78,35 +78,35 @@ export const faqs: FAQItem[] = [
     id: "f011",
     question: "What is a 'Data Fiduciary' and am I one?",
     answer:
-      "A Data Fiduciary is any person (including a company, firm, or individual) who alone or jointly with others determines the purpose and means of processing personal data. In plain language: if your business decides what data to collect, why to collect it, and how to use it — you are a Data Fiduciary. Most businesses that deal with customers, clients, employees, or leads are Data Fiduciaries for at least some of their data processing activities. As a Data Fiduciary, you have obligations around consent, notice, security, breach notification, and honouring individual rights.",
+      "A Data Fiduciary is any person (including a company, firm, or individual) who alone or jointly with others determines the purpose and means of processing personal data. In plain language: if your business decides what data to collect, why to collect it, and how to use it, you are a Data Fiduciary. Most businesses that deal with customers, clients, employees, or leads are Data Fiduciaries for at least some of their data processing activities. As a Data Fiduciary, you have obligations around consent, notice, security, breach notification, and honouring individual rights.",
     category: "basics",
   },
   {
     id: "f012",
     question: "When will DPDPA be enforced? Is there a grace period?",
     answer:
-      "The DPDP Rules, 2025 were notified on 14 November 2025. Implementation is phased: some rules took effect immediately, others take effect 12 and 18 months later. For most businesses, the priority is to use this transition window productively — fix consent flows, privacy notices, rights-handling workflows, and retention policies now.",
+      "The DPDP Rules, 2025 were notified on 14 November 2025. Implementation is phased: some rules took effect immediately, others take effect 12 and 18 months later. For most businesses, the priority is to use this transition window productively: fix consent flows, privacy notices, rights-handling workflows, and retention policies now.",
     category: "regulatory",
   },
   {
     id: "f013",
     question: "Do I need to appoint a Data Protection Officer?",
     answer:
-      "Not every business is required to appoint a DPO. The obligation to appoint a Data Protection Officer applies specifically to 'Significant Data Fiduciaries' — entities that the Central Government designates as such based on factors like volume of data processed, sensitivity of data, and risk to individuals. For most small and medium businesses, a formal DPO is not a statutory requirement. However, you do need to designate a point of contact for data-related grievances and rights requests — this could be an existing role such as a Privacy Champion, Compliance Manager, or even a founder in a small business.",
+      "Not every business is required to appoint a DPO. The obligation to appoint a Data Protection Officer applies specifically to 'Significant Data Fiduciaries': entities that the Central Government designates as such based on factors like volume of data processed, sensitivity of data, and risk to individuals. For most small and medium businesses, a formal DPO is not a statutory requirement. However, you do need to designate a point of contact for data-related grievances and rights requests. This could be an existing role such as a Privacy Champion, Compliance Manager, or even a founder in a small business.",
     category: "compliance",
   },
   {
     id: "f014",
     question: "Can I store customer data in foreign countries?",
     answer:
-      "The DPDPA permits the transfer of personal data outside India, subject to restrictions. The Central Government has the power to restrict data transfers to specific countries or territories. Initially, the Act takes a 'whitelist' approach — transfers can be made to countries notified by the government as permissible destinations. The specific list of permitted countries has not yet been finalised. Businesses that transfer personal data internationally (for example, using US-based SaaS tools, cloud services, or offshore data centres) must monitor this closely and be prepared to comply with transfer restrictions when they are notified. Data localisation requirements (if any) will be specified in the rules.",
+      "The DPDPA permits the transfer of personal data outside India, subject to restrictions. The Central Government has the power to restrict data transfers to specific countries or territories. Initially, the Act takes a 'whitelist' approach: transfers can be made to countries notified by the government as permissible destinations. The specific list of permitted countries has not yet been finalised. Businesses that transfer personal data internationally (for example, using US-based SaaS tools, cloud services, or offshore data centres) must monitor this closely and be prepared to comply with transfer restrictions when they are notified. Data localisation requirements (if any) will be specified in the rules.",
     category: "compliance",
   },
   {
     id: "f015",
     question: "How do I handle a 'delete my data' request from a customer?",
     answer:
-      "When a customer requests deletion of their data, you should: (1) Verify their identity to confirm they are the person whose data is being requested for deletion; (2) Assess whether there is a lawful reason to retain the data — for example, an ongoing contract, a legal obligation (like tax records), or an active dispute; (3) If no such reason applies, delete the data across all systems (primary database, backups, email archives, third-party tools) within a reasonable period; (4) Inform the customer when the deletion is complete; (5) Document the request and your response for your records. If you are unable to comply, explain the specific legal reason for retaining the data. Ignoring deletion requests is a violation of the DPDPA and grounds for a complaint to the Data Protection Board.",
+      "When a customer requests deletion of their data, you should: (1) Verify their identity to confirm they are the person whose data is being requested for deletion; (2) Assess whether there is a lawful reason to retain the data, for example an ongoing contract, a legal obligation (like tax records), or an active dispute; (3) If no such reason applies, delete the data across all systems (primary database, backups, email archives, third-party tools) within a reasonable period; (4) Inform the customer when the deletion is complete; (5) Document the request and your response for your records. If you are unable to comply, explain the specific legal reason for retaining the data. Ignoring deletion requests is a violation of the DPDPA and grounds for a complaint to the Data Protection Board.",
     category: "rights",
   },
 
@@ -119,21 +119,21 @@ export const faqs: FAQItem[] = [
     id: "f016",
     question: "What information do I need to enter?",
     answer:
-      "Nothing about yourself, and no documents. The assessment asks practical questions about how your business already works — where customer or staff data is stored, whether you have a privacy notice, how you collect consent, who can reach shared folders, and what happens when someone asks for their data. If you run the business or its operations, you can answer every question from memory in a few minutes.",
+      "Nothing about yourself, and no documents. The assessment asks practical questions about how your business already works: where customer or staff data is stored, whether you have a privacy notice, how you collect consent, who can reach shared folders, and what happens when someone asks for their data. If you run the business or its operations, you can answer every question from memory in a few minutes.",
     category: "assessment",
   },
   {
     id: "f017",
     question: "Do I need to give an email address?",
     answer:
-      "No. You can take the whole assessment and see your score, your risk category, your top gaps and your first recommended actions without entering an email address. An email is only needed if you want the full report sent to you — that is a choice at the end, not a gate at the start.",
+      "No. You can take the whole assessment and see your score, your risk category, your top gaps and your first recommended actions without entering an email address. An email is only needed if you want the full report sent to you. That is a choice at the end, not a gate at the start.",
     category: "assessment",
   },
   {
     id: "f018",
     question: "What will my report contain?",
     answer:
-      "A readiness score out of 100, your risk category, scores across five dimensions — notice and collection, consent, sharing and vendors, access and security, retention and response — your top three privacy gaps, your first recommended actions, and a practical DPDPA checklist. It is written in plain English and organised by what to do first, not by section of the Act.",
+      "A readiness score out of 100, your risk category, scores across five dimensions (notice and collection, consent, sharing and vendors, access and security, retention and response), your top three privacy gaps, your first recommended actions, and a practical DPDPA checklist. It is written in plain English and organised by what to do first, not by section of the Act.",
     category: "assessment",
   },
   {
@@ -147,21 +147,21 @@ export const faqs: FAQItem[] = [
     id: "f020",
     question: "How accurate is the result?",
     answer:
-      "It is a readiness indicator, not an audit. The score reflects the answers you give about your own workflows, so it is as accurate as those answers are. It is designed to tell you reliably where your biggest gaps sit and what to fix first — it is not a certification, and it does not inspect your systems. Treat it as a prioritised starting point for the next 30 to 90 days.",
+      "It is a readiness indicator, not an audit. The score reflects the answers you give about your own workflows, so it is as accurate as those answers are. It is designed to tell you reliably where your biggest gaps sit and what to fix first. It is not a certification, and it does not inspect your systems. Treat it as a prioritised starting point for the next 30 to 90 days.",
     category: "assessment",
   },
   {
     id: "f021",
     question: "What happens after I get my score?",
     answer:
-      "You get your gaps and your first actions immediately on screen, and you can work through them yourself — most of the first fixes are decisions and documentation, not software. If you want to go further, you can map where your personal data actually sits, generate a privacy notice, or download the checklist and templates. Nothing is charged, and no account is created.",
+      "You get your gaps and your first actions immediately on screen, and you can work through them yourself. Most of the first fixes are decisions and documentation, not software. If you want to go further, you can map where your personal data actually sits, generate a privacy notice, or download the checklist and templates. Nothing is charged, and no account is created.",
     category: "assessment",
   },
   {
     id: "f022",
     question: "Is this formal legal advice?",
     answer:
-      "No. SaralPrivacy is an education and readiness platform, not a law firm. We tell you what to prepare and what to prioritise in plain English. For a formal opinion on your specific position — particularly if you have had a breach, a regulatory query, or a contractual dispute — engage a qualified data protection lawyer. The assessment is useful preparation for that conversation, not a substitute for it.",
+      "No. SaralPrivacy is an education and readiness platform, not a law firm. We tell you what to prepare and what to prioritise in plain English. For a formal opinion on your specific position, particularly if you have had a breach, a regulatory query, or a contractual dispute, engage a qualified data protection lawyer. The assessment is useful preparation for that conversation, not a substitute for it.",
     category: "assessment",
   },
 ];
