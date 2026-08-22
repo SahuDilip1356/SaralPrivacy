@@ -1,7 +1,2 @@
 components/home/NewsletterSection.tsx:76:              className="bg-white border border-pearl-200 rounded-xl p-6 text-left"
-components/home/WhereRiskHides.tsx:145:                  className={`absolute flex items-center gap-2.5 rounded-lg bg-white border border-pearl-200 px-3 z-10 ${fade()}`}
-components/home/WhereRiskHides.tsx:180:                  className={`flex items-center gap-3 rounded-lg bg-white border border-pearl-200 px-3.5 py-2.5 ${fade()}`}
-components/home/WhitePaperSection.tsx:57:                  className="text-xs text-slate-700 bg-white border border-pearl-200 rounded-full px-3 py-1"
-components/home/WhitePaperSection.tsx:89:            <div className="bg-white rounded-xl border border-pearl-200 p-6 sm:p-7">
-components/home/FounderProof.tsx:16:    <div className="bg-white rounded-xl border border-slate-200 p-7">
-components/home/VerdictPreview.tsx:57:                    : "bg-white border-slate-200 text-slate-600 hover:border-teal-400 hover:text-teal-900"
+components/home/FounderProof.tsx:23:    <div className="bg-white rounded-xl border border-slate-200 p-7">

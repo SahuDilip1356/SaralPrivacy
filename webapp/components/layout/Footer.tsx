@@ -1,64 +1,94 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Mail } from "lucide-react";
 import { PressProofStrip } from "@/components/ui/PressProofStrip";
 import { sectorNavLinks } from "@/lib/data/sectors";
-import { dataMapFooterLinks } from "@/lib/data/data-flow";
 import { DPO } from "@/lib/data/privacy-vendors";
 
-const footerLinks = {
-  platform: [
-    { label: "Daily Briefings", href: "/briefings" },
-    { label: "DPDPA Guide", href: "/learn" },
-    { label: "Insights", href: "/blog" },
-    { label: "FAQ", href: "/faq" },
-    { label: "Glossary", href: "/glossary" },
-    { label: "About", href: "/about" },
-    { label: "Media", href: "/media" },
-  ],
-  industries: sectorNavLinks,
-  // Landing page first, then the sectors that actually have a map. Derived from
-  // the data-flow registry, so publishing the next map adds its row here with
-  // no edit to this file - and a sector without a map can never be listed.
-  dataMapping: [
-    { label: "Data Mapping Overview", href: "/data-mapping" },
-    ...dataMapFooterLinks,
-  ],
-  assessment: [
-    { label: "DPDPA Readiness Assessment", href: "/assessment" },
-    { label: "Personal Data Discovery", href: "/discovery" },
-    { label: "DPDPA Notice Generator", href: "/tools/dpdpa-privacy-notice-generator" },
-  ],
-  // "Your Rights" → /rights is the single entry for data-principal rights. The old
-  // per-action links ("Request Data Access" → /rights#access, "Request Erasure" →
-  // /rights#erasure) were dropped: they landed on the same page /rights already opens,
-  // which surfaces every right (access, erasure, withdraw, nominate, grievance) on arrival.
-  // The /rights/access + /rights/erasure stub routes still 308-redirect for old bookmarks.
-  // "Unsubscribe" is intentionally NOT here. /unsubscribe is the one-click target for
-  // the mandatory link inside marketing emails — it needs an ?email= param and errors
-  // (or now redirects to /consent-preferences) without one, so it makes a poor footer
-  // destination. "Consent Preferences" is the human-navigable surface and carries its
-  // own "Unsubscribe from All" button, so nothing is lost.
-  legal: [
-    { label: "Privacy Notice", href: "/privacy" },
-    { label: "Your Rights", href: "/rights" },
-    { label: "Terms of Use", href: "/terms" },
-    { label: "Consent Preferences", href: "/consent-preferences" },
-  ],
-};
+// The institutional footer (Quiet Authority spec §10). Restructured, not
+// reduced: every link the old footer carried is still here — the footer is a
+// load-bearing internal-linking surface — but the grouping now says what kind
+// of organisation this is.
+//
+// The old layout interleaved two headed lists per column (Platform above Data
+// Flow Maps, Industries above Assessments) and scattered the trust apparatus:
+// the disclaimer sat in the brand column, the DPO in a tinted box under Legal,
+// the general contact somewhere else again. Now: four columns that answer the
+// four questions a footer gets asked — what do you make (Product), who is it
+// for (Industries), what have you written (Knowledge), who are you (Company) —
+// and one PRIVACY OFFICE band that gathers contact, DPO and disclaimer into
+// the single block a privacy company should end on.
+//
+// Column labels are the site's eyebrow style, not bold white — quieter reads
+// as more established. cloud-400 on navy measures 7.64:1.
+
+const productLinks = [
+  { label: "DPDPA Readiness Assessment", href: "/assessment" },
+  { label: "Personal Data Discovery", href: "/discovery" },
+  { label: "Data Mapping Overview", href: "/data-mapping" },
+  { label: "DPDPA Notice Generator", href: "/tools/dpdpa-privacy-notice-generator" },
+];
+
+// Every sector's flow map is now live, which made the old footer render two
+// near-identical twelve-row columns — the sector list under INDUSTRIES and the
+// same twelve names again under DATA FLOW MAPS. That duplication was most of
+// the footer's height. The maps keep their links, but as a quiet "map" suffix
+// on each industry row: one column, twenty-four hrefs, half the pixels.
+// Registry-driven — a sector without a live map simply gets no suffix.
+
+const knowledgeLinks = [
+  { label: "Daily Briefings", href: "/briefings" },
+  { label: "DPDPA Guide", href: "/learn" },
+  { label: "Insights", href: "/blog" },
+  { label: "FAQ", href: "/faq" },
+  { label: "Glossary", href: "/glossary" },
+];
+
+const companyLinks = [
+  { label: "About", href: "/about" },
+  { label: "Media", href: "/media" },
+];
+
+const legalLinks = [
+  { label: "Privacy Notice", href: "/privacy" },
+  { label: "Your Rights", href: "/rights" },
+  { label: "Terms of Use", href: "/terms" },
+  { label: "Consent Preferences", href: "/consent-preferences" },
+];
+
+function ColumnLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <h4 className="text-[11px] font-semibold uppercase tracking-[0.09em] text-cloud-400 mb-4">
+      {children}
+    </h4>
+  );
+}
+
+function FooterLink({ href, label }: { href: string; label: string }) {
+  return (
+    <li>
+      <Link
+        href={href}
+        className="inline-flex items-center pointer-coarse:min-h-11 text-sm text-slate-400 hover:text-white transition-colors"
+      >
+        {label}
+      </Link>
+    </li>
+  );
+}
 
 export function Footer() {
   return (
     <footer className="bg-navy-700 text-slate-300">
-      {/* Gold rule at top — ceremonial brand divider */}
+      {/* Gold rule at top — the one ceremonial gold on the page, and it is on
+          navy, which is the only surface the interim gold ruling permits it. */}
       <div className="h-px bg-gold-400 opacity-40" />
 
-      {/* Main footer */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-14">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
-          {/* Brand column */}
-          <div className="lg:col-span-2">
-            <Link href="/" className="flex items-center gap-2.5 mb-5">
+      {/* ── Main grid ── */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-16 pb-12">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-8 gap-y-12">
+          {/* Brand */}
+          <div className="col-span-2 md:col-span-3 lg:col-span-2">
+            <Link href="/" className="inline-flex items-center gap-2.5 mb-4 pointer-coarse:min-h-11">
               <div className="h-8 w-8 rounded-full bg-white flex items-center justify-center p-0.5 shrink-0">
                 <Image
                   src="/logo-emblem.png"
@@ -68,143 +98,129 @@ export function Footer() {
                   className="h-7 w-7 object-contain"
                 />
               </div>
-              <div>
-                <div className="font-bold text-white text-base leading-none">
-                  Saral<span className="text-green-400">Privacy</span>
-                </div>
-                <div className="text-[10px] text-slate-400 leading-none mt-0.5">
-                  Privacy Made Practical for India
-                </div>
-              </div>
+              <span className="font-bold text-white text-base leading-none">
+                Saral<span className="text-green-400">Privacy</span>
+              </span>
             </Link>
-            <p className="text-sm text-slate-400 leading-relaxed mb-5 max-w-xs">
-              India&apos;s practical DPDPA readiness platform for businesses. Daily briefings,
-              industry assessments, resources, and advisory — without the legalese.
+            <p className="text-sm font-medium text-slate-300 mb-3">
+              Privacy made practical for India.
             </p>
-            <div className="flex items-center gap-2 text-sm">
-              <Mail size={14} className="text-teal-400" />
-              <a href="mailto:privacy@saralprivacy.com" className="inline-flex items-center pointer-coarse:min-h-11 text-slate-400 hover:text-white transition-colors">
-                privacy@saralprivacy.com
-              </a>
-            </div>
-            <div data-nosnippet className="mt-5 p-3 rounded-lg bg-navy-800 border border-navy-600">
-              <p className="text-xs text-slate-400">
-                <span className="text-gold-400 font-semibold">Disclaimer:</span> Information on
-                this platform is for educational purposes only and does not constitute formal legal
-                advice. Consult a qualified professional for legal guidance.
-              </p>
-            </div>
+            <p className="text-sm text-slate-400 leading-relaxed max-w-xs">
+              India&apos;s practical DPDPA readiness platform for businesses.
+              Daily briefings, industry assessments, resources, and advisory —
+              without the legalese.
+            </p>
           </div>
 
-          {/* Platform links */}
+          {/* Product */}
           <div>
-            <h4 className="text-white font-semibold text-sm mb-4">Platform</h4>
+            <ColumnLabel>Product</ColumnLabel>
             <ul className="space-y-2.5">
-              {footerLinks.platform.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="inline-flex items-center pointer-coarse:min-h-11 text-sm text-slate-400 hover:text-white transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-
-            {/* Data Mapping - sits under Platform per the product spine:
-                Discovery -> Data Mapping -> Assessment -> Notice. Industry rows
-                come from the registry, so this list grows as maps ship. */}
-            <h4 className="text-white font-semibold text-sm mb-4 mt-6">Data Flow Maps</h4>
-            <ul className="space-y-2.5">
-              {footerLinks.dataMapping.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="inline-flex items-center pointer-coarse:min-h-11 text-sm text-slate-400 hover:text-white transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
+              {productLinks.map((l) => (
+                <FooterLink key={l.href} {...l} />
               ))}
             </ul>
           </div>
 
-          {/* Industries */}
+          {/* Industries — two lines, not twenty-four.
+              The column used to list all twelve sectors, each with its flow map
+              as a "· map" suffix: 24 links on every page of the site. Founder
+              call (2026-08-22): it read as clutter, and it did.
+
+              Dropping it outright would have cost the sitewide crawl path to
+              twelve pages we invest in — the homepage's sector deck carries
+              those links, but only on the homepage. So the rows collapse to
+              their two hubs, which link onward to all twelve. Clutter gone,
+              crawl path intact, one extra hop. */}
           <div>
-            <h4 className="text-white font-semibold text-sm mb-4">Industries</h4>
+            <ColumnLabel>Industries</ColumnLabel>
             <ul className="space-y-2.5">
-              {footerLinks.industries.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="inline-flex items-center pointer-coarse:min-h-11 text-sm text-slate-400 hover:text-white transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+              <FooterLink href="/industries" label={`All ${sectorNavLinks.length} industries`} />
+              <FooterLink href="/data-mapping" label="Data flow maps" />
             </ul>
-            <h4 className="text-white font-semibold text-sm mb-4 mt-6">Assessments</h4>
+          </div>
+
+          {/* Knowledge */}
+          <div>
+            <ColumnLabel>Knowledge</ColumnLabel>
             <ul className="space-y-2.5">
-              {footerLinks.assessment.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="inline-flex items-center pointer-coarse:min-h-11 text-sm text-slate-400 hover:text-white transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
+              {knowledgeLinks.map((l) => (
+                <FooterLink key={l.href} {...l} />
               ))}
             </ul>
           </div>
 
-          {/* Legal */}
+          {/* Company + legal */}
           <div>
-            <h4 className="text-white font-semibold text-sm mb-4">Privacy & Legal</h4>
+            <ColumnLabel>Company</ColumnLabel>
             <ul className="space-y-2.5">
-              {footerLinks.legal.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="inline-flex items-center pointer-coarse:min-h-11 text-sm text-slate-400 hover:text-white transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
+              {companyLinks.map((l) => (
+                <FooterLink key={l.href} {...l} />
               ))}
             </ul>
-
-            <div data-nosnippet className="mt-6 p-3 rounded-lg bg-teal-900/40 border border-teal-700/50">
-              <p className="text-xs text-teal-300 font-semibold mb-1">Data Protection Officer</p>
-              <a
-                href={`mailto:${DPO.email}`}
-                className="inline-flex items-center pointer-coarse:min-h-11 text-xs text-teal-400 hover:text-teal-300"
-              >
-                {DPO.email}
-              </a>
-              <p className="text-xs text-slate-400 mt-1">
-                {DPO.name} — for access, correction, erasure, or complaints
-              </p>
-            </div>
+            {/* Privacy & legal — now one pane, per the founder's "bring privacy
+                and legal into the same pane". The Privacy Office used to be a
+                full-width band of its own below the columns; the contacts it
+                carried live here instead. They are not dropped: a data
+                fiduciary has to be reachable for access, correction, erasure
+                and complaints, and the DPO's address is how. */}
+            <ColumnLabel>
+              <span className="mt-6 inline-block">Privacy &amp; legal</span>
+            </ColumnLabel>
+            <ul className="space-y-2.5">
+              {legalLinks.map((l) => (
+                <FooterLink key={l.href} {...l} />
+              ))}
+              <li className="text-sm leading-snug pt-1.5">
+                <a
+                  href={`mailto:${DPO.email}`}
+                  className="inline-block pointer-coarse:min-h-11 break-all text-teal-300 hover:text-teal-200 transition-colors"
+                >
+                  {DPO.email}
+                </a>
+                <span className="block text-xs text-slate-400 mt-0.5">
+                  Data Protection Officer — {DPO.name}
+                </span>
+              </li>
+              <li className="text-sm leading-snug">
+                <a
+                  href="mailto:privacy@saralprivacy.com"
+                  className="inline-block pointer-coarse:min-h-11 break-all text-slate-400 hover:text-white transition-colors"
+                >
+                  privacy@saralprivacy.com
+                </a>
+                <span className="block text-xs text-slate-400 mt-0.5">General enquiries</span>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
 
-      {/* Press proof strip */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-6 border-t border-navy-600 pt-5">
-        <PressProofStrip variant="compact" />
+      {/* The Privacy Office band and the briefings signup band both used to
+          sit here — three stacked full-width bands above the press row, which
+          is what made this footer read as cluttered. The office contacts moved
+          into the Privacy & legal column above; the briefings signup is one
+          click away from the "Daily Briefings" link in Knowledge and from
+          /subscribe. Disclaimer moved to the bottom bar, still data-nosnippet. */}
+
+      {/* ── Press proof ── */}
+      <div className="border-t border-navy-600">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5">
+          <PressProofStrip variant="compact" />
+        </div>
       </div>
 
-      {/* Bottom bar */}
+      {/* ── Bottom bar ── */}
       <div data-nosnippet className="border-t border-navy-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs text-slate-400">
-            © {new Date().getFullYear()} SaralPrivacy. All rights reserved.
+            © {new Date().getFullYear()} SaralPrivacy. All rights reserved.{" "}
+            <span className="block sm:inline">
+              <span className="text-gold-400 font-semibold">Disclaimer:</span> educational
+              information, not formal legal advice.
+            </span>
           </p>
-          <div className="flex items-center gap-4">
-            <span className="text-xs text-slate-400">Privacy Notice v2.0 · Updated July 2026</span>
+          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
             <Link href="/privacy" className="inline-flex items-center pointer-coarse:min-h-11 text-xs text-slate-400 hover:text-white transition-colors">
               Privacy
             </Link>

@@ -112,6 +112,46 @@ export const trackEvent = {
       sector:         params.sector || "",
     }),
 
+  // ── Homepage scroll depth ───────────────────────────────────────────────
+  // The rebuild's central claim is that the page now holds a reader past the
+  // hero — compressed ladder, continuous dark opening, next section always
+  // peeking above the fold. That claim is currently unmeasured, which is the
+  // only reason this exists: 25/50/75/100 is the coarsest instrument that can
+  // still falsify it.
+  //
+  // Fires at most once per depth per page view. `depth` is the bucket, not the
+  // exact position — a percentage per visitor would be a behavioural
+  // fingerprint for no extra insight.
+  scrollDepth: (params: { depth: 25 | 50 | 75 | 100 }) =>
+    gtag("scroll_depth", {
+      event_category: "engagement",
+      depth:          params.depth,
+    }),
+
+  // ── Sector ring deck (S6) ───────────────────────────────────────────────
+  // `via` separates the founder's direction cue from real intent: an
+  // auto-advance never fires this (it is our action, not the visitor's), so the
+  // values are chip · arrow · spine. If spine clicks dominate, the cover-flow is
+  // doing its job; if the chip rail dominates, the ring is decoration on top of
+  // a list and should be judged as such.
+  sectorRingSelect: (params: { sector: string; via: "chip" | "arrow" | "spine" }) =>
+    gtag("sector_ring_select", {
+      event_category: "engagement",
+      sector:         params.sector,
+      via:            params.via,
+    }),
+
+  // ── Risk map evidence (S3) ──────────────────────────────────────────────
+  // Which everyday tool a visitor opens the evidence for. This is the closest
+  // thing on the page to a stated concern — the sector they pick says who they
+  // are, the tool they open says what worries them.
+  riskToolSelect: (params: { tool: string; gap: string }) =>
+    gtag("risk_tool_select", {
+      event_category: "engagement",
+      tool:           params.tool,
+      gap:            params.gap,
+    }),
+
   // ── How it works spine (Beat 4) ─────────────────────────────────────────
   // Fires when a visitor clicks a step card (Discover / Assess / Fix) — measures
   // whether the step artifacts (Phase 2) drive clicks into the tools.

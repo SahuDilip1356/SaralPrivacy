@@ -109,7 +109,86 @@ export const faqs: FAQItem[] = [
       "When a customer requests deletion of their data, you should: (1) Verify their identity to confirm they are the person whose data is being requested for deletion; (2) Assess whether there is a lawful reason to retain the data — for example, an ongoing contract, a legal obligation (like tax records), or an active dispute; (3) If no such reason applies, delete the data across all systems (primary database, backups, email archives, third-party tools) within a reasonable period; (4) Inform the customer when the deletion is complete; (5) Document the request and your response for your records. If you are unable to comply, explain the specific legal reason for retaining the data. Ignoring deletion requests is a violation of the DPDPA and grounds for a complaint to the Data Protection Board.",
     category: "rights",
   },
+
+  // ── Assessment objections ───────────────────────────────────────────────
+  // The homepage FAQ answers hesitation about *starting the check*, not
+  // general DPDPA definitions. Every answer below is checkable against
+  // app/assessment/SurveyClient.tsx and app/api/assessment/route.ts — do not
+  // soften them into marketing. If the flow changes, these change with it.
+  {
+    id: "f016",
+    question: "What information do I need to enter?",
+    answer:
+      "Nothing about yourself, and no documents. The assessment asks practical questions about how your business already works — where customer or staff data is stored, whether you have a privacy notice, how you collect consent, who can reach shared folders, and what happens when someone asks for their data. If you run the business or its operations, you can answer every question from memory in a few minutes.",
+    category: "assessment",
+  },
+  {
+    id: "f017",
+    question: "Do I need to give an email address?",
+    answer:
+      "No. You can take the whole assessment and see your score, your risk category, your top gaps and your first recommended actions without entering an email address. An email is only needed if you want the full report sent to you — that is a choice at the end, not a gate at the start.",
+    category: "assessment",
+  },
+  {
+    id: "f018",
+    question: "What will my report contain?",
+    answer:
+      "A readiness score out of 100, your risk category, scores across five dimensions — notice and collection, consent, sharing and vendors, access and security, retention and response — your top three privacy gaps, your first recommended actions, and a practical DPDPA checklist. It is written in plain English and organised by what to do first, not by section of the Act.",
+    category: "assessment",
+  },
+  {
+    id: "f019",
+    question: "Does SaralPrivacy store my answers?",
+    answer:
+      "Only if you ask for the report. Your score is calculated in your browser as you answer, and nothing is sent to us unless you enter your contact details and request the full report at the end. If you close the tab before that point, we have no record of your answers, because none was ever transmitted.",
+    category: "assessment",
+  },
+  {
+    id: "f020",
+    question: "How accurate is the result?",
+    answer:
+      "It is a readiness indicator, not an audit. The score reflects the answers you give about your own workflows, so it is as accurate as those answers are. It is designed to tell you reliably where your biggest gaps sit and what to fix first — it is not a certification, and it does not inspect your systems. Treat it as a prioritised starting point for the next 30 to 90 days.",
+    category: "assessment",
+  },
+  {
+    id: "f021",
+    question: "What happens after I get my score?",
+    answer:
+      "You get your gaps and your first actions immediately on screen, and you can work through them yourself — most of the first fixes are decisions and documentation, not software. If you want to go further, you can map where your personal data actually sits, generate a privacy notice, or download the checklist and templates. Nothing is charged, and no account is created.",
+    category: "assessment",
+  },
+  {
+    id: "f022",
+    question: "Is this formal legal advice?",
+    answer:
+      "No. SaralPrivacy is an education and readiness platform, not a law firm. We tell you what to prepare and what to prioritise in plain English. For a formal opinion on your specific position — particularly if you have had a breach, a regulatory query, or a contractual dispute — engage a qualified data protection lawyer. The assessment is useful preparation for that conversation, not a substitute for it.",
+    category: "assessment",
+  },
 ];
+
+/**
+ * The homepage FAQ set (S9), in display order. These answer *conversion*
+ * objections — time, email, privacy, report contents, what happens next — not
+ * "what is DPDPA", which the risk section already covers. /faq keeps the full
+ * library; this is the slice the landing page shows.
+ */
+export const homepageFaqIds = [
+  "f002", // Does DPDPA apply to my small business?
+  "f016", // What information do I need to enter?
+  "f017", // Do I need to give an email address?
+  "f018", // What will my report contain?
+  "f019", // Does SaralPrivacy store my answers?
+  "f020", // How accurate is the result?
+  "f021", // What happens after I get my score?
+  "f022", // Is this formal legal advice?
+];
+
+/** The homepage FAQ items, resolved and ordered. Missing ids are dropped. */
+export function getHomepageFaqs(): FAQItem[] {
+  return homepageFaqIds
+    .map((id) => faqs.find((f) => f.id === id))
+    .filter((f): f is FAQItem => Boolean(f));
+}
 
 export function getFAQsByCategory(category: string): FAQItem[] {
   return faqs.filter((f) => f.category === category);
@@ -130,4 +209,5 @@ export const faqCategories = [
   { id: "regulatory", label: "Regulatory Authority" },
   { id: "compliance", label: "Compliance Steps" },
   { id: "sector-specific", label: "Sector-Specific" },
+  { id: "assessment", label: "Taking the Assessment" },
 ];

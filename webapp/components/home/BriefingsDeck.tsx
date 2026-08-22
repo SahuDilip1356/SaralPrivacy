@@ -97,7 +97,7 @@ function DeckCard({ b, lifted, fanned = false }:
       href={`/briefings/${b.slug}`}
       className={`group block h-full rounded-xl border bg-white overflow-hidden
         motion-safe:transition-all motion-safe:duration-300 ${shadow}
-        ${lifted ? "border-teal-300" : "border-slate-200"}`}
+        ${lifted ? "border-teal-300" : "border-cloud-300"}`}
     >
       {/* Navy mat — same treatment as the archive card, so a briefing looks the
           same wherever it appears. Contained, never cropped. */}

@@ -195,6 +195,34 @@
   img { max-width: 100%; height: auto; }
 }
 
+/* ── Display type scale — Quiet Authority (LANDING_PAGE_QUIET_AUTHORITY_SPEC §4)
+   All Inter; the premium register is size, tracking and line-height, not a new
+   face. Weight stays 600 per the heading-weight cap. Three tiers:
+     display-1  the hero H1 only
+     display-2  L1 narrative sections (risk map, recognition, final CTA)
+     display-3  L2/L3 working sections
+   Colour is NOT set here — a display heading sits on white, deep and navy
+   grounds, so ink stays with the component. `font-optical-sizing` engages the
+   display cut where the loaded Inter variable carries the opsz axis; it is a
+   safe no-op where it doesn't. */
+.type-display-1 {
+  font-size: clamp(2.5rem, 5.5vw, 4.25rem);
+  font-weight: 600; line-height: 1.05; letter-spacing: -0.02em;
+  font-optical-sizing: auto; text-wrap: balance;
+}
+.type-display-2 {
+  font-size: clamp(2.125rem, 4vw, 3.25rem);
+  font-weight: 600; line-height: 1.1; letter-spacing: -0.015em;
+  font-optical-sizing: auto; text-wrap: balance;
+}
+.type-display-3 {
+  font-size: clamp(1.875rem, 3.2vw, 2.75rem);
+  font-weight: 600; line-height: 1.12; letter-spacing: -0.015em;
+  font-optical-sizing: auto; text-wrap: balance;
+}
+/* Section intro copy — the quiet carrier of the editorial feel. */
+.type-intro { font-size: 1.0625rem; line-height: 1.65; }
+
 /* ── Custom scrollbar ───────────────────────────────────────────────────────── */
 ::-webkit-scrollbar       { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: #EEF2F7; }
@@ -210,6 +238,48 @@
 
 /* SVG dashed connectors that "flow" outward */
 .sp-dash-flow { animation: sp-dash-flow 1s linear infinite; }
+
+/* ── Guide cover: pages opening one by one (S8 Resources) ──────────────────
+   Three leaves start hidden behind the cover and fan out past its right edge,
+   each a little further and a beat later than the last — the page edges of a
+   book being opened, seen front-on.
+
+   First attempt used a 3D rotateY hinge on the spine, which is the physically
+   correct motion and completely invisible: the leaves swung BEHIND the cover
+   face, which is opaque and stacked above them. Translation past the visible
+   edge is the version a reader can actually see.
+
+   Runs once when the card first reaches the viewport (JS adds .sp-open), and
+   again on hover. Nothing loops: the motion inventory allows an entrance, not
+   an idle. */
+@keyframes sp-page-open {
+  from { transform: translateX(0) rotate(0deg); opacity: 0; }
+  to   { transform: translateX(var(--leaf-x)) rotate(var(--leaf-r)); opacity: 1; }
+}
+
+.sp-cover-leaf {
+  transform-origin: left bottom;
+  transform: translateX(0) rotate(0deg);
+  opacity: 0;
+}
+
+.sp-open .sp-cover-leaf,
+.sp-cover:hover .sp-cover-leaf {
+  animation: sp-page-open 560ms cubic-bezier(0.22, 0.68, 0.35, 1) both;
+  animation-delay: var(--leaf-delay);
+  transform: translateX(var(--leaf-x)) rotate(var(--leaf-r));
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sp-cover-leaf,
+  .sp-open .sp-cover-leaf,
+  .sp-cover:hover .sp-cover-leaf {
+    animation: none;
+    transform: translateX(var(--leaf-x)) rotate(var(--leaf-r));
+    opacity: 1;
+  }
+}
 
 /* Vertical HTML dashed connector that "flows" downward */
 .sp-line-flow {

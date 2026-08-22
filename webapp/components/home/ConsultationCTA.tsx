@@ -5,7 +5,7 @@ export function ConsultationCTA() {
   return (
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="bg-navy-700 rounded-2xl p-10 lg:p-14 relative overflow-hidden">
+        <div className="bg-navy-700 rounded-xl p-10 lg:p-14 relative overflow-hidden">
           {/* Background accent — teal radial */}
           <div className="absolute inset-0 opacity-10">
             <div
