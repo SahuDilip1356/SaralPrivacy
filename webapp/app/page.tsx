@@ -13,6 +13,16 @@ import { organizationSchema, websiteSchema, speakableSchema } from "@/lib/schema
 import { PressProofStrip } from "@/components/ui/PressProofStrip";
 import { Section } from "@/components/ui/Section";
 
+// Hourly ISR, matching /briefings. Without it this page is fully static (the
+// build log renders it `○`), so the briefings deck freezes at deploy time —
+// tolerable when the deck was only "seven recent cards", not once it carries a
+// `LATEST · <date>` dateline. A dateline is a factual claim, and a claim that
+// only refreshes when someone happens to deploy is one that goes stale in
+// public: the homepage would say 22 Aug while /briefings, one click away,
+// showed the 25th. Same window as the source page, so the two cannot disagree
+// by more than an hour.
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: "DPDPA Compliance for Indian Businesses | SaralPrivacy",
   description:
