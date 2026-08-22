@@ -31,7 +31,7 @@ import { sectorNavLinks } from "./sectors.ts";
  * scannable triads and Resources stops asking the reader to infer that a hub,
  * a feed and a lookup are different kinds of thing.
  *
- * ── Why three menus, not four
+ * ── Which four menus, and why not the old four
  *
  * "Readiness" and "Tools" claimed to split on "where do I stand?" versus "help
  * me do the work", but the line did not hold: the penalty calculator is a tool
@@ -43,6 +43,17 @@ import { sectorNavLinks } from "./sectors.ts";
  * They are now one menu whose groups follow the actual sequence of the work —
  * Assess, then Map, then Act. The scent words the split was protecting survive
  * as group headings, which is where they were doing the work anyway.
+ *
+ * The slot that freed went to Insights. Resources was carrying two different
+ * relationships to time: reference a reader consults when a question comes up
+ * (the Act, the Rules, the glossary, the FAQ) and a feed they return to
+ * because it changed (briefings, the blog). Someone coming back for today's
+ * briefing should not have to open a menu named for looking things up.
+ *
+ *   Compliance  what do I have to do, and what do I do it with
+ *   Industries  show me my sector
+ *   Insights    what is new, and what is being said about us
+ *   Resources   help me understand it, and answer my question
  *
  * ── On the destinations that appear here and in lib/learnNav.ts
  *
@@ -187,6 +198,55 @@ export const navMenus: NavMenu[] = [
     groups: sectorGroups(),
   },
   {
+    // Briefings and the blog used to sit inside Resources under "Keep up",
+    // next to the Act, the Rules and the glossary. That put two different
+    // relationships to time in one panel: reference you consult when a
+    // question comes up, and a feed you return to because it changed. A
+    // reader coming back for today's briefing had to open a menu named for
+    // looking things up. They are their own chip now.
+    label: "Insights",
+    featured: {
+      label: "Daily briefings",
+      href: "/briefings",
+      description: "What moved in Indian privacy today, in under two minutes.",
+    },
+    groups: [
+      {
+        heading: "Read",
+        items: [
+          {
+            label: "Briefings archive",
+            href: "/briefings/all",
+            description: "Every briefing so far, searchable.",
+          },
+          {
+            label: "Blog",
+            href: "/blog",
+            description: "Longer pieces on doing privacy work in an Indian business.",
+          },
+        ],
+      },
+      {
+        // Media was in the footer only, so the pressroom was invisible from
+        // the chrome. It is the other half of "what is being published", and
+        // it is what gives this panel a second column.
+        heading: "In the press",
+        items: [
+          {
+            label: "Media coverage",
+            href: "/media/coverage",
+            description: "Where SaralPrivacy has been cited and quoted.",
+          },
+          {
+            label: "Press wall",
+            href: "/media/press-wall",
+            description: "Logos, boilerplate and assets for journalists.",
+          },
+        ],
+      },
+    ],
+  },
+  {
     label: "Resources",
     featured: {
       label: "Learn DPDPA",
@@ -212,21 +272,6 @@ export const navMenus: NavMenu[] = [
             label: "Glossary",
             href: "/glossary",
             description: "Fifty-plus DPDPA terms, defined without the legalese.",
-          },
-        ],
-      },
-      {
-        heading: "Keep up",
-        items: [
-          {
-            label: "Daily briefings",
-            href: "/briefings",
-            description: "What moved in Indian privacy today, in under two minutes.",
-          },
-          {
-            label: "Blog",
-            href: "/blog",
-            description: "Longer pieces on doing privacy work in an Indian business.",
           },
         ],
       },

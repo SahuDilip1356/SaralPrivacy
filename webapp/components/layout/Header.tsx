@@ -338,11 +338,15 @@ export function Header() {
                         onClick={() => (isOpen ? close() : open(menu.label))}
                         onKeyDown={(e) => onTriggerKeyDown(e, menu)}
                         className={cn(
-                          // px-2.5 at lg, px-3 from xl: at 1024px the row has
-                          // roughly 14px of true free space once the flex gaps
-                          // are counted, and the tighter padding buys ~16px
-                          // more without being visible at that width.
-                          "flex items-center gap-1 whitespace-nowrap px-2.5 xl:px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                          // px-2 at lg, px-3 from xl. Adding the Insights menu
+                          // cost the 1024px row about 93px and dropped its
+                          // slack to 19px — under the 24px floor the
+                          // acceptance script enforces. Four triggers at
+                          // px-2 instead of px-2.5 hand back ~32px, which
+                          // clears the floor without hiding the guide link or
+                          // pushing the bar back up to the xl breakpoint.
+                          // Invisible at that width; xl is unchanged.
+                          "flex items-center gap-1 whitespace-nowrap px-2 xl:px-3 py-2 rounded-lg text-sm font-medium transition-colors",
                           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2",
                           isOpen || menuIsActive(menu)
                             ? "text-green-800 bg-green-50"
