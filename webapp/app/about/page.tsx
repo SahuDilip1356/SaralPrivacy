@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     absolute: "About SaralPrivacy | Practical DPDPA Readiness for Indian Businesses",
   },
   description:
-    "SaralPrivacy helps Indian businesses understand, assess, and act on DPDPA obligations — plain-English guidance, personal data discovery, sector-specific assessments, and advisory support.",
+    "SaralPrivacy helps Indian businesses understand, assess, and act on DPDPA obligations: plain-English guidance, personal data discovery, sector-specific assessments, and advisory support.",
   alternates: { canonical: "https://saralprivacy.com/about" },
 };
 
@@ -82,7 +82,7 @@ export default function AboutPage() {
                   icon: Users,
                   title: "Built for Indian businesses",
                   description:
-                    "Not a GDPR guide repurposed for India — written for Indian workflows and data practices.",
+                    "Not a GDPR guide repurposed for India, but written for Indian workflows and data practices.",
                 },
                 {
                   icon: MessageSquare,
@@ -109,7 +109,7 @@ export default function AboutPage() {
             <h2 className="text-xl font-semibold text-navy-700 mb-5">How SaralPrivacy Works</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {[
-                { step: "1", title: "Understand", body: "What DPDPA means for your business — in plain English, not legalese." },
+                { step: "1", title: "Understand", body: "What DPDPA means for your business, in plain English, not legalese." },
                 { step: "2", title: "Discover", body: "The personal data your business actually holds, across people and systems." },
                 { step: "3", title: "Assess", body: "Your readiness through a free, sector-specific assessment." },
                 { step: "4", title: "Act", body: "Prioritise consent, notices, access, vendors, retention, and breach readiness." },
@@ -131,23 +131,23 @@ export default function AboutPage() {
             <ul className="space-y-3 text-sm text-slate-600 leading-relaxed">
               <li className="flex items-start gap-3">
                 <span className="w-2 h-2 rounded-full bg-green-500 mt-1.5 shrink-0" />
-                <span><strong className="text-navy-700">Free readiness assessments</strong> — Sector-specific questionnaires that surface the biggest DPDPA gaps in your business in 3–5 minutes, with a plain-English risk score and prioritised next steps.</span>
+                <span><strong className="text-navy-700">Free readiness assessments.</strong> Sector-specific questionnaires that surface the biggest DPDPA gaps in your business in 3–5 minutes, with a plain-English risk score and prioritised next steps.</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="w-2 h-2 rounded-full bg-green-500 mt-1.5 shrink-0" />
-                <span><strong className="text-navy-700">Daily briefings</strong> — Short, practical updates on DPDPA developments, regulatory notices, and implementation guidance published regularly for Indian businesses.</span>
+                <span><strong className="text-navy-700">Daily briefings.</strong> Short, practical updates on DPDPA developments, regulatory notices, and implementation guidance published regularly for Indian businesses.</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="w-2 h-2 rounded-full bg-green-500 mt-1.5 shrink-0" />
-                <span><strong className="text-navy-700">Industry guides</strong> — Sector-specific compliance guidance across every industry we assess — from recruitment, CA firms and clinics to fintech, real estate and wellness — covering the specific risks and workflows that matter in each sector.</span>
+                <span><strong className="text-navy-700">Industry guides.</strong> Sector-specific compliance guidance across every industry we assess, from recruitment, CA firms and clinics to fintech, real estate and wellness, covering the specific risks and workflows that matter in each sector.</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="w-2 h-2 rounded-full bg-green-500 mt-1.5 shrink-0" />
-                <span><strong className="text-navy-700">Guide</strong> — A practitioner guide updated for the DPDP Rules, 2025, covering applicability, consent, notices, rights, breach response, sector risks, and a 30-day action plan.</span>
+                <span><strong className="text-navy-700">Guide.</strong> A practitioner guide updated for the DPDP Rules, 2025, covering applicability, consent, notices, rights, breach response, sector risks, and a 30-day action plan.</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="w-2 h-2 rounded-full bg-green-500 mt-1.5 shrink-0" />
-                <span><strong className="text-navy-700">Advisory</strong> — Expert consultation for businesses that need specific guidance on their data flows, vendor agreements, consent architecture, or compliance priorities.</span>
+                <span><strong className="text-navy-700">Advisory.</strong> Expert consultation for businesses that need specific guidance on their data flows, vendor agreements, consent architecture, or compliance priorities.</span>
               </li>
             </ul>
           </div>
@@ -156,7 +156,7 @@ export default function AboutPage() {
           <div className="bg-white rounded-xl border border-slate-200 p-7">
             <h2 className="text-xl font-semibold text-navy-700 mb-4">Who It Serves</h2>
             <p className="text-sm text-slate-600 leading-relaxed mb-4">
-              SaralPrivacy is built for Indian businesses that process personal data as a routine part of their operations — not data protection specialists, but founders, operations leads, compliance managers, and senior staff who need to understand what to do and in what order.
+              SaralPrivacy is built for Indian businesses that process personal data as a routine part of their operations. Not data protection specialists, but founders, operations leads, compliance managers, and senior staff who need to understand what to do and in what order.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {[
@@ -179,7 +179,7 @@ export default function AboutPage() {
           <div className="bg-white rounded-xl border border-slate-200 p-7">
             <h2 className="text-xl font-semibold text-navy-700 mb-4">Built With a Practitioner&apos;s Lens</h2>
             <p className="text-sm text-slate-600 leading-relaxed">
-              SaralPrivacy is built with a practitioner&apos;s lens — by a digital-transformation and enterprise-applications leader with two decades across ERP, finance systems, workflow automation, governance, and system integration. The conviction behind it is simple: DPDPA readiness isn&apos;t only about reading the law — it&apos;s about translating it into the systems, workflows, access controls, vendor handoffs, and retention practices where personal data actually lives.
+              SaralPrivacy is built with a practitioner&apos;s lens, by a digital-transformation and enterprise-applications leader with two decades across ERP, finance systems, workflow automation, governance, and system integration. The conviction behind it is simple: DPDPA readiness isn&apos;t only about reading the law. It&apos;s about translating it into the systems, workflows, access controls, vendor handoffs, and retention practices where personal data actually lives.
             </p>
           </div>
 
@@ -231,7 +231,7 @@ export default function AboutPage() {
               </li>
               <li className="flex items-start gap-3">
                 <span className="w-2 h-2 rounded-full bg-slate-400 mt-1.5 shrink-0" />
-                Not a one-size-fits-all checklist — DPDPA risk differs by sector.
+                Not a one-size-fits-all checklist: DPDPA risk differs by sector.
               </li>
             </ul>
           </div>

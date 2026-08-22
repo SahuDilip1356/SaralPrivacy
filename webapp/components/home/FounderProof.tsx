@@ -16,7 +16,7 @@ const credentials = [
 ];
 
 const FOUNDER_QUOTE =
-  "I built SaralPrivacy because Indian businesses don't need more legal theory — they need to know what to fix, in plain English. After two decades building finance, ERP and governance systems, I wanted DPDPA made genuinely practical for the people who actually run a business.";
+  "I built SaralPrivacy because Indian businesses don't need more legal theory. They need to know what to fix, in plain English. After two decades building finance, ERP and governance systems, I wanted DPDPA made genuinely practical for the people who actually run a business.";
 
 export function FounderProof() {
   return (

@@ -107,7 +107,7 @@ export function Footer() {
             </p>
             <p className="text-sm text-slate-400 leading-relaxed max-w-xs">
               India&apos;s practical DPDPA readiness platform for businesses.
-              Daily briefings, industry assessments, resources, and advisory —
+              Daily briefings, industry assessments, resources, and advisory, all
               without the legalese.
             </p>
           </div>
@@ -179,7 +179,7 @@ export function Footer() {
                   {DPO.email}
                 </a>
                 <span className="block text-xs text-slate-400 mt-0.5">
-                  Data Protection Officer — {DPO.name}
+                  Data Protection Officer: {DPO.name}
                 </span>
               </li>
               <li className="text-sm leading-snug">

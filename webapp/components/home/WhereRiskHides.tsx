@@ -422,7 +422,7 @@ export function WhereRiskHides() {
             aria-hidden. */}
         <div className="max-w-2xl mx-auto mt-10" aria-hidden="true">
           <p className="text-center text-2xs font-semibold uppercase tracking-[0.09em] text-slate-400 mb-5">
-            The data lifecycle — where this gap lives
+            The data lifecycle: where this gap lives
           </p>
           <div className="flex items-start">
             {LIFECYCLE.map((label, i) => {
@@ -455,7 +455,7 @@ export function WhereRiskHides() {
         </div>
 
         <p className="text-center text-slate-400 text-sm mt-10 max-w-xl mx-auto">
-          These are ordinary workflows, not integrations — SaralPrivacy does not
+          These are ordinary workflows, not integrations. SaralPrivacy does not
           connect to any of them. DPDPA risk usually hides here, not in legal
           documents.
         </p>

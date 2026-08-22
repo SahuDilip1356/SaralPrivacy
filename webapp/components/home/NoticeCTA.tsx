@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowRight, FileText, ListChecks, ShieldCheck } from "lucide-react";
 
 const points = [
-  { icon: ListChecks, text: "Answer 8 plain questions — no legal jargon, no blank page" },
+  { icon: ListChecks, text: "Answer 8 plain questions: no legal jargon, no blank page" },
   { icon: FileText, text: "Get a full notice, form mini-notices, consent text & rights block" },
   { icon: ShieldCheck, text: "Built around the DPDPA's Section 5 notice requirements" },
 ];

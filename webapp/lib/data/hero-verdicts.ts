@@ -22,7 +22,7 @@ export const HERO_VERDICTS: HeroVerdict[] = [
   { slug: "ca-firms", chipLabel: "CA firm", band: "High", riskLine: "Client PAN, financials and KYC sit across email, drives and WhatsApp." },
   { slug: "training-institutes", chipLabel: "training institute", band: "Moderate", riskLine: "Student records, fee data and parent contacts often have no retention limit." },
   { slug: "d2c-brands", chipLabel: "D2C brand", band: "Moderate–High", riskLine: "Customer addresses, order history and ad-pixel data flow to many vendors." },
-  { slug: "clinics-diagnostic-labs", chipLabel: "diagnostic lab", band: "High", riskLine: "You hold high-impact health data — and often share reports over WhatsApp." },
+  { slug: "clinics-diagnostic-labs", chipLabel: "diagnostic lab", band: "High", riskLine: "You hold high-impact health data, and often share reports over WhatsApp." },
   { slug: "schools-colleges", chipLabel: "school or college", band: "High", riskLine: "Children's data carries the strictest consent and verifiable-parent rules." },
   { slug: "law-firms", chipLabel: "law firm", band: "High", riskLine: "Privileged client matters and ID copies sit in inboxes and shared drives." },
   { slug: "real-estate", chipLabel: "real estate firm", band: "Moderate–High", riskLine: "KYC, income proofs and Aadhaar copies pile up across deals and brokers." },

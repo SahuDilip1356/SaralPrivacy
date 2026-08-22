@@ -107,7 +107,7 @@ function DeckCard({ b, lifted, fanned = false }:
           /* eslint-disable-next-line @next/next/no-img-element */
           <img
             src={b.image}
-            alt={b.infTitle ? `${b.infTitle} — DPDPA infographic` : `${b.title} — DPDPA infographic`}
+            alt={b.infTitle ? `${b.infTitle}: DPDPA infographic` : `${b.title}: DPDPA infographic`}
             loading="lazy"
             decoding="async"
             className="w-full h-full object-contain rounded-md ring-1 ring-white/10"

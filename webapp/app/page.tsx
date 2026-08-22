@@ -35,9 +35,9 @@ export const metadata: Metadata = {
     locale: 'en_IN',
     url: 'https://saralprivacy.com',
     siteName: 'SaralPrivacy',
-    title: 'SaralPrivacy — DPDPA Compliance for Indian Businesses',
+    title: 'SaralPrivacy: DPDPA Compliance for Indian Businesses',
     description: 'Free DPDPA readiness assessments, daily briefings, and practical compliance guides for Indian businesses.',
-    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'SaralPrivacy — DPDPA Compliance' }],
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'SaralPrivacy: DPDPA Compliance' }],
   },
 };
 
