@@ -239,6 +239,48 @@
 /* SVG dashed connectors that "flow" outward */
 .sp-dash-flow { animation: sp-dash-flow 1s linear infinite; }
 
+/* ── Guide cover: pages opening one by one (S8 Resources) ──────────────────
+   Three leaves start hidden behind the cover and fan out past its right edge,
+   each a little further and a beat later than the last — the page edges of a
+   book being opened, seen front-on.
+
+   First attempt used a 3D rotateY hinge on the spine, which is the physically
+   correct motion and completely invisible: the leaves swung BEHIND the cover
+   face, which is opaque and stacked above them. Translation past the visible
+   edge is the version a reader can actually see.
+
+   Runs once when the card first reaches the viewport (JS adds .sp-open), and
+   again on hover. Nothing loops: the motion inventory allows an entrance, not
+   an idle. */
+@keyframes sp-page-open {
+  from { transform: translateX(0) rotate(0deg); opacity: 0; }
+  to   { transform: translateX(var(--leaf-x)) rotate(var(--leaf-r)); opacity: 1; }
+}
+
+.sp-cover-leaf {
+  transform-origin: left bottom;
+  transform: translateX(0) rotate(0deg);
+  opacity: 0;
+}
+
+.sp-open .sp-cover-leaf,
+.sp-cover:hover .sp-cover-leaf {
+  animation: sp-page-open 560ms cubic-bezier(0.22, 0.68, 0.35, 1) both;
+  animation-delay: var(--leaf-delay);
+  transform: translateX(var(--leaf-x)) rotate(var(--leaf-r));
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sp-cover-leaf,
+  .sp-open .sp-cover-leaf,
+  .sp-cover:hover .sp-cover-leaf {
+    animation: none;
+    transform: translateX(var(--leaf-x)) rotate(var(--leaf-r));
+    opacity: 1;
+  }
+}
+
 /* Vertical HTML dashed connector that "flows" downward */
 .sp-line-flow {
   background-image: repeating-linear-gradient(to bottom, #35B6AE 0 6px, transparent 6px 12px);

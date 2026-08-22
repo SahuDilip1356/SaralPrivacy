@@ -91,34 +91,46 @@ export function ReportPreview() {
         </p>
       </div>
 
-      {/* sector tabs */}
-      <div
-        className="flex flex-wrap justify-center gap-2 mb-6"
-        role="tablist"
-        aria-label="Preview a sector report"
-      >
-        {VERDICT_PREVIEWS.map((p) => {
-          const on = p.slug === active;
-          return (
-            <button
-              key={p.slug}
-              type="button"
-              role="tab"
-              aria-selected={on}
-              onClick={() => {
-                if (p.slug !== active) trackEvent.beat5TabSelect({ sector: p.slug });
-                setActive(p.slug);
-              }}
-              className={`inline-flex items-center justify-center min-h-11 text-sm rounded-full border px-4 py-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 ${
-                on
-                  ? "bg-teal-800 border-teal-800 text-white font-semibold"
-                  : "bg-cloud-25 border-cloud-200 text-slate-600 hover:border-teal-400 hover:text-teal-900"
-              }`}
-            >
-              {p.tab}
-            </button>
-          );
-        })}
+      {/* ── Sector tabs — all twelve, deliberately SUBORDINATE ──────────────
+          The sector ring deck further down is where a visitor chooses their
+          industry; this rail only re-skins a sample report. Two twelve-chip
+          rails given equal weight would read as the page asking the same
+          question twice, so this one is smaller (13px, tighter padding), a
+          single scrolling line rather than a wrapped block, and edge-faded so
+          it reads as a control strip instead of a menu.
+
+          Scrolls on every width, not just mobile: twelve chips do not fit a
+          centred line at 1440 either, and a rail that wraps to three rows is
+          the "menu" this is trying not to be. */}
+      <div className="relative mb-6">
+        <div
+          className="flex gap-1.5 overflow-x-auto pb-1 -mx-4 px-4 sm:mx-0 sm:px-0 sm:justify-start lg:justify-center [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          role="tablist"
+          aria-label="Preview a sector report"
+        >
+          {VERDICT_PREVIEWS.map((p) => {
+            const on = p.slug === active;
+            return (
+              <button
+                key={p.slug}
+                type="button"
+                role="tab"
+                aria-selected={on}
+                onClick={() => {
+                  if (p.slug !== active) trackEvent.beat5TabSelect({ sector: p.slug });
+                  setActive(p.slug);
+                }}
+                className={`shrink-0 inline-flex items-center justify-center min-h-11 sm:min-h-0 text-[13px] rounded-full border px-3 py-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 ${
+                  on
+                    ? "bg-teal-800 border-teal-800 text-white font-semibold"
+                    : "bg-cloud-25 border-cloud-200 text-slate-600 hover:border-teal-400 hover:text-teal-900"
+                }`}
+              >
+                {p.tab}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* The observer target is this wrapper, not the Surface: `Surface` is a

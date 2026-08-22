@@ -50,22 +50,37 @@ export function PressProofStrip({
   /* ── Rail — S2, the seam between the hero and the risk map. One tight band,
      no cards, no heading: its whole job is to answer "can I trust this enough
      to click" in the two seconds after the promise lands, so it must read as a
-     seam in the dark chapter, never as a section of its own. ── */
+     seam in the dark chapter, never as a section of its own.
+
+     Founder note (2026-08-22): "could the background or font be changed to get
+     attention?" — the answer is ink, not ground. Going light here would break
+     the continuous dark opening (hero → seam → risk map) that the same review
+     asked for two rounds earlier, and a background change is the one lever that
+     costs that. So the press names step up to white at 14px semibold, the
+     eyebrow gets letter-spacing so it reads as a label rather than as more body
+     copy, and the facts line stays quiet underneath. The band gets louder
+     without becoming a section. ── */
   if (variant === "rail") {
     const sep = onDark ? "text-white/25" : "text-cloud-400";
     return (
       <div className="flex flex-col items-center gap-1.5 text-center">
         <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-[13px]">
-          <span className={onDark ? "text-slate-400" : "text-slate-600"}>Featured in:</span>
+          <span
+            className={`text-2xs font-semibold uppercase tracking-[0.09em] ${
+              onDark ? "text-cloud-400" : "text-slate-600"
+            }`}
+          >
+            Featured in
+          </span>
           {PUBS.map((p, i) => (
             <span key={p.name} className="inline-flex items-center gap-2">
               <a
                 href={p.url}
                 target="_blank"
                 rel="nofollow noopener"
-                className={`inline-flex items-center pointer-coarse:min-h-11 font-medium underline underline-offset-4 transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${
+                className={`inline-flex items-center pointer-coarse:min-h-11 text-sm font-semibold underline underline-offset-4 transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${
                   onDark
-                    ? "text-slate-200 decoration-white/25 hover:decoration-white hover:text-white focus-visible:ring-green-400 focus-visible:ring-offset-navy-800"
+                    ? "text-white decoration-white/30 hover:decoration-white focus-visible:ring-green-400 focus-visible:ring-offset-navy-800"
                     : "text-navy-700 decoration-cloud-400 hover:decoration-navy-700 focus-visible:ring-green-800"
                 }`}
               >

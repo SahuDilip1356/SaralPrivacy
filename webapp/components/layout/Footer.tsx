@@ -1,9 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
 import { PressProofStrip } from "@/components/ui/PressProofStrip";
 import { sectorNavLinks } from "@/lib/data/sectors";
-import { dataMapFooterLinks } from "@/lib/data/data-flow";
 import { DPO } from "@/lib/data/privacy-vendors";
 
 // The institutional footer (Quiet Authority spec §10). Restructured, not
@@ -36,9 +34,6 @@ const productLinks = [
 // the footer's height. The maps keep their links, but as a quiet "map" suffix
 // on each industry row: one column, twenty-four hrefs, half the pixels.
 // Registry-driven — a sector without a live map simply gets no suffix.
-const FLOW_MAP_HREFS = new Map(
-  dataMapFooterLinks.map((l) => [l.href.replace(/\/data-flow$/, ""), l.href]),
-);
 
 const knowledgeLinks = [
   { label: "Daily Briefings", href: "/briefings" },
@@ -127,38 +122,21 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Industries — all twelve, each with its live flow map as a quiet
-              suffix. The footer is part of the internal-linking budget
-              (INTERNAL_LINKING_SPEC.md) and drops nothing: 12 industry hrefs +
-              12 map hrefs, in one column instead of two. */}
+          {/* Industries — two lines, not twenty-four.
+              The column used to list all twelve sectors, each with its flow map
+              as a "· map" suffix: 24 links on every page of the site. Founder
+              call (2026-08-22): it read as clutter, and it did.
+
+              Dropping it outright would have cost the sitewide crawl path to
+              twelve pages we invest in — the homepage's sector deck carries
+              those links, but only on the homepage. So the rows collapse to
+              their two hubs, which link onward to all twelve. Clutter gone,
+              crawl path intact, one extra hop. */}
           <div>
             <ColumnLabel>Industries</ColumnLabel>
             <ul className="space-y-2.5">
-              {sectorNavLinks.map((l) => {
-                const mapHref = FLOW_MAP_HREFS.get(l.href);
-                return (
-                  <li key={l.href} className="text-sm leading-snug">
-                    <Link
-                      href={l.href}
-                      className="inline-flex items-center pointer-coarse:min-h-11 text-slate-400 hover:text-white transition-colors"
-                    >
-                      {l.label}
-                    </Link>
-                    {mapHref && (
-                      <>
-                        {" "}
-                        <Link
-                          href={mapHref}
-                          aria-label={`${l.label} — data flow map`}
-                          className="inline-flex items-center pointer-coarse:min-h-11 text-xs text-teal-300/80 hover:text-teal-200 transition-colors"
-                        >
-                          · map
-                        </Link>
-                      </>
-                    )}
-                  </li>
-                );
-              })}
+              <FooterLink href="/industries" label={`All ${sectorNavLinks.length} industries`} />
+              <FooterLink href="/data-mapping" label="Data flow maps" />
             </ul>
           </div>
 
@@ -180,6 +158,12 @@ export function Footer() {
                 <FooterLink key={l.href} {...l} />
               ))}
             </ul>
+            {/* Privacy & legal — now one pane, per the founder's "bring privacy
+                and legal into the same pane". The Privacy Office used to be a
+                full-width band of its own below the columns; the contacts it
+                carried live here instead. They are not dropped: a data
+                fiduciary has to be reachable for access, correction, erasure
+                and complaints, and the DPO's address is how. */}
             <ColumnLabel>
               <span className="mt-6 inline-block">Privacy &amp; legal</span>
             </ColumnLabel>
@@ -187,77 +171,37 @@ export function Footer() {
               {legalLinks.map((l) => (
                 <FooterLink key={l.href} {...l} />
               ))}
+              <li className="text-sm leading-snug pt-1.5">
+                <a
+                  href={`mailto:${DPO.email}`}
+                  className="inline-block pointer-coarse:min-h-11 break-all text-teal-300 hover:text-teal-200 transition-colors"
+                >
+                  {DPO.email}
+                </a>
+                <span className="block text-xs text-slate-400 mt-0.5">
+                  Data Protection Officer — {DPO.name}
+                </span>
+              </li>
+              <li className="text-sm leading-snug">
+                <a
+                  href="mailto:privacy@saralprivacy.com"
+                  className="inline-block pointer-coarse:min-h-11 break-all text-slate-400 hover:text-white transition-colors"
+                >
+                  privacy@saralprivacy.com
+                </a>
+                <span className="block text-xs text-slate-400 mt-0.5">General enquiries</span>
+              </li>
             </ul>
           </div>
         </div>
       </div>
 
-      {/* ── Privacy Office — the block a privacy company should end on: who to
-          write to, who answers for data protection, and what this platform is
-          not. data-nosnippet keeps the disclaimer out of search snippets. ── */}
-      <div className="border-t border-navy-600">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-          <h4 className="text-[11px] font-semibold uppercase tracking-[0.09em] text-cloud-400 mb-5">
-            Privacy office
-          </h4>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-8 gap-y-6">
-            <div>
-              <p className="text-xs text-slate-400 mb-1">General</p>
-              <a
-                href="mailto:privacy@saralprivacy.com"
-                className="inline-flex items-center pointer-coarse:min-h-11 text-sm text-slate-300 hover:text-white transition-colors"
-              >
-                privacy@saralprivacy.com
-              </a>
-            </div>
-            <div>
-              <p className="text-xs text-slate-400 mb-1">
-                Data Protection Officer — {DPO.name}
-              </p>
-              <a
-                href={`mailto:${DPO.email}`}
-                className="inline-flex items-center pointer-coarse:min-h-11 text-sm text-teal-300 hover:text-teal-200 transition-colors"
-              >
-                {DPO.email}
-              </a>
-              <p className="text-xs text-slate-400 mt-1">
-                For access, correction, erasure, or complaints
-              </p>
-            </div>
-            <div data-nosnippet>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                <span className="text-gold-400 font-semibold">Disclaimer:</span>{" "}
-                Information on this platform is for educational purposes only
-                and does not constitute formal legal advice. Consult a qualified
-                professional for legal guidance.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ── Briefings signup — a link, not an inline field: the real form
-          carries an un-prechecked consent box plus the Privacy Notice
-          reference, which a one-field footer box could not carry honestly. ── */}
-      <div className="border-t border-navy-600">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div>
-            <p className="text-sm font-semibold text-white">
-              DPDPA briefings, delivered to your inbox
-            </p>
-            <p className="text-xs text-slate-400 mt-0.5">
-              A short daily read for business owners, not lawyers. Unsubscribe any time.
-            </p>
-          </div>
-          <Link
-            href="/subscribe"
-            className="inline-flex items-center gap-1.5 shrink-0 pointer-coarse:min-h-11 text-sm font-semibold text-teal-300 hover:text-teal-200 transition-colors"
-          >
-            Subscribe to briefings
-            <ArrowRight size={14} />
-          </Link>
-        </div>
-      </div>
+      {/* The Privacy Office band and the briefings signup band both used to
+          sit here — three stacked full-width bands above the press row, which
+          is what made this footer read as cluttered. The office contacts moved
+          into the Privacy & legal column above; the briefings signup is one
+          click away from the "Daily Briefings" link in Knowledge and from
+          /subscribe. Disclaimer moved to the bottom bar, still data-nosnippet. */}
 
       {/* ── Press proof ── */}
       <div className="border-t border-navy-600">
@@ -270,10 +214,13 @@ export function Footer() {
       <div data-nosnippet className="border-t border-navy-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs text-slate-400">
-            © {new Date().getFullYear()} SaralPrivacy. All rights reserved.
+            © {new Date().getFullYear()} SaralPrivacy. All rights reserved.{" "}
+            <span className="block sm:inline">
+              <span className="text-gold-400 font-semibold">Disclaimer:</span> educational
+              information, not formal legal advice.
+            </span>
           </p>
           <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
-            <span className="text-xs text-slate-400">Privacy Notice v2.0 · Updated July 2026</span>
             <Link href="/privacy" className="inline-flex items-center pointer-coarse:min-h-11 text-xs text-slate-400 hover:text-white transition-colors">
               Privacy
             </Link>

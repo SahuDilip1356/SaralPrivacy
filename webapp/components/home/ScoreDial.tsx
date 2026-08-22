@@ -7,6 +7,13 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 //   variant="full"  → gold arc on a slate track (hero: the score IS the subject)
 //   variant="quiet" → muted, thinner arc, no solid track (a step artifact must
 //                     stay secondary to the step title)
+//   onDark          → the same dial on navy. Not a third variant: the two
+//                     variants are about EMPHASIS and this is about GROUND, and
+//                     folding them together would give four names for two ideas.
+//                     `quiet` is tuned for a light card — its arc (#B98F3E)
+//                     measures 3.5:1 on navy-700 and its track is invisible
+//                     there — so on navy the arc steps up to gold-400 (8.52:1)
+//                     and the track becomes a white scrim.
 //   animate         → arc draws + number counts up 0→value once, when in view.
 //
 // Robustness: state initialises to the FINAL value, so server-render, no-JS,
@@ -22,6 +29,8 @@ type Props = {
   size?: number;
   stroke?: number;
   variant?: "full" | "quiet";
+  /** Rendering on a navy ground — re-inks the arc and track, nothing else. */
+  onDark?: boolean;
   animate?: boolean;
   showTotal?: boolean;
 };
@@ -31,6 +40,7 @@ export function ScoreDial({
   size = 66,
   stroke = 8,
   variant = "full",
+  onDark = false,
   animate = false,
   showTotal = true,
 }: Props) {
@@ -99,8 +109,12 @@ export function ScoreDial({
     };
   }, [animate, value, circ, finalOffset]);
 
-  const arc = variant === "full" ? "#E8AB42" : "#B98F3E";
-  const track = variant === "full" ? "#E2E8F0" : "rgba(185,143,62,0.16)";
+  const arc = onDark ? "#E8AB42" : variant === "full" ? "#E8AB42" : "#B98F3E";
+  const track = onDark
+    ? "rgba(255,255,255,0.14)"
+    : variant === "full"
+      ? "#E2E8F0"
+      : "rgba(185,143,62,0.16)";
   const arcOpacity = variant === "quiet" ? 0.85 : 1;
   const cx = size / 2;
 
@@ -134,7 +148,7 @@ export function ScoreDial({
         dominantBaseline="central"
         fontSize={size * 0.3}
         fontWeight={700}
-        fill={variant === "quiet" ? "#E2E8F0" : "#121A2E"}
+        fill={onDark || variant === "quiet" ? "#E2E8F0" : "#121A2E"}
         fontFamily="inherit"
       >
         {count}

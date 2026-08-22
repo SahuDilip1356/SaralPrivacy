@@ -24,6 +24,7 @@ import { DATA_MAPS } from "@/lib/data/data-flow";
 import { trackEvent } from "@/lib/analytics";
 import { Section, Eyebrow } from "@/components/ui/Section";
 import { useInView } from "@/lib/hooks/useInView";
+import { SECTOR_ACCENTS } from "@/lib/data/sector-accents";
 import { FlowMapCardLink } from "./FlowMapCardLink";
 
 // S7 — "Your sector", as a cover-flow deck. Founder-directed design
@@ -169,10 +170,15 @@ function pose(d: number) {
   if (abs > 2) {
     return { x: d < 0 ? -90 : 90, s: 0.8, o: 0, z: 0 };
   }
+  // The ±2 opacity was 0.55, tuned when these cards were light on white: a
+  // pale card fading toward a pale ground reads as distance. The cards are navy
+  // now, and navy at 55% over white is not a receding card, it is a grey slab —
+  // the depth cue inverted the moment the fill did. Depth on a dark card comes
+  // from scale and stacking instead, so the fade only has to take the edge off.
   const table = [
     { x: 0, s: 1, o: 1, z: 30 },
-    { x: 40, s: 0.92, o: 0.95, z: 20 },
-    { x: 72, s: 0.85, o: 0.55, z: 10 },
+    { x: 40, s: 0.92, o: 0.96, z: 20 },
+    { x: 72, s: 0.85, o: 0.82, z: 10 },
   ][abs]!;
   return { x: d < 0 ? -table.x : table.x, s: table.s, o: table.o, z: table.z };
 }
@@ -224,11 +230,13 @@ export function AudienceCards() {
     }
   };
 
+  // No `divider` on the Section: the navy "How it works" above is the boundary,
+  // and a hairline is only for two beats that share a fill.
   return (
-    <Section id="sectors" surface="white" type="evidence" divider className="scroll-mt-20">
+    <Section id="sectors" surface="white" type="evidence" className="scroll-mt-20">
       <div ref={ref} onFocusCapture={() => setEngaged(true)}>
         <div className="text-center mb-8">
-          <Eyebrow className="mb-3">Your sector</Eyebrow>
+          <Eyebrow className="mb-3">Explore DPDPA by your sector</Eyebrow>
           <h2 className="type-display-3 text-navy-700 mb-4">
             Same law. Different data. Different fixes.
           </h2>
@@ -253,10 +261,16 @@ export function AudienceCards() {
                 role="tab"
                 aria-selected={on}
                 onClick={() => go(i, "chip")}
-                className={`shrink-0 inline-flex items-center justify-center min-h-11 sm:min-h-0 text-sm rounded-full border px-3.5 py-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 ${
+                /* Founder call: off is grey, on is green. green-700 + white is
+                   the light-surface half of the locked CTA convention (5.48:1);
+                   the literal brand-book green-500 + white measures 2.54:1. It
+                   spends a little of green's "this is the action" meaning on a
+                   filter chip — accepted, because one chip in twelve is a small
+                   dose and the selected sector IS the reader's commitment. */
+                className={`shrink-0 inline-flex items-center justify-center min-h-11 sm:min-h-0 text-sm rounded-full border px-3.5 py-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2 ${
                   on
-                    ? "bg-teal-800 border-teal-800 text-white font-semibold"
-                    : "bg-cloud-25 border-cloud-200 text-slate-600 hover:border-teal-400 hover:text-teal-900"
+                    ? "bg-green-700 border-green-700 text-white font-semibold"
+                    : "bg-cloud-50 border-cloud-300 text-slate-600 hover:border-slate-400 hover:text-navy-700"
                 }`}
               >
                 {s.chip}
@@ -282,6 +296,11 @@ export function AudienceCards() {
               const assessmentSlug = s.assessmentHref.replace("/assessment/", "");
               const preview = VERDICT_PREVIEWS.find((v) => v.slug === assessmentSlug);
               const band = getHeroVerdict(assessmentSlug)?.band;
+              // One hue per sector, from the single source that /industries and
+              // /data-mapping already read. Not forked for this page: a second
+              // copy of the palette is exactly how a sector ends up looking like
+              // a different business depending on which page you are on.
+              const accent = SECTOR_ACCENTS[industrySlug]?.dark ?? SECTOR_ACCENTS["ca-firms"].dark;
               const centred = d === 0;
               // Deal-in: before the section is seen, every card waits at the
               // centre, small and transparent; on inView they spread to their
@@ -307,42 +326,59 @@ export function AudienceCards() {
                     transitionDelay: composed && !centred ? `${Math.abs(d) * 90}ms` : undefined,
                   }}
                 >
+                  {/* Founder call: card colour to match /data-mapping — a dark
+                      navy card carrying the sector's own hue, on a light ground.
+                      The inversion is the point: the deck reads as twelve
+                      distinct objects laid on the page rather than twelve tinted
+                      rectangles printed on it, and the sector hue finally has
+                      somewhere bright enough to show. */}
                   <div
                     inert={!centred}
-                    className={`relative overflow-hidden rounded-xl bg-cloud-25 border p-6 sm:p-7 ${
-                      centred ? "border-cloud-300 shadow-elevated" : "border-cloud-200 shadow-card"
+                    className={`relative overflow-hidden rounded-xl bg-navy-700 border p-6 sm:p-7 ${
+                      centred ? "border-white/20 shadow-elevated" : "border-white/10 shadow-card"
                     }`}
                   >
                     <div className="flex flex-wrap items-center gap-3 mb-4">
-                      <span className="w-10 h-10 rounded-lg bg-teal-50 grid place-items-center shrink-0">
-                        <Icon size={20} className="text-teal-800" />
+                      <span className="w-10 h-10 rounded-lg bg-white/10 grid place-items-center shrink-0">
+                        <Icon size={20} className={accent.icon} />
                       </span>
-                      <h3 className="font-semibold text-navy-700 text-lg">{s.title}</h3>
+                      <h3 className="font-semibold text-white text-lg">{s.title}</h3>
                     </div>
-                    <span className="inline-flex items-center gap-1.5 text-2xs font-semibold text-navy-700 bg-gold-400/20 border border-gold-400/40 rounded-full px-2.5 py-1 mb-4">
-                      <span className="w-1.5 h-1.5 rounded-full bg-gold-500" />
+                    {/* Risk stays GOLD on every card, whatever the sector hue.
+                        The accent says which industry this is; gold says what is
+                        at stake, and it is the only colour on this palette that
+                        is ever allowed to say so. */}
+                    <span className="inline-flex items-center gap-1.5 text-2xs font-semibold text-gold-300 bg-gold-400/15 border border-gold-400/40 rounded-full px-2.5 py-1 mb-4">
+                      <span className="w-1.5 h-1.5 rounded-full bg-gold-400" />
                       {s.risk}
                     </span>
 
                     <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-1.5 mb-4">
                       {s.painPoints.map((pp) => (
-                        <li key={pp} className="flex items-start gap-2 text-sm text-slate-600">
-                          <span className="mt-1.5 w-1 h-1 rounded-full bg-teal-700 shrink-0" />
+                        <li key={pp} className="flex items-start gap-2 text-sm text-slate-300">
+                          <span className={`mt-1.5 w-1 h-1 rounded-full shrink-0 ${accent.dot}`} />
                           {pp}
                         </li>
                       ))}
                     </ul>
 
-                    <p className="text-sm text-slate-600 leading-snug border-t border-cloud-200 pt-3.5 mb-4">
+                    <p className="text-sm text-slate-300 leading-snug border-t border-white/10 pt-3.5 mb-4">
                       {s.line}
                     </p>
 
-                    <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-                      <p className="text-xs text-slate-600">
+                    {/* Founder call: the three destinations become chips.
+                        NOT three coloured chips — twelve cards times three
+                        filled colours is thirty-six competing actions, and a
+                        card with three equal buttons has no primary. One filled
+                        chip in the sector's hue (the assessment, which is the
+                        free thing), two outline chips beside it. Same three
+                        destinations, one obvious order. */}
+                    <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
+                      <p className="text-xs text-slate-400">
                         {preview ? (
                           <>
                             Sample score{" "}
-                            <span className="font-semibold text-navy-700 tabular-nums">
+                            <span className="font-semibold text-white tabular-nums">
                               {preview.score}/100
                             </span>{" "}
                             · illustrative
@@ -350,31 +386,31 @@ export function AudienceCards() {
                         ) : band ? (
                           <>
                             Typical risk{" "}
-                            <span className="font-semibold text-navy-700">{band}</span> ·
+                            <span className="font-semibold text-white">{band}</span> ·
                             illustrative
                           </>
                         ) : null}
                       </p>
-                      <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <Link
+                          href={s.href}
+                          className="inline-flex items-center rounded-full border border-white/20 px-3 py-1.5 pointer-coarse:min-h-11 text-[13px] font-medium text-slate-200 hover:border-white/45 hover:text-white transition-colors"
+                        >
+                          Industry guide
+                        </Link>
                         {flowHref && (
                           <FlowMapCardLink
                             href={flowHref}
                             sector={industrySlug}
-                            className="text-slate-600 hover:text-navy-700"
+                            className="rounded-full border border-white/20 px-3 py-1.5 pointer-coarse:min-h-11 text-[13px] font-medium text-slate-200 hover:border-white/45 hover:text-white"
                           />
                         )}
-                        <Link
-                          href={s.href}
-                          className="inline-flex items-center py-3 -my-3 text-sm font-medium text-slate-600 hover:text-navy-700 transition-colors"
-                        >
-                          Industry guide
-                        </Link>
                         <Link
                           href={s.assessmentHref}
                           onClick={() =>
                             trackEvent.landingCtaClick({ cta: "sector", sector: assessmentSlug })
                           }
-                          className="inline-flex items-center gap-1.5 py-3 -my-3 text-sm font-semibold text-teal-800 hover:text-teal-900 transition-colors"
+                          className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 pointer-coarse:min-h-11 text-[13px] font-semibold text-navy-950 transition-colors ${accent.cta}`}
                         >
                           Take the assessment
                           <ArrowRight size={14} />
@@ -389,15 +425,15 @@ export function AudienceCards() {
                         edge. Clicking a spine deals that card forward. */}
                     <div
                       aria-hidden="true"
-                      className={`absolute inset-0 bg-cloud-25 flex items-center transition-opacity duration-300 motion-reduce:!transition-none ${
+                      className={`absolute inset-0 bg-navy-700 flex items-center transition-opacity duration-300 motion-reduce:!transition-none ${
                         centred ? "opacity-0 pointer-events-none" : "opacity-100"
                       } ${d < 0 ? "justify-start pl-7" : "justify-end pr-7"}`}
                     >
                       <span className={`flex items-center gap-3 ${d < 0 ? "" : "flex-row-reverse"}`}>
-                        <span className="w-10 h-10 rounded-lg bg-teal-50 grid place-items-center shrink-0">
-                          <Icon size={20} className="text-teal-800" />
+                        <span className="w-10 h-10 rounded-lg bg-white/10 grid place-items-center shrink-0">
+                          <Icon size={20} className={accent.icon} />
                         </span>
-                        <span className="text-sm font-semibold text-navy-700 whitespace-nowrap">
+                        <span className="text-sm font-semibold text-white whitespace-nowrap">
                           {s.chip}
                         </span>
                       </span>

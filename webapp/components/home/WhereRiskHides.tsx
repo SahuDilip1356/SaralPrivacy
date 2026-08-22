@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   MessageSquare,
   HardDrive,
@@ -83,14 +83,51 @@ const chipMid = (i: number) => chipTop(i) + CHIP_H / 2;
 export function WhereRiskHides() {
   const { ref, inView } = useInView<HTMLDivElement>();
   const [sel, setSel] = useState(0);
+  const [engaged, setEngaged] = useState(false);
+  const [hovering, setHovering] = useState(false);
   const active = tools[sel];
 
-  // Re-selecting the open tool is not a signal, so it does not fire.
+  // Re-selecting the open tool is not a signal, so it does not fire. `engaged`
+  // latches on the first real selection and permanently ends the auto-tour —
+  // a reader who has started steering should never have the page take the
+  // wheel back mid-sentence.
   const select = (i: number) => {
+    setEngaged(true);
     if (i === sel) return;
     setSel(i);
     trackEvent.riskToolSelect({ tool: tools[i].tool, gap: tools[i].gap });
   };
+
+  // ── The auto-tour ──────────────────────────────────────────────────────────
+  // Founder-directed: the section should walk itself so a reader learns that the
+  // chips are selectable without being told. Same guardrails as the sector
+  // ring, plus one that matters more here.
+  //
+  // 5s per tool, not 3. Each panel carries three fields of roughly sixty words;
+  // at 3s a reader cannot finish the FIRST field, and text that moves before it
+  // can be read is worse than text that does not move at all. 5s is enough to
+  // take in one field and decide to stop — which is the actual job of this
+  // motion. It is a direction cue, not a slideshow.
+  //
+  // Exactly one revolution: ten tools, then it rests wherever it landed. It
+  // pauses on hover, ends for good on any selection or keyboard focus, never
+  // starts under reduced motion, and holds while the tab is hidden. Auto-
+  // advances fire no analytics — an advance we performed is not a preference
+  // the visitor expressed.
+  const steps = useRef(0);
+  useEffect(() => {
+    if (!inView || engaged || hovering) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (steps.current >= tools.length) return;
+
+    const id = setInterval(() => {
+      if (document.hidden) return;
+      steps.current += 1;
+      if (steps.current >= tools.length) clearInterval(id);
+      setSel((s) => (s + 1) % tools.length);
+    }, 5000);
+    return () => clearInterval(id);
+  }, [inView, engaged, hovering]);
 
   // staggered fade (delay applied via inline transitionDelay per element)
   const fade = () =>
@@ -108,7 +145,12 @@ export function WhereRiskHides() {
        chips 12.65:1. teal-700 (the light-surface line ink) manages only
        3.52:1 here and must not be used. */
     <Section surface="navy" type="statement" width="wide">
-      <div ref={ref}>
+      <div
+        ref={ref}
+        onPointerEnter={() => setHovering(true)}
+        onPointerLeave={() => setHovering(false)}
+        onFocusCapture={() => setEngaged(true)}
+      >
         {/* header */}
         <div className="text-center mb-8">
           <Eyebrow surface="navy" className="mb-3">

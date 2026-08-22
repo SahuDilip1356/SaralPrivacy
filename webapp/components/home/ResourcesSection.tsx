@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowRight, ListChecks, FileDown } from "lucide-react";
+import { useInView } from "@/lib/hooks/useInView";
 import { Surface } from "@/components/ui/Surface";
 import { Section, Eyebrow } from "@/components/ui/Section";
 import { GUIDE_LANGUAGES } from "@/lib/data/guide-languages";
@@ -31,18 +34,37 @@ const TEMPLATE_COUNT = 17;
  * Decorative — the card's own heading and description carry the content, so
  * this is aria-hidden and the scripts inside it are never announced.
  */
-function GuideCover() {
+function GuideCover({ open }: { open: boolean }) {
   return (
     <div
       aria-hidden
-      className="relative shrink-0 w-[104px] sm:w-[116px] aspect-[3/4] select-none"
+      className={`sp-cover relative shrink-0 w-[104px] sm:w-[116px] aspect-[3/4] select-none ${
+        open ? "sp-open" : ""
+      }`}
     >
-      {/* page block — two hairlines offset right, so the cover reads as the
-          front of something with pages behind it rather than a flat rectangle */}
-      <span className="absolute inset-y-1.5 right-0 w-2 rounded-r-lg bg-cloud-300" />
-      <span className="absolute inset-y-1 right-0.5 w-2 rounded-r-lg bg-cloud-200" />
+      {/* Three leaves, fanning out past the cover's right edge. They start
+          hidden behind the cover, so what the eye sees is page edges appearing
+          one after another. */}
+      {[
+        { x: "6px", r: "1.2deg", delay: "140ms", tone: "bg-cloud-200 border-cloud-300" },
+        { x: "12px", r: "2.6deg", delay: "290ms", tone: "bg-cloud-100 border-cloud-300" },
+        { x: "18px", r: "4.2deg", delay: "440ms", tone: "bg-cloud-50 border-cloud-300" },
+      ].map((leaf) => (
+        <span
+          key={leaf.x}
+          className={`sp-cover-leaf absolute inset-y-1.5 left-2 right-[22px] rounded-r-lg border ${leaf.tone}`}
+          style={
+            {
+              "--leaf-x": leaf.x,
+              "--leaf-r": leaf.r,
+              "--leaf-delay": leaf.delay,
+            } as React.CSSProperties
+          }
+        />
+      ))}
 
-      <div className="absolute inset-0 right-1.5 rounded-r-lg rounded-l-sm bg-navy-700 shadow-[0_10px_24px_-12px_rgba(18,26,46,0.7)] overflow-hidden">
+      {/* The cover itself — sits above the leaves, so they appear from behind. */}
+      <div className="absolute inset-0 right-[22px] rounded-r-lg rounded-l-sm bg-navy-700 shadow-[0_10px_24px_-12px_rgba(18,26,46,0.7)] overflow-hidden z-10">
         {/* spine */}
         <span className="absolute inset-y-0 left-0 w-[7px] bg-navy-900" />
         <span className="absolute inset-y-0 left-[7px] w-px bg-white/15" />
@@ -65,7 +87,30 @@ function GuideCover() {
   );
 }
 
+/**
+ * Per-language chip tints. Spelled out, never derived — the same rule
+ * sector-accents.ts documents, and for the same reason: Tailwind scans source
+ * text, so a constructed class is a class that does not exist.
+ *
+ * Seven hues is a lot of colour for a quiet reference section, so these are
+ * tints (50/200/800), not fills: enough to read as seven distinct things at a
+ * glance, not enough to compete with the one green action on this page. Every
+ * pair is an 800 on a 50, which clears AA on all seven.
+ */
+const LANG_TINTS = [
+  "bg-teal-50 border-teal-200 text-teal-800",
+  "bg-amber-50 border-amber-200 text-amber-800",
+  "bg-indigo-50 border-indigo-200 text-indigo-800",
+  "bg-emerald-50 border-emerald-200 text-emerald-800",
+  "bg-sky-50 border-sky-200 text-sky-800",
+  "bg-violet-50 border-violet-200 text-violet-800",
+  "bg-orange-50 border-orange-200 text-orange-800",
+];
+
 export function ResourcesSection() {
+  // The cover opens once, when the section first reaches the viewport.
+  const { ref, inView } = useInView<HTMLDivElement>(0.3);
+
   // No briefings card here. The deck immediately above already shows the latest
   // seven with their infographics — a "latest briefing" card underneath it would
   // be the same content twice in the same chapter. These three are the reference
@@ -90,10 +135,10 @@ export function ResourcesSection() {
   ];
 
   return (
-    /* No `divider`: this section follows the navy briefings desk now, and a
-       fill change already IS the boundary — the hairline is only for two beats
-       that share a fill (the FAQ below it still carries one). */
-    <Section surface="deep" type="utility">
+    /* `divider`: the briefings deck above shares this deep fill again, so the
+       boundary needs a hairline — a fill change would have been the boundary by
+       itself, and there isn't one here. */
+    <Section surface="deep" type="utility" divider>
       <div className="text-center mb-9">
         <Eyebrow surface="deep" className="mb-3">
           Learn more
@@ -111,8 +156,8 @@ export function ResourcesSection() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
         {/* ── The guide, given the room a publication needs ── */}
         <Surface rung="card" onDeep className="lg:col-span-7 p-6 flex flex-col">
-          <div className="flex gap-5 sm:gap-6">
-            <GuideCover />
+          <div ref={ref} className="flex gap-5 sm:gap-6">
+            <GuideCover open={inView} />
             <div className="flex flex-col">
               <h3 className="font-semibold text-navy-700 text-base mb-2">
                 The complete DPDPA guide
@@ -145,12 +190,14 @@ export function ResourcesSection() {
               Read it in {GUIDE_LANGUAGES.length} Indian languages
             </p>
             <ul className="flex flex-wrap gap-1.5">
-              {GUIDE_LANGUAGES.map((l) => (
+              {GUIDE_LANGUAGES.map((l, i) => (
                 <li
                   key={l.code}
                   lang={l.locale}
                   title={l.roman}
-                  className="rounded-full bg-cloud-50 border border-cloud-200 px-2.5 py-1 text-xs text-slate-600"
+                  className={`rounded-full border px-2.5 py-1 text-xs ${
+                    LANG_TINTS[i % LANG_TINTS.length]
+                  }`}
                 >
                   {l.native}
                 </li>
