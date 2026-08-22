@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, ListChecks, FileDown } from "lucide-react";
+import { ArrowRight, Check, ListChecks, FileDown } from "lucide-react";
+import { useState } from "react";
 import { useInView } from "@/lib/hooks/useInView";
 import { Surface } from "@/components/ui/Surface";
 import { Section, Eyebrow } from "@/components/ui/Section";
-import { GUIDE_LANGUAGES } from "@/lib/data/guide-languages";
+import { GUIDE_LANGUAGES, DEFAULT_LANG_CODE, getLanguage, type GuideLanguage } from "@/lib/data/guide-languages";
 
 // S8 — Resources. Three offers, one of which is a publication.
 //
@@ -34,43 +35,63 @@ const TEMPLATE_COUNT = 17;
  * Decorative — the card's own heading and description carry the content, so
  * this is aria-hidden and the scripts inside it are never announced.
  */
-function GuideCover({ open }: { open: boolean }) {
+function GuideCover({ open, lang }: { open: boolean; lang: GuideLanguage }) {
   return (
     <div
       aria-hidden
-      className={`sp-cover relative shrink-0 w-[104px] sm:w-[116px] aspect-[3/4] select-none ${
+      /* 7:10 is a book. The box used to be 3:4 with a 22px dead strip down the
+         right — a leftover from the abandoned "leaves slide past the fore-edge"
+         attempt — which left the face at 82px on a 360px screen and clipped its
+         own title to "SARALPRIVAC". Nothing renders in that strip now, so the
+         face takes the whole box and the box takes the right proportion. */
+      className={`sp-cover relative shrink-0 w-[104px] sm:w-[116px] aspect-[7/10] select-none ${
         open ? "sp-open" : ""
       }`}
     >
-      {/* Three leaves, fanning out past the cover's right edge. They start
-          hidden behind the cover, so what the eye sees is page edges appearing
-          one after another. */}
-      {[
-        { x: "6px", r: "1.2deg", delay: "140ms", tone: "bg-cloud-200 border-cloud-300" },
-        { x: "12px", r: "2.6deg", delay: "290ms", tone: "bg-cloud-100 border-cloud-300" },
-        { x: "18px", r: "4.2deg", delay: "440ms", tone: "bg-cloud-50 border-cloud-300" },
-      ].map((leaf) => (
-        <span
-          key={leaf.x}
-          className={`sp-cover-leaf absolute inset-y-1.5 left-2 right-[22px] rounded-r-lg border ${leaf.tone}`}
-          style={
-            {
-              "--leaf-x": leaf.x,
-              "--leaf-r": leaf.r,
-              "--leaf-delay": leaf.delay,
-            } as React.CSSProperties
-          }
-        />
-      ))}
+      {/* The riffle stage. Its box is the cover face exactly, and it clips —
+          which is the whole trick. A page hinged on the spine is over the face
+          while it is between 0° and 90°, and past 90° it is behind the spine,
+          where a clipped stage stops drawing it. That is what a turning page
+          does when the left board is out of shot; left unclipped it sails on
+          into the gutter and reads as a sheet blowing off the book.
 
-      {/* The cover itself — sits above the leaves, so they appear from behind. */}
-      <div className="absolute inset-0 right-[22px] rounded-r-lg rounded-l-sm bg-navy-700 shadow-[0_10px_24px_-12px_rgba(18,26,46,0.7)] overflow-hidden z-10">
+          Perspective lives here rather than on the outer box so the vanishing
+          point is the centre of the face the pages actually turn on. */}
+      <div
+        className="absolute inset-0 rounded-r-lg rounded-l-sm overflow-hidden z-20"
+        style={{ perspective: "620px" }}
+      >
+        {/* Five sheets, invisible at rest, so the closed cover is what you see
+            until the animation runs. Opaque — a see-through page shows the
+            title behind it and stops reading as paper. The gradient is the
+            curl: lit at the fore-edge, shaded toward the spine. Faint rules
+            stand in for text; at this size a page reads as "a page" from four
+            grey lines and nothing else. */}
+        {["0ms", "130ms", "260ms", "390ms", "520ms"].map((delay) => (
+          <span
+            key={delay}
+            className="sp-cover-leaf absolute inset-y-[5px] left-[7px] right-[4px] rounded-r-md bg-gradient-to-l from-white to-cloud-100 border border-cloud-300 overflow-hidden shadow-[-5px_0_12px_-4px_rgba(18,26,46,0.32)]"
+            style={{ "--leaf-delay": delay } as React.CSSProperties}
+          >
+            <span className="absolute left-2 right-2 top-3 h-px bg-cloud-300" />
+            <span className="absolute left-2 right-4 top-5 h-px bg-cloud-300" />
+            <span className="absolute left-2 right-3 top-7 h-px bg-cloud-300" />
+            <span className="absolute left-2 right-5 top-9 h-px bg-cloud-300" />
+            <span className="absolute left-2 right-2 top-[68px] h-px bg-cloud-300" />
+            <span className="absolute left-2 right-3 top-[76px] h-px bg-cloud-300" />
+            <span className="absolute left-2 right-6 top-[84px] h-px bg-cloud-300" />
+          </span>
+        ))}
+      </div>
+
+      {/* The cover itself, under the stage — the pages turn on top of it. */}
+      <div className="absolute inset-0 rounded-r-lg rounded-l-sm bg-navy-700 shadow-[0_10px_24px_-12px_rgba(18,26,46,0.7)] overflow-hidden z-10">
         {/* spine */}
         <span className="absolute inset-y-0 left-0 w-[7px] bg-navy-900" />
         <span className="absolute inset-y-0 left-[7px] w-px bg-white/15" />
 
         <div className="absolute inset-0 pl-[18px] pr-3 py-3.5 flex flex-col">
-          <span className="text-[8px] font-semibold uppercase tracking-[0.14em] text-teal-300">
+          <span className="text-[8px] font-semibold uppercase tracking-[0.1em] text-teal-300">
             SaralPrivacy
           </span>
           <span className="mt-auto text-white font-semibold text-[13px] leading-[1.15]">
@@ -78,8 +99,21 @@ function GuideCover({ open }: { open: boolean }) {
             <br />
             DPDPA Guide
           </span>
-          <span className="mt-2 pt-2 border-t border-white/15 text-[8px] uppercase tracking-[0.1em] text-slate-300">
-            2026 edition
+          {/* The edition line carries the SELECTED language. It is the cheapest
+              possible confirmation that picking a chip did something: the thing
+              you are about to open changes in front of you. `lang` + `key` so a
+              screen reader gets the right voice and the swap re-animates. */}
+          <span className="mt-2 pt-2 border-t border-white/15 flex items-baseline justify-between gap-1">
+            <span className="text-[8px] uppercase tracking-[0.1em] text-slate-300">
+              2026 edition
+            </span>
+            <span
+              key={lang.code}
+              lang={lang.locale}
+              className="text-[9px] font-semibold text-teal-300 animate-fade-up motion-reduce:animate-none"
+            >
+              {lang.native}
+            </span>
           </span>
         </div>
       </div>
@@ -110,6 +144,16 @@ const LANG_TINTS = [
 export function ResourcesSection() {
   // The cover opens once, when the section first reaches the viewport.
   const { ref, inView } = useInView<HTMLDivElement>(0.3);
+
+  // Founder call: the language chips should be selectable. They were decoration
+  // — seven tinted pills proving the count. Now they pick which edition the
+  // card is offering, and TWO things follow the choice: the cover's edition
+  // line, and where "Read the guide" actually goes. Every language has a live
+  // reading page at /guides/dpdpa-guide-{code}.html, so this is a real
+  // destination change, not a highlight.
+  const [langCode, setLangCode] = useState(DEFAULT_LANG_CODE);
+  const lang = getLanguage(langCode);
+  const guideHref = lang.htmlUrl ?? "/white-paper";
 
   // No briefings card here. The deck immediately above already shows the latest
   // seven with their infographics — a "latest briefing" card underneath it would
@@ -156,8 +200,12 @@ export function ResourcesSection() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
         {/* ── The guide, given the room a publication needs ── */}
         <Surface rung="card" onDeep className="lg:col-span-7 p-6 flex flex-col">
-          <div ref={ref} className="flex gap-5 sm:gap-6">
-            <GuideCover open={inView} />
+          {/* `flex-1 items-center`: this card is a grid item stretched to the
+              height of the two stacked cards beside it, and that surplus has to
+              go somewhere. Pinned to the top it read as a hole under the link;
+              centred, it reads as the margin a publication gets. */}
+          <div ref={ref} className="flex flex-1 items-center gap-5 sm:gap-6">
+            <GuideCover open={inView} lang={lang} />
             <div className="flex flex-col">
               <h3 className="font-semibold text-navy-700 text-base mb-2">
                 The complete DPDPA guide
@@ -166,11 +214,21 @@ export function ResourcesSection() {
                 What the Act requires, who it applies to, and a 90-day plan,
                 written against the DPDP Rules, 2025 as notified.
               </p>
+              {/* The destination follows the chip. English keeps the plain
+                  label; any other language names itself, so the reader can see
+                  what they are about to open before they open it. */}
               <Link
-                href="/white-paper"
+                href={guideHref}
                 className="mt-auto self-start inline-flex items-center gap-1.5 pointer-coarse:min-h-11 text-sm font-semibold text-teal-800 hover:text-teal-900 transition-colors"
               >
-                Read the guide
+                {lang.code === DEFAULT_LANG_CODE ? (
+                  "Read the guide"
+                ) : (
+                  <>
+                    Read the guide in{" "}
+                    <span lang={lang.locale}>{lang.native}</span>
+                  </>
+                )}
                 <ArrowRight size={14} />
               </Link>
             </div>
@@ -181,27 +239,35 @@ export function ResourcesSection() {
               reader whose first language is one of them it is also the fastest
               way to find that out. `lang` per chip so a screen reader that
               reaches them switches voice correctly. */}
-          {/* `mt-auto`: this card is a grid item, so it stretches to the height
-              of the two stacked cards beside it. Without it the language row
-              sat where the text happened to end and left ~120px of nothing
-              under it. */}
-          <div className="mt-auto pt-5 border-t border-cloud-200">
+          <div className="pt-5 mt-5 border-t border-cloud-200">
             <p className="text-2xs font-semibold uppercase tracking-[0.08em] text-slate-600 mb-2.5">
-              Read it in {GUIDE_LANGUAGES.length} Indian languages
+              Choose your language
             </p>
             <ul className="flex flex-wrap gap-1.5">
-              {GUIDE_LANGUAGES.map((l, i) => (
-                <li
-                  key={l.code}
-                  lang={l.locale}
-                  title={l.roman}
-                  className={`rounded-full border px-2.5 py-1 text-xs ${
-                    LANG_TINTS[i % LANG_TINTS.length]
-                  }`}
-                >
-                  {l.native}
-                </li>
-              ))}
+              {GUIDE_LANGUAGES.map((l, i) => {
+                const on = l.code === langCode;
+                return (
+                  <li key={l.code}>
+                    <button
+                      type="button"
+                      lang={l.locale}
+                      title={l.roman}
+                      aria-pressed={on}
+                      onClick={() => setLangCode(l.code)}
+                      className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 pointer-coarse:min-h-11 text-xs transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-1 ${
+                        LANG_TINTS[i % LANG_TINTS.length]
+                      } ${
+                        on
+                          ? "font-semibold ring-2 ring-current ring-offset-1 ring-offset-cloud-25"
+                          : "opacity-70 hover:opacity-100"
+                      }`}
+                    >
+                      {on && <Check size={11} aria-hidden className="shrink-0" />}
+                      {l.native}
+                    </button>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </Surface>
