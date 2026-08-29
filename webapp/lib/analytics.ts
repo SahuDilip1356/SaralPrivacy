@@ -387,4 +387,19 @@ export const trackEvent = {
 
   chatMemoryCleared: () =>
     gtag("chat_memory_cleared", { event_category: "engagement" }),
+
+  // ── PWA (MOBILE_APP_SPEC §7 M2) ─────────────────────────────────────────
+  // The install/retention baseline that gates Capacitor/React Native (M5
+  // decision gate). Same preview-verification rule as every event above.
+
+  /** Chromium `appinstalled` — the user completed a real install. */
+  pwaInstall: () => gtag("pwa_install", { event_category: "engagement" }),
+
+  /** Page loaded in standalone display-mode, i.e. launched from the icon. */
+  pwaStandaloneSession: () =>
+    gtag("pwa_standalone_session", { event_category: "engagement" }),
+
+  /** Footer "Install app" tapped. outcome: accepted | dismissed | hint_shown */
+  pwaInstallClick: (params: { platform: "android" | "ios"; outcome: string }) =>
+    gtag("pwa_install_click", { event_category: "engagement", ...params }),
 };
