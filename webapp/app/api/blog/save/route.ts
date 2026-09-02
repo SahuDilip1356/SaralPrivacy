@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { requireRole } from "@/lib/adminSession";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { databases, DB_ID, COLLECTIONS, ID } from "@/lib/appwrite";
 
@@ -143,8 +144,8 @@ function buildDocument(payload: SavePayload) {
 }
 
 export async function POST(req: NextRequest) {
-  const session = req.cookies.get("admin_session");
-  if (!session || !["authenticated", "blogger"].includes(session.value)) {
+  const session = await requireRole(req, ["admin", "blogger"]);
+  if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -177,8 +178,8 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PATCH(req: NextRequest) {
-  const session = req.cookies.get("admin_session");
-  if (!session || !["authenticated", "blogger"].includes(session.value)) {
+  const session = await requireRole(req, ["admin", "blogger"]);
+  if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

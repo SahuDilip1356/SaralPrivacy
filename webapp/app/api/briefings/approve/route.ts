@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
+import { databases, DB_ID, COLLECTIONS } from "@/lib/appwrite";
 import { sendBriefingToSubscribers } from "@/lib/email";
+import { fetchEligibleSubscribers } from "@/lib/sendGateway";
 import type { BriefingData } from "@/lib/email-templates";
+
+// Serial send at ~100ms/recipient — 300s covers ~2,500 recipients.
+export const maxDuration = 300;
 
 export async function GET(request: NextRequest) {
   try {
@@ -26,15 +30,10 @@ export async function GET(request: NextRequest) {
       return NextResponse.redirect(new URL("/admin?briefing=already-sent", request.url));
     }
 
-    // Fetch active subscribers — cap at 300 per send (Gmail / Resend daily safe limit)
-    const subscriberResult = await databases.listDocuments(DB_ID, COLLECTIONS.SUBSCRIBERS, [
-      Query.limit(300),
-    ]);
-    const subscribers = subscriberResult.documents.map((doc) => ({
-      email: doc.email as string,
-      name:  doc.name  as string,
-      $id:   doc.$id,
-    }));
+    // Audience comes from the send gateway: suppression-filtered, deduped,
+    // paginated past the old 300-row cap. This path used to email the first
+    // 300 rows with NO status filter — including unsubscribed people.
+    const subscribers = await fetchEligibleSubscribers();
 
     // Send briefing to all subscribers
     const briefingPayload: BriefingData = {

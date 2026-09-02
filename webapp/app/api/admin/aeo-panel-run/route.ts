@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { databases, DB_ID, COLLECTIONS, ID } from '@/lib/appwrite'
 import { runAeoPanel, summarizeRun } from '@/lib/aeo/runner'
+import { requireRole } from '@/lib/adminSession'
 
 /**
  * Admin-triggered AEO panel run.
@@ -13,9 +14,9 @@ export const dynamic     = 'force-dynamic'
 export const runtime     = 'nodejs'
 
 export async function POST(req: NextRequest) {
-  // Auth — same pattern as /api/admin/data
-  const session = req.cookies.get('admin_session')
-  if (!session || session.value !== 'authenticated') {
+  // Auth — same pattern as /api/admin/data (signature-verified, admin only)
+  const session = await requireRole(req, ['admin'])
+  if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 

@@ -1,5 +1,7 @@
 // email.ts — Resend email client for SaralPrivacy
-import { Resend } from 'resend';
+import { resend } from './resendClient';
+import { buildUnsubscribeUrl } from './sendGateway';
+import { escapeHtml } from './email-templates';
 import {
   consultationAlertTemplate,
   downloadAlertTemplate,
@@ -19,7 +21,8 @@ import {
   type BloggerInviteData,
 } from './email-templates';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Shared lazy client — see lib/resendClient.ts for why it must not be
+// constructed at module scope.
 const FROM_BRIEFINGS = process.env.RESEND_FROM_BRIEFINGS || 'briefings@saralprivacy.com';
 const FROM_NOREPLY   = process.env.RESEND_FROM_NOREPLY   || 'noreply@saralprivacy.com';
 const ADMIN_EMAIL    = process.env.ADMIN_EMAIL            || 'dilip.sahu@gmail.com';
@@ -106,7 +109,7 @@ export async function sendDiscoveryInventory(p: {
   to: string; name?: string; nicheName: string; csv: string;
 }): Promise<EmailResult> {
   try {
-    const hi = p.name ? `Hi ${p.name},` : "Hi,";
+    const hi = p.name ? `Hi ${escapeHtml(p.name)},` : "Hi,";
     const html = `
       <div style="font-family:Inter,Arial,sans-serif;color:#334155;line-height:1.6;max-width:560px">
         <p>${hi}</p>
@@ -148,7 +151,7 @@ export async function sendDiscoveryLeadAlert(lead: {
 }): Promise<EmailResult> {
   try {
     const row = (k: string, v: string) =>
-      `<tr><td style="padding:4px 12px 4px 0;color:#64748B">${k}</td><td style="padding:4px 0;color:#121A2E"><strong>${v || "—"}</strong></td></tr>`;
+      `<tr><td style="padding:4px 12px 4px 0;color:#64748B">${k}</td><td style="padding:4px 0;color:#121A2E"><strong>${escapeHtml(v) || "—"}</strong></td></tr>`;
     const html = `
       <div style="font-family:Inter,Arial,sans-serif;color:#334155;max-width:560px">
         <p>New <strong>Personal Data Discovery</strong> lead — they downloaded their data inventory.</p>
@@ -286,8 +289,7 @@ export async function sendSubscriberBriefing(
   briefing: BriefingData
 ): Promise<EmailResult> {
   try {
-    const siteUrl       = process.env.NEXT_PUBLIC_SITE_URL || 'https://saralprivacy.com';
-    const unsubscribeUrl = `${siteUrl}/unsubscribe?email=${encodeURIComponent(email)}`;
+    const unsubscribeUrl = await buildUnsubscribeUrl(email);
     const { subject, html } = briefingEmailTemplate(briefing, unsubscribeUrl);
     const { error } = await resend.emails.send({
       from:    FROM_BRIEFINGS,

@@ -175,7 +175,7 @@ const EPILOGUE = `
 -- Supabase, service_role is not a superuser and custom schemas inherit
 -- nothing, so 0001 alone is not usable by the app. Apply the pair.
 -- (Function EXECUTE needs no grant: Postgres grants PUBLIC execute by
--- default — verified live via `set local role service_role` insert probes.)
+-- default — verified live via set-local-role service_role insert probes.)
 
 -- Deny-all hardening: nothing for anon/authenticated until P3.
 revoke all on all tables in schema ops from anon, authenticated;

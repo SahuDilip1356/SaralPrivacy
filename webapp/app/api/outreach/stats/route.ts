@@ -1,5 +1,6 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
+import { requireRole } from "@/lib/adminSession";
 
 async function count(status?: string): Promise<number> {
   const q = status
@@ -9,7 +10,11 @@ async function count(status?: string): Promise<number> {
   return res.total;
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  // Campaign metrics are internal — admin only.
+  if (!(await requireRole(request, ["admin"]))) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
   try {
     const [total, pending, sent, subscribed, bounced, unsubscribed, complained] =
       await Promise.all([

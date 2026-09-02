@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
+import { verifyAdminSessionToken, ADMIN_SESSION_COOKIE } from "@/lib/adminSession";
 import { BarChart2, Users, Mail, Download, CheckCircle, Shield, Clock, LogOut, FileText, ClipboardList, BookOpen, UserPlus, Send, TrendingUp, Compass } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -36,17 +37,18 @@ const adminNav = [
 // The /admin/login page renders inside this layout but gets no sidebar because
 // login itself is excluded from the middleware redirect.
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  // Secondary guard in case middleware is bypassed
+  // Secondary guard in case middleware is bypassed — signature-verified
   const cookieStore = await cookies();
-  const session = cookieStore.get("admin_session");
-  const role = session?.value; // "authenticated" | "blogger" | undefined
-  const isBlogger = role === "blogger";
+  const session = await verifyAdminSessionToken(
+    cookieStore.get(ADMIN_SESSION_COOKIE)?.value
+  );
+  const isBlogger = session?.role === "blogger";
 
   // We cannot know the pathname here without extra headers tricks,
   // so we rely on the middleware for the login exclusion.
   // If there's no session and we're not on login, middleware already redirected.
   // We only need to render the sidebar for authenticated users.
-  if (!role) {
+  if (!session) {
     // Render children without sidebar (will be the login page or redirect)
     return <>{children}</>;
   }

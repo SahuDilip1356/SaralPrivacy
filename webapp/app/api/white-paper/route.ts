@@ -4,10 +4,25 @@ import { insertDocument } from "@/lib/db";
 import { sendDownloadAlert } from "@/lib/email";
 import { upsertSubscriber } from "@/lib/subscribers";
 import { getLanguage, getPdfUrl, DEFAULT_LANG_CODE } from "@/lib/data/guide-languages";
+import { getClientIp, rateLimit, isHoneypotTripped } from "@/lib/abuseGuard";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+
+    // Guard parity with the other public lead routes (this one writes PII +
+    // sends mail); it previously had neither honeypot nor rate limit.
+    if (isHoneypotTripped(body)) {
+      return NextResponse.json({ success: true }); // silent drop for bots
+    }
+    const limited = rateLimit(`white-paper:${getClientIp(request)}`, 5, 10 * 60 * 1000);
+    if (!limited.ok) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again later." },
+        { status: 429, headers: { "Retry-After": String(limited.retryAfter) } }
+      );
+    }
+
     const { fullName, workEmail, companyName, industry, companySize } = body;
     // Resolve the requested language, falling back to English for anything unknown.
     const language = getLanguage(body.language).code;

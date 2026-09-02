@@ -71,11 +71,25 @@ function divider(): string {
   return `<hr style="border:none;border-top:1px solid ${BORDER};margin:20px 0;" />`;
 }
 
+/**
+ * User-typed values (names, business names, issue summaries) land inside email
+ * HTML — escape them so a lead form can't inject markup/links into mail the
+ * founder reads. Static template strings are trusted; only inputs pass here.
+ */
+export function escapeHtml(value: string | null | undefined): string {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 function labelRow(label: string, value: string): string {
   return `
   <tr>
     <td style="padding:6px 0;font-size:13px;color:${MUTED};width:140px;vertical-align:top;">${label}</td>
-    <td style="padding:6px 0;font-size:13px;color:${TEXT};font-weight:500;vertical-align:top;">${value || '—'}</td>
+    <td style="padding:6px 0;font-size:13px;color:${TEXT};font-weight:500;vertical-align:top;">${escapeHtml(value) || '—'}</td>
   </tr>`;
 }
 
@@ -120,7 +134,7 @@ export function consultationAlertTemplate(lead: LeadData): { subject: string; ht
 
     <p style="margin:0 0 8px;font-size:13px;font-weight:600;color:${NAV};">Issue Summary</p>
     <div style="background-color:${LIGHT_BG};border-left:3px solid ${SAFFRON};padding:14px 16px;border-radius:0 8px 8px 0;font-size:13px;color:${TEXT};line-height:1.6;">
-      ${lead.issue_summary || 'Not provided'}
+      ${escapeHtml(lead.issue_summary) || 'Not provided'}
     </div>
 
     <p style="margin:20px 0 0;font-size:12px;color:${MUTED};">Reply directly to this lead within 1 business day.</p>
@@ -532,9 +546,9 @@ export function surveyResultEmailTemplate(data: SurveyResultData): { subject: st
     ? `https://saralprivacy.com/report/${data.reportToken}`
     : "https://saralprivacy.com/assessment";
 
-  const greeting     = data.name ? `Hi ${data.name}` : "Hi there";
+  const greeting     = data.name ? `Hi ${escapeHtml(data.name)}` : "Hi there";
   const businessLine = data.businessName
-    ? `<p style="margin:0 0 24px;font-size:13px;color:${MUTED};">Business: <strong style="color:${TEXT};">${data.businessName}</strong></p>`
+    ? `<p style="margin:0 0 24px;font-size:13px;color:${MUTED};">Business: <strong style="color:${TEXT};">${escapeHtml(data.businessName)}</strong></p>`
     : "";
 
   const html = baseLayout(`
@@ -996,7 +1010,7 @@ export interface BloggerInviteData {
 export function bloggerInviteTemplate(data: BloggerInviteData): { subject: string; html: string } {
   const subject = `You've been invited to contribute to SaralPrivacy Insights`;
   const html = baseLayout(`
-    <h2 style="margin:0 0 8px;font-size:22px;font-weight:700;color:#1E3A5F;">Welcome, ${data.name}!</h2>
+    <h2 style="margin:0 0 8px;font-size:22px;font-weight:700;color:#1E3A5F;">Welcome, ${escapeHtml(data.name)}!</h2>
     <p style="margin:0 0 20px;font-size:15px;color:#718096;">You have been invited to contribute expert insights to <strong>SaralPrivacy</strong> — India's DPDPA compliance platform.</p>
 
     <p style="margin:0 0 16px;font-size:14px;color:#2D3748;">As a <strong>Blog Contributor</strong>, you can:</p>

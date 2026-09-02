@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
+import { requireRole } from "@/lib/adminSession";
 
 const ALLOWED_COLLECTIONS = Object.values(COLLECTIONS);
 
 export async function GET(request: NextRequest) {
-  // Auth check
-  const session = request.cookies.get("admin_session");
-  if (!session || session.value !== "authenticated") {
+  // Auth check — signature-verified session, admin role only
+  const session = await requireRole(request, ["admin"]);
+  if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
