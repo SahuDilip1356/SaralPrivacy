@@ -68,3 +68,10 @@ export function toRow(collection: string, data: Record<string, unknown>): Record
   const ren = RENAMES[collection] ?? {};
   return Object.fromEntries(Object.entries(data).map(([k, v]) => [ren[k] ?? k, v]));
 }
+
+/** Map a Postgres row back to app-side field names (inverse of toRow). */
+export function fromRow(collection: string, row: Record<string, unknown>): Record<string, unknown> {
+  const ren = RENAMES[collection] ?? {};
+  const inv = Object.fromEntries(Object.entries(ren).map(([from, to]) => [to, from]));
+  return Object.fromEntries(Object.entries(row).map(([k, v]) => [inv[k] ?? k, v]));
+}

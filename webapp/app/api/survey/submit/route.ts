@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { databases, DB_ID, COLLECTIONS, ID } from "@/lib/appwrite";
+import { insertDocument } from "@/lib/db";
 import { sendSurveyResultEmail } from "@/lib/email";
 import { getClientIp, rateLimit, isHoneypotTripped } from "@/lib/abuseGuard";
 
@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     const now = new Date().toISOString();
 
     // Save to Appwrite survey_responses collection
-    await databases.createDocument(DB_ID, COLLECTIONS.SURVEY_RESPONSES, ID.unique(), {
+    await insertDocument("survey_responses", {
       // Business profile
       role:                answers.role                || "",
       employee_size:       answers.employee_size       || "",

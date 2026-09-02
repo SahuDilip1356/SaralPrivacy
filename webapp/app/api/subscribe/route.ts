@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PRIVACY_NOTICE_VERSION } from "@/lib/utils";
-import { databases, DB_ID, COLLECTIONS, ID, Query } from "@/lib/appwrite";
+import { insertDocument, findOneByEmail, updateDocumentById } from "@/lib/db";
 import { sendWelcomeEmail } from "@/lib/email";
 import { getClientIp, rateLimit, isHoneypotTripped } from "@/lib/abuseGuard";
 
@@ -62,25 +62,21 @@ export async function POST(request: NextRequest) {
     // insert blindly — duplicate rows meant duplicate briefing emails per person.
     // Re-subscribing after unsubscribe flips the existing row back to active
     // (with a fresh consent-log entry below) instead of adding a second row.
-    const existing = await databases.listDocuments(DB_ID, COLLECTIONS.SUBSCRIBERS, [
-      Query.equal("email", email),
-      Query.limit(1),
-    ]);
-    if (existing.documents.length) {
-      const doc = existing.documents[0];
-      if (doc.status !== "active") {
-        await databases.updateDocument(DB_ID, COLLECTIONS.SUBSCRIBERS, doc.$id, {
+    const existing = await findOneByEmail("subscribers", email);
+    if (existing) {
+      if (existing.status !== "active") {
+        await updateDocumentById("subscribers", existing.id, {
           status: "active",
           consent_version: PRIVACY_NOTICE_VERSION,
         });
       }
     } else {
-      await databases.createDocument(DB_ID, COLLECTIONS.SUBSCRIBERS, ID.unique(), subscriberData);
+      await insertDocument("subscribers", subscriberData);
     }
 
     // Write consent log entry
     const timestamp = new Date().toISOString();
-    databases.createDocument(DB_ID, COLLECTIONS.CONSENT_LOG, ID.unique(), {
+    insertDocument("consent_log", {
       email,
       name,
       source:          "subscribe",

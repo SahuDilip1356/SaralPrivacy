@@ -1,18 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Webhook } from "svix";
-import { databases, DB_ID, COLLECTIONS, ID, Query } from "@/lib/appwrite";
+import { insertDocument, findOneByEmail, updateDocumentById } from "@/lib/db";
 
 export const runtime = "nodejs";
 
 // Mark contact as bounced/complained in a given collection (by email field)
 async function updateContactStatus(collection: string, email: string, status: string) {
   try {
-    const res = await databases.listDocuments(DB_ID, collection, [
-      Query.equal("email", email),
-      Query.limit(1),
-    ]);
-    if (!res.documents.length) return;
-    await databases.updateDocument(DB_ID, collection, res.documents[0].$id, { status });
+    const doc = await findOneByEmail(collection, email);
+    if (!doc) return;
+    await updateDocumentById(collection, doc.id, { status });
   } catch (err) {
     console.error(`[resend-webhook] updateContactStatus ${collection} ${email}:`, err);
   }
@@ -52,7 +49,7 @@ export async function POST(request: NextRequest) {
   const now = new Date().toISOString();
 
   // Log every event to email_send_log
-  databases.createDocument(DB_ID, COLLECTIONS.EMAIL_SEND_LOG, ID.unique(), {
+  insertDocument("email_send_log", {
     recipient_email:   email,
     email_type:        "intro",
     resend_message_id: payload.data?.email_id ?? "",
@@ -63,16 +60,16 @@ export async function POST(request: NextRequest) {
 
   if (eventType === "email.bounced") {
     await Promise.all([
-      updateContactStatus(COLLECTIONS.OUTREACH_CONTACTS, email, "bounced"),
-      updateContactStatus(COLLECTIONS.SUBSCRIBERS, email, "bounced"),
+      updateContactStatus("outreach_contacts", email, "bounced"),
+      updateContactStatus("subscribers", email, "bounced"),
     ]);
     console.log(`[resend-webhook] Marked bounced: ${email}`);
   }
 
   else if (eventType === "email.complained") {
     await Promise.all([
-      updateContactStatus(COLLECTIONS.OUTREACH_CONTACTS, email, "complained"),
-      updateContactStatus(COLLECTIONS.SUBSCRIBERS, email, "complained"),
+      updateContactStatus("outreach_contacts", email, "complained"),
+      updateContactStatus("subscribers", email, "complained"),
     ]);
     console.log(`[resend-webhook] Marked complained: ${email}`);
   }

@@ -1,4 +1,4 @@
-import { databases, DB_ID, COLLECTIONS, ID, Query } from "@/lib/appwrite";
+import { insertDocument, findOneByEmail } from "@/lib/db";
 import { PRIVACY_NOTICE_VERSION } from "@/lib/utils";
 
 export async function upsertSubscriber({
@@ -24,15 +24,12 @@ export async function upsertSubscriber({
 }) {
   const normalised = email.trim().toLowerCase();
 
-  const existing = await databases.listDocuments(DB_ID, COLLECTIONS.SUBSCRIBERS, [
-    Query.equal("email", normalised),
-    Query.limit(1),
-  ]);
-  if (existing.documents.length) return;
+  const existing = await findOneByEmail("subscribers", normalised);
+  if (existing) return;
 
   const now = new Date().toISOString();
 
-  await databases.createDocument(DB_ID, COLLECTIONS.SUBSCRIBERS, ID.unique(), {
+  await insertDocument("subscribers", {
     name,
     email:           normalised,
     industry,
@@ -47,7 +44,7 @@ export async function upsertSubscriber({
     user_agent:      userAgent,
   });
 
-  databases.createDocument(DB_ID, COLLECTIONS.CONSENT_LOG, ID.unique(), {
+  insertDocument("consent_log", {
     email:           normalised,
     name,
     source,

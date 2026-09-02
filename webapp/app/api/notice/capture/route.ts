@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { databases, DB_ID, COLLECTIONS, ID } from "@/lib/appwrite";
+import { insertDocument } from "@/lib/db";
 import { sendNoticeLeadAlert } from "@/lib/email";
 import { getClientIp, rateLimit, isHoneypotTripped } from "@/lib/abuseGuard";
 
@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
     const city = decodeURIComponent(request.headers.get("x-vercel-ip-city") || "");
     const country = request.headers.get("x-vercel-ip-country") || "";
 
-    await databases.createDocument(DB_ID, COLLECTIONS.NOTICE_CAPTURES, ID.unique(), {
+    await insertDocument("notice_captures", {
       email: b.email,
       name: b.name || b.email.split("@")[0],
       business_name: b.business_name,
