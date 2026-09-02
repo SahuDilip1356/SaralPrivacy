@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { databases, DB_ID, COLLECTIONS, ID } from "@/lib/appwrite";
+import { insertDocument } from "@/lib/db";
 import {
   TemplateDownloadFormSchema,
   templateNames,
@@ -194,7 +194,7 @@ export async function POST(request: NextRequest) {
 
     // Save lead to Appwrite (non-fatal if it fails)
     try {
-      await databases.createDocument(DB_ID, COLLECTIONS.TEMPLATE_DOWNLOADS, ID.unique(), {
+      await insertDocument("template_downloads", {
         contact_email:     data.email,
         contact_person:    data.contactPersonName,
         business_name:     data.businessName,

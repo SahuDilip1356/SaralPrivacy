@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PRIVACY_NOTICE_VERSION } from "@/lib/utils";
-import { databases, DB_ID, COLLECTIONS, ID } from "@/lib/appwrite";
+import { insertDocument } from "@/lib/db";
 import { sendDownloadAlert } from "@/lib/email";
 import { upsertSubscriber } from "@/lib/subscribers";
 import { getLanguage, getPdfUrl, DEFAULT_LANG_CODE } from "@/lib/data/guide-languages";
@@ -46,11 +46,11 @@ export async function POST(request: NextRequest) {
     // without it so the lead is never lost (language segmentation degrades, the
     // download does not). Remove the fallback once the attr exists everywhere.
     try {
-      await databases.createDocument(DB_ID, COLLECTIONS.DOWNLOADS, ID.unique(), downloadData);
+      await insertDocument("downloads", downloadData);
     } catch (writeErr) {
       console.error("downloads write with language failed, retrying without:", writeErr);
       const { language: _omit, ...legacy } = downloadData;
-      await databases.createDocument(DB_ID, COLLECTIONS.DOWNLOADS, ID.unique(), legacy);
+      await insertDocument("downloads", legacy);
     }
 
     // Write consent log entries — one per consent type checked
@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
 
     if (body.consentEmail) {
       consentEntries.push(
-        databases.createDocument(DB_ID, COLLECTIONS.CONSENT_LOG, ID.unique(), {
+        insertDocument("consent_log", {
           email:           workEmail,
           name:            fullName,
           source:          "download",
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
 
     if (body.consentPhone) {
       consentEntries.push(
-        databases.createDocument(DB_ID, COLLECTIONS.CONSENT_LOG, ID.unique(), {
+        insertDocument("consent_log", {
           email:           workEmail,
           name:            fullName,
           source:          "download",
@@ -97,7 +97,7 @@ export async function POST(request: NextRequest) {
 
     if (body.consentWebinars) {
       consentEntries.push(
-        databases.createDocument(DB_ID, COLLECTIONS.CONSENT_LOG, ID.unique(), {
+        insertDocument("consent_log", {
           email:           workEmail,
           name:            fullName,
           source:          "download",

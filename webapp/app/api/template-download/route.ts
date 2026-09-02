@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { databases, DB_ID, COLLECTIONS, ID } from "@/lib/appwrite";
+import { insertDocument } from "@/lib/db";
 import { upsertSubscriber } from "@/lib/subscribers";
 import { getClientIp, rateLimit, isHoneypotTripped } from "@/lib/abuseGuard";
 import { sendDiscoveryInventory, sendDiscoveryLeadAlert } from "@/lib/email";
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
     const country = request.headers.get("x-vercel-ip-country") || "";
     const isDiscovery = source === "discovery";
 
-    await databases.createDocument(DB_ID, COLLECTIONS.TEMPLATE_DOWNLOADS, ID.unique(), {
+    await insertDocument("template_downloads", {
       business_name:   businessName,
       employees,
       contact_name:    contactName,
