@@ -6,7 +6,7 @@
 
 import { databases, DB_ID, ID, Query } from "@/lib/appwrite";
 import { dataBackend } from "./flags";
-import { getSupabase, TARGETS, toRow, fromRow } from "./supabase";
+import { getSupabase, TARGETS, toRow, fromRow, toColumn } from "./supabase";
 
 export { dataBackend } from "./flags";
 
@@ -40,26 +40,96 @@ export async function insertDocument(
   return doc.$id;
 }
 
-/** Find the single document with this (normalised) email, or null. */
-export async function findOneByEmail(collection: string, email: string): Promise<DbDoc | null> {
+/** Find the single document where field === value, or null. */
+export async function findOneBy(
+  collection: string,
+  field: string,
+  value: string,
+): Promise<DbDoc | null> {
   if (dataBackend(collection) === "supabase") {
     const t = TARGETS[collection];
     const { data, error } = await getSupabase()
       .schema(t.schema)
       .from(t.table)
       .select("*")
-      .eq("email", email)
+      .eq(toColumn(collection, field), value)
       .limit(1);
-    if (error) throw new Error(`lib/db findOneByEmail ${collection}: ${error.message}`);
+    if (error) throw new Error(`lib/db findOneBy ${collection}.${field}: ${error.message}`);
     const row = data?.[0];
     return row ? ({ ...fromRow(collection, row), id: String(row.id) } as DbDoc) : null;
   }
   const res = await databases.listDocuments(DB_ID, collection, [
-    Query.equal("email", email),
+    Query.equal(field, value),
     Query.limit(1),
   ]);
   const doc = res.documents[0];
   return doc ? ({ ...doc, id: doc.$id } as DbDoc) : null;
+}
+
+/** Find the single document with this (normalised) email, or null. */
+export async function findOneByEmail(collection: string, email: string): Promise<DbDoc | null> {
+  return findOneBy(collection, "email", email);
+}
+
+export interface WhereClause {
+  field: string;
+  /** default "eq"; "eq" with an array value means IN on both backends */
+  op?: "eq" | "isNull";
+  value?: unknown;
+}
+
+export interface QuerySpec {
+  where?: WhereClause[];
+  orderBy?: { field: string; dir: "asc" | "desc" };
+  limit?: number;
+}
+
+/**
+ * Filtered query with total count. Covers the repo's whole read vocabulary
+ * beyond findOneBy/listPage: equality (scalar or IN), null checks, ordering,
+ * limit. NOTE: Appwrite caps `total` at 5000 — treat large totals as "≥".
+ */
+export async function queryDocuments(
+  collection: string,
+  spec: QuerySpec,
+): Promise<{ docs: DbDoc[]; total: number }> {
+  if (dataBackend(collection) === "supabase") {
+    const t = TARGETS[collection];
+    let q = getSupabase()
+      .schema(t.schema)
+      .from(t.table)
+      .select("*", { count: "exact" });
+    for (const w of spec.where ?? []) {
+      const col = toColumn(collection, w.field);
+      if (w.op === "isNull") q = q.is(col, null);
+      else if (Array.isArray(w.value)) q = q.in(col, w.value as (string | number)[]);
+      else q = q.eq(col, w.value as string | number | boolean);
+    }
+    if (spec.orderBy) {
+      q = q.order(toColumn(collection, spec.orderBy.field), { ascending: spec.orderBy.dir === "asc" });
+    }
+    if (spec.limit !== undefined) q = q.limit(spec.limit);
+    const { data, error, count } = await q;
+    if (error) throw new Error(`lib/db query ${collection}: ${error.message}`);
+    return {
+      docs: (data ?? []).map((row) => ({ ...fromRow(collection, row), id: String(row.id) }) as DbDoc),
+      total: count ?? data?.length ?? 0,
+    };
+  }
+  const queries: string[] = [];
+  for (const w of spec.where ?? []) {
+    if (w.op === "isNull") queries.push(Query.isNull(w.field));
+    else queries.push(Query.equal(w.field, w.value as string | string[]));
+  }
+  if (spec.orderBy) {
+    queries.push(spec.orderBy.dir === "asc" ? Query.orderAsc(spec.orderBy.field) : Query.orderDesc(spec.orderBy.field));
+  }
+  if (spec.limit !== undefined) queries.push(Query.limit(spec.limit));
+  const res = await databases.listDocuments(DB_ID, collection, queries);
+  return {
+    docs: res.documents.map((doc) => ({ ...doc, id: doc.$id }) as DbDoc),
+    total: res.total,
+  };
 }
 
 /** Patch one document by the id a DbDoc carries. */

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { databases, DB_ID, COLLECTIONS, ID, Query } from "@/lib/appwrite";
+import { insertDocument, listPage } from "@/lib/db";
 import { generateToken } from "@/lib/tokens";
 import { requireRole } from "@/lib/adminSession";
 
@@ -62,19 +62,17 @@ async function fetchExistingEmails(): Promise<Set<string>> {
   const set = new Set<string>();
   let cursor: string | undefined;
   for (;;) {
-    const q = [Query.select(["email"]), Query.limit(100)];
-    if (cursor) q.push(Query.cursorAfter(cursor));
-    const res = await databases.listDocuments(DB_ID, COLLECTIONS.OUTREACH_CONTACTS, q);
-    res.documents.forEach((d) => set.add((d.email as string).toLowerCase()));
-    if (res.documents.length < 100) break;
-    cursor = res.documents[res.documents.length - 1].$id;
+    const docs = await listPage("outreach_contacts", { limit: 100, after: cursor });
+    docs.forEach((d) => set.add((d.email as string).toLowerCase()));
+    if (docs.length < 100) break;
+    cursor = docs[docs.length - 1].id;
   }
   return set;
 }
 
 async function insertBatch(docs: Record<string, unknown>[]): Promise<number> {
   const results = await Promise.allSettled(
-    docs.map((d) => databases.createDocument(DB_ID, COLLECTIONS.OUTREACH_CONTACTS, ID.unique(), d))
+    docs.map((d) => insertDocument("outreach_contacts", d))
   );
   return results.filter((r) => r.status === "fulfilled").length;
 }
