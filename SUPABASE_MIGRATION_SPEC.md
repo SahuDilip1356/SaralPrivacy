@@ -47,7 +47,10 @@
 ## 3. EXPAND — Supabase project + schema
 
 ### 3.1 Project setup
-- One Supabase project, **region: Singapore** (`ap-southeast-1`) — co-located with Vercel `sin1` functions; Appwrite is Singapore today, so zero latency regression. ⚠️ **Decision O2 closes now:** a later Mumbai move means migrating again — if residency marketing is wanted, this is the cheapest moment to choose Mumbai and accept ~50 ms/query from `sin1` until Render lands in-region. Default stands: **Singapore**.
+- One Supabase project, **region: Mumbai (`ap-south-1`)** — ✅ **DECIDED (Dilip, 2026-09-02): Mumbai is the hosting territory.** This is the cheapest moment to plant the flag; the data never moves again.
+  - During migration, Vercel functions stay `sin1` (Appwrite SG is still primary); each Supabase call crosses `sin1→BOM` (~40–60 ms) — acceptable at these volumes for the flip window.
+  - At Contract (§9), `vercel.json` `regions` switches `["sin1"]` → `["bom1"]` so functions co-locate with the database permanently.
+  - Downstream consequence recorded in the Blueprint: Render has **no Mumbai region** — the P4 backend host choice re-opens (decision O2b there). Not this spec's problem; noted so it isn't lost.
 - Supabase CLI + `supabase/` dir in repo: `config.toml`, `migrations/*.sql` — schema lives in git, applied by CI (`supabase db push`), never by hand in the dashboard. Preview PRs get **branch databases**.
 - Plan: Pro ($25/mo) from day one — PITR add-on deferred until paid-customer data exists (Blueprint P5).
 
@@ -184,6 +187,7 @@ M7 is the big one (23 refs + SSR pages + sitemap + storage): give it its own pre
 2. Final `export.ts` run → archive JSONL + `schema-report.json` + `file-map.json` to the encrypted local archive (retention: keep indefinitely; it's the lineage record).
 3. 30 days after read-only → **delete the Appwrite project**.
 4. Code cleanup PR: delete `lib/db/legacy/appwrite.ts`, uninstall `node-appwrite`, drop `APPWRITE_*` env vars from Vercel (all environments), delete the `DATA_BACKEND_*` flags (Supabase becomes the only path), remove the ≤10-char `report_type` handling wherever it was papered over, retire the lazy Proxy *comment* debt.
+4b. **Region co-location:** `vercel.json` `regions` `["sin1"]` → `["bom1"]` (functions move to Mumbai beside the DB) → redeploy → verify latency on a live endpoint (env/config law applies).
 5. Memory + docs: update `critical-rules`, `deployment-pipeline`, `privacy-notice-vendor-truth` — **Appwrite leaves the sub-processor list and Supabase enters it (DPA reviewed, region recorded) in the same PR as the first prod flip, not at contract time.** Our privacy notice must be true on every day of this migration.
 
 ---
@@ -238,7 +242,7 @@ Guides live on Vercel Blob (`lib/data/guide-languages.ts` hardcodes the host). M
 
 | # | Question | Default |
 |---|---|---|
-| D1 | Region: Singapore or Mumbai? (cheapest moment to choose is now — §3.1) | **Singapore** |
+| D1 | Region | ✅ **DECIDED: Mumbai (`ap-south-1`)** — founder call 2026-09-02; §3.1 |
 | D2 | M10 Vercel Blob consolidation now or defer to Blueprint P5? | **Defer** |
 | D3 | Zero-ref collections (`notice_runs`, `business_profiles`, `dsar_requests`): create empty tables (schema parity) or drop from scope? | **Create empty** — they're the P5 DSAR seed |
 | D4 | Supabase Pro from S1 or free tier until first flip? | **Pro from S1** (branch DBs + support during cutover) |
