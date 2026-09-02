@@ -1,15 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { verifyAdminSessionToken, ADMIN_SESSION_COOKIE } from "@/lib/adminSession";
 import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
 import { sendBriefingToSubscribers } from "@/lib/email";
 import type { BriefingData } from "@/lib/email-templates";
 
 export async function POST(request: NextRequest) {
   try {
-    // Check admin session
+    // Check admin session (signature-verified, admin role only)
     const cookieStore = await cookies();
-    const session = cookieStore.get("admin_session");
-    if (!session || session.value !== "authenticated") {
+    const session = await verifyAdminSessionToken(
+      cookieStore.get(ADMIN_SESSION_COOKIE)?.value
+    );
+    if (!session || session.role !== "admin") {
       return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
     }
 

@@ -1,12 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
 import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
+import { verifyUnsubscribeSig } from "@/lib/sendGateway";
+import { getClientIp, rateLimit } from "@/lib/abuseGuard";
 
 export async function POST(request: NextRequest) {
   try {
-    const { email } = await request.json();
+    const { email, sig } = await request.json();
     if (!email) return NextResponse.json({ error: "email required" }, { status: 400 });
 
     const normalised = email.trim().toLowerCase();
+
+    // Links in our emails carry an HMAC sig and are honoured unconditionally.
+    // Unsigned requests (old emails, the consent-preferences form) still work —
+    // unsubscribes must never be blocked outright — but are throttled so a
+    // griefer can't bulk-suppress the subscriber list by posting raw emails.
+    const signedLink = await verifyUnsubscribeSig(normalised, sig);
+    if (!signedLink) {
+      const limited = rateLimit(`unsub:${getClientIp(request)}`, 5, 60 * 60 * 1000);
+      if (!limited.ok) {
+        return NextResponse.json(
+          { error: "Too many requests. Try again later or email privacy@saralprivacy.com." },
+          { status: 429, headers: { "Retry-After": String(limited.retryAfter) } }
+        );
+      }
+    }
 
     const res = await databases.listDocuments(DB_ID, COLLECTIONS.SUBSCRIBERS, [
       Query.equal("email", normalised),

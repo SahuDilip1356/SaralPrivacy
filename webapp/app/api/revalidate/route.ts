@@ -7,7 +7,11 @@ import { revalidateTag } from "next/cache";
  * Called automatically by publish_to_webapp.py after every new briefing is published.
  */
 export async function GET(request: NextRequest) {
-  const secret   = request.nextUrl.searchParams.get("secret") || "";
+  // Prefer the header — query strings land in access logs and referrers.
+  // The ?secret= form stays accepted until publish_to_webapp.py migrates.
+  const secret   =
+    (request.headers.get("x-revalidate-secret") || "").trim() ||
+    request.nextUrl.searchParams.get("secret") || "";
   const expected = (process.env.CRON_SECRET || process.env.BRIEFING_CRON_SECRET || "").trim();
 
   if (!expected || secret !== expected) {

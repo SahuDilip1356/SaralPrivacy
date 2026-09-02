@@ -110,7 +110,7 @@ export default function OutreachPage() {
       <div className="bg-white rounded-xl border border-pearl-200 shadow-sm p-5 mb-5">
         <h2 className="text-sm font-semibold text-slate-700 mb-1">Import Contact List</h2>
         <p className="text-xs text-slate-400 mb-4">
-          Upload an Excel (.xlsx) or CSV file. Must have a column named <span className="font-mono bg-slate-100 px-1 rounded">Email</span>.
+          Upload a CSV file (in Excel: File → Save As → CSV). Must have a column named <span className="font-mono bg-slate-100 px-1 rounded">Email</span>.
           Optional columns: <span className="font-mono bg-slate-100 px-1 rounded">Name</span>, <span className="font-mono bg-slate-100 px-1 rounded">Company</span>, <span className="font-mono bg-slate-100 px-1 rounded">Industry</span>.
           Duplicates are skipped automatically.
         </p>
@@ -118,7 +118,7 @@ export default function OutreachPage() {
         <input
           ref={fileRef}
           type="file"
-          accept=".xlsx,.xls,.csv"
+          accept=".csv"
           className="hidden"
           onChange={(e) => { const f = e.target.files?.[0]; if (f) handleUpload(f); e.target.value = ""; }}
         />

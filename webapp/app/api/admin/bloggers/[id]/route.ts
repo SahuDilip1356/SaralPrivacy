@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { databases, DB_ID, COLLECTIONS } from "@/lib/appwrite";
+import { requireRole } from "@/lib/adminSession";
 
-function adminOnly(req: NextRequest): boolean {
-  return req.cookies.get("admin_session")?.value === "authenticated";
+async function adminOnly(req: NextRequest): Promise<boolean> {
+  return (await requireRole(req, ["admin"])) !== null;
 }
 
 // PATCH /api/admin/bloggers/[id] — revoke (active:false) or restore (active:true)
@@ -10,7 +11,7 @@ export async function PATCH(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  if (!adminOnly(req)) {
+  if (!(await adminOnly(req))) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   const { id } = await params;
@@ -31,7 +32,7 @@ export async function DELETE(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  if (!adminOnly(req)) {
+  if (!(await adminOnly(req))) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   const { id } = await params;

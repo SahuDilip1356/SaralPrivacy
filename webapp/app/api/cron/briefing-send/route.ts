@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { databases, DB_ID, COLLECTIONS, ID, Query } from "@/lib/appwrite";
 import { briefingEmailTemplate } from "@/lib/email-templates";
-import { Resend } from "resend";
+import { resend } from "@/lib/resendClient";
+import { fetchEligibleSubscribers, buildUnsubscribeUrl } from "@/lib/sendGateway";
 import type { BriefingData } from "@/lib/email-templates";
 
-const resend   = new Resend(process.env.RESEND_API_KEY);
-const BASE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://saralprivacy.com").replace(/\/$/, "");
-const FROM     = process.env.RESEND_FROM_BRIEFINGS || "briefings@saralprivacy.com";
+const FROM   = process.env.RESEND_FROM_BRIEFINGS || "briefings@saralprivacy.com";
 
-const SUPPRESSED = ["bounced", "complained", "unsubscribed"];
+// Serial send at ~100ms/recipient — 300s covers ~2,500 recipients.
+export const maxDuration = 300;
 
 export async function GET(request: NextRequest) {
   if (request.headers.get("authorization") !== `Bearer ${process.env.CRON_SECRET}`) {
@@ -41,21 +41,17 @@ export async function GET(request: NextRequest) {
       created_at:       briefing.created_at,
     };
 
-    // 2. Fetch all subscribers (up to 500)
-    const subRes = await databases.listDocuments(DB_ID, COLLECTIONS.SUBSCRIBERS, [
-      Query.limit(500),
-    ]);
+    // 2. Audience via the send gateway (suppression-filtered, deduped,
+    //    paginated past the old 500 cap); weekly cadence applied here.
+    const allEligible = await fetchEligibleSubscribers();
 
     const now      = new Date();
     const nowISO   = now.toISOString();
     const isMonday = now.getDay() === 1;
 
-    // Filter: skip suppressed + weekly subscribers on non-Monday days
-    const eligible = subRes.documents.filter((s) => {
-      if (SUPPRESSED.includes(s.status as string)) return false;
-      if ((s.frequency as string) === "weekly" && !isMonday) return false;
-      return true;
-    });
+    const eligible = allEligible.filter(
+      (s) => s.frequency !== "weekly" || isMonday
+    );
 
     if (!eligible.length) {
       return NextResponse.json({ message: "No eligible subscribers today.", briefing_used: briefing.title });
@@ -66,8 +62,8 @@ export async function GET(request: NextRequest) {
     let failed = 0;
 
     for (const sub of eligible) {
-      const email          = sub.email as string;
-      const unsubscribeUrl = `${BASE_URL}/unsubscribe?email=${encodeURIComponent(email)}`;
+      const email          = sub.email;
+      const unsubscribeUrl = await buildUnsubscribeUrl(email);
       const { subject, html } = briefingEmailTemplate(briefingPayload, unsubscribeUrl);
 
       const { data, error } = await resend.emails.send({

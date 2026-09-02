@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cookies } from "next/headers";
+import { verifyAdminSessionToken, ADMIN_SESSION_COOKIE } from "@/lib/adminSession";
 import BlogEditor, { type BlogPostData, type PrimarySource } from "@/components/admin/BlogEditor";
 
 export const metadata: Metadata = { title: "Edit Blog Post | Admin" };
@@ -17,10 +18,12 @@ function tryParse<T>(str: string | null | undefined, fallback: T): T {
 export default async function EditBlogPostPage({ params }: Props) {
   const { id } = await params;
 
-  // Resolve role for role-gated UI in editor
+  // Resolve role for role-gated UI in editor — signature-verified
   const cookieStore = await cookies();
-  const sessionCookie = cookieStore.get("admin_session");
-  const role: "admin" | "blogger" = sessionCookie?.value === "blogger" ? "blogger" : "admin";
+  const session = await verifyAdminSessionToken(
+    cookieStore.get(ADMIN_SESSION_COOKIE)?.value
+  );
+  const role: "admin" | "blogger" = session?.role === "blogger" ? "blogger" : "admin";
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/api/blog/${id}`,

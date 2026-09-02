@@ -2,9 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { databases, DB_ID, COLLECTIONS, ID, Query } from "@/lib/appwrite";
 import { generateToken } from "@/lib/tokens";
 import { outreachBriefingEmail } from "@/lib/email-templates";
-import { Resend } from "resend";
+import { resend } from "@/lib/resendClient";
 
-const resend    = new Resend(process.env.RESEND_API_KEY);
 const DAILY_CAP = parseInt(process.env.OUTREACH_DAILY_CAP || "50", 10);
 const BASE_URL  = (process.env.NEXT_PUBLIC_SITE_URL || "https://saralprivacy.com").replace(/\/$/, "");
 
