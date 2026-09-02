@@ -40,6 +40,28 @@ export async function insertDocument(
   return doc.$id;
 }
 
+/** Fetch one document by its id (Appwrite $id / Postgres uuid), or null. */
+export async function getDocumentById(collection: string, id: string): Promise<DbDoc | null> {
+  if (dataBackend(collection) === "supabase") {
+    const t = TARGETS[collection];
+    const { data, error } = await getSupabase()
+      .schema(t.schema)
+      .from(t.table)
+      .select("*")
+      .eq("id", id)
+      .limit(1);
+    if (error) throw new Error(`lib/db get ${collection}: ${error.message}`);
+    const row = data?.[0];
+    return row ? ({ ...fromRow(collection, row), id: String(row.id) } as DbDoc) : null;
+  }
+  try {
+    const doc = await databases.getDocument(DB_ID, collection, id);
+    return { ...doc, id: doc.$id } as DbDoc;
+  } catch {
+    return null;
+  }
+}
+
 /** Find the single document where field === value, or null. */
 export async function findOneBy(
   collection: string,
