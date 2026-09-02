@@ -1,0 +1,4136 @@
+{
+  "generatedAt": "2026-09-02T12:57:23.506Z",
+  "endpoint": "https://sgp.cloud.appwrite.io/v1",
+  "databaseId": "69bb4b6200165ff03610",
+  "collections": [
+    {
+      "id": "leads",
+      "exists": true,
+      "total": 3,
+      "attributes": [
+        {
+          "key": "name",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:06.231+00:00",
+          "$updatedAt": "2026-03-19T01:22:06.358+00:00",
+          "size": 255,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "email",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:06.975+00:00",
+          "$updatedAt": "2026-03-19T01:22:07.103+00:00",
+          "format": "email",
+          "default": null
+        },
+        {
+          "key": "phone",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:07.719+00:00",
+          "$updatedAt": "2026-03-19T01:22:07.858+00:00",
+          "size": 50,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "company",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:08.463+00:00",
+          "$updatedAt": "2026-03-19T01:22:08.591+00:00",
+          "size": 255,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "industry",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:09.217+00:00",
+          "$updatedAt": "2026-03-19T01:22:09.362+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "company_size",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:09.965+00:00",
+          "$updatedAt": "2026-03-19T01:22:10.096+00:00",
+          "size": 50,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "source",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:10.709+00:00",
+          "$updatedAt": "2026-03-19T01:22:10.835+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "issue_summary",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:11.682+00:00",
+          "$updatedAt": "2026-03-19T01:22:11.803+00:00",
+          "size": 5000,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "preferred_contact",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:12.451+00:00",
+          "$updatedAt": "2026-03-19T01:22:12.584+00:00",
+          "size": 50,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "preferred_time",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:13.222+00:00",
+          "$updatedAt": "2026-03-19T01:22:13.350+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "consent_version",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:13.970+00:00",
+          "$updatedAt": "2026-03-19T01:22:14.107+00:00",
+          "size": 20,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "risk_level",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:14.711+00:00",
+          "$updatedAt": "2026-03-19T01:22:14.853+00:00",
+          "size": 20,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "created_at",
+          "type": "datetime",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:15.457+00:00",
+          "$updatedAt": "2026-03-19T01:22:15.594+00:00",
+          "format": "",
+          "default": null
+        },
+        {
+          "key": "ip_address",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-22T14:47:51.621+00:00",
+          "$updatedAt": "2026-03-22T14:47:51.758+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "city",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-22T14:48:01.531+00:00",
+          "$updatedAt": "2026-03-22T14:48:01.667+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "country",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-22T14:48:02.709+00:00",
+          "$updatedAt": "2026-03-22T14:48:02.837+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "region",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-22T14:48:03.878+00:00",
+          "$updatedAt": "2026-03-22T14:48:04.013+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "id": "subscribers",
+      "exists": true,
+      "total": 11,
+      "attributes": [
+        {
+          "key": "name",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:16.945+00:00",
+          "$updatedAt": "2026-03-19T01:22:17.083+00:00",
+          "size": 255,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "email",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:17.686+00:00",
+          "$updatedAt": "2026-03-19T01:22:17.810+00:00",
+          "format": "email",
+          "default": null
+        },
+        {
+          "key": "industry",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:18.435+00:00",
+          "$updatedAt": "2026-03-19T01:22:18.560+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "frequency",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:19.167+00:00",
+          "$updatedAt": "2026-03-19T01:22:19.304+00:00",
+          "size": 20,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "consent_version",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:19.908+00:00",
+          "$updatedAt": "2026-03-19T01:22:20.044+00:00",
+          "size": 20,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "user_agent",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:20.653+00:00",
+          "$updatedAt": "2026-03-19T01:22:20.781+00:00",
+          "size": 500,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "created_at",
+          "type": "datetime",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:21.398+00:00",
+          "$updatedAt": "2026-03-19T01:22:21.522+00:00",
+          "format": "",
+          "default": null
+        },
+        {
+          "key": "ip_address",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-22T14:48:05.031+00:00",
+          "$updatedAt": "2026-03-22T14:48:05.159+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "city",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-22T14:48:06.197+00:00",
+          "$updatedAt": "2026-03-22T14:48:06.315+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "country",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-22T14:48:07.361+00:00",
+          "$updatedAt": "2026-03-22T14:48:07.490+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "region",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-22T14:48:08.515+00:00",
+          "$updatedAt": "2026-03-22T14:48:08.644+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "consent_source",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-04-19T15:53:00.214+00:00",
+          "$updatedAt": "2026-04-19T15:53:00.285+00:00",
+          "elements": [
+            "manual",
+            "assessment_form",
+            "intro_email_one_click",
+            "report_email_cta",
+            "admin_added"
+          ],
+          "format": "enum",
+          "default": null
+        },
+        {
+          "key": "consent_timestamp",
+          "type": "datetime",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-19T15:53:23.569+00:00",
+          "$updatedAt": "2026-04-19T15:53:23.635+00:00",
+          "format": "",
+          "default": null
+        },
+        {
+          "key": "unsubscribe_token",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-19T15:54:06.046+00:00",
+          "$updatedAt": "2026-04-19T15:54:06.117+00:00",
+          "size": 64,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "status",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-04-19T15:54:57.321+00:00",
+          "$updatedAt": "2026-04-19T15:54:57.386+00:00",
+          "elements": [
+            "active",
+            "unsubscribed",
+            "bounced",
+            "complained"
+          ],
+          "format": "enum",
+          "default": null
+        },
+        {
+          "key": "unsubscribed_at",
+          "type": "datetime",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-07-18T14:05:21.314+00:00",
+          "$updatedAt": "2026-07-18T14:05:21.537+00:00",
+          "format": "",
+          "default": null
+        }
+      ],
+      "indexes": [
+        {
+          "$id": "22473_2_unsub_token_unique",
+          "$createdAt": "2026-04-19T15:55:36.056+00:00",
+          "$updatedAt": "2026-04-19T15:55:36.134+00:00",
+          "key": "unsub_token_unique",
+          "type": "unique",
+          "status": "available",
+          "error": "",
+          "attributes": [
+            "unsubscribe_token"
+          ],
+          "lengths": [
+            0
+          ],
+          "orders": [
+            "asc"
+          ]
+        },
+        {
+          "$id": "22473_2_sub_status_idx",
+          "$createdAt": "2026-04-19T15:56:01.892+00:00",
+          "$updatedAt": "2026-04-19T15:56:01.962+00:00",
+          "key": "sub_status_idx",
+          "type": "key",
+          "status": "available",
+          "error": "",
+          "attributes": [
+            "status"
+          ],
+          "lengths": [
+            0
+          ],
+          "orders": [
+            "asc"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "downloads",
+      "exists": true,
+      "total": 19,
+      "attributes": [
+        {
+          "key": "name",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:22.386+00:00",
+          "$updatedAt": "2026-03-19T01:22:22.512+00:00",
+          "size": 255,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "email",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:23.126+00:00",
+          "$updatedAt": "2026-03-19T01:22:23.259+00:00",
+          "format": "email",
+          "default": null
+        },
+        {
+          "key": "company",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:23.874+00:00",
+          "$updatedAt": "2026-03-19T01:22:24.003+00:00",
+          "size": 255,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "industry",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:24.616+00:00",
+          "$updatedAt": "2026-03-19T01:22:24.751+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "company_size",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:25.369+00:00",
+          "$updatedAt": "2026-03-19T01:22:25.502+00:00",
+          "size": 50,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "consent_email",
+          "type": "boolean",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:26.109+00:00",
+          "$updatedAt": "2026-03-19T01:22:26.465+00:00",
+          "default": false
+        },
+        {
+          "key": "consent_phone",
+          "type": "boolean",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:27.075+00:00",
+          "$updatedAt": "2026-03-19T01:22:27.219+00:00",
+          "default": false
+        },
+        {
+          "key": "consent_webinars",
+          "type": "boolean",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:27.816+00:00",
+          "$updatedAt": "2026-03-19T01:22:27.941+00:00",
+          "default": false
+        },
+        {
+          "key": "privacy_version",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:28.565+00:00",
+          "$updatedAt": "2026-03-19T01:22:28.705+00:00",
+          "size": 20,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "downloaded_at",
+          "type": "datetime",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:29.301+00:00",
+          "$updatedAt": "2026-03-19T01:22:29.438+00:00",
+          "format": "",
+          "default": null
+        },
+        {
+          "key": "ip_address",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-22T14:48:09.661+00:00",
+          "$updatedAt": "2026-03-22T14:48:09.731+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "city",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-22T14:48:10.882+00:00",
+          "$updatedAt": "2026-03-22T14:48:10.957+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "country",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-22T14:48:12.050+00:00",
+          "$updatedAt": "2026-03-22T14:48:12.119+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "region",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-22T14:48:13.226+00:00",
+          "$updatedAt": "2026-03-22T14:48:13.300+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "phone",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-22T14:48:19.245+00:00",
+          "$updatedAt": "2026-03-22T14:48:19.315+00:00",
+          "size": 20,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "language",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-06-15T18:20:59.070+00:00",
+          "$updatedAt": "2026-06-15T18:20:59.194+00:00",
+          "size": 5,
+          "default": "en",
+          "encrypt": false
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "id": "assessments",
+      "exists": true,
+      "total": 52,
+      "attributes": [
+        {
+          "key": "email",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:30.295+00:00",
+          "$updatedAt": "2026-03-19T01:22:30.417+00:00",
+          "format": "email",
+          "default": null
+        },
+        {
+          "key": "industry",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:31.035+00:00",
+          "$updatedAt": "2026-03-19T01:22:31.165+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "risk_level",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:31.794+00:00",
+          "$updatedAt": "2026-03-19T01:22:31.926+00:00",
+          "size": 20,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "applicability_score",
+          "type": "double",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:32.552+00:00",
+          "$updatedAt": "2026-03-19T01:22:32.680+00:00",
+          "min": -1.7976931348623157e+308,
+          "max": 1.7976931348623157e+308,
+          "default": null
+        },
+        {
+          "key": "maturity_score",
+          "type": "double",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:33.290+00:00",
+          "$updatedAt": "2026-03-19T01:22:33.425+00:00",
+          "min": -1.7976931348623157e+308,
+          "max": 1.7976931348623157e+308,
+          "default": null
+        },
+        {
+          "key": "risk_score",
+          "type": "double",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:34.036+00:00",
+          "$updatedAt": "2026-03-19T01:22:34.173+00:00",
+          "min": -1.7976931348623157e+308,
+          "max": 1.7976931348623157e+308,
+          "default": null
+        },
+        {
+          "key": "urgency_score",
+          "type": "double",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:34.778+00:00",
+          "$updatedAt": "2026-03-19T01:22:34.909+00:00",
+          "min": -1.7976931348623157e+308,
+          "max": 1.7976931348623157e+308,
+          "default": null
+        },
+        {
+          "key": "overall_score",
+          "type": "double",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:35.525+00:00",
+          "$updatedAt": "2026-03-19T01:22:35.662+00:00",
+          "min": -1.7976931348623157e+308,
+          "max": 1.7976931348623157e+308,
+          "default": null
+        },
+        {
+          "key": "created_at",
+          "type": "datetime",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-19T01:22:36.283+00:00",
+          "$updatedAt": "2026-03-19T01:22:36.421+00:00",
+          "format": "",
+          "default": null
+        },
+        {
+          "key": "ip_address",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-22T14:48:14.536+00:00",
+          "$updatedAt": "2026-03-22T14:48:14.660+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "city",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-22T14:48:15.707+00:00",
+          "$updatedAt": "2026-03-22T14:48:15.843+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "country",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-22T14:48:16.865+00:00",
+          "$updatedAt": "2026-03-22T14:48:16.995+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "region",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-22T14:48:18.029+00:00",
+          "$updatedAt": "2026-03-22T14:48:18.163+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "raw_score",
+          "type": "integer",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-13T07:22:24.927+00:00",
+          "$updatedAt": "2026-04-13T07:22:25.034+00:00",
+          "min": -9223372036854776000,
+          "max": 9223372036854776000,
+          "default": null
+        },
+        {
+          "key": "final_score",
+          "type": "integer",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-13T07:22:43.802+00:00",
+          "$updatedAt": "2026-04-13T07:22:43.830+00:00",
+          "min": -9223372036854776000,
+          "max": 9223372036854776000,
+          "default": null
+        },
+        {
+          "key": "data_exposure",
+          "type": "integer",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-13T07:23:01.425+00:00",
+          "$updatedAt": "2026-04-13T07:23:01.506+00:00",
+          "min": -9223372036854776000,
+          "max": 9223372036854776000,
+          "default": null
+        },
+        {
+          "key": "control_maturity",
+          "type": "integer",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-13T07:23:17.966+00:00",
+          "$updatedAt": "2026-04-13T07:23:18.048+00:00",
+          "min": -9223372036854776000,
+          "max": 9223372036854776000,
+          "default": null
+        },
+        {
+          "key": "operational_readiness",
+          "type": "integer",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-13T07:23:33.786+00:00",
+          "$updatedAt": "2026-04-13T07:23:33.815+00:00",
+          "min": -9223372036854776000,
+          "max": 9223372036854776000,
+          "default": null
+        },
+        {
+          "key": "consent_report",
+          "type": "boolean",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-13T07:24:44.669+00:00",
+          "$updatedAt": "2026-04-13T07:24:44.696+00:00",
+          "default": false
+        },
+        {
+          "key": "consent_newsletter",
+          "type": "boolean",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-13T07:25:03.343+00:00",
+          "$updatedAt": "2026-04-13T07:25:03.378+00:00",
+          "default": false
+        },
+        {
+          "key": "consent_followup",
+          "type": "boolean",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-13T07:25:25.749+00:00",
+          "$updatedAt": "2026-04-13T07:25:25.787+00:00",
+          "default": false
+        },
+        {
+          "key": "verdict_band",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-13T07:26:06.966+00:00",
+          "$updatedAt": "2026-04-13T07:26:07.047+00:00",
+          "size": 60,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "report_type",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-13T07:26:32.243+00:00",
+          "$updatedAt": "2026-04-13T07:26:32.330+00:00",
+          "size": 10,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "name",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-13T07:26:52.096+00:00",
+          "$updatedAt": "2026-04-13T07:26:52.187+00:00",
+          "size": 200,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "business_name",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-13T07:27:15.481+00:00",
+          "$updatedAt": "2026-04-13T07:27:15.568+00:00",
+          "size": 200,
+          "default": null,
+          "encrypt": false
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "id": "briefings",
+      "exists": true,
+      "total": 155,
+      "attributes": [
+        {
+          "key": "title",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-03-20T02:08:52.871+00:00",
+          "$updatedAt": "2026-03-20T02:08:53.002+00:00",
+          "size": 500,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "slug",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-03-20T02:08:53.976+00:00",
+          "$updatedAt": "2026-03-20T02:08:54.096+00:00",
+          "size": 255,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-20T02:08:54.839+00:00",
+          "$updatedAt": "2026-03-20T02:08:54.961+00:00",
+          "size": 2000,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "why_it_matters",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-20T02:08:56.579+00:00",
+          "$updatedAt": "2026-03-20T02:08:56.707+00:00",
+          "size": 5000,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "action_checklist",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-20T02:08:57.445+00:00",
+          "$updatedAt": "2026-03-20T02:08:57.578+00:00",
+          "size": 5000,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "status",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-20T02:08:58.305+00:00",
+          "$updatedAt": "2026-03-20T02:08:58.428+00:00",
+          "size": 50,
+          "default": "draft",
+          "encrypt": false
+        },
+        {
+          "key": "approval_token",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-20T02:08:59.183+00:00",
+          "$updatedAt": "2026-03-20T02:08:59.312+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "scheduled_for",
+          "type": "datetime",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-20T02:09:00.043+00:00",
+          "$updatedAt": "2026-03-20T02:09:00.200+00:00",
+          "format": "",
+          "default": null
+        },
+        {
+          "key": "sent_at",
+          "type": "datetime",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-20T02:09:01.071+00:00",
+          "$updatedAt": "2026-03-20T02:09:01.214+00:00",
+          "format": "",
+          "default": null
+        },
+        {
+          "key": "created_at",
+          "type": "datetime",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-20T02:09:01.944+00:00",
+          "$updatedAt": "2026-03-20T02:09:02.087+00:00",
+          "format": "",
+          "default": null
+        },
+        {
+          "key": "subscriber_count",
+          "type": "integer",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-20T02:09:02.806+00:00",
+          "$updatedAt": "2026-03-20T02:09:02.928+00:00",
+          "min": -9223372036854776000,
+          "max": 9223372036854776000,
+          "default": null
+        },
+        {
+          "key": "excerpt",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-22T15:29:03.947+00:00",
+          "$updatedAt": "2026-03-22T15:29:04.138+00:00",
+          "size": 500,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "category",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-22T15:29:05.117+00:00",
+          "$updatedAt": "2026-03-22T15:29:05.244+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "tags",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-22T15:29:06.277+00:00",
+          "$updatedAt": "2026-03-22T15:29:06.396+00:00",
+          "size": 1000,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "industries",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-22T15:29:07.465+00:00",
+          "$updatedAt": "2026-03-22T15:29:07.595+00:00",
+          "size": 1000,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "author",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-22T15:29:10.957+00:00",
+          "$updatedAt": "2026-03-22T15:29:11.090+00:00",
+          "size": 200,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "published_at",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-22T15:29:12.104+00:00",
+          "$updatedAt": "2026-03-22T15:29:12.231+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "read_time",
+          "type": "integer",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-22T15:29:13.270+00:00",
+          "$updatedAt": "2026-03-22T15:29:13.389+00:00",
+          "min": -9223372036854776000,
+          "max": 9223372036854776000,
+          "default": null
+        },
+        {
+          "key": "featured",
+          "type": "boolean",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-22T15:29:14.430+00:00",
+          "$updatedAt": "2026-03-22T15:29:14.563+00:00",
+          "default": null
+        },
+        {
+          "key": "infographic_base64",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-26T00:17:14.729+00:00",
+          "$updatedAt": "2026-03-26T00:17:14.811+00:00",
+          "size": 1000000,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "outreach_used_at",
+          "type": "datetime",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-20T02:39:30.481+00:00",
+          "$updatedAt": "2026-04-20T02:39:30.722+00:00",
+          "format": "",
+          "default": null
+        }
+      ],
+      "indexes": [
+        {
+          "$id": "22473_5_slug_idx",
+          "$createdAt": "2026-04-07T03:18:54.129+00:00",
+          "$updatedAt": "2026-04-07T03:18:54.233+00:00",
+          "key": "slug_idx",
+          "type": "key",
+          "status": "available",
+          "error": "",
+          "attributes": [
+            "slug"
+          ],
+          "lengths": [
+            0
+          ],
+          "orders": [
+            "asc"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "consent_log",
+      "exists": true,
+      "total": 70,
+      "attributes": [
+        {
+          "key": "email",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-03-22T14:48:48.644+00:00",
+          "$updatedAt": "2026-03-22T14:48:48.771+00:00",
+          "size": 255,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "name",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-22T14:48:50.805+00:00",
+          "$updatedAt": "2026-03-22T14:48:50.930+00:00",
+          "size": 255,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "source",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-03-22T14:48:52.962+00:00",
+          "$updatedAt": "2026-03-22T14:48:53.095+00:00",
+          "size": 50,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "consent_type",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-03-22T14:48:55.140+00:00",
+          "$updatedAt": "2026-03-22T14:48:55.274+00:00",
+          "size": 50,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "privacy_version",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-03-22T14:48:57.330+00:00",
+          "$updatedAt": "2026-03-22T14:48:57.455+00:00",
+          "size": 20,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "ip_address",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-22T14:48:59.525+00:00",
+          "$updatedAt": "2026-03-22T14:48:59.658+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "user_agent",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-22T14:49:01.691+00:00",
+          "$updatedAt": "2026-03-22T14:49:01.829+00:00",
+          "size": 500,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "city",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-22T14:49:03.868+00:00",
+          "$updatedAt": "2026-03-22T14:49:03.994+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "country",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-22T14:49:06.054+00:00",
+          "$updatedAt": "2026-03-22T14:49:06.177+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "region",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-22T14:49:08.268+00:00",
+          "$updatedAt": "2026-03-22T14:49:08.398+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "timestamp",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-03-22T14:49:10.441+00:00",
+          "$updatedAt": "2026-03-22T14:49:10.569+00:00",
+          "size": 50,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "withdrawn_at",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-22T14:49:12.603+00:00",
+          "$updatedAt": "2026-03-22T14:49:12.746+00:00",
+          "size": 50,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "consent_value",
+          "type": "boolean",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-03-22T14:49:24.447+00:00",
+          "$updatedAt": "2026-03-22T14:49:24.573+00:00",
+          "default": null
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "id": "survey_responses",
+      "exists": true,
+      "total": 9,
+      "attributes": [
+        {
+          "key": "role",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-26T00:22:01.606+00:00",
+          "$updatedAt": "2026-03-26T00:22:01.736+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "employee_size",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-26T00:22:01.972+00:00",
+          "$updatedAt": "2026-03-26T00:22:02.092+00:00",
+          "size": 50,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "sector",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-26T00:22:02.313+00:00",
+          "$updatedAt": "2026-03-26T00:22:02.445+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "operating_footprint",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-26T00:22:02.649+00:00",
+          "$updatedAt": "2026-03-26T00:22:02.776+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "state_ut",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-26T00:22:02.995+00:00",
+          "$updatedAt": "2026-03-26T00:22:03.130+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "city",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-26T00:22:03.580+00:00",
+          "$updatedAt": "2026-03-26T00:22:03.721+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "digital_personal_data",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-26T00:22:03.929+00:00",
+          "$updatedAt": "2026-03-26T00:22:04.067+00:00",
+          "size": 50,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "data_types",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-26T00:22:04.319+00:00",
+          "$updatedAt": "2026-03-26T00:22:04.456+00:00",
+          "size": 1000,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "data_storage",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-26T00:22:04.710+00:00",
+          "$updatedAt": "2026-03-26T00:22:04.861+00:00",
+          "size": 1000,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "controls_in_place",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-26T00:22:05.071+00:00",
+          "$updatedAt": "2026-03-26T00:22:05.210+00:00",
+          "size": 2000,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "readiness_self_view",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-26T00:22:05.447+00:00",
+          "$updatedAt": "2026-03-26T00:22:05.590+00:00",
+          "size": 200,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "biggest_blocker",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-26T00:22:05.781+00:00",
+          "$updatedAt": "2026-03-26T00:22:05.923+00:00",
+          "size": 200,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "most_helpful_resource",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-26T00:22:06.135+00:00",
+          "$updatedAt": "2026-03-26T00:22:06.264+00:00",
+          "size": 200,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "score_band",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-26T00:22:06.474+00:00",
+          "$updatedAt": "2026-03-26T00:22:06.614+00:00",
+          "size": 50,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "name",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-26T00:22:06.823+00:00",
+          "$updatedAt": "2026-03-26T00:22:06.960+00:00",
+          "size": 200,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "business_name",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-26T00:22:07.164+00:00",
+          "$updatedAt": "2026-03-26T00:22:07.294+00:00",
+          "size": 200,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "work_email",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-26T00:22:07.497+00:00",
+          "$updatedAt": "2026-03-26T00:22:07.645+00:00",
+          "size": 200,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "mobile_number",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-26T00:22:07.849+00:00",
+          "$updatedAt": "2026-03-26T00:22:07.983+00:00",
+          "size": 20,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "contact_preference",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-26T00:22:08.187+00:00",
+          "$updatedAt": "2026-03-26T00:22:08.321+00:00",
+          "size": 50,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "consent_version",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-26T00:22:08.530+00:00",
+          "$updatedAt": "2026-03-26T00:22:08.703+00:00",
+          "size": 20,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "consent_timestamp",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-26T00:22:08.869+00:00",
+          "$updatedAt": "2026-03-26T00:22:09.013+00:00",
+          "size": 50,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "created_at",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-26T00:22:09.207+00:00",
+          "$updatedAt": "2026-03-26T00:22:09.356+00:00",
+          "size": 50,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "score",
+          "type": "integer",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-26T00:22:09.555+00:00",
+          "$updatedAt": "2026-03-26T00:22:09.693+00:00",
+          "min": -9223372036854776000,
+          "max": 9223372036854776000,
+          "default": null
+        },
+        {
+          "key": "wants_report",
+          "type": "boolean",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-26T00:22:09.909+00:00",
+          "$updatedAt": "2026-03-26T00:22:10.038+00:00",
+          "default": null
+        },
+        {
+          "key": "consent_followup",
+          "type": "boolean",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-26T00:22:10.245+00:00",
+          "$updatedAt": "2026-03-26T00:22:10.385+00:00",
+          "default": null
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "id": "blog_posts",
+      "exists": true,
+      "total": 8,
+      "attributes": [
+        {
+          "key": "title",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-03-27T02:38:07.257+00:00",
+          "$updatedAt": "2026-03-27T02:38:07.389+00:00",
+          "size": 200,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "slug",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-03-27T02:38:09.407+00:00",
+          "$updatedAt": "2026-03-27T02:38:09.540+00:00",
+          "size": 200,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "excerpt",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-03-27T02:38:11.576+00:00",
+          "$updatedAt": "2026-03-27T02:38:11.706+00:00",
+          "size": 600,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "lane",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-03-27T02:38:13.724+00:00",
+          "$updatedAt": "2026-03-27T02:38:13.856+00:00",
+          "size": 60,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "author",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-03-27T02:38:18.066+00:00",
+          "$updatedAt": "2026-03-27T02:38:18.205+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "tags",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-27T02:38:20.238+00:00",
+          "$updatedAt": "2026-03-27T02:38:20.359+00:00",
+          "size": 500,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "industries",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-27T02:38:22.382+00:00",
+          "$updatedAt": "2026-03-27T02:38:22.512+00:00",
+          "size": 500,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "validated_at",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-27T02:38:24.559+00:00",
+          "$updatedAt": "2026-03-27T02:38:24.700+00:00",
+          "size": 30,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "published_at",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-27T02:38:26.707+00:00",
+          "$updatedAt": "2026-03-27T02:38:26.842+00:00",
+          "size": 30,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "section_what_changed",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-27T02:38:28.868+00:00",
+          "$updatedAt": "2026-03-27T02:38:29.003+00:00",
+          "size": 10000,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "status",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-27T02:39:02.042+00:00",
+          "$updatedAt": "2026-03-27T02:39:02.173+00:00",
+          "size": 20,
+          "default": "draft",
+          "encrypt": false
+        },
+        {
+          "key": "section_law_says",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-27T02:39:04.210+00:00",
+          "$updatedAt": "2026-03-27T02:39:04.348+00:00",
+          "size": 3000,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "read_time",
+          "type": "integer",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-27T02:41:59.848+00:00",
+          "$updatedAt": "2026-03-27T02:41:59.988+00:00",
+          "min": -9223372036854776000,
+          "max": 9223372036854776000,
+          "default": 5
+        },
+        {
+          "key": "score_legal_accuracy",
+          "type": "integer",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-27T02:42:02.036+00:00",
+          "$updatedAt": "2026-03-27T02:42:02.193+00:00",
+          "min": -9223372036854776000,
+          "max": 9223372036854776000,
+          "default": 0
+        },
+        {
+          "key": "score_primary_source",
+          "type": "integer",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-27T02:42:04.216+00:00",
+          "$updatedAt": "2026-03-27T02:42:04.360+00:00",
+          "min": -9223372036854776000,
+          "max": 9223372036854776000,
+          "default": 0
+        },
+        {
+          "key": "score_currency",
+          "type": "integer",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-27T02:42:06.413+00:00",
+          "$updatedAt": "2026-03-27T02:42:06.586+00:00",
+          "min": -9223372036854776000,
+          "max": 9223372036854776000,
+          "default": 0
+        },
+        {
+          "key": "score_scope",
+          "type": "integer",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-27T02:42:08.571+00:00",
+          "$updatedAt": "2026-03-27T02:42:08.704+00:00",
+          "min": -9223372036854776000,
+          "max": 9223372036854776000,
+          "default": 0
+        },
+        {
+          "key": "score_operational",
+          "type": "integer",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-27T02:42:10.742+00:00",
+          "$updatedAt": "2026-03-27T02:42:10.882+00:00",
+          "min": -9223372036854776000,
+          "max": 9223372036854776000,
+          "default": 0
+        },
+        {
+          "key": "validation_score",
+          "type": "integer",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-27T02:42:12.912+00:00",
+          "$updatedAt": "2026-03-27T02:42:13.034+00:00",
+          "min": -9223372036854776000,
+          "max": 9223372036854776000,
+          "default": 0
+        },
+        {
+          "key": "featured",
+          "type": "boolean",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-27T02:42:15.055+00:00",
+          "$updatedAt": "2026-03-27T02:42:15.188+00:00",
+          "default": false
+        },
+        {
+          "key": "sections_json",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-11T13:15:01.241+00:00",
+          "$updatedAt": "2026-04-11T13:15:02.445+00:00",
+          "size": 1000000,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "infographic_url",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-11T13:15:58.968+00:00",
+          "$updatedAt": "2026-04-11T13:15:59.048+00:00",
+          "size": 500,
+          "default": null,
+          "encrypt": false
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "id": "blogger_accounts",
+      "exists": true,
+      "total": 1,
+      "attributes": [
+        {
+          "key": "email",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-04-11T14:07:26.037+00:00",
+          "$updatedAt": "2026-04-11T14:07:26.180+00:00",
+          "size": 254,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "name",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-04-11T14:08:00.778+00:00",
+          "$updatedAt": "2026-04-11T14:08:00.930+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "bio",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-11T14:08:40.305+00:00",
+          "$updatedAt": "2026-04-11T14:08:40.454+00:00",
+          "size": 500,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "password_hash",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-11T14:09:33.257+00:00",
+          "$updatedAt": "2026-04-11T14:09:33.397+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "active",
+          "type": "boolean",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-11T14:10:06.710+00:00",
+          "$updatedAt": "2026-04-11T14:10:06.861+00:00",
+          "default": null
+        },
+        {
+          "key": "invite_token",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-11T14:10:30.267+00:00",
+          "$updatedAt": "2026-04-11T14:10:30.412+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "token_expires",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-11T14:10:55.757+00:00",
+          "$updatedAt": "2026-04-11T14:10:55.909+00:00",
+          "size": 50,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "created_at",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-11T14:11:20.419+00:00",
+          "$updatedAt": "2026-04-11T14:11:20.553+00:00",
+          "size": 50,
+          "default": null,
+          "encrypt": false
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "id": "template_downloads",
+      "exists": true,
+      "total": 9,
+      "attributes": [
+        {
+          "key": "business_name",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-04-19T06:01:23.748+00:00",
+          "$updatedAt": "2026-04-19T06:01:23.876+00:00",
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "employees",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-19T06:01:58.250+00:00",
+          "$updatedAt": "2026-04-19T06:01:58.415+00:00",
+          "size": 64,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "phone",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-04-19T06:15:52.476+00:00",
+          "$updatedAt": "2026-04-19T06:16:36.425+00:00",
+          "size": 64,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "email",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-19T06:16:25.487+00:00",
+          "$updatedAt": "2026-04-19T06:16:25.625+00:00",
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "template_name",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-19T06:17:17.599+00:00",
+          "$updatedAt": "2026-04-19T06:17:17.734+00:00",
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "consent_contact",
+          "type": "boolean",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-19T06:17:43.681+00:00",
+          "$updatedAt": "2026-04-19T06:17:43.815+00:00",
+          "default": null
+        },
+        {
+          "key": "report_token",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-19T06:18:06.236+00:00",
+          "$updatedAt": "2026-04-19T06:18:06.379+00:00",
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "ip_address",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-19T06:18:28.223+00:00",
+          "$updatedAt": "2026-04-19T06:18:28.379+00:00",
+          "size": 64,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "city",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-19T06:18:46.145+00:00",
+          "$updatedAt": "2026-04-19T06:18:46.285+00:00",
+          "size": 128,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "country",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-19T06:19:00.367+00:00",
+          "$updatedAt": "2026-04-19T06:19:00.495+00:00",
+          "size": 64,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "created_at",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-19T06:19:29.576+00:00",
+          "$updatedAt": "2026-04-19T06:19:29.716+00:00",
+          "size": 64,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "contact_name",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-04-19T06:35:25.454+00:00",
+          "$updatedAt": "2026-04-19T06:35:25.591+00:00",
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "source",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-06-13T15:48:18.988+00:00",
+          "$updatedAt": "2026-06-13T15:48:19.142+00:00",
+          "size": 64,
+          "default": "report_page",
+          "encrypt": false
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "id": "outreach_contacts",
+      "exists": true,
+      "total": 5000,
+      "attributes": [
+        {
+          "key": "email",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-04-19T15:33:24.263+00:00",
+          "$updatedAt": "2026-04-19T15:33:24.389+00:00",
+          "format": "email",
+          "default": null
+        },
+        {
+          "key": "name",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-19T15:33:53.074+00:00",
+          "$updatedAt": "2026-04-19T15:33:53.210+00:00",
+          "size": 200,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "company",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-19T15:34:16.023+00:00",
+          "$updatedAt": "2026-04-19T15:34:16.140+00:00",
+          "size": 200,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "industry",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-19T15:34:42.998+00:00",
+          "$updatedAt": "2026-04-19T15:34:43.134+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "source",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-19T15:35:17.150+00:00",
+          "$updatedAt": "2026-04-19T15:35:17.274+00:00",
+          "size": 100,
+          "default": "excel_import_v1",
+          "encrypt": false
+        },
+        {
+          "key": "status",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-04-19T15:36:31.577+00:00",
+          "$updatedAt": "2026-04-19T19:03:02.539+00:00",
+          "elements": [
+            "pending",
+            "sent",
+            "subscribed",
+            "bounced",
+            "unsubscribed",
+            "complained",
+            "failed"
+          ],
+          "format": "enum",
+          "default": null
+        },
+        {
+          "key": "intro_sent_at",
+          "type": "datetime",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-19T15:37:00.097+00:00",
+          "$updatedAt": "2026-04-19T15:37:00.227+00:00",
+          "format": "",
+          "default": null
+        },
+        {
+          "key": "subscribed_at",
+          "type": "datetime",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-19T15:37:19.989+00:00",
+          "$updatedAt": "2026-04-19T15:37:20.120+00:00",
+          "format": "",
+          "default": null
+        },
+        {
+          "key": "magic_token",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-04-19T15:37:49.283+00:00",
+          "$updatedAt": "2026-04-19T15:37:49.416+00:00",
+          "size": 64,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "created_at",
+          "type": "datetime",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-04-19T15:38:30.029+00:00",
+          "$updatedAt": "2026-04-19T15:38:30.163+00:00",
+          "format": "",
+          "default": null
+        }
+      ],
+      "indexes": [
+        {
+          "$id": "22473_11_email_unique",
+          "$createdAt": "2026-04-19T15:40:15.447+00:00",
+          "$updatedAt": "2026-04-19T15:40:15.499+00:00",
+          "key": "email_unique",
+          "type": "unique",
+          "status": "available",
+          "error": "",
+          "attributes": [
+            "email"
+          ],
+          "lengths": [
+            0
+          ],
+          "orders": [
+            "asc"
+          ]
+        },
+        {
+          "$id": "22473_11_magic_token_unique",
+          "$createdAt": "2026-04-19T15:40:44.630+00:00",
+          "$updatedAt": "2026-04-19T15:40:44.690+00:00",
+          "key": "magic_token_unique",
+          "type": "unique",
+          "status": "available",
+          "error": "",
+          "attributes": [
+            "magic_token"
+          ],
+          "lengths": [
+            0
+          ],
+          "orders": [
+            "asc"
+          ]
+        },
+        {
+          "$id": "22473_11_status_idx",
+          "$createdAt": "2026-04-19T15:41:22.630+00:00",
+          "$updatedAt": "2026-04-19T15:41:22.698+00:00",
+          "key": "status_idx",
+          "type": "key",
+          "status": "available",
+          "error": "",
+          "attributes": [
+            "status"
+          ],
+          "lengths": [
+            0
+          ],
+          "orders": [
+            "asc"
+          ]
+        },
+        {
+          "$id": "22473_11_created_idx",
+          "$createdAt": "2026-04-19T15:41:49.624+00:00",
+          "$updatedAt": "2026-04-19T15:41:49.680+00:00",
+          "key": "created_idx",
+          "type": "key",
+          "status": "available",
+          "error": "",
+          "attributes": [
+            "created_at"
+          ],
+          "lengths": [
+            0
+          ],
+          "orders": [
+            "asc"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "email_send_log",
+      "exists": true,
+      "total": 5000,
+      "attributes": [
+        {
+          "key": "recipient_email",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-04-19T15:43:42.322+00:00",
+          "$updatedAt": "2026-04-19T15:43:42.446+00:00",
+          "format": "email",
+          "default": null
+        },
+        {
+          "key": "email_type",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-04-19T15:44:13.052+00:00",
+          "$updatedAt": "2026-04-19T15:44:13.176+00:00",
+          "elements": [
+            "intro",
+            "briefing_daily",
+            "briefing_weekly",
+            "report",
+            "subscribe_confirmation",
+            "unsubscribe_confirmation"
+          ],
+          "format": "enum",
+          "default": null
+        },
+        {
+          "key": "briefing_id",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-19T15:44:35.755+00:00",
+          "$updatedAt": "2026-04-19T15:44:35.890+00:00",
+          "size": 36,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "resend_message_id",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-19T15:45:11.403+00:00",
+          "$updatedAt": "2026-04-19T15:45:11.530+00:00",
+          "size": 100,
+          "default": "",
+          "encrypt": false
+        },
+        {
+          "key": "status",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-04-19T15:45:48.706+00:00",
+          "$updatedAt": "2026-04-19T15:45:48.838+00:00",
+          "elements": [
+            "sent",
+            "delivered",
+            "opened",
+            "clicked",
+            "bounced",
+            "complained"
+          ],
+          "format": "enum",
+          "default": null
+        },
+        {
+          "key": "consent_basis",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-04-19T15:46:20.621+00:00",
+          "$updatedAt": "2026-04-19T15:46:20.745+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "sent_at",
+          "type": "datetime",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-04-19T15:47:34.198+00:00",
+          "$updatedAt": "2026-04-19T15:47:34.329+00:00",
+          "format": "",
+          "default": null
+        },
+        {
+          "key": "updated_at",
+          "type": "datetime",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-19T15:48:20.698+00:00",
+          "$updatedAt": "2026-04-19T15:48:20.831+00:00",
+          "format": "",
+          "default": null
+        }
+      ],
+      "indexes": [
+        {
+          "$id": "22473_12_recipient_idx",
+          "$createdAt": "2026-04-19T15:49:23.550+00:00",
+          "$updatedAt": "2026-04-19T15:49:23.609+00:00",
+          "key": "recipient_idx",
+          "type": "key",
+          "status": "available",
+          "error": "",
+          "attributes": [
+            "recipient_email"
+          ],
+          "lengths": [
+            0
+          ],
+          "orders": [
+            "asc"
+          ]
+        },
+        {
+          "$id": "22473_12_type_idx",
+          "$createdAt": "2026-04-19T15:49:47.579+00:00",
+          "$updatedAt": "2026-04-19T15:49:47.634+00:00",
+          "key": "type_idx",
+          "type": "key",
+          "status": "available",
+          "error": "",
+          "attributes": [
+            "email_type"
+          ],
+          "lengths": [
+            0
+          ],
+          "orders": [
+            "asc"
+          ]
+        },
+        {
+          "$id": "22473_12_sent_at_idx",
+          "$createdAt": "2026-04-19T15:50:30.038+00:00",
+          "$updatedAt": "2026-04-19T15:50:30.103+00:00",
+          "key": "sent_at_idx",
+          "type": "key",
+          "status": "available",
+          "error": "",
+          "attributes": [
+            "sent_at"
+          ],
+          "lengths": [
+            0
+          ],
+          "orders": [
+            "desc"
+          ]
+        },
+        {
+          "$id": "22473_12_resend_msg_idx",
+          "$createdAt": "2026-04-19T15:51:06.591+00:00",
+          "$updatedAt": "2026-04-19T15:51:06.651+00:00",
+          "key": "resend_msg_idx",
+          "type": "key",
+          "status": "available",
+          "error": "",
+          "attributes": [
+            "resend_message_id"
+          ],
+          "lengths": [
+            0
+          ],
+          "orders": [
+            "asc"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ai_citations",
+      "exists": true,
+      "total": 400,
+      "attributes": [
+        {
+          "key": "run_id",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-05-15T01:54:26.244+00:00",
+          "$updatedAt": "2026-05-15T01:54:26.398+00:00",
+          "size": 64,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "date",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-05-15T01:54:27.341+00:00",
+          "$updatedAt": "2026-05-15T01:54:27.491+00:00",
+          "size": 10,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "week_num",
+          "type": "integer",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-05-15T01:54:29.541+00:00",
+          "$updatedAt": "2026-05-15T01:54:29.684+00:00",
+          "min": -9223372036854776000,
+          "max": 9223372036854776000,
+          "default": null
+        },
+        {
+          "key": "engine",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-05-15T01:54:30.370+00:00",
+          "$updatedAt": "2026-05-15T01:54:30.512+00:00",
+          "size": 32,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "engine_label",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-05-15T01:54:31.210+00:00",
+          "$updatedAt": "2026-05-15T01:54:31.374+00:00",
+          "size": 64,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "query_id",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-05-15T01:54:32.066+00:00",
+          "$updatedAt": "2026-05-15T01:54:32.219+00:00",
+          "size": 8,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "query_text",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-05-15T01:54:32.912+00:00",
+          "$updatedAt": "2026-05-15T01:54:33.056+00:00",
+          "size": 500,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "cited",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-05-15T01:54:33.754+00:00",
+          "$updatedAt": "2026-05-15T01:54:33.907+00:00",
+          "size": 32,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "position",
+          "type": "integer",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-05-15T01:54:34.603+00:00",
+          "$updatedAt": "2026-05-15T01:54:34.748+00:00",
+          "min": -9223372036854776000,
+          "max": 9223372036854776000,
+          "default": null
+        },
+        {
+          "key": "cited_page",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-05-15T01:54:35.452+00:00",
+          "$updatedAt": "2026-05-15T01:54:35.602+00:00",
+          "size": 500,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "quote_type",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-05-15T01:54:36.298+00:00",
+          "$updatedAt": "2026-05-15T01:54:36.449+00:00",
+          "size": 32,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "competitors",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-05-15T01:54:37.149+00:00",
+          "$updatedAt": "2026-05-15T01:54:37.311+00:00",
+          "size": 4000,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "raw_citations",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-05-15T01:54:37.990+00:00",
+          "$updatedAt": "2026-05-15T01:54:38.139+00:00",
+          "size": 50000,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "content_snippet",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-05-15T01:54:38.843+00:00",
+          "$updatedAt": "2026-05-15T01:54:38.999+00:00",
+          "size": 1000,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "duration_ms",
+          "type": "integer",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-05-15T01:54:39.701+00:00",
+          "$updatedAt": "2026-05-15T01:54:39.853+00:00",
+          "min": -9223372036854776000,
+          "max": 9223372036854776000,
+          "default": null
+        },
+        {
+          "key": "error_message",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-05-15T01:54:40.535+00:00",
+          "$updatedAt": "2026-05-15T01:54:40.674+00:00",
+          "size": 1000,
+          "default": null,
+          "encrypt": false
+        }
+      ],
+      "indexes": [
+        {
+          "$id": "22473_14_idx_run_id",
+          "$createdAt": "2026-05-15T01:54:46.361+00:00",
+          "$updatedAt": "2026-05-15T01:54:46.441+00:00",
+          "key": "idx_run_id",
+          "type": "key",
+          "status": "available",
+          "error": "",
+          "attributes": [
+            "run_id"
+          ],
+          "lengths": [
+            0
+          ],
+          "orders": [
+            "ASC"
+          ]
+        },
+        {
+          "$id": "22473_14_idx_date",
+          "$createdAt": "2026-05-15T01:54:47.202+00:00",
+          "$updatedAt": "2026-05-15T01:54:47.285+00:00",
+          "key": "idx_date",
+          "type": "key",
+          "status": "available",
+          "error": "",
+          "attributes": [
+            "date"
+          ],
+          "lengths": [
+            0
+          ],
+          "orders": [
+            "DESC"
+          ]
+        },
+        {
+          "$id": "22473_14_idx_engine",
+          "$createdAt": "2026-05-15T01:54:48.056+00:00",
+          "$updatedAt": "2026-05-15T01:54:48.131+00:00",
+          "key": "idx_engine",
+          "type": "key",
+          "status": "available",
+          "error": "",
+          "attributes": [
+            "engine"
+          ],
+          "lengths": [
+            0
+          ],
+          "orders": [
+            "ASC"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "notice_captures",
+      "exists": true,
+      "total": 3,
+      "attributes": [
+        {
+          "key": "email",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-06-22T17:50:23.206+00:00",
+          "$updatedAt": "2026-06-22T17:50:23.413+00:00",
+          "size": 255,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "name",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-06-22T17:53:14.235+00:00",
+          "$updatedAt": "2026-06-22T17:53:14.436+00:00",
+          "size": 255,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "business_name",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-06-22T17:56:47.744+00:00",
+          "$updatedAt": "2026-06-22T17:56:47.939+00:00",
+          "size": 255,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "sector",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-06-22T17:57:08.006+00:00",
+          "$updatedAt": "2026-06-22T17:57:08.194+00:00",
+          "size": 120,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "readiness_score",
+          "type": "integer",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-06-22T17:57:54.653+00:00",
+          "$updatedAt": "2026-06-22T17:57:54.865+00:00",
+          "min": 0,
+          "max": 100,
+          "default": 0
+        },
+        {
+          "key": "export_type",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-06-22T17:58:19.894+00:00",
+          "$updatedAt": "2026-06-22T17:58:20.085+00:00",
+          "size": 20,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "source",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-06-22T17:58:47.989+00:00",
+          "$updatedAt": "2026-06-22T17:58:48.182+00:00",
+          "size": 60,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "consent",
+          "type": "boolean",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-06-22T17:59:19.855+00:00",
+          "$updatedAt": "2026-06-22T17:59:20.084+00:00",
+          "default": false
+        },
+        {
+          "key": "ip_address",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-06-22T17:59:44.426+00:00",
+          "$updatedAt": "2026-06-22T17:59:44.626+00:00",
+          "size": 64,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "city",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-06-22T18:00:09.380+00:00",
+          "$updatedAt": "2026-06-22T18:00:09.725+00:00",
+          "size": 120,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "country",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-06-22T18:00:35.665+00:00",
+          "$updatedAt": "2026-06-22T18:00:35.895+00:00",
+          "size": 8,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "created_at",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-06-22T18:00:56.342+00:00",
+          "$updatedAt": "2026-06-22T18:00:56.586+00:00",
+          "size": 40,
+          "default": null,
+          "encrypt": false
+        }
+      ],
+      "indexes": [
+        {
+          "$id": "22473_15_idx_created",
+          "$createdAt": "2026-06-22T18:02:51.755+00:00",
+          "$updatedAt": "2026-06-22T18:02:51.866+00:00",
+          "key": "idx_created",
+          "type": "key",
+          "status": "available",
+          "error": "",
+          "attributes": [
+            "$createdAt"
+          ],
+          "lengths": [
+            0
+          ],
+          "orders": [
+            "desc"
+          ]
+        },
+        {
+          "$id": "22473_15_idx_sector",
+          "$createdAt": "2026-06-22T18:03:24.595+00:00",
+          "$updatedAt": "2026-06-22T18:03:24.726+00:00",
+          "key": "idx_sector",
+          "type": "key",
+          "status": "available",
+          "error": "",
+          "attributes": [
+            "sector"
+          ],
+          "lengths": [
+            0
+          ],
+          "orders": [
+            "asc"
+          ]
+        },
+        {
+          "$id": "22473_15_idx_source",
+          "$createdAt": "2026-06-22T18:03:52.560+00:00",
+          "$updatedAt": "2026-06-22T18:03:52.689+00:00",
+          "key": "idx_source",
+          "type": "key",
+          "status": "available",
+          "error": "",
+          "attributes": [
+            "source"
+          ],
+          "lengths": [
+            0
+          ],
+          "orders": [
+            "asc"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "notice_runs",
+      "exists": false,
+      "total": null,
+      "attributes": [],
+      "indexes": [],
+      "error": "GET /databases/69bb4b6200165ff03610/collections/notice_runs/attributes → 404 {\"message\":\"Collection with the requested ID 'notice_runs' could not be found.\",\"code\":404,\"type\":\"collection_not_found\",\"version\":\"2.0.0\"}"
+    },
+    {
+      "id": "notice_events",
+      "exists": true,
+      "total": 55,
+      "attributes": [
+        {
+          "key": "name",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": true,
+          "array": false,
+          "$createdAt": "2026-06-22T18:05:51.015+00:00",
+          "$updatedAt": "2026-06-22T18:05:51.251+00:00",
+          "size": 60,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "session_id",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-06-22T18:07:03.824+00:00",
+          "$updatedAt": "2026-06-22T18:07:04.008+00:00",
+          "size": 64,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "payload",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-06-22T18:07:27.848+00:00",
+          "$updatedAt": "2026-06-22T18:07:28.062+00:00",
+          "size": 4000,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "created_at",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-06-22T18:07:50.029+00:00",
+          "$updatedAt": "2026-06-22T18:07:50.249+00:00",
+          "size": 40,
+          "default": null,
+          "encrypt": false
+        }
+      ],
+      "indexes": [
+        {
+          "$id": "22473_16_idx_created",
+          "$createdAt": "2026-06-22T18:09:06.066+00:00",
+          "$updatedAt": "2026-06-22T18:09:06.237+00:00",
+          "key": "idx_created",
+          "type": "key",
+          "status": "available",
+          "error": "",
+          "attributes": [
+            "$createdAt"
+          ],
+          "lengths": [
+            0
+          ],
+          "orders": [
+            "desc"
+          ]
+        },
+        {
+          "$id": "22473_16_idx_name",
+          "$createdAt": "2026-06-22T18:09:37.855+00:00",
+          "$updatedAt": "2026-06-22T18:09:37.970+00:00",
+          "key": "idx_name",
+          "type": "key",
+          "status": "available",
+          "error": "",
+          "attributes": [
+            "name"
+          ],
+          "lengths": [
+            0
+          ],
+          "orders": [
+            "asc"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "business_profiles",
+      "exists": false,
+      "total": null,
+      "attributes": [],
+      "indexes": [],
+      "error": "GET /databases/69bb4b6200165ff03610/collections/business_profiles/documents?queries[]=%7B%22method%22%3A%22limit%22%2C%22values%22%3A%5B1%5D%7D → 404 {\"message\":\"Collection with the requested ID 'business_profiles' could not be found.\",\"code\":404,\"type\":\"collection_not_found\",\"version\":\"2.0.0\"}"
+    },
+    {
+      "id": "dsar_requests",
+      "exists": false,
+      "total": null,
+      "attributes": [],
+      "indexes": [],
+      "error": "GET /databases/69bb4b6200165ff03610/collections/dsar_requests/indexes → 404 {\"message\":\"Collection with the requested ID 'dsar_requests' could not be found.\",\"code\":404,\"type\":\"collection_not_found\",\"version\":\"2.0.0\"}"
+    },
+    {
+      "id": "chat_feedback",
+      "exists": false,
+      "total": null,
+      "attributes": [],
+      "indexes": [],
+      "error": "GET /databases/69bb4b6200165ff03610/collections/chat_feedback/indexes → 404 {\"message\":\"Collection with the requested ID 'chat_feedback' could not be found.\",\"code\":404,\"type\":\"collection_not_found\",\"version\":\"2.0.0\"}"
+    }
+  ],
+  "bucket": {
+    "bucketId": "69bb55520039677639df",
+    "total": 165,
+    "sample": [
+      {
+        "id": "69bc9494003e41d72eb4",
+        "name": "DPDP_Visual_Guide_v4.pdf",
+        "mimeType": "application/pdf",
+        "sizeOriginal": 98326,
+        "createdAt": "2026-03-20T00:28:07.614+00:00"
+      },
+      {
+        "id": "69bcc0c9000f111c261d",
+        "name": "DPDP_Visual_Guide_v4 (3).pdf",
+        "mimeType": "application/pdf",
+        "sizeOriginal": 102649,
+        "createdAt": "2026-03-20T03:36:41.896+00:00"
+      },
+      {
+        "id": "inf20260329",
+        "name": "infographic_2026-03-29.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 234955,
+        "createdAt": "2026-03-29T14:33:08.434+00:00"
+      },
+      {
+        "id": "inf20260325",
+        "name": "infographic_2026-03-25.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 200382,
+        "createdAt": "2026-03-29T17:52:14.279+00:00"
+      },
+      {
+        "id": "inf20260326",
+        "name": "infographic_2026-03-26.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 224901,
+        "createdAt": "2026-03-29T17:52:15.076+00:00"
+      },
+      {
+        "id": "inf20260327",
+        "name": "infographic_2026-03-27.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 157786,
+        "createdAt": "2026-03-29T17:52:15.841+00:00"
+      },
+      {
+        "id": "inf20260328",
+        "name": "infographic_2026-03-28.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 172752,
+        "createdAt": "2026-03-29T17:52:16.585+00:00"
+      },
+      {
+        "id": "inf20260330",
+        "name": "infographic_2026-03-30.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 237253,
+        "createdAt": "2026-03-30T02:30:10.455+00:00"
+      },
+      {
+        "id": "inf20260401",
+        "name": "infographic_2026-04-01.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 175461,
+        "createdAt": "2026-04-01T00:43:30.970+00:00"
+      },
+      {
+        "id": "inf20260331",
+        "name": "infographic_2026-03-31.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 264390,
+        "createdAt": "2026-04-01T00:55:12.669+00:00"
+      },
+      {
+        "id": "inf20260402",
+        "name": "infographic_2026-04-02.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 239016,
+        "createdAt": "2026-04-02T02:15:02.498+00:00"
+      },
+      {
+        "id": "inf20260403",
+        "name": "infographic_2026-04-03.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 177878,
+        "createdAt": "2026-04-02T19:12:08.228+00:00"
+      },
+      {
+        "id": "inf20260404",
+        "name": "infographic_2026-04-04.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 207993,
+        "createdAt": "2026-04-03T19:01:35.046+00:00"
+      },
+      {
+        "id": "inf20260405",
+        "name": "infographic_2026-04-05.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 208936,
+        "createdAt": "2026-04-05T00:15:28.011+00:00"
+      },
+      {
+        "id": "inf20260406",
+        "name": "infographic_2026-04-06.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 198876,
+        "createdAt": "2026-04-05T19:01:47.405+00:00"
+      },
+      {
+        "id": "inf20260407",
+        "name": "infographic_2026-04-07.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 181256,
+        "createdAt": "2026-04-06T19:01:24.668+00:00"
+      },
+      {
+        "id": "inf20260408",
+        "name": "infographic_2026-04-08.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 231593,
+        "createdAt": "2026-04-07T19:01:37.761+00:00"
+      },
+      {
+        "id": "inf20260409",
+        "name": "infographic_2026-04-09.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 226482,
+        "createdAt": "2026-04-08T19:01:35.313+00:00"
+      },
+      {
+        "id": "inf20260410",
+        "name": "infographic_2026-04-10.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 218155,
+        "createdAt": "2026-04-09T19:15:46.923+00:00"
+      },
+      {
+        "id": "inf20260411",
+        "name": "infographic_2026-04-11.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 168677,
+        "createdAt": "2026-04-10T19:01:27.592+00:00"
+      },
+      {
+        "id": "inf20260412",
+        "name": "infographic_2026-04-12.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 254236,
+        "createdAt": "2026-04-11T19:01:40.036+00:00"
+      },
+      {
+        "id": "blog_inf_69cf358000343905fc90",
+        "name": "blog_inf_69cf358000343905fc90.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 556485,
+        "createdAt": "2026-04-12T06:19:03.633+00:00"
+      },
+      {
+        "id": "blog_inf_69db50dd0021ebeeb8b0",
+        "name": "blog_inf_69db50dd0021ebeeb8b0.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 665410,
+        "createdAt": "2026-04-12T08:00:51.070+00:00"
+      },
+      {
+        "id": "blog_inf_69db64bc0032f40e0fad",
+        "name": "blog_inf_69db64bc0032f40e0fad.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 788742,
+        "createdAt": "2026-04-12T09:52:52.587+00:00"
+      },
+      {
+        "id": "inf20260413",
+        "name": "infographic_2026-04-13.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 197530,
+        "createdAt": "2026-04-12T19:02:10.090+00:00"
+      },
+      {
+        "id": "blog_inf_69dd2b97001a6d6aefa8",
+        "name": "blog_inf_69dd2b97001a6d6aefa8.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 627901,
+        "createdAt": "2026-04-13T17:48:26.615+00:00"
+      },
+      {
+        "id": "blog_inf_69dd311c00248b309ff7",
+        "name": "blog_inf_69dd311c00248b309ff7.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 824127,
+        "createdAt": "2026-04-13T18:09:20.887+00:00"
+      },
+      {
+        "id": "inf20260414",
+        "name": "infographic_2026-04-14.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 195222,
+        "createdAt": "2026-04-13T19:04:33.027+00:00"
+      },
+      {
+        "id": "inf20260415",
+        "name": "infographic_2026-04-15.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 185517,
+        "createdAt": "2026-04-14T19:03:56.144+00:00"
+      },
+      {
+        "id": "inf20260416",
+        "name": "infographic_2026-04-16.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 144629,
+        "createdAt": "2026-04-15T19:04:23.767+00:00"
+      },
+      {
+        "id": "inf20260417",
+        "name": "infographic_2026-04-17.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 203203,
+        "createdAt": "2026-04-16T19:01:30.694+00:00"
+      },
+      {
+        "id": "inf20260418",
+        "name": "infographic_2026-04-18.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 121491,
+        "createdAt": "2026-04-17T19:01:04.180+00:00"
+      },
+      {
+        "id": "inf20260419",
+        "name": "infographic_2026-04-19.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 191903,
+        "createdAt": "2026-04-18T19:01:32.890+00:00"
+      },
+      {
+        "id": "inf20260421",
+        "name": "infographic_2026-04-21.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 216003,
+        "createdAt": "2026-04-20T19:01:37.834+00:00"
+      },
+      {
+        "id": "inf20260422",
+        "name": "infographic_2026-04-22.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 191102,
+        "createdAt": "2026-04-21T19:02:22.580+00:00"
+      },
+      {
+        "id": "inf20260424",
+        "name": "infographic_2026-04-24.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 163093,
+        "createdAt": "2026-04-23T19:01:41.886+00:00"
+      },
+      {
+        "id": "inf20260420",
+        "name": "infographic_2026-04-20.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 117704,
+        "createdAt": "2026-04-24T05:31:17.818+00:00"
+      },
+      {
+        "id": "inf20260423",
+        "name": "infographic_2026-04-23.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 153803,
+        "createdAt": "2026-04-24T05:58:21.333+00:00"
+      },
+      {
+        "id": "inf20260425",
+        "name": "infographic_2026-04-25.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 217785,
+        "createdAt": "2026-04-24T19:01:34.254+00:00"
+      },
+      {
+        "id": "inf20260426",
+        "name": "infographic_2026-04-26.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 121141,
+        "createdAt": "2026-04-25T19:00:55.634+00:00"
+      },
+      {
+        "id": "blog_inf_69ee2b6a000be9045e21",
+        "name": "blog_inf_69ee2b6a000be9045e21.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 618922,
+        "createdAt": "2026-04-26T15:14:23.619+00:00"
+      },
+      {
+        "id": "inf20260427",
+        "name": "infographic_2026-04-27.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 179958,
+        "createdAt": "2026-04-26T19:01:24.219+00:00"
+      },
+      {
+        "id": "inf20260428",
+        "name": "infographic_2026-04-28.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 237058,
+        "createdAt": "2026-04-27T19:01:50.167+00:00"
+      },
+      {
+        "id": "inf20260429",
+        "name": "infographic_2026-04-29.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 133052,
+        "createdAt": "2026-04-28T19:01:10.278+00:00"
+      },
+      {
+        "id": "inf20260430",
+        "name": "infographic_2026-04-30.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 204525,
+        "createdAt": "2026-04-29T19:01:13.934+00:00"
+      },
+      {
+        "id": "inf20260501",
+        "name": "infographic_2026-05-01.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 202471,
+        "createdAt": "2026-04-30T19:01:50.971+00:00"
+      },
+      {
+        "id": "inf20260502",
+        "name": "infographic_2026-05-02.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 231620,
+        "createdAt": "2026-05-01T19:03:42.027+00:00"
+      },
+      {
+        "id": "inf20260503",
+        "name": "infographic_2026-05-03.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 170296,
+        "createdAt": "2026-05-02T19:01:19.604+00:00"
+      },
+      {
+        "id": "inf20260504",
+        "name": "infographic_2026-05-04.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 146872,
+        "createdAt": "2026-05-03T19:01:06.957+00:00"
+      },
+      {
+        "id": "inf20260505",
+        "name": "infographic_2026-05-05.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 182537,
+        "createdAt": "2026-05-04T19:01:14.978+00:00"
+      },
+      {
+        "id": "inf20260506",
+        "name": "infographic_2026-05-06.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 224251,
+        "createdAt": "2026-05-05T19:01:22.002+00:00"
+      },
+      {
+        "id": "inf20260507",
+        "name": "infographic_2026-05-07.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 194345,
+        "createdAt": "2026-05-06T19:01:16.746+00:00"
+      },
+      {
+        "id": "inf20260508",
+        "name": "infographic_2026-05-08.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 185012,
+        "createdAt": "2026-05-07T19:01:23.382+00:00"
+      },
+      {
+        "id": "inf20260509",
+        "name": "infographic_2026-05-09.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 243399,
+        "createdAt": "2026-05-08T19:01:23.393+00:00"
+      },
+      {
+        "id": "inf20260510",
+        "name": "infographic_2026-05-10.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 183096,
+        "createdAt": "2026-05-09T19:01:17.195+00:00"
+      },
+      {
+        "id": "inf20260511",
+        "name": "infographic_2026-05-11.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 197844,
+        "createdAt": "2026-05-10T19:01:06.499+00:00"
+      },
+      {
+        "id": "inf20260512",
+        "name": "infographic_2026-05-12.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 183469,
+        "createdAt": "2026-05-11T19:01:13.964+00:00"
+      },
+      {
+        "id": "inf20260513",
+        "name": "infographic_2026-05-13.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 286393,
+        "createdAt": "2026-05-12T19:01:32.115+00:00"
+      },
+      {
+        "id": "inf20260514",
+        "name": "infographic_2026-05-14.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 201785,
+        "createdAt": "2026-05-13T19:02:10.935+00:00"
+      },
+      {
+        "id": "inf20260515",
+        "name": "infographic_2026-05-15.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 188505,
+        "createdAt": "2026-05-14T19:01:44.011+00:00"
+      },
+      {
+        "id": "inf20260516",
+        "name": "infographic_2026-05-16.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 277021,
+        "createdAt": "2026-05-15T19:01:35.749+00:00"
+      },
+      {
+        "id": "inf20260517",
+        "name": "infographic_2026-05-17.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 201132,
+        "createdAt": "2026-05-16T19:01:44.433+00:00"
+      },
+      {
+        "id": "inf20260518",
+        "name": "infographic_2026-05-18.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 200848,
+        "createdAt": "2026-05-17T19:01:34.885+00:00"
+      },
+      {
+        "id": "inf20260519",
+        "name": "infographic_2026-05-19.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 151187,
+        "createdAt": "2026-05-18T19:00:54.668+00:00"
+      },
+      {
+        "id": "inf20260520",
+        "name": "infographic_2026-05-20.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 195280,
+        "createdAt": "2026-05-19T19:01:24.083+00:00"
+      },
+      {
+        "id": "inf20260521",
+        "name": "infographic_2026-05-21.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 168357,
+        "createdAt": "2026-05-20T19:01:16.512+00:00"
+      },
+      {
+        "id": "blog_inf_6a0bce9c00026b558456",
+        "name": "blog_inf_6a0bce9c00026b558456.png",
+        "mimeType": "image/png",
+        "sizeOriginal": 93267,
+        "createdAt": "2026-05-21T03:14:50.221+00:00"
+      },
+      {
+        "id": "inf20260522",
+        "name": "infographic_2026-05-22.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 164476,
+        "createdAt": "2026-05-21T19:01:51.600+00:00"
+      },
+      {
+        "id": "inf20260523",
+        "name": "infographic_2026-05-23.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 119018,
+        "createdAt": "2026-05-22T19:01:03.838+00:00"
+      },
+      {
+        "id": "inf20260527",
+        "name": "infographic_2026-05-27.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 223687,
+        "createdAt": "2026-05-27T18:17:18.281+00:00"
+      },
+      {
+        "id": "inf20260524",
+        "name": "infographic_2026-05-24.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 171199,
+        "createdAt": "2026-05-28T01:41:13.865+00:00"
+      },
+      {
+        "id": "inf20260525",
+        "name": "infographic_2026-05-25.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 182327,
+        "createdAt": "2026-05-28T01:42:34.650+00:00"
+      },
+      {
+        "id": "inf20260526",
+        "name": "infographic_2026-05-26.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 167679,
+        "createdAt": "2026-05-28T01:44:18.397+00:00"
+      },
+      {
+        "id": "inf20260528",
+        "name": "infographic_2026-05-28.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 230940,
+        "createdAt": "2026-05-30T06:42:49.270+00:00"
+      },
+      {
+        "id": "inf20260529",
+        "name": "infographic_2026-05-29.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 210478,
+        "createdAt": "2026-05-30T06:43:41.683+00:00"
+      },
+      {
+        "id": "inf20260530",
+        "name": "infographic_2026-05-30.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 207616,
+        "createdAt": "2026-05-30T06:45:00.937+00:00"
+      },
+      {
+        "id": "inf20260531",
+        "name": "infographic_2026-05-31.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 168092,
+        "createdAt": "2026-06-01T02:12:50.956+00:00"
+      },
+      {
+        "id": "inf20260601",
+        "name": "infographic_2026-06-01.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 118954,
+        "createdAt": "2026-06-01T02:15:48.872+00:00"
+      },
+      {
+        "id": "inf20260602",
+        "name": "infographic_2026-06-02.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 193906,
+        "createdAt": "2026-06-02T08:15:09.999+00:00"
+      },
+      {
+        "id": "inf20260603",
+        "name": "infographic_2026-06-03.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 208100,
+        "createdAt": "2026-06-03T08:36:22.236+00:00"
+      },
+      {
+        "id": "inf20260604",
+        "name": "infographic_2026-06-04.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 169950,
+        "createdAt": "2026-06-04T08:08:23.667+00:00"
+      },
+      {
+        "id": "inf20260605",
+        "name": "infographic_2026-06-05.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 175556,
+        "createdAt": "2026-06-05T07:55:42.428+00:00"
+      },
+      {
+        "id": "inf20260606",
+        "name": "infographic_2026-06-06.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 192263,
+        "createdAt": "2026-06-06T06:43:59.512+00:00"
+      },
+      {
+        "id": "inf20260607",
+        "name": "infographic_2026-06-07.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 172015,
+        "createdAt": "2026-06-07T07:43:02.393+00:00"
+      },
+      {
+        "id": "inf20260608",
+        "name": "infographic_2026-06-08.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 196288,
+        "createdAt": "2026-06-08T08:30:40.447+00:00"
+      },
+      {
+        "id": "inf20260609",
+        "name": "infographic_2026-06-09.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 179684,
+        "createdAt": "2026-06-09T07:03:47.710+00:00"
+      },
+      {
+        "id": "inf20260610",
+        "name": "infographic_2026-06-10.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 230579,
+        "createdAt": "2026-06-10T07:55:53.062+00:00"
+      },
+      {
+        "id": "inf20260611",
+        "name": "infographic_2026-06-11.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 213764,
+        "createdAt": "2026-06-11T08:23:02.823+00:00"
+      },
+      {
+        "id": "inf20260612",
+        "name": "infographic_2026-06-12.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 201130,
+        "createdAt": "2026-06-12T08:11:31.242+00:00"
+      },
+      {
+        "id": "inf20260613",
+        "name": "infographic_2026-06-13.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 202217,
+        "createdAt": "2026-06-13T07:11:21.005+00:00"
+      },
+      {
+        "id": "inf20260614",
+        "name": "infographic_2026-06-14.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 189262,
+        "createdAt": "2026-06-14T08:04:02.101+00:00"
+      },
+      {
+        "id": "inf20260615",
+        "name": "infographic_2026-06-15.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 203318,
+        "createdAt": "2026-06-15T09:45:46.477+00:00"
+      },
+      {
+        "id": "inf20260616",
+        "name": "infographic_2026-06-16.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 216267,
+        "createdAt": "2026-06-16T09:11:24.229+00:00"
+      },
+      {
+        "id": "blog_inf_6a3214150034ab2b9723",
+        "name": "blog_inf_6a3214150034ab2b9723.png",
+        "mimeType": "image/png",
+        "sizeOriginal": 88925,
+        "createdAt": "2026-06-17T03:27:42.601+00:00"
+      },
+      {
+        "id": "inf20260617",
+        "name": "infographic_2026-06-17.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 187514,
+        "createdAt": "2026-06-17T08:42:58.786+00:00"
+      },
+      {
+        "id": "inf20260618",
+        "name": "infographic_2026-06-18.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 222802,
+        "createdAt": "2026-06-18T08:27:32.175+00:00"
+      },
+      {
+        "id": "inf20260619",
+        "name": "infographic_2026-06-19.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 205017,
+        "createdAt": "2026-06-19T08:53:56.418+00:00"
+      },
+      {
+        "id": "inf20260620",
+        "name": "infographic_2026-06-20.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 226969,
+        "createdAt": "2026-06-20T07:37:40.517+00:00"
+      },
+      {
+        "id": "inf20260621",
+        "name": "infographic_2026-06-21.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 162022,
+        "createdAt": "2026-06-21T08:16:34.017+00:00"
+      },
+      {
+        "id": "inf20260623",
+        "name": "infographic_2026-06-23.jpg",
+        "mimeType": "image/jpeg",
+        "sizeOriginal": 181425,
+        "createdAt": "2026-06-23T07:04:50.912+00:00"
+      }
+    ]
+  }
+}
