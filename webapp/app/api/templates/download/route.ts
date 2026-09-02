@@ -7,6 +7,7 @@ import {
   formatPhoneNumber,
   TemplateOption,
 } from "@/lib/templates/validation";
+import { buildTemplateLeadDocument } from "@/lib/templates/lead";
 import { resend } from "@/lib/resendClient";
 import { list } from "@vercel/blob";
 import { upsertSubscriber } from "@/lib/subscribers";
@@ -216,22 +217,29 @@ export async function POST(request: NextRequest) {
     const city    = decodeURIComponent(request.headers.get("x-vercel-ip-city") || "");
     const country = request.headers.get("x-vercel-ip-country") || "";
 
-    // Save lead to Appwrite (non-fatal if it fails)
+    // Save lead to Appwrite (non-fatal if it fails). The payload builder is
+    // pinned to the collection schema — see lib/templates/lead.ts. Briefings
+    // consent is not a collection attribute; it drives the subscriber upsert
+    // below instead.
     try {
-      await databases.createDocument(DB_ID, COLLECTIONS.TEMPLATE_DOWNLOADS, ID.unique(), {
-        contact_email:     data.email,
-        contact_person:    data.contactPersonName,
-        business_name:     data.businessName,
-        template_selected: data.templateSelected,
-        phone_number:      formattedPhone,
-        consent_contact:   data.consentContact,
-        consent_briefings: data.consentBriefings,
-        source:            request.headers.get("referer") || "direct",
-        ip_address:        ip,
-        city,
-        country,
-        created_at:        new Date().toISOString(),
-      });
+      const doc = await databases.createDocument(
+        DB_ID,
+        COLLECTIONS.TEMPLATE_DOWNLOADS,
+        ID.unique(),
+        buildTemplateLeadDocument({
+          email:          data.email,
+          contactName:    data.contactPersonName,
+          businessName:   data.businessName,
+          templateName,
+          phone:          formattedPhone,
+          consentContact: data.consentContact,
+          referer:        request.headers.get("referer"),
+          ip,
+          city,
+          country,
+        })
+      );
+      console.log(`[templates/download] Lead saved: ${doc.$id}`);
     } catch (err) {
       console.error("[templates/download] Appwrite save failed (non-fatal):", err);
     }
