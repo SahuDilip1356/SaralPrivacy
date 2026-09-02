@@ -8,7 +8,7 @@ import { databases, DB_ID, ID, Query } from "@/lib/appwrite";
 import { dataBackend } from "./flags";
 import { getSupabase, TARGETS, toRow, fromRow, toColumn } from "./supabase";
 
-export { dataBackend } from "./flags";
+export { dataBackend, COLLECTIONS } from "./flags";
 
 /** A document as the app sees it: Appwrite-era field names plus a uniform id
  *  (Appwrite $id / Postgres uuid) usable with updateDocumentById. */

@@ -30,6 +30,31 @@ export const COLLECTION_MODULE: Record<string, DataModule> = {
   blogger_accounts: "admin",
 };
 
+// Name map for call sites that address collections symbolically (admin
+// dashboard, admin data route allowlist). Same shape lib/appwrite.ts exported,
+// so those surfaces need no appwrite import.
+export const COLLECTIONS = {
+  LEADS:              "leads",
+  SUBSCRIBERS:        "subscribers",
+  DOWNLOADS:          "downloads",
+  ASSESSMENTS:        "assessments",
+  BRIEFINGS:          "briefings",
+  CONSENT_LOG:        "consent_log",
+  SURVEY_RESPONSES:   "survey_responses",
+  BLOG_POSTS:         "blog_posts",
+  BLOGGER_ACCOUNTS:   "blogger_accounts",
+  TEMPLATE_DOWNLOADS: "template_downloads",
+  OUTREACH_CONTACTS:  "outreach_contacts",
+  EMAIL_SEND_LOG:     "email_send_log",
+  AI_CITATIONS:       "ai_citations",
+  NOTICE_CAPTURES:    "notice_captures",
+  NOTICE_RUNS:        "notice_runs",
+  NOTICE_EVENTS:      "notice_events",
+  BUSINESS_PROFILES:  "business_profiles",
+  DSAR_REQUESTS:      "dsar_requests",
+  CHAT_FEEDBACK:      "chat_feedback",
+} as const;
+
 export type DataBackend = "appwrite" | "supabase";
 
 export function dataBackend(collection: string): DataBackend {

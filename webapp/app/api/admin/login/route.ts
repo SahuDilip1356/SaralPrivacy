@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { timingSafeEqual } from "crypto";
-import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
+
+import { queryDocuments } from "@/lib/db";
 import { createAdminSessionToken, ADMIN_SESSION_MAX_AGE } from "@/lib/adminSession";
 import { getClientIp, rateLimit } from "@/lib/abuseGuard";
 
@@ -63,13 +64,15 @@ export async function POST(request: NextRequest) {
 
   // ── Blogger check (Appwrite collection + bcrypt) ──────────────────────────
   try {
-    const result = await databases.listDocuments(DB_ID, COLLECTIONS.BLOGGER_ACCOUNTS, [
-      Query.equal("email", normalised),
-      Query.equal("active", true),
-    ]);
+    const result = await queryDocuments("blogger_accounts", {
+      where: [
+        { field: "email", value: normalised },
+        { field: "active", value: true },
+      ],
+    });
 
     if (result.total > 0) {
-      const blogger = result.documents[0];
+      const blogger = result.docs[0] as Record<string, any>;
       const match   = blogger.password_hash
         ? await bcrypt.compare(password, blogger.password_hash)
         : false;

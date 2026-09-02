@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Users, Download, Mail, CheckCircle, ClipboardList, FileText, Activity, Calendar } from "lucide-react";
-import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
+import { queryDocuments, COLLECTIONS } from "@/lib/db";
 
 export const metadata: Metadata = { title: "Admin Dashboard" };
 export const dynamic = "force-dynamic";
@@ -9,28 +9,30 @@ export const dynamic = "force-dynamic";
 
 async function getCount(collection: string): Promise<number> {
   try {
-    const res = await databases.listDocuments(DB_ID, collection, [Query.limit(1)]);
+    const res = await queryDocuments(collection, { limit: 1 });
     return res.total;
   } catch { return 0; }
 }
 
 async function getRecent(collection: string, limit = 5) {
   try {
-    const res = await databases.listDocuments(DB_ID, collection, [
-      Query.orderDesc("$createdAt"),
-      Query.limit(limit),
-    ]);
-    return res.documents;
+    const res = await queryDocuments(collection, {
+      orderBy: { field: "$createdAt", dir: "desc" },
+      limit,
+    });
+    return res.docs;
   } catch { return []; }
 }
 
 async function getRiskDistribution() {
   try {
+    const byRisk = (risk?: string) =>
+      queryDocuments(COLLECTIONS.ASSESSMENTS, {
+        where: risk ? [{ field: "risk_level", value: risk }] : [],
+        limit: 1,
+      });
     const [green, amber, red, total] = await Promise.all([
-      databases.listDocuments(DB_ID, COLLECTIONS.ASSESSMENTS, [Query.equal("risk_level", "green"), Query.limit(1)]),
-      databases.listDocuments(DB_ID, COLLECTIONS.ASSESSMENTS, [Query.equal("risk_level", "amber"), Query.limit(1)]),
-      databases.listDocuments(DB_ID, COLLECTIONS.ASSESSMENTS, [Query.equal("risk_level", "red"),   Query.limit(1)]),
-      databases.listDocuments(DB_ID, COLLECTIONS.ASSESSMENTS, [Query.limit(1)]),
+      byRisk("green"), byRisk("amber"), byRisk("red"), byRisk(),
     ]);
     const t = total.total || 1;
     return [

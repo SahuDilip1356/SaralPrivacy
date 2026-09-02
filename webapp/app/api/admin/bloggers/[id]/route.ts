@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { databases, DB_ID, COLLECTIONS } from "@/lib/appwrite";
+
+import { updateDocumentById, deleteDocumentById } from "@/lib/db";
 import { requireRole } from "@/lib/adminSession";
 
 async function adminOnly(req: NextRequest): Promise<boolean> {
@@ -18,7 +19,7 @@ export async function PATCH(
   const { active } = await req.json();
 
   try {
-    await databases.updateDocument(DB_ID, COLLECTIONS.BLOGGER_ACCOUNTS, id, { active });
+    await updateDocumentById("blogger_accounts", id, { active });
     return NextResponse.json({ success: true });
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
@@ -38,7 +39,7 @@ export async function DELETE(
   const { id } = await params;
 
   try {
-    await databases.deleteDocument(DB_ID, COLLECTIONS.BLOGGER_ACCOUNTS, id);
+    await deleteDocumentById("blogger_accounts", id);
     return NextResponse.json({ success: true });
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
