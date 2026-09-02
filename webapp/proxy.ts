@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { verifyAdminSessionToken, ADMIN_SESSION_COOKIE } from "@/lib/adminSession";
 
 // Routes bloggers are restricted to (blog editor + blog API only)
 const BLOGGER_ALLOWED_PREFIXES = [
@@ -28,7 +29,7 @@ const LOWERCASE_ONLY_PREFIXES = [
   "/glossary",
 ];
 
-export function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // ── Canonical casing: 308 any uppercase variant to its lowercase twin ──
@@ -47,16 +48,18 @@ export function proxy(request: NextRequest) {
 
   // Only guard /admin/* routes (excluding public admin paths)
   if (pathname.startsWith("/admin") && !ADMIN_PUBLIC_PATHS.some(p => pathname.startsWith(p))) {
-    const session = request.cookies.get("admin_session");
-    const role    = session?.value; // "authenticated" | "blogger" | undefined
+    // Cryptographically verified — a hand-set cookie no longer passes.
+    const session = await verifyAdminSessionToken(
+      request.cookies.get(ADMIN_SESSION_COOKIE)?.value
+    );
 
     // Not authenticated → redirect to login
-    if (!role || !["authenticated", "blogger"].includes(role)) {
+    if (!session) {
       return NextResponse.redirect(new URL("/admin/login", request.url));
     }
 
     // Blogger: can only access blog editor routes
-    if (role === "blogger") {
+    if (session.role === "blogger") {
       const allowed = BLOGGER_ALLOWED_PREFIXES.some((prefix) =>
         pathname.startsWith(prefix)
       );

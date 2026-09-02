@@ -1,9 +1,45 @@
 import { NextRequest, NextResponse } from "next/server";
 import { databases, DB_ID, COLLECTIONS, ID, Query } from "@/lib/appwrite";
 import { generateToken } from "@/lib/tokens";
-import * as XLSX from "xlsx";
+import { requireRole } from "@/lib/adminSession";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// CSV-only on purpose: this route parses an UPLOADED file, and the xlsx
+// package it previously used has no-fix-available CVEs (prototype pollution,
+// ReDoS) — exactly the wrong parser for untrusted input. CSV covers the real
+// workflow (Excel exports CSV in one click) with a parser we fully control.
+const MAX_FILE_BYTES = 2 * 1024 * 1024; // 2 MB
+const MAX_ROWS = 10_000;
+
+/** Minimal RFC-4180 CSV parser: quoted fields, escaped quotes, CRLF/LF. */
+function parseCsv(text: string): string[][] {
+  const rows: string[][] = [];
+  let row: string[] = [];
+  let field = "";
+  let inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (inQuotes) {
+      if (c === '"') {
+        if (text[i + 1] === '"') { field += '"'; i++; }
+        else inQuotes = false;
+      } else field += c;
+    } else if (c === '"') {
+      inQuotes = true;
+    } else if (c === ",") {
+      row.push(field); field = "";
+    } else if (c === "\n" || c === "\r") {
+      if (c === "\r" && text[i + 1] === "\n") i++;
+      row.push(field); field = "";
+      if (row.length > 1 || row[0] !== "") rows.push(row);
+      row = [];
+      if (rows.length > MAX_ROWS) break;
+    } else field += c;
+  }
+  if (field !== "" || row.length > 0) { row.push(field); rows.push(row); }
+  return rows;
+}
 
 const EMAIL_ALIASES = ["email", "e-mail", "emailaddress", "email address", "mail", "emailid", "email id"];
 const NAME_ALIASES  = ["name", "full name", "fullname", "contact name", "contactname", "person"];
@@ -44,19 +80,38 @@ async function insertBatch(docs: Record<string, unknown>[]): Promise<number> {
 }
 
 export async function POST(request: NextRequest) {
+  // This route feeds the outreach mailer — unauthenticated, it let anyone
+  // load victim addresses into our sender. Admin session required.
+  if (!(await requireRole(request, ["admin"]))) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
     const form = await request.formData();
     const file = form.get("file") as File | null;
     if (!file) return NextResponse.json({ error: "No file uploaded." }, { status: 400 });
+    if (file.size > MAX_FILE_BYTES) {
+      return NextResponse.json({ error: "File too large (max 2 MB). Export as CSV." }, { status: 413 });
+    }
+    if (file.name && !/\.csv$/i.test(file.name)) {
+      return NextResponse.json(
+        { error: "Only CSV files are accepted. In Excel: File → Save As → CSV." },
+        { status: 400 }
+      );
+    }
 
-    const buf  = await file.arrayBuffer();
-    const wb   = XLSX.read(buf, { type: "array" });
-    const ws   = wb.Sheets[wb.SheetNames[0]];
-    const rows = XLSX.utils.sheet_to_json<Record<string, unknown>>(ws, { defval: "" });
+    const text = await file.text();
+    const grid = parseCsv(text);
+    if (grid.length < 2) {
+      return NextResponse.json({ error: "Spreadsheet is empty." }, { status: 400 });
+    }
 
-    if (!rows.length) return NextResponse.json({ error: "Spreadsheet is empty." }, { status: 400 });
-
-    const headers  = Object.keys(rows[0]);
+    const headers = grid[0].map((h) => h.trim());
+    const rows: Record<string, unknown>[] = grid.slice(1).map((cells) => {
+      const rec: Record<string, unknown> = {};
+      headers.forEach((h, i) => { rec[h] = cells[i] ?? ""; });
+      return rec;
+    });
     const emailCol = detect(headers, EMAIL_ALIASES);
     if (!emailCol) {
       return NextResponse.json(

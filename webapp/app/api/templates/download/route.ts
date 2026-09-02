@@ -7,13 +7,13 @@ import {
   formatPhoneNumber,
   TemplateOption,
 } from "@/lib/templates/validation";
-import { Resend } from "resend";
+import { resend } from "@/lib/resendClient";
 import { list } from "@vercel/blob";
 import { upsertSubscriber } from "@/lib/subscribers";
+import { getClientIp, rateLimit, isHoneypotTripped } from "@/lib/abuseGuard";
 
 // ─── Clients ──────────────────────────────────────────────────────────────────
 
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Twilio is optional — feature degrades gracefully if env vars are missing
 const twilioEnabled =
@@ -142,18 +142,30 @@ async function sendTemplateWhatsApp(props: {
   }
 
   try {
-    // Dynamic import — avoids build error when Twilio env vars are absent
-    const twilio = (await import("twilio")).default;
-    const client = twilio(
-      process.env.TWILIO_ACCOUNT_SID!,
-      process.env.TWILIO_AUTH_TOKEN!
-    );
-
-    const message = await client.messages.create({
-      from: `whatsapp:${process.env.TWILIO_WHATSAPP_FROM}`,
-      to:   `whatsapp:${props.phoneNumber}`,
-      body: `Hi ${props.contactPersonName}! 👋\n\nYour *${props.templateName}* from SaralPrivacy is ready.\n\n⬇ Download here:\n${props.downloadUrl}\n\n— SaralPrivacy DPDPA Templates`,
+    // Raw Twilio REST call — the SDK was 9.6 MB and two majors stale for this
+    // one request. Basic auth + form body is the whole API.
+    const sid  = process.env.TWILIO_ACCOUNT_SID!;
+    const auth = Buffer.from(`${sid}:${process.env.TWILIO_AUTH_TOKEN!}`).toString("base64");
+    const params = new URLSearchParams({
+      From: `whatsapp:${process.env.TWILIO_WHATSAPP_FROM}`,
+      To:   `whatsapp:${props.phoneNumber}`,
+      Body: `Hi ${props.contactPersonName}! 👋\n\nYour *${props.templateName}* from SaralPrivacy is ready.\n\n⬇ Download here:\n${props.downloadUrl}\n\n— SaralPrivacy DPDPA Templates`,
     });
+    const res = await fetch(
+      `https://api.twilio.com/2010-04-01/Accounts/${sid}/Messages.json`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Basic ${auth}`,
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: params.toString(),
+      }
+    );
+    const message = (await res.json()) as { sid?: string; message?: string };
+    if (!res.ok || !message.sid) {
+      return { success: false, error: message.message || `Twilio HTTP ${res.status}` };
+    }
 
     return { success: true, messageSid: message.sid };
   } catch (error) {
@@ -170,6 +182,18 @@ async function sendTemplateWhatsApp(props: {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+
+    // Same guards as every other public POST — this one can burn Twilio spend.
+    if (isHoneypotTripped(body)) {
+      return NextResponse.json({ success: true }); // silent drop for bots
+    }
+    const limited = rateLimit(`template-download:${getClientIp(request)}`, 5, 10 * 60 * 1000);
+    if (!limited.ok) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again later." },
+        { status: 429, headers: { "Retry-After": String(limited.retryAfter) } }
+      );
+    }
 
     // Validate input
     const validated = TemplateDownloadFormSchema.safeParse(body);

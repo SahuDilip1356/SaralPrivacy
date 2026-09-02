@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { requireRole } from "@/lib/adminSession";
 import { generateText, Output } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
 import { z } from "zod";
@@ -102,8 +103,8 @@ You MUST return a valid JSON object matching the schema. Every field is required
 // ── Handler ───────────────────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest) {
-  const session = req.cookies.get("admin_session");
-  if (!session || !["authenticated", "blogger"].includes(session.value)) {
+  const session = await requireRole(req, ["admin", "blogger"]);
+  if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

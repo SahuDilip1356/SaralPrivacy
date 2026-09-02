@@ -7,6 +7,7 @@ function UnsubscribeInner() {
   const router       = useRouter();
   const searchParams = useSearchParams();
   const email        = searchParams.get("email") ?? "";
+  const sig          = searchParams.get("sig") ?? "";
   const [state, setState] = useState<"loading" | "done" | "error">("loading");
 
   useEffect(() => {
@@ -19,12 +20,12 @@ function UnsubscribeInner() {
     fetch("/api/subscribers/unsubscribe", {
       method:  "POST",
       headers: { "Content-Type": "application/json" },
-      body:    JSON.stringify({ email }),
+      body:    JSON.stringify({ email, sig }),
     })
       .then((r) => r.json())
       .then((d) => setState(d.success ? "done" : "error"))
       .catch(() => setState("error"));
-  }, [email]);
+  }, [email, sig]);
 
   return (
     <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-10 max-w-md w-full text-center">

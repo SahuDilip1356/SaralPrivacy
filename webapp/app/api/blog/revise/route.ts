@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { requireRole } from "@/lib/adminSession";
 import { generateText } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
 
@@ -40,8 +41,8 @@ Your task is to rewrite ONLY that section to address every issue raised in the v
 // ── Handler ───────────────────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest) {
-  const session = req.cookies.get("admin_session");
-  if (!session || !["authenticated", "blogger"].includes(session.value)) {
+  const session = await requireRole(req, ["admin", "blogger"]);
+  if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

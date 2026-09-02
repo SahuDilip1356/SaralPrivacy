@@ -2,17 +2,18 @@ import { NextRequest, NextResponse } from "next/server";
 import { randomBytes } from "crypto";
 import { databases, DB_ID, COLLECTIONS, ID, Query } from "@/lib/appwrite";
 import { sendBloggerInvite } from "@/lib/email";
+import { requireRole } from "@/lib/adminSession";
 
 const SITE_URL         = (process.env.NEXT_PUBLIC_SITE_URL || "https://saralprivacy.com").trim();
 const TOKEN_EXPIRY_HOURS = 72;
 
-function adminOnly(req: NextRequest): boolean {
-  return req.cookies.get("admin_session")?.value === "authenticated";
+async function adminOnly(req: NextRequest): Promise<boolean> {
+  return (await requireRole(req, ["admin"])) !== null;
 }
 
 // GET /api/admin/bloggers — list all blogger accounts
 export async function GET(req: NextRequest) {
-  if (!adminOnly(req)) {
+  if (!(await adminOnly(req))) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   try {
@@ -29,7 +30,7 @@ export async function GET(req: NextRequest) {
 
 // POST /api/admin/bloggers — invite a new blogger
 export async function POST(req: NextRequest) {
-  if (!adminOnly(req)) {
+  if (!(await adminOnly(req))) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

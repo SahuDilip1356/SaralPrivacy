@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { databases, DB_ID, COLLECTIONS } from "@/lib/appwrite";
 import { sendSurveyResultEmail } from "@/lib/email";
+import { requireRole } from "@/lib/adminSession";
 
 export async function POST(request: NextRequest) {
-  // Auth check
-  const session = request.cookies.get("admin_session");
-  if (!session || session.value !== "authenticated") {
+  // Auth check — signature-verified session, admin role only
+  const session = await requireRole(request, ["admin"]);
+  if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
