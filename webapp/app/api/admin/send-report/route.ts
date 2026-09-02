@@ -16,8 +16,11 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "assessmentId is required" }, { status: 400 });
     }
 
-    // Fetch the assessment document
-    const doc = await getDocumentById("assessments", assessmentId);
+    // Fetch the assessment document (fields were untyped under the Appwrite
+    // SDK too — this route reads them dynamically throughout)
+    const doc = (await getDocumentById("assessments", assessmentId)) as
+      | (Record<string, any> & { id: string })
+      | null;
     if (!doc) {
       return NextResponse.json({ error: "Assessment not found" }, { status: 404 });
     }
