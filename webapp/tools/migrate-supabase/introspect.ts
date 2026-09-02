@@ -56,6 +56,22 @@ async function get(path: string): Promise<any> {
   return res.json();
 }
 
+const q = (method: string, ...values: unknown[]): string =>
+  `queries[]=${encodeURIComponent(JSON.stringify({ method, values }))}`;
+
+// Appwrite list endpoints default to 25 items — page through with
+// limit+offset until `total` is exhausted, or truncated attribute lists
+// produce truncated DDL (Bugbot caught assessments/survey_responses at
+// exactly 25).
+async function getAll(path: string, field: string): Promise<unknown[]> {
+  const items: unknown[] = [];
+  for (;;) {
+    const page = await get(`${path}?${q("limit", 100)}&${q("offset", items.length)}`);
+    items.push(...page[field]);
+    if (items.length >= page.total || page[field].length === 0) return items;
+  }
+}
+
 interface CollectionReport {
   id: string;
   exists: boolean;
@@ -68,12 +84,12 @@ interface CollectionReport {
 async function inspectCollection(id: string): Promise<CollectionReport> {
   try {
     const base = `/databases/${DB_ID}/collections/${id}`;
-    const [attrs, indexes, docs] = await Promise.all([
-      get(`${base}/attributes`),
-      get(`${base}/indexes`),
-      get(`${base}/documents?queries[]=${encodeURIComponent(JSON.stringify({ method: "limit", values: [1] }))}`),
+    const [attributes, indexes, docs] = await Promise.all([
+      getAll(`${base}/attributes`, "attributes"),
+      getAll(`${base}/indexes`, "indexes"),
+      get(`${base}/documents?${q("limit", 1)}`),
     ]);
-    return { id, exists: true, total: docs.total, attributes: attrs.attributes, indexes: indexes.indexes };
+    return { id, exists: true, total: docs.total, attributes, indexes };
   } catch (e) {
     return {
       id, exists: false, total: null, attributes: [], indexes: [],
@@ -85,9 +101,7 @@ async function inspectCollection(id: string): Promise<CollectionReport> {
 async function inspectBucket(): Promise<Record<string, unknown>> {
   if (!BUCKET_ID) return { bucketId: "", error: "APPWRITE_BUCKET_ID not set" };
   try {
-    const page = await get(
-      `/storage/buckets/${BUCKET_ID}/files?queries[]=${encodeURIComponent(JSON.stringify({ method: "limit", values: [100] }))}`,
-    );
+    const page = await get(`/storage/buckets/${BUCKET_ID}/files?${q("limit", 100)}`);
     return {
       bucketId: BUCKET_ID,
       total: page.total,

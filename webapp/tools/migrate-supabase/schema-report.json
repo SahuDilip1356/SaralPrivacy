@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-02T12:57:23.506Z",
+  "generatedAt": "2026-09-02T13:03:00.975Z",
   "endpoint": "https://sgp.cloud.appwrite.io/v1",
   "databaseId": "69bb4b6200165ff03610",
   "collections": [
@@ -1019,6 +1019,162 @@
           "size": 200,
           "default": null,
           "encrypt": false
+        },
+        {
+          "key": "mobile",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-13T07:27:47.738+00:00",
+          "$updatedAt": "2026-04-13T07:27:47.820+00:00",
+          "size": 20,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "q11_blocker",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-13T07:28:08.738+00:00",
+          "$updatedAt": "2026-04-13T07:28:08.771+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "q12_resource",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-13T07:28:31.016+00:00",
+          "$updatedAt": "2026-04-13T07:28:31.056+00:00",
+          "size": 100,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "red_flags_json",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-13T07:28:57.499+00:00",
+          "$updatedAt": "2026-04-13T07:28:57.589+00:00",
+          "size": 1000,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "immediate_actions_json",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-13T07:29:22.985+00:00",
+          "$updatedAt": "2026-04-13T07:29:23.021+00:00",
+          "size": 2000,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "thirty_day_actions_json",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-13T07:29:41.525+00:00",
+          "$updatedAt": "2026-04-13T07:29:41.603+00:00",
+          "size": 2000,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "report_token",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-18T06:31:37.157+00:00",
+          "$updatedAt": "2026-04-18T06:31:37.243+00:00",
+          "size": 256,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "report_token_expires_at",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-18T06:32:01.765+00:00",
+          "$updatedAt": "2026-04-18T06:32:01.828+00:00",
+          "size": 64,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "answers_json",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-18T06:32:41.860+00:00",
+          "$updatedAt": "2026-04-18T06:32:41.928+00:00",
+          "size": 16384,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "category_scores_json",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-18T06:33:12.829+00:00",
+          "$updatedAt": "2026-04-18T06:33:12.900+00:00",
+          "size": 4096,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "email_sent_at",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-18T06:33:29.934+00:00",
+          "$updatedAt": "2026-04-18T06:33:30.007+00:00",
+          "size": 64,
+          "default": null,
+          "encrypt": false
+        },
+        {
+          "key": "email_sent_by",
+          "type": "string",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-04-18T06:33:45.531+00:00",
+          "$updatedAt": "2026-04-18T06:33:45.601+00:00",
+          "size": 64,
+          "default": null,
+          "encrypt": false
         }
       ],
       "indexes": []
@@ -1816,6 +1972,17 @@
           "array": false,
           "$createdAt": "2026-03-26T00:22:10.245+00:00",
           "$updatedAt": "2026-03-26T00:22:10.385+00:00",
+          "default": null
+        },
+        {
+          "key": "consent_given",
+          "type": "boolean",
+          "status": "available",
+          "error": "",
+          "required": false,
+          "array": false,
+          "$createdAt": "2026-03-26T00:22:10.831+00:00",
+          "$updatedAt": "2026-03-26T00:22:10.975+00:00",
           "default": null
         }
       ],
@@ -3303,7 +3470,7 @@
       "total": null,
       "attributes": [],
       "indexes": [],
-      "error": "GET /databases/69bb4b6200165ff03610/collections/notice_runs/attributes → 404 {\"message\":\"Collection with the requested ID 'notice_runs' could not be found.\",\"code\":404,\"type\":\"collection_not_found\",\"version\":\"2.0.0\"}"
+      "error": "GET /databases/69bb4b6200165ff03610/collections/notice_runs/attributes?queries[]=%7B%22method%22%3A%22limit%22%2C%22values%22%3A%5B100%5D%7D&queries[]=%7B%22method%22%3A%22offset%22%2C%22values%22%3A%5B0%5D%7D → 404 {\"message\":\"Collection with the requested ID 'notice_runs' could not be found.\",\"code\":404,\"type\":\"collection_not_found\",\"version\":\"2.0.0\"}"
     },
     {
       "id": "notice_events",
@@ -3416,7 +3583,7 @@
       "total": null,
       "attributes": [],
       "indexes": [],
-      "error": "GET /databases/69bb4b6200165ff03610/collections/dsar_requests/indexes → 404 {\"message\":\"Collection with the requested ID 'dsar_requests' could not be found.\",\"code\":404,\"type\":\"collection_not_found\",\"version\":\"2.0.0\"}"
+      "error": "GET /databases/69bb4b6200165ff03610/collections/dsar_requests/attributes?queries[]=%7B%22method%22%3A%22limit%22%2C%22values%22%3A%5B100%5D%7D&queries[]=%7B%22method%22%3A%22offset%22%2C%22values%22%3A%5B0%5D%7D → 404 {\"message\":\"Collection with the requested ID 'dsar_requests' could not be found.\",\"code\":404,\"type\":\"collection_not_found\",\"version\":\"2.0.0\"}"
     },
     {
       "id": "chat_feedback",
@@ -3424,7 +3591,7 @@
       "total": null,
       "attributes": [],
       "indexes": [],
-      "error": "GET /databases/69bb4b6200165ff03610/collections/chat_feedback/indexes → 404 {\"message\":\"Collection with the requested ID 'chat_feedback' could not be found.\",\"code\":404,\"type\":\"collection_not_found\",\"version\":\"2.0.0\"}"
+      "error": "GET /databases/69bb4b6200165ff03610/collections/chat_feedback/attributes?queries[]=%7B%22method%22%3A%22limit%22%2C%22values%22%3A%5B100%5D%7D&queries[]=%7B%22method%22%3A%22offset%22%2C%22values%22%3A%5B0%5D%7D → 404 {\"message\":\"Collection with the requested ID 'chat_feedback' could not be found.\",\"code\":404,\"type\":\"collection_not_found\",\"version\":\"2.0.0\"}"
     }
   ],
   "bucket": {
