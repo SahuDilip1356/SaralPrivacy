@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { databases, DB_ID, COLLECTIONS, ID } from '@/lib/appwrite'
+import { insertDocument } from '@/lib/db'
 import { runAeoPanel, summarizeRun } from '@/lib/aeo/runner'
 
 /**
@@ -60,7 +60,7 @@ export async function GET(req: Request) {
     // One document per (run, query, engine) row.
     const persistResults = await Promise.allSettled(
       results.map((r) =>
-        databases.createDocument(DB_ID, COLLECTIONS.AI_CITATIONS, ID.unique(), {
+        insertDocument("ai_citations", {
           run_id:          r.runId,
           date:            r.date,
           week_num:        r.weekNum,

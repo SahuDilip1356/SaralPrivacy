@@ -13,7 +13,7 @@
  * Topic slugs are derived here, server-side, so the client receives ten short
  * strings instead of 240 briefings' worth of body text.
  */
-import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
+import { queryDocuments } from "@/lib/db";
 import { unstable_cache } from "next/cache";
 import { FORMAT_SLUGS } from "@/lib/data/briefing-taxonomy";
 import { topicsFor } from "@/lib/data/briefing-topics";
@@ -97,14 +97,14 @@ function normalise(doc: Record<string, unknown>): ArchiveBriefing {
 async function fetchAll(): Promise<ArchiveBriefing[]> {
   const docs: Record<string, unknown>[] = [];
   for (let page = 0; page < MAX_PAGES; page++) {
-    const result = await databases.listDocuments(DB_ID, COLLECTIONS.BRIEFINGS, [
-      Query.equal("status", ["sent", "approved"]),
-      Query.orderDesc("$createdAt"),
-      Query.limit(PAGE),
-      Query.offset(page * PAGE),
-    ]);
-    docs.push(...(result.documents as unknown as Record<string, unknown>[]));
-    if (result.documents.length < PAGE || docs.length >= result.total) break;
+    const result = await queryDocuments("briefings", {
+      where: [{ field: "status", value: ["sent", "approved"] }],
+      orderBy: { field: "$createdAt", dir: "desc" },
+      limit: PAGE,
+      offset: page * PAGE,
+    });
+    docs.push(...(result.docs as unknown as Record<string, unknown>[]));
+    if (result.docs.length < PAGE || docs.length >= result.total) break;
   }
   return docs
     .filter((d) => d.slug)
