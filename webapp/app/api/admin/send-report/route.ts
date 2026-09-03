@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { databases, DB_ID, COLLECTIONS } from "@/lib/appwrite";
+import { getDocumentById, updateDocumentById } from "@/lib/db";
 import { sendSurveyResultEmail } from "@/lib/email";
 import { requireRole } from "@/lib/adminSession";
 
@@ -16,8 +16,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "assessmentId is required" }, { status: 400 });
     }
 
-    // Fetch the assessment document
-    const doc = await databases.getDocument(DB_ID, COLLECTIONS.ASSESSMENTS, assessmentId);
+    // Fetch the assessment document (fields were untyped under the Appwrite
+    // SDK too — this route reads them dynamically throughout)
+    const doc = (await getDocumentById("assessments", assessmentId)) as
+      | (Record<string, any> & { id: string })
+      | null;
+    if (!doc) {
+      return NextResponse.json({ error: "Assessment not found" }, { status: 404 });
+    }
 
     if (!doc.email) {
       return NextResponse.json({ error: "Assessment has no email address" }, { status: 400 });
@@ -82,7 +88,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Record send timestamp so admin panel shows sent status
-    await databases.updateDocument(DB_ID, COLLECTIONS.ASSESSMENTS, doc.$id, {
+    await updateDocumentById("assessments", doc.id, {
       email_sent_at:  new Date().toISOString(),
       email_sent_by:  "admin",
     }).catch((err) => console.error("Failed to record email_sent_at:", err));

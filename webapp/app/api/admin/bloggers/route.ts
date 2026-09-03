@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { randomBytes } from "crypto";
-import { databases, DB_ID, COLLECTIONS, ID, Query } from "@/lib/appwrite";
+
+import { insertDocument, queryDocuments } from "@/lib/db";
 import { sendBloggerInvite } from "@/lib/email";
 import { requireRole } from "@/lib/adminSession";
 
@@ -17,11 +18,11 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   try {
-    const result = await databases.listDocuments(DB_ID, COLLECTIONS.BLOGGER_ACCOUNTS, [
-      Query.orderDesc("$createdAt"),
-      Query.limit(100),
-    ]);
-    return NextResponse.json({ bloggers: result.documents });
+    const result = await queryDocuments("blogger_accounts", {
+      orderBy: { field: "$createdAt", dir: "desc" },
+      limit: 100,
+    });
+    return NextResponse.json({ bloggers: result.docs });
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     return NextResponse.json({ error: msg }, { status: 500 });
@@ -43,9 +44,9 @@ export async function POST(req: NextRequest) {
 
   // Check for duplicate
   try {
-    const existing = await databases.listDocuments(DB_ID, COLLECTIONS.BLOGGER_ACCOUNTS, [
-      Query.equal("email", normalised),
-    ]);
+    const existing = await queryDocuments("blogger_accounts", {
+      where: [{ field: "email", value: normalised }],
+    });
     if (existing.total > 0) {
       return NextResponse.json({ error: "A blogger with this email already exists." }, { status: 409 });
     }
@@ -55,7 +56,7 @@ export async function POST(req: NextRequest) {
   const token   = randomBytes(32).toString("hex");
   const expires = new Date(Date.now() + TOKEN_EXPIRY_HOURS * 60 * 60 * 1000).toISOString();
 
-  const doc = await databases.createDocument(DB_ID, COLLECTIONS.BLOGGER_ACCOUNTS, ID.unique(), {
+  const newBloggerId = await insertDocument("blogger_accounts", {
     email:         normalised,
     name:          name.trim(),
     bio:           (bio || "").trim(),
@@ -73,7 +74,7 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json({
     success:      true,
-    id:           doc.$id,
+    id:           newBloggerId,
     inviteUrl,
     emailSent:    emailResult.success,
     emailError:   emailResult.error ?? null,

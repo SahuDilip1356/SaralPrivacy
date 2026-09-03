@@ -11,7 +11,7 @@
  *   - Always paginate — the collection is well past a single 100-doc page.
  *   - Never let a public count exceed the real count.
  */
-import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
+import { queryDocuments } from "@/lib/db";
 import { unstable_cache } from "next/cache";
 
 export type BriefingRef = {
@@ -28,14 +28,14 @@ async function _fetchPublishedBriefings(): Promise<BriefingRef[]> {
   const refs: BriefingRef[] = [];
   try {
     for (let page = 0; page < MAX_PAGES; page++) {
-      const result = await databases.listDocuments(DB_ID, COLLECTIONS.BRIEFINGS, [
-        Query.equal("status", ["sent", "approved"]),
-        Query.orderDesc("$createdAt"),
-        Query.limit(PAGE),
-        Query.offset(page * PAGE),
-      ]);
+      const result = await queryDocuments("briefings", {
+        where: [{ field: "status", value: ["sent", "approved"] }],
+        orderBy: { field: "$createdAt", dir: "desc" },
+        limit: PAGE,
+        offset: page * PAGE,
+      });
 
-      for (const doc of result.documents as any[]) {
+      for (const doc of result.docs as any[]) {
         if (!doc.slug) continue;
         const raw = doc.published_at || doc.created_at || doc.$updatedAt;
         const parsed = new Date(raw);
@@ -47,7 +47,7 @@ async function _fetchPublishedBriefings(): Promise<BriefingRef[]> {
         });
       }
 
-      if (result.documents.length < PAGE || refs.length >= result.total) break;
+      if (result.docs.length < PAGE || refs.length >= result.total) break;
     }
   } catch {
     // Appwrite unreachable (e.g. env vars absent in a preview build) — return

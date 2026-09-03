@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
+import { queryDocuments, COLLECTIONS, type WhereClause } from "@/lib/db";
 import { requireRole } from "@/lib/adminSession";
 
 const ALLOWED_COLLECTIONS = Object.values(COLLECTIONS);
@@ -22,12 +22,16 @@ export async function GET(request: NextRequest) {
 
   try {
     const status = searchParams.get("status");
-    const queries: string[] = [Query.orderDesc("$createdAt"), Query.limit(limit)];
-    if (source) queries.push(Query.equal("source", source));
-    if (status) queries.push(Query.equal("status", status));
+    const where: WhereClause[] = [];
+    if (source) where.push({ field: "source", value: source });
+    if (status) where.push({ field: "status", value: status });
 
-    const result = await databases.listDocuments(DB_ID, collection, queries);
-    return NextResponse.json({ documents: result.documents, total: result.total });
+    const result = await queryDocuments(collection, {
+      where,
+      orderBy: { field: "$createdAt", dir: "desc" },
+      limit,
+    });
+    return NextResponse.json({ documents: result.docs, total: result.total });
   } catch (error: any) {
     console.error(`Admin data fetch [${collection}]:`, error);
     return NextResponse.json({ error: "Failed to fetch data." }, { status: 500 });

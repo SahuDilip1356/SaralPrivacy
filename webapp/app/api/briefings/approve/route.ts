@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { databases, DB_ID, COLLECTIONS } from "@/lib/appwrite";
+import { getDocumentById, updateDocumentById } from "@/lib/db";
 import { sendBriefingToSubscribers } from "@/lib/email";
 import { fetchEligibleSubscribers } from "@/lib/sendGateway";
 import type { BriefingData } from "@/lib/email-templates";
@@ -18,7 +18,8 @@ export async function GET(request: NextRequest) {
     }
 
     // Fetch the briefing document
-    const briefing = await databases.getDocument(DB_ID, COLLECTIONS.BRIEFINGS, briefingId);
+    const briefing = (await getDocumentById("briefings", briefingId)) as (Record<string, any> & { id: string }) | null;
+    if (!briefing) throw new Error(`Briefing ${briefingId} not found`);
 
     // Validate approval token
     if (briefing.approval_token !== token) {
@@ -51,7 +52,7 @@ export async function GET(request: NextRequest) {
     const sendResult = await sendBriefingToSubscribers(briefingPayload, subscribers);
 
     // Update briefing status to "sent" with subscriber count and sent timestamp
-    await databases.updateDocument(DB_ID, COLLECTIONS.BRIEFINGS, briefingId, {
+    await updateDocumentById("briefings", briefingId, {
       status:           "sent",
       sent_at:          new Date().toISOString(),
       subscriber_count: sendResult.sent,

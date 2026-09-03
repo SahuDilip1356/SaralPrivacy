@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
+import { queryDocuments } from "@/lib/db";
 import { requireRole } from "@/lib/adminSession";
 
 async function count(status?: string): Promise<number> {
-  const q = status
-    ? [Query.equal("status", status), Query.limit(1)]
-    : [Query.limit(1)];
-  const res = await databases.listDocuments(DB_ID, COLLECTIONS.OUTREACH_CONTACTS, q);
+  const res = await queryDocuments("outreach_contacts", {
+    where: status ? [{ field: "status", value: status }] : [],
+    limit: 1,
+  });
   return res.total;
 }
 

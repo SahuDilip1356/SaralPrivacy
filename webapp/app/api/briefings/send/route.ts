@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verifyAdminSessionToken, ADMIN_SESSION_COOKIE } from "@/lib/adminSession";
-import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
+import { getDocumentById, updateDocumentById, queryDocuments } from "@/lib/db";
 import { sendBriefingToSubscribers } from "@/lib/email";
 import type { BriefingData } from "@/lib/email-templates";
 
@@ -24,7 +24,10 @@ export async function POST(request: NextRequest) {
     }
 
     // Fetch the briefing
-    const briefing = await databases.getDocument(DB_ID, COLLECTIONS.BRIEFINGS, briefingId);
+    const briefing = (await getDocumentById("briefings", briefingId)) as (Record<string, any> & { id: string }) | null;
+    if (!briefing) {
+      return NextResponse.json({ error: "Briefing not found" }, { status: 404 });
+    }
 
     if (briefing.status !== "approved") {
       return NextResponse.json(
@@ -34,13 +37,11 @@ export async function POST(request: NextRequest) {
     }
 
     // Fetch all subscribers (up to 1000)
-    const subscriberResult = await databases.listDocuments(DB_ID, COLLECTIONS.SUBSCRIBERS, [
-      Query.limit(1000),
-    ]);
-    const subscribers = subscriberResult.documents.map((doc) => ({
+    const subscriberResult = await queryDocuments("subscribers", { limit: 1000 });
+    const subscribers = subscriberResult.docs.map((doc) => ({
       email: doc.email as string,
       name:  doc.name  as string,
-      $id:   doc.$id,
+      $id:   doc.id,
     }));
 
     const briefingPayload: BriefingData = {
@@ -58,7 +59,7 @@ export async function POST(request: NextRequest) {
     const result = await sendBriefingToSubscribers(briefingPayload, subscribers);
 
     // Update briefing to "sent"
-    await databases.updateDocument(DB_ID, COLLECTIONS.BRIEFINGS, briefingId, {
+    await updateDocumentById("briefings", briefingId, {
       status:           "sent",
       sent_at:          new Date().toISOString(),
       subscriber_count: result.sent,

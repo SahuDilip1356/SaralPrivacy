@@ -1,5 +1,5 @@
 import { MetadataRoute } from 'next'
-import { databases, DB_ID, COLLECTIONS, Query } from '@/lib/appwrite'
+import { queryDocuments } from '@/lib/db'
 import { FRESHNESS } from '@/lib/content-freshness'
 import { sectorSlugs } from '@/lib/data/sectors'
 import { dataMapSlugs } from '@/lib/data/data-flow'
@@ -68,13 +68,13 @@ async function getBlogSlugs(): Promise<Array<{ slug: string; updated: Date }>> {
   const posts: Array<{ slug: string; updated: Date }> = []
   try {
     for (let page = 0; page < 20; page++) {
-      const result = await databases.listDocuments(DB_ID, COLLECTIONS.BLOG_POSTS, [
-        Query.equal('status', 'published'),
-        Query.orderDesc('$updatedAt'),
-        Query.limit(PAGE),
-        Query.offset(page * PAGE),
-      ])
-      for (const doc of result.documents) {
+      const result = await queryDocuments('blog_posts', {
+        where: [{ field: 'status', value: 'published' }],
+        orderBy: { field: '$updatedAt', dir: 'desc' },
+        limit: PAGE,
+        offset: page * PAGE,
+      })
+      for (const doc of result.docs) {
         if (!doc.slug) continue
         posts.push({
           // Lowercased deliberately: at least one stored slug has a capital
@@ -86,7 +86,7 @@ async function getBlogSlugs(): Promise<Array<{ slug: string; updated: Date }>> {
           updated: new Date((doc.published_at || doc.$updatedAt) as string),
         })
       }
-      if (result.documents.length < PAGE || posts.length >= result.total) break
+      if (result.docs.length < PAGE || posts.length >= result.total) break
     }
   } catch {
     return posts

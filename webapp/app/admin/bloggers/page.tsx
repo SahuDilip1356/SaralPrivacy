@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
+
+import { queryDocuments } from "@/lib/db";
 import BloggersClient from "./BloggersClient";
 
 export const metadata: Metadata = { title: "Blogger Management | Admin" };
@@ -7,13 +8,13 @@ export const dynamic = "force-dynamic";
 
 async function fetchBloggers() {
   try {
-    const result = await databases.listDocuments(DB_ID, COLLECTIONS.BLOGGER_ACCOUNTS, [
-      Query.orderDesc("$createdAt"),
-      Query.limit(100),
-    ]);
+    const result = await queryDocuments("blogger_accounts", {
+      orderBy: { field: "$createdAt", dir: "desc" },
+      limit: 100,
+    });
     // Spread to plain objects — Appwrite Models.Document are class instances
     // which Next.js App Router cannot serialize across the Server→Client boundary
-    return result.documents.map(doc => ({ ...doc }));
+    return result.docs.map((doc: Record<string, unknown>) => ({ ...doc }));
   } catch {
     return [];
   }

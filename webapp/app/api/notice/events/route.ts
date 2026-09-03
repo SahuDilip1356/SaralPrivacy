@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { databases, DB_ID, COLLECTIONS, ID } from "@/lib/appwrite";
+import { insertDocument } from "@/lib/db";
 import { getClientIp, rateLimit } from "@/lib/abuseGuard";
 
 const EVENT_NAMES = [
@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     if (!parsed.success) return NextResponse.json({ ok: true }); // drop unknown events, don't error the client
     const { name, session_id, ...rest } = parsed.data;
 
-    await databases.createDocument(DB_ID, COLLECTIONS.NOTICE_EVENTS, ID.unique(), {
+    await insertDocument("notice_events", {
       name,
       session_id,
       payload: JSON.stringify(rest),
