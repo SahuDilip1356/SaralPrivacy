@@ -51,8 +51,19 @@ export interface Vendor {
 
 export const VENDORS: Vendor[] = [
   {
+    name: 'Supabase',
+    purpose:
+      'Our database and file storage — where your records live (we are migrating here from Appwrite)',
+    dataReceived:
+      'Name, email, phone, company, and your assessment and discovery answers',
+    location: 'India (Mumbai)',
+    dpa: 'available',
+  },
+  {
+    // Being retired: modules move to Supabase one by one; this row leaves the
+    // list when the Appwrite project is deleted at the end of the migration.
     name: 'Appwrite',
-    purpose: 'Our database and file storage — where your records actually live',
+    purpose: 'Our previous database and file storage, during the migration window',
     dataReceived:
       'Name, email, phone, company, and your assessment and discovery answers',
     location: 'Singapore',
