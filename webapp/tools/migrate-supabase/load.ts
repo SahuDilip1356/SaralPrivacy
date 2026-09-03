@@ -90,6 +90,12 @@ const collections = targets.length ? targets : Object.keys(TABLES);
 for (const collection of collections) {
   const table = TABLES[collection];
   if (!table) throw new Error(`Unknown collection ${collection}`);
+  if (!targets.length && !existsSync(join(SNAP_DIR, `${collection}.jsonl`))) {
+    // All-collections run: ghosts (e.g. chat_feedback) have no snapshot and
+    // nothing to load — skip instead of aborting the loop mid-way.
+    console.log(`- ${collection}: no snapshot (ghost collection) — skipped`);
+    continue;
+  }
   const rows = readSnapshot(collection).map((doc) => toRow(collection, doc));
   if (EMIT_SQL) {
     const sqlDir = join(SNAP_DIR, "sql");
