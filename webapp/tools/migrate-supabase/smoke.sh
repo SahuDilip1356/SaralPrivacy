@@ -8,7 +8,8 @@ BASE="${1:?base url}"; MODULE="${2:?module m1..m8}"
 pass=0; fail=0
 check() { # check <name> <expected-status> <curl args...>
   local name="$1" want="$2"; shift 2
-  local got; got=$(curl -s -o /dev/null -w "%{http_code}" "$@")
+  # SMOKE_COOKIE_JAR: pre-warmed cookie jar for deployment-protected previews
+  local got; got=$(curl -s -o /dev/null -w "%{http_code}" ${SMOKE_COOKIE_JAR:+-b "$SMOKE_COOKIE_JAR"} "$@")
   if [ "$got" = "$want" ]; then echo "  ✓ $name ($got)"; pass=$((pass+1));
   else echo "  ✗ $name: want $want got $got"; fail=$((fail+1)); fi
 }
