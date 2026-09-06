@@ -72,11 +72,28 @@ export default function ResourceTemplateGate({ templates }: Props) {
   };
 
   const handleClick = (template: ResourceTemplate) => {
-    if (gateCompleted) {
+    // Re-check live, not just mounted state: the header download modal can
+    // grant the unlock while this page is already open (it overlays every
+    // page, /resources included), and that must count immediately.
+    if (gateCompleted || areTemplatesUnlocked()) {
+      setGateCompleted(true);
       triggerDownload(template.file);
-    } else {
-      setPendingTemplate(template);
+      return;
     }
+    // Same for the contact: re-read at open so details submitted through the
+    // modal moments ago pre-fill the gate without a reload.
+    const contact = loadSavedContact();
+    if (contact) {
+      setForm(f => ({
+        ...f,
+        email:        contact.email || f.email,
+        contactName:  contact.contactPersonName || f.contactName,
+        businessName: contact.businessName || f.businessName,
+        phone:        contact.phoneNumber || f.phone,
+        employees:    contact.employees || f.employees,
+      }));
+    }
+    setPendingTemplate(template);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
