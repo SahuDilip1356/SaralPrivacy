@@ -1,8 +1,12 @@
 "use client";
 import { useState, useEffect } from "react";
 import { X, Download } from "lucide-react";
-
-const STORAGE_KEY = "sp_rg_v1";
+import {
+  loadSavedContact,
+  saveContact,
+  areTemplatesUnlocked,
+  markTemplatesUnlocked,
+} from "@/lib/templates/contact-storage";
 
 const EMPLOYEE_OPTIONS = [
   "1–10 employees",
@@ -39,7 +43,23 @@ export default function ResourceTemplateGate({ templates }: Props) {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    setGateCompleted(!!localStorage.getItem(STORAGE_KEY));
+    // Unlocked by a previous submission on either surface (this gate or the
+    // header download modal) — downloads are instant, no form.
+    setGateCompleted(areTemplatesUnlocked());
+
+    // Not unlocked but a contact is saved (e.g. storage restored partially):
+    // pre-fill so the gate is confirm-and-download, not re-typing.
+    const contact = loadSavedContact();
+    if (contact) {
+      setForm(f => ({
+        ...f,
+        email:        contact.email || f.email,
+        contactName:  contact.contactPersonName || f.contactName,
+        businessName: contact.businessName || f.businessName,
+        phone:        contact.phoneNumber || f.phone,
+        employees:    contact.employees || f.employees,
+      }));
+    }
   }, []);
 
   const triggerDownload = (file: string) => {
@@ -52,11 +72,28 @@ export default function ResourceTemplateGate({ templates }: Props) {
   };
 
   const handleClick = (template: ResourceTemplate) => {
-    if (gateCompleted) {
+    // Re-check live, not just mounted state: the header download modal can
+    // grant the unlock while this page is already open (it overlays every
+    // page, /resources included), and that must count immediately.
+    if (gateCompleted || areTemplatesUnlocked()) {
+      setGateCompleted(true);
       triggerDownload(template.file);
-    } else {
-      setPendingTemplate(template);
+      return;
     }
+    // Same for the contact: re-read at open so details submitted through the
+    // modal moments ago pre-fill the gate without a reload.
+    const contact = loadSavedContact();
+    if (contact) {
+      setForm(f => ({
+        ...f,
+        email:        contact.email || f.email,
+        contactName:  contact.contactPersonName || f.contactName,
+        businessName: contact.businessName || f.businessName,
+        phone:        contact.phoneNumber || f.phone,
+        employees:    contact.employees || f.employees,
+      }));
+    }
+    setPendingTemplate(template);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -86,7 +123,14 @@ export default function ResourceTemplateGate({ templates }: Props) {
       });
       const data = await res.json();
       if (data.success) {
-        localStorage.setItem(STORAGE_KEY, "1");
+        saveContact({
+          email:             form.email,
+          contactPersonName: form.contactName,
+          businessName:      form.businessName,
+          phoneNumber:       form.phone,
+          employees:         form.employees,
+        });
+        markTemplatesUnlocked();
         setGateCompleted(true);
         if (pendingTemplate) triggerDownload(pendingTemplate.file);
         setPendingTemplate(null);
