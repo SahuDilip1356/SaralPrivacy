@@ -6,19 +6,22 @@
 //   existing user→ role claim re-asserted + RECOVERY link (emailed via Resend)
 //
 // Run from webapp/ (needs SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY,
-// RESEND_API_KEY, NEXT_PUBLIC_SITE_URL in the environment):
+// RESEND_API_KEY, NEXT_PUBLIC_SITE_URL in the environment — point
+// NEXT_PUBLIC_SITE_URL at the PREVIEW alias while testing a branch):
 //   set -a; . ./.env.local; set +a
 //   node --import ./scripts/ts-resolve.mjs --experimental-strip-types \
 //     tools/auth/provision.ts --email dilip.sahu@gmail.com --role admin --name "Dilip Sahu"
 //
 // Flags: --email <addr> (required) · --role admin|blogger (required)
-//        --name "<display name>" · --no-email (print the link, don't send)
+//        --name "<display name>" · --no-email (don't send) · --print-link
+//        (echo the one-time link to stdout — it IS a credential)
 //
-// The link printed to stdout IS a one-time credential — treat the terminal
-// output accordingly.
+// Imports stay alias-free ("@/…") on purpose: this runs under node's
+// strip-types loader, not Next's bundler.
 
+import { Resend } from "resend";
 import { createInvite, createRecovery, findAuthUserIdByEmail } from "../../lib/auth/adminAuth.ts";
-import { sendBloggerInvite } from "../../lib/email.ts";
+import { bloggerInviteTemplate } from "../../lib/email-templates.ts";
 
 // .env.local values pulled from Vercel carry literal "\n" suffixes (standing law).
 for (const k of Object.keys(process.env)) {
@@ -36,9 +39,10 @@ const email = (arg("email") || "").trim().toLowerCase();
 const role = arg("role");
 const name = (arg("name") || email.split("@")[0]).trim();
 const sendEmail = !flag("no-email");
+const printLink = flag("print-link");
 
 if (!email || (role !== "admin" && role !== "blogger")) {
-  console.error("usage: provision.ts --email <addr> --role admin|blogger [--name \"…\"] [--no-email]");
+  console.error('usage: provision.ts --email <addr> --role admin|blogger [--name "…"] [--no-email] [--print-link]');
   process.exit(2);
 }
 
@@ -49,9 +53,13 @@ const { userId, url } = existingId
   : await createInvite({ email, name, role });
 
 console.log(`${kind === "invite" ? "created" : "found"} auth user ${userId} (${email}) role=${role}`);
-console.log(`${kind} link: ${url}`);
+if (printLink || !sendEmail) console.log(`${kind} link: ${url}`);
 
 if (sendEmail) {
-  const result = await sendBloggerInvite({ email, name, inviteUrl: url, role, kind });
-  console.log(result.success ? "email sent via Resend" : `email FAILED: ${result.error} — share the link manually`);
+  const from = (process.env.RESEND_FROM_NOREPLY || "noreply@saralprivacy.com").trim();
+  const { subject, html } = bloggerInviteTemplate({ email, name, inviteUrl: url, role, kind });
+  const { error } = await new Resend((process.env.RESEND_API_KEY || "").trim()).emails.send({
+    from, to: email, subject, html,
+  });
+  console.log(error ? `email FAILED: ${error.message} — re-run with --print-link and share manually` : `${kind} email sent to ${email} via Resend`);
 }
