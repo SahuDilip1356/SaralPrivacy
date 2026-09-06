@@ -10,10 +10,13 @@
  * module is imported by proxy.ts as well as Node route handlers, and Web
  * Crypto is the API available in both runtimes.
  *
- * Signing key: ADMIN_SESSION_SECRET if set; otherwise derived from
- * ADMIN_PASSWORD so preview/prod work before the dedicated secret is
- * provisioned. Deriving also means rotating the admin password invalidates
- * every outstanding session, which is the behaviour we want.
+ * Signing key: ADMIN_SESSION_SECRET, full stop. The P0-era fallback that
+ * derived a key from ADMIN_PASSWORD is gone with the password itself (P3).
+ * Rotating ADMIN_SESSION_SECRET invalidates every outstanding session.
+ *
+ * A token is only ever minted after Supabase Auth reports aal2 (password +
+ * verified TOTP) — see app/api/admin/mfa/verify. `u` carries the Supabase
+ * user id so a future audit trail can name who did what.
  */
 
 import type { NextRequest } from "next/server";
@@ -26,11 +29,13 @@ export type AdminRole = "admin" | "blogger";
 export interface AdminSession {
   role: AdminRole;
   name?: string;
+  userId?: string; // Supabase auth.users.id
 }
 
 interface TokenPayload {
   r: AdminRole;
   n?: string;
+  u?: string;
   exp: number; // unix seconds
 }
 
@@ -55,10 +60,7 @@ function b64urlDecode(value: string): Uint8Array | null {
 
 function getSecret(): string | null {
   const dedicated = (process.env.ADMIN_SESSION_SECRET || "").trim();
-  if (dedicated) return dedicated;
-  const derivedFrom = (process.env.ADMIN_PASSWORD || "").trim();
-  if (derivedFrom) return `saralprivacy-admin-session-v1:${derivedFrom}`;
-  return null; // no secret material → sessions cannot be minted or verified
+  return dedicated || null; // no secret → sessions cannot be minted or verified
 }
 
 async function hmac(payloadB64: string, secret: string): Promise<Uint8Array> {
@@ -82,15 +84,17 @@ function constantTimeEqual(a: Uint8Array, b: Uint8Array): boolean {
 
 export async function createAdminSessionToken(
   role: AdminRole,
-  name?: string
+  name?: string,
+  userId?: string
 ): Promise<string> {
   const secret = getSecret();
   if (!secret) {
-    throw new Error("adminSession: no ADMIN_SESSION_SECRET or ADMIN_PASSWORD configured");
+    throw new Error("adminSession: ADMIN_SESSION_SECRET is not configured");
   }
   const payload: TokenPayload = {
     r: role,
     ...(name ? { n: name } : {}),
+    ...(userId ? { u: userId } : {}),
     exp: Math.floor(Date.now() / 1000) + ADMIN_SESSION_MAX_AGE,
   };
   const payloadB64 = b64urlEncode(encoder.encode(JSON.stringify(payload)));
@@ -128,7 +132,11 @@ export async function verifyAdminSessionToken(
     return null;
   }
 
-  return { role: payload.r, ...(payload.n ? { name: payload.n } : {}) };
+  return {
+    role: payload.r,
+    ...(payload.n ? { name: payload.n } : {}),
+    ...(typeof payload.u === "string" && payload.u ? { userId: payload.u } : {}),
+  };
 }
 
 /** Convenience for route handlers holding a NextRequest. */
