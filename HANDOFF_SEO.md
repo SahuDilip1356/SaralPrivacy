@@ -31,6 +31,36 @@ reads `GOOGLE_CREDENTIALS_JSON`) → add the account's email as **Full** user on
 result here and in memory `seo-cycle-2-plan`. The same run exports "Crawled – currently not indexed" and tests the
 hypothesis that it is the briefings.
 
+### 2026-09-06 RESULT — verdict `QUEUE_MOVED` (first real run: 242 URLs, 0 errors, report `webapp/tools/seo/reports/2026-09-06T0906Z.json`, local only — migration 0005 not yet applied)
+
+Setup completed same day: Search Console API enabled on GCP project ONSJMDSGN (`gen-lang-client-0104633078`), new JSON key
+(id `30aa27a4…`) for `sahudilip1356@gen-lang-client-0104633078.iam.gserviceaccount.com` saved at `webapp/.gsc-service-account.json`
+(chmod 600; excluded via `.git/info/exclude` in the main checkout until PR #28's `.gitignore` lands), account added as **Full** on the
+URL-prefix property. The March key still exists in GCP; the Sheets pipeline keeps using it.
+
+- **Watchlist: 17/17 crawled, 16 indexed.** `/data-mapping` is the one exception — *Crawled – currently not indexed* (fetched 31 Jul,
+  rejected). ⚠️ 15 of 17 crawl dates ARE the request day (31 Jul / 1 Aug): the button did it; Googlebot has not come back organically
+  since (only `/blog` 30 Aug and `/industries/ca-firms` 3 Aug). Indexed ≠ recrawled.
+- **Whole site:** 162 indexed · 46 discovered-never-crawled (44 briefings + `fintech-nbfc/data-flow` + `schools-colleges/data-flow`) ·
+  18 *unknown to Google* (all briefings, the newest) · 12 crawled-not-indexed · 4 briefings *Excluded by noindex tag* (see below).
+- **Hypothesis "crawled-not-indexed = briefings" REJECTED** (2 of 12). It is the statics: `/contact`, guide HTML `hi`/`kn`/`ta`,
+  `/learn/consent`, `/learn/rights`, `/learn/childrens-data`, `/learn/dpdp-rules-2025-plain-english-guide`, `/data-mapping`.
+  Two different problems: briefings are starved of *discovery* (62 never fetched), statics are fetched and *rejected*.
+- **28-day search (7 Aug → 3 Sep): 3,945 impressions → 10 clicks, 0.25% CTR.** `/learn/dpdp-act-2023` alone = 2,193 impressions,
+  1 click, position 10. Guide EN 508/2. Watchlist pages draw 3–38 impressions each, 1 click in total (`/discovery`).
+  Anomaly to re-check next run: `/learn/dpdp-rules-2025-plain-english-guide` shows 185 impressions at position 7.2 while inspection
+  says not indexed.
+- **The 4 "Excluded by noindex" briefings serve `index, follow` today** (verified live on `2026-08-26-old-factory-files…`). Google saw
+  the not-found body's `noindex` at crawl time — the C2 streaming soft-404 mechanism biting real briefings that Googlebot fetched
+  before the document existed, or during a transient Appwrite/cache miss. Not a new bug, but the first measured cost of the
+  won't-fix: 4 of 167 briefings. They will recover on recrawl; the tool will show it as a bucket change.
+- **Shortlist emitted (10):** the two data-flow pages + the crawled-not-indexed statics. Press the button, then add ledger lines in
+  `watchlist.ts`.
+
+**Per the tree → resume Cycle 2 in the revised order: A2/A4/A6 → B3 (CA-firms pillar) → B2 (gate expired 28 Aug).** New input for
+B2: the briefing problem is discovery, not rejection — consolidation should aim at fewer, better-linked URLs, and the 62 never-fetched
+ones are the natural `noindex`/merge candidates. New input for the ellipsis/CTR fix (B1-lite): the CTR number above is the target.
+
 **Standing state carried forward (settled, never re-litigate):** C2 soft-404 closed · dual-title theory dead
 (B1 = CTR-only ellipsis fix) · 12 `noindex` quizzes by design · www cert fixed 08-01 (⛔ never switch nameservers to
 Vercel — Hostinger holds SPF; optional: make www 308 to apex) · briefing meta descriptions too SHORT (90-char cap in
