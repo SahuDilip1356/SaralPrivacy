@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BookOpen, CheckCircle } from "lucide-react";
-import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
+import { queryDocuments, type WhereClause } from "@/lib/db";
 import { BriefingSubscribeCard } from "@/components/briefings/BriefingSubscribeCard";
 import BlogImage from "@/components/BlogImage";
 import { unstable_cache } from "next/cache";
@@ -52,16 +52,16 @@ function getPublishedPosts(lane?: string): Promise<BlogPost[]> {
   return unstable_cache(
     async (): Promise<BlogPost[]> => {
       try {
-        const filters = [
-          Query.equal("status", "published"),
-          Query.orderDesc("$createdAt"),
-          Query.limit(50),
-        ];
+        const where: WhereClause[] = [{ field: "status", value: "published" }];
         if (key !== "all") {
-          filters.push(Query.equal("lane", key));
+          where.push({ field: "lane", value: key });
         }
-        const result = await databases.listDocuments(DB_ID, COLLECTIONS.BLOG_POSTS, filters);
-        return result.documents as unknown as BlogPost[];
+        const result = await queryDocuments("blog_posts", {
+          where,
+          orderBy: { field: "$createdAt", dir: "desc" },
+          limit: 50,
+        });
+        return result.docs as unknown as BlogPost[];
       } catch (err) {
         console.error("[blog/page] fetch error", err);
         return [];

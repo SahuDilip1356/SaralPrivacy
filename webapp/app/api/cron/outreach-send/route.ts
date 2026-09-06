@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { databases, DB_ID, COLLECTIONS, ID, Query } from "@/lib/appwrite";
+import { insertDocument, updateDocumentById, queryDocuments } from "@/lib/db";
 import { generateToken } from "@/lib/tokens";
 import { outreachBriefingEmail } from "@/lib/email-templates";
 import { resend } from "@/lib/resendClient";
@@ -9,21 +9,23 @@ const BASE_URL  = (process.env.NEXT_PUBLIC_SITE_URL || "https://saralprivacy.com
 
 async function getTodaysBriefing() {
   // 1. Try oldest approved/sent briefing not yet used in outreach
-  const unused = await databases.listDocuments(DB_ID, COLLECTIONS.BRIEFINGS, [
-    Query.equal("status", ["approved", "sent"]),
-    Query.isNull("outreach_used_at"),
-    Query.orderAsc("scheduled_for"),
-    Query.limit(1),
-  ]);
-  if (unused.documents.length) return { briefing: unused.documents[0], isNew: true };
+  const unused = await queryDocuments("briefings", {
+    where: [
+      { field: "status", value: ["approved", "sent"] },
+      { field: "outreach_used_at", op: "isNull" },
+    ],
+    orderBy: { field: "scheduled_for", dir: "asc" },
+    limit: 1,
+  });
+  if (unused.docs.length) return { briefing: unused.docs[0], isNew: true };
 
   // 2. Fallback: most recently approved/sent briefing (all already used)
-  const fallback = await databases.listDocuments(DB_ID, COLLECTIONS.BRIEFINGS, [
-    Query.equal("status", ["approved", "sent"]),
-    Query.orderDesc("scheduled_for"),
-    Query.limit(1),
-  ]);
-  if (fallback.documents.length) return { briefing: fallback.documents[0], isNew: false };
+  const fallback = await queryDocuments("briefings", {
+    where: [{ field: "status", value: ["approved", "sent"] }],
+    orderBy: { field: "scheduled_for", dir: "desc" },
+    limit: 1,
+  });
+  if (fallback.docs.length) return { briefing: fallback.docs[0], isNew: false };
 
   return null;
 }
@@ -43,13 +45,13 @@ export async function GET(request: NextRequest) {
     const { briefing, isNew } = result;
 
     // Fetch pending contacts
-    const res = await databases.listDocuments(DB_ID, COLLECTIONS.OUTREACH_CONTACTS, [
-      Query.equal("status", "pending"),
-      Query.orderAsc("created_at"),
-      Query.limit(DAILY_CAP),
-    ]);
+    const res = await queryDocuments("outreach_contacts", {
+      where: [{ field: "status", value: "pending" }],
+      orderBy: { field: "created_at", dir: "asc" },
+      limit: DAILY_CAP,
+    });
 
-    const contacts = res.documents;
+    const contacts = res.docs;
     if (!contacts.length) {
       return NextResponse.json({ message: "No pending contacts. Campaign complete.", briefing_used: briefing.title });
     }
@@ -63,7 +65,7 @@ export async function GET(request: NextRequest) {
       let token = contact.magic_token as string;
       if (!token) {
         token = generateToken();
-        await databases.updateDocument(DB_ID, COLLECTIONS.OUTREACH_CONTACTS, contact.$id, { magic_token: token });
+        await updateDocumentById("outreach_contacts", contact.id, { magic_token: token });
       }
 
       const subscribeUrl   = `${BASE_URL}/subscribe?token=${token}`;
@@ -88,18 +90,18 @@ export async function GET(request: NextRequest) {
       if (error || !data) {
         console.error(`[outreach-send] Failed ${contact.email}:`, error);
         failed++;
-        databases.updateDocument(DB_ID, COLLECTIONS.OUTREACH_CONTACTS, contact.$id, {
+        updateDocumentById("outreach_contacts", contact.id, {
           status: "failed",
         }).catch(() => {});
         continue;
       }
 
       await Promise.all([
-        databases.updateDocument(DB_ID, COLLECTIONS.OUTREACH_CONTACTS, contact.$id, {
+        updateDocumentById("outreach_contacts", contact.id, {
           status:        "sent",
           intro_sent_at: now,
         }),
-        databases.createDocument(DB_ID, COLLECTIONS.EMAIL_SEND_LOG, ID.unique(), {
+        insertDocument("email_send_log", {
           recipient_email:   contact.email,
           email_type:        "intro",
           resend_message_id: data.id,
@@ -114,7 +116,7 @@ export async function GET(request: NextRequest) {
 
     // Mark briefing as used in outreach (only if it was a new/unused one)
     if (isNew && sent > 0) {
-      databases.updateDocument(DB_ID, COLLECTIONS.BRIEFINGS, briefing.$id, {
+      updateDocumentById("briefings", briefing.id, {
         outreach_used_at: now,
       }).catch((err) => console.error("[outreach-send] Failed to mark briefing:", err));
     }
@@ -124,7 +126,7 @@ export async function GET(request: NextRequest) {
       failed,
       remaining:     res.total - sent,
       briefing_used: briefing.title,
-      briefing_id:   briefing.$id,
+      briefing_id:   briefing.id,
     });
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);

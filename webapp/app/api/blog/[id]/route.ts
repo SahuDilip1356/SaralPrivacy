@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { databases, DB_ID, COLLECTIONS } from "@/lib/appwrite";
+import { getDocumentById } from "@/lib/db";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -8,7 +8,8 @@ interface Props {
 export async function GET(_req: NextRequest, { params }: Props) {
   try {
     const { id } = await params;
-    const doc = await databases.getDocument(DB_ID, COLLECTIONS.BLOG_POSTS, id);
+    const doc = await getDocumentById("blog_posts", id);
+    if (!doc) return NextResponse.json({ error: "Not found" }, { status: 404 });
     return NextResponse.json(doc);
   } catch (err: unknown) {
     console.error("[blog/[id] GET]", err);

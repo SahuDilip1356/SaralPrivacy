@@ -10,7 +10,7 @@ import { formatDate, formatDateShort, getCategoryLabel, getIndustryLabel } from 
 import { Badge } from "@/components/ui/Badge";
 import { articleSchema, breadcrumbSchema, speakableSchema } from "@/lib/schema";
 import { AnswerBlock } from "@/components/seo/AnswerBlock";
-import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
+import { queryDocuments } from "@/lib/db";
 import { WhitepaperCTA } from "@/components/cta/WhitepaperCTA";
 import { TemplatesCTA } from "@/components/cta/TemplatesCTA";
 import { InBodyToolLink } from "@/components/briefings/InBodyToolLink";
@@ -71,22 +71,22 @@ async function _fetchBriefingFromDb(slug: string) {
     // Primary: query by slug (requires slug index in Appwrite)
     let doc: any = null;
     try {
-      const result = await databases.listDocuments(DB_ID, COLLECTIONS.BRIEFINGS, [
-        Query.equal("slug", slug),
-        Query.limit(1),
-      ]);
-      doc = result.documents[0] || null;
+      const result = await queryDocuments("briefings", {
+        where: [{ field: "slug", value: slug }],
+        limit: 1,
+      });
+      doc = result.docs[0] || null;
     } catch {
       // slug attribute not indexed — fall back to scanning recent briefings
     }
 
     // Fallback: fetch recent 50 briefings and match by slug in JS
     if (!doc) {
-      const fallback = await databases.listDocuments(DB_ID, COLLECTIONS.BRIEFINGS, [
-        Query.orderDesc("$createdAt"),
-        Query.limit(50),
-      ]);
-      doc = fallback.documents.find((d: any) => d.slug === slug) || null;
+      const fallback = await queryDocuments("briefings", {
+        orderBy: { field: "$createdAt", dir: "desc" },
+        limit: 50,
+      });
+      doc = fallback.docs.find((d: any) => d.slug === slug) || null;
     }
 
     if (!doc) return null;
@@ -202,14 +202,14 @@ async function _fetchRelatedPool(): Promise<RelatedCandidate[]> {
   const PAGE = 100;
   const docs: any[] = [];
   for (let offset = 0; ; offset += PAGE) {
-    const result = await databases.listDocuments(DB_ID, COLLECTIONS.BRIEFINGS, [
-      Query.equal("status", ["sent", "approved"]),
-      Query.orderDesc("$createdAt"),
-      Query.limit(PAGE),
-      Query.offset(offset),
-    ]);
-    docs.push(...result.documents);
-    if (result.documents.length < PAGE || docs.length >= result.total) break;
+    const result = await queryDocuments("briefings", {
+      where: [{ field: "status", value: ["sent", "approved"] }],
+      orderBy: { field: "$createdAt", dir: "desc" },
+      limit: PAGE,
+      offset,
+    });
+    docs.push(...result.docs);
+    if (result.docs.length < PAGE || docs.length >= result.total) break;
   }
   return docs.map((d) => {
     // `industries` is a JSON string on the document; tolerate a real array too.

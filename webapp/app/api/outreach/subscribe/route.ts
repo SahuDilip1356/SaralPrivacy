@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { databases, DB_ID, COLLECTIONS, ID, Query } from "@/lib/appwrite";
+import { insertDocument, findOneBy, findOneByEmail, updateDocumentById } from "@/lib/db";
 import { PRIVACY_NOTICE_VERSION } from "@/lib/utils";
 
 export async function POST(request: NextRequest) {
@@ -10,16 +10,11 @@ export async function POST(request: NextRequest) {
     }
 
     // Find outreach contact by magic_token
-    const res = await databases.listDocuments(DB_ID, COLLECTIONS.OUTREACH_CONTACTS, [
-      Query.equal("magic_token", token),
-      Query.limit(1),
-    ]);
+    const contact = await findOneBy("outreach_contacts", "magic_token", token);
 
-    if (!res.documents.length) {
+    if (!contact) {
       return NextResponse.json({ error: "Link not recognised or already used." }, { status: 404 });
     }
-
-    const contact = res.documents[0];
     const email = (contact.email as string).trim().toLowerCase();
 
     if (contact.status === "subscribed") {
@@ -29,14 +24,11 @@ export async function POST(request: NextRequest) {
     const now = new Date().toISOString();
 
     // Check if already a subscriber
-    const existing = await databases.listDocuments(DB_ID, COLLECTIONS.SUBSCRIBERS, [
-      Query.equal("email", email),
-      Query.limit(1),
-    ]);
+    const existing = await findOneByEmail("subscribers", email);
 
-    if (!existing.documents.length) {
+    if (!existing) {
       // Create new subscriber with explicit one-click consent
-      await databases.createDocument(DB_ID, COLLECTIONS.SUBSCRIBERS, ID.unique(), {
+      await insertDocument("subscribers", {
         name:            contact.name || "",
         email,
         industry:        contact.industry || "",
@@ -53,7 +45,7 @@ export async function POST(request: NextRequest) {
       });
 
       // Consent log
-      databases.createDocument(DB_ID, COLLECTIONS.CONSENT_LOG, ID.unique(), {
+      insertDocument("consent_log", {
         email,
         name:            contact.name || "",
         source:          "outreach_magic_link",
@@ -70,7 +62,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Mark outreach contact as subscribed
-    await databases.updateDocument(DB_ID, COLLECTIONS.OUTREACH_CONTACTS, contact.$id, {
+    await updateDocumentById("outreach_contacts", contact.id, {
       status:        "subscribed",
       subscribed_at: now,
     });

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PRIVACY_NOTICE_VERSION } from "@/lib/utils";
-import { databases, DB_ID, COLLECTIONS, ID } from "@/lib/appwrite";
+import { insertDocument } from "@/lib/db";
 import { sendConsultationAlert } from "@/lib/email";
 import { getClientIp, rateLimit, isHoneypotTripped } from "@/lib/abuseGuard";
 
@@ -52,11 +52,11 @@ export async function POST(request: NextRequest) {
       region,
     };
 
-    await databases.createDocument(DB_ID, COLLECTIONS.LEADS, ID.unique(), leadData);
+    await insertDocument("leads", leadData);
 
     // Write consent log entry
     const timestamp = new Date().toISOString();
-    databases.createDocument(DB_ID, COLLECTIONS.CONSENT_LOG, ID.unique(), {
+    insertDocument("consent_log", {
       email:           workEmail,
       name:            fullName,
       source:          "contact",

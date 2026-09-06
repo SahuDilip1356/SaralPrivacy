@@ -18,7 +18,7 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
+import { queryDocuments } from "@/lib/db";
 
 export async function GET(request: NextRequest) {
   // ── Auth ────────────────────────────────────────────────────────────────────
@@ -48,19 +48,17 @@ export async function GET(request: NextRequest) {
     const endUTC   = new Date(`${todayIST}T23:59:59+05:30`).toISOString();
 
     // ── Query Appwrite for today's approved briefing ─────────────────────────
-    const result = await databases.listDocuments(
-      DB_ID,
-      COLLECTIONS.BRIEFINGS,
-      [
-        Query.equal("status", ["approved", "sent"]),
-        Query.greaterThanEqual("created_at", startUTC),
-        Query.lessThanEqual("created_at", endUTC),
-        Query.orderDesc("created_at"),
-        Query.limit(1),
-      ]
-    );
+    const result = await queryDocuments("briefings", {
+      where: [
+        { field: "status", value: ["approved", "sent"] },
+        { field: "created_at", op: "gte", value: startUTC },
+        { field: "created_at", op: "lte", value: endUTC },
+      ],
+      orderBy: { field: "created_at", dir: "desc" },
+      limit: 1,
+    });
 
-    if (result.documents.length === 0) {
+    if (result.docs.length === 0) {
       return NextResponse.json(
         {
           error: "No briefing found for today.",
@@ -71,7 +69,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const briefing  = result.documents[0];
+    const briefing  = result.docs[0];
     const siteUrl   = (process.env.NEXT_PUBLIC_SITE_URL || "https://saralprivacy.com").replace(/\/$/, "");
     const briefingUrl = `${siteUrl}/briefings/${briefing.slug}`;
 

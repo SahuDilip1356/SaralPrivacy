@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { databases, DB_ID, COLLECTIONS, ID } from "@/lib/appwrite";
+import { insertDocument } from "@/lib/db";
 import {
   TemplateDownloadFormSchema,
   templateNames,
@@ -217,15 +217,13 @@ export async function POST(request: NextRequest) {
     const city    = decodeURIComponent(request.headers.get("x-vercel-ip-city") || "");
     const country = request.headers.get("x-vercel-ip-country") || "";
 
-    // Save lead to Appwrite (non-fatal if it fails). The payload builder is
-    // pinned to the collection schema — see lib/templates/lead.ts. Briefings
-    // consent is not a collection attribute; it drives the subscriber upsert
-    // below instead.
+    // Save lead via the lib/db seam (non-fatal if it fails). The payload
+    // builder is pinned to the collection schema — see lib/templates/lead.ts.
+    // Briefings consent is not a collection attribute; it drives the
+    // subscriber upsert below instead.
     try {
-      const doc = await databases.createDocument(
-        DB_ID,
-        COLLECTIONS.TEMPLATE_DOWNLOADS,
-        ID.unique(),
+      const id = await insertDocument(
+        "template_downloads",
         buildTemplateLeadDocument({
           email:          data.email,
           contactName:    data.contactPersonName,
@@ -239,9 +237,9 @@ export async function POST(request: NextRequest) {
           country,
         })
       );
-      console.log(`[templates/download] Lead saved: ${doc.$id}`);
+      console.log(`[templates/download] Lead saved: ${id}`);
     } catch (err) {
-      console.error("[templates/download] Appwrite save failed (non-fatal):", err);
+      console.error("[templates/download] Lead save failed (non-fatal):", err);
     }
 
     // Subscribe to briefings if opted in (non-fatal)

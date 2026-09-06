@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireRole } from "@/lib/adminSession";
 import { revalidatePath, revalidateTag } from "next/cache";
-import { databases, DB_ID, COLLECTIONS, ID } from "@/lib/appwrite";
+import { insertDocument, updateDocumentById } from "@/lib/db";
 
 /**
  * Bust the ISR cache for a blog post so the public route reflects the DB
@@ -160,16 +160,11 @@ export async function POST(req: NextRequest) {
     }
 
     const doc = buildDocument(payload);
-    const result = await databases.createDocument(
-      DB_ID,
-      COLLECTIONS.BLOG_POSTS,
-      ID.unique(),
-      doc
-    );
+    const newId = await insertDocument("blog_posts", doc);
 
-    safeRevalidateBlog(result.slug as string);
+    safeRevalidateBlog(doc.slug as string);
 
-    return NextResponse.json({ success: true, id: result.$id, slug: result.slug });
+    return NextResponse.json({ success: true, id: newId, slug: doc.slug });
   } catch (err: unknown) {
     console.error("[blog/save POST]", err);
     const message = err instanceof Error ? err.message : "Unknown error";
@@ -194,16 +189,11 @@ export async function PATCH(req: NextRequest) {
     }
 
     const doc = buildDocument(payload);
-    const result = await databases.updateDocument(
-      DB_ID,
-      COLLECTIONS.BLOG_POSTS,
-      payload.id,
-      doc
-    );
+    await updateDocumentById("blog_posts", payload.id, doc);
 
-    safeRevalidateBlog(result.slug as string);
+    safeRevalidateBlog(doc.slug as string);
 
-    return NextResponse.json({ success: true, id: result.$id, slug: result.slug });
+    return NextResponse.json({ success: true, id: payload.id, slug: doc.slug });
   } catch (err: unknown) {
     console.error("[blog/save PATCH]", err);
     const message = err instanceof Error ? err.message : "Unknown error";

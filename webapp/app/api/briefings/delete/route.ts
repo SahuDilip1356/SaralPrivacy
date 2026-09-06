@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { databases, DB_ID, COLLECTIONS } from "@/lib/appwrite";
+import { deleteDocumentById } from "@/lib/db";
 
 /**
  * DELETE /api/briefings/delete?id=<documentId>
@@ -19,7 +19,7 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: "Missing ?id= parameter" }, { status: 400 });
     }
 
-    await databases.deleteDocument(DB_ID, COLLECTIONS.BRIEFINGS, id);
+    await deleteDocumentById("briefings", id);
     return NextResponse.json({ success: true, deleted: id });
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);

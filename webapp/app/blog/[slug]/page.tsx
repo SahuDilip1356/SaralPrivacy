@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
+import { queryDocuments } from "@/lib/db";
 import { BriefingSubscribeCard } from "@/components/briefings/BriefingSubscribeCard";
 import { PressProofStrip } from "@/components/ui/PressProofStrip";
 import { articleSchema, breadcrumbSchema } from "@/lib/schema";
@@ -86,12 +86,14 @@ function isPostVerified(post: BlogPost): boolean {
 
 async function getPostBySlug(slug: string): Promise<BlogPost | null> {
   try {
-    const result = await databases.listDocuments(DB_ID, COLLECTIONS.BLOG_POSTS, [
-      Query.equal("slug", slug),
-      Query.equal("status", "published"),
-      Query.limit(1),
-    ]);
-    return (result.documents[0] as unknown as BlogPost) || null;
+    const result = await queryDocuments("blog_posts", {
+      where: [
+        { field: "slug", value: slug },
+        { field: "status", value: "published" },
+      ],
+      limit: 1,
+    });
+    return (result.docs[0] as unknown as BlogPost) || null;
   } catch {
     return null;
   }
@@ -99,13 +101,15 @@ async function getPostBySlug(slug: string): Promise<BlogPost | null> {
 
 async function getRelatedPosts(lane: string, excludeSlug: string): Promise<BlogPost[]> {
   try {
-    const result = await databases.listDocuments(DB_ID, COLLECTIONS.BLOG_POSTS, [
-      Query.equal("status", "published"),
-      Query.equal("lane", lane),
-      Query.notEqual("slug", excludeSlug),
-      Query.limit(3),
-    ]);
-    return result.documents as unknown as BlogPost[];
+    const result = await queryDocuments("blog_posts", {
+      where: [
+        { field: "status", value: "published" },
+        { field: "lane", value: lane },
+        { field: "slug", op: "ne", value: excludeSlug },
+      ],
+      limit: 3,
+    });
+    return result.docs as unknown as BlogPost[];
   } catch {
     return [];
   }

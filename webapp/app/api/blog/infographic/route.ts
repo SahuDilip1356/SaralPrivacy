@@ -4,7 +4,8 @@ import { revalidatePath, revalidateTag } from "next/cache";
 import { Resvg } from "@resvg/resvg-js";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { databases, storage, DB_ID, COLLECTIONS } from "@/lib/appwrite";
+import { getDocumentById, updateDocumentById } from "@/lib/db";
+import { putInfographic } from "@/lib/db/storage";
 
 // Deterministic SVG → PNG rasterisation is sub-second; the old 180s budget
 // was for AI polling. PNG is used (not SVG) because Appwrite Storage's /view
@@ -345,32 +346,12 @@ function rasterizeToPng(svg: string): Buffer {
   return resvg.render().asPng();
 }
 
-// ── Appwrite Storage upload ──────────────────────────────────────────────────
+// ── Storage upload (backend-flagged via lib/db/storage) ──────────────────────
 
 async function uploadPng(png: Buffer, docId: string): Promise<string> {
-  const BUCKET_ID  = (process.env.APPWRITE_BUCKET_ID  || "").trim();
-  const ENDPOINT   = (process.env.APPWRITE_ENDPOINT   || "").trim();
-  const PROJECT_ID = (process.env.APPWRITE_PROJECT_ID || "").trim();
-  const fileId     = `blog_inf_${docId}`;
-
-  // Replace any prior file (re-generation case) — includes the broken SVGs
-  // that earlier deploys may have uploaded for posts being regenerated now.
-  try {
-    await storage.deleteFile(BUCKET_ID, fileId);
-  } catch {
-    // File doesn't exist yet — fine
-  }
-
-  const blob = new Blob([new Uint8Array(png)], { type: "image/png" });
-  const file = new File([blob], `${fileId}.png`, { type: "image/png" });
-
-  await storage.createFile(BUCKET_ID, fileId, file);
-
-  // Cache-buster: the fileId is deterministic so the URL is byte-identical
-  // across regenerations. Without `?v=<ts>`, browsers and Vercel ISR keep
-  // serving the previously cached file content. Appwrite ignores unknown
-  // query params on /view, so the file still serves correctly.
-  return `${ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${fileId}/view?project=${PROJECT_ID}&v=${Date.now()}`;
+  // Deterministic file id per post so re-generation replaces in place; the
+  // seam appends the `?v=<ts>` cache-buster.
+  return putInfographic(png, `blog_inf_${docId}`);
 }
 
 // ── Handler ──────────────────────────────────────────────────────────────────
@@ -412,7 +393,7 @@ export async function POST(req: NextRequest) {
     const png       = rasterizeToPng(svg);
     const publicUrl = await uploadPng(png, docId);
 
-    await databases.updateDocument(DB_ID, COLLECTIONS.BLOG_POSTS, docId, {
+    await updateDocumentById("blog_posts", docId, {
       infographic_url: publicUrl,
     });
 
@@ -421,12 +402,8 @@ export async function POST(req: NextRequest) {
     // Same pattern as the save route added by commit 1b27b5d. Failures here are
     // non-fatal: the DB write already succeeded.
     try {
-      const post = await databases.getDocument(
-        DB_ID,
-        COLLECTIONS.BLOG_POSTS,
-        docId,
-      ) as { slug?: string };
-      if (post.slug) revalidatePath(`/blog/${post.slug}`);
+      const post = (await getDocumentById("blog_posts", docId)) as { slug?: string } | null;
+      if (post?.slug) revalidatePath(`/blog/${post.slug}`);
       revalidatePath("/blog");
       revalidateTag("blog-posts", "default"); // bust the cached /blog listing query immediately
     } catch (e) {

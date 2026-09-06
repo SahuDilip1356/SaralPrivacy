@@ -1,0 +1,35 @@
+{
+  "leads": {
+    "created_at": "created_at_attr"
+  },
+  "subscribers": {
+    "created_at": "created_at_attr"
+  },
+  "assessments": {
+    "created_at": "created_at_attr"
+  },
+  "briefings": {
+    "created_at": "created_at_attr"
+  },
+  "survey_responses": {
+    "created_at": "created_at_attr"
+  },
+  "blogger_accounts": {
+    "created_at": "created_at_attr"
+  },
+  "template_downloads": {
+    "created_at": "created_at_attr"
+  },
+  "outreach_contacts": {
+    "created_at": "created_at_attr"
+  },
+  "email_send_log": {
+    "updated_at": "updated_at_attr"
+  },
+  "notice_captures": {
+    "created_at": "created_at_attr"
+  },
+  "notice_events": {
+    "created_at": "created_at_attr"
+  }
+}

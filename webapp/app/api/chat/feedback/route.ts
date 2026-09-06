@@ -3,7 +3,7 @@
 // redact(). Successful turns store the boolean signal alone.
 
 import { NextRequest, NextResponse } from "next/server";
-import { databases, DB_ID, COLLECTIONS, ID } from "@/lib/appwrite";
+import { insertDocument } from "@/lib/db";
 import { rateLimit, getClientIp } from "@/lib/abuseGuard";
 import { redactText } from "@/lib/chat/redact";
 
@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
   };
 
   try {
-    await databases.createDocument(DB_ID, COLLECTIONS.CHAT_FEEDBACK, ID.unique(), doc);
+    await insertDocument("chat_feedback", doc);
     return NextResponse.json({ stored: true });
   } catch (err) {
     // Missing collection or transient Appwrite failure must never break chat UX.

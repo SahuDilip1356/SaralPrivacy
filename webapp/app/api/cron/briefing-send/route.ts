@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { databases, DB_ID, COLLECTIONS, ID, Query } from "@/lib/appwrite";
+import { insertDocument, updateDocumentById, queryDocuments } from "@/lib/db";
 import { briefingEmailTemplate } from "@/lib/email-templates";
 import { resend } from "@/lib/resendClient";
 import { fetchEligibleSubscribers, buildUnsubscribeUrl } from "@/lib/sendGateway";
@@ -17,17 +17,17 @@ export async function GET(request: NextRequest) {
 
   try {
     // 1. Find the most recent approved briefing
-    const approvedRes = await databases.listDocuments(DB_ID, COLLECTIONS.BRIEFINGS, [
-      Query.equal("status", "approved"),
-      Query.orderDesc("scheduled_for"),
-      Query.limit(1),
-    ]);
+    const approvedRes = await queryDocuments("briefings", {
+      where: [{ field: "status", value: "approved" }],
+      orderBy: { field: "scheduled_for", dir: "desc" },
+      limit: 1,
+    });
 
-    if (!approvedRes.documents.length) {
+    if (!approvedRes.docs.length) {
       return NextResponse.json({ error: "No approved briefing found. Approve a briefing first." }, { status: 404 });
     }
 
-    const briefing = approvedRes.documents[0];
+    const briefing = approvedRes.docs[0] as Record<string, any> & { id: string };
 
     const briefingPayload: BriefingData = {
       id:               briefing.$id,
@@ -80,7 +80,7 @@ export async function GET(request: NextRequest) {
         continue;
       }
 
-      databases.createDocument(DB_ID, COLLECTIONS.EMAIL_SEND_LOG, ID.unique(), {
+      insertDocument("email_send_log", {
         recipient_email:   email,
         email_type:        (sub.frequency as string) === "weekly" ? "briefing_weekly" : "briefing_daily",
         resend_message_id: data.id,
@@ -95,7 +95,7 @@ export async function GET(request: NextRequest) {
     }
 
     // 4. Mark briefing as sent
-    await databases.updateDocument(DB_ID, COLLECTIONS.BRIEFINGS, briefing.$id, {
+    await updateDocumentById("briefings", briefing.id, {
       status:           "sent",
       sent_at:          nowISO,
       subscriber_count: sent,

@@ -6,7 +6,7 @@
 // Any failure (missing env, network, schema drift) degrades to null; the
 // turn proceeds on the static index alone.
 
-import { databases, DB_ID, COLLECTIONS, Query } from "../appwrite";
+import { queryDocuments } from "../db";
 import { tokenize } from "./retrieve.ts";
 
 export const FRESH_INTENT_RE =
@@ -29,13 +29,12 @@ function pick(doc: Record<string, unknown>, keys: string[]): string {
 /** Best-effort fetch of recent briefings matching the question. Null on any failure. */
 export async function fetchLiveBriefings(query: string, limit = 3): Promise<LiveBriefing[] | null> {
   try {
-    if (!DB_ID) return null;
-    const res = await databases.listDocuments(DB_ID, COLLECTIONS.BRIEFINGS, [
-      Query.orderDesc("$createdAt"),
-      Query.limit(25),
-    ]);
+    const res = await queryDocuments("briefings", {
+      orderBy: { field: "$createdAt", dir: "desc" },
+      limit: 25,
+    });
     const qTokens = new Set(tokenize(query));
-    const scored = res.documents
+    const scored = res.docs
       .map((doc) => {
         const d = doc as unknown as Record<string, unknown>;
         const title = pick(d, ["title", "headline"]);

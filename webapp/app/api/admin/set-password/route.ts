@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
+import { queryDocuments, updateDocumentById } from "@/lib/db";
+
 
 // POST /api/admin/set-password — validate invite token and activate blogger account
 export async function POST(req: NextRequest) {
@@ -16,15 +17,15 @@ export async function POST(req: NextRequest) {
   const normalised = email.trim().toLowerCase();
 
   try {
-    const result = await databases.listDocuments(DB_ID, COLLECTIONS.BLOGGER_ACCOUNTS, [
-      Query.equal("email", normalised),
-    ]);
+    const result = await queryDocuments("blogger_accounts", {
+      where: [{ field: "email", value: normalised }],
+    });
 
     if (result.total === 0) {
       return NextResponse.json({ error: "Invalid invite link." }, { status: 404 });
     }
 
-    const doc = result.documents[0];
+    const doc = result.docs[0] as Record<string, any> & { id: string };
 
     // Validate token
     if (!doc.invite_token || doc.invite_token !== token) {
@@ -41,7 +42,7 @@ export async function POST(req: NextRequest) {
 
     // Hash and save password — activate account
     const password_hash = await bcrypt.hash(password, 12);
-    await databases.updateDocument(DB_ID, COLLECTIONS.BLOGGER_ACCOUNTS, doc.$id, {
+    await updateDocumentById("blogger_accounts", doc.id, {
       password_hash,
       active:        true,
       invite_token:  "",

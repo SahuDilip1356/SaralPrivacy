@@ -19,7 +19,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 
-import { databases, DB_ID, COLLECTIONS, ID } from "@/lib/appwrite";
+import { insertDocument } from "@/lib/db";
 import { getClientIp, rateLimit, isHoneypotTripped } from "@/lib/abuseGuard";
 import { sendConsultationAlert } from "@/lib/email";
 import { PRIVACY_NOTICE_VERSION } from "@/lib/utils";
@@ -120,7 +120,7 @@ export async function POST(request: NextRequest) {
   };
 
   try {
-    await databases.createDocument(DB_ID, COLLECTIONS.LEADS, ID.unique(), leadData);
+    await insertDocument("leads", leadData);
   } catch (err) {
     console.error("setu handoff lead write failed:", (err as Error).message);
     return NextResponse.json(
@@ -132,8 +132,7 @@ export async function POST(request: NextRequest) {
   // Consent record. Non-blocking: the lead is already safe, and losing the log
   // row must not cost the user their callback — but it is logged loudly
   // because it is the record that matters if anyone ever asks.
-  databases
-    .createDocument(DB_ID, COLLECTIONS.CONSENT_LOG, ID.unique(), {
+  insertDocument("consent_log", {
       email: valid.contact.email,
       name: valid.contact.name,
       source: "setu_handoff",

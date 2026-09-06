@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { databases, DB_ID, COLLECTIONS, ID } from '@/lib/appwrite'
+import { insertDocument } from '@/lib/db'
 import { runAeoPanel, summarizeRun } from '@/lib/aeo/runner'
 import { requireRole } from '@/lib/adminSession'
 
@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
 
     const persistResults = await Promise.allSettled(
       results.map((r) =>
-        databases.createDocument(DB_ID, COLLECTIONS.AI_CITATIONS, ID.unique(), {
+        insertDocument("ai_citations", {
           run_id:          r.runId,
           date:            r.date,
           week_num:        r.weekNum,

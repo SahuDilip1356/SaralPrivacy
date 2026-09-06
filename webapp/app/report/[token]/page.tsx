@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
+import { findOneBy } from "@/lib/db";
 import { QUESTIONS } from "@/lib/data/dpdpa-assessment";
 import TemplateGateModal, { type TemplateItem } from "@/components/TemplateGateModal";
 import {
@@ -265,11 +265,7 @@ export default async function ReportPage({ params }: { params: Promise<{ token: 
   // Fetch assessment by report_token
   let doc: Record<string, unknown> | null = null;
   try {
-    const res = await databases.listDocuments(DB_ID, COLLECTIONS.ASSESSMENTS, [
-      Query.equal("report_token", [token]),
-      Query.limit(1),
-    ]);
-    doc = (res.documents[0] as Record<string, unknown>) ?? null;
+    doc = await findOneBy("assessments", "report_token", token);
   } catch {
     notFound();
   }

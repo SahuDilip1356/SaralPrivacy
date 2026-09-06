@@ -1,4 +1,4 @@
-import { databases, DB_ID, COLLECTIONS, Query } from '@/lib/appwrite'
+import { queryDocuments } from '@/lib/db'
 import RunButton from './RunButton'
 
 export const dynamic     = 'force-dynamic'
@@ -25,11 +25,11 @@ interface CitationRow {
 
 async function fetchRecent(): Promise<CitationRow[]> {
   try {
-    const result = await databases.listDocuments(DB_ID, COLLECTIONS.AI_CITATIONS, [
-      Query.orderDesc('$createdAt'),
-      Query.limit(500),
-    ])
-    return result.documents as unknown as CitationRow[]
+    const result = await queryDocuments('ai_citations', {
+      orderBy: { field: '$createdAt', dir: 'desc' },
+      limit: 500,
+    })
+    return result.docs as unknown as CitationRow[]
   } catch {
     return []
   }

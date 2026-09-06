@@ -16,7 +16,7 @@
  * (compliance — they're in sent mail forever) but are rate-limited.
  */
 
-import { databases, DB_ID, COLLECTIONS, Query } from "./appwrite";
+import { listPage } from "./db";
 
 export const SUPPRESSED_STATUSES = ["unsubscribed", "bounced", "complained"];
 
@@ -38,25 +38,23 @@ export async function fetchEligibleSubscribers(): Promise<EligibleSubscriber[]> 
   let cursor: string | undefined;
 
   for (let page = 0; page < MAX_PAGES; page++) {
-    const q = [Query.limit(PAGE_SIZE)];
-    if (cursor) q.push(Query.cursorAfter(cursor));
-    const res = await databases.listDocuments(DB_ID, COLLECTIONS.SUBSCRIBERS, q);
+    const docs = await listPage("subscribers", { limit: PAGE_SIZE, after: cursor });
 
-    for (const doc of res.documents) {
+    for (const doc of docs) {
       const email = String(doc.email || "").trim().toLowerCase();
       if (!email || seen.has(email)) continue;
       if (SUPPRESSED_STATUSES.includes(doc.status as string)) continue;
       seen.add(email);
       eligible.push({
-        $id: doc.$id,
+        $id: doc.id,
         email,
         name: (doc.name as string) || "",
         frequency: (doc.frequency as string) || "daily",
       });
     }
 
-    if (res.documents.length < PAGE_SIZE) return eligible;
-    cursor = res.documents[res.documents.length - 1].$id;
+    if (docs.length < PAGE_SIZE) return eligible;
+    cursor = docs[docs.length - 1].id;
   }
 
   console.error(

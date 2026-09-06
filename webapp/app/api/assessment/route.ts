@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { randomUUID } from "crypto";
 import { PRIVACY_NOTICE_VERSION } from "@/lib/utils";
-import { databases, DB_ID, COLLECTIONS, ID } from "@/lib/appwrite";
+import { insertDocument, updateDocumentById } from "@/lib/db";
 import { sendAssessmentAlert, sendSurveyResultEmail } from "@/lib/email";
 import { upsertSubscriber } from "@/lib/subscribers";
 import { QUESTIONS } from "@/lib/data/dpdpa-assessment";
@@ -125,11 +125,11 @@ export async function POST(request: NextRequest) {
       category_scores_json:    JSON.stringify(result?.categoryScores ?? {}),
     };
 
-    const doc = await databases.createDocument(DB_ID, COLLECTIONS.ASSESSMENTS, ID.unique(), assessmentData);
+    const assessmentDocId = await insertDocument("assessments", assessmentData);
 
     // Write consent log entry
     const timestamp = new Date().toISOString();
-    databases.createDocument(DB_ID, COLLECTIONS.CONSENT_LOG, ID.unique(), {
+    insertDocument("consent_log", {
       email,
       source:          "assessment",
       consent_type:    "data_processing",
@@ -205,7 +205,7 @@ export async function POST(request: NextRequest) {
                          : undefined,
         });
         if (emailResult.success) {
-          databases.updateDocument(DB_ID, COLLECTIONS.ASSESSMENTS, doc.$id, {
+          updateDocumentById("assessments", assessmentDocId, {
             email_sent_at: new Date().toISOString(),
             email_sent_by: "auto",
           }).catch((err) => console.error("Failed to record auto email_sent_at:", err));

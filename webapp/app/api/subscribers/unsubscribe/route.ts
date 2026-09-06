@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
+import { findOneByEmail, updateDocumentById } from "@/lib/db";
 import { verifyUnsubscribeSig } from "@/lib/sendGateway";
 import { getClientIp, rateLimit } from "@/lib/abuseGuard";
 
@@ -25,12 +25,9 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const res = await databases.listDocuments(DB_ID, COLLECTIONS.SUBSCRIBERS, [
-      Query.equal("email", normalised),
-      Query.limit(1),
-    ]);
+    const existing = await findOneByEmail("subscribers", normalised);
 
-    if (!res.documents.length) {
+    if (!existing) {
       // Not found — still return success so the page shows a clean state
       return NextResponse.json({ success: true, already_removed: true });
     }
@@ -39,7 +36,7 @@ export async function POST(request: NextRequest) {
     // lib/suppression.ts) and stamp WHEN consent was withdrawn. We keep the row
     // as a suppression record so a later re-import can't re-contact them; full
     // deletion is available on request via the erasure right (/rights).
-    await databases.updateDocument(DB_ID, COLLECTIONS.SUBSCRIBERS, res.documents[0].$id, {
+    await updateDocumentById("subscribers", existing.id, {
       status: "unsubscribed",
       unsubscribed_at: new Date().toISOString(),
     });

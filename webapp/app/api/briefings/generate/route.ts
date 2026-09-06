@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { databases, DB_ID, COLLECTIONS, ID, Query } from "@/lib/appwrite";
+import { insertDocument, deleteDocumentById, queryDocuments } from "@/lib/db";
 import { sendBriefingApprovalEmail } from "@/lib/email";
 
 // ─── Daily DPDPA topic rotation ───────────────────────────────────────────────
@@ -261,18 +261,16 @@ async function generateAndSave(request: NextRequest) {
     created_at:       new Date().toISOString(),
   };
 
-  const doc = await databases.createDocument(
-    DB_ID, COLLECTIONS.BRIEFINGS, ID.unique(), briefingData
-  );
+  const briefingDocId = await insertDocument("briefings", briefingData);
 
   // Push to GitHub (non-blocking)
-  pushToGitHub(generatedSlug, { ...briefingData, id: doc.$id }).catch(console.error);
+  pushToGitHub(generatedSlug, { ...briefingData, id: briefingDocId }).catch(console.error);
 
   // Email approval link to admin
-  await sendBriefingApprovalEmail({ ...briefingData, id: doc.$id }, approvalToken)
+  await sendBriefingApprovalEmail({ ...briefingData, id: briefingDocId }, approvalToken)
     .catch(console.error);
 
-  return NextResponse.json({ success: true, briefingId: doc.$id, slug: generatedSlug, topic });
+  return NextResponse.json({ success: true, briefingId: briefingDocId, slug: generatedSlug, topic });
 }
 
 // ─── Routes ───────────────────────────────────────────────────────────────────
@@ -326,18 +324,18 @@ export async function POST(request: NextRequest) {
     // Duplicate guard: if a draft with this slug already exists, delete it first
     // (prevents duplicates if the pipeline retries a same-day submission)
     try {
-      const existing = await databases.listDocuments(DB_ID, COLLECTIONS.BRIEFINGS, [
-        Query.equal("slug", slug),
-        Query.equal("status", "draft"),
-        Query.limit(5),
-      ]);
-      if (existing.documents.length > 0) {
+      const existing = await queryDocuments("briefings", {
+        where: [
+          { field: "slug", value: slug },
+          { field: "status", value: "draft" },
+        ],
+        limit: 5,
+      });
+      if (existing.docs.length > 0) {
         await Promise.all(
-          existing.documents.map((d) =>
-            databases.deleteDocument(DB_ID, COLLECTIONS.BRIEFINGS, d.$id)
-          )
+          existing.docs.map((d) => deleteDocumentById("briefings", d.id))
         );
-        console.log(`[briefing] Deleted ${existing.documents.length} existing draft(s) for slug: ${slug}`);
+        console.log(`[briefing] Deleted ${existing.docs.length} existing draft(s) for slug: ${slug}`);
       }
     } catch { /* non-blocking */ }
 
@@ -395,14 +393,12 @@ export async function POST(request: NextRequest) {
       // by publish_to_webapp.py. The briefing detail page unpacks them via parseWhyField().
     };
 
-    const doc = await databases.createDocument(
-      DB_ID, COLLECTIONS.BRIEFINGS, ID.unique(), briefingData
-    );
+    const briefingDocId = await insertDocument("briefings", briefingData);
 
     // Admin approval dropped — briefing is live on site immediately (status: approved).
     // Email delivery to subscribers is handled by the n8n pipeline (send_email.py).
 
-    return NextResponse.json({ success: true, briefingId: doc.$id, slug });
+    return NextResponse.json({ success: true, briefingId: briefingDocId, slug });
   } catch (error) {
     console.error("Briefing generate error:", error);
     return NextResponse.json({ error: "Failed to generate briefing." }, { status: 500 });

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
+import { findOneBy, updateDocumentById } from "@/lib/db";
 
 export async function POST(request: NextRequest) {
   try {
@@ -8,22 +8,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Invalid token." }, { status: 400 });
     }
 
-    const res = await databases.listDocuments(DB_ID, COLLECTIONS.OUTREACH_CONTACTS, [
-      Query.equal("magic_token", token),
-      Query.limit(1),
-    ]);
+    const contact = await findOneBy("outreach_contacts", "magic_token", token);
 
-    if (!res.documents.length) {
+    if (!contact) {
       return NextResponse.json({ error: "Link not recognised." }, { status: 404 });
     }
-
-    const contact = res.documents[0];
 
     if (contact.status === "unsubscribed") {
       return NextResponse.json({ success: true, already: true });
     }
 
-    await databases.updateDocument(DB_ID, COLLECTIONS.OUTREACH_CONTACTS, contact.$id, {
+    await updateDocumentById("outreach_contacts", contact.id, {
       status: "unsubscribed",
     });
 
