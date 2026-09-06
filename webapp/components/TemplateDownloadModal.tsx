@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { TemplateDownloadForm } from "@/components/TemplateDownloadForm";
+import { TemplateDownloadForm, StoredContact } from "@/components/TemplateDownloadForm";
 
 interface TemplateDownloadModalProps {
   open: boolean;
@@ -21,7 +21,7 @@ export function TemplateDownloadModal({
   open,
   onOpenChange,
 }: TemplateDownloadModalProps) {
-  const [defaultEmail, setDefaultEmail] = useState("");
+  const [defaultContact, setDefaultContact] = useState<StoredContact | null>(null);
   const [showPrefillBanner, setShowPrefillBanner] = useState(false);
 
   // On open: load any previously saved contact from sessionStorage
@@ -32,9 +32,9 @@ export function TemplateDownloadModal({
     try {
       const stored = sessionStorage.getItem(STORAGE_KEY);
       if (stored) {
-        const contact = JSON.parse(stored);
+        const contact = JSON.parse(stored) as StoredContact;
         if (contact?.email) {
-          setDefaultEmail(contact.email);
+          setDefaultContact(contact);
           setShowPrefillBanner(true);
         }
       }
@@ -65,7 +65,7 @@ export function TemplateDownloadModal({
         )}
 
         <TemplateDownloadForm
-          defaultEmail={defaultEmail}
+          defaultContact={defaultContact}
           onSuccess={handleSuccess}
         />
       </DialogContent>
