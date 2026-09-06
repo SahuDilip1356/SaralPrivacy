@@ -1,10 +1,43 @@
 # Handoff — SEO & Trust work stream
 
-**Written:** end of the SEO audit + defect-repair session, 2026-07-27.
-**Prod `main` = `f88e5c0`** (was `0fa31c1` at session start — 8 commits landed).
+**Written:** end of the SEO audit + defect-repair session, 2026-07-27. §0 added 2026-09-06.
+**Prod `main` = `f88e5c0`** (was `0fa31c1` at session start — 8 commits landed). *As of 2026-09-06 prod `main` = `1057af6`.*
 
 > **To start the next session, one line does it:**
-> *"Read HANDOFF_SEO.md at the repo root and pick up Stream A."*
+> *"Read HANDOFF_SEO.md at the repo root — §0 first, then the 2026-07-31 GSC baseline in memory `seo-cycle-2-plan`."*
+
+---
+
+## 0. 2026-09-06 — the GSC watcher exists; the 7 Aug check is still owed a key
+
+**This thread owns all SEO work.** Not migration clocks, P3 auth, multilingual or PWA — those stay in the main thread.
+
+**Built (branch `claude/seo-observability-agent-ff07c0`, PR pending, no app code touched):** `webapp/tools/seo/` —
+the Search Console watcher. Watchlist (the 17 never-crawled commercial URLs, request ledger 31 Jul / 1 Aug) +
+sitemap newcomers → URL Inspection API per URL → dated JSON report (+ `ops.seo_runs` / `ops.seo_inspections`,
+migration `0005`, **not yet applied**) → diff vs the previous run → verdict per the pre-agreed tree
+(`QUEUE_MOVED` / `STARVED` / `TOO_EARLY`) → ≤10-URL Request-Indexing shortlist that never repeats a ledger URL.
+Weekly Action `.github/workflows/seo-inspect.yml` (Mondays 09:30 IST + manual dispatch, optional sitemap resubmit).
+No new dependency — plain REST + a `node:crypto` service-account JWT. 12 unit tests green; `--dry-run` walks the whole path.
+Boundary is settled: the "Request Indexing" button has no API and the GSC UI is never puppeted.
+
+**Gate — Dilip's one-time setup (≈10 min, steps in `webapp/tools/seo/README.md`):** enable the Search Console API
+on the GCP project → service-account JSON key (the daily-briefing Sheets account can be reused; the Action already
+reads `GOOGLE_CREDENTIALS_JSON`) → add the account's email as **Full** user on the **URL-prefix** property
+`https://saralprivacy.com/` → save the key as `webapp/.gsc-service-account.json` (gitignored — never in chat or a commit).
+
+**First real run:** `cd webapp && node --experimental-strip-types tools/seo/inspect.ts --scope full`
+(≈241 inspections of the 2,000/day quota). The verdict fires the tree — do not re-debate it — then record the dated
+result here and in memory `seo-cycle-2-plan`. The same run exports "Crawled – currently not indexed" and tests the
+hypothesis that it is the briefings.
+
+**Standing state carried forward (settled, never re-litigate):** C2 soft-404 closed · dual-title theory dead
+(B1 = CTR-only ellipsis fix) · 12 `noindex` quizzes by design · www cert fixed 08-01 (⛔ never switch nameservers to
+Vercel — Hostinger holds SPF; optional: make www 308 to apex) · briefing meta descriptions too SHORT (90-char cap in
+`tools/generate_content.py`), statics too long — two populations, two fixes · Stream C gated on n≥30/sector
+(52 assessments total on 2026-09-06 — not there) · B4 templates hub: 17 assets, 0 indexable pages · B2's 4-week
+gate expired 28 Aug — decision is ripe · `ANALYTICS_BASELINE.md` (PR #27, still open on 2026-09-06) proved Gate 3
+is a traffic problem, which is why this watcher is strategic, not hygiene.
 
 ⚠️ **Not to be confused with `handoff.md`** (one directory ABOVE the git root, at
 `DPDPA Daily Brief/handoff.md`). That is the **Data Flow Map #5** handoff — a different
