@@ -1,6 +1,6 @@
 # P3 AUTH SPEC — Supabase Auth + TOTP MFA for the admin surface
 
-**Status:** eng-reviewed (this document is the `/plan-eng-review` output) — build in progress
+**Status:** BUILT 2026-09-06 — unit 10/10, build green, RLS test passes live, preview smoke 7/7 (PR #30). Awaiting Dilip's preview E2E (§9), then the merge sequence (§7 rows 5–6). Migrations 0005/0006 are already applied to the live project.
 **Branch:** `claude/supabase-auth-totp-mfa-891f76` (cut from `main` @ `1057af6`)
 **Goal (Blueprint P3):** the shared env password disappears. Every admin-surface login is an
 individual Supabase Auth user (email + password) **plus a verified TOTP factor (aal2)**.
@@ -172,6 +172,31 @@ bytes), `EMAIL_LINK_SECRET` (32 random bytes) on Preview first; Production at me
 | 5 | Preview env (3 secrets) → push → preview → Dilip E2E | 1 | Dilip's confirmation |
 | 6 | Merge → Production env → redeploy → verify → delete `ADMIN_PASSWORD`/`BLOGGER_*` → redeploy → verify | 1 | login works on prod with the var gone |
 | | **Total** | **~10.5** | |
+
+## 9. First-admin bootstrap (Dilip, on the preview)
+
+The service-role key is a *sensitive* Vercel var (pulls as empty), so provisioning can't run from a
+worktree without the key from the Supabase dashboard. Two equivalent paths — pick one:
+
+**A. Dashboard (no key handling, recommended for the first admin)**
+1. Supabase → Authentication → Users → *Add user* → *Create new user*: your email, a password you
+   choose, **Auto Confirm User = on**.
+2. Stamp the role (SQL editor, or ask the session to run it):
+   ```sql
+   update auth.users set raw_app_meta_data = coalesce(raw_app_meta_data,'{}'::jsonb) || '{"role":"admin"}'
+   where lower(email) = 'dilip.sahu@gmail.com';
+   ```
+3. Open the preview alias `/admin/login` → password → scan QR → code → dashboard.
+
+**B. Tool (emails you an invite link; needs the key locally)**
+```bash
+set -a; . ./.env.local; set +a   # must contain SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY
+NEXT_PUBLIC_SITE_URL=https://<preview-alias> node --import ./scripts/ts-resolve.mjs --experimental-strip-types \
+  tools/auth/provision.ts --email dilip.sahu@gmail.com --role admin --name "Dilip Sahu"
+```
+The link follows the project's OTP expiry (default 1 h); re-running sends a fresh *recovery* link.
+The blogger (`saralprivacy@gmail.com`, `--role blogger`) goes the same way — after that the bcrypt
+row in `ops.blogger_accounts` is dead weight (dropped at Contract).
 
 ## 8. Out of scope (explicit)
 Recovery codes (Supabase has none — a second TOTP factor is the documented backup; add "manage factors" UI in P5) · social login · Supabase JWT as the app session · per-user audit log table (the `u` claim is the hook for it) · branch-DB CI.
