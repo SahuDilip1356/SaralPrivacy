@@ -1,33 +1,25 @@
+/**
+ * POST /api/admin/login — step 1 of the admin login (Blueprint P3).
+ *
+ * Password check is delegated to Supabase Auth. A successful password is NOT
+ * a session: it yields an aal1 Supabase token parked in a 10-minute, path-
+ * scoped cookie, and the caller is told whether to enroll a TOTP factor or
+ * verify one. The admin_session cookie is only ever minted by
+ * /api/admin/mfa/verify after Supabase reports aal2.
+ */
 import { NextRequest, NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
-import { timingSafeEqual } from "crypto";
 
-import { queryDocuments } from "@/lib/db";
-import { createAdminSessionToken, ADMIN_SESSION_MAX_AGE } from "@/lib/adminSession";
+import {
+  anonClient, roleOf, nextStep, revokeSession, AuthNotConfiguredError,
+} from "@/lib/auth/supabaseAuth";
+import {
+  PENDING_COOKIE, PENDING_COOKIE_PATH, PENDING_MAX_AGE, encodePending,
+} from "@/lib/auth/pending";
+import { ADMIN_SESSION_COOKIE } from "@/lib/adminSession";
 import { getClientIp, rateLimit } from "@/lib/abuseGuard";
-
-const ADMIN_EMAIL    = (process.env.ADMIN_EMAIL    || "dilip.sahu@gmail.com").trim().toLowerCase();
-const ADMIN_PASSWORD = (process.env.ADMIN_PASSWORD || "").trim();
+import { findOneByEmail } from "@/lib/db";
 
 const IS_PROD = process.env.NODE_ENV === "production";
-
-function makeCookie(sessionValue: string): string {
-  return [
-    `admin_session=${sessionValue}`,
-    "HttpOnly",
-    "SameSite=Lax",
-    `Max-Age=${ADMIN_SESSION_MAX_AGE}`,
-    "Path=/",
-    IS_PROD ? "Secure" : "",
-  ].filter(Boolean).join("; ");
-}
-
-// Constant-time compare; length is padded so mismatched lengths don't leak timing.
-function safeEqual(a: string, b: string): boolean {
-  const bufA = Buffer.from(a.padEnd(256, "\0"));
-  const bufB = Buffer.from(b.padEnd(256, "\0"));
-  return bufA.length === bufB.length && timingSafeEqual(bufA, bufB) && a.length === b.length;
-}
 
 export async function POST(request: NextRequest) {
   // Login is the brute-force target — throttle it like every other public POST.
@@ -40,71 +32,69 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const { email, password } = await request.json();
-
+  let body: { email?: unknown; password?: unknown };
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Email and password are required." }, { status: 400 });
+  }
+  const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
+  const password = typeof body.password === "string" ? body.password : "";
   if (!email || !password) {
     return NextResponse.json({ error: "Email and password are required." }, { status: 400 });
   }
 
-  const normalised = email.trim().toLowerCase();
-
-  // ── Admin check (env-based) ───────────────────────────────────────────────
-  if (normalised === ADMIN_EMAIL) {
-    if (!ADMIN_PASSWORD || !safeEqual(password, ADMIN_PASSWORD)) {
-      return NextResponse.json({ error: "Invalid credentials." }, { status: 401 });
-    }
-    return new NextResponse(JSON.stringify({ success: true, role: "admin" }), {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-        "Set-Cookie": makeCookie(await createAdminSessionToken("admin")),
-      },
-    });
-  }
-
-  // ── Blogger check (Appwrite collection + bcrypt) ──────────────────────────
+  let client;
   try {
-    const result = await queryDocuments("blogger_accounts", {
-      where: [
-        { field: "email", value: normalised },
-        { field: "active", value: true },
-      ],
-    });
-
-    if (result.total > 0) {
-      const blogger = result.docs[0] as Record<string, any>;
-      const match   = blogger.password_hash
-        ? await bcrypt.compare(password, blogger.password_hash)
-        : false;
-
-      if (match) {
-        return new NextResponse(
-          JSON.stringify({ success: true, role: "blogger", name: blogger.name }),
-          {
-            status: 200,
-            headers: {
-              "Content-Type": "application/json",
-              "Set-Cookie": makeCookie(await createAdminSessionToken("blogger", blogger.name)),
-            },
-          }
-        );
-      }
-      // Blogger exists but wrong password — give specific error
-      return NextResponse.json({ error: "Invalid credentials." }, { status: 401 });
-    }
+    client = anonClient();
   } catch (err) {
-    console.error("[login] Blogger lookup failed:", err);
+    if (err instanceof AuthNotConfiguredError) {
+      console.error("[login]", err.message);
+      return NextResponse.json({ error: "Login is not configured." }, { status: 500 });
+    }
+    throw err;
   }
 
-  return NextResponse.json({ error: "Access denied." }, { status: 403 });
+  const { data, error } = await client.auth.signInWithPassword({ email, password });
+  if (error || !data.session || !data.user) {
+    // Same message for unknown email and wrong password — no enumeration.
+    return NextResponse.json({ error: "Invalid credentials." }, { status: 401 });
+  }
+
+  const role = roleOf(data.user);
+  if (!role) {
+    await revokeSession(client);
+    return NextResponse.json({ error: "Access denied." }, { status: 403 });
+  }
+
+  // Bloggers can be revoked from the admin UI (ops.blogger_accounts.active).
+  if (role === "blogger") {
+    const account = await findOneByEmail("blogger_accounts", email).catch(() => null);
+    if (!account || (account as Record<string, unknown>).active !== true) {
+      await revokeSession(client);
+      return NextResponse.json({ error: "Access denied." }, { status: 403 });
+    }
+  }
+
+  const { data: factors } = await client.auth.mfa.listFactors();
+  const step = nextStep(factors);
+
+  const res = NextResponse.json({ success: true, step, role });
+  res.cookies.set(PENDING_COOKIE, encodePending({
+    at: data.session.access_token,
+    rt: data.session.refresh_token,
+  }), {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: IS_PROD,
+    path: PENDING_COOKIE_PATH,
+    maxAge: PENDING_MAX_AGE,
+  });
+  return res;
 }
 
 export async function DELETE() {
-  return new NextResponse(JSON.stringify({ success: true }), {
-    status: 200,
-    headers: {
-      "Content-Type": "application/json",
-      "Set-Cookie": "admin_session=; HttpOnly; SameSite=Lax; Max-Age=0; Path=/",
-    },
-  });
+  const res = NextResponse.json({ success: true });
+  res.cookies.set(ADMIN_SESSION_COOKIE, "", { httpOnly: true, sameSite: "lax", path: "/", maxAge: 0 });
+  return res;
 }

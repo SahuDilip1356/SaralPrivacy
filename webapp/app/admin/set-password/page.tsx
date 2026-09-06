@@ -4,12 +4,21 @@ import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 
+const MIN_PASSWORD = 12;
+
+/**
+ * /admin/set-password?token_hash=…&type=invite|recovery
+ * Completes a Supabase invite (first password) or a password reset. The link
+ * is generated server-side and emailed by us — see lib/auth/adminAuth.ts.
+ */
 function SetPasswordForm() {
   const searchParams = useSearchParams();
   const router       = useRouter();
 
-  const token = searchParams.get("token") || "";
-  const email = searchParams.get("email") || "";
+  const tokenHash = searchParams.get("token_hash") || "";
+  const rawType   = searchParams.get("type") || "invite";
+  const type      = rawType === "recovery" ? "recovery" : "invite";
+  const isReset   = type === "recovery";
 
   const [password,        setPassword]        = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -18,15 +27,15 @@ function SetPasswordForm() {
   const [success,         setSuccess]         = useState(false);
 
   useEffect(() => {
-    if (!token || !email) setError("Invalid invite link. Please contact the admin.");
-  }, [token, email]);
+    if (!tokenHash) setError("Invalid link. Please contact the admin for a new one.");
+  }, [tokenHash]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
 
-    if (password.length < 8) {
-      setError("Password must be at least 8 characters.");
+    if (password.length < MIN_PASSWORD) {
+      setError(`Password must be at least ${MIN_PASSWORD} characters.`);
       return;
     }
     if (password !== confirmPassword) {
@@ -39,7 +48,7 @@ function SetPasswordForm() {
       const res = await fetch("/api/admin/set-password", {
         method:  "POST",
         headers: { "Content-Type": "application/json" },
-        body:    JSON.stringify({ email, token, password }),
+        body:    JSON.stringify({ token_hash: tokenHash, type, password }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -63,8 +72,12 @@ function SetPasswordForm() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h2 className="text-xl font-semibold text-slate-800 mb-2">Account activated!</h2>
-        <p className="text-sm text-slate-500">Redirecting you to the login page…</p>
+        <h2 className="text-xl font-semibold text-slate-800 mb-2">
+          {isReset ? "Password updated" : "Account activated!"}
+        </h2>
+        <p className="text-sm text-slate-500">
+          Redirecting you to sign in{isReset ? "" : " — you'll set up your verification app there"}…
+        </p>
       </div>
     );
   }
@@ -72,10 +85,13 @@ function SetPasswordForm() {
   return (
     <>
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-slate-800">Set your password</h1>
+        <h1 className="text-2xl font-semibold text-slate-800">
+          {isReset ? "Choose a new password" : "Set your password"}
+        </h1>
         <p className="text-sm text-slate-500 mt-1">
-          You&apos;re setting up your SaralPrivacy contributor account
-          {email && <> for <span className="font-medium text-slate-700">{email}</span></>}.
+          {isReset
+            ? "You're resetting the password for your SaralPrivacy admin account."
+            : "You're setting up your SaralPrivacy account. After this you'll sign in with your password and a code from an authenticator app."}
         </p>
       </div>
 
@@ -92,9 +108,10 @@ function SetPasswordForm() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Minimum 8 characters"
+            placeholder={`Minimum ${MIN_PASSWORD} characters`}
             required
-            minLength={8}
+            minLength={MIN_PASSWORD}
+            autoComplete="new-password"
             className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-navy-500 focus:border-transparent"
           />
         </div>
@@ -107,16 +124,17 @@ function SetPasswordForm() {
             onChange={(e) => setConfirmPassword(e.target.value)}
             placeholder="Re-enter your password"
             required
+            autoComplete="new-password"
             className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-navy-500 focus:border-transparent"
           />
         </div>
 
         <button
           type="submit"
-          disabled={loading || !token || !email}
+          disabled={loading || !tokenHash}
           className="w-full py-2.5 rounded-lg bg-navy-700 text-white text-sm font-semibold hover:bg-navy-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {loading ? "Activating account…" : "Activate My Account"}
+          {loading ? "Saving…" : isReset ? "Update Password" : "Activate My Account"}
         </button>
       </form>
     </>
@@ -134,7 +152,7 @@ export default function SetPasswordPage() {
               Saral<span className="text-saffron-500">Privacy</span>
             </span>
           </Link>
-          <p className="text-xs text-slate-400 mt-1">Blog Contributor Onboarding</p>
+          <p className="text-xs text-slate-400 mt-1">Account Setup</p>
         </div>
 
         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8">

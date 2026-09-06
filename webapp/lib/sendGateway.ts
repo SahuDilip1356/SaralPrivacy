@@ -68,12 +68,12 @@ export async function fetchEligibleSubscribers(): Promise<EligibleSubscriber[]> 
 
 const encoder = new TextEncoder();
 
+// EMAIL_LINK_SECRET only. The ADMIN_PASSWORD-derived fallback left with the
+// password itself (P3). Without the secret, links go out unsigned and the
+// unsubscribe route falls back to its throttled unsigned path — never blocked.
 function getLinkSecret(): string | null {
   const dedicated = (process.env.EMAIL_LINK_SECRET || "").trim();
-  if (dedicated) return dedicated;
-  const derivedFrom = (process.env.ADMIN_PASSWORD || "").trim();
-  if (derivedFrom) return `saralprivacy-email-link-v1:${derivedFrom}`;
-  return null;
+  return dedicated || null;
 }
 
 async function hmacHex(value: string, secret: string): Promise<string> {

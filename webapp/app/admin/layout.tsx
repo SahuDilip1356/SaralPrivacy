@@ -63,14 +63,16 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     <div className="min-h-screen bg-slate-50 flex pt-[96px]">
 
       {/* Sidebar — sticky, stays fixed while content scrolls */}
-      <aside className="w-56 bg-navy-700 shrink-0 hidden lg:flex flex-col sticky top-[96px] h-[calc(100vh-96px)] overflow-y-auto">
-        <div className="px-5 py-5 border-b border-navy-800">
+      {/* Only the nav list scrolls; the header and the Sign Out footer stay pinned
+          so logout is reachable on short viewports (14 nav items overflow ~800px). */}
+      <aside className="w-56 bg-navy-700 shrink-0 hidden lg:flex flex-col sticky top-[96px] h-[calc(100vh-96px)] overflow-hidden">
+        <div className="px-5 py-5 border-b border-navy-800 shrink-0">
           <div className="font-bold text-white text-base">Saral<span className="text-green-400">Privacy</span></div>
           <div className="text-slate-400 text-xs mt-0.5">
             {isBlogger ? "Blog Contributor" : "Admin Dashboard"}
           </div>
         </div>
-        <nav className="flex-1 px-3 py-4 space-y-0.5">
+        <nav className="flex-1 min-h-0 overflow-y-auto px-3 py-4 space-y-0.5">
           {visibleNav.map((item) => (
             <Link
               key={item.label}
@@ -82,7 +84,10 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             </Link>
           ))}
         </nav>
-        <div className="px-5 py-4 border-t border-navy-800 space-y-2">
+        <div className="px-5 py-4 border-t border-navy-800 space-y-2 shrink-0">
+          {session.name && (
+            <div className="text-xs text-slate-400 truncate" title={session.name}>{session.name}</div>
+          )}
           <Link href="/" className="text-xs text-slate-400 hover:text-white block transition-colors">← View Site</Link>
           <form action={async () => {
             "use server";
