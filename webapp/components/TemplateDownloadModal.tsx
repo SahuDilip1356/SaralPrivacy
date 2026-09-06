@@ -8,38 +8,29 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { TemplateDownloadForm, StoredContact } from "@/components/TemplateDownloadForm";
+import { TemplateDownloadForm } from "@/components/TemplateDownloadForm";
+import { SavedContact, loadSavedContact } from "@/lib/templates/contact-storage";
 
 interface TemplateDownloadModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-const STORAGE_KEY = "saral_template_contact";
-
 export function TemplateDownloadModal({
   open,
   onOpenChange,
 }: TemplateDownloadModalProps) {
-  const [defaultContact, setDefaultContact] = useState<StoredContact | null>(null);
+  const [defaultContact, setDefaultContact] = useState<SavedContact | null>(null);
   const [showPrefillBanner, setShowPrefillBanner] = useState(false);
 
-  // On open: load any previously saved contact from sessionStorage
+  // On open: load any previously saved contact (shared with the /resources
+  // gate — completing either surface fills the other)
   useEffect(() => {
     if (!open) return;
-    if (typeof window === "undefined") return;
-
-    try {
-      const stored = sessionStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        const contact = JSON.parse(stored) as StoredContact;
-        if (contact?.email) {
-          setDefaultContact(contact);
-          setShowPrefillBanner(true);
-        }
-      }
-    } catch {
-      // Corrupt storage — ignore
+    const contact = loadSavedContact();
+    if (contact) {
+      setDefaultContact(contact);
+      setShowPrefillBanner(true);
     }
   }, [open]);
 

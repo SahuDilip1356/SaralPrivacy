@@ -29,22 +29,15 @@ import {
   templateOptions,
 } from "@/lib/templates/validation";
 import { Loader2, Download, MessageCircle } from "lucide-react";
-
-const STORAGE_KEY = "saral_template_contact";
-
-/** Contact fields persisted after a successful download, restored on the
- *  next open so a repeat visitor only picks a template. Consent is never
- *  part of this — each submission re-asks with unchecked boxes. */
-export interface StoredContact {
-  email?: string;
-  contactPersonName?: string;
-  businessName?: string;
-  phoneNumber?: string;
-}
+import {
+  SavedContact,
+  saveContact,
+  markTemplatesUnlocked,
+} from "@/lib/templates/contact-storage";
 
 interface TemplateDownloadFormProps {
   onSuccess?: () => void;
-  defaultContact?: StoredContact | null;
+  defaultContact?: SavedContact | null;
 }
 
 export function TemplateDownloadForm({
@@ -106,18 +99,16 @@ export function TemplateDownloadForm({
         throw new Error(data.message || "Failed to send template");
       }
 
-      // Persist contact for next download (pre-fill)
-      if (typeof window !== "undefined") {
-        sessionStorage.setItem(
-          STORAGE_KEY,
-          JSON.stringify({
-            email:             values.email,
-            contactPersonName: values.contactPersonName,
-            businessName:      values.businessName,
-            phoneNumber:       values.phoneNumber,
-          })
-        );
-      }
+      // Persist contact for next download (pre-fill on both surfaces) and
+      // unlock the /resources instant downloads — the lead is captured, so
+      // the gate there has nothing left to ask.
+      saveContact({
+        email:             values.email,
+        contactPersonName: values.contactPersonName,
+        businessName:      values.businessName,
+        phoneNumber:       values.phoneNumber,
+      });
+      markTemplatesUnlocked();
 
       setSuccessState({
         templateName: templateNames[values.templateSelected],
