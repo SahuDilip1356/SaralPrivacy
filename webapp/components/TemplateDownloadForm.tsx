@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/Button";
@@ -29,17 +29,20 @@ import {
   templateOptions,
 } from "@/lib/templates/validation";
 import { Loader2, Download, MessageCircle } from "lucide-react";
-
-const STORAGE_KEY = "saral_template_contact";
+import {
+  SavedContact,
+  saveContact,
+  markTemplatesUnlocked,
+} from "@/lib/templates/contact-storage";
 
 interface TemplateDownloadFormProps {
   onSuccess?: () => void;
-  defaultEmail?: string;
+  defaultContact?: SavedContact | null;
 }
 
 export function TemplateDownloadForm({
   onSuccess,
-  defaultEmail = "",
+  defaultContact = null,
 }: TemplateDownloadFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -51,15 +54,33 @@ export function TemplateDownloadForm({
   const form = useForm<TemplateDownloadFormData>({
     resolver: zodResolver(TemplateDownloadFormSchema),
     defaultValues: {
-      email:             defaultEmail,
-      contactPersonName: "",
-      businessName:      "",
+      email:             defaultContact?.email || "",
+      contactPersonName: defaultContact?.contactPersonName || "",
+      businessName:      defaultContact?.businessName || "",
       templateSelected:  undefined,
-      phoneNumber:       "+91",
+      phoneNumber:       defaultContact?.phoneNumber || "+91",
       consentContact:    false,
       consentBriefings:  false,
     },
   });
+
+  // The modal reads sessionStorage in an effect, so the stored contact can
+  // arrive after this form has mounted with empty defaults — re-seed the
+  // untouched form when it does. Template choice and consents stay fresh.
+  useEffect(() => {
+    if (!defaultContact?.email) return;
+    if (form.formState.isDirty) return;
+    form.reset({
+      email:             defaultContact.email || "",
+      contactPersonName: defaultContact.contactPersonName || "",
+      businessName:      defaultContact.businessName || "",
+      templateSelected:  undefined,
+      phoneNumber:       defaultContact.phoneNumber || "+91",
+      consentContact:    false,
+      consentBriefings:  false,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [defaultContact]);
 
   async function onSubmit(values: TemplateDownloadFormData) {
     setIsLoading(true);
@@ -78,18 +99,16 @@ export function TemplateDownloadForm({
         throw new Error(data.message || "Failed to send template");
       }
 
-      // Persist contact for next download (pre-fill)
-      if (typeof window !== "undefined") {
-        sessionStorage.setItem(
-          STORAGE_KEY,
-          JSON.stringify({
-            email:             values.email,
-            contactPersonName: values.contactPersonName,
-            businessName:      values.businessName,
-            phoneNumber:       values.phoneNumber,
-          })
-        );
-      }
+      // Persist contact for next download (pre-fill on both surfaces) and
+      // unlock the /resources instant downloads — the lead is captured, so
+      // the gate there has nothing left to ask.
+      saveContact({
+        email:             values.email,
+        contactPersonName: values.contactPersonName,
+        businessName:      values.businessName,
+        phoneNumber:       values.phoneNumber,
+      });
+      markTemplatesUnlocked();
 
       setSuccessState({
         templateName: templateNames[values.templateSelected],

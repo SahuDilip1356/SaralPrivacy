@@ -1005,13 +1005,29 @@ export interface BloggerInviteData {
   name: string;
   email: string;
   inviteUrl: string;
+  /** P3: the same template serves admin provisioning and password resets. */
+  role?: "admin" | "blogger";
+  kind?: "invite" | "recovery";
+  /** Supabase link validity as shown to the reader (project OTP expiry; default 1 hour). */
+  validFor?: string;
 }
 
 export function bloggerInviteTemplate(data: BloggerInviteData): { subject: string; html: string } {
-  const subject = `You've been invited to contribute to SaralPrivacy Insights`;
-  const html = baseLayout(`
-    <h2 style="margin:0 0 8px;font-size:22px;font-weight:700;color:#1E3A5F;">Welcome, ${escapeHtml(data.name)}!</h2>
-    <p style="margin:0 0 20px;font-size:15px;color:#718096;">You have been invited to contribute expert insights to <strong>SaralPrivacy</strong> — India's DPDPA compliance platform.</p>
+  const isReset = data.kind === "recovery";
+  const isAdmin = data.role === "admin";
+  const validFor = data.validFor ?? "1 hour";
+
+  const subject = isReset
+    ? `Reset your SaralPrivacy admin password`
+    : isAdmin
+      ? `Set up your SaralPrivacy admin account`
+      : `You've been invited to contribute to SaralPrivacy Insights`;
+
+  const intro = isReset
+    ? `<p style="margin:0 0 20px;font-size:15px;color:#718096;">We received a request to reset the password for your <strong>SaralPrivacy</strong> admin account. If you didn't ask for this, ignore this email — nothing changes.</p>`
+    : isAdmin
+      ? `<p style="margin:0 0 20px;font-size:15px;color:#718096;">Your <strong>SaralPrivacy</strong> admin account is ready. Set a password now; on your first sign-in you'll also set up an authenticator app (two-step verification).</p>`
+      : `<p style="margin:0 0 20px;font-size:15px;color:#718096;">You have been invited to contribute expert insights to <strong>SaralPrivacy</strong> — India's DPDPA compliance platform.</p>
 
     <p style="margin:0 0 16px;font-size:14px;color:#2D3748;">As a <strong>Blog Contributor</strong>, you can:</p>
     <ul style="margin:0 0 24px;padding-left:20px;font-size:14px;color:#2D3748;line-height:1.8;">
@@ -1019,14 +1035,20 @@ export function bloggerInviteTemplate(data: BloggerInviteData): { subject: strin
       <li>Run AI-powered DPDPA guardrail validation on your content</li>
       <li>Generate smart infographics from your articles</li>
       <li>Submit posts for admin review and publication</li>
-    </ul>
+    </ul>`;
 
-    <p style="margin:0 0 20px;font-size:14px;color:#718096;">Click the button below to set up your password and get started. This invite link is valid for <strong>72 hours</strong>.</p>
+  const cta = isReset ? "Choose a New Password" : "Set Up My Account";
+
+  const html = baseLayout(`
+    <h2 style="margin:0 0 8px;font-size:22px;font-weight:700;color:#1E3A5F;">${isReset ? "Password reset" : `Welcome, ${escapeHtml(data.name)}!`}</h2>
+    ${intro}
+
+    <p style="margin:0 0 20px;font-size:14px;color:#718096;">Click the button below to ${isReset ? "choose a new password" : "set up your password and get started"}. This link is valid for <strong>${escapeHtml(validFor)}</strong> and can be used once.</p>
 
     <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 24px;">
       <tr>
         <td style="border-radius:8px;background-color:#1E3A5F;">
-          <a href="${data.inviteUrl}" style="display:inline-block;padding:14px 32px;font-size:15px;font-weight:600;color:#ffffff;text-decoration:none;border-radius:8px;">Set Up My Account</a>
+          <a href="${data.inviteUrl}" style="display:inline-block;padding:14px 32px;font-size:15px;font-weight:600;color:#ffffff;text-decoration:none;border-radius:8px;">${cta}</a>
         </td>
       </tr>
     </table>
