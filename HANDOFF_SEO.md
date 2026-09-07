@@ -57,6 +57,20 @@ URL-prefix property. The March key still exists in GCP; the Sheets pipeline keep
 - **Shortlist emitted (10):** the two data-flow pages + the crawled-not-indexed statics. Press the button, then add ledger lines in
   `watchlist.ts`.
 
+### 2026-09-07 — admin layer built: `/admin/seo` (PR #28, preview READY, NOT merged)
+
+- **Shared core:** `lib/seo/{gsc,verdict,watchlist,db,run}.ts`; `runInspection()` is executed identically by the CLI
+  (`tools/seo/inspect.ts`), the Monday Action and the admin route `POST /api/admin/seo-inspect` (requireRole admin, 300 s).
+- **Dashboard:** verdict card · six tiles (watchlist crawled, indexed, never crawled, crawled-rejected + hypothesis, unknown,
+  28-day impressions/clicks/CTR) · Request-Indexing shortlist with **Mark requested** (server action → `ops.seo_index_requests`,
+  the DB ledger; merged with the code ledger so a pressed URL never returns) · watchlist table · crawled-not-indexed list ·
+  run trend · ledger. Nav entry "SEO Watcher".
+- **Data:** migration 0005 applied to Mumbai (3 tables), ledger seeded with the 17 baseline requests, first persisted run
+  `cee3daf1` (2026-09-07, 242 URLs, 6 transient fetch errors → retry added in `gsc.ts`).
+- **Gates before "Run now" works on Vercel:** `GSC_SERVICE_ACCOUNT_JSON` must be added to the Vercel env (preview + production);
+  the page itself renders from Supabase without it. Weekly cron activates on merge to `main`.
+- ⛔ Not design-reviewed as a public surface: internal admin page, follows the `/admin/citations` idiom (same badge pairs, ≥4.5:1).
+
 **Per the tree → resume Cycle 2 in the revised order: A2/A4/A6 → B3 (CA-firms pillar) → B2 (gate expired 28 Aug).** New input for
 B2: the briefing problem is discovery, not rejection — consolidation should aim at fewer, better-linked URLs, and the 62 never-fetched
 ones are the natural `noindex`/merge candidates. New input for the ellipsis/CTR fix (B1-lite): the CTR number above is the target.
