@@ -154,11 +154,22 @@ export function createGscClient(sa: ServiceAccount, siteUrl: string): GscApi {
   }
 
   async function call<T>(method: string, url: string, body?: unknown, attempt = 0): Promise<T | undefined> {
-    const res = await fetch(url, {
-      method,
-      headers: { authorization: `Bearer ${await bearer()}`, "content-type": "application/json" },
-      body: body === undefined ? undefined : JSON.stringify(body),
-    });
+    let res: Response;
+    try {
+      res = await fetch(url, {
+        method,
+        headers: { authorization: `Bearer ${await bearer()}`, "content-type": "application/json" },
+        body: body === undefined ? undefined : JSON.stringify(body),
+        signal: AbortSignal.timeout(30_000),
+      });
+    } catch (err) {
+      // Network-level failure ("fetch failed", timeout) — retry like a 5xx; 6 of 242 hit this on 2026-09-07.
+      if (attempt < 4) {
+        await sleep(500 * 2 ** attempt);
+        return call<T>(method, url, body, attempt + 1);
+      }
+      throw err;
+    }
     if ((res.status === 429 || res.status >= 500) && attempt < 4) {
       await sleep(500 * 2 ** attempt);
       return call<T>(method, url, body, attempt + 1);
