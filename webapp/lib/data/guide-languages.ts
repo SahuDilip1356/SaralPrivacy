@@ -44,21 +44,39 @@ export interface GuideLanguage {
   pdfUrl: string | null;
   /** Static HTML reading page. null → "Read online" hidden for this language */
   htmlUrl: string | null;
+  /** Gate: app locale routing (`/<code>/...`) enabled for this language (MULTILINGUAL_SPEC §3) */
+  appLocaleEnabled: boolean;
+  /** Gate: content Tier-1 shipped — drives hreflang/sitemap emission (MULTILINGUAL_SPEC §3) */
+  tier1Live: boolean;
 }
 
 export const GUIDE_LANGUAGES: GuideLanguage[] = [
-  { code: "en", locale: "en-IN", native: "English",  roman: "English",  pdfUrl: `${BLOB}/dpdpa-guide-en.pdf`, htmlUrl: html("en") },
-  { code: "hi", locale: "hi-IN", native: "हिन्दी",    roman: "Hindi",    pdfUrl: `${BLOB}/dpdpa-guide-hi.pdf`, htmlUrl: html("hi") },
-  { code: "gu", locale: "gu-IN", native: "ગુજરાતી",  roman: "Gujarati", pdfUrl: `${BLOB}/dpdpa-guide-gu.pdf`, htmlUrl: html("gu") },
-  { code: "mr", locale: "mr-IN", native: "मराठी",    roman: "Marathi",  pdfUrl: `${BLOB}/dpdpa-guide-mr.pdf`, htmlUrl: html("mr") },
-  { code: "kn", locale: "kn-IN", native: "ಕನ್ನಡ",     roman: "Kannada",  pdfUrl: `${BLOB}/dpdpa-guide-kn.pdf`, htmlUrl: html("kn") },
-  { code: "ta", locale: "ta-IN", native: "தமிழ்",     roman: "Tamil",    pdfUrl: `${BLOB}/dpdpa-guide-ta.pdf`, htmlUrl: html("ta") },
-  { code: "te", locale: "te-IN", native: "తెలుగు",    roman: "Telugu",   pdfUrl: `${BLOB}/dpdpa-guide-te.pdf`, htmlUrl: html("te") },
+  { code: "en", locale: "en-IN", native: "English",  roman: "English",  pdfUrl: `${BLOB}/dpdpa-guide-en.pdf`, htmlUrl: html("en"), appLocaleEnabled: true,  tier1Live: false },
+  { code: "hi", locale: "hi-IN", native: "हिन्दी",    roman: "Hindi",    pdfUrl: `${BLOB}/dpdpa-guide-hi.pdf`, htmlUrl: html("hi"), appLocaleEnabled: true,  tier1Live: false },
+  { code: "gu", locale: "gu-IN", native: "ગુજરાતી",  roman: "Gujarati", pdfUrl: `${BLOB}/dpdpa-guide-gu.pdf`, htmlUrl: html("gu"), appLocaleEnabled: false, tier1Live: false },
+  { code: "mr", locale: "mr-IN", native: "मराठी",    roman: "Marathi",  pdfUrl: `${BLOB}/dpdpa-guide-mr.pdf`, htmlUrl: html("mr"), appLocaleEnabled: false, tier1Live: false },
+  { code: "kn", locale: "kn-IN", native: "ಕನ್ನಡ",     roman: "Kannada",  pdfUrl: `${BLOB}/dpdpa-guide-kn.pdf`, htmlUrl: html("kn"), appLocaleEnabled: false, tier1Live: false },
+  { code: "ta", locale: "ta-IN", native: "தமிழ்",     roman: "Tamil",    pdfUrl: `${BLOB}/dpdpa-guide-ta.pdf`, htmlUrl: html("ta"), appLocaleEnabled: false, tier1Live: false },
+  { code: "te", locale: "te-IN", native: "తెలుగు",    roman: "Telugu",   pdfUrl: `${BLOB}/dpdpa-guide-te.pdf`, htmlUrl: html("te"), appLocaleEnabled: false, tier1Live: false },
 ];
 
 export const DEFAULT_LANG_CODE = "en";
 
 export const LANG_CODES = GUIDE_LANGUAGES.map((l) => l.code);
+
+/**
+ * App locale codes with routing enabled (`/<code>/...` URL prefixes; "en" is
+ * unprefixed). ⛔ The ONLY locale list — next-intl routing derives from this;
+ * never create a parallel array (MULTILINGUAL_SPEC §3).
+ */
+export const APP_LOCALES = GUIDE_LANGUAGES.filter((l) => l.appLocaleEnabled).map(
+  (l) => l.code
+);
+
+/** True when `code` is a routing-enabled app locale. */
+export function isAppLocale(code: string): boolean {
+  return APP_LOCALES.includes(code);
+}
 
 /** Languages whose PDF is downloadable (the rest fall back to English). */
 export const DOWNLOADABLE_LANGS = GUIDE_LANGUAGES.filter((l) => l.pdfUrl !== null);
