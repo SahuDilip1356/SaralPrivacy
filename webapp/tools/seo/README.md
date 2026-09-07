@@ -47,4 +47,17 @@ Every run also exports the **Crawled – currently not indexed** set and tests t
 
 ## Quota rule
 
-A URL in `REQUESTED_INDEXING` (the ledger) is never shortlisted again — re-requesting doesn't jump the queue and burns the button quota. Press the button → add one ledger line.
+A URL in the ledger is never shortlisted again — re-requesting doesn't jump the queue and burns the button quota. The ledger is
+`ops.seo_index_requests` (seeded from `lib/seo/watchlist.ts` `REQUESTED_INDEXING`); press the button, then **Mark requested** on `/admin/seo`.
+
+## Layout
+
+| Path | Role |
+|---|---|
+| `lib/seo/gsc.ts` | Search Console client (service-account JWT, URL Inspection, Search Analytics, Sitemaps, dry-run adapter) |
+| `lib/seo/verdict.ts` | pure logic: buckets, diff, decision tree, breakdown, shortlist, summary |
+| `lib/seo/watchlist.ts` | the 17 URLs + the code ledger |
+| `lib/seo/db.ts` | `ops.seo_runs` / `ops.seo_inspections` / `ops.seo_index_requests` via PostgREST |
+| `lib/seo/run.ts` | `runInspection()` — shared by the CLI, the Action and `/admin/seo` |
+| `tools/seo/inspect.ts` | the CLI shell (args, env, key, report files) |
+| `app/admin/seo/` + `app/api/admin/seo-inspect/` | admin dashboard + "Run now" (needs `GSC_SERVICE_ACCOUNT_JSON` in the Vercel env) |

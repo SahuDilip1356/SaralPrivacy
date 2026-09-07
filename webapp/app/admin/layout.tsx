@@ -3,7 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { verifyAdminSessionToken, ADMIN_SESSION_COOKIE } from "@/lib/adminSession";
-import { BarChart2, Users, Mail, Download, CheckCircle, Shield, Clock, LogOut, FileText, ClipboardList, BookOpen, UserPlus, Send, TrendingUp, Compass } from "lucide-react";
+import { BarChart2, Users, Mail, Download, CheckCircle, Shield, Clock, LogOut, FileText, ClipboardList, BookOpen, UserPlus, Send, TrendingUp, Compass, Globe } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Admin | SaralPrivacy",
@@ -30,6 +30,7 @@ const adminNav = [
   { label: "Consent Log",      href: "/admin/consent",          icon: Shield,        adminOnly: true  },
   { label: "Consultations",    href: "/admin/consultations",    icon: Clock,         adminOnly: true  },
   { label: "AEO Citations",    href: "/admin/citations",        icon: TrendingUp,    adminOnly: true  },
+  { label: "SEO Watcher",      href: "/admin/seo",              icon: Globe,         adminOnly: true  },
 ];
 
 // The middleware.ts already protects all /admin/* routes (except /admin/login).

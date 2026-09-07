@@ -55,8 +55,20 @@ create index seo_inspections_url_run_at on ops.seo_inspections (url, run_at desc
 create index seo_inspections_run_bucket on ops.seo_inspections (run_id, bucket);
 alter table ops.seo_inspections enable row level security;
 
+-- Request-indexing ledger: one row per URL the GSC button was pressed for.
+-- Seeded from watchlist.ts REQUESTED_INDEXING; the admin page adds rows; the
+-- tool merges both so a ledger URL is never shortlisted again (quota rule).
+create table ops.seo_index_requests (
+  url text primary key,
+  requested_at date not null,
+  note text,
+  created_at timestamptz not null default now()
+);
+alter table ops.seo_index_requests enable row level security;
+
 grant all on ops.seo_runs to service_role;
 grant all on ops.seo_inspections to service_role;
+grant all on ops.seo_index_requests to service_role;
 
 -- PostgREST caches the schema; without this the tables 404 (PGRST205) — see 0002.
 notify pgrst, 'reload schema';

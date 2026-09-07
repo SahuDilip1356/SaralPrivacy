@@ -1,4 +1,4 @@
-// inspect.ts — SEO observability agent: the Google Search Console watcher.
+// inspect.ts — SEO observability agent: the Google Search Console watcher (CLI).
 //
 // Watchlist (17 never-crawled commercial pages) + sitemap newcomers
 //   → URL Inspection API per URL (last crawl / coverage / canonical)
@@ -6,6 +6,9 @@
 //   → diff vs the previous run
 //   → the pre-agreed verdict (QUEUE_MOVED / STARVED / TOO_EARLY)
 //   → a ≤10-URL human shortlist for the "Request Indexing" button.
+//
+// The run itself lives in lib/seo/run.ts and is shared with /admin/seo's
+// "Run now" button; this file is the shell around it (args, env, key, files).
 //
 // Run from webapp/ (Node ≥ 22.6; the flag is a no-op on 24+):
 //   node --experimental-strip-types tools/seo/inspect.ts [flags]
@@ -20,35 +23,23 @@
 //   --site URL           property (default https://saralprivacy.com/)
 //   --out DIR            report directory (default tools/seo/reports)
 //
-// Key: webapp/.gsc-service-account.json (gitignored) or GSC_SERVICE_ACCOUNT_JSON.
-// Env: SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY from webapp/.env.local (auto-loaded).
+// Key: webapp/.gsc-service-account.json (gitignored), GSC_SERVICE_ACCOUNT_PATH,
+// or GSC_SERVICE_ACCOUNT_JSON. Env: SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY
+// from webapp/.env.local (auto-loaded).
 
-import { randomUUID } from "node:crypto";
 import { appendFileSync, existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { createDb, isMissingTable, type Db, type PrevRun } from "./db.ts";
-import { createDryRunClient, createGscClient, loadServiceAccount, type DryRunFixture, type GscApi, type SitemapEntry } from "./gsc.ts";
-import {
-  bucketCounts,
-  crawledNotIndexedBreakdown,
-  decide,
-  diffRuns,
-  renderSummary,
-  shortlist,
-  toRecord,
-  type Report,
-  type UrlRecord,
-} from "./verdict.ts";
-import { REQUESTED_INDEXING, SITE, WATCHLIST } from "./watchlist.ts";
+import { dbFromEnv, isMissingTable, ledgerToMap, type Db, type PrevRun } from "../../lib/seo/db.ts";
+import { createDryRunClient, createGscClient, loadServiceAccount, type DryRunFixture, type GscApi } from "../../lib/seo/gsc.ts";
+import { DEFAULT_BUDGET, SCOPES, mergeLedger, resolveSitemap, runInspection, type Scope } from "../../lib/seo/run.ts";
+import { renderSummary, type Report } from "../../lib/seo/verdict.ts";
+import { REQUESTED_INDEXING, SITE } from "../../lib/seo/watchlist.ts";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const APP_DIR = join(HERE, "..", "..");
 const FIXTURE = join(HERE, "fixtures", "dry-run.json");
-const CONCURRENCY = 3;
-
-type Scope = "watchlist" | "newcomers" | "full";
 
 type Args = {
   dryRun: boolean;
@@ -67,7 +58,7 @@ function parseArgs(argv: string[]): Args {
     dryRun: false,
     offline: false,
     scope: "newcomers",
-    budget: 500,
+    budget: DEFAULT_BUDGET,
     db: true,
     analytics: true,
     submitSitemap: false,
@@ -88,7 +79,7 @@ function parseArgs(argv: string[]): Args {
     else if (f === "--out") a.out = next();
     else throw new Error(`unknown flag ${f}`);
   }
-  if (!["watchlist", "newcomers", "full"].includes(a.scope)) throw new Error(`--scope must be watchlist | newcomers | full`);
+  if (!SCOPES.includes(a.scope)) throw new Error(`--scope must be ${SCOPES.join(" | ")}`);
   if (!Number.isFinite(a.budget) || a.budget < 1) throw new Error("--budget must be a positive number");
   if (!a.out) a.out = a.dryRun ? join(tmpdir(), "seo-inspect-dry-run") : join(HERE, "reports");
   return a;
@@ -110,50 +101,13 @@ function loadDotEnv(path: string): void {
 }
 
 const SETUP = `
-No Search Console key found. One-time setup (≈10 min, reuses the existing Google service account if you like):
-  1. Google Cloud console → the project that owns the daily-briefing service account (or a new one) → APIs & Services → enable "Google Search Console API".
-  2. IAM → Service Accounts → create "gsc-reader" (or reuse the Sheets one) → Keys → add JSON key.
+No Search Console key found. One-time setup (≈10 min):
+  1. Google Cloud console → the project of the daily-briefing service account → APIs & Services → enable "Google Search Console API".
+  2. IAM → Service Accounts → that account (or a new "gsc-reader") → Keys → add JSON key.
   3. Search Console → property https://saralprivacy.com/ (URL-prefix, NOT the domain property) → Settings → Users and permissions → add the service-account email as Full.
   4. Save the JSON as webapp/.gsc-service-account.json (gitignored) — or set GSC_SERVICE_ACCOUNT_JSON in CI. Never paste it into chat or a commit.
 Until then: node --experimental-strip-types tools/seo/inspect.ts --dry-run
 `;
-
-/** sitemap.xml is a dynamic route (Appwrite-backed) — retry a blip rather than blank the run. */
-async function fetchSitemapUrls(base: string, depth = 0): Promise<string[]> {
-  let lastErr: unknown;
-  for (let attempt = 0; attempt < 3; attempt++) {
-    try {
-      const res = await fetch(base, { headers: { "user-agent": "saralprivacy-seo-inspect/1" }, signal: AbortSignal.timeout(20_000) });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const xml = await res.text();
-      const locs = [...xml.matchAll(/<loc>\s*([^<\s]+)\s*<\/loc>/g)].map((m) => m[1]);
-      if (/<sitemapindex/i.test(xml) && depth < 2) {
-        const nested = await Promise.all(locs.map((u) => fetchSitemapUrls(u, depth + 1)));
-        return nested.flat();
-      }
-      if (locs.length === 0) throw new Error("no <loc> entries");
-      return locs;
-    } catch (err) {
-      lastErr = err;
-      await new Promise((r) => setTimeout(r, 1500 * (attempt + 1)));
-    }
-  }
-  throw new Error(`${base}: ${lastErr instanceof Error ? lastErr.message : String(lastErr)}`);
-}
-
-async function pool<T, R>(items: readonly T[], size: number, fn: (item: T) => Promise<R>): Promise<R[]> {
-  const out: R[] = new Array(items.length);
-  let i = 0;
-  await Promise.all(
-    Array.from({ length: Math.min(size, items.length) }, async () => {
-      while (i < items.length) {
-        const idx = i++;
-        out[idx] = await fn(items[idx]);
-      }
-    }),
-  );
-  return out;
-}
 
 function newestLocalReport(dir: string): PrevRun | null {
   if (!existsSync(dir)) return null;
@@ -167,10 +121,6 @@ function newestLocalReport(dir: string): PrevRun | null {
     sitemap_urls: rep.sitemap.urls,
     records: rep.urls.map((u) => ({ url: u.url, bucket: u.bucket, last_crawl_time: u.last_crawl_time })),
   };
-}
-
-function isoDay(d: Date): string {
-  return d.toISOString().slice(0, 10);
 }
 
 async function main(): Promise<number> {
@@ -199,21 +149,19 @@ async function main(): Promise<number> {
     log(`key: ${loaded.source} (${loaded.sa.client_email}) · property ${args.site}`);
   }
 
-  // ── Previous run (Supabase → local report fallback) ──
-  let db: Db | null = null;
+  // ── Previous run + ledger (Supabase → local report fallback) ──
+  let db: Db | null = args.db && !args.dryRun ? dbFromEnv() : null;
   let prev: PrevRun | null = null;
-  const supaUrl = (process.env.SUPABASE_URL || "").trim();
-  const supaKey = (process.env.SUPABASE_SERVICE_ROLE_KEY || "").trim();
-  if (args.db && !args.dryRun && supaUrl && supaKey) {
-    db = createDb(supaUrl, supaKey);
+  let ledger: Record<string, string> = { ...REQUESTED_INDEXING };
+  if (db) {
     try {
       prev = await db.fetchPrevRun();
+      ledger = mergeLedger(REQUESTED_INDEXING, ledgerToMap(await db.fetchLedger()));
       log(prev ? `previous run from Supabase: ${prev.run_at}` : "no previous run in Supabase");
     } catch (err) {
-      if (isMissingTable(err)) {
-        log("Supabase: ops.seo_runs not found — apply supabase/migrations/0005_ops_seo_inspections.sql; continuing without DB");
-        db = null;
-      } else throw err;
+      if (!isMissingTable(err)) throw err;
+      log("Supabase: ops.seo_* tables not found — apply supabase/migrations/0005_ops_seo_inspections.sql; continuing without DB");
+      db = null;
     }
   } else if (args.db && !args.dryRun) {
     log("Supabase not configured (SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY) — local reports only");
@@ -224,108 +172,28 @@ async function main(): Promise<number> {
   }
 
   // ── Sitemap ──
-  const sitemapUrl = `${args.site.replace(/\/$/, "")}/sitemap.xml`;
-  let sitemapUrls: string[] = [];
-  let sitemapFetched = false;
-  if (args.offline && fixture) {
-    sitemapUrls = fixture.sitemapUrls;
-  } else {
-    try {
-      sitemapUrls = await fetchSitemapUrls(sitemapUrl);
-      sitemapFetched = true;
-    } catch (err) {
-      // Never blank the shortlist on a fetch blip: reuse the last known sitemap.
-      const fromPrev = prev?.sitemap_urls.length ? prev.sitemap_urls : null;
-      sitemapUrls = fromPrev ?? fixture?.sitemapUrls ?? [];
-      log(`sitemap fetch failed after retries (${(err as Error).message}); using ${fromPrev ? "the previous run's sitemap" : fixture ? "the fixture sitemap" : "the watchlist only"}`);
-    }
-  }
-  const sitemapSet = new Set(sitemapUrls);
-  const prevSitemap = new Set(prev?.sitemap_urls ?? []);
-  const newcomers = prev ? sitemapUrls.filter((u) => !prevSitemap.has(u)) : sitemapUrls.filter((u) => !WATCHLIST.includes(u));
-  log(`sitemap: ${sitemapUrls.length} URLs${sitemapFetched ? "" : " (not fetched live)"} · ${newcomers.length} newcomers`);
+  const sitemap =
+    args.offline && fixture
+      ? { urls: fixture.sitemapUrls, fetched: false }
+      : await resolveSitemap(args.site, prev, fixture?.sitemapUrls ?? null, log);
 
-  // ── Targets ──
-  const targets: string[] = [...WATCHLIST];
-  const extra = args.scope === "full" ? sitemapUrls : args.scope === "newcomers" ? newcomers : [];
-  for (const u of extra) if (!targets.includes(u)) targets.push(u);
-  const cut = Math.max(WATCHLIST.length, args.budget);
-  if (targets.length > cut) log(`budget ${args.budget}: inspecting ${cut} of ${targets.length} candidate URLs`);
-  const toInspect = targets.slice(0, cut);
-
-  // ── Inspect ──
-  const ctx = { watchlist: new Set(WATCHLIST), sitemap: sitemapSet, ledger: REQUESTED_INDEXING };
-  let done = 0;
-  const records: UrlRecord[] = await pool(toInspect, CONCURRENCY, async (url) => {
-    try {
-      const r = toRecord(url, await api.inspect(url), ctx);
-      if (++done % 25 === 0) log(`  inspected ${done}/${toInspect.length}`);
-      return r;
-    } catch (err) {
-      const msg = (err as Error).message;
-      log(`  ✗ ${url}: ${msg}`);
-      return toRecord(url, null, { ...ctx, error: msg });
-    }
-  });
-  const errors = records.filter((r) => r.bucket === "error").length;
-  log(`inspected ${records.length} (${errors} errors)`);
-
-  // ── Search Analytics, last 28 days (GSC data lags ~3 days) ──
-  if (args.analytics) {
-    try {
-      const end = new Date(now.getTime() - 3 * 86_400_000);
-      const start = new Date(end.getTime() - 27 * 86_400_000);
-      const rows = await api.searchAnalytics(isoDay(start), isoDay(end));
-      const byPage = new Map(rows.map((r) => [r.keys[0], r]));
-      for (const r of records) {
-        const row = byPage.get(r.url);
-        if (row) r.search_28d = { clicks: row.clicks, impressions: row.impressions, position: Number(row.position.toFixed(1)) };
-      }
-      log(`search analytics: ${rows.length} pages with impressions (${isoDay(start)} → ${isoDay(end)})`);
-    } catch (err) {
-      log(`search analytics skipped: ${(err as Error).message}`);
-    }
-  }
-
-  // ── Sitemaps in GSC (+ optional resubmit) ──
-  let sitemapsInGsc: SitemapEntry[] = [];
-  let submitted = false;
-  try {
-    if (args.submitSitemap) {
-      await api.submitSitemap(sitemapUrl);
-      submitted = true;
-      log(`sitemap resubmitted: ${sitemapUrl}`);
-    }
-    sitemapsInGsc = await api.listSitemaps();
-  } catch (err) {
-    log(`sitemaps API skipped: ${(err as Error).message}`);
-  }
-
-  // ── Verdict, diff, shortlist ──
-  const prevDiscovered = prev
-    ? prev.records.filter((p) => WATCHLIST.includes(p.url) && (p.bucket === "discovered" || p.bucket === "unknown")).length
-    : null;
-  const verdict = decide(records, { now, prevDiscovered });
-  const report: Report = {
-    run_id: randomUUID(),
-    run_at: now.toISOString(),
+  // ── Run ──
+  const report = await runInspection({
+    api,
     site: args.site,
     scope: args.scope,
-    dry_run: args.dryRun,
-    key_source: keySource,
-    sitemap: { url: sitemapUrl, fetched: sitemapFetched, url_count: sitemapUrls.length, urls: sitemapUrls, newcomers },
-    sitemaps_in_gsc: sitemapsInGsc,
-    sitemap_submitted: submitted,
-    inspected: records.length,
-    errors,
-    buckets: bucketCounts(records),
-    watchlist_buckets: bucketCounts(records.filter((r) => r.watchlist)),
-    verdict,
-    diff: diffRuns(prev?.records ?? null, prev?.run_at ?? null, records),
-    crawled_not_indexed: crawledNotIndexedBreakdown(records),
-    shortlist: shortlist(records),
-    urls: records,
-  };
+    budget: args.budget,
+    analytics: args.analytics,
+    submitSitemap: args.submitSitemap,
+    prev,
+    ledger,
+    sitemapUrls: sitemap.urls,
+    sitemapFetched: sitemap.fetched,
+    keySource,
+    dryRun: args.dryRun,
+    now,
+    log,
+  });
 
   // ── Outputs ──
   mkdirSync(args.out, { recursive: true });
@@ -347,7 +215,7 @@ async function main(): Promise<number> {
     }
   }
 
-  return verdict.code === "INSUFFICIENT_DATA" ? 2 : 0;
+  return report.verdict.code === "INSUFFICIENT_DATA" ? 2 : 0;
 }
 
 main().then(

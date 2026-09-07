@@ -12,8 +12,8 @@ import {
   toRecord,
   type Bucket,
   type UrlRecord,
-} from "./verdict.ts";
-import { BASE, REQUESTED_INDEXING, WATCHLIST, WATCHLIST_PATHS } from "./watchlist.ts";
+} from "../../lib/seo/verdict.ts";
+import { BASE, REQUESTED_INDEXING, WATCHLIST, WATCHLIST_PATHS } from "../../lib/seo/watchlist.ts";
 
 const NOW = new Date("2026-09-06T00:00:00Z"); // 5+ weeks after the 31 Jul / 1 Aug requests
 
