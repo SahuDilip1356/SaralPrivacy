@@ -1,30 +1,35 @@
+"use client";
+
 import Link from "next/link";
 import { Download } from "lucide-react";
-import { ctaCopy } from "@/lib/cta-copy";
+import { useTranslations } from "next-intl";
+import { ctaHrefs } from "@/lib/cta-copy";
 
 interface WhitepaperCTAProps {
   variant?: "full" | "sidebar";
 }
 
 export function WhitepaperCTA({ variant = "full" }: WhitepaperCTAProps) {
+  const t = useTranslations("cta");
+
   if (variant === "sidebar") {
     return (
       <div className="bg-navy-700 rounded-xl p-5">
         <p className="text-xs font-bold text-green-400 uppercase tracking-wide mb-2">
-          {ctaCopy.whitepaper.eyebrow}
+          {t("whitepaper.eyebrow")}
         </p>
         <p className="text-white font-bold text-sm leading-snug mb-3">
-          {ctaCopy.whitepaper.heading}
+          {t("whitepaper.heading")}
         </p>
         <p className="text-slate-300 text-xs leading-relaxed mb-4">
-          {ctaCopy.whitepaper.body}
+          {t("whitepaper.body")}
         </p>
         <Link
-          href={ctaCopy.whitepaper.href}
+          href={ctaHrefs.whitepaper}
           className="flex items-center justify-center gap-2 bg-green-400 text-navy-950 text-sm font-bold py-2.5 rounded-lg hover:bg-green-300 transition-colors"
         >
           <Download size={14} />
-          {ctaCopy.whitepaper.cta}
+          {t("whitepaper.cta")}
         </Link>
       </div>
     );
@@ -35,21 +40,21 @@ export function WhitepaperCTA({ variant = "full" }: WhitepaperCTAProps) {
     <div className="bg-navy-700 rounded-xl p-6 flex flex-col sm:flex-row items-center gap-5">
       <div className="flex-1 text-center sm:text-left">
         <p className="text-xs font-bold text-green-400 uppercase tracking-wide mb-1">
-          {ctaCopy.whitepaper.eyebrow}
+          {t("whitepaper.eyebrow")}
         </p>
         <h3 className="text-white font-semibold text-base leading-snug mb-1">
-          {ctaCopy.whitepaper.heading}
+          {t("whitepaper.heading")}
         </h3>
         <p className="text-slate-300 text-sm leading-relaxed">
-          {ctaCopy.whitepaper.body}
+          {t("whitepaper.body")}
         </p>
       </div>
       <Link
-        href={ctaCopy.whitepaper.href}
+        href={ctaHrefs.whitepaper}
         className="shrink-0 inline-flex items-center gap-2 bg-green-400 text-navy-950 font-bold px-5 py-3 rounded-xl hover:bg-green-300 transition-colors"
       >
         <Download size={15} />
-        Download Free
+        {t("downloadFree")}
       </Link>
     </div>
   );
