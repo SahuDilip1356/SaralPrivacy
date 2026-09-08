@@ -9,6 +9,7 @@ import { Menu, X, ChevronDown, Download, ArrowRight } from "lucide-react";
 import { TemplateDownloadModal } from "@/components/TemplateDownloadModal";
 import { surfaceClasses } from "@/components/ui/Surface";
 import { navMenus, primaryAction, secondaryAction, type NavItem, type NavMenu } from "@/lib/data/navigation";
+import { isAppLocale } from "@/lib/data/guide-languages";
 import { trackEvent } from "@/lib/analytics";
 
 // No badges here on purpose. Three gold "Free" chips plus "Daily" plus a
@@ -254,8 +255,17 @@ export function Header() {
     if (item.action === "templates") setTemplateModalOpen(true);
   }
 
+  // Strip a locale prefix before matching (/hi/faq and /faq both mark the FAQ
+  // links active). Also load-bearing for English prerenders: next-intl renders
+  // the unprefixed English site under the internal /en/... pathname at build
+  // time, so matching the raw pathname would ship un-highlighted nav HTML.
+  const routePathname = (() => {
+    const seg = pathname.split("/")[1] ?? "";
+    return isAppLocale(seg) ? pathname.slice(seg.length + 1) || "/" : pathname;
+  })();
+
   const isActive = (href: string) =>
-    pathname === href || pathname.startsWith(href + "/");
+    routePathname === href || routePathname.startsWith(href + "/");
 
   /** A menu counts as current when any of its destinations is the open page. */
   const menuIsActive = (menu: NavMenu) =>
