@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import { Mail, CheckCircle } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Checkbox } from "@/components/ui/Input";
 import { trackEvent } from "@/lib/analytics";
 
 export function NewsletterSection() {
+  const t = useTranslations("home.newsletter");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [consentEmail, setConsentEmail] = useState(false);
@@ -32,10 +34,10 @@ export function NewsletterSection() {
         trackEvent.subscribe({ frequency: "daily" });
         setSubmitted(true);
       } else {
-        setError(data.error || "Something went wrong. Please try again.");
+        setError(data.error || t("errorGeneric"));
       }
     } catch {
-      setError("Network error. Please check your connection and try again.");
+      setError(t("errorNetwork"));
     } finally {
       setLoading(false);
     }
@@ -53,22 +55,14 @@ export function NewsletterSection() {
             <Mail size={24} className="text-teal-300" />
           </div>
 
-          <h2 className="text-3xl font-semibold text-white mb-3">
-            DPDPA briefings, delivered to your inbox
-          </h2>
-          <p className="text-slate-300 mb-8 leading-relaxed">
-            Get practical DPDPA updates, compliance tips, and regulatory developments:
-            a short daily briefing, written for business owners, not lawyers.
-          </p>
+          <h2 className="text-3xl font-semibold text-white mb-3">{t("title")}</h2>
+          <p className="text-slate-300 mb-8 leading-relaxed">{t("intro")}</p>
 
           {submitted ? (
             <div className="bg-green-50 border border-green-200 rounded-xl p-8">
               <CheckCircle size={40} className="text-green-800 mx-auto mb-3" />
-              <h3 className="font-semibold text-green-800 text-xl mb-2">You&apos;re subscribed!</h3>
-              <p className="text-green-700 text-sm">
-                You&apos;ll receive your first DPDPA briefing at the next dispatch. You can manage
-                your preferences any time from the link in any email we send.
-              </p>
+              <h3 className="font-semibold text-green-800 text-xl mb-2">{t("subscribedTitle")}</h3>
+              <p className="text-green-700 text-sm">{t("subscribedBody")}</p>
             </div>
           ) : (
             <form
@@ -77,13 +71,13 @@ export function NewsletterSection() {
             >
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                 <Input
-                  label="Your Name (optional)"
-                  placeholder="Priya Sharma"
+                  label={t("nameLabel")}
+                  placeholder={t("namePlaceholder")}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
                 <Input
-                  label="Work Email"
+                  label={t("emailLabel")}
                   type="email"
                   placeholder="priya@yourcompany.in"
                   value={email}
@@ -94,12 +88,15 @@ export function NewsletterSection() {
 
               {/* Consent */}
               <div className="bg-slate-50 rounded-lg p-4 mb-4 space-y-3">
-                <p className="text-xs text-slate-500 font-semibold uppercase tracking-wide">Consent</p>
+                <p className="text-xs text-slate-500 font-semibold uppercase tracking-wide">{t("consentHeading")}</p>
+                {/* Legal tier (MULTILINGUAL_SPEC §6): the consent sentence renders in
+                    English in EVERY locale until legal review + CONSENT_LOG language
+                    tracking land (P5) — hi.json deliberately carries the English text. */}
                 <Checkbox
                   label={
                     <span>
-                      I consent to receive DPDPA briefings and compliance updates by email from SaralPrivacy.{" "}
-                      <span className="text-slate-500">I understand I can unsubscribe at any time.</span>
+                      {t("consentSentence")}{" "}
+                      <span className="text-slate-500">{t("consentUnsubscribe")}</span>
                     </span>
                   }
                   checked={consentEmail}
@@ -107,9 +104,11 @@ export function NewsletterSection() {
                   required
                 />
                 <p className="text-xs text-slate-400 pl-7">
-                  Your data is processed as described in our{" "}
-                  <a href="/privacy" className="text-green-700 underline">Privacy Notice</a>.
-                  We do not pre-check consent boxes. You must opt in actively.
+                  {t.rich("privacyNote", {
+                    link: (chunks) => (
+                      <a href="/privacy" className="text-green-700 underline">{chunks}</a>
+                    ),
+                  })}
                 </p>
               </div>
 
@@ -125,7 +124,7 @@ export function NewsletterSection() {
                 loading={loading}
                 disabled={!consentEmail}
               >
-                Subscribe to Briefings
+                {t("subscribeCta")}
               </Button>
             </form>
           )}

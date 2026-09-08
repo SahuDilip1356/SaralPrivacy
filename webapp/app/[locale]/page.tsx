@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { setRequestLocale } from "next-intl/server";
 import { HeroSection } from "@/components/home/HeroSection";
 import { WhereRiskHides } from "@/components/home/WhereRiskHides";
 import { ReportPreview } from "@/components/home/ReportPreview";
@@ -93,7 +94,17 @@ export const metadata: Metadata = {
 // navy and becomes Authority Moment 2. The page now reads dark-open (S1–S3),
 // light-middle (S4–S6, the product and the fit), dark-turn (S7), quiet close
 // (S8–S9) into the dark CTA — symmetric, and one fewer beat.
-export default function HomePage() {
+export default async function HomePage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  // Static-rendering guard: pages using next-intl server APIs (the async
+  // BriefingsSection below calls getTranslations) must pin the locale
+  // themselves — the layout's call does not always cover a parallel-rendered
+  // page.
+  const { locale } = await params;
+  setRequestLocale(locale);
   return (
     <>
       {organizationSchema()}

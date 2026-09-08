@@ -12,6 +12,7 @@ import {
   Microscope,
   ArrowRight,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Section, Eyebrow } from "@/components/ui/Section";
 import { ScoreDial } from "@/components/home/ScoreDial";
 import { useInView } from "@/lib/hooks/useInView";
@@ -53,14 +54,12 @@ import { trackEvent } from "@/lib/analytics";
 // The one thing that stays light is the Notice Pack artifact: it depicts paper,
 // and paper is white on every ground.
 
+// Display strings (title / sub / tag / cap) live in the catalog under
+// home.howItWorks.steps.<key>.* — this array keeps only wiring + styling.
 type Step = {
   n: number;
   key: "discover" | "map" | "assess" | "fix";
   icon: typeof Search;
-  title: string;
-  sub: string;
-  tag: string; // product name kept discoverable (Data Discovery / Notice Pack …)
-  cap: string; // caps micro-outcome (what you walk away with)
   href: string;
   badge: string; // number-badge fill (full class for Tailwind purge-safety)
   ring: string; // icon tile
@@ -74,10 +73,6 @@ const steps: Step[] = [
     n: 1,
     key: "discover",
     icon: Search,
-    title: "Discover",
-    sub: "Find where your personal data sits",
-    tag: "Data Discovery",
-    cap: "Know where your data sits",
     href: "/discovery",
     badge: "bg-teal-400",
     ring: "bg-teal-400/15",
@@ -87,10 +82,6 @@ const steps: Step[] = [
     n: 2,
     key: "map",
     icon: Workflow,
-    title: "Map",
-    sub: "See where it travels, and where control breaks",
-    tag: "Data Flow",
-    cap: "Your sector's flow map",
     href: "/data-mapping",
     badge: "bg-teal-400",
     ring: "bg-teal-400/15",
@@ -100,10 +91,6 @@ const steps: Step[] = [
     n: 3,
     key: "assess",
     icon: ClipboardCheck,
-    title: "Assess",
-    sub: "Score your current risk",
-    tag: "Assessment",
-    cap: "Your score in 3 minutes",
     href: "/assessment",
     badge: "bg-green-400",
     ring: "bg-green-400/20",
@@ -114,10 +101,6 @@ const steps: Step[] = [
     n: 4,
     key: "fix",
     icon: FileText,
-    title: "Fix what matters",
-    sub: "Generate notices + first controls",
-    tag: "Notice Pack",
-    cap: "Notice pack as a branded PDF",
     href: "/tools/dpdpa-privacy-notice-generator",
     badge: "bg-gold-400",
     ring: "bg-gold-400/15",
@@ -129,15 +112,16 @@ const steps: Step[] = [
 // title stays the standout (one standout per card). Desktop: beside the title.
 // Mobile: wraps onto its own row under the text. CSS/SVG only.
 function StepArtifact({ kind }: { kind: Step["key"] }) {
+  const t = useTranslations("home.howItWorks");
   if (kind === "discover") {
     return (
       <div className="flex flex-wrap gap-1 justify-start sm:justify-end sm:max-w-[124px] shrink-0">
-        {["Customers", "Staff", "CCTV", "Vendors"].map((l) => (
+        {(["customers", "staff", "cctv", "vendors"] as const).map((l) => (
           <span
             key={l}
             className="text-[9px] font-medium text-teal-200 bg-teal-400/15 border border-teal-400/30 rounded-full px-1.5 py-0.5"
           >
-            {l}
+            {t(`artifactChips.${l}`)}
           </span>
         ))}
       </div>
@@ -185,28 +169,15 @@ function StepArtifact({ kind }: { kind: Step["key"] }) {
   );
 }
 
+// Leaf display strings live under home.howItWorks.leaves.<key>.*
 const leaves = [
-  {
-    icon: Newspaper,
-    title: "Daily Brief",
-    sub: "5-min updates + actions",
-    href: "/briefings",
-  },
-  {
-    icon: Telescope,
-    title: "Sector Deep Dive",
-    sub: "Go deeper on your sector",
-    href: "/industries",
-  },
-  {
-    icon: Microscope,
-    title: "Deep Review",
-    sub: "Coming soon",
-    href: null,
-  },
+  { key: "dailyBrief", icon: Newspaper, href: "/briefings" },
+  { key: "sectorDeepDive", icon: Telescope, href: "/industries" },
+  { key: "deepReview", icon: Microscope, href: null },
 ] as const;
 
 export function HowItWorks() {
+  const t = useTranslations("home.howItWorks");
   const { ref, inView } = useInView<HTMLDivElement>();
 
   // staggered reveal: each row fades up after its predecessor lands
@@ -221,14 +192,11 @@ export function HowItWorks() {
         {/* header */}
         <div className="text-center mb-11">
           <Eyebrow surface="navy" className="mb-3">
-            How it works
+            {t("eyebrow")}
           </Eyebrow>
-          <h2 className="type-display-3 text-white mb-3">
-            Start anywhere. It&apos;s all free to try.
-          </h2>
+          <h2 className="type-display-3 text-white mb-3">{t("title")}</h2>
           <p className="type-intro text-slate-300 max-w-md mx-auto">
-            Four steps to DPDPA-ready. Follow them in order, or jump straight to
-            what you need.
+            {t("intro")}
           </p>
         </div>
 
@@ -260,13 +228,14 @@ export function HowItWorks() {
                   </span>
                   <span className="order-2 min-w-0 flex-1">
                     <span className="block text-white font-semibold text-[15px]">
-                      {step.title}
+                      {t(`steps.${step.key}.title`)}
                     </span>
                     <span className="block text-slate-300 text-xs mt-0.5">
-                      {step.sub} <span className="text-slate-400">· {step.tag}</span>
+                      {t(`steps.${step.key}.sub`)}{" "}
+                      <span className="text-slate-400">· {t(`steps.${step.key}.tag`)}</span>
                     </span>
                     <span className="block text-[10px] font-semibold tracking-wide uppercase text-slate-400 mt-1.5">
-                      {step.cap}
+                      {t(`steps.${step.key}.cap`)}
                     </span>
                   </span>
                   {/* artifact: inline beside the text on desktop; wraps to its own
@@ -302,10 +271,10 @@ export function HowItWorks() {
             </span>
             <span className="min-w-0">
               <span className="block text-white font-semibold text-base">
-                You&apos;re DPDPA-ready
+                {t("milestoneTitle")}
               </span>
               <span className="block text-slate-300 text-xs mt-0.5">
-                Keep evidence ready for customers, vendors &amp; regulators
+                {t("milestoneSub")}
               </span>
             </span>
           </div>
@@ -371,15 +340,15 @@ export function HowItWorks() {
                         comingSoon ? "text-slate-300" : "text-white"
                       }`}
                     >
-                      {leaf.title}
+                      {t(`leaves.${leaf.key}.title`)}
                     </span>
                     {comingSoon ? (
                       <span className="inline-block mt-1 text-[10px] font-semibold text-gold-300 bg-gold-400/15 rounded-full px-2 py-0.5">
-                        Coming soon
+                        {t("comingSoon")}
                       </span>
                     ) : (
                       <span className="block text-slate-300 text-xs mt-0.5">
-                        {leaf.sub}
+                        {t(`leaves.${leaf.key}.sub`)}
                       </span>
                     )}
                   </span>
@@ -394,15 +363,15 @@ export function HowItWorks() {
               const base = "flex items-center gap-2.5 rounded-xl border px-3.5 py-3";
               return comingSoon ? (
                 <div
-                  key={leaf.title}
+                  key={leaf.key}
                   className={`${base} border-dashed border-white/15 bg-white/[0.03] cursor-not-allowed`}
-                  title="Coming soon"
+                  title={t("comingSoon")}
                 >
                   {inner}
                 </div>
               ) : (
                 <Link
-                  key={leaf.title}
+                  key={leaf.key}
                   href={leaf.href as string}
                   className={`group ${base} bg-navy-600 border-white/10 hover:border-teal-400/50 transition-colors`}
                 >

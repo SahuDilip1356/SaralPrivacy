@@ -133,5 +133,203 @@
         "cta": "Start Real Estate Risk Scan →"
       }
     }
+  },
+  "home": {
+    "hero": {
+      "badge": "Free DPDPA readiness check · 3–5 minutes",
+      "title": "Get your DPDPA readiness score in <accent>3–5 minutes</accent>",
+      "intro": "See your top gaps, first fixes and a sector-specific action plan for your Indian business, in plain English.",
+      "iRunA": "I run a…",
+      "selectorAria": "Select your business type",
+      "otherBusiness": "other business",
+      "seeAllSectors": "See all 12 sectors",
+      "takeFreeAssessment": "Take free assessment",
+      "frictionLine": "Free · 3–5 minutes · No email to start · Plain English · Not legal advice",
+      "notSureData": "Not sure what personal data you hold?",
+      "seeMyDataMap": "See my data map",
+      "mapItFirst": "Map it first",
+      "snapshotTitle": "Privacy readiness snapshot",
+      "sampleLabel": "Sample · Clinics & Labs",
+      "appliesTo": "DPDPA applies to your {sector}.",
+      "typicalRisk": "Typical risk",
+      "firstFixLabel": "First fix",
+      "realScoreAway": "Your real score is 3–5 minutes away.",
+      "seeFullReport": "See the full report",
+      "highPriorityAction": "High-priority action",
+      "significantGaps": "Significant gaps. Start a focused fix plan now.",
+      "generalCheck": "The general check covers every business that handles personal data. Your real score is 3–5 minutes away.",
+      "pickBusiness": "Pick your business on the left to see your own read."
+    },
+    "riskMap": {
+      "eyebrow": "The everyday data ecosystem",
+      "title": "The tools are ordinary. The gaps hide between them.",
+      "intro": "Most Indian businesses don't lack a privacy policy. They lack visibility into where personal data actually lives.",
+      "entersHere": "Personal data enters here",
+      "yourBusiness": "Your business",
+      "entersYourBusiness": "Personal data enters your business",
+      "scattersTo": "…and scatters to:",
+      "lifecycleStage": "Lifecycle stage",
+      "whatsInThere": "What's in there",
+      "howItGoesWrong": "How it goes wrong",
+      "whatClosesIt": "What closes it",
+      "threadTitle": "The data lifecycle: where this gap lives",
+      "lifecycle": {
+        "collect": "Collect",
+        "use": "Use",
+        "share": "Share",
+        "store": "Store",
+        "retain": "Retain",
+        "delete": "Delete"
+      },
+      "footNote": "These are ordinary workflows, not integrations. SaralPrivacy does not connect to any of them. DPDPA risk usually hides here, not in legal documents.",
+      "answerQuestion": "What is DPDPA?",
+      "answerBody": "DPDPA is India's framework for handling digital personal data, and the DPDP Rules, 2025 have now been notified. For Indian businesses, the real work is operational: fix your notices, consent flows, rights handling, retention logic, and vendor controls. SaralPrivacy helps you understand what matters, assess your risk, and prioritise the next 30 to 90 days."
+    },
+    "report": {
+      "eyebrow": "Your report",
+      "title": "This is what you get at the end",
+      "intro": "Every assessment ends in a scored, sector-specific report. Here is the shape of one. Pick a sector to see how it changes.",
+      "tablistAria": "Preview a sector report",
+      "panelTitle": "Privacy readiness report",
+      "sampleIllustrative": "Sample · illustrative",
+      "riskCategory": "Risk category",
+      "fiveDimensions": "Five dimensions",
+      "topGaps": "Your top 3 gaps",
+      "fixFirst": "Fix these first",
+      "plusChecklist": "Plus a practical checklist",
+      "emailNote": "Want it in writing? You can have the full report emailed to you at the end. Optional, and only if you ask.",
+      "getMyRealScore": "Get my real score"
+    },
+    "howItWorks": {
+      "eyebrow": "How it works",
+      "title": "Start anywhere. It's all free to try.",
+      "intro": "Four steps to DPDPA-ready. Follow them in order, or jump straight to what you need.",
+      "steps": {
+        "discover": {
+          "title": "Discover",
+          "sub": "Find where your personal data sits",
+          "tag": "Data Discovery",
+          "cap": "Know where your data sits"
+        },
+        "map": {
+          "title": "Map",
+          "sub": "See where it travels, and where control breaks",
+          "tag": "Data Flow",
+          "cap": "Your sector's flow map"
+        },
+        "assess": {
+          "title": "Assess",
+          "sub": "Score your current risk",
+          "tag": "Assessment",
+          "cap": "Your score in 3 minutes"
+        },
+        "fix": {
+          "title": "Fix what matters",
+          "sub": "Generate notices + first controls",
+          "tag": "Notice Pack",
+          "cap": "Notice pack as a branded PDF"
+        }
+      },
+      "artifactChips": {
+        "customers": "Customers",
+        "staff": "Staff",
+        "cctv": "CCTV",
+        "vendors": "Vendors"
+      },
+      "milestoneTitle": "You're DPDPA-ready",
+      "milestoneSub": "Keep evidence ready for customers, vendors & regulators",
+      "comingSoon": "Coming soon",
+      "leaves": {
+        "dailyBrief": {
+          "title": "Daily Brief",
+          "sub": "5-min updates + actions"
+        },
+        "sectorDeepDive": {
+          "title": "Sector Deep Dive",
+          "sub": "Go deeper on your sector"
+        },
+        "deepReview": {
+          "title": "Deep Review"
+        }
+      }
+    },
+    "sectors": {
+      "eyebrow": "Explore DPDPA by your sector",
+      "title": "Same law. Different data. Different fixes.",
+      "intro": "Twelve sectors, twelve different exposures. Pick yours and the deck brings it forward.",
+      "railAria": "Pick a sector",
+      "showSector": "Show {sector}",
+      "sampleScore": "Sample score",
+      "typicalRisk": "Typical risk",
+      "illustrative": "illustrative",
+      "industryGuide": "Industry guide",
+      "takeAssessment": "Take the assessment",
+      "prevSector": "Previous sector",
+      "nextSector": "Next sector",
+      "exploreAll": "Explore all 12 industries",
+      "seeDataFlow": "See the data flow"
+    },
+    "briefings": {
+      "eyebrow": "Daily briefings",
+      "title": "Stay ahead of DPDPA developments",
+      "intro": "Clear, actionable briefings on DPDPA updates, enforcement signals, and compliance guidance, written for business owners, not lawyers.",
+      "latest": "Latest",
+      "allBriefings": "All briefings",
+      "comingSoonTitle": "Briefings coming soon",
+      "comingSoonBody": "Daily DPDPA briefings will appear here automatically.",
+      "hoverHint": "Hover a card to bring it forward.",
+      "swipeHint": "Swipe to browse.",
+      "cadence": "One briefing every morning, 9 AM IST."
+    },
+    "deck": {
+      "dailyBriefing": "DPDPA Daily Briefing",
+      "allSectors": "All sectors",
+      "read": "Read",
+      "minutes": "{count} min"
+    },
+    "resources": {
+      "eyebrow": "Learn more",
+      "title": "If you'd rather read first",
+      "intro": "The assessment is faster. But if you want the background, start here.",
+      "guideTitle": "The complete DPDPA guide",
+      "guideDesc": "What the Act requires, who it applies to, and a 90-day plan, written against the DPDP Rules, 2025 as notified.",
+      "readGuide": "Read the guide",
+      "readGuideIn": "Read the guide in <name></name>",
+      "chooseLanguage": "Choose your language",
+      "checklistTitle": "Compliance checklist",
+      "checklistDesc": "The statutory and operational controls, laid out as a list you can work through and tick off.",
+      "checklistCta": "Open the checklist",
+      "templatesTitle": "Template library",
+      "templatesDesc": "{count} free notices, consent lines, vendor checklists and sector checklists you can adapt today.",
+      "templatesCta": "Get the templates"
+    },
+    "faqPreview": {
+      "eyebrow": "Before you start",
+      "title": "The questions people ask first",
+      "intro": "What it takes, what you get, and what happens to your answers.",
+      "browseAll": "Browse all {count} FAQs"
+    },
+    "finalBand": {
+      "sectionAria": "Take the free assessment",
+      "title": "Know your gaps. Fix what matters. Signal trust.",
+      "takeFreeAssessment": "Take free assessment",
+      "trustLine": "Free · 3–5 minutes · No email to start"
+    },
+    "newsletter": {
+      "title": "DPDPA briefings, delivered to your inbox",
+      "intro": "Get practical DPDPA updates, compliance tips, and regulatory developments: a short daily briefing, written for business owners, not lawyers.",
+      "subscribedTitle": "You're subscribed!",
+      "subscribedBody": "You'll receive your first DPDPA briefing at the next dispatch. You can manage your preferences any time from the link in any email we send.",
+      "nameLabel": "Your Name (optional)",
+      "namePlaceholder": "Priya Sharma",
+      "emailLabel": "Work Email",
+      "consentHeading": "Consent",
+      "consentSentence": "I consent to receive DPDPA briefings and compliance updates by email from SaralPrivacy.",
+      "consentUnsubscribe": "I understand I can unsubscribe at any time.",
+      "privacyNote": "Your data is processed as described in our <link>Privacy Notice</link>. We do not pre-check consent boxes. You must opt in actively.",
+      "errorGeneric": "Something went wrong. Please try again.",
+      "errorNetwork": "Network error. Please check your connection and try again.",
+      "subscribeCta": "Subscribe to Briefings"
+    }
   }
 }

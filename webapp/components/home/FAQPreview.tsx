@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ChevronDown, ArrowRight } from "lucide-react";
 import { faqs, getHomepageFaqs } from "@/lib/data/faqs";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 import { Section, Eyebrow } from "@/components/ui/Section";
 
 // S9 — the objection FAQ, and the last thing before the close.
@@ -25,6 +26,7 @@ import { Section, Eyebrow } from "@/components/ui/Section";
 // it buys back ~90px in the bargain.
 
 export function FAQPreview() {
+  const t = useTranslations("home.faqPreview");
   const homepageFaqs = getHomepageFaqs();
   const [openId, setOpenId] = useState<string | null>(homepageFaqs[0]?.id ?? null);
 
@@ -32,14 +34,10 @@ export function FAQPreview() {
     <Section surface="deep" type="evidence" width="narrow" divider>
       <div className="text-center mb-9">
         <Eyebrow surface="deep" className="mb-3">
-          Before you start
+          {t("eyebrow")}
         </Eyebrow>
-        <h2 className="type-display-3 text-navy-700 mb-4">
-          The questions people ask first
-        </h2>
-        <p className="text-slate-600">
-          What it takes, what you get, and what happens to your answers.
-        </p>
+        <h2 className="type-display-3 text-navy-700 mb-4">{t("title")}</h2>
+        <p className="text-slate-600">{t("intro")}</p>
       </div>
 
       {/* The rule above the first row closes the list at the top; each row
@@ -92,7 +90,7 @@ export function FAQPreview() {
           href="/faq"
           className="inline-flex items-center gap-1.5 pointer-coarse:min-h-11 text-sm font-semibold text-teal-800 hover:text-teal-900 underline underline-offset-4 decoration-teal-800/30 hover:decoration-teal-800 transition-colors"
         >
-          Browse all {faqs.length} FAQs
+          {t("browseAll", { count: faqs.length })}
           <ArrowRight size={15} />
         </Link>
       </div>
