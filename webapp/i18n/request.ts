@@ -31,20 +31,29 @@ function withEnglishFallback(en: Messages, locale: Messages): Messages {
   return out;
 }
 
+/**
+ * Load the merged catalog for a locale (en for the default; en ⊕ overrides for
+ * others). Exported so the shared SiteShell can hand explicit messages to
+ * NextIntlClientProvider — the (backoffice) tree renders the same shell but has
+ * no [locale] segment, so the provider must never fall back to reading request
+ * headers there (it would force dynamic rendering).
+ */
+export async function loadMessages(locale: string): Promise<Messages> {
+  const en = (await import("../messages/en.json")).default as Messages;
+  if (locale === routing.defaultLocale || !hasLocale(routing.locales, locale)) {
+    return en;
+  }
+  return withEnglishFallback(
+    en,
+    (await import(`../messages/${locale}.json`)).default as Messages
+  );
+}
+
 export default getRequestConfig(async ({ requestLocale }) => {
   const requested = await requestLocale;
   const locale = hasLocale(routing.locales, requested)
     ? requested
     : routing.defaultLocale;
 
-  const en = (await import("../messages/en.json")).default as Messages;
-  const messages =
-    locale === routing.defaultLocale
-      ? en
-      : withEnglishFallback(
-          en,
-          (await import(`../messages/${locale}.json`)).default as Messages
-        );
-
-  return { locale, messages };
+  return { locale, messages: await loadMessages(locale) };
 });

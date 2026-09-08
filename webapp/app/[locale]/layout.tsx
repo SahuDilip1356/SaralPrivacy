@@ -1,11 +1,6 @@
 import { notFound } from "next/navigation";
-import { NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
-import {
-  APP_LOCALES,
-  getLanguage,
-  isAppLocale,
-} from "@/lib/data/guide-languages";
+import { APP_LOCALES, isAppLocale } from "@/lib/data/guide-languages";
 import { SiteShell, siteMetadata } from "@/components/layout/SiteShell";
 
 // Root layout of the public, locale-routed tree. English serves unprefixed
@@ -38,9 +33,7 @@ export default async function LocaleLayout({
   // instead of from request headers.
   setRequestLocale(locale);
 
-  return (
-    <SiteShell lang={getLanguage(locale).locale}>
-      <NextIntlClientProvider>{children}</NextIntlClientProvider>
-    </SiteShell>
-  );
+  // NextIntlClientProvider lives inside SiteShell (explicit locale + messages),
+  // shared with the (backoffice) tree so the chrome cannot drift.
+  return <SiteShell locale={locale}>{children}</SiteShell>;
 }

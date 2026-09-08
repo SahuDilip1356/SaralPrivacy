@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Inter, Noto_Sans_Devanagari } from "next/font/google";
+import { NextIntlClientProvider } from "next-intl";
 import "@/app/globals.css";
+import { loadMessages } from "@/i18n/request";
+import { getLanguage } from "@/lib/data/guide-languages";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 // Vercel Web Analytics — cookieless, no cross-session identifier, so it needs no
@@ -67,14 +70,23 @@ export const siteMetadata: Metadata = {
   },
 };
 
-export function SiteShell({
-  lang,
+export async function SiteShell({
+  locale,
   children,
 }: Readonly<{
-  /** BCP-47 tag for <html lang> — the registry's `locale` field (en-IN, hi-IN, …) */
-  lang: string;
+  /** Registry `code` (en, hi, …). <html lang> derives the BCP-47 tag from it. */
+  locale: string;
   children: React.ReactNode;
 }>) {
+  // Explicit locale + messages, never inherited from request headers: this
+  // shell also wraps the (backoffice) tree, which has no [locale] segment —
+  // automatic inheritance there would read headers() and force every static
+  // backoffice route dynamic. The provider makes useTranslations()/useLocale()
+  // work in the client chrome (Header, home sections, assessment clients) on
+  // BOTH trees; server components under [locale] keep using the request config.
+  const messages = await loadMessages(locale);
+  const lang = getLanguage(locale).locale;
+
   return (
     <html lang={lang} className={`${inter.variable} ${notoDevanagari.variable}`}>
       <head>
@@ -85,14 +97,16 @@ export function SiteShell({
         <link rel="alternate" type="text/markdown" title="LLM extended reference" href="/llms-full.txt" />
       </head>
       <body className="font-sans antialiased bg-slate-50 text-slate-900 min-h-screen flex flex-col">
-        <Header />
-        {/* 4rem clears the fixed header. The extra 32px this used to carry was
-            clearance for the announcement strip, which is gone. */}
-        <main className="flex-1 pt-16">
-          {children}
-        </main>
-        <Footer />
-        <SetuChat />
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          <Header />
+          {/* 4rem clears the fixed header. The extra 32px this used to carry was
+              clearance for the announcement strip, which is gone. */}
+          <main className="flex-1 pt-16">
+            {children}
+          </main>
+          <Footer locale={locale} />
+          <SetuChat />
+        </NextIntlClientProvider>
         <Analytics />
       </body>
     </html>

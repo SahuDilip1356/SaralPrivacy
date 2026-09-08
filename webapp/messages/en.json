@@ -2,5 +2,53 @@
   "common": {
     "brandName": "SaralPrivacy",
     "tagline": "DPDPA compliance, made simple for Indian businesses"
+  },
+  "nav": {
+    "tagline": "Privacy Made Practical for India",
+    "mainAria": "Main",
+    "toggleMenu": "Toggle menu",
+    "comingSoon": "Coming soon",
+    "getConsultation": "Get Consultation"
+  },
+  "footer": {
+    "tagline": "Privacy made practical for India.",
+    "description": "India's practical DPDPA readiness platform for businesses. Daily briefings, industry assessments, resources, and advisory, all without the legalese.",
+    "columns": {
+      "product": "Product",
+      "industries": "Industries",
+      "knowledge": "Knowledge",
+      "company": "Company",
+      "privacyLegal": "Privacy & legal"
+    },
+    "links": {
+      "assessment": "DPDPA Readiness Assessment",
+      "discovery": "Personal Data Discovery",
+      "dataMapping": "Data Mapping Overview",
+      "noticeGenerator": "DPDPA Notice Generator",
+      "briefings": "Daily Briefings",
+      "learn": "DPDPA Guide",
+      "blog": "Insights",
+      "faq": "FAQ",
+      "glossary": "Glossary",
+      "about": "About",
+      "media": "Media",
+      "privacy": "Privacy Notice",
+      "rights": "Your Rights",
+      "terms": "Terms of Use",
+      "consent": "Consent Preferences",
+      "dataFlowMaps": "Data flow maps"
+    },
+    "allIndustries": "All {count} industries",
+    "dpoLine": "Data Protection Officer: {name}",
+    "generalEnquiries": "General enquiries",
+    "copyright": "© {year} SaralPrivacy. All rights reserved.",
+    "disclaimerLabel": "Disclaimer:",
+    "disclaimerText": "educational information, not formal legal advice.",
+    "bottomBar": {
+      "privacy": "Privacy",
+      "rights": "Rights",
+      "terms": "Terms",
+      "consent": "Consent"
+    }
   }
 }

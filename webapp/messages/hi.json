@@ -1,5 +1,168 @@
 {
   "common": {
     "tagline": "भारतीय व्यवसायों के लिए DPDPA अनुपालन, आसान भाषा में"
+  },
+  "nav": {
+    "tagline": "भारत के लिए प्राइवेसी, आसान और व्यावहारिक",
+    "mainAria": "मुख्य",
+    "toggleMenu": "मेनू खोलें या बंद करें",
+    "comingSoon": "जल्द आ रहा है",
+    "getConsultation": "परामर्श लें",
+    "menus": {
+      "compliance": "अनुपालन",
+      "industries": "उद्योग",
+      "insights": "इनसाइट्स",
+      "resources": "संसाधन"
+    },
+    "groups": {
+      "assess": "जाँचें",
+      "map": "मैप करें",
+      "act": "कदम उठाएँ",
+      "finance-legal": "फाइनेंस और क़ानून",
+      "health-wellness": "स्वास्थ्य और वेलनेस",
+      "education-people": "शिक्षा और लोग",
+      "consumer-property": "कंज़्यूमर और प्रॉपर्टी",
+      "read": "पढ़ें",
+      "in-the-press": "प्रेस में",
+      "learn-the-law": "क़ानून समझें",
+      "get-answers": "जवाब पाएँ"
+    },
+    "items": {
+      "quick-readiness-assessment": {
+        "label": "क्विक रेडीनेस मूल्यांकन",
+        "description": "मुफ़्त 5-मिनट की जाँच — सिर्फ़ उन DPDPA दायित्वों पर जो सच में आपके व्यवसाय पर लागू होते हैं।"
+      },
+      "deep-assessment": {
+        "label": "विस्तृत मूल्यांकन",
+        "description": "हर कंट्रोल की पूरी समीक्षा, 25 सवालों में।"
+      },
+      "penalty-calculator": {
+        "label": "जुर्माना कैलकुलेटर",
+        "description": "क़ानून के तहत डेटा उल्लंघन की आपको असल कीमत क्या पड़ेगी।"
+      },
+      "data-flow-maps": {
+        "label": "डेटा फ़्लो मैप",
+        "description": "देखें कि व्यक्तिगत डेटा आपके व्यवसाय में कहाँ से आता है, कहाँ जाता है और किस-किस तक पहुँचता है।"
+      },
+      "data-discovery": {
+        "label": "डेटा डिस्कवरी",
+        "description": "जो व्यक्तिगत डेटा आप पहले से रखते हैं, उसे सिस्टम-दर-सिस्टम खोजें।"
+      },
+      "compliance-checklist": {
+        "label": "अनुपालन चेकलिस्ट",
+        "description": "आपकी कमियाँ दूर करने वाले कदम, उसी क्रम में जिसमें करना समझदारी है।"
+      },
+      "privacy-notice-generator": {
+        "label": "प्राइवेसी नोटिस जेनरेटर",
+        "description": "अपने व्यवसाय के लिए DPDPA-तैयार प्राइवेसी नोटिस बनाएँ।"
+      },
+      "dpdpa-templates": {
+        "label": "DPDPA टेम्पलेट",
+        "description": "सहमति फ़ॉर्म, नोटिस और रजिस्टर — तैयार, बस अपने हिसाब से ढालिए।"
+      },
+      "all-industries": {
+        "label": "सभी उद्योग",
+        "description": "क़ानून एक, डेटा अलग। 12 सेक्टर, हर एक के अपने जोखिम और अपने समाधान।"
+      },
+      "recruitment-agencies": { "label": "रिक्रूटमेंट एजेंसियाँ" },
+      "ca-firms": { "label": "CA फ़र्में" },
+      "training-institutes": { "label": "ट्रेनिंग इंस्टिट्यूट" },
+      "d2c-brands": { "label": "D2C ब्रांड" },
+      "clinics-diagnostic-labs": { "label": "क्लिनिक और डायग्नोस्टिक लैब" },
+      "schools-colleges": { "label": "स्कूल और कॉलेज" },
+      "law-firms-legal-consultants": { "label": "लॉ फ़र्में और लीगल कंसल्टेंट" },
+      "real-estate-property-firms": { "label": "रियल एस्टेट और प्रॉपर्टी फ़र्में" },
+      "hotels-hospitality-travel": { "label": "होटल, हॉस्पिटैलिटी और ट्रैवल" },
+      "pharmacies-online-pharmacies": { "label": "फ़ार्मेसी और ऑनलाइन फ़ार्मेसी" },
+      "fintech-nbfc-digital-payments": { "label": "फ़िनटेक, NBFC और डिजिटल पेमेंट्स" },
+      "gyms-salons-spas": { "label": "जिम, सैलून और स्पा" },
+      "daily-briefings": {
+        "label": "डेली ब्रीफ़िंग",
+        "description": "भारतीय प्राइवेसी में आज क्या बदला — दो मिनट से भी कम में।"
+      },
+      "briefings-archive": {
+        "label": "ब्रीफ़िंग आर्काइव",
+        "description": "अब तक की हर ब्रीफ़िंग, खोज के साथ।"
+      },
+      "blog": {
+        "label": "ब्लॉग",
+        "description": "भारतीय व्यवसाय में प्राइवेसी का काम करने पर लंबे लेख।"
+      },
+      "media-coverage": {
+        "label": "मीडिया कवरेज",
+        "description": "जहाँ-जहाँ SaralPrivacy का हवाला और उद्धरण दिया गया है।"
+      },
+      "press-wall": {
+        "label": "प्रेस वॉल",
+        "description": "पत्रकारों के लिए लोगो, बॉयलरप्लेट और असेट्स।"
+      },
+      "learn-dpdpa": {
+        "label": "DPDPA सीखें",
+        "description": "क़ानून, नियम और आपसे उनकी अपेक्षाएँ — आसान भाषा में।"
+      },
+      "dpdp-act-2023": {
+        "label": "DPDP Act 2023",
+        "description": "पूरा मूल पाठ, आसान भाषा में समझाया हुआ।"
+      },
+      "dpdp-rules-2025": {
+        "label": "DPDP Rules 2025",
+        "description": "नोटिफ़ाइड नियमों ने क्या बदला, और अब क्या ज़रूरी है।"
+      },
+      "glossary": {
+        "label": "शब्दावली",
+        "description": "50+ DPDPA शब्द, बिना क़ानूनी भाषा के समझाए हुए।"
+      },
+      "faq": {
+        "label": "FAQ",
+        "description": "वे सवाल जो व्यवसाय मालिक हमसे सच में पूछते हैं।"
+      },
+      "talk-to-us": {
+        "label": "हमसे बात करें",
+        "description": "अपनी स्थिति के बारे में सवाल पूछें और सोच-समझा जवाब पाएँ।"
+      },
+      "take-free-assessment": { "label": "मुफ़्त मूल्यांकन करें" },
+      "dpdpa-guide": { "label": "DPDPA गाइड" }
+    }
+  },
+  "footer": {
+    "tagline": "भारत के लिए प्राइवेसी, आसान और व्यावहारिक।",
+    "description": "भारतीय व्यवसायों के लिए व्यावहारिक DPDPA तैयारी प्लेटफ़ॉर्म। डेली ब्रीफ़िंग, उद्योग मूल्यांकन, संसाधन और सलाह — सब कुछ, बिना क़ानूनी उलझन के।",
+    "columns": {
+      "product": "प्रोडक्ट",
+      "industries": "उद्योग",
+      "knowledge": "जानकारी",
+      "company": "कंपनी",
+      "privacyLegal": "प्राइवेसी और क़ानूनी"
+    },
+    "links": {
+      "assessment": "DPDPA रेडीनेस मूल्यांकन",
+      "discovery": "पर्सनल डेटा डिस्कवरी",
+      "dataMapping": "डेटा मैपिंग ओवरव्यू",
+      "noticeGenerator": "DPDPA नोटिस जेनरेटर",
+      "briefings": "डेली ब्रीफ़िंग",
+      "learn": "DPDPA गाइड",
+      "blog": "इनसाइट्स",
+      "faq": "FAQ",
+      "glossary": "शब्दावली",
+      "about": "हमारे बारे में",
+      "media": "मीडिया",
+      "privacy": "प्राइवेसी नोटिस",
+      "rights": "आपके अधिकार",
+      "terms": "उपयोग की शर्तें",
+      "consent": "सहमति प्राथमिकताएँ",
+      "dataFlowMaps": "डेटा फ़्लो मैप"
+    },
+    "allIndustries": "सभी {count} उद्योग",
+    "dpoLine": "डेटा प्रोटेक्शन ऑफ़िसर (Data Protection Officer): {name}",
+    "generalEnquiries": "सामान्य पूछताछ",
+    "copyright": "© {year} SaralPrivacy. सर्वाधिकार सुरक्षित।",
+    "disclaimerLabel": "अस्वीकरण:",
+    "disclaimerText": "यह शैक्षिक जानकारी है, औपचारिक क़ानूनी सलाह नहीं।",
+    "bottomBar": {
+      "privacy": "प्राइवेसी",
+      "rights": "अधिकार",
+      "terms": "शर्तें",
+      "consent": "सहमति"
+    }
   }
 }

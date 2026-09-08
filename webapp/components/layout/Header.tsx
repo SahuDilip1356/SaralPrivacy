@@ -4,7 +4,9 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useMessages, useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
+import { chromeMessage, labelKey } from "@/lib/i18n/chrome";
 import { Menu, X, ChevronDown, Download, ArrowRight } from "lucide-react";
 import { TemplateDownloadModal } from "@/components/TemplateDownloadModal";
 import { surfaceClasses } from "@/components/ui/Surface";
@@ -53,6 +55,28 @@ const panelId = (label: string) => `nav-panel-${label.toLowerCase()}`;
 const gridItems = (menu: NavMenu) => menu.groups.flatMap((g) => g.items);
 
 /**
+ * Display strings for the nav DATA (lib/data/navigation.ts stays the English
+ * source of truth — see lib/i18n/chrome.ts). Identity everywhere else in this
+ * file keeps using the raw English label (panel ids, trigger refs, analytics
+ * events), so translation never changes behaviour, only what is painted.
+ */
+function useNavT() {
+  const messages = useMessages();
+  const s = (path: string, fallback: string) =>
+    chromeMessage(messages, path, fallback);
+  return {
+    menu: (label: string) => s(`nav.menus.${labelKey(label)}`, label),
+    heading: (h: string) => s(`nav.groups.${labelKey(h)}`, h),
+    label: (i: Pick<NavItem, "label">) =>
+      s(`nav.items.${labelKey(i.label)}.label`, i.label),
+    description: (i: Pick<NavItem, "label" | "description">) =>
+      i.description
+        ? s(`nav.items.${labelKey(i.label)}.description`, i.description)
+        : "",
+  };
+}
+
+/**
  * Tailwind needs the column count as a literal class, not an interpolation,
  * or the JIT never emits it. The nav test caps groups at four.
  */
@@ -64,6 +88,8 @@ const COLS: Record<number, string> = {
 };
 
 export function Header() {
+  const t = useTranslations("nav");
+  const navT = useNavT();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileSection, setMobileSection] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
@@ -304,7 +330,7 @@ export function Header() {
                     <span className="text-navy-700">Privacy</span>
                   </div>
                   <div className="text-[10px] text-navy-700 leading-tight tracking-wide">
-                    Privacy Made Practical for India
+                    {t("tagline")}
                   </div>
                 </div>
               </Link>
@@ -316,7 +342,7 @@ export function Header() {
                   190px back, which is what buys the breakpoint. */}
               <nav
                 className="hidden lg:flex items-center gap-0.5 xl:gap-1"
-                aria-label="Main"
+                aria-label={t("mainAria")}
               >
                 {navMenus.map((menu) => {
                   const isOpen = openMenu === menu.label;
@@ -363,7 +389,7 @@ export function Header() {
                             : "text-slate-700 hover:text-navy-700 hover:bg-cloud-50"
                         )}
                       >
-                        {menu.label}
+                        {navT.menu(menu.label)}
                         <ChevronDown
                           size={14}
                           className={cn(
@@ -386,21 +412,21 @@ export function Header() {
                   className="hidden md:inline-flex items-center gap-1.5 px-3 py-2 pointer-coarse:min-h-11 text-sm font-medium whitespace-nowrap text-slate-700 rounded-lg hover:text-navy-700 hover:bg-cloud-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2"
                 >
                   <Download size={14} />
-                  {secondaryAction.label}
+                  {navT.label(secondaryAction)}
                 </Link>
                 <Link
                   href={primaryAction.href}
                   onClick={() => trackEvent.navItemClick({ menu: "chrome", item: primaryAction.label })}
                   className="hidden sm:inline-flex items-center px-4 py-2 pointer-coarse:min-h-11 text-sm font-semibold whitespace-nowrap bg-green-700 text-white rounded-lg hover:bg-green-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2"
                 >
-                  {primaryAction.label}
+                  {navT.label(primaryAction)}
                 </Link>
                 <button
                   className="lg:hidden inline-flex items-center justify-center min-h-11 min-w-11 p-2 text-slate-600 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2 rounded-lg"
                   onClick={() => setMobileOpen(!mobileOpen)}
                   aria-expanded={mobileOpen}
                   aria-controls="mobile-nav"
-                  aria-label="Toggle menu"
+                  aria-label={t("toggleMenu")}
                 >
                   {mobileOpen ? <X size={22} /> : <Menu size={22} />}
                 </button>
@@ -445,7 +471,7 @@ export function Header() {
                       expanded ? "text-green-800 bg-green-50" : "text-slate-700 hover:bg-cloud-50"
                     )}
                   >
-                    <span>{menu.label}</span>
+                    <span>{navT.menu(menu.label)}</span>
                     <ChevronDown
                       size={16}
                       className={cn("transition-transform duration-200", expanded && "rotate-180")}
@@ -494,20 +520,20 @@ export function Header() {
                 onClick={() => trackEvent.navItemClick({ menu: "chrome", item: primaryAction.label })}
                 className="flex w-full items-center justify-center px-4 py-2.5 min-h-11 text-sm font-semibold bg-green-700 text-white rounded-lg hover:bg-green-800 transition-colors"
               >
-                {primaryAction.label}
+                {navT.label(primaryAction)}
               </Link>
               <Link
                 href={secondaryAction.href}
                 className="flex w-full items-center justify-center gap-2 px-4 py-2.5 min-h-11 text-sm font-semibold border border-pearl-300 text-navy-700 rounded-lg hover:bg-cloud-50 transition-colors"
               >
                 <Download size={14} />
-                {secondaryAction.label}
+                {navT.label(secondaryAction)}
               </Link>
               <Link
                 href="/contact"
                 className="flex w-full items-center justify-center px-4 py-2.5 min-h-11 text-sm font-semibold border border-pearl-300 text-navy-700 rounded-lg hover:bg-cloud-50 transition-colors"
               >
-                Get Consultation
+                {t("getConsultation")}
               </Link>
             </div>
           </div>
@@ -533,6 +559,7 @@ function MegaPanel({
   onActivate: (item: NavItem) => void;
   isActive: (href: string) => boolean;
 }) {
+  const navT = useNavT();
   // Descriptions are all-or-nothing per menu (asserted in the test suite), so
   // one probe decides the grid's density for the whole panel.
   const described = gridItems(menu)[0]?.description !== "";
@@ -562,14 +589,14 @@ function MegaPanel({
             )}
           >
             <span className="inline-flex items-center gap-2 text-base font-semibold text-navy-700">
-              {menu.featured.label}
+              {navT.label(menu.featured)}
               <ArrowRight
                 size={16}
                 className="transition-transform duration-200 group-hover:translate-x-0.5"
               />
             </span>
             <span className="mt-1 block max-w-2xl text-sm leading-relaxed text-slate-600">
-              {menu.featured.description}
+              {navT.description(menu.featured)}
             </span>
           </Link>
 
@@ -593,7 +620,7 @@ function MegaPanel({
                     emits no rule, so it silently renders at the inherited
                     size. See the note on the coming-soon chips below. */}
                 <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
-                  {group.heading}
+                  {navT.heading(group.heading)}
                 </h3>
                 <div className={cn("grid", described ? "gap-y-5" : "gap-y-1")}>
                   {group.items.map((item) => (
@@ -626,6 +653,8 @@ function PanelItem({
   current: boolean;
   onActivate: () => void;
 }) {
+  const t = useTranslations("nav");
+  const navT = useNavT();
   // A menu entry that navigates nowhere is worse than no entry at all, so
   // coming-soon renders as inert text — not a link, not in the tab order.
   if (item.comingSoon) {
@@ -636,14 +665,14 @@ function PanelItem({
     return (
       <div className="cursor-not-allowed">
         <span className="flex items-center gap-2 text-sm font-semibold text-slate-500">
-          {item.label}
+          {navT.label(item)}
           <span className="rounded-full bg-cloud-100 px-2 py-0.5 text-2xs font-medium text-slate-600">
-            Coming soon
+            {t("comingSoon")}
           </span>
         </span>
         {described && (
           <span className="mt-0.5 block text-sm leading-snug text-slate-500">
-            {item.description}
+            {navT.description(item)}
           </span>
         )}
       </div>
@@ -662,11 +691,11 @@ function PanelItem({
           current ? "text-green-800" : "text-navy-700 group-hover:text-green-800"
         )}
       >
-        {item.label}
+        {navT.label(item)}
       </span>
       {described && (
         <span className="mt-0.5 block text-sm leading-snug text-slate-600">
-          {item.description}
+          {navT.description(item)}
         </span>
       )}
     </Link>
@@ -684,12 +713,14 @@ function MobileItem({
   featured?: boolean;
   onActivate: () => void;
 }) {
+  const t = useTranslations("nav");
+  const navT = useNavT();
   if (item.comingSoon) {
     return (
       <div className="flex items-center gap-2 px-3 py-2 min-h-11 text-sm text-slate-500">
-        {item.label}
+        {navT.label(item)}
         <span className="rounded-full bg-cloud-100 px-2 py-0.5 text-2xs font-medium text-slate-600">
-          Coming soon
+          {t("comingSoon")}
         </span>
       </div>
     );
@@ -712,10 +743,10 @@ function MobileItem({
         featured ? "font-semibold text-navy-700" : "text-slate-600 hover:text-navy-700"
       )}
     >
-      <span>{item.label}</span>
+      <span>{navT.label(item)}</span>
       {described && (
         <span className="mt-0.5 text-xs leading-snug text-slate-500">
-          {item.description}
+          {navT.description(item)}
         </span>
       )}
     </Link>

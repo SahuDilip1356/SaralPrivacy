@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { getTranslations } from "next-intl/server";
 import { PressProofStrip } from "@/components/ui/PressProofStrip";
 import { sectorNavLinks } from "@/lib/data/sectors";
 import { DPO } from "@/lib/data/privacy-vendors";
@@ -21,11 +22,13 @@ import { DPO } from "@/lib/data/privacy-vendors";
 // Column labels are the site's eyebrow style, not bold white — quieter reads
 // as more established. cloud-400 on navy measures 7.64:1.
 
+// Link labels live in messages/*.json (chrome tier); this file keeps only the
+// stable keys and hrefs. `key` resolves under the footer.links namespace.
 const productLinks = [
-  { label: "DPDPA Readiness Assessment", href: "/assessment" },
-  { label: "Personal Data Discovery", href: "/discovery" },
-  { label: "Data Mapping Overview", href: "/data-mapping" },
-  { label: "DPDPA Notice Generator", href: "/tools/dpdpa-privacy-notice-generator" },
+  { key: "assessment", href: "/assessment" },
+  { key: "discovery", href: "/discovery" },
+  { key: "dataMapping", href: "/data-mapping" },
+  { key: "noticeGenerator", href: "/tools/dpdpa-privacy-notice-generator" },
 ];
 
 // Every sector's flow map is now live, which made the old footer render two
@@ -36,23 +39,23 @@ const productLinks = [
 // Registry-driven — a sector without a live map simply gets no suffix.
 
 const knowledgeLinks = [
-  { label: "Daily Briefings", href: "/briefings" },
-  { label: "DPDPA Guide", href: "/learn" },
-  { label: "Insights", href: "/blog" },
-  { label: "FAQ", href: "/faq" },
-  { label: "Glossary", href: "/glossary" },
+  { key: "briefings", href: "/briefings" },
+  { key: "learn", href: "/learn" },
+  { key: "blog", href: "/blog" },
+  { key: "faq", href: "/faq" },
+  { key: "glossary", href: "/glossary" },
 ];
 
 const companyLinks = [
-  { label: "About", href: "/about" },
-  { label: "Media", href: "/media" },
+  { key: "about", href: "/about" },
+  { key: "media", href: "/media" },
 ];
 
 const legalLinks = [
-  { label: "Privacy Notice", href: "/privacy" },
-  { label: "Your Rights", href: "/rights" },
-  { label: "Terms of Use", href: "/terms" },
-  { label: "Consent Preferences", href: "/consent-preferences" },
+  { key: "privacy", href: "/privacy" },
+  { key: "rights", href: "/rights" },
+  { key: "terms", href: "/terms" },
+  { key: "consent", href: "/consent-preferences" },
 ];
 
 function ColumnLabel({ children }: { children: React.ReactNode }) {
@@ -76,7 +79,11 @@ function FooterLink({ href, label }: { href: string; label: string }) {
   );
 }
 
-export function Footer() {
+export async function Footer({ locale }: { locale: string }) {
+  // Explicit locale, never the request-scoped default: the footer also renders
+  // in the (backoffice) tree, where reading headers() would force dynamic
+  // rendering. SiteShell owns the locale and passes it down.
+  const t = await getTranslations({ locale, namespace: "footer" });
   return (
     <footer className="bg-navy-700 text-slate-300">
       {/* Gold rule at top — the one ceremonial gold on the page, and it is on
@@ -103,21 +110,19 @@ export function Footer() {
               </span>
             </Link>
             <p className="text-sm font-medium text-slate-300 mb-3">
-              Privacy made practical for India.
+              {t("tagline")}
             </p>
             <p className="text-sm text-slate-400 leading-relaxed max-w-xs">
-              India&apos;s practical DPDPA readiness platform for businesses.
-              Daily briefings, industry assessments, resources, and advisory, all
-              without the legalese.
+              {t("description")}
             </p>
           </div>
 
           {/* Product */}
           <div>
-            <ColumnLabel>Product</ColumnLabel>
+            <ColumnLabel>{t("columns.product")}</ColumnLabel>
             <ul className="space-y-2.5">
               {productLinks.map((l) => (
-                <FooterLink key={l.href} {...l} />
+                <FooterLink key={l.href} href={l.href} label={t(`links.${l.key}`)} />
               ))}
             </ul>
           </div>
@@ -133,29 +138,32 @@ export function Footer() {
               their two hubs, which link onward to all twelve. Clutter gone,
               crawl path intact, one extra hop. */}
           <div>
-            <ColumnLabel>Industries</ColumnLabel>
+            <ColumnLabel>{t("columns.industries")}</ColumnLabel>
             <ul className="space-y-2.5">
-              <FooterLink href="/industries" label={`All ${sectorNavLinks.length} industries`} />
-              <FooterLink href="/data-mapping" label="Data flow maps" />
+              <FooterLink
+                href="/industries"
+                label={t("allIndustries", { count: sectorNavLinks.length })}
+              />
+              <FooterLink href="/data-mapping" label={t("links.dataFlowMaps")} />
             </ul>
           </div>
 
           {/* Knowledge */}
           <div>
-            <ColumnLabel>Knowledge</ColumnLabel>
+            <ColumnLabel>{t("columns.knowledge")}</ColumnLabel>
             <ul className="space-y-2.5">
               {knowledgeLinks.map((l) => (
-                <FooterLink key={l.href} {...l} />
+                <FooterLink key={l.href} href={l.href} label={t(`links.${l.key}`)} />
               ))}
             </ul>
           </div>
 
           {/* Company + legal */}
           <div>
-            <ColumnLabel>Company</ColumnLabel>
+            <ColumnLabel>{t("columns.company")}</ColumnLabel>
             <ul className="space-y-2.5">
               {companyLinks.map((l) => (
-                <FooterLink key={l.href} {...l} />
+                <FooterLink key={l.href} href={l.href} label={t(`links.${l.key}`)} />
               ))}
             </ul>
             {/* Privacy & legal — now one pane, per the founder's "bring privacy
@@ -165,11 +173,11 @@ export function Footer() {
                 fiduciary has to be reachable for access, correction, erasure
                 and complaints, and the DPO's address is how. */}
             <ColumnLabel>
-              <span className="mt-6 inline-block">Privacy &amp; legal</span>
+              <span className="mt-6 inline-block">{t("columns.privacyLegal")}</span>
             </ColumnLabel>
             <ul className="space-y-2.5">
               {legalLinks.map((l) => (
-                <FooterLink key={l.href} {...l} />
+                <FooterLink key={l.href} href={l.href} label={t(`links.${l.key}`)} />
               ))}
               <li className="text-sm leading-snug pt-1.5">
                 <a
@@ -179,7 +187,7 @@ export function Footer() {
                   {DPO.email}
                 </a>
                 <span className="block text-xs text-slate-400 mt-0.5">
-                  Data Protection Officer: {DPO.name}
+                  {t("dpoLine", { name: DPO.name })}
                 </span>
               </li>
               <li className="text-sm leading-snug">
@@ -189,7 +197,7 @@ export function Footer() {
                 >
                   privacy@saralprivacy.com
                 </a>
-                <span className="block text-xs text-slate-400 mt-0.5">General enquiries</span>
+                <span className="block text-xs text-slate-400 mt-0.5">{t("generalEnquiries")}</span>
               </li>
             </ul>
           </div>
@@ -214,24 +222,25 @@ export function Footer() {
       <div data-nosnippet className="border-t border-navy-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs text-slate-400">
-            © {new Date().getFullYear()} SaralPrivacy. All rights reserved.{" "}
+            {/* String, not number: ICU would group-format 2026 as "2,026". */}
+            {t("copyright", { year: String(new Date().getFullYear()) })}{" "}
             <span className="block sm:inline">
-              <span className="text-gold-400 font-semibold">Disclaimer:</span> educational
-              information, not formal legal advice.
+              <span className="text-gold-400 font-semibold">{t("disclaimerLabel")}</span>{" "}
+              {t("disclaimerText")}
             </span>
           </p>
           <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
             <Link href="/privacy" className="inline-flex items-center pointer-coarse:min-h-11 text-xs text-slate-400 hover:text-white transition-colors">
-              Privacy
+              {t("bottomBar.privacy")}
             </Link>
             <Link href="/rights" className="inline-flex items-center pointer-coarse:min-h-11 text-xs text-slate-400 hover:text-white transition-colors">
-              Rights
+              {t("bottomBar.rights")}
             </Link>
             <Link href="/terms" className="inline-flex items-center pointer-coarse:min-h-11 text-xs text-slate-400 hover:text-white transition-colors">
-              Terms
+              {t("bottomBar.terms")}
             </Link>
             <Link href="/consent-preferences" className="inline-flex items-center pointer-coarse:min-h-11 text-xs text-slate-400 hover:text-white transition-colors">
-              Consent
+              {t("bottomBar.consent")}
             </Link>
           </div>
         </div>

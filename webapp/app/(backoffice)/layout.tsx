@@ -1,4 +1,3 @@
-import { getLanguage } from "@/lib/data/guide-languages";
 import { SiteShell, siteMetadata } from "@/components/layout/SiteShell";
 
 // Root layout for the trees that never localize (MULTILINGUAL_SPEC §1
@@ -13,5 +12,5 @@ export default function BackofficeLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <SiteShell lang={getLanguage("en").locale}>{children}</SiteShell>;
+  return <SiteShell locale="en">{children}</SiteShell>;
 }
