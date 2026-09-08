@@ -1,0 +1,65 @@
+name: SEO — Search Console inspection
+
+# Weekly GSC watcher (webapp/tools/seo/inspect.ts): inspects the 17-URL
+# watchlist + sitemap newcomers, diffs against the previous run in Supabase,
+# prints the verdict + the ≤10-URL "Request Indexing" shortlist to the job
+# summary, and uploads the JSON report. Read-only on GSC unless dispatched
+# with submit_sitemap. Needs no npm install — plain Node + fetch.
+
+on:
+  schedule:
+    # Mondays 09:30 IST = 04:00 UTC
+    - cron: '0 4 * * 1'
+  workflow_dispatch:
+    inputs:
+      scope:
+        description: 'watchlist | newcomers | full'
+        required: false
+        default: newcomers
+        type: choice
+        options: [watchlist, newcomers, full]
+      submit_sitemap:
+        description: 'Re-submit /sitemap.xml to Search Console'
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: seo-inspect
+  cancel-in-progress: false
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: webapp
+    env:
+      # Same service-account JSON the daily briefing already uses (GOOGLE_CREDENTIALS_JSON),
+      # once that account is a user on the GSC property — or a dedicated GSC_SERVICE_ACCOUNT_JSON.
+      GSC_SERVICE_ACCOUNT_JSON: ${{ secrets.GSC_SERVICE_ACCOUNT_JSON || secrets.GOOGLE_CREDENTIALS_JSON }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Inspect
+        run: >
+          node --experimental-strip-types tools/seo/inspect.ts
+          --scope "${{ inputs.scope || 'newcomers' }}"
+          ${{ inputs.submit_sitemap == true && '--submit-sitemap' || '' }}
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seo-inspection-${{ github.run_id }}
+          path: webapp/tools/seo/reports/*.json
+          retention-days: 90
+          if-no-files-found: warn
