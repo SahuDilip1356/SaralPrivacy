@@ -207,7 +207,7 @@ test("hotspot deep-links resolve: every assessment client handles ?bucket=", () 
 
   for (const p of PACKS) {
     const folder = p.assessmentRoute.replace(/^\/assessment\//, "");
-    const dir = join(HERE, "../../app/assessment", folder);
+    const dir = join(HERE, "../../app/[locale]/assessment", folder);
 
     let clients: string[];
     try {

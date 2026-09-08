@@ -18,7 +18,7 @@ import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const PAGE = "app/page.tsx";
+const PAGE = "app/[locale]/page.tsx";
 
 const read = (p) => {
   try {

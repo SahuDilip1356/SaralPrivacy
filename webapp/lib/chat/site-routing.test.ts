@@ -32,7 +32,8 @@ import {
 } from "./site-routing.ts";
 import { topicNav } from "../learnNav.ts";
 
-const APP_DIR = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "app");
+// Public routes live under the [locale] segment since the i18n W1 restructure.
+const APP_DIR = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "app", "[locale]");
 
 /** Learn slugs served by app/learn/[topic] (entries without an external href). */
 const LEARN_TOPIC_SLUGS = new Set(
