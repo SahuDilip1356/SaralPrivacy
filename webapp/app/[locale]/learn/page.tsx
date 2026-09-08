@@ -1,29 +1,32 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ArrowRight, BookOpen, FileText, Shield, Users, AlertTriangle, Database, Globe, HelpCircle, Scale, ClipboardList, FileSearch, CheckSquare } from "lucide-react";
 
 // ─── Reading guide data ───────────────────────────────────────────────────────
 
+// Display strings live in the catalog under learn.hub.* — these arrays keep
+// only stable keys, hrefs and icons (MULTILINGUAL_SPEC §4.3A).
 const learningPath = [
-  { label: "What is DPDPA?",        href: "/learn/what-is-dpdpa" },
-  { label: "Who Does It Apply To?", href: "/learn/applicability" },
-  { label: "Key Terms",             href: "/learn/key-terms" },
-  { label: "Consent Under DPDPA",   href: "/learn/consent" },
-  { label: "Rights of Individuals", href: "/learn/rights" },
-  { label: "Duties of Businesses",  href: "/learn/duties" },
+  { key: "whatIsDpdpa",   href: "/learn/what-is-dpdpa" },
+  { key: "applicability", href: "/learn/applicability" },
+  { key: "keyTerms",      href: "/learn/key-terms" },
+  { key: "consent",       href: "/learn/consent" },
+  { key: "rights",        href: "/learn/rights" },
+  { key: "duties",        href: "/learn/duties" },
 ];
 
 const referenceDocuments = [
-  { label: "DPDP Act 2023",        href: "/learn/dpdp-act-2023",                        icon: Scale },
-  { label: "DPDP Rules 2025",      href: "/learn/dpdp-rules-2025-plain-english-guide",  icon: FileText },
-  { label: "Penalties",            href: "/penalty-calculator",                         icon: AlertTriangle },
-  { label: "Glossary (50+ Terms)", href: "/glossary",                                   icon: BookOpen },
+  { key: "act",       href: "/learn/dpdp-act-2023",                       icon: Scale },
+  { key: "rules",     href: "/learn/dpdp-rules-2025-plain-english-guide", icon: FileText },
+  { key: "penalties", href: "/penalty-calculator",                        icon: AlertTriangle },
+  { key: "glossary",  href: "/glossary",                                  icon: BookOpen },
 ];
 
 const complianceTools = [
-  { label: "Compliance Checklist (90 Controls)", href: "/compliance-checklist", icon: ClipboardList },
-  { label: "DPDPA Assessment",                   href: "/assessment",           icon: FileSearch },
-  { label: "DPDPA White Paper",                  href: "/white-paper",          icon: CheckSquare },
+  { key: "checklist",  href: "/compliance-checklist", icon: ClipboardList },
+  { key: "assessment", href: "/assessment",           icon: FileSearch },
+  { key: "whitePaper", href: "/white-paper",          icon: CheckSquare },
 ];
 
 export const metadata: Metadata = {
@@ -33,163 +36,35 @@ export const metadata: Metadata = {
   alternates: { canonical: 'https://saralprivacy.com/learn' },
 };
 
+// Titles, descriptions, time and tag strings live under learn.hub.topics.<key>.
 const learnTopics = [
-  {
-    icon: Scale,
-    title: "DPDP Act 2023 — Full Text",
-    href: "/learn/dpdp-act-2023",
-    description: "The complete Digital Personal Data Protection Act, 2023 — all 9 chapters, 44 sections, and the Penalty Schedule — official text with plain-English summaries.",
-    time: "Act Reference",
-    tag: "Act Reference",
-    tagColor: "bg-navy-100 text-navy-700",
-  },
-  {
-    icon: FileText,
-    title: "DPDP Rules 2025: Plain-English Guide",
-    href: "/learn/dpdp-rules-2025-plain-english-guide",
-    description: "Every Rule and Schedule under the DPDP Rules, 2025 explained in plain English — section by section, in the same order as the official text.",
-    time: "25 min",
-    tag: "Rules Reference",
-    tagColor: "bg-navy-100 text-navy-700",
-  },
-  {
-    icon: BookOpen,
-    title: "What is DPDPA?",
-    href: "/learn/what-is-dpdpa",
-    description: "An overview of the Digital Personal Data Protection Act, 2023 — why it was passed, what it governs, and what it means for Indian businesses.",
-    time: "5 min",
-    tag: "Start here",
-    tagColor: "bg-green-100 text-green-800",
-  },
-  {
-    icon: Users,
-    title: "Who Does It Apply To?",
-    href: "/learn/applicability",
-    description: "DPDPA applies to any entity processing personal data of Indian citizens. Find out whether your business is covered and to what extent.",
-    time: "4 min",
-    tag: "Essential",
-    tagColor: "bg-amber-100 text-amber-700",
-  },
-  {
-    icon: FileText,
-    title: "Must Learn: Key Terms",
-    href: "/learn/key-terms",
-    description: "Data Fiduciary, Data Principal, Data Processor, Significant Data Fiduciary — all the DPDPA vocabulary you need, explained plainly.",
-    time: "6 min",
-    tag: "Reference",
-    tagColor: "bg-slate-100 text-slate-600",
-  },
-  {
-    icon: Shield,
-    title: "Consent Under DPDPA",
-    href: "/learn/consent",
-    description: "What valid consent looks like, how to collect it, what makes consent invalid, and how to design compliant consent flows for your forms and website.",
-    time: "7 min",
-    tag: "Action needed",
-    tagColor: "bg-red-100 text-red-700",
-  },
-  {
-    icon: FileText,
-    title: "Notice Requirements",
-    href: "/learn/notice",
-    description: "Every data collection must be accompanied by a clear notice. Learn what a DPDPA-compliant notice must include and how to implement it.",
-    time: "4 min",
-    tag: "Action needed",
-    tagColor: "bg-red-100 text-red-700",
-  },
-  {
-    icon: Users,
-    title: "Rights of Individuals",
-    href: "/learn/rights",
-    description: "Data Principals have rights to access, correct, and erase their data. Learn what these rights are and how your business must respond.",
-    time: "5 min",
-    tag: "Essential",
-    tagColor: "bg-amber-100 text-amber-700",
-  },
-  {
-    icon: Shield,
-    title: "Duties of Businesses",
-    href: "/learn/duties",
-    description: "What Data Fiduciaries must do: security safeguards, data minimisation, purpose limitation, processor agreements, and more.",
-    time: "8 min",
-    tag: "Essential",
-    tagColor: "bg-amber-100 text-amber-700",
-  },
-  {
-    icon: Users,
-    title: "Children's Data",
-    href: "/learn/childrens-data",
-    description: "DPDPA has special provisions for data of minors. If you process data of anyone under 18, this section is mandatory reading.",
-    time: "4 min",
-    tag: "Sector-specific",
-    tagColor: "bg-indigo-100 text-indigo-700",
-  },
-  {
-    icon: AlertTriangle,
-    title: "Data Breach Basics",
-    href: "/learn/data-breach",
-    description: "What constitutes a breach, notification timelines, who to notify, and how to build a basic incident response capability.",
-    time: "5 min",
-    tag: "Action needed",
-    tagColor: "bg-red-100 text-red-700",
-  },
-  {
-    icon: Database,
-    title: "Data Retention and Deletion",
-    href: "/learn/retention",
-    description: "How long can you keep personal data? What are the rules around deletion? Learn to define and document your retention policies.",
-    time: "4 min",
-    tag: "Practical",
-    tagColor: "bg-green-100 text-green-800",
-  },
-  {
-    icon: Globe,
-    title: "Cross-Border Considerations",
-    href: "/learn/cross-border",
-    description: "Transferring personal data outside India? Understand the permitted destinations framework and what cross-border flows require.",
-    time: "4 min",
-    tag: "Reference",
-    tagColor: "bg-slate-100 text-slate-600",
-  },
-  {
-    icon: HelpCircle,
-    title: "Myth vs Fact",
-    href: "/learn/myths",
-    description: "Common misconceptions about DPDPA — including who needs to comply, what counts as consent, and whether SMEs are exempt.",
-    time: "5 min",
-    tag: "Popular",
-    tagColor: "bg-purple-100 text-purple-700",
-  },
-  {
-    icon: AlertTriangle,
-    title: "Penalties Under DPDPA",
-    href: "/penalty-calculator",
-    description: "Understand the 7-item Penalty Schedule — who can be fined, how much, and under what circumstances. Includes a free Penalty Risk Indicator tool.",
-    time: "Tool",
-    tag: "Tools",
-    tagColor: "bg-amber-100 text-amber-700",
-  },
-  {
-    icon: BookOpen,
-    title: "DPDPA Glossary — 50 Key Terms",
-    href: "/glossary",
-    description: "Every key term from the Act and Rules — Data Principal, Data Fiduciary, Deemed Consent, Penalty Schedule, and more — with exact section references.",
-    time: "Reference",
-    tag: "Reference",
-    tagColor: "bg-blue-100 text-blue-700",
-  },
-  {
-    icon: ClipboardList,
-    title: "DPDPA Compliance Checklist — 90 Controls",
-    href: "/compliance-checklist",
-    description: "Statutory and operational controls across 27 sections — applicability, consent, notice, rights, breach, SDF obligations, and evidence requirements. Based on DPDPA Act 2023 + DPDP Rules 2025.",
-    time: "Checklist",
-    tag: "Tools",
-    tagColor: "bg-teal-100 text-teal-800",
-  },
+  { key: "act", icon: Scale, href: "/learn/dpdp-act-2023", tagColor: "bg-navy-100 text-navy-700" },
+  { key: "rules", icon: FileText, href: "/learn/dpdp-rules-2025-plain-english-guide", tagColor: "bg-navy-100 text-navy-700" },
+  { key: "what-is-dpdpa", icon: BookOpen, href: "/learn/what-is-dpdpa", tagColor: "bg-green-100 text-green-800" },
+  { key: "applicability", icon: Users, href: "/learn/applicability", tagColor: "bg-amber-100 text-amber-700" },
+  { key: "key-terms", icon: FileText, href: "/learn/key-terms", tagColor: "bg-slate-100 text-slate-600" },
+  { key: "consent", icon: Shield, href: "/learn/consent", tagColor: "bg-red-100 text-red-700" },
+  { key: "notice", icon: FileText, href: "/learn/notice", tagColor: "bg-red-100 text-red-700" },
+  { key: "rights", icon: Users, href: "/learn/rights", tagColor: "bg-amber-100 text-amber-700" },
+  { key: "duties", icon: Shield, href: "/learn/duties", tagColor: "bg-amber-100 text-amber-700" },
+  { key: "childrens-data", icon: Users, href: "/learn/childrens-data", tagColor: "bg-indigo-100 text-indigo-700" },
+  { key: "data-breach", icon: AlertTriangle, href: "/learn/data-breach", tagColor: "bg-red-100 text-red-700" },
+  { key: "retention", icon: Database, href: "/learn/retention", tagColor: "bg-green-100 text-green-800" },
+  { key: "cross-border", icon: Globe, href: "/learn/cross-border", tagColor: "bg-slate-100 text-slate-600" },
+  { key: "myths", icon: HelpCircle, href: "/learn/myths", tagColor: "bg-purple-100 text-purple-700" },
+  { key: "penalties", icon: AlertTriangle, href: "/penalty-calculator", tagColor: "bg-amber-100 text-amber-700" },
+  { key: "glossary", icon: BookOpen, href: "/glossary", tagColor: "bg-blue-100 text-blue-700" },
+  { key: "checklist", icon: ClipboardList, href: "/compliance-checklist", tagColor: "bg-teal-100 text-teal-800" },
 ];
 
-export default function LearnPage() {
+export default async function LearnPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations("learn.hub");
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
@@ -198,15 +73,12 @@ export default function LearnPage() {
           <div className="max-w-2xl">
             <div className="inline-flex items-center gap-2 bg-green-700/40 border border-green-500/50 rounded-full px-3.5 py-1.5 mb-4">
               <BookOpen size={12} className="text-green-300" />
-              <span className="text-green-300 text-xs font-semibold">DPDPA Learning Hub</span>
+              <span className="text-green-300 text-xs font-semibold">{t("badge")}</span>
             </div>
             <h1 className="text-3xl sm:text-4xl font-semibold text-white mb-3">
-              DPDPA Guide — Plain English for Indian Businesses
+              {t("title")}
             </h1>
-            <p className="text-slate-300 text-lg leading-relaxed">
-              Everything you need to understand the Digital Personal Data Protection Act —
-              without a law degree. Start with the basics or jump to the topic most relevant to you.
-            </p>
+            <p className="text-slate-300 text-lg leading-relaxed">{t("intro")}</p>
           </div>
         </div>
       </div>
@@ -218,7 +90,7 @@ export default function LearnPage() {
           {/* Row 1 — Beginner learning path */}
           <div>
             <h2 className="font-semibold text-navy-700 text-sm mb-2.5">
-              New to DPDPA? Start here →
+              {t("startHere")}
             </h2>
             <div className="flex flex-wrap gap-2">
               {learningPath.map((item, i) => (
@@ -228,7 +100,7 @@ export default function LearnPage() {
                   className="inline-flex items-center gap-1 text-xs text-green-700 bg-white border border-green-200 rounded-full px-2.5 py-1 hover:border-green-400 hover:shadow-sm transition-all"
                 >
                   <span className="font-bold">{i + 1}.</span>
-                  {item.label}
+                  {t(`path.${item.key}`)}
                 </Link>
               ))}
             </div>
@@ -240,17 +112,17 @@ export default function LearnPage() {
           {/* Row 2 — Key reference documents */}
           <div>
             <h2 className="font-semibold text-navy-700 text-sm mb-2.5">
-              Key Reference Documents
+              {t("keyReferenceDocs")}
             </h2>
             <div className="flex flex-wrap gap-2">
-              {referenceDocuments.map(({ label, href, icon: Icon }) => (
+              {referenceDocuments.map(({ key, href, icon: Icon }) => (
                 <Link
                   key={href}
                   href={href}
                   className="inline-flex items-center gap-1.5 text-xs text-navy-700 bg-white border border-navy-300 rounded-full px-3 py-1 hover:bg-navy-50 hover:border-navy-500 hover:shadow-sm transition-all"
                 >
                   <Icon size={11} className="text-navy-500 shrink-0" />
-                  {label}
+                  {t(`refs.${key}`)}
                 </Link>
               ))}
             </div>
@@ -262,17 +134,17 @@ export default function LearnPage() {
           {/* Row 3 — Compliance tools */}
           <div>
             <h2 className="font-semibold text-navy-700 text-sm mb-2.5">
-              Compliance Tools
+              {t("complianceTools")}
             </h2>
             <div className="flex flex-wrap gap-2">
-              {complianceTools.map(({ label, href, icon: Icon }) => (
+              {complianceTools.map(({ key, href, icon: Icon }) => (
                 <Link
                   key={href}
                   href={href}
                   className="inline-flex items-center gap-1.5 text-xs text-teal-800 bg-white border border-teal-300 rounded-full px-3 py-1 hover:bg-teal-50 hover:border-teal-500 hover:shadow-sm transition-all"
                 >
                   <Icon size={11} className="text-teal-500 shrink-0" />
-                  {label}
+                  {t(`tools.${key}`)}
                 </Link>
               ))}
             </div>
@@ -282,7 +154,7 @@ export default function LearnPage() {
 
         {/* Topics grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {learnTopics.map(({ icon: Icon, title, href, description, time, tag, tagColor }) => (
+          {learnTopics.map(({ key, icon: Icon, href, tagColor }) => (
             <Link key={href} href={href}>
               <div className="bg-white rounded-xl border border-slate-200 p-6 h-full hover:border-green-300 hover:shadow-md transition-all group">
                 <div className="flex items-center justify-between mb-3">
@@ -290,17 +162,21 @@ export default function LearnPage() {
                     <Icon size={18} className="text-slate-600" />
                   </div>
                   <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${tagColor}`}>
-                    {tag}
+                    {t(`topics.${key}.tag`)}
                   </span>
                 </div>
                 <h3 className="font-semibold text-navy-700 text-base mb-2 group-hover:text-green-900 transition-colors">
-                  {title}
+                  {t(`topics.${key}.title`)}
                 </h3>
-                <p className="text-slate-500 text-sm leading-relaxed mb-4">{description}</p>
+                <p className="text-slate-500 text-sm leading-relaxed mb-4">
+                  {t(`topics.${key}.description`)}
+                </p>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-slate-600">{time} read</span>
+                  <span className="text-xs text-slate-600">
+                    {t("readTime", { time: t(`topics.${key}.time`) })}
+                  </span>
                   <span className="text-green-500 text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
-                    Read <ArrowRight size={14} />
+                    {t("read")} <ArrowRight size={14} />
                   </span>
                 </div>
               </div>

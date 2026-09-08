@@ -331,5 +331,153 @@
       "errorNetwork": "Network error. Please check your connection and try again.",
       "subscribeCta": "Subscribe to Briefings"
     }
+  },
+  "learn": {
+    "hub": {
+      "badge": "DPDPA Learning Hub",
+      "title": "DPDPA Guide — Plain English for Indian Businesses",
+      "intro": "Everything you need to understand the Digital Personal Data Protection Act — without a law degree. Start with the basics or jump to the topic most relevant to you.",
+      "startHere": "New to DPDPA? Start here →",
+      "keyReferenceDocs": "Key Reference Documents",
+      "complianceTools": "Compliance Tools",
+      "read": "Read",
+      "readTime": "{time} read",
+      "path": {
+        "whatIsDpdpa": "What is DPDPA?",
+        "applicability": "Who Does It Apply To?",
+        "keyTerms": "Key Terms",
+        "consent": "Consent Under DPDPA",
+        "rights": "Rights of Individuals",
+        "duties": "Duties of Businesses"
+      },
+      "refs": {
+        "act": "DPDP Act 2023",
+        "rules": "DPDP Rules 2025",
+        "penalties": "Penalties",
+        "glossary": "Glossary (50+ Terms)"
+      },
+      "tools": {
+        "checklist": "Compliance Checklist (90 Controls)",
+        "assessment": "DPDPA Assessment",
+        "whitePaper": "DPDPA White Paper"
+      },
+      "topics": {
+        "act": {
+          "title": "DPDP Act 2023 — Full Text",
+          "description": "The complete Digital Personal Data Protection Act, 2023 — all 9 chapters, 44 sections, and the Penalty Schedule — official text with plain-English summaries.",
+          "time": "Act Reference",
+          "tag": "Act Reference"
+        },
+        "rules": {
+          "title": "DPDP Rules 2025: Plain-English Guide",
+          "description": "Every Rule and Schedule under the DPDP Rules, 2025 explained in plain English — section by section, in the same order as the official text.",
+          "time": "25 min",
+          "tag": "Rules Reference"
+        },
+        "what-is-dpdpa": {
+          "title": "What is DPDPA?",
+          "description": "An overview of the Digital Personal Data Protection Act, 2023 — why it was passed, what it governs, and what it means for Indian businesses.",
+          "time": "5 min",
+          "tag": "Start here"
+        },
+        "applicability": {
+          "title": "Who Does It Apply To?",
+          "description": "DPDPA applies to any entity processing personal data of Indian citizens. Find out whether your business is covered and to what extent.",
+          "time": "4 min",
+          "tag": "Essential"
+        },
+        "key-terms": {
+          "title": "Must Learn: Key Terms",
+          "description": "Data Fiduciary, Data Principal, Data Processor, Significant Data Fiduciary — all the DPDPA vocabulary you need, explained plainly.",
+          "time": "6 min",
+          "tag": "Reference"
+        },
+        "consent": {
+          "title": "Consent Under DPDPA",
+          "description": "What valid consent looks like, how to collect it, what makes consent invalid, and how to design compliant consent flows for your forms and website.",
+          "time": "7 min",
+          "tag": "Action needed"
+        },
+        "notice": {
+          "title": "Notice Requirements",
+          "description": "Every data collection must be accompanied by a clear notice. Learn what a DPDPA-compliant notice must include and how to implement it.",
+          "time": "4 min",
+          "tag": "Action needed"
+        },
+        "rights": {
+          "title": "Rights of Individuals",
+          "description": "Data Principals have rights to access, correct, and erase their data. Learn what these rights are and how your business must respond.",
+          "time": "5 min",
+          "tag": "Essential"
+        },
+        "duties": {
+          "title": "Duties of Businesses",
+          "description": "What Data Fiduciaries must do: security safeguards, data minimisation, purpose limitation, processor agreements, and more.",
+          "time": "8 min",
+          "tag": "Essential"
+        },
+        "childrens-data": {
+          "title": "Children's Data",
+          "description": "DPDPA has special provisions for data of minors. If you process data of anyone under 18, this section is mandatory reading.",
+          "time": "4 min",
+          "tag": "Sector-specific"
+        },
+        "data-breach": {
+          "title": "Data Breach Basics",
+          "description": "What constitutes a breach, notification timelines, who to notify, and how to build a basic incident response capability.",
+          "time": "5 min",
+          "tag": "Action needed"
+        },
+        "retention": {
+          "title": "Data Retention and Deletion",
+          "description": "How long can you keep personal data? What are the rules around deletion? Learn to define and document your retention policies.",
+          "time": "4 min",
+          "tag": "Practical"
+        },
+        "cross-border": {
+          "title": "Cross-Border Considerations",
+          "description": "Transferring personal data outside India? Understand the permitted destinations framework and what cross-border flows require.",
+          "time": "4 min",
+          "tag": "Reference"
+        },
+        "myths": {
+          "title": "Myth vs Fact",
+          "description": "Common misconceptions about DPDPA — including who needs to comply, what counts as consent, and whether SMEs are exempt.",
+          "time": "5 min",
+          "tag": "Popular"
+        },
+        "penalties": {
+          "title": "Penalties Under DPDPA",
+          "description": "Understand the 7-item Penalty Schedule — who can be fined, how much, and under what circumstances. Includes a free Penalty Risk Indicator tool.",
+          "time": "Tool",
+          "tag": "Tools"
+        },
+        "glossary": {
+          "title": "DPDPA Glossary — 50 Key Terms",
+          "description": "Every key term from the Act and Rules — Data Principal, Data Fiduciary, Deemed Consent, Penalty Schedule, and more — with exact section references.",
+          "time": "Reference",
+          "tag": "Reference"
+        },
+        "checklist": {
+          "title": "DPDPA Compliance Checklist — 90 Controls",
+          "description": "Statutory and operational controls across 27 sections — applicability, consent, notice, rights, breach, SDF obligations, and evidence requirements. Based on DPDPA Act 2023 + DPDP Rules 2025.",
+          "time": "Checklist",
+          "tag": "Tools"
+        }
+      }
+    },
+    "topic": {
+      "guideLabel": "DPDPA Guide",
+      "complianceTools": "Compliance Tools",
+      "complianceChecklist": "Compliance Checklist",
+      "dpdpaAssessment": "DPDPA Assessment",
+      "guide": "Guide",
+      "disclaimerLabel": "Educational content only.",
+      "disclaimerText": "This guide is for educational purposes and does not constitute legal advice. Please consult a qualified data protection lawyer for formal legal opinions specific to your business situation.",
+      "legalBaselineLabel": "Legal baseline:",
+      "legalBaselineText": "DPDP Rules, 2025 notified on 14 November 2025, with phased commencement.",
+      "educationalLine": "This page is for educational purposes and does not constitute legal advice.",
+      "relatedTopics": "Related topics"
+    }
   }
 }

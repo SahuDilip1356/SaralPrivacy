@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, ClipboardList, FileSearch, CheckSquare } from "lucide-react";
 import { notFound } from "next/navigation";
+import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { articleSchema, breadcrumbSchema, speakableSchema } from "@/lib/schema";
+import { chromeMessage } from "@/lib/i18n/chrome";
 import { topicNav } from "@/lib/learnNav";
 import { AssessmentCTA } from "@/components/cta/AssessmentCTA";
 import { WhitepaperCTA } from "@/components/cta/WhitepaperCTA";
@@ -30,7 +32,7 @@ const RELATED_TOPICS: Record<string, string[]> = {
 };
 
 interface Props {
-  params: Promise<{ topic: string }>;
+  params: Promise<{ locale: string; topic: string }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -113,7 +115,14 @@ function renderContent(content: string) {
 
 
 export default async function LearnTopicPage({ params }: Props) {
-  const { topic } = await params;
+  const { locale, topic } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations("learn.topic");
+  // TOC labels are DATA (lib/learnNav.ts stays the English source): hi.json
+  // overrides live under learn.toc.<slug>, falling back to the English label.
+  const messages = await getMessages();
+  const tocLabel = (slug: string, fallback: string) =>
+    chromeMessage(messages, `learn.toc.${slug}`, fallback);
   const content = learnContent[topic];
 
   if (!content) {
@@ -149,20 +158,20 @@ export default async function LearnTopicPage({ params }: Props) {
           <div className="hidden lg:block">
             <div className="bg-white rounded-xl border border-slate-200 p-4 sticky top-24">
               <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
-                DPDPA Guide
+                {t("guideLabel")}
               </h3>
               <nav className="space-y-1">
-                {topicNav.map((t) => (
+                {topicNav.map((nav) => (
                   <Link
-                    key={t.slug}
-                    href={t.href ?? `/learn/${t.slug}`}
+                    key={nav.slug}
+                    href={nav.href ?? `/learn/${nav.slug}`}
                     className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
-                      t.slug === topic
+                      nav.slug === topic
                         ? "bg-green-50 text-green-800 font-semibold"
                         : "text-slate-600 hover:text-navy-700 hover:bg-slate-50"
                     }`}
                   >
-                    {t.label}
+                    {tocLabel(nav.slug, nav.label)}
                   </Link>
                 ))}
               </nav>
@@ -171,7 +180,7 @@ export default async function LearnTopicPage({ params }: Props) {
             {/* Compliance Tools widget */}
             <div className="bg-teal-50 border border-teal-200 rounded-xl p-4 mt-4">
               <h3 className="text-xs font-semibold text-teal-800 uppercase tracking-wider mb-3">
-                Compliance Tools
+                {t("complianceTools")}
               </h3>
               <nav className="space-y-1">
                 <Link
@@ -179,21 +188,21 @@ export default async function LearnTopicPage({ params }: Props) {
                   className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-teal-100 hover:text-teal-900 transition-colors"
                 >
                   <ClipboardList size={14} className="text-teal-500 shrink-0" />
-                  Compliance Checklist
+                  {t("complianceChecklist")}
                 </Link>
                 <Link
                   href="/assessment"
                   className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-teal-100 hover:text-teal-900 transition-colors"
                 >
                   <FileSearch size={14} className="text-teal-500 shrink-0" />
-                  DPDPA Assessment
+                  {t("dpdpaAssessment")}
                 </Link>
                 <Link
                   href="/white-paper"
                   className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-teal-100 hover:text-teal-900 transition-colors"
                 >
                   <CheckSquare size={14} className="text-teal-500 shrink-0" />
-                  Guide
+                  {t("guide")}
                 </Link>
               </nav>
             </div>
@@ -211,7 +220,7 @@ export default async function LearnTopicPage({ params }: Props) {
               className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-green-900 mb-5 transition-colors"
             >
               <ArrowLeft size={14} />
-              DPDPA Guide
+              {t("guideLabel")}
             </Link>
 
             <div className="bg-white rounded-xl border border-slate-200 p-7 mb-5">
@@ -229,16 +238,14 @@ export default async function LearnTopicPage({ params }: Props) {
                 {renderContent(content.content)}
               </div>
               <div className="mt-10 pt-6 border-t border-slate-200 text-xs text-slate-600 space-y-1">
-                <p><strong>Legal baseline:</strong> DPDP Rules, 2025 notified on 14 November 2025, with phased commencement.</p>
-                <p>This page is for educational purposes and does not constitute legal advice.</p>
+                <p><strong>{t("legalBaselineLabel")}</strong> {t("legalBaselineText")}</p>
+                <p>{t("educationalLine")}</p>
               </div>
             </div>
 
             {/* Disclaimer */}
             <div className="bg-cloud-100 rounded-lg p-4 text-xs text-slate-600 mb-5">
-              <strong>Educational content only.</strong> This guide is for educational purposes and
-              does not constitute legal advice. Please consult a qualified data protection lawyer
-              for formal legal opinions specific to your business situation.
+              <strong>{t("disclaimerLabel")}</strong> {t("disclaimerText")}
             </div>
 
             {/* Contextual CTAs — Assessment + Whitepaper after article content */}
@@ -251,7 +258,7 @@ export default async function LearnTopicPage({ params }: Props) {
             {RELATED_TOPICS[topic] && (
               <div className="bg-white rounded-xl border border-slate-200 p-5 mb-5">
                 <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
-                  Related topics
+                  {t("relatedTopics")}
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {RELATED_TOPICS[topic].map((relSlug) => {
@@ -263,7 +270,7 @@ export default async function LearnTopicPage({ params }: Props) {
                         href={relTopic.href ?? `/learn/${relSlug}`}
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-green-50 hover:text-green-700 transition-colors"
                       >
-                        {relTopic.label}
+                        {tocLabel(relTopic.slug, relTopic.label)}
                       </Link>
                     );
                   })}
@@ -279,7 +286,7 @@ export default async function LearnTopicPage({ params }: Props) {
                   className="flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-green-900 transition-colors"
                 >
                   <ArrowLeft size={16} />
-                  {prev.label}
+                  {tocLabel(prev.slug, prev.label)}
                 </Link>
               ) : (
                 <div />
@@ -289,7 +296,7 @@ export default async function LearnTopicPage({ params }: Props) {
                   href={`/learn/${next.slug}`}
                   className="flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-green-900 transition-colors"
                 >
-                  {next.label}
+                  {tocLabel(next.slug, next.label)}
                   <ArrowRight size={16} />
                 </Link>
               ) : (
