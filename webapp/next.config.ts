@@ -1,4 +1,8 @@
 import type { NextConfig } from "next";
+import createNextIntlPlugin from "next-intl/plugin";
+
+// next-intl request config lives at the default location, ./i18n/request.ts
+const withNextIntl = createNextIntlPlugin();
 
 const nextConfig: NextConfig = {
   // @resvg/resvg-js loads platform-specific native binaries
@@ -62,4 +66,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withNextIntl(nextConfig);
