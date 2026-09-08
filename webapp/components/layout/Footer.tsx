@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { PressProofStrip } from "@/components/ui/PressProofStrip";
+import { InstallCta } from "@/components/pwa/InstallCta";
 import { sectorNavLinks } from "@/lib/data/sectors";
 import { DPO } from "@/lib/data/privacy-vendors";
 
@@ -233,6 +234,9 @@ export function Footer() {
             <Link href="/consent-preferences" className="inline-flex items-center pointer-coarse:min-h-11 text-xs text-slate-400 hover:text-white transition-colors">
               Consent
             </Link>
+            {/* Renders only when the browser can actually install right now
+                (Chromium prompt captured, or iOS Safari outside the app). */}
+            <InstallCta />
           </div>
         </div>
       </div>
