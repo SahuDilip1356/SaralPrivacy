@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Noto_Sans_Devanagari } from "next/font/google";
-import "./globals.css";
+import "@/app/globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 // Vercel Web Analytics — cookieless, no cross-session identifier, so it needs no
@@ -9,6 +9,16 @@ import { Footer } from "@/components/layout/Footer";
 // selling DPDPA readiness. See PRIVACY_RIGHTS_PAGES_SPEC.md §2.
 import { Analytics } from "@vercel/analytics/next";
 import SetuChat from "@/components/chat/SetuChat";
+
+// ─────────────────────────────────────────────────────────────────────────────
+// The single <html>/<body> shell shared by BOTH root layouts:
+//   • app/[locale]/layout.tsx — the public, locale-routed tree (lang from the
+//     locale registry: en-IN, hi-IN, …)
+//   • app/(backoffice)/layout.tsx — admin + report, English-only forever
+//     (MULTILINGUAL_SPEC §1 non-goals)
+// One shell, two thin layouts ⇒ the chrome (Header/Footer/Setu/Analytics,
+// fonts, head links, metadata) can never drift between the trees.
+// ─────────────────────────────────────────────────────────────────────────────
 
 const inter = Inter({
   subsets: ["latin"],
@@ -25,7 +35,8 @@ const notoDevanagari = Noto_Sans_Devanagari({
   display: "swap",
 });
 
-export const metadata: Metadata = {
+/** Site-wide metadata, re-exported verbatim by both root layouts. */
+export const siteMetadata: Metadata = {
   metadataBase: new URL('https://saralprivacy.com'),
   title: {
     default: 'SaralPrivacy — DPDPA Compliance for Indian Businesses',
@@ -56,13 +67,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export function SiteShell({
+  lang,
   children,
 }: Readonly<{
+  /** BCP-47 tag for <html lang> — the registry's `locale` field (en-IN, hi-IN, …) */
+  lang: string;
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en-IN" className={`${inter.variable} ${notoDevanagari.variable}`}>
+    <html lang={lang} className={`${inter.variable} ${notoDevanagari.variable}`}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
