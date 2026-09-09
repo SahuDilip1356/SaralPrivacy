@@ -640,5 +640,190 @@
       "glossary": "शब्दावली (50+ शब्द)",
       "compliance-checklist": "अनुपालन चेकलिस्ट (90 कंट्रोल)"
     }
+  },
+  "survey": {
+    "sidebar": {
+      "engine": "कंप्लायंस इंजन",
+      "tagline": "भारत के लिए प्राइवेसी, आसान और व्यावहारिक",
+      "viewSite": "साइट देखें",
+      "siteSupport": "साइट सहायता"
+    },
+    "sections": {
+      "yourBusiness": "आपका व्यवसाय",
+      "dataInventory": "डेटा इन्वेंटरी",
+      "howAccessWorks": "एक्सेस कैसे काम करता है",
+      "consentAndRights": "सहमति और अधिकार",
+      "ownership": "ज़िम्मेदारी",
+      "report": "रिपोर्ट"
+    },
+    "progress": {
+      "stepOf": "चरण {step} / {total}",
+      "pctComplete": "{pct}% पूरा"
+    },
+    "gauge": {
+      "aria": "रेडीनेस स्कोर: 100 में से {score}",
+      "outOf": "100 में से"
+    },
+    "q6Groups": {
+      "transparencyConsent": "पारदर्शिता और सहमति",
+      "internalControls": "आंतरिक कंट्रोल",
+      "governanceResponse": "गवर्नेंस और रिस्पॉन्स"
+    },
+    "priority": {
+      "highPriority": "उच्च प्राथमिकता",
+      "quickWin": "क्विक विन",
+      "foundational": "बुनियादी"
+    },
+    "whyItMatters": "यह क्यों ज़रूरी है",
+    "whatToDo": "क्या करें",
+    "landing": {
+      "badge": "DPDPA रेडीनेस मूल्यांकन",
+      "title": "3–5 मिनट में अपनी DPDPA तैयारी की कमियाँ जानें",
+      "intro": "देखें कि आपका व्यवसाय व्यक्तिगत डेटा, सहमति, स्टोरेज, डेटा-अधिकार अनुरोध, वेंडर और प्राइवेसी की ज़िम्मेदारी कैसे संभालता है — और आसान भाषा में रेडीनेस स्कोर व व्यावहारिक अगले कदम पाएँ।",
+      "trust": {
+        "builtForIndia": "भारतीय व्यवसायों के लिए बना",
+        "noPayment": "कोई भुगतान नहीं",
+        "noJargon": "कोई क़ानूनी जटिल भाषा नहीं",
+        "takesMinutes": "सिर्फ़ 3–5 मिनट",
+        "practicalScore": "व्यावहारिक स्कोर + अगले कदम",
+        "educationalOnly": "शैक्षिक, क़ानूनी सलाह नहीं"
+      },
+      "whatYoullGet": "आपको क्या मिलेगा",
+      "deliverables": {
+        "score": "आपका रेडीनेस स्कोर (0–100)",
+        "topGaps": "आपकी टॉप 3 प्राइवेसी कमियाँ",
+        "riskCategory": "आपकी जोखिम श्रेणी",
+        "nextSteps": "सुझाए गए अगले कदम",
+        "checklist": "एक आसान DPDPA चेकलिस्ट",
+        "emailOption": "पूरी रिपोर्ट ईमेल पर पाने का विकल्प"
+      },
+      "howItWorks": "यह कैसे काम करता है",
+      "steps": {
+        "answer": "एक छोटा, सेक्टर-विशेष डायग्नोस्टिक भरें",
+        "score": "तुरंत अपना रेडीनेस स्कोर पाएँ",
+        "gaps": "अपनी सबसे बड़ी प्राइवेसी कमियाँ देखें",
+        "actions": "सुझाए गए अगले कदम पाएँ"
+      },
+      "authTitle": "अपनी मुफ़्त DPDPA रेडीनेस जाँच शुरू करें",
+      "beforeYouBegin": "शुरू करने से पहले",
+      "consentRequired": "I authorize SaralPrivacy to analyze my responses to generate a confidential DPDPA readiness assessment.",
+      "viewPrivacyNotice": "प्राइवेसी नोटिस देखें",
+      "takeFreeAssessment": "मुफ़्त मूल्यांकन करें",
+      "freeNoPayment": "मुफ़्त · कोई भुगतान नहीं",
+      "optReport": "पूरी तकनीकी रिपोर्ट मेरे ईमेल पर भेजें",
+      "optNewsletter": "मुझे मुफ़्त डेली DPDPA ब्रीफ़िंग भेजें (2-मिनट की, कभी भी अनसब्सक्राइब करें)"
+    },
+    "steps": {
+      "selectAll": "जो-जो लागू हों, सब चुनें",
+      "optional": "(वैकल्पिक)",
+      "describeIndustry": "कृपया अपना उद्योग बताएँ",
+      "describeIndustryPlaceholder": "जैसे रियल एस्टेट, शिक्षा, कृषि…",
+      "skipForNow": "ये सवाल अभी छोड़ें",
+      "whyThisMatters": "यह क्यों ज़रूरी है",
+      "whatStrongTeamsDo": "मज़बूत टीमें क्या करती हैं",
+      "rightsManagement": "अधिकार प्रबंधन",
+      "consentPractice": "सहमति का तरीक़ा",
+      "s1": {
+        "eyebrow": "व्यवसाय का संदर्भ",
+        "title": "आपके व्यवसाय में प्राइवेसी जोखिम कहाँ से शुरू होता है",
+        "sub": "इससे पता चलता है कि प्राइवेसी जोखिम आपके बिज़नेस मॉडल में संरचनात्मक रूप से कहाँ बना हुआ है।"
+      },
+      "s2": {
+        "eyebrow": "डेटा एक्सपोज़र प्रोफ़ाइल",
+        "title": "क्या आपका व्यवसाय व्यक्तिगत डेटा डिजिटल रूप से जुटाता या रखता है?",
+        "sub": "कभी-कभार का डिजिटल डेटा संग्रह भी DPDPA के तहत दायित्व बनाता है, अगर व्यक्ति पहचाने जा सकते हों।"
+      },
+      "s3": {
+        "eyebrow": "डेटा इकोसिस्टम मैपिंग",
+        "title": "डेटा संभालने के तरीक़ों से अपना अनुपालन दायरा तय करें।"
+      },
+      "s4": {
+        "eyebrow": "कंट्रोल परिपक्वता मूल्यांकन",
+        "title": "कौन-सी प्राइवेसी बुनियादें पहले से मौजूद हैं?",
+        "note": "यह खंड नीति के इरादे और परिचालन कंट्रोल का फ़र्क़ समझने में मदद करता है।"
+      },
+      "s5": {
+        "eyebrow": "अनुपालन परिपक्वता",
+        "title": "आज सहमति और अनुरोध कैसे संभाले जाते हैं",
+        "sub": "अनुपालन परिपक्वता 80% पूरी।"
+      },
+      "s6": {
+        "eyebrow": "ज़िम्मेदारी और तैयारी",
+        "title": "आज प्राइवेसी के फ़ैसलों का मालिक कौन है",
+        "sub": "बुनियादी ऑडिट का आख़िरी चरण।"
+      },
+      "s7": {
+        "eyebrow": "वैयक्तिकरण",
+        "title": "सही सुधारों को प्राथमिकता देने में हमारी मदद करें",
+        "sub": "इससे आपकी रिपोर्ट आपकी असल कामकाजी स्थिति के हिसाब से बनती है, सामान्य सलाह नहीं।"
+      }
+    },
+    "nav": {
+      "back": "पीछे",
+      "next": "आगे",
+      "nextQuestion": "अगला सवाल",
+      "seeScore": "मेरा रेडीनेस स्कोर देखें"
+    },
+    "gate": {
+      "readinessResult": "रेडीनेस नतीजा",
+      "maturityLevel": "परिपक्वता स्तर",
+      "unlocks": {
+        "breakdown": "पूरा स्कोर ब्रेकडाउन — सभी पाँच DPDPA अनुपालन स्तंभों पर विस्तृत मूल्यांकन",
+        "priorityActions": "टॉप 3 प्राथमिक कदम — क़ानूनी जोखिम घटाने के लिए क्रमबद्ध सुधार",
+        "checklist": "डाउनलोड करने लायक चेकलिस्ट — शुरू से अंत तक प्राइवेसी कंट्रोल लागू करने का रोडमैप"
+      },
+      "formTitle": "टॉप जोखिमों, क्विक विन्स और अगले कदमों वाली अपनी विस्तृत रिपोर्ट पाएँ",
+      "secureDelivery": "सुरक्षित डिलीवरी मोड",
+      "emailLabel": "काम का ईमेल (ज़रूरी)",
+      "nameLabel": "आपका नाम (वैकल्पिक)",
+      "businessLabel": "व्यवसाय का नाम (वैकल्पिक)",
+      "mobileLabel": "मोबाइल (वैकल्पिक)",
+      "namePlaceholder": "जैसे राहुल शर्मा",
+      "dataUseNote": "हम इन विवरणों का उपयोग सिर्फ़ आपकी सुरक्षित अनुपालन रिपोर्ट बनाने और भेजने के लिए करते हैं। आपका डेटा एन्क्रिप्टेड है और DPDPA मानकों के अनुसार संभाला जाता है।",
+      "consentDelivery": "I consent to SaralPrivacy using my details to deliver my readiness report.",
+      "consentUpdates": "I would like to receive occasional updates regarding Indian privacy laws.",
+      "consentConsult": "I agree to be contacted for a professional consultation for specific DPDPA needs.",
+      "sending": "भेजा जा रहा है…",
+      "unlockCta": "विस्तृत रिपोर्ट अनलॉक करें",
+      "skipBasic": "छोड़ें — बुनियादी नतीजे दिखाएँ",
+      "trustFooter": "DPDP Act, 2023 और DPDP Rules, 2025 पर आधारित। आपके जवाब कभी बेचे या साझा नहीं किए जाते।"
+    },
+    "result": {
+      "onItsWay": "रिपोर्ट रास्ते में है!",
+      "willSendTo": "आपकी विस्तृत रिपोर्ट हम जल्द ही <email></email> पर भेज देंगे।",
+      "reportTitle": "आपकी DPDPA रेडीनेस रिपोर्ट",
+      "designedFor": "यह रिपोर्ट DPDPA-तैयार तौर-तरीक़ों की ओर बढ़ रहे भारतीय व्यवसायों के लिए बनी है।",
+      "reportRef": "रिपोर्ट संदर्भ",
+      "executiveSummary": "कार्यकारी सारांश",
+      "yourScore": "आपका रेडीनेस स्कोर",
+      "scoreCategories": "स्कोर श्रेणियाँ",
+      "cats": {
+        "noticeConsent": "नोटिस और सहमति",
+        "accessControl": "एक्सेस और नियंत्रण",
+        "retentionDeletion": "डेटा रखना और मिटाना",
+        "ownershipGovernance": "ज़िम्मेदारी और गवर्नेंस",
+        "vendorPartnerRisk": "वेंडर और पार्टनर जोखिम",
+        "incidentReadiness": "इंसिडेंट तैयारी"
+      },
+      "diagnosticSignals": "डायग्नोस्टिक संकेत",
+      "dataExposure": "डेटा एक्सपोज़र",
+      "controlMaturity": "कंट्रोल परिपक्वता",
+      "operationalReadiness": "परिचालन तैयारी",
+      "redFlags": "{count, plural, one {# रेड फ़्लैग मिला} other {# रेड फ़्लैग मिले}}",
+      "strategicRecs": "रणनीतिक सिफ़ारिशें",
+      "elevate": "आज ही अपनी तैयारी बढ़ाएँ।",
+      "elevateBody": "DPDP Rules एक अनुपालन रुख़ माँगते हैं। हमारे विशेषज्ञ DPDPA-अनुरूप ढांचा और उसे लागू करने की रणनीति बनाने में आपकी मदद करते हैं।",
+      "viewFullReport": "पूरी रिपोर्ट देखें",
+      "bookCall": "मुफ़्त 20-मिनट कॉल बुक करें",
+      "downloadGuide": "गाइड डाउनलोड करें",
+      "retake": "मूल्यांकन दोबारा करें",
+      "thisWeek": "इस हफ़्ते करने के 3 काम",
+      "thirtyDayPlan": "आपका 30-दिन का एक्शन प्लान",
+      "recommendedNext": "सुझाया गया अगला कदम",
+      "startHighest": "ऊपर दिए सबसे ज़रूरी कदम से शुरू करें।",
+      "wantHelp": "अपना स्कोर समझने में मदद चाहिए?",
+      "wantHelpBody": "हमारी टीम के साथ मुफ़्त 20-मिनट की DPDPA रेडीनेस कॉल बुक करें।",
+      "bookACall": "कॉल बुक करें"
+    }
   }
 }

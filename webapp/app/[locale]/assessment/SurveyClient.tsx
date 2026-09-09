@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { ArrowRight, ArrowLeft, CheckCircle, AlertTriangle, Shield, SkipForward, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { trackEvent } from "@/lib/analytics";
@@ -18,21 +19,23 @@ import {
 
 // ── Sidebar Sections ──────────────────────────────────────────────────────────
 
+// Labels live under survey.sections.<key> in the catalog.
 const SIDEBAR_SECTIONS = [
-  { label: "Your business",      steps: [1] },
-  { label: "Data inventory",     steps: [2, 3] },
-  { label: "How access works",   steps: [4, 5] },
-  { label: "Consent and rights", steps: [6] },
-  { label: "Ownership",          steps: [7] },
-  { label: "Report",             steps: [8, 9] },
+  { key: "yourBusiness",     steps: [1] },
+  { key: "dataInventory",    steps: [2, 3] },
+  { key: "howAccessWorks",   steps: [4, 5] },
+  { key: "consentAndRights", steps: [6] },
+  { key: "ownership",        steps: [7] },
+  { key: "report",           steps: [8, 9] },
 ];
 
 function SidebarNav({ step, result }: { step: number; result: DPDPAScoreResult | null }) {
+  const t = useTranslations("survey");
   return (
     <aside className="hidden lg:flex w-56 bg-navy-950 shrink-0 flex-col sticky top-[96px] h-[calc(100vh-96px)] overflow-y-auto">
       <div className="px-4 py-5 border-b border-navy-800">
-        <div className="text-xs font-bold text-green-400 uppercase tracking-widest mb-1">Compliance Engine</div>
-        <div className="text-slate-400 text-xs">PRIVACY MADE PRACTICAL FOR INDIA</div>
+        <div className="text-xs font-bold text-green-400 uppercase tracking-widest mb-1">{t("sidebar.engine")}</div>
+        <div className="text-slate-400 text-xs">{t("sidebar.tagline")}</div>
       </div>
 
       <nav className="flex-1 px-3 py-4 space-y-0.5">
@@ -41,7 +44,7 @@ function SidebarNav({ step, result }: { step: number; result: DPDPAScoreResult |
           const isComplete = sec.steps.every(s => s < step);
           return (
             <div
-              key={sec.label}
+              key={sec.key}
               className={cn(
                 "flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm transition-colors",
                 isActive ? "bg-navy-800 text-white border-l-2 border-green-400" :
@@ -55,7 +58,7 @@ function SidebarNav({ step, result }: { step: number; result: DPDPAScoreResult |
                   isActive ? "border-green-400 bg-green-400" : "border-slate-600"
                 )} />
               )}
-              <span className="text-xs font-medium">{sec.label}</span>
+              <span className="text-xs font-medium">{t(`sections.${sec.key}`)}</span>
             </div>
           );
         })}
@@ -64,8 +67,8 @@ function SidebarNav({ step, result }: { step: number; result: DPDPAScoreResult |
       {/* Score hidden during assessment — revealed at gate screen */}
 
       <div className="px-5 py-4 border-t border-navy-800 space-y-2">
-        <Link href="/" className="text-xs text-slate-500 hover:text-white block transition-colors">← View Site</Link>
-        <a href="mailto:support@saralprivacy.com" className="text-xs text-slate-500 hover:text-white block transition-colors">Site support</a>
+        <Link href="/" className="text-xs text-slate-500 hover:text-white block transition-colors">← {t("sidebar.viewSite")}</Link>
+        <a href="mailto:support@saralprivacy.com" className="text-xs text-slate-500 hover:text-white block transition-colors">{t("sidebar.siteSupport")}</a>
       </div>
     </aside>
   );
@@ -74,16 +77,17 @@ function SidebarNav({ step, result }: { step: number; result: DPDPAScoreResult |
 // ── Progress Breadcrumb ───────────────────────────────────────────────────────
 
 function ProgressBar({ step, total }: { step: number; total: number }) {
+  const t = useTranslations("survey");
   const pct = Math.round((step / total) * 100);
-  const section = SIDEBAR_SECTIONS.find(s => s.steps.includes(step))?.label ?? "";
+  const sectionKey = SIDEBAR_SECTIONS.find(s => s.steps.includes(step))?.key ?? "";
   return (
     <div className="mb-6">
       <div className="flex items-center justify-between text-xs text-slate-500 mb-2">
         <span className="font-semibold text-navy-900">
-          Step {step} of {total}
-          {section ? <span className="text-slate-400 font-normal"> · {section}</span> : null}
+          {t("progress.stepOf", { step, total })}
+          {sectionKey ? <span className="text-slate-400 font-normal"> · {t(`sections.${sectionKey}`)}</span> : null}
         </span>
-        <span className="text-green-800 font-semibold">{pct}% complete</span>
+        <span className="text-green-800 font-semibold">{t("progress.pctComplete", { pct })}</span>
       </div>
       <div className="h-1 bg-slate-200 rounded-full overflow-hidden">
         <div className="h-full bg-green-400 rounded-full transition-all duration-500" style={{ width: `${pct}%` }} />
@@ -95,6 +99,7 @@ function ProgressBar({ step, total }: { step: number; total: number }) {
 // ── Speedometer SVG ───────────────────────────────────────────────────────────
 
 function SpeedometerGauge({ score, color }: { score: number; color: string }) {
+  const t = useTranslations("survey");
   const [animated, setAnimated] = useState(false);
   useEffect(() => {
     let raf: number;
@@ -129,7 +134,7 @@ function SpeedometerGauge({ score, color }: { score: number; color: string }) {
 
   return (
     <div className="flex flex-col items-center">
-      <svg viewBox="0 0 200 110" className="w-56 h-auto" aria-label={`Readiness score: ${score} out of 100`}>
+      <svg viewBox="0 0 200 110" className="w-56 h-auto" aria-label={t("gauge.aria", { score })}>
         {/* Band arcs */}
         {bands.map((b) => {
           const startDeg = (b.from / 100) * 180;
@@ -167,7 +172,7 @@ function SpeedometerGauge({ score, color }: { score: number; color: string }) {
           {score}
         </text>
         <text x={cx} y={cy + 8} textAnchor="middle" fill="#64748b" fontSize="10" fontFamily="Inter">
-          out of 100
+          {t("gauge.outOf")}
         </text>
       </svg>
     </div>
@@ -349,10 +354,11 @@ function QuestionCardGrid({
 
 // ── Multi-Select: Grouped Cards (Q6) ─────────────────────────────────────────
 
+// Group labels live under survey.q6Groups.<key>.
 const Q6_GROUPS = [
-  { label: "TRANSPARENCY & CONSENT",  ids: ["privacy-notice", "consent-capture"] },
-  { label: "INTERNAL CONTROLS",       ids: ["access-controls", "retention"] },
-  { label: "GOVERNANCE & RESPONSE",   ids: ["vendor-clauses", "incident-response", "privacy-owner", "data-inventory"] },
+  { key: "transparencyConsent", ids: ["privacy-notice", "consent-capture"] },
+  { key: "internalControls",    ids: ["access-controls", "retention"] },
+  { key: "governanceResponse",  ids: ["vendor-clauses", "incident-response", "privacy-owner", "data-inventory"] },
 ];
 
 function QuestionMultiCards({
@@ -362,6 +368,7 @@ function QuestionMultiCards({
   selected: string[];
   onChange: (ids: string[]) => void;
 }) {
+  const t = useTranslations("survey");
   const optMap = Object.fromEntries(options.map(o => [o.id, o]));
 
   const toggle = (id: string) => {
@@ -376,8 +383,8 @@ function QuestionMultiCards({
   return (
     <div className="space-y-5">
       {Q6_GROUPS.map((group) => (
-        <div key={group.label}>
-          <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">{group.label}</div>
+        <div key={group.key}>
+          <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">{t(`q6Groups.${group.key}`)}</div>
           <div className="grid grid-cols-2 gap-2">
             {group.ids.map((id) => {
               const opt = optMap[id];
@@ -492,13 +499,16 @@ function StrategyCard({
     priority === "QUICK WIN"      ? "bg-green-100 text-green-800 border border-green-200" :
     "bg-slate-100 text-slate-600 border border-slate-200";
 
+  const t = useTranslations("survey");
+  const priorityKey =
+    priority === "HIGH PRIORITY" ? "highPriority" : priority === "QUICK WIN" ? "quickWin" : "foundational";
   return (
     <div className="bg-white rounded-xl border border-slate-200 p-5">
-      <span className={cn("text-xs font-bold px-2 py-0.5 rounded-full", badge)}>{priority}</span>
+      <span className={cn("text-xs font-bold px-2 py-0.5 rounded-full", badge)}>{t(`priority.${priorityKey}`)}</span>
       <h4 className="font-semibold text-slate-800 text-sm mt-3 mb-2 leading-snug">{finding}</h4>
-      <div className="text-xs text-slate-500 font-semibold uppercase tracking-wide mb-1">Why it matters</div>
+      <div className="text-xs text-slate-500 font-semibold uppercase tracking-wide mb-1">{t("whyItMatters")}</div>
       <p className="text-slate-600 text-xs leading-relaxed mb-3">{why}</p>
-      <div className="text-xs text-slate-500 font-semibold uppercase tracking-wide mb-1">What to do</div>
+      <div className="text-xs text-slate-500 font-semibold uppercase tracking-wide mb-1">{t("whatToDo")}</div>
       <p className="text-slate-600 text-xs leading-relaxed">{what}</p>
     </div>
   );
@@ -545,6 +555,7 @@ function buildStrategyCards(result: DPDPAScoreResult): Array<{ priority: "HIGH P
 const TOTAL_Q_STEPS = 7; // steps 1–7 cover Q1–Q10 + Q11/Q12
 
 export default function SurveyClient() {
+  const t = useTranslations("survey");
   const [step, setStep] = useState(0);
 
   // Consent state
@@ -697,48 +708,41 @@ export default function SurveyClient() {
           {/* Left — Hero */}
           <div>
             <div className="inline-block bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide mb-5">
-              DPDPA READINESS ASSESSMENT
+              {t("landing.badge")}
             </div>
             <h1 className="text-4xl sm:text-5xl font-semibold text-navy-900 leading-tight mb-5">
-              Find your DPDPA readiness gaps in 3–5 minutes
+              {t("landing.title")}
             </h1>
             <p className="text-slate-600 text-lg leading-relaxed mb-7">
-              Check how your business handles personal data, consent, storage, data rights
-              requests, vendors, and privacy ownership — and get a plain-English readiness
-              score with practical next steps.
+              {t("landing.intro")}
             </p>
             {/* Trust row */}
             <div className="grid grid-cols-2 gap-3 mb-8">
-              {[
-                { icon: "🇮🇳", text: "Built for Indian businesses" },
-                { icon: "🆓", text: "No payment required" },
-                { icon: "🚫", text: "No legal jargon" },
-                { icon: "⏱", text: "Takes 3–5 minutes" },
-                { icon: "📋", text: "Practical score + next steps" },
-                { icon: "⚖️", text: "Educational, not legal advice" },
-              ].map(item => (
-                <div key={item.text} className="flex items-center gap-2 text-sm text-slate-700">
-                  <span>{item.icon}</span>
-                  <span>{item.text}</span>
+              {(
+                [
+                  ["🇮🇳", "builtForIndia"],
+                  ["🆓", "noPayment"],
+                  ["🚫", "noJargon"],
+                  ["⏱", "takesMinutes"],
+                  ["📋", "practicalScore"],
+                  ["⚖️", "educationalOnly"],
+                ] as const
+              ).map(([icon, key]) => (
+                <div key={key} className="flex items-center gap-2 text-sm text-slate-700">
+                  <span>{icon}</span>
+                  <span>{t(`landing.trust.${key}`)}</span>
                 </div>
               ))}
             </div>
 
             {/* What you'll get */}
             <div className="bg-white rounded-xl border border-slate-200 p-5 mb-5">
-              <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">What you&apos;ll get</div>
+              <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">{t("landing.whatYoullGet")}</div>
               <div className="grid sm:grid-cols-2 gap-x-5 gap-y-2">
-                {[
-                  "Your readiness score (0–100)",
-                  "Your top 3 privacy gaps",
-                  "Your risk category",
-                  "Recommended next steps",
-                  "A simple DPDPA checklist",
-                  "Option to email your full report",
-                ].map(t => (
-                  <div key={t} className="flex items-start gap-2 text-sm text-slate-700">
+                {(["score", "topGaps", "riskCategory", "nextSteps", "checklist", "emailOption"] as const).map(key => (
+                  <div key={key} className="flex items-start gap-2 text-sm text-slate-700">
                     <CheckCircle size={15} className="text-green-500 mt-0.5 shrink-0" />
-                    <span>{t}</span>
+                    <span>{t(`landing.deliverables.${key}`)}</span>
                   </div>
                 ))}
               </div>
@@ -746,17 +750,12 @@ export default function SurveyClient() {
 
             {/* How it works */}
             <div>
-              <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">How it works</div>
+              <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">{t("landing.howItWorks")}</div>
               <div className="space-y-2">
-                {[
-                  "Answer a short, sector-specific diagnostic",
-                  "Get your readiness score instantly",
-                  "See your biggest privacy gaps",
-                  "Receive recommended next actions",
-                ].map((t, i) => (
-                  <div key={t} className="flex items-center gap-3 text-sm text-slate-700">
+                {(["answer", "score", "gaps", "actions"] as const).map((key, i) => (
+                  <div key={key} className="flex items-center gap-3 text-sm text-slate-700">
                     <span className="shrink-0 w-6 h-6 rounded-full bg-navy-900 text-white text-xs font-bold flex items-center justify-center">{i + 1}</span>
-                    <span>{t}</span>
+                    <span>{t(`landing.steps.${key}`)}</span>
                   </div>
                 ))}
               </div>
@@ -766,8 +765,8 @@ export default function SurveyClient() {
           {/* Right — Authorization card + press proof */}
           <div>
           <div className="bg-white rounded-2xl border border-slate-200 shadow-lg p-7">
-            <h2 className="text-xl font-semibold text-navy-900 mb-1">Start your free DPDPA readiness check</h2>
-            <div className="text-xs font-semibold text-slate-600 uppercase tracking-widest mb-6">Before you begin</div>
+            <h2 className="text-xl font-semibold text-navy-900 mb-1">{t("landing.authTitle")}</h2>
+            <div className="text-xs font-semibold text-slate-600 uppercase tracking-widest mb-6">{t("landing.beforeYouBegin")}</div>
 
             {/* Required consent */}
             <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
@@ -778,8 +777,11 @@ export default function SurveyClient() {
                   onChange={e => setConsentRequired(e.target.checked)}
                   className="mt-0.5 w-4 h-4 accent-green-500 shrink-0"
                 />
+                {/* Legal tier (MULTILINGUAL_SPEC §6): this authorization sentence stays
+                    ENGLISH in every locale — hi.json deliberately carries the English
+                    text until legal review + consent-language tracking land (P5). */}
                 <span className="text-sm text-slate-700 leading-snug">
-                  I authorize SaralPrivacy to analyze my responses to generate a confidential DPDPA readiness assessment.{" "}
+                  {t("landing.consentRequired")}{" "}
                   <span className="text-red-500 font-bold">*</span>
                 </span>
               </label>
@@ -789,7 +791,7 @@ export default function SurveyClient() {
                 onClick={() => setPrivacyExpanded(e => !e)}
                 className="mt-2 ml-7 text-xs text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1"
               >
-                View privacy notice {privacyExpanded ? "▲" : "▼"}
+                {t("landing.viewPrivacyNotice")} {privacyExpanded ? "▲" : "▼"}
               </button>
 
               {privacyExpanded && (
@@ -809,15 +811,15 @@ export default function SurveyClient() {
               disabled={!consentRequired}
               className="w-full py-4 bg-navy-900 text-white font-bold rounded-xl text-base hover:bg-navy-800 disabled:opacity-30 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 mb-2"
             >
-              Take free assessment <ArrowRight size={18} />
+              {t("landing.takeFreeAssessment")} <ArrowRight size={18} />
             </button>
-            <div className="text-center text-xs text-slate-600 mb-5">Free · No payment required</div>
+            <div className="text-center text-xs text-slate-600 mb-5">{t("landing.freeNoPayment")}</div>
 
             {/* Optional consents */}
             <div className="space-y-2.5 border-t border-slate-100 pt-4">
               {[
-                { label: "Deliver full technical report to my email", val: consentReport, set: setConsentReport },
-                { label: "Send me free daily DPDPA briefings (2-min reads, unsubscribe anytime)", val: consentNewsletter, set: setConsentNewsletter },
+                { label: t("landing.optReport"), val: consentReport, set: setConsentReport },
+                { label: t("landing.optNewsletter"), val: consentNewsletter, set: setConsentNewsletter },
               ].map(({ label, val, set }) => (
                 <label key={label} className="flex items-center gap-2.5 cursor-pointer">
                   <input
@@ -858,9 +860,9 @@ export default function SurveyClient() {
           {step === 1 && (
             <div className="space-y-8">
               <div>
-                <div className="text-xs font-bold text-green-800 uppercase tracking-widest mb-2">BUSINESS CONTEXT</div>
-                <h2 className="text-3xl font-semibold text-navy-900 mb-1">Where privacy risk starts in your business</h2>
-                <p className="text-slate-500 text-sm">This helps identify where privacy exposure is structurally built into your business model.</p>
+                <div className="text-xs font-bold text-green-800 uppercase tracking-widest mb-2">{t("steps.s1.eyebrow")}</div>
+                <h2 className="text-3xl font-semibold text-navy-900 mb-1">{t("steps.s1.title")}</h2>
+                <p className="text-slate-500 text-sm">{t("steps.s1.sub")}</p>
               </div>
 
               <div>
@@ -877,12 +879,12 @@ export default function SurveyClient() {
                 />
                 {answers.q1_sector === "other" && (
                   <div className="mt-3">
-                    <label className="block text-sm font-semibold text-slate-600 mb-1">Please describe your industry</label>
+                    <label className="block text-sm font-semibold text-slate-600 mb-1">{t("steps.describeIndustry")}</label>
                     <input
                       type="text"
                       value={(answers as any).q1_sector_other ?? ""}
                       onChange={(e) => setAnswers(prev => ({ ...prev, q1_sector_other: e.target.value } as any))}
-                      placeholder="e.g. Real estate, Education, Agriculture..."
+                      placeholder={t("steps.describeIndustryPlaceholder")}
                       className="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-green-500 bg-white"
                     />
                   </div>
@@ -909,9 +911,9 @@ export default function SurveyClient() {
           {step === 2 && (
             <div className="space-y-6">
               <div>
-                <div className="text-xs font-bold text-green-800 uppercase tracking-widest mb-2">DATA EXPOSURE PROFILE</div>
-                <h2 className="text-3xl font-semibold text-navy-900 mb-1">Does your business collect or store personal data digitally?</h2>
-                <p className="text-slate-500 text-sm">Even occasional digital data collection creates obligations under DPDPA if individuals are identifiable.</p>
+                <div className="text-xs font-bold text-green-800 uppercase tracking-widest mb-2">{t("steps.s2.eyebrow")}</div>
+                <h2 className="text-3xl font-semibold text-navy-900 mb-1">{t("steps.s2.title")}</h2>
+                <p className="text-slate-500 text-sm">{t("steps.s2.sub")}</p>
               </div>
               <QuestionCardGrid
                 options={QUESTIONS[2].options}
@@ -927,15 +929,15 @@ export default function SurveyClient() {
           {step === 3 && (
             <div className="space-y-8">
               <div>
-                <div className="text-xs font-bold text-green-800 uppercase tracking-widest mb-2">DATA ECOSYSTEM MAPPING</div>
-                <h2 className="text-3xl font-semibold text-navy-900 mb-1">Define your compliance footprint by data handling practices.</h2>
+                <div className="text-xs font-bold text-green-800 uppercase tracking-widest mb-2">{t("steps.s3.eyebrow")}</div>
+                <h2 className="text-3xl font-semibold text-navy-900 mb-1">{t("steps.s3.title")}</h2>
                 <div className="text-xs text-slate-400 font-mono">04 / 10</div>
               </div>
 
               <div>
                 <div className="flex items-center gap-2 mb-3">
                   <span className="w-6 h-6 rounded-full bg-green-700 text-white text-xs font-bold flex items-center justify-center shrink-0">4</span>
-                  <span className="text-navy-800 font-semibold text-base">What data do you handle? <span className="text-slate-500 text-xs font-normal">Select all that apply</span></span>
+                  <span className="text-navy-800 font-semibold text-base">What data do you handle? <span className="text-slate-500 text-xs font-normal">{t("steps.selectAll")}</span></span>
                 </div>
                 <QuestionCardGrid
                   options={QUESTIONS[3].options}
@@ -950,7 +952,7 @@ export default function SurveyClient() {
               <div>
                 <div className="flex items-center gap-2 mb-3">
                   <span className="w-6 h-6 rounded-full bg-green-700 text-white text-xs font-bold flex items-center justify-center shrink-0">5</span>
-                  <span className="text-navy-800 font-semibold text-base">Where is this data usually stored? <span className="text-slate-500 text-xs font-normal">Select all that apply</span></span>
+                  <span className="text-navy-800 font-semibold text-base">Where is this data usually stored? <span className="text-slate-500 text-xs font-normal">{t("steps.selectAll")}</span></span>
                 </div>
                 <QuestionCardGrid
                   options={QUESTIONS[4].options}
@@ -968,11 +970,11 @@ export default function SurveyClient() {
           {step === 4 && (
             <div className="space-y-6">
               <div>
-                <div className="text-xs font-bold text-green-800 uppercase tracking-widest mb-2">CONTROL MATURITY ASSESSMENT</div>
-                <h2 className="text-3xl font-semibold text-navy-900 mb-1">Which privacy basics are already in place?</h2>
+                <div className="text-xs font-bold text-green-800 uppercase tracking-widest mb-2">{t("steps.s4.eyebrow")}</div>
+                <h2 className="text-3xl font-semibold text-navy-900 mb-1">{t("steps.s4.title")}</h2>
                 <div className="text-xs text-slate-400 font-mono mb-2">06 / 10</div>
                 <div className="bg-slate-100 rounded-lg px-4 py-2.5 text-xs text-slate-500">
-                  ℹ This section helps distinguish policy intent from operational controls.
+                  ℹ {t("steps.s4.note")}
                 </div>
               </div>
               <QuestionMultiCards
@@ -987,13 +989,13 @@ export default function SurveyClient() {
           {step === 5 && (
             <div className="space-y-8">
               <div>
-                <div className="text-xs font-bold text-green-800 uppercase tracking-widest mb-2">COMPLIANCE MATURITY</div>
-                <h2 className="text-3xl font-semibold text-navy-900 mb-1">How consent and requests are handled today</h2>
-                <p className="text-slate-500 text-sm">Compliance maturity is 80% complete.</p>
+                <div className="text-xs font-bold text-green-800 uppercase tracking-widest mb-2">{t("steps.s5.eyebrow")}</div>
+                <h2 className="text-3xl font-semibold text-navy-900 mb-1">{t("steps.s5.title")}</h2>
+                <p className="text-slate-500 text-sm">{t("steps.s5.sub")}</p>
               </div>
 
               <div>
-                <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">RIGHTS MANAGEMENT</div>
+                <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">{t("steps.rightsManagement")}</div>
                 <div className="flex items-center gap-2 mb-3">
                   <span className="w-6 h-6 rounded-full bg-green-700 text-white text-xs font-bold flex items-center justify-center shrink-0">7</span>
                   <span className="text-navy-800 font-semibold text-base">How well can your business handle requests to access, correct, or delete data?</span>
@@ -1008,7 +1010,7 @@ export default function SurveyClient() {
               </div>
 
               <div>
-                <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">CONSENT PRACTICE</div>
+                <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">{t("steps.consentPractice")}</div>
                 <div className="flex items-center gap-2 mb-3">
                   <span className="w-6 h-6 rounded-full bg-green-700 text-white text-xs font-bold flex items-center justify-center shrink-0">8</span>
                   <span className="text-navy-800 font-semibold text-base">How does your business ask for permission before collecting personal data?</span>
@@ -1028,9 +1030,9 @@ export default function SurveyClient() {
           {step === 6 && (
             <div className="space-y-8">
               <div>
-                <div className="text-xs font-bold text-green-800 uppercase tracking-widest mb-2">OWNERSHIP & READINESS</div>
-                <h2 className="text-3xl font-semibold text-navy-900 mb-1">Who owns privacy decisions today</h2>
-                <p className="text-slate-500 text-sm">Final phase of the foundational audit.</p>
+                <div className="text-xs font-bold text-green-800 uppercase tracking-widest mb-2">{t("steps.s6.eyebrow")}</div>
+                <h2 className="text-3xl font-semibold text-navy-900 mb-1">{t("steps.s6.title")}</h2>
+                <p className="text-slate-500 text-sm">{t("steps.s6.sub")}</p>
                 <div className="text-xs text-slate-400 font-mono mt-1">QUESTION 9–10 OF 10</div>
               </div>
 
@@ -1068,9 +1070,9 @@ export default function SurveyClient() {
           {step === 7 && (
             <div className="space-y-8">
               <div>
-                <div className="text-xs font-bold text-green-800 uppercase tracking-widest mb-2">PERSONALISATION</div>
-                <h2 className="text-3xl font-semibold text-navy-900 mb-1">Help us prioritize the right fixes</h2>
-                <p className="text-slate-500 text-sm">This tailors your report to your operating reality, not generic advice.</p>
+                <div className="text-xs font-bold text-green-800 uppercase tracking-widest mb-2">{t("steps.s7.eyebrow")}</div>
+                <h2 className="text-3xl font-semibold text-navy-900 mb-1">{t("steps.s7.title")}</h2>
+                <p className="text-slate-500 text-sm">{t("steps.s7.sub")}</p>
                 <div className="mt-2 h-1.5 bg-slate-200 rounded-full overflow-hidden">
                   <div className="h-full bg-green-400 rounded-full" style={{ width: "95%" }} />
                 </div>
@@ -1079,7 +1081,7 @@ export default function SurveyClient() {
               <div>
                 <div className="flex items-center gap-2 mb-3">
                   <span className="w-6 h-6 rounded-full bg-slate-600 text-slate-300 text-xs font-bold flex items-center justify-center shrink-0">11</span>
-                  <span className="text-navy-800 font-semibold text-base">What is your biggest blocker right now? <span className="text-slate-400 font-normal text-xs">(Optional)</span></span>
+                  <span className="text-navy-800 font-semibold text-base">What is your biggest blocker right now? <span className="text-slate-400 font-normal text-xs">{t("steps.optional")}</span></span>
                 </div>
                 <BlockerGrid
                   options={QUESTIONS[10].options}
@@ -1091,7 +1093,7 @@ export default function SurveyClient() {
               <div>
                 <div className="flex items-center gap-2 mb-3">
                   <span className="w-6 h-6 rounded-full bg-slate-600 text-slate-300 text-xs font-bold flex items-center justify-center shrink-0">12</span>
-                  <span className="text-navy-800 font-semibold text-base">What would help you most right now? <span className="text-slate-400 font-normal text-xs">(Optional)</span></span>
+                  <span className="text-navy-800 font-semibold text-base">What would help you most right now? <span className="text-slate-400 font-normal text-xs">{t("steps.optional")}</span></span>
                 </div>
                 <QuestionCardGrid
                   options={QUESTIONS[11].options}
@@ -1107,7 +1109,7 @@ export default function SurveyClient() {
                 onClick={() => { setStep(8); }}
                 className="text-slate-500 hover:text-slate-300 text-sm flex items-center gap-1.5 transition-colors"
               >
-                <SkipForward size={14} /> Skip these questions for now
+                <SkipForward size={14} /> {t("steps.skipForNow")}
               </button>
             </div>
           )}
@@ -1118,7 +1120,7 @@ export default function SurveyClient() {
               onClick={handleBack}
               className="inline-flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors"
             >
-              <ArrowLeft size={16} /> Back
+              <ArrowLeft size={16} /> {t("nav.back")}
             </button>
 
             <button
@@ -1126,7 +1128,7 @@ export default function SurveyClient() {
               disabled={!canProceed()}
               className="inline-flex items-center gap-2 px-7 py-3 bg-green-700 text-white text-sm font-bold rounded-xl hover:bg-green-800 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
             >
-              {step === 6 ? "See my readiness score" : isOptionalStep ? "Next →" : "Next question"}
+              {step === 6 ? t("nav.seeScore") : isOptionalStep ? `${t("nav.next")} →` : t("nav.nextQuestion")}
               {step !== 6 && <ArrowRight size={16} />}
             </button>
           </div>
@@ -1135,7 +1137,7 @@ export default function SurveyClient() {
         {/* Right context panel — all steps, dark navy */}
         {step >= 1 && step <= 7 && (
           <div className="hidden xl:block w-64 bg-navy-900 px-5 py-8 border-l border-navy-800 shrink-0">
-            <div className="text-xs font-bold text-green-400 uppercase tracking-widest mb-3">WHY THIS MATTERS</div>
+            <div className="text-xs font-bold text-green-400 uppercase tracking-widest mb-3">{t("steps.whyThisMatters")}</div>
             <p className="text-slate-300 text-xs leading-relaxed mb-5">
               {step === 1 && "Your sector and scale determine which DPDPA obligations apply to you and at what threshold."}
               {step === 2 && "How you collect data determines whether you need explicit consent or can rely on legitimate interest."}
@@ -1145,7 +1147,7 @@ export default function SurveyClient() {
               {step === 6 && "Designated ownership is required by DPDPA — informal ownership is treated as non-compliance."}
               {step === 7 && "Your answers help us personalise your action plan — no scoring impact."}
             </p>
-            <div className="text-xs font-bold text-green-400 uppercase tracking-widest mb-3">WHAT STRONG TEAMS DO</div>
+            <div className="text-xs font-bold text-green-400 uppercase tracking-widest mb-3">{t("steps.whatStrongTeamsDo")}</div>
             <p className="text-slate-300 text-xs leading-relaxed">
               {step === 1 && "Strong teams classify their sector first — healthcare and financial services face stricter obligations and lower penalty thresholds than other sectors."}
               {step === 2 && "Strong teams document every touchpoint where personal data enters their systems and establish the legal basis for each collection channel."}
@@ -1173,26 +1175,22 @@ export default function SurveyClient() {
 
               {/* Left — score teaser */}
               <div>
-                <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">READINESS RESULT</div>
+                <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">{t("gate.readinessResult")}</div>
                 <div className="flex items-end gap-2 mb-1">
                   <span className="text-7xl font-bold text-navy-900 leading-none">{result.finalScore}</span>
                   <span className="text-2xl text-slate-400 mb-2">/100</span>
                 </div>
                 <div className="inline-flex items-center gap-2 bg-amber-100 border border-amber-200 text-amber-800 text-xs font-bold px-3 py-1.5 rounded-lg mb-4">
-                  MATURITY LEVEL: {result.verdictBand.toUpperCase()}
+                  {t("gate.maturityLevel")}: {result.verdictBand.toUpperCase()}
                 </div>
                 <p className="text-slate-600 text-sm leading-relaxed mb-6">{result.verdictDescription}</p>
 
                 <div className="bg-white rounded-2xl border border-slate-200 p-5">
-                  <div className="text-xs font-bold text-slate-500 mb-3">✦ What you&apos;ll get</div>
-                  {[
-                    "Complete score breakdown — detailed assessment across all five DPDPA compliance pillars",
-                    "Top 3 priority actions — prioritized remediation steps to lower your legal risk profile",
-                    "Downloadable checklist — a structured roadmap for implementing end-to-end privacy controls",
-                  ].map(item => (
-                    <div key={item} className="flex items-start gap-2.5 mb-3">
+                  <div className="text-xs font-bold text-slate-500 mb-3">✦ {t("landing.whatYoullGet")}</div>
+                  {(["breakdown", "priorityActions", "checklist"] as const).map(key => (
+                    <div key={key} className="flex items-start gap-2.5 mb-3">
                       <CheckCircle size={15} className="text-green-500 mt-0.5 shrink-0" />
-                      <span className="text-slate-600 text-sm leading-snug">{item}</span>
+                      <span className="text-slate-600 text-sm leading-snug">{t(`gate.unlocks.${key}`)}</span>
                     </div>
                   ))}
                 </div>
@@ -1200,9 +1198,9 @@ export default function SurveyClient() {
 
               {/* Right — unlock form */}
               <div className="bg-white rounded-2xl border border-slate-200 shadow-lg p-7">
-                <h2 className="text-xl font-semibold text-navy-900 mb-1">Get your detailed report with top risks, quick wins, and next steps</h2>
+                <h2 className="text-xl font-semibold text-navy-900 mb-1">{t("gate.formTitle")}</h2>
                 <div className="flex items-center gap-1.5 text-xs text-green-700 font-semibold mb-5">
-                  <Shield size={12} /> SECURE DELIVERY MODE
+                  <Shield size={12} /> {t("gate.secureDelivery")}
                 </div>
 
                 {/* Honeypot — hidden from real users; bots auto-fill it and get dropped server-side */}
@@ -1219,7 +1217,7 @@ export default function SurveyClient() {
 
                 <div className="grid grid-cols-2 gap-3 mb-4">
                   <div>
-                    <label className="text-xs font-semibold text-slate-500 block mb-1">WORK EMAIL (REQUIRED)</label>
+                    <label className="text-xs font-semibold text-slate-500 block mb-1">{t("gate.emailLabel")}</label>
                     <input
                       type="email"
                       value={contactEmail}
@@ -1229,17 +1227,17 @@ export default function SurveyClient() {
                     />
                   </div>
                   <div>
-                    <label className="text-xs font-semibold text-slate-500 block mb-1">YOUR NAME (OPTIONAL)</label>
+                    <label className="text-xs font-semibold text-slate-500 block mb-1">{t("gate.nameLabel")}</label>
                     <input
                       type="text"
                       value={contactName}
                       onChange={e => setContactName(e.target.value)}
-                      placeholder="e.g. Rahul Sharma"
+                      placeholder={t("gate.namePlaceholder")}
                       className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
                     />
                   </div>
                   <div>
-                    <label className="text-xs font-semibold text-slate-500 block mb-1">BUSINESS NAME (OPTIONAL)</label>
+                    <label className="text-xs font-semibold text-slate-500 block mb-1">{t("gate.businessLabel")}</label>
                     <input
                       type="text"
                       value={contactBusiness}
@@ -1249,7 +1247,7 @@ export default function SurveyClient() {
                     />
                   </div>
                   <div>
-                    <label className="text-xs font-semibold text-slate-500 block mb-1">MOBILE (OPTIONAL)</label>
+                    <label className="text-xs font-semibold text-slate-500 block mb-1">{t("gate.mobileLabel")}</label>
                     <input
                       type="tel"
                       value={contactMobile}
@@ -1261,21 +1259,22 @@ export default function SurveyClient() {
                 </div>
 
                 <p className="text-xs text-slate-400 mb-4 leading-relaxed">
-                  We only use these details to generate and deliver your secure compliance report. Your data is encrypted and managed according to DPDPA standards.
+                  {t("gate.dataUseNote")}
                 </p>
 
                 <div className="space-y-2.5 mb-5">
                   <label className="flex items-start gap-2.5 cursor-pointer bg-green-50 border border-green-200 rounded-lg px-3 py-2.5">
                     <input type="checkbox" checked={consentDelivery} onChange={e => setConsentDelivery(e.target.checked)} className="mt-0.5 w-4 h-4 accent-green-500" />
-                    <span className="text-xs text-slate-700 leading-snug">I consent to SaralPrivacy using my details to deliver my readiness report. <span className="text-red-500">*</span></span>
+                    {/* Legal tier: consent sentence stays English in every locale (spec §6). */}
+                    <span className="text-xs text-slate-700 leading-snug">{t("gate.consentDelivery")} <span className="text-red-500">*</span></span>
                   </label>
                   <label className="flex items-start gap-2.5 cursor-pointer">
                     <input type="checkbox" checked={consentNL} onChange={e => setConsentNL(e.target.checked)} className="mt-0.5 w-4 h-4 accent-green-500" />
-                    <span className="text-xs text-slate-500 leading-snug">I would like to receive occasional updates regarding Indian privacy laws.</span>
+                    <span className="text-xs text-slate-500 leading-snug">{t("gate.consentUpdates")}</span>
                   </label>
                   <label className="flex items-start gap-2.5 cursor-pointer">
                     <input type="checkbox" checked={consentFU} onChange={e => setConsentFU(e.target.checked)} className="mt-0.5 w-4 h-4 accent-green-500" />
-                    <span className="text-xs text-slate-500 leading-snug">I agree to be contacted for a professional consultation for specific DPDPA needs.</span>
+                    <span className="text-xs text-slate-500 leading-snug">{t("gate.consentConsult")}</span>
                   </label>
                 </div>
 
@@ -1284,7 +1283,7 @@ export default function SurveyClient() {
                   disabled={!contactEmail || !consentDelivery || submitting}
                   className="w-full py-3.5 bg-green-700 text-white font-bold rounded-xl text-sm hover:bg-green-800 disabled:opacity-40 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
                 >
-                  {submitting ? "Sending…" : "Unlock detailed report"} {!submitting && <ArrowRight size={16} />}
+                  {submitting ? t("gate.sending") : t("gate.unlockCta")} {!submitting && <ArrowRight size={16} />}
                 </button>
 
                 <button
@@ -1292,14 +1291,14 @@ export default function SurveyClient() {
                   onClick={() => setStep(9)}
                   className="w-full text-center text-xs text-slate-400 hover:text-slate-600 mt-3 transition-colors"
                 >
-                  Skip — show basic results
+                  {t("gate.skipBasic")}
                 </button>
               </div>
             </div>
 
             <div className="mt-8 text-center text-xs text-slate-400 flex items-center justify-center gap-2">
               <Shield size={12} />
-              Built on the DPDP Act, 2023 and the DPDP Rules, 2025. Your answers are never sold or shared.
+              {t("gate.trustFooter")}
             </div>
           </div>
         </div>
@@ -1324,25 +1323,25 @@ export default function SurveyClient() {
               <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-6 flex items-center gap-3">
                 <CheckCircle size={18} className="text-green-800 shrink-0" />
                 <div>
-                  <div className="font-semibold text-green-800 text-sm">Report on its way!</div>
-                  <div className="text-green-700 text-xs">We will send your detailed report to <strong>{contactEmail}</strong> shortly.</div>
+                  <div className="font-semibold text-green-800 text-sm">{t("result.onItsWay")}</div>
+                  <div className="text-green-700 text-xs">{t.rich("result.willSendTo", { email: () => <strong>{contactEmail}</strong> })}</div>
                 </div>
               </div>
             )}
 
             <div className="flex items-start justify-between mb-6">
               <div>
-                <h1 className="text-3xl font-semibold text-navy-900">Your DPDPA readiness report</h1>
+                <h1 className="text-3xl font-semibold text-navy-900">{t("result.reportTitle")}</h1>
                 <div className="flex items-center gap-2 mt-2">
                   <span className="text-sm font-bold px-3 py-1 rounded-full"
                     style={{ backgroundColor: result.verdictColor + "20", color: result.verdictColor }}>
                     ✦ {result.verdictBand}
                   </span>
-                  <span className="text-xs text-slate-400">This report is designed for Indian businesses working toward DPDPA-ready practices.</span>
+                  <span className="text-xs text-slate-400">{t("result.designedFor")}</span>
                 </div>
               </div>
               <div className="text-right text-xs text-slate-400">
-                <div>REPORT REF</div>
+                <div>{t("result.reportRef")}</div>
                 <div className="font-mono font-bold text-slate-600">{reportId}</div>
               </div>
             </div>
@@ -1351,36 +1350,36 @@ export default function SurveyClient() {
             <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-6">
               <div className="grid sm:grid-cols-2 gap-6 items-center">
                 <div>
-                  <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">EXECUTIVE SUMMARY</div>
+                  <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">{t("result.executiveSummary")}</div>
                   <p className="text-slate-700 text-sm leading-relaxed">{result.verdictDescription}</p>
                 </div>
                 <div className="flex flex-col items-center">
                   <SpeedometerGauge score={result.finalScore} color={result.verdictColor} />
-                  <div className="text-xs text-slate-400 mt-2 text-center">Your readiness score</div>
+                  <div className="text-xs text-slate-400 mt-2 text-center">{t("result.yourScore")}</div>
                 </div>
               </div>
             </div>
 
             {/* 6 score categories */}
             <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-6">
-              <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">SCORE CATEGORIES</div>
+              <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">{t("result.scoreCategories")}</div>
               <div className="grid sm:grid-cols-2 gap-4">
-                <CategoryBar label="Notice and consent"       score={cats.noticeConsent} />
-                <CategoryBar label="Access and control"       score={cats.accessControl} />
-                <CategoryBar label="Retention and deletion"   score={cats.retentionDeletion} />
-                <CategoryBar label="Ownership and governance" score={cats.ownershipGovernance} />
-                <CategoryBar label="Vendor and partner risk"  score={cats.vendorPartnerRisk} />
-                <CategoryBar label="Incident readiness"       score={cats.incidentReadiness} />
+                <CategoryBar label={t("result.cats.noticeConsent")} score={cats.noticeConsent} />
+                <CategoryBar label={t("result.cats.accessControl")} score={cats.accessControl} />
+                <CategoryBar label={t("result.cats.retentionDeletion")} score={cats.retentionDeletion} />
+                <CategoryBar label={t("result.cats.ownershipGovernance")} score={cats.ownershipGovernance} />
+                <CategoryBar label={t("result.cats.vendorPartnerRisk")} score={cats.vendorPartnerRisk} />
+                <CategoryBar label={t("result.cats.incidentReadiness")} score={cats.incidentReadiness} />
               </div>
             </div>
 
             {/* 3 mini diagnostics */}
             <div className="bg-navy-900 rounded-2xl p-6 mb-6">
-              <div className="text-xs font-bold text-green-400 uppercase tracking-widest mb-4">DIAGNOSTIC SIGNALS</div>
+              <div className="text-xs font-bold text-green-400 uppercase tracking-widest mb-4">{t("result.diagnosticSignals")}</div>
               <div className="space-y-4">
-                <MiniBar label="Data Exposure"          score={result.dataExposure} />
-                <MiniBar label="Control Maturity"       score={result.controlMaturity} />
-                <MiniBar label="Operational Readiness"  score={result.operationalReadiness} />
+                <MiniBar label={t("result.dataExposure")} score={result.dataExposure} />
+                <MiniBar label={t("result.controlMaturity")} score={result.controlMaturity} />
+                <MiniBar label={t("result.operationalReadiness")} score={result.operationalReadiness} />
               </div>
             </div>
 
@@ -1389,7 +1388,7 @@ export default function SurveyClient() {
               <div className="bg-red-50 border border-red-200 rounded-2xl p-5 mb-6">
                 <div className="flex items-center gap-2 mb-3">
                   <AlertTriangle size={16} className="text-red-600" />
-                  <span className="font-bold text-red-700 text-sm">{result.redFlagsTriggered.length} red flag{result.redFlagsTriggered.length > 1 ? "s" : ""} detected</span>
+                  <span className="font-bold text-red-700 text-sm">{t("result.redFlags", { count: result.redFlagsTriggered.length })}</span>
                 </div>
                 <ul className="space-y-1.5">
                   {result.redFlagsTriggered.map(f => (
@@ -1403,7 +1402,7 @@ export default function SurveyClient() {
 
             {/* Strategic recommendations */}
             <div className="mb-6">
-              <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">STRATEGIC RECOMMENDATIONS</div>
+              <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">{t("result.strategicRecs")}</div>
               <div className="grid sm:grid-cols-3 gap-4">
                 {stratCards.map((card, i) => (
                   <StrategyCard key={i} {...card} />
@@ -1413,21 +1412,19 @@ export default function SurveyClient() {
 
             {/* CTA bar */}
             <div className="bg-navy-900 rounded-2xl p-6 text-center">
-              <h3 className="text-xl font-semibold text-white mb-2">Elevate your readiness today.</h3>
-              <p className="text-slate-400 text-sm mb-5">
-                The DPDP Rules require a compliance posture. Our experts help you build the DPDPA-aligned framework and implementation strategy.
-              </p>
+              <h3 className="text-xl font-semibold text-white mb-2">{t("result.elevate")}</h3>
+              <p className="text-slate-400 text-sm mb-5">{t("result.elevateBody")}</p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 {reportToken && (
                   <a href={`/report/${reportToken}`} target="_blank" rel="noopener noreferrer" className="px-6 py-3 bg-green-400 text-navy-950 font-bold rounded-xl text-sm hover:bg-green-300 transition-colors flex items-center justify-center gap-2">
-                    View Full Report →
+                    {t("result.viewFullReport")} →
                   </a>
                 )}
                 <Link href="/contact" onClick={() => trackEvent.callBookingClicked({ band: result?.verdictBand, location: "assessment_report" })} className="px-6 py-3 bg-white/10 text-white font-bold rounded-xl text-sm hover:bg-white/20 transition-colors flex items-center justify-center gap-2">
-                  Book a free 20-min call
+                  {t("result.bookCall")}
                 </Link>
                 <Link href="/white-paper" className="px-6 py-3 bg-white/10 text-white font-bold rounded-xl text-sm hover:bg-white/20 transition-colors flex items-center justify-center gap-2">
-                  Download the Guide
+                  {t("result.downloadGuide")}
                 </Link>
               </div>
             </div>
@@ -1438,7 +1435,7 @@ export default function SurveyClient() {
                 onClick={() => { setAnswers({}); setResult(null); setStep(0); setConsentRequired(false); setContactEmail(""); setContactName(""); setContactBusiness(""); setContactMobile(""); setSubmitted(false); setReportToken(""); }}
                 className="text-sm text-slate-400 hover:text-slate-600 underline transition-colors"
               >
-                Retake Assessment
+                {t("result.retake")}
               </button>
             </div>
           </div>
@@ -1463,8 +1460,8 @@ export default function SurveyClient() {
               <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-6 flex items-center gap-3">
                 <CheckCircle size={18} className="text-green-800 shrink-0" />
                 <div>
-                  <div className="font-semibold text-green-800 text-sm">Report on its way!</div>
-                  <div className="text-green-700 text-xs">We will send your detailed report to <strong>{contactEmail}</strong> shortly.</div>
+                  <div className="font-semibold text-green-800 text-sm">{t("result.onItsWay")}</div>
+                  <div className="text-green-700 text-xs">{t.rich("result.willSendTo", { email: () => <strong>{contactEmail}</strong> })}</div>
                 </div>
               </div>
             )}
@@ -1478,11 +1475,11 @@ export default function SurveyClient() {
 
             {/* 3 mini-bars */}
             <div className="bg-navy-900 rounded-2xl p-6 mb-5">
-              <div className="text-xs font-bold text-green-400 uppercase tracking-widest mb-4">DIAGNOSTIC SIGNALS</div>
+              <div className="text-xs font-bold text-green-400 uppercase tracking-widest mb-4">{t("result.diagnosticSignals")}</div>
               <div className="space-y-4">
-                <MiniBar label="Data Exposure"          score={result.dataExposure} />
-                <MiniBar label="Control Maturity"       score={result.controlMaturity} />
-                <MiniBar label="Operational Readiness"  score={result.operationalReadiness} />
+                <MiniBar label={t("result.dataExposure")} score={result.dataExposure} />
+                <MiniBar label={t("result.controlMaturity")} score={result.controlMaturity} />
+                <MiniBar label={t("result.operationalReadiness")} score={result.operationalReadiness} />
               </div>
             </div>
 
@@ -1491,7 +1488,7 @@ export default function SurveyClient() {
               <div className="bg-red-50 border border-red-200 rounded-2xl p-5 mb-5">
                 <div className="flex items-center gap-2 mb-3">
                   <AlertTriangle size={16} className="text-red-600" />
-                  <span className="font-bold text-red-700 text-sm">{result.redFlagsTriggered.length} red flag{result.redFlagsTriggered.length > 1 ? "s" : ""} detected</span>
+                  <span className="font-bold text-red-700 text-sm">{t("result.redFlags", { count: result.redFlagsTriggered.length })}</span>
                 </div>
                 <ul className="space-y-1.5">
                   {result.redFlagsTriggered.map(f => (
@@ -1505,7 +1502,7 @@ export default function SurveyClient() {
 
             {/* Immediate actions */}
             <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-5">
-              <h3 className="font-semibold text-navy-700 text-base mb-4">3 things to do this week</h3>
+              <h3 className="font-semibold text-navy-700 text-base mb-4">{t("result.thisWeek")}</h3>
               <div className="space-y-3">
                 {result.immediateActions.map((action, i) => (
                   <div key={i} className="flex items-start gap-3">
@@ -1519,7 +1516,7 @@ export default function SurveyClient() {
             {/* 30-day plan */}
             {result.thirtyDayActions.length > 0 && (
               <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-5">
-                <h3 className="font-semibold text-navy-700 text-base mb-4">Your 30-day action plan</h3>
+                <h3 className="font-semibold text-navy-700 text-base mb-4">{t("result.thirtyDayPlan")}</h3>
                 <div className="space-y-3">
                   {result.thirtyDayActions.map((action, i) => (
                     <div key={i} className="flex items-start gap-3">
@@ -1533,8 +1530,8 @@ export default function SurveyClient() {
 
             {/* CTAs */}
             <div className="bg-navy-900 rounded-2xl p-6 mb-5">
-              <h4 className="font-semibold text-white text-base mb-1">Recommended next step</h4>
-              <p className="text-slate-400 text-sm mb-4">{result.blockerNote ?? "Start with the highest-priority action above."}</p>
+              <h4 className="font-semibold text-white text-base mb-1">{t("result.recommendedNext")}</h4>
+              <p className="text-slate-400 text-sm mb-4">{result.blockerNote ?? t("result.startHighest")}</p>
               <div className="flex flex-col sm:flex-row gap-3">
                 {reportToken && (
                   <a
@@ -1543,7 +1540,7 @@ export default function SurveyClient() {
                     rel="noopener noreferrer"
                     className="flex-1 text-center py-3 px-5 bg-green-400 hover:bg-green-300 text-navy-950 font-semibold rounded-xl text-sm transition-colors"
                   >
-                    View Full Report →
+                    {t("result.viewFullReport")} →
                   </a>
                 )}
                 <Link
@@ -1571,11 +1568,11 @@ export default function SurveyClient() {
             >
               <div className="flex items-center justify-between gap-4">
                 <div>
-                  <div className="font-bold text-navy-900 text-sm mb-0.5">Want help interpreting your score?</div>
-                  <div className="text-slate-600 text-sm">Book a free 20-minute DPDPA readiness call with our team.</div>
+                  <div className="font-bold text-navy-900 text-sm mb-0.5">{t("result.wantHelp")}</div>
+                  <div className="text-slate-600 text-sm">{t("result.wantHelpBody")}</div>
                 </div>
                 <span className="shrink-0 inline-flex items-center gap-1 text-green-700 font-semibold text-sm group-hover:gap-2 transition-all">
-                  Book a call <ArrowRight size={16} />
+                  {t("result.bookACall")} <ArrowRight size={16} />
                 </span>
               </div>
             </Link>
@@ -1591,7 +1588,7 @@ export default function SurveyClient() {
               }}
               className="w-full text-center text-sm text-slate-400 hover:text-slate-600 underline transition-colors"
             >
-              Retake Assessment
+              {t("result.retake")}
             </button>
           </div>
         </div>
