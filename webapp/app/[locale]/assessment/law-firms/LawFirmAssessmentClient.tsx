@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -97,6 +99,7 @@ function BucketChip({ score }: { score: number }) {
 }
 
 function ReadinessGauge({ readiness, color, band }: { readiness: number; color: string; band: string }) {
+  const t = useTranslations("assessment.shared");
   const r = 54;
   const c = 2 * Math.PI * r;
   const offset = c * (1 - readiness / 100);
@@ -104,7 +107,7 @@ function ReadinessGauge({ readiness, color, band }: { readiness: number; color: 
     <div
       className="relative h-36 w-36 shrink-0"
       role="img"
-      aria-label={`DPDPA readiness ${readiness} out of 100. Risk band: ${band}.`}
+      aria-label={t("gaugeAria", { readiness, band })}
     >
       <svg viewBox="0 0 128 128" className="h-full w-full -rotate-90">
         <circle cx="64" cy="64" r={r} fill="none" stroke="#EEF2F7" strokeWidth="12" />
@@ -143,6 +146,9 @@ function MiniBar({ label, value, polarity }: { label: string; value: number; pol
 // ── Main client ───────────────────────────────────────────────────────────────
 
 export default function LawFirmAssessmentClient() {
+  // ~40 strings shared verbatim by all 12 sector clients (W2 B-lean cut):
+  // they resolve from assessment.shared.*; sector-specific copy stays inline.
+  const t = useTranslations("assessment.shared");
   const router = useRouter();
   // ?bucket= arrives from a Data Flow Map hotspot: it focuses the scan on the
   // control area that hotspot is about. Unknown or absent values render nothing.
@@ -211,11 +217,11 @@ export default function LawFirmAssessmentClient() {
     e.preventDefault();
     if (!result || submitting) return;
     if (!form.name.trim() || !form.email.trim() || !form.phone.trim()) {
-      setFormError("Please add your name, email and phone so we can send your report.");
+      setFormError(t("errNeedContact"));
       return;
     }
     if (!form.consent) {
-      setFormError("Please tick the consent box so we can email your results.");
+      setFormError(t("errNeedConsent"));
       return;
     }
     setFormError("");
@@ -273,7 +279,7 @@ export default function LawFirmAssessmentClient() {
 
     setSubmitting(false);
     if (saved) setReportUnlocked(true);
-    else setFormError("We couldn't save your results just now. Please try again — your answers are safe.");
+    else setFormError(t("errSaveFailed"));
   }
 
   function retake() {
@@ -307,12 +313,12 @@ export default function LawFirmAssessmentClient() {
               <ReadinessGauge readiness={result.readinessScore} color={result.bandColor} band={result.band} />
               <div className="text-center sm:text-left">
                 <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Your law firm result</div>
-                <h2 className="mt-1 text-xl font-semibold text-navy-700">DPDPA Readiness: {result.readinessScore} / 100</h2>
+                <h2 className="mt-1 text-xl font-semibold text-navy-700">{t("readinessScore", { score: result.readinessScore })}</h2>
                 <div
                   className="mt-2 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-bold text-white"
                   style={{ backgroundColor: result.bandColor }}
                 >
-                  Risk Band: {result.band}
+                  {t("riskBand")}: {result.band}
                 </div>
                 <p className="mt-3 text-sm leading-relaxed text-slate-600">{BAND_COPY[result.band]}</p>
               </div>
@@ -321,14 +327,14 @@ export default function LawFirmAssessmentClient() {
 
           {/* Two-lens */}
           <div className="mt-5 grid grid-cols-1 gap-4 rounded-xl border border-slate-200 bg-white p-6 sm:grid-cols-2">
-            <MiniBar label="Data exposure" value={result.dataExposure} polarity="bad-high" />
-            <MiniBar label="Control maturity" value={result.controlMaturity} polarity="good-high" />
+            <MiniBar label={t("dataExposure")} value={result.dataExposure} polarity="bad-high" />
+            <MiniBar label={t("controlMaturity")} value={result.controlMaturity} polarity="good-high" />
           </div>
 
           {/* Top red flags */}
           {result.redFlags.length > 0 && (
             <div className="mt-5 rounded-xl border border-slate-200 bg-white p-6">
-              <h3 className="mb-3 text-sm font-semibold text-navy-700">Top {result.redFlags.length} risk areas</h3>
+              <h3 className="mb-3 text-sm font-semibold text-navy-700">{t("topRiskAreas", { count: result.redFlags.length })}</h3>
               <ul className="space-y-2.5">
                 {result.redFlags.map((flag, i) => (
                   <li key={i} className="flex items-start gap-2.5 text-sm text-slate-700">
@@ -368,20 +374,21 @@ export default function LawFirmAssessmentClient() {
               </div>
               <p className="mb-4 text-xs text-slate-600">See your recommended next steps and get the checklist emailed to you. This scan collects no client documents — only your contact details and answers.</p>
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                <input aria-label="Your name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Your name" className="rounded-lg border border-slate-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500" />
+                <input aria-label={t("yourName")} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder={t("yourName")} className="rounded-lg border border-slate-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500" />
                 <input aria-label="Firm or chamber name" value={form.firm} onChange={(e) => setForm({ ...form, firm: e.target.value })} placeholder="Firm / chamber name" className="rounded-lg border border-slate-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500" />
-                <input aria-label="Email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="Email" className="rounded-lg border border-slate-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500" />
-                <input aria-label="Phone or WhatsApp" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="Phone / WhatsApp" className="rounded-lg border border-slate-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500" />
-                <input aria-label="City" value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} placeholder="City" className="rounded-lg border border-slate-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 sm:col-span-2" />
+                <input aria-label={t("email")} type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder={t("email")} className="rounded-lg border border-slate-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500" />
+                <input aria-label={t("phoneAria")} value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder={t("phoneWhatsApp")} className="rounded-lg border border-slate-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500" />
+                <input aria-label={t("city")} value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} placeholder={t("city")} className="rounded-lg border border-slate-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 sm:col-span-2" />
               </div>
               {typePrefill.length > 0 && (
                 <p className="mt-2 text-xs text-slate-500">Practice type: {typePrefill.join(" · ")}</p>
               )}
               <label className="mt-3 flex items-start gap-2 text-xs text-slate-600">
                 <input type="checkbox" checked={form.consent} onChange={(e) => setForm({ ...form, consent: e.target.checked })} className="mt-0.5" />
+                {/* Legal tier: consent sentence stays English in every locale (spec §6). */}
                 <span>
-                  I agree to receive my assessment results and related resources. See our{" "}
-                  <Link href="/privacy" className="text-green-800 underline">Privacy Notice</Link>.
+                  {t("consentSentence")}{" "}
+                  <Link href="/privacy" className="text-green-800 underline">{t("privacyNoticeLink")}</Link>.
                 </span>
               </label>
               <input
@@ -393,12 +400,12 @@ export default function LawFirmAssessmentClient() {
                 type="submit" disabled={submitting}
                 className="mt-4 w-full rounded-lg bg-green-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-green-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-300 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {submitting ? "Saving your results…" : "Show my priority fixes"}
+                {submitting ? t("saving") : t("showPriorityFixes")}
               </button>
             </form>
           ) : (
             <div className="mt-5 rounded-xl border border-slate-200 bg-white p-6">
-              <h3 className="mb-3 text-sm font-semibold text-navy-700">Your priority fixes</h3>
+              <h3 className="mb-3 text-sm font-semibold text-navy-700">{t("yourPriorityFixes")}</h3>
               <ul className="space-y-2.5">
                 {result.recommendations.map((rec, i) => (
                   <li key={i} className="flex items-start gap-2.5 text-sm text-slate-700">
@@ -412,7 +419,7 @@ export default function LawFirmAssessmentClient() {
                   href={pack.leadMagnet.href} download target="_blank" rel="noopener noreferrer"
                   className="mt-4 inline-flex items-center gap-2 rounded-lg border border-navy-200 px-4 py-2.5 text-sm font-semibold text-navy-700 hover:bg-pearl-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-400"
                 >
-                  <FileCheck2 size={16} /> Download the {pack.leadMagnet.title}
+                  <FileCheck2 size={16} /> {t("downloadThe", { title: pack.leadMagnet.title })}
                 </a>
               )}
             </div>
@@ -436,7 +443,7 @@ export default function LawFirmAssessmentClient() {
           <FlowCrossLink sectorSlug={lawFirmsPack.industry} source="assessment" className="mt-5" />
 
           <button onClick={retake} className="mt-4 w-full text-center text-sm text-slate-500 underline hover:text-slate-700">
-            Retake the scan
+            {t("retakeScan")}
           </button>
         </div>
       </div>
@@ -457,8 +464,8 @@ export default function LawFirmAssessmentClient() {
         {/* Progress */}
         <div className="mb-7">
           <div className="mb-2 flex items-center justify-between text-sm text-slate-500">
-            <span>{`Question ${requiredPos} of ${TOTAL_REQUIRED}`}</span>
-            <span className="font-semibold text-green-800">{progress}% complete</span>
+            <span>{t("questionOf", { current: requiredPos, total: TOTAL_REQUIRED })}</span>
+            <span className="font-semibold text-green-800">{t("pctComplete", { pct: progress })}</span>
           </div>
           <div className="h-2 overflow-hidden rounded-full bg-slate-200">
             <div className="h-full rounded-full bg-green-500 motion-safe:transition-all motion-safe:duration-300" style={{ width: `${progress}%` }} />
@@ -469,8 +476,9 @@ export default function LawFirmAssessmentClient() {
           <div className="mb-5 flex items-center gap-2 rounded-xl border border-teal-200 bg-teal-50 px-4 py-3 text-sm text-teal-900">
             <Info size={16} className="shrink-0 text-teal-600" aria-hidden="true" />
             <span>
-              You&apos;re checking: <span className="font-semibold">{focusLabel}</span>. Answer the
-              full scan to see how your controls hold up.
+              {t.rich("checkingFocus", {
+                focus: () => <span className="font-semibold">{focusLabel}</span>,
+              })}
             </span>
           </div>
         )}
@@ -482,7 +490,7 @@ export default function LawFirmAssessmentClient() {
             <h2 className="text-lg font-semibold leading-snug text-navy-700 sm:text-xl">{q.question}</h2>
           </legend>
           {q.helpText && <p className="mt-2 text-sm leading-relaxed text-slate-500">{q.helpText}</p>}
-          {q.type === "multi" && <p className="mt-1 text-xs font-medium text-slate-400">Select all that apply.</p>}
+          {q.type === "multi" && <p className="mt-1 text-xs font-medium text-slate-400">{t("selectAll")}</p>}
 
           <div className="mt-5 space-y-3">
             {q.options.map((opt) => {
@@ -545,7 +553,7 @@ export default function LawFirmAssessmentClient() {
 
           {q.whyThisMatters && (
             <details className="mt-5 rounded-lg bg-pearl-100 p-4">
-              <summary className="cursor-pointer text-sm font-medium text-navy-700">Why this matters</summary>
+              <summary className="cursor-pointer text-sm font-medium text-navy-700">{t("whyThisMatters")}</summary>
               <p className="mt-2 text-sm leading-relaxed text-slate-600">{q.whyThisMatters}</p>
             </details>
           )}
@@ -554,16 +562,16 @@ export default function LawFirmAssessmentClient() {
         {/* Nav */}
         <div className="mt-6 flex items-center justify-between">
           <button onClick={back} className="inline-flex items-center gap-1.5 px-4 py-2.5 text-sm font-semibold text-slate-600 transition-colors hover:text-slate-900">
-            <ArrowLeft size={16} /> Back
+            <ArrowLeft size={16} /> {t("back")}
           </button>
           <button
             onClick={next} disabled={!hasAnswer}
             className="inline-flex items-center gap-2 rounded-lg bg-navy-700 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-navy-800 disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-400 focus-visible:ring-offset-2"
           >
-            {isLast ? "See my results" : "Next"} <ArrowRight size={16} />
+            {isLast ? t("seeMyResults") : t("next")} <ArrowRight size={16} />
           </button>
         </div>
-        <p className="mt-4 text-center text-xs text-slate-400">All responses are confidential. This scan is educational and not legal advice.</p>
+        <p className="mt-4 text-center text-xs text-slate-400">{t("confidentialityNote")}</p>
       </div>
     </div>
   );

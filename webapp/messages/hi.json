@@ -825,5 +825,41 @@
       "wantHelpBody": "हमारी टीम के साथ मुफ़्त 20-मिनट की DPDPA रेडीनेस कॉल बुक करें।",
       "bookACall": "कॉल बुक करें"
     }
+  },
+  "assessment": {
+    "shared": {
+      "questionOf": "सवाल {current} / {total}",
+      "quickStartOptional": "क्विक स्टार्ट · वैकल्पिक",
+      "pctComplete": "{pct}% पूरा",
+      "checkingFocus": "आप जाँच रहे हैं: <focus></focus>। पूरा स्कैन भरें और देखें कि आपके कंट्रोल कितने मज़बूत हैं।",
+      "selectAll": "जो-जो लागू हों, सब चुनें।",
+      "whyThisMatters": "यह क्यों ज़रूरी है",
+      "back": "पीछे",
+      "skip": "छोड़ें",
+      "next": "आगे",
+      "seeMyResults": "मेरे नतीजे देखें",
+      "confidentialityNote": "आपके सभी जवाब गोपनीय हैं। यह स्कैन शैक्षिक है, क़ानूनी सलाह नहीं।",
+      "readinessScore": "DPDPA तैयारी: {score} / 100",
+      "riskBand": "जोखिम बैंड",
+      "dataExposure": "डेटा एक्सपोज़र",
+      "controlMaturity": "कंट्रोल परिपक्वता",
+      "topRiskAreas": "टॉप {count} जोखिम क्षेत्र",
+      "yourPriorityFixes": "आपके प्राथमिक सुधार",
+      "yourName": "आपका नाम",
+      "email": "ईमेल",
+      "phoneAria": "फ़ोन या WhatsApp",
+      "phoneWhatsApp": "फ़ोन / WhatsApp",
+      "city": "शहर",
+      "errNeedContact": "कृपया अपना नाम, ईमेल और फ़ोन जोड़ें ताकि हम आपकी रिपोर्ट भेज सकें।",
+      "errNeedConsent": "कृपया सहमति का बॉक्स टिक करें ताकि हम आपके नतीजे ईमेल कर सकें।",
+      "errSaveFailed": "अभी आपके नतीजे सेव नहीं हो पाए। कृपया फिर कोशिश करें — आपके जवाब सुरक्षित हैं।",
+      "consentSentence": "I agree to receive my assessment results and related resources. See our",
+      "privacyNoticeLink": "Privacy Notice",
+      "saving": "आपके नतीजे सेव हो रहे हैं…",
+      "showPriorityFixes": "मेरे प्राथमिक सुधार दिखाएँ",
+      "retakeScan": "स्कैन दोबारा करें",
+      "downloadThe": "{title} डाउनलोड करें",
+      "gaugeAria": "DPDPA तैयारी: 100 में से {readiness}। जोखिम बैंड: {band}।"
+    }
   }
 }

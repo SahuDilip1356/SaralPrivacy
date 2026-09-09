@@ -664,5 +664,41 @@
       "wantHelpBody": "Book a free 20-minute DPDPA readiness call with our team.",
       "bookACall": "Book a call"
     }
+  },
+  "assessment": {
+    "shared": {
+      "questionOf": "Question {current} of {total}",
+      "quickStartOptional": "Quick start · optional",
+      "pctComplete": "{pct}% complete",
+      "checkingFocus": "You're checking: <focus></focus>. Answer the full scan to see how your controls hold up.",
+      "selectAll": "Select all that apply.",
+      "whyThisMatters": "Why this matters",
+      "back": "Back",
+      "skip": "Skip",
+      "next": "Next",
+      "seeMyResults": "See my results",
+      "confidentialityNote": "All responses are confidential. This scan is educational and not legal advice.",
+      "readinessScore": "DPDPA Readiness: {score} / 100",
+      "riskBand": "Risk Band",
+      "dataExposure": "Data exposure",
+      "controlMaturity": "Control maturity",
+      "topRiskAreas": "Top {count} risk areas",
+      "yourPriorityFixes": "Your priority fixes",
+      "yourName": "Your name",
+      "email": "Email",
+      "phoneAria": "Phone or WhatsApp",
+      "phoneWhatsApp": "Phone / WhatsApp",
+      "city": "City",
+      "errNeedContact": "Please add your name, email and phone so we can send your report.",
+      "errNeedConsent": "Please tick the consent box so we can email your results.",
+      "errSaveFailed": "We couldn't save your results just now. Please try again — your answers are safe.",
+      "consentSentence": "I agree to receive my assessment results and related resources. See our",
+      "privacyNoticeLink": "Privacy Notice",
+      "saving": "Saving your results…",
+      "showPriorityFixes": "Show my priority fixes",
+      "retakeScan": "Retake the scan",
+      "downloadThe": "Download the {title}",
+      "gaugeAria": "DPDPA readiness {readiness} out of 100. Risk band: {band}."
+    }
   }
 }
