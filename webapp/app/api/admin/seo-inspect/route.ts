@@ -65,11 +65,15 @@ export async function POST(req: NextRequest) {
       dryRun: false,
       log,
     });
-    await db.persist(report);
+    // A suspect run is shown but never stored — it must not become the baseline.
+    const suspect = report.data_sanity?.suspect === true;
+    if (suspect) log(`NOT persisted — suspect data (${report.data_sanity?.reason}); the last good run remains the baseline`);
+    else await db.persist(report);
 
     return NextResponse.json({
       ok: true,
       run_id: report.run_id,
+      persisted: !suspect,
       verdict: report.verdict.code,
       summary: report.verdict.summary,
       inspected: report.inspected,

@@ -4,11 +4,13 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
   bucketOf,
+  checkDataSanity,
   crawledNotIndexedBreakdown,
   decide,
   diffRuns,
   normalizeCrawlTime,
   shortlist,
+  suspectVerdict,
   toRecord,
   type Bucket,
   type UrlRecord,
@@ -159,4 +161,54 @@ test("shortlist: ≤10, commercial first, never a ledger URL, never indexed/excl
   assert.equal(s[1].url, `${BASE}/blog/some-post`);
   assert.ok(s.every((x) => !WATCHLIST.includes(x.url)));
   assert.ok(s.every((x) => x.url !== `${BASE}/briefings/b` && x.url !== `${BASE}/not-in-sitemap`));
+});
+
+// ── Data sanity: the 2026-09-08 false alarm must never fire again ────────────
+
+/** prev/curr pairs for n watchlist URLs, all previously indexed. */
+function sanityPair(n: number, opts: { regress: number; recrawl: number }) {
+  const urls = WATCHLIST.slice(0, n);
+  const prev = urls.map((u) => ({ url: u, bucket: "indexed" as Bucket, last_crawl_time: "2026-08-01T00:00:00Z" }));
+  const curr = urls.map((u, i) => {
+    const regressed = i < opts.regress;
+    return rec(u, regressed ? "crawled_not_indexed" : "indexed", {
+      // A genuine re-judgement follows a genuine re-fetch.
+      last_crawl_time: i < opts.recrawl ? "2026-09-08T00:00:00Z" : "2026-08-01T00:00:00Z",
+    });
+  });
+  return { prev, curr };
+}
+
+test("checkDataSanity: mass regression with no recrawl is suspect", () => {
+  const { prev, curr } = sanityPair(16, { regress: 16, recrawl: 0 });
+  const s = checkDataSanity(prev, curr);
+  assert.equal(s.suspect, true);
+  assert.equal(s.regressed, 16);
+  assert.equal(s.prev_indexed, 16);
+  assert.equal(s.stale_crawl, 16);
+});
+
+test("checkDataSanity: mass regression WITH recrawls is believed", () => {
+  const { prev, curr } = sanityPair(16, { regress: 16, recrawl: 16 });
+  assert.equal(checkDataSanity(prev, curr).suspect, false);
+});
+
+test("checkDataSanity: a few stale regressions are ordinary churn", () => {
+  const { prev, curr } = sanityPair(16, { regress: 4, recrawl: 0 });
+  assert.equal(checkDataSanity(prev, curr).suspect, false);
+});
+
+test("checkDataSanity: no previous run is never suspect", () => {
+  const { curr } = sanityPair(16, { regress: 16, recrawl: 0 });
+  assert.equal(checkDataSanity(null, curr).suspect, false);
+});
+
+test("suspectVerdict withholds the real verdict and says not to act", () => {
+  const { prev, curr } = sanityPair(16, { regress: 16, recrawl: 0 });
+  const s = checkDataSanity(prev, curr);
+  const real = decide(curr, { now: NOW, prevDiscovered: null });
+  const v = suspectVerdict(s, real.evidence);
+  assert.equal(v.code, "SUSPECT_DATA");
+  assert.match(v.next, /do not treat it as the new baseline/i);
+  assert.deepEqual(v.evidence, real.evidence);
 });

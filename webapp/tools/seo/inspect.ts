@@ -205,7 +205,10 @@ async function main(): Promise<number> {
   console.error(`report: ${file}`);
   if (process.env.GITHUB_STEP_SUMMARY) appendFileSync(process.env.GITHUB_STEP_SUMMARY, summary + "\n");
 
-  if (db) {
+  if (db && report.data_sanity?.suspect) {
+    // Never let implausible data become the baseline the next diff is read against.
+    log(`NOT persisted — suspect data (${report.data_sanity.reason}); the last good run remains the baseline`);
+  } else if (db) {
     try {
       await db.persist(report);
       log(`persisted to Supabase: run ${report.run_id}`);
@@ -215,7 +218,7 @@ async function main(): Promise<number> {
     }
   }
 
-  return report.verdict.code === "INSUFFICIENT_DATA" ? 2 : 0;
+  return report.verdict.code === "INSUFFICIENT_DATA" || report.verdict.code === "SUSPECT_DATA" ? 2 : 0;
 }
 
 main().then(

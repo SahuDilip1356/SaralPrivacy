@@ -8,10 +8,12 @@ import type { GscApi, SitemapEntry } from "./gsc.ts";
 import type { PrevRun } from "./db.ts";
 import {
   bucketCounts,
+  checkDataSanity,
   crawledNotIndexedBreakdown,
   decide,
   diffRuns,
   shortlist,
+  suspectVerdict,
   toRecord,
   type Report,
   type UrlRecord,
@@ -175,7 +177,17 @@ export async function runInspection(o: RunOptions): Promise<Report> {
   const prevDiscovered = o.prev
     ? o.prev.records.filter((p) => WATCHLIST.includes(p.url) && (p.bucket === "discovered" || p.bucket === "unknown")).length
     : null;
-  const verdict = decide(records, { now, prevDiscovered });
+  const realVerdict = decide(records, { now, prevDiscovered });
+
+  // A mass de-indexation with nothing recrawled is an API fault, not an SEO
+  // event: override the verdict so nobody reads a false alarm as truth. The
+  // caller must also skip persisting — a suspect run may never become the
+  // baseline the next diff is measured against.
+  const dataSanity = checkDataSanity(o.prev?.records ?? null, records);
+  if (dataSanity.suspect) {
+    log(`⚠ SUSPECT DATA — ${dataSanity.reason}; verdict withheld and this run will not be persisted`);
+  }
+  const verdict = dataSanity.suspect ? suspectVerdict(dataSanity, realVerdict.evidence) : realVerdict;
 
   return {
     run_id: randomUUID(),
@@ -192,6 +204,7 @@ export async function runInspection(o: RunOptions): Promise<Report> {
     buckets: bucketCounts(records),
     watchlist_buckets: bucketCounts(records.filter((r) => r.watchlist)),
     verdict,
+    data_sanity: dataSanity,
     diff: diffRuns(o.prev?.records ?? null, o.prev?.run_at ?? null, records),
     crawled_not_indexed: crawledNotIndexedBreakdown(records),
     shortlist: shortlist(records),

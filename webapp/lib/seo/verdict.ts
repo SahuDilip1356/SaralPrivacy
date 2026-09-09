@@ -34,7 +34,7 @@ export type UrlRecord = {
 /** What the previous run must supply for a diff. */
 export type PrevRecord = Pick<UrlRecord, "url" | "bucket" | "last_crawl_time">;
 
-export type VerdictCode = "QUEUE_MOVED" | "STARVED" | "TOO_EARLY" | "INSUFFICIENT_DATA";
+export type VerdictCode = "QUEUE_MOVED" | "STARVED" | "TOO_EARLY" | "INSUFFICIENT_DATA" | "SUSPECT_DATA";
 
 export type Verdict = {
   code: VerdictCode;
@@ -71,6 +71,29 @@ export type Breakdown = {
 
 export type ShortlistItem = { url: string; bucket: Bucket; reason: string };
 
+/**
+ * Was this run's index data believable at all?
+ *
+ * Google can only re-evaluate indexation for a page it has re-fetched, so a
+ * mass "indexed → not indexed" flip in which nothing was recrawled is a
+ * Search Console data fault, not an SEO event. Measured on 2026-09-08: 16/16
+ * watchlist URLs plus 6/6 sampled non-watchlist URLs flipped inside 26
+ * minutes with every last_crawl_time unchanged, while the pages were still
+ * visibly ranking in Google's own results. Left unguarded that reads as a
+ * site-wide de-indexation and would fire a false alarm every time the API
+ * hiccups.
+ */
+export type DataSanity = {
+  suspect: boolean;
+  prev_indexed: number;
+  regressed: number;
+  regressed_share: number;
+  /** Regressions whose last_crawl_time did not move — i.e. never refetched. */
+  stale_crawl: number;
+  stale_crawl_share: number;
+  reason: string;
+};
+
 export type Report = {
   run_id: string;
   run_at: string;
@@ -86,6 +109,8 @@ export type Report = {
   buckets: Record<Bucket, number>;
   watchlist_buckets: Record<Bucket, number>;
   verdict: Verdict;
+  /** Null only for dry runs with no previous run. Suspect runs must not become the baseline. */
+  data_sanity: DataSanity | null;
   diff: Diff | null;
   crawled_not_indexed: Breakdown;
   shortlist: ShortlistItem[];
@@ -102,6 +127,15 @@ export const SHRINK_RATIO = 0.7;
 export const STARVED_WEEKS = 5;
 /** Max URLs on the human "Request Indexing" shortlist (GSC button quota ≈ 10/day). */
 export const SHORTLIST_MAX = 10;
+
+// ── Data-sanity thresholds (see DataSanity) ──────────────────────────────────
+
+/** Below this many regressions, ordinary churn — never call a run suspect. */
+export const SUSPECT_MIN_REGRESSIONS = 5;
+/** Share of previously-indexed URLs that must regress before we get suspicious. */
+export const SUSPECT_REGRESSED_SHARE = 0.5;
+/** Share of those regressions that must show NO recrawl for the fault to be the API's. */
+export const SUSPECT_STALE_CRAWL_SHARE = 0.9;
 
 // ── Per-URL classification ───────────────────────────────────────────────────
 
@@ -239,6 +273,70 @@ export function decide(records: readonly UrlRecord[], opts: { now: Date; prevDis
   };
 }
 
+// ── Is this run's data believable? ───────────────────────────────────────────
+
+/**
+ * Compare against the previous run and decide whether a mass de-indexation is
+ * real or an artefact. Only URLs present and non-error in BOTH runs count.
+ */
+export function checkDataSanity(prev: readonly PrevRecord[] | null, curr: readonly UrlRecord[]): DataSanity {
+  const none: DataSanity = {
+    suspect: false, prev_indexed: 0, regressed: 0, regressed_share: 0,
+    stale_crawl: 0, stale_crawl_share: 0, reason: "no previous run to compare against",
+  };
+  if (!prev || prev.length === 0) return none;
+
+  const byUrl = new Map(prev.map((p) => [p.url, p]));
+  let prevIndexed = 0;
+  let regressed = 0;
+  let staleCrawl = 0;
+
+  for (const r of curr) {
+    const p = byUrl.get(r.url);
+    if (!p || r.bucket === "error" || p.bucket === "error") continue;
+    if (p.bucket !== "indexed") continue;
+    prevIndexed += 1;
+    if (r.bucket === "indexed") continue;
+    regressed += 1;
+    // Unchanged crawl timestamp = Google never re-fetched, so it cannot have
+    // re-judged the page. Treated as stale whether or not it was ever crawled.
+    if (p.last_crawl_time === r.last_crawl_time) staleCrawl += 1;
+  }
+
+  if (prevIndexed === 0) return { ...none, reason: "previous run had no indexed URLs in common" };
+
+  const regressedShare = regressed / prevIndexed;
+  const staleShare = regressed ? staleCrawl / regressed : 0;
+  const suspect =
+    regressed >= SUSPECT_MIN_REGRESSIONS &&
+    regressedShare >= SUSPECT_REGRESSED_SHARE &&
+    staleShare >= SUSPECT_STALE_CRAWL_SHARE;
+
+  return {
+    suspect,
+    prev_indexed: prevIndexed,
+    regressed,
+    regressed_share: Number(regressedShare.toFixed(2)),
+    stale_crawl: staleCrawl,
+    stale_crawl_share: Number(staleShare.toFixed(2)),
+    reason: suspect
+      ? `${regressed}/${prevIndexed} previously-indexed URLs regressed and ${staleCrawl} of them were never recrawled`
+      : `${regressed}/${prevIndexed} regressed (${staleCrawl} without a recrawl) — within normal churn`,
+  };
+}
+
+/** The verdict a suspect run gets instead of a real one. */
+export function suspectVerdict(sanity: DataSanity, evidence: Verdict["evidence"]): Verdict {
+  return {
+    code: "SUSPECT_DATA",
+    summary: `Search Console returned implausible index data: ${sanity.reason}.`,
+    next:
+      "Do NOT act on this run and do not treat it as the new baseline — Google cannot re-judge a page it never re-fetched. " +
+      "Confirm against reality with a site: search before believing any de-indexation, then re-run in a few hours; the last good run still stands.",
+    evidence,
+  };
+}
+
 // ── Diff vs previous run ─────────────────────────────────────────────────────
 
 export function diffRuns(prev: readonly PrevRecord[] | null, prevRunAt: string | null, curr: readonly UrlRecord[]): Diff | null {
@@ -313,6 +411,16 @@ export function renderSummary(rep: Report): string {
   out += line();
   out += line(`▶ ${rep.verdict.next}`);
   out += line();
+  if (rep.data_sanity?.suspect) {
+    const s = rep.data_sanity;
+    out += line(
+      `> ⚠ **Not persisted.** ${s.regressed}/${s.prev_indexed} previously-indexed URLs regressed, ` +
+      `${s.stale_crawl} of them (${Math.round(s.stale_crawl_share * 100)}%) with an unchanged last-crawl date. ` +
+      `Google cannot re-judge a page it never re-fetched, so this reads as a Search Console data fault. ` +
+      `Verify with a \`site:\` search before believing it.`
+    );
+    out += line();
+  }
   out += line(`Scope \`${rep.scope}\` · inspected ${rep.inspected} (${rep.errors} errors) · sitemap ${rep.sitemap.url_count} URLs · ${rep.sitemap.newcomers.length} newcomers since last run`);
   out += line();
   out += line("| Bucket | All | Watchlist |");
