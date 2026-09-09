@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { chromeMessage, labelKey } from "@/lib/i18n/chrome";
 import { Menu, X, ChevronDown, Download, ArrowRight } from "lucide-react";
 import { TemplateDownloadModal } from "@/components/TemplateDownloadModal";
+import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import { surfaceClasses } from "@/components/ui/Surface";
 import { navMenus, primaryAction, secondaryAction, type NavItem, type NavMenu } from "@/lib/data/navigation";
 import { isAppLocale } from "@/lib/data/guide-languages";
@@ -407,6 +408,9 @@ export function Header() {
                   The guide used to carry the fill, which put two green CTAs
                   above the fold competing for the same click. */}
               <div className="flex items-center gap-2 shrink-0">
+                {/* xl+ only: the lg bar's slack floor (24px at 1024) cannot
+                    absorb two chips; below xl the mobile drawer carries it. */}
+                <LanguageSwitcher className="hidden xl:flex" />
                 <Link
                   href={secondaryAction.href}
                   className="hidden md:inline-flex items-center gap-1.5 px-3 py-2 pointer-coarse:min-h-11 text-sm font-medium whitespace-nowrap text-slate-700 rounded-lg hover:text-navy-700 hover:bg-cloud-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2"
@@ -515,6 +519,7 @@ export function Header() {
             })}
 
             <div className="pt-3 border-t border-slate-100 space-y-2">
+              <LanguageSwitcher className="px-1 pb-1" />
               <Link
                 href={primaryAction.href}
                 onClick={() => trackEvent.navItemClick({ menu: "chrome", item: primaryAction.label })}
