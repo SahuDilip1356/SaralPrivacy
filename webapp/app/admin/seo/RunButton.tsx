@@ -56,6 +56,14 @@ export default function RunButton() {
         setMessage(res.status === 504 ? `Timed out at ${elapsedRef.current}s (300 s ceiling).` : `HTTP ${res.status}: ${text.slice(0, 200)}`);
         return;
       }
+      if (res.status === 401) {
+        // Admin sessions last 8h. A tab left open outlives the cookie, so the
+        // page still renders while every write is refused — say so plainly
+        // instead of the bare "Unauthorized" the API returns.
+        setState("error");
+        setMessage("Your 8-hour admin session has expired. Reload this page, sign in again, then re-run.");
+        return;
+      }
       if (!res.ok || !data?.ok) {
         setState("error");
         setMessage(data?.error || `HTTP ${res.status}`);

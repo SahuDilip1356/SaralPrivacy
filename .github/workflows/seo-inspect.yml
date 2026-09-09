@@ -15,7 +15,7 @@ on:
       scope:
         description: 'watchlist | newcomers | full'
         required: false
-        default: newcomers
+        default: full
         type: choice
         options: [watchlist, newcomers, full]
       submit_sitemap:
@@ -52,7 +52,7 @@ jobs:
       - name: Inspect
         run: >
           node --experimental-strip-types tools/seo/inspect.ts
-          --scope "${{ inputs.scope || 'newcomers' }}"
+          --scope "${{ inputs.scope || 'full' }}"
           ${{ inputs.submit_sitemap == true && '--submit-sitemap' || '' }}
 
       - name: Upload report

@@ -36,6 +36,7 @@ const VERDICT_STYLE: Record<RunRow["verdict_code"], string> = {
   STARVED: "bg-red-50 border-red-200 text-red-900",
   TOO_EARLY: "bg-blue-50 border-blue-200 text-blue-900",
   INSUFFICIENT_DATA: "bg-amber-50 border-amber-200 text-amber-900",
+  SUSPECT_DATA: "bg-amber-50 border-amber-200 text-amber-900",
 };
 
 const day = (iso: string | null | undefined) => (iso ? iso.slice(0, 10) : "—");
