@@ -5,7 +5,8 @@ import { usePathname } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { GUIDE_LANGUAGES, isAppLocale } from "@/lib/data/guide-languages";
+import { GUIDE_LANGUAGES } from "@/lib/data/guide-languages";
+import { stripAppLocale } from "@/lib/i18n/chrome";
 import { SHOW_LANGUAGE_SWITCHER } from "@/lib/i18n/switcher-gate";
 
 // Header language switcher (MULTILINGUAL_SPEC §4.1) — a chip row of the
@@ -29,10 +30,7 @@ export function LanguageSwitcher({ className }: { className?: string }) {
   if (!SHOW_LANGUAGE_SWITCHER) return null;
 
   // Strip a leading app-locale segment so /hi/faq and /faq both map to /faq.
-  const seg = pathname.split("/")[1] ?? "";
-  const routePathname = isAppLocale(seg)
-    ? pathname.slice(seg.length + 1) || "/"
-    : pathname;
+  const routePathname = stripAppLocale(pathname);
 
   // Never offer locale-prefixed admin/report URLs — proxy.ts refuses them
   // (spec §10.13) and those trees are English-only forever.

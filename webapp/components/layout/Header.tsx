@@ -6,13 +6,12 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useMessages, useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
-import { chromeMessage, labelKey } from "@/lib/i18n/chrome";
+import { chromeMessage, labelKey, stripAppLocale } from "@/lib/i18n/chrome";
 import { Menu, X, ChevronDown, Download, ArrowRight } from "lucide-react";
 import { TemplateDownloadModal } from "@/components/TemplateDownloadModal";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import { surfaceClasses } from "@/components/ui/Surface";
 import { navMenus, primaryAction, secondaryAction, type NavItem, type NavMenu } from "@/lib/data/navigation";
-import { isAppLocale } from "@/lib/data/guide-languages";
 import { trackEvent } from "@/lib/analytics";
 
 // No badges here on purpose. Three gold "Free" chips plus "Daily" plus a
@@ -286,10 +285,7 @@ export function Header() {
   // links active). Also load-bearing for English prerenders: next-intl renders
   // the unprefixed English site under the internal /en/... pathname at build
   // time, so matching the raw pathname would ship un-highlighted nav HTML.
-  const routePathname = (() => {
-    const seg = pathname.split("/")[1] ?? "";
-    return isAppLocale(seg) ? pathname.slice(seg.length + 1) || "/" : pathname;
-  })();
+  const routePathname = stripAppLocale(pathname);
 
   const isActive = (href: string) =>
     routePathname === href || routePathname.startsWith(href + "/");

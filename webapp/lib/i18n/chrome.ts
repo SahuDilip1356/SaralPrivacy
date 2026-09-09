@@ -18,6 +18,19 @@
 // `chromeMessage(messages, path, fallback)` with useMessages()/getMessages().
 // ─────────────────────────────────────────────────────────────────────────────
 
+import { isAppLocale } from "@/lib/data/guide-languages";
+
+/**
+ * Strip a leading app-locale segment from a URL pathname, so route-keyed
+ * logic (nav active states, Setu page triggers, admin/report hide checks)
+ * sees /hi/faq and /faq as the same page. "en" is unprefixed, unknown
+ * segments pass through untouched.
+ */
+export function stripAppLocale(pathname: string): string {
+  const seg = pathname.split("/")[1] ?? "";
+  return isAppLocale(seg) ? pathname.slice(seg.length + 1) || "/" : pathname;
+}
+
 /** Stable message key derived from an English label ("CA Firms" → "ca-firms"). */
 export function labelKey(label: string): string {
   return label
