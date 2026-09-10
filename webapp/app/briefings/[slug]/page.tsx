@@ -9,6 +9,7 @@ import { getBriefingBySlug, briefings as staticBriefings } from "@/lib/data/brie
 import { formatDate, formatDateShort, getCategoryLabel, getIndustryLabel } from "@/lib/utils";
 import { Badge } from "@/components/ui/Badge";
 import { articleSchema, breadcrumbSchema, speakableSchema } from "@/lib/schema";
+import { seoTitle } from "@/lib/content/seo-title";
 import { AnswerBlock } from "@/components/seo/AnswerBlock";
 import { queryDocuments } from "@/lib/db";
 import { WhitepaperCTA } from "@/components/cta/WhitepaperCTA";
@@ -254,14 +255,6 @@ async function getRelatedFromDb(currentSlug: string, category: string, sector: s
   } catch {
     return [];
   }
-}
-
-function seoTitle(title: string, max = 46): string {
-  if (title.length <= max) return title;
-  const truncated = title.slice(0, max - 1).trimEnd();
-  return truncated.endsWith("—") || truncated.endsWith("-")
-    ? truncated.slice(0, -1).trimEnd()
-    : truncated + "…";
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

@@ -14,6 +14,7 @@ import { PressProofStrip } from "@/components/ui/PressProofStrip";
 import { articleSchema, breadcrumbSchema } from "@/lib/schema";
 import BlogImage from "@/components/BlogImage";
 import { isVerifiable } from "@/lib/content/editorial-guard";
+import { seoTitle } from "@/lib/content/seo-title";
 import { InBodyToolLink } from "@/components/briefings/InBodyToolLink";
 
 export const revalidate = 3600;
@@ -119,14 +120,6 @@ async function getRelatedPosts(lane: string, excludeSlug: string): Promise<BlogP
 
 interface Props {
   params: Promise<{ slug: string }>;
-}
-
-function seoTitle(title: string, max = 46): string {
-  if (title.length <= max) return title;
-  const truncated = title.slice(0, max - 1).trimEnd();
-  return truncated.endsWith("—") || truncated.endsWith("-")
-    ? truncated.slice(0, -1).trimEnd()
-    : truncated + "…";
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
