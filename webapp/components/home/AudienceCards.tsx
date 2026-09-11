@@ -21,6 +21,7 @@ import {
 import { VERDICT_PREVIEWS } from "@/lib/data/verdict-previews";
 import { getHeroVerdict } from "@/lib/data/hero-verdicts";
 import { DATA_MAPS } from "@/lib/data/data-flow";
+import { useTranslations } from "next-intl";
 import { trackEvent } from "@/lib/analytics";
 import { Section, Eyebrow } from "@/components/ui/Section";
 import { useInView } from "@/lib/hooks/useInView";
@@ -185,6 +186,7 @@ function pose(d: number) {
 
 
 export function AudienceCards() {
+  const t = useTranslations("home.sectors");
   const { ref, inView } = useInView<HTMLDivElement>();
   const [active, setActive] = useState(0);
   // Auto-rotation: founder-directed direction cue. It plays exactly ONE full
@@ -236,13 +238,10 @@ export function AudienceCards() {
     <Section id="sectors" surface="white" type="evidence" className="scroll-mt-20">
       <div ref={ref} onFocusCapture={() => setEngaged(true)}>
         <div className="text-center mb-8">
-          <Eyebrow className="mb-3">Explore DPDPA by your sector</Eyebrow>
-          <h2 className="type-display-3 text-navy-700 mb-4">
-            Same law. Different data. Different fixes.
-          </h2>
+          <Eyebrow className="mb-3">{t("eyebrow")}</Eyebrow>
+          <h2 className="type-display-3 text-navy-700 mb-4">{t("title")}</h2>
           <p className="type-intro text-slate-600 max-w-2xl mx-auto">
-            Twelve sectors, twelve different exposures. Pick yours and the deck
-            brings it forward.
+            {t("intro")}
           </p>
         </div>
 
@@ -250,7 +249,7 @@ export function AudienceCards() {
         <div
           className="flex sm:flex-wrap sm:justify-center gap-2 overflow-x-auto sm:overflow-visible pb-1 mb-8 -mx-4 px-4 sm:mx-0 sm:px-0"
           role="tablist"
-          aria-label="Pick a sector"
+          aria-label={t("railAria")}
         >
           {sectors.map((s, i) => {
             const on = i === active;
@@ -314,7 +313,7 @@ export function AudienceCards() {
                   key={s.href}
                   onClick={centred ? undefined : () => go(i, "spine")}
                   role={centred ? undefined : "button"}
-                  aria-label={centred ? undefined : `Show ${s.title}`}
+                  aria-label={centred ? undefined : t("showSector", { sector: s.title })}
                   className={`absolute top-0 left-1/2 w-[min(560px,92vw)] transition-[transform,opacity] duration-500 ease-out motion-reduce:!transition-none motion-reduce:!opacity-100 ${
                     centred ? "" : "cursor-pointer"
                   }`}
@@ -377,17 +376,17 @@ export function AudienceCards() {
                       <p className="text-xs text-slate-400">
                         {preview ? (
                           <>
-                            Sample score{" "}
+                            {t("sampleScore")}{" "}
                             <span className="font-semibold text-white tabular-nums">
                               {preview.score}/100
                             </span>{" "}
-                            · illustrative
+                            · {t("illustrative")}
                           </>
                         ) : band ? (
                           <>
-                            Typical risk{" "}
-                            <span className="font-semibold text-white">{band}</span> ·
-                            illustrative
+                            {t("typicalRisk")}{" "}
+                            <span className="font-semibold text-white">{band}</span> ·{" "}
+                            {t("illustrative")}
                           </>
                         ) : null}
                       </p>
@@ -396,7 +395,7 @@ export function AudienceCards() {
                           href={s.href}
                           className="inline-flex items-center rounded-full border border-white/20 px-3 py-1.5 pointer-coarse:min-h-11 text-[13px] font-medium text-slate-200 hover:border-white/45 hover:text-white transition-colors"
                         >
-                          Industry guide
+                          {t("industryGuide")}
                         </Link>
                         {flowHref && (
                           <FlowMapCardLink
@@ -412,7 +411,7 @@ export function AudienceCards() {
                           }
                           className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 pointer-coarse:min-h-11 text-[13px] font-semibold text-navy-950 transition-colors ${accent.cta}`}
                         >
-                          Take the assessment
+                          {t("takeAssessment")}
                           <ArrowRight size={14} />
                         </Link>
                       </div>
@@ -449,7 +448,7 @@ export function AudienceCards() {
             <button
               type="button"
               onClick={() => go(active - 1, "arrow")}
-              aria-label="Previous sector"
+              aria-label={t("prevSector")}
               className="w-11 h-11 sm:w-9 sm:h-9 rounded-full border border-cloud-200 bg-cloud-25 grid place-items-center text-slate-600 hover:border-teal-400 hover:text-teal-900 transition-colors disabled:opacity-35 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2"
             >
               <ArrowLeft size={16} />
@@ -460,7 +459,7 @@ export function AudienceCards() {
             <button
               type="button"
               onClick={() => go(active + 1, "arrow")}
-              aria-label="Next sector"
+              aria-label={t("nextSector")}
               className="w-11 h-11 sm:w-9 sm:h-9 rounded-full border border-cloud-200 bg-cloud-25 grid place-items-center text-slate-600 hover:border-teal-400 hover:text-teal-900 transition-colors disabled:opacity-35 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2"
             >
               <ArrowRight size={16} />
@@ -473,7 +472,7 @@ export function AudienceCards() {
             href="/industries"
             className="inline-flex items-center gap-1.5 pointer-coarse:min-h-11 text-sm font-medium text-teal-800 hover:text-teal-900 underline underline-offset-4 decoration-teal-800/30 hover:decoration-teal-800 transition-colors"
           >
-            Explore all 12 industries
+            {t("exploreAll")}
             <ArrowRight size={14} />
           </Link>
         </p>

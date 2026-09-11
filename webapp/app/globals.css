@@ -223,6 +223,38 @@
 /* Section intro copy — the quiet carrier of the editorial feel. */
 .type-intro { font-size: 1.0625rem; line-height: 1.65; }
 
+/* ── Devanagari typography — html[lang="hi-IN"] (MULTILINGUAL_SPEC §4.5) ─────
+   Indic scripts break under the Latin-tuned metrics above: matras clip at
+   line-height ≤1.3 and negative tracking collides conjuncts. So on Hindi
+   pages: body ≥1.7, headings ≥1.3, letter-spacing 0 everywhere a negative
+   value is set, and Noto Sans Devanagari leads the stack (Inter carries no
+   Devanagari glyphs; the base --font-sans already falls back to Noto, this
+   makes it explicit and first). Deliberately un-layered so these beat both
+   the base heading scale and leading-* utilities on Hindi pages. */
+html[lang="hi-IN"] body {
+  font-family: var(--font-noto-devanagari), var(--font-inter), ui-sans-serif,
+    system-ui, sans-serif;
+  line-height: 1.7;
+}
+html[lang="hi-IN"] h1,
+html[lang="hi-IN"] h2,
+html[lang="hi-IN"] h3,
+html[lang="hi-IN"] h4,
+html[lang="hi-IN"] h5,
+html[lang="hi-IN"] h6 {
+  line-height: 1.3;
+  letter-spacing: 0;
+}
+html[lang="hi-IN"] .type-display-1,
+html[lang="hi-IN"] .type-display-2,
+html[lang="hi-IN"] .type-display-3 {
+  line-height: 1.3;
+  letter-spacing: 0;
+}
+html[lang="hi-IN"] .type-intro {
+  line-height: 1.75;
+}
+
 /* ── Custom scrollbar ───────────────────────────────────────────────────────── */
 ::-webkit-scrollbar       { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: #EEF2F7; }

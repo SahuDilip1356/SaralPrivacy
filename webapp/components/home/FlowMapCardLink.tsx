@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { trackEvent } from "@/lib/analytics";
 
 /**
@@ -22,13 +23,14 @@ export function FlowMapCardLink({
   sector: string;
   className: string;
 }) {
+  const t = useTranslations("home.sectors");
   return (
     <Link
       href={href}
       onClick={() => trackEvent.flowCrosslinkClick({ source: "home_cards", sector })}
       className={`inline-flex items-center gap-1.5 transition-colors ${className}`}
     >
-      See the data flow
+      {t("seeDataFlow")}
       <ArrowRight size={14} />
     </Link>
   );

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { AlertTriangle, ArrowRight, Check, Mail } from "lucide-react";
+import { useTranslations } from "next-intl";
 import {
   VERDICT_PREVIEWS,
   VERDICT_CHECKLIST,
@@ -74,6 +75,7 @@ function DimensionBar({ label, pct, run, delay }: {
 }
 
 export function ReportPreview() {
+  const t = useTranslations("home.report");
   const [active, setActive] = useState(VERDICT_PREVIEWS[0].slug);
   const v = VERDICT_PREVIEWS.find((p) => p.slug === active) ?? VERDICT_PREVIEWS[0];
   const { ref, inView } = useInView<HTMLDivElement>(0.25);
@@ -81,13 +83,10 @@ export function ReportPreview() {
   return (
     <Section id="report" surface="white" type="demo" className="scroll-mt-20">
       <div className="text-center mb-8">
-        <Eyebrow className="mb-3">Your report</Eyebrow>
-        <h2 className="type-display-3 text-navy-700 mb-4">
-          This is what you get at the end
-        </h2>
+        <Eyebrow className="mb-3">{t("eyebrow")}</Eyebrow>
+        <h2 className="type-display-3 text-navy-700 mb-4">{t("title")}</h2>
         <p className="type-intro text-slate-600 max-w-lg mx-auto">
-          Every assessment ends in a scored, sector-specific report. Here is the
-          shape of one. Pick a sector to see how it changes.
+          {t("intro")}
         </p>
       </div>
 
@@ -106,7 +105,7 @@ export function ReportPreview() {
         <div
           className="flex gap-1.5 overflow-x-auto pb-1 -mx-4 px-4 sm:mx-0 sm:px-0 sm:justify-start lg:justify-center [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           role="tablist"
-          aria-label="Preview a sector report"
+          aria-label={t("tablistAria")}
         >
           {VERDICT_PREVIEWS.map((p) => {
             const on = p.slug === active;
@@ -147,10 +146,10 @@ export function ReportPreview() {
             the body it was a chip competing with the sector name. */}
         <div className="flex items-center justify-between gap-3 bg-navy-950 px-5 py-3">
           <span className="text-2xs font-semibold uppercase tracking-[0.08em] text-cloud-400">
-            Privacy readiness report
+            {t("panelTitle")}
           </span>
           <span className="text-2xs font-semibold text-white whitespace-nowrap">
-            Sample · illustrative
+            {t("sampleIllustrative")}
           </span>
         </div>
 
@@ -168,7 +167,7 @@ export function ReportPreview() {
               <div className="flex items-center gap-4 mb-6">
                 <ScoreDial value={v.score} size={84} animate />
                 <div>
-                  <div className="text-xs text-slate-600 mb-1">Risk category</div>
+                  <div className="text-xs text-slate-600 mb-1">{t("riskCategory")}</div>
                   <span className="inline-block text-sm font-semibold text-navy-700 bg-gold-400 rounded-full px-3 py-1">
                     {v.band}
                   </span>
@@ -179,7 +178,7 @@ export function ReportPreview() {
                   INSIDE the card, which is what the `sunken` rung is for. */}
               <Surface rung="sunken" className="space-y-2.5 p-4">
                 <div className="text-2xs font-semibold uppercase tracking-wide text-slate-600 mb-1">
-                  Five dimensions
+                  {t("fiveDimensions")}
                 </div>
                 {v.categories.map((c, i) => (
                   <DimensionBar
@@ -199,7 +198,7 @@ export function ReportPreview() {
                 <div className="flex items-center gap-2 mb-3">
                   <AlertTriangle size={16} className="text-gold-500 shrink-0" />
                   <span className="text-sm font-semibold text-navy-700">
-                    Your top 3 gaps
+                    {t("topGaps")}
                   </span>
                 </div>
                 <ol className="space-y-2.5">
@@ -218,7 +217,7 @@ export function ReportPreview() {
                 <div className="flex items-center gap-2 mb-3">
                   <Check size={16} className="text-green-700 shrink-0" />
                   <span className="text-sm font-semibold text-navy-700">
-                    Fix these first
+                    {t("fixFirst")}
                   </span>
                 </div>
                 <ol className="space-y-2.5">
@@ -240,7 +239,7 @@ export function ReportPreview() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div>
                 <div className="text-2xs font-semibold uppercase tracking-wide text-slate-600 mb-2.5">
-                  Plus a practical checklist
+                  {t("plusChecklist")}
                 </div>
                 <ul className="space-y-1.5">
                   {VERDICT_CHECKLIST.map((c) => (
@@ -261,15 +260,14 @@ export function ReportPreview() {
               <div className="flex flex-col justify-end">
                 <p className="flex items-start gap-2 text-xs text-slate-600 leading-snug mb-4">
                   <Mail size={14} className="text-slate-600 shrink-0 mt-0.5" />
-                  Want it in writing? You can have the full report emailed to you
-                  at the end. Optional, and only if you ask.
+                  {t("emailNote")}
                 </p>
                 <Link
                   href={`/assessment/${v.slug}`}
                   onClick={() => trackEvent.beat5CtaClick({ sector: v.slug })}
                   className="self-start inline-flex items-center gap-2 px-6 py-3 pointer-coarse:min-h-11 bg-green-700 hover:bg-green-800 text-white text-sm font-semibold rounded-xl transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2"
                 >
-                  Get my real score
+                  {t("getMyRealScore")}
                   <ArrowRight size={16} />
                 </Link>
               </div>

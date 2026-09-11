@@ -18,6 +18,7 @@ import {
   Search,
   type LucideIcon,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Section, Eyebrow } from "@/components/ui/Section";
 import { useInView } from "@/lib/hooks/useInView";
 import { AnswerBlock } from "@/components/seo/AnswerBlock";
@@ -81,6 +82,7 @@ const chipTop = (i: number) => TOP_0 + i * ROW;
 const chipMid = (i: number) => chipTop(i) + CHIP_H / 2;
 
 export function WhereRiskHides() {
+  const t = useTranslations("home.riskMap");
   const { ref, inView } = useInView<HTMLDivElement>();
   const [sel, setSel] = useState(0);
   const [engaged, setEngaged] = useState(false);
@@ -154,14 +156,11 @@ export function WhereRiskHides() {
         {/* header */}
         <div className="text-center mb-8">
           <Eyebrow surface="navy" className="mb-3">
-            The everyday data ecosystem
+            {t("eyebrow")}
           </Eyebrow>
-          <h2 className="type-display-2 text-white mb-4">
-            The tools are ordinary. The gaps hide between them.
-          </h2>
+          <h2 className="type-display-2 text-white mb-4">{t("title")}</h2>
           <p className="type-intro text-slate-300 max-w-xl mx-auto">
-            Most Indian businesses don&apos;t lack a privacy policy. They lack
-            visibility into where personal data actually lives.
+            {t("intro")}
           </p>
         </div>
 
@@ -224,7 +223,7 @@ export function WhereRiskHides() {
             className="absolute text-xs text-slate-400"
             style={{ left: 18, top: HUB_Y - HUB_H / 2 - 24 }}
           >
-            Personal data enters here
+            {t("entersHere")}
           </span>
           <div
             className="absolute flex items-center gap-2.5 rounded-xl bg-white px-3.5 z-10"
@@ -232,17 +231,17 @@ export function WhereRiskHides() {
           >
             <Building2 size={22} className="text-navy-700 shrink-0" />
             <span className="text-navy-700 font-semibold text-sm leading-tight">
-              Your business
+              {t("yourBusiness")}
             </span>
           </div>
 
           {/* tool chips + adjacent gold gaps */}
-          {tools.map((t, i) => {
-            const Icon = t.icon;
+          {tools.map((tool, i) => {
+            const Icon = tool.icon;
             const top = chipTop(i);
             const on = i === sel;
             return (
-              <div key={t.tool}>
+              <div key={tool.tool}>
                 <button
                   type="button"
                   onClick={() => select(i)}
@@ -265,7 +264,7 @@ export function WhereRiskHides() {
                     className={`shrink-0 ${on ? "text-teal-300" : "text-slate-300"}`}
                   />
                   <span className={`text-white text-[13px] ${on ? "font-semibold" : ""}`}>
-                    {t.tool}
+                    {tool.tool}
                   </span>
                 </button>
                 <div
@@ -279,7 +278,7 @@ export function WhereRiskHides() {
                   <span
                     className={`text-gold-400 text-xs font-medium ${on ? "font-semibold" : "opacity-70"}`}
                   >
-                    {t.gap}
+                    {tool.gap}
                   </span>
                 </div>
               </div>
@@ -292,18 +291,18 @@ export function WhereRiskHides() {
           <div className="flex items-center gap-2.5 rounded-xl bg-white px-4 py-3 mb-2">
             <Building2 size={20} className="text-navy-700 shrink-0" />
             <span className="text-navy-700 font-semibold text-sm">
-              Personal data enters your business
+              {t("entersYourBusiness")}
             </span>
           </div>
           <div className="text-center text-xs text-slate-400 mb-2">
-            …and scatters to:
+            {t("scattersTo")}
           </div>
           <ul className="space-y-2">
-            {tools.map((t, i) => {
-              const Icon = t.icon;
+            {tools.map((tool, i) => {
+              const Icon = tool.icon;
               const on = i === sel;
               return (
-                <li key={t.tool} className={fade()} style={{ transitionDelay: `${i * 80}ms` }}>
+                <li key={tool.tool} className={fade()} style={{ transitionDelay: `${i * 80}ms` }}>
                   <button
                     type="button"
                     onClick={() => select(i)}
@@ -317,14 +316,14 @@ export function WhereRiskHides() {
                       className={`shrink-0 ${on ? "text-teal-300" : "text-slate-300"}`}
                     />
                     <span className={`text-white text-sm ${on ? "font-semibold" : ""}`}>
-                      {t.tool}
+                      {tool.tool}
                     </span>
                     <span className="ml-auto flex items-center gap-1.5 shrink-0">
                       <AlertCircle size={13} className="text-gold-400" />
                       <span
                         className={`text-gold-400 text-xs font-medium ${on ? "" : "opacity-70"}`}
                       >
-                        {t.gap}
+                        {tool.gap}
                       </span>
                     </span>
                   </button>
@@ -353,24 +352,24 @@ export function WhereRiskHides() {
           aria-live="polite"
           className="max-w-3xl mx-auto mt-9 rounded-xl border border-white/10 bg-white/5 p-5 sm:p-6"
         >
-          {tools.map((t, i) => {
-            const Icon = t.icon;
+          {tools.map((tool, i) => {
+            const Icon = tool.icon;
             return (
               <div
-                key={t.tool}
+                key={tool.tool}
                 hidden={i !== sel}
                 className={i === sel ? "animate-fade-up motion-reduce:animate-none" : undefined}
               >
                 <div className="flex flex-wrap items-center gap-x-3 gap-y-2 pb-4 mb-4 border-b border-white/10">
                   <Icon size={18} className="text-teal-300 shrink-0" aria-hidden />
-                  <span className="text-white font-semibold text-[15px]">{t.tool}</span>
+                  <span className="text-white font-semibold text-[15px]">{tool.tool}</span>
                   <span className="inline-flex items-center gap-1.5 rounded-full border border-gold-400/30 px-2.5 py-0.5">
                     <AlertCircle size={12} className="text-gold-400 shrink-0" aria-hidden />
-                    <span className="text-gold-400 text-2xs font-semibold">{t.gap}</span>
+                    <span className="text-gold-400 text-2xs font-semibold">{tool.gap}</span>
                   </span>
                   <span className="sm:ml-auto text-2xs text-slate-400">
-                    Lifecycle stage ·{" "}
-                    <span className="text-teal-300 font-semibold">{t.lifecycle}</span>
+                    {t("lifecycleStage")} ·{" "}
+                    <span className="text-teal-300 font-semibold">{tool.lifecycle}</span>
                   </span>
                 </div>
 
@@ -378,20 +377,20 @@ export function WhereRiskHides() {
                   {[
                     {
                       icon: Search,
-                      label: "What's in there",
-                      body: t.dataFound,
+                      label: t("whatsInThere"),
+                      body: tool.dataFound,
                       ink: "text-slate-400",
                     },
                     {
                       icon: AlertCircle,
-                      label: "How it goes wrong",
-                      body: t.exposure,
+                      label: t("howItGoesWrong"),
+                      body: tool.exposure,
                       ink: "text-gold-400",
                     },
                     {
                       icon: ShieldCheck,
-                      label: "What closes it",
-                      body: t.control,
+                      label: t("whatClosesIt"),
+                      body: tool.control,
                       ink: "text-teal-300",
                     },
                   ].map((f) => (
@@ -422,7 +421,7 @@ export function WhereRiskHides() {
             aria-hidden. */}
         <div className="max-w-2xl mx-auto mt-10" aria-hidden="true">
           <p className="text-center text-2xs font-semibold uppercase tracking-[0.09em] text-slate-400 mb-5">
-            The data lifecycle: where this gap lives
+            {t("threadTitle")}
           </p>
           <div className="flex items-start">
             {LIFECYCLE.map((label, i) => {
@@ -442,7 +441,7 @@ export function WhereRiskHides() {
                         on ? "text-gold-400 font-semibold" : "text-slate-300"
                       }`}
                     >
-                      {label}
+                      {t(`lifecycle.${label.toLowerCase()}`)}
                     </span>
                   </div>
                   {i < LIFECYCLE.length - 1 && (
@@ -455,9 +454,7 @@ export function WhereRiskHides() {
         </div>
 
         <p className="text-center text-slate-400 text-sm mt-10 max-w-xl mx-auto">
-          These are ordinary workflows, not integrations. SaralPrivacy does not
-          connect to any of them. DPDPA risk usually hides here, not in legal
-          documents.
+          {t("footNote")}
         </p>
 
         {/* "What is DPDPA?" is the education on-ramp for the risk story above,
@@ -468,8 +465,8 @@ export function WhereRiskHides() {
         <div className="max-w-3xl mx-auto mt-10">
           <AnswerBlock
             variant="on-dark"
-            question="What is DPDPA?"
-            answer="DPDPA is India's framework for handling digital personal data, and the DPDP Rules, 2025 have now been notified. For Indian businesses, the real work is operational: fix your notices, consent flows, rights handling, retention logic, and vendor controls. SaralPrivacy helps you understand what matters, assess your risk, and prioritise the next 30 to 90 days."
+            question={t("answerQuestion")}
+            answer={t("answerBody")}
           />
         </div>
       </div>

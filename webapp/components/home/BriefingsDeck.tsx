@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { formatDateShort } from "@/lib/utils";
 import { STAGE_SLUGS, stageLabel, sectorLabel } from "@/lib/data/briefing-taxonomy";
 
@@ -87,6 +88,7 @@ export function BriefingsDeck({ briefings }: { briefings: DeckBriefing[] }) {
  */
 function DeckCard({ b, lifted, fanned = false }:
   { b: DeckBriefing; lifted: boolean; fanned?: boolean }) {
+  const t = useTranslations("home.deck");
   const shadow = lifted
     ? "shadow-[0_14px_30px_-14px_rgba(18,26,46,0.5)]"
     : fanned
@@ -119,7 +121,7 @@ function DeckCard({ b, lifted, fanned = false }:
                 {stageLabel(b.stage)}
               </span>
             )}
-            <span className="text-white/70 text-xs mt-1">DPDPA Daily Briefing</span>
+            <span className="text-white/70 text-xs mt-1">{t("dailyBriefing")}</span>
           </div>
         )}
       </div>
@@ -127,7 +129,7 @@ function DeckCard({ b, lifted, fanned = false }:
       <div className="p-4">
         <div className="flex items-center gap-1.5 mb-2 flex-wrap">
           <span className="text-[10px] font-semibold text-teal-800 bg-teal-100 px-2 py-0.5 rounded-full">
-            {b.sector === "general" ? "All sectors" : sectorLabel(b.sector)}
+            {b.sector === "general" ? t("allSectors") : sectorLabel(b.sector)}
           </span>
           {STAGE_SLUGS.has(b.stage) && (
             <span className="text-[10px] font-semibold text-navy-700 bg-navy-100 px-2 py-0.5 rounded-full">
@@ -143,10 +145,10 @@ function DeckCard({ b, lifted, fanned = false }:
         <div className="flex items-center justify-between gap-2 text-[11px] text-slate-600">
           <span className="inline-flex items-center gap-2">
             <span className="inline-flex items-center gap-1"><Calendar size={11} />{formatDateShort(b.date)}</span>
-            <span className="inline-flex items-center gap-1"><Clock size={11} />{b.readTime} min</span>
+            <span className="inline-flex items-center gap-1"><Clock size={11} />{t("minutes", { count: b.readTime })}</span>
           </span>
           <span className="inline-flex items-center gap-1 font-semibold text-navy-700 group-hover:text-green-900 transition-colors">
-            Read <ArrowRight size={12} />
+            {t("read")} <ArrowRight size={12} />
           </span>
         </div>
       </div>

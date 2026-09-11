@@ -48,7 +48,7 @@ check "unreadable-green" \
 
 check "card-radius" \
   "rounded-2xl exceeds the card cap; the radius vocabulary is 8 / 12 / pill." \
-  "$(grep -rn "rounded-2xl" components/home app/page.tsx 2>/dev/null)"
+  "$(grep -rn "rounded-2xl" components/home "app/[locale]/page.tsx" 2>/dev/null)"
 
 # The homepage rhythm ladder. W1.3 specified padding-as-structure and nothing
 # checked it, so it drifted to 16/16/32/24/16/16/20/10/20/20 — three py-20

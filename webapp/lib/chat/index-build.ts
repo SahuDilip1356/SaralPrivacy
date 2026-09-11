@@ -321,7 +321,7 @@ export function collectIndustryChunks(appRoot: string): ChatChunk[] {
   for (const slug of INDUSTRY_SLUGS) {
     const url = `/industries/${slug}`;
     const meta = routeMeta(url)!;
-    const source = readFileSync(join(appRoot, "app", "industries", slug, "page.tsx"), "utf8");
+    const source = readFileSync(join(appRoot, "app", "[locale]", "industries", slug, "page.tsx"), "utf8");
 
     const literal = extractBalancedArray(source, "faqs");
     const pageFaqs = literal ? (evalDataLiteral(literal) as PageFaq[] | null) : null;
@@ -379,7 +379,7 @@ const STATIC_LEARN: Array<{ slug: string; url: string; title: string; tags: stri
 export function collectStaticLearnChunks(appRoot: string): ChatChunk[] {
   const chunks: ChatChunk[] = [];
   for (const page of STATIC_LEARN) {
-    const source = readFileSync(join(appRoot, "app", "learn", page.slug, "page.tsx"), "utf8");
+    const source = readFileSync(join(appRoot, "app", "[locale]", "learn", page.slug, "page.tsx"), "utf8");
     groupProse(extractTsxProse(source)).forEach((piece, i) => {
       chunks.push({
         id: `learn-static:${page.slug}:${i}`,
@@ -513,5 +513,5 @@ export function collectAllChunks(appRoot: string): { chunks: ChatChunk[]; stats:
 
 /** Guard used by tests and the build script. */
 export function assertAppRoot(appRoot: string): void {
-  readdirSync(join(appRoot, "app", "industries"));
+  readdirSync(join(appRoot, "app", "[locale]", "industries"));
 }

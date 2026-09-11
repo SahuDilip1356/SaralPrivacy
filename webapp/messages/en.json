@@ -1,0 +1,705 @@
+{
+  "common": {
+    "brandName": "SaralPrivacy",
+    "tagline": "DPDPA compliance, made simple for Indian businesses"
+  },
+  "nav": {
+    "tagline": "Privacy Made Practical for India",
+    "mainAria": "Main",
+    "toggleMenu": "Toggle menu",
+    "comingSoon": "Coming soon",
+    "getConsultation": "Get Consultation",
+    "languageAria": "Language"
+  },
+  "footer": {
+    "tagline": "Privacy made practical for India.",
+    "description": "India's practical DPDPA readiness platform for businesses. Daily briefings, industry assessments, resources, and advisory, all without the legalese.",
+    "columns": {
+      "product": "Product",
+      "industries": "Industries",
+      "knowledge": "Knowledge",
+      "company": "Company",
+      "privacyLegal": "Privacy & legal"
+    },
+    "links": {
+      "assessment": "DPDPA Readiness Assessment",
+      "discovery": "Personal Data Discovery",
+      "dataMapping": "Data Mapping Overview",
+      "noticeGenerator": "DPDPA Notice Generator",
+      "briefings": "Daily Briefings",
+      "learn": "DPDPA Guide",
+      "blog": "Insights",
+      "faq": "FAQ",
+      "glossary": "Glossary",
+      "about": "About",
+      "media": "Media",
+      "privacy": "Privacy Notice",
+      "rights": "Your Rights",
+      "terms": "Terms of Use",
+      "consent": "Consent Preferences",
+      "dataFlowMaps": "Data flow maps"
+    },
+    "allIndustries": "All {count} industries",
+    "dpoLine": "Data Protection Officer: {name}",
+    "generalEnquiries": "General enquiries",
+    "copyright": "© {year} SaralPrivacy. All rights reserved.",
+    "disclaimerLabel": "Disclaimer:",
+    "disclaimerText": "educational information, not formal legal advice.",
+    "bottomBar": {
+      "privacy": "Privacy",
+      "rights": "Rights",
+      "terms": "Terms",
+      "consent": "Consent"
+    }
+  },
+  "cta": {
+    "assessment": {
+      "eyebrow": "Free · 3–5 minutes",
+      "heading": "Is your business DPDPA-ready?",
+      "body": "Answer a few plain-English questions. Get your free Readiness Score with a prioritised action list.",
+      "cta": "Check My Readiness →"
+    },
+    "assessmentCompact": {
+      "heading": "Know your DPDPA risk in 3–5 minutes",
+      "cta": "Free Readiness Check →"
+    },
+    "whitepaper": {
+      "eyebrow": "Free Download",
+      "heading": "The Complete DPDPA Compliance Guide",
+      "body": "Plain English. Everything your business needs to understand the DPDP Rules 2025 — written for founders, not lawyers. Now in 7 Indian languages.",
+      "cta": "Download the Guide →"
+    },
+    "whitepaperCompact": {
+      "heading": "Get the complete DPDPA guide",
+      "cta": "Free Download →"
+    },
+    "downloadFree": "Download Free",
+    "templates": {
+      "eyebrow": "5 Ready-to-Use Templates",
+      "heading": "Start complying — not just reading",
+      "body": "Privacy Notice, Consent Language, Data Inventory, DSR SOP, Vendor Register. Delivered free to your email.",
+      "cta": "Download Free Templates"
+    },
+    "templatesCompact": {
+      "heading": "Download DPDPA compliance templates",
+      "cta": "Get Free Templates"
+    },
+    "industry": {
+      "recruitment-agencies": {
+        "eyebrow": "Free · For Recruitment Agencies",
+        "heading": "Is your candidate-data handling DPDPA-ready?",
+        "body": "CV sharing, ATS access, PAN/Aadhaar/salary docs, WhatsApp/email forwarding, client folders and rejected-candidate retention — get your agency's readiness score in 3 minutes.",
+        "cta": "Start Recruitment Risk Scan →"
+      },
+      "ca-firms": {
+        "eyebrow": "Free · For CA Firms",
+        "heading": "Is your client-document handling DPDPA-ready?",
+        "body": "PAN, Aadhaar, ITR, bank statements, payroll across WhatsApp, Drive and laptops — get your firm's readiness score in 3 minutes.",
+        "cta": "Start CA Firm Risk Scan →"
+      },
+      "training-institutes": {
+        "eyebrow": "Free · For Training Institutes",
+        "heading": "Is your student-data handling DPDPA-ready?",
+        "body": "Admission forms, parent consent, minors, WhatsApp groups, student photos, LMS tools and placement data — get your institute's readiness score in 3 minutes.",
+        "cta": "Start Training Institute Risk Scan →"
+      },
+      "d2c-brands": {
+        "eyebrow": "Free · For D2C Brands",
+        "heading": "Is your customer data collection DPDPA-ready?",
+        "body": "Cart abandonment, remarketing pixels, SMS/WhatsApp — see what needs fixing before you face a complaint.",
+        "cta": "Start D2C Brand Risk Scan →"
+      },
+      "clinics-diagnostic-labs": {
+        "eyebrow": "Free · For Clinics & Diagnostic Labs",
+        "heading": "Is your patient-data handling DPDPA-ready?",
+        "body": "Prescriptions, lab reports, WhatsApp report sharing, reception access, home collection and old records — get your clinic or lab's readiness score in 3 minutes.",
+        "cta": "Start Clinic / Lab Risk Scan →"
+      },
+      "schools-colleges": {
+        "eyebrow": "Free · For Schools & Colleges",
+        "heading": "Is your student-data handling DPDPA-ready?",
+        "body": "Children's data, parent consent, school apps, WhatsApp groups, CCTV, attendance, transport GPS, student photos and old student files — get your institution's readiness score in 3 minutes.",
+        "cta": "Start School / College Risk Scan →"
+      },
+      "law-firms": {
+        "eyebrow": "Free · For Law Firms & Legal Consultants",
+        "heading": "Is your client and matter-data handling DPDPA-ready?",
+        "body": "Client KYC, evidence files, affidavits, WhatsApp instructions, junior/intern access, external counsel, court filing and closed matter records — get your firm's readiness score in 3 minutes.",
+        "cta": "Start Law Firm Risk Scan →"
+      },
+      "real-estate": {
+        "eyebrow": "Free · For Real Estate Brokers & Property Firms",
+        "heading": "Is your buyer/tenant data handling DPDPA-ready?",
+        "body": "Buyer/tenant KYC, PAN/Aadhaar, rent agreements, sale deeds, WhatsApp lead sharing, broker networks, loan partners and old lead databases — get your firm's readiness score in 3 minutes.",
+        "cta": "Start Real Estate Risk Scan →"
+      }
+    }
+  },
+  "home": {
+    "hero": {
+      "badge": "Free DPDPA readiness check · 3–5 minutes",
+      "title": "Get your DPDPA readiness score in <accent>3–5 minutes</accent>",
+      "intro": "See your top gaps, first fixes and a sector-specific action plan for your Indian business, in plain English.",
+      "iRunA": "I run a…",
+      "selectorAria": "Select your business type",
+      "otherBusiness": "other business",
+      "seeAllSectors": "See all 12 sectors",
+      "takeFreeAssessment": "Take free assessment",
+      "frictionLine": "Free · 3–5 minutes · No email to start · Plain English · Not legal advice",
+      "notSureData": "Not sure what personal data you hold?",
+      "seeMyDataMap": "See my data map",
+      "mapItFirst": "Map it first",
+      "snapshotTitle": "Privacy readiness snapshot",
+      "sampleLabel": "Sample · Clinics & Labs",
+      "appliesTo": "DPDPA applies to your {sector}.",
+      "typicalRisk": "Typical risk",
+      "firstFixLabel": "First fix",
+      "realScoreAway": "Your real score is 3–5 minutes away.",
+      "seeFullReport": "See the full report",
+      "highPriorityAction": "High-priority action",
+      "significantGaps": "Significant gaps. Start a focused fix plan now.",
+      "generalCheck": "The general check covers every business that handles personal data. Your real score is 3–5 minutes away.",
+      "pickBusiness": "Pick your business on the left to see your own read."
+    },
+    "riskMap": {
+      "eyebrow": "The everyday data ecosystem",
+      "title": "The tools are ordinary. The gaps hide between them.",
+      "intro": "Most Indian businesses don't lack a privacy policy. They lack visibility into where personal data actually lives.",
+      "entersHere": "Personal data enters here",
+      "yourBusiness": "Your business",
+      "entersYourBusiness": "Personal data enters your business",
+      "scattersTo": "…and scatters to:",
+      "lifecycleStage": "Lifecycle stage",
+      "whatsInThere": "What's in there",
+      "howItGoesWrong": "How it goes wrong",
+      "whatClosesIt": "What closes it",
+      "threadTitle": "The data lifecycle: where this gap lives",
+      "lifecycle": {
+        "collect": "Collect",
+        "use": "Use",
+        "share": "Share",
+        "store": "Store",
+        "retain": "Retain",
+        "delete": "Delete"
+      },
+      "footNote": "These are ordinary workflows, not integrations. SaralPrivacy does not connect to any of them. DPDPA risk usually hides here, not in legal documents.",
+      "answerQuestion": "What is DPDPA?",
+      "answerBody": "DPDPA is India's framework for handling digital personal data, and the DPDP Rules, 2025 have now been notified. For Indian businesses, the real work is operational: fix your notices, consent flows, rights handling, retention logic, and vendor controls. SaralPrivacy helps you understand what matters, assess your risk, and prioritise the next 30 to 90 days."
+    },
+    "report": {
+      "eyebrow": "Your report",
+      "title": "This is what you get at the end",
+      "intro": "Every assessment ends in a scored, sector-specific report. Here is the shape of one. Pick a sector to see how it changes.",
+      "tablistAria": "Preview a sector report",
+      "panelTitle": "Privacy readiness report",
+      "sampleIllustrative": "Sample · illustrative",
+      "riskCategory": "Risk category",
+      "fiveDimensions": "Five dimensions",
+      "topGaps": "Your top 3 gaps",
+      "fixFirst": "Fix these first",
+      "plusChecklist": "Plus a practical checklist",
+      "emailNote": "Want it in writing? You can have the full report emailed to you at the end. Optional, and only if you ask.",
+      "getMyRealScore": "Get my real score"
+    },
+    "howItWorks": {
+      "eyebrow": "How it works",
+      "title": "Start anywhere. It's all free to try.",
+      "intro": "Four steps to DPDPA-ready. Follow them in order, or jump straight to what you need.",
+      "steps": {
+        "discover": {
+          "title": "Discover",
+          "sub": "Find where your personal data sits",
+          "tag": "Data Discovery",
+          "cap": "Know where your data sits"
+        },
+        "map": {
+          "title": "Map",
+          "sub": "See where it travels, and where control breaks",
+          "tag": "Data Flow",
+          "cap": "Your sector's flow map"
+        },
+        "assess": {
+          "title": "Assess",
+          "sub": "Score your current risk",
+          "tag": "Assessment",
+          "cap": "Your score in 3 minutes"
+        },
+        "fix": {
+          "title": "Fix what matters",
+          "sub": "Generate notices + first controls",
+          "tag": "Notice Pack",
+          "cap": "Notice pack as a branded PDF"
+        }
+      },
+      "artifactChips": {
+        "customers": "Customers",
+        "staff": "Staff",
+        "cctv": "CCTV",
+        "vendors": "Vendors"
+      },
+      "milestoneTitle": "You're DPDPA-ready",
+      "milestoneSub": "Keep evidence ready for customers, vendors & regulators",
+      "comingSoon": "Coming soon",
+      "leaves": {
+        "dailyBrief": {
+          "title": "Daily Brief",
+          "sub": "5-min updates + actions"
+        },
+        "sectorDeepDive": {
+          "title": "Sector Deep Dive",
+          "sub": "Go deeper on your sector"
+        },
+        "deepReview": {
+          "title": "Deep Review"
+        }
+      }
+    },
+    "sectors": {
+      "eyebrow": "Explore DPDPA by your sector",
+      "title": "Same law. Different data. Different fixes.",
+      "intro": "Twelve sectors, twelve different exposures. Pick yours and the deck brings it forward.",
+      "railAria": "Pick a sector",
+      "showSector": "Show {sector}",
+      "sampleScore": "Sample score",
+      "typicalRisk": "Typical risk",
+      "illustrative": "illustrative",
+      "industryGuide": "Industry guide",
+      "takeAssessment": "Take the assessment",
+      "prevSector": "Previous sector",
+      "nextSector": "Next sector",
+      "exploreAll": "Explore all 12 industries",
+      "seeDataFlow": "See the data flow"
+    },
+    "briefings": {
+      "eyebrow": "Daily briefings",
+      "title": "Stay ahead of DPDPA developments",
+      "intro": "Clear, actionable briefings on DPDPA updates, enforcement signals, and compliance guidance, written for business owners, not lawyers.",
+      "latest": "Latest",
+      "allBriefings": "All briefings",
+      "comingSoonTitle": "Briefings coming soon",
+      "comingSoonBody": "Daily DPDPA briefings will appear here automatically.",
+      "hoverHint": "Hover a card to bring it forward.",
+      "swipeHint": "Swipe to browse.",
+      "cadence": "One briefing every morning, 9 AM IST."
+    },
+    "deck": {
+      "dailyBriefing": "DPDPA Daily Briefing",
+      "allSectors": "All sectors",
+      "read": "Read",
+      "minutes": "{count} min"
+    },
+    "resources": {
+      "eyebrow": "Learn more",
+      "title": "If you'd rather read first",
+      "intro": "The assessment is faster. But if you want the background, start here.",
+      "guideTitle": "The complete DPDPA guide",
+      "guideDesc": "What the Act requires, who it applies to, and a 90-day plan, written against the DPDP Rules, 2025 as notified.",
+      "readGuide": "Read the guide",
+      "readGuideIn": "Read the guide in <name></name>",
+      "chooseLanguage": "Choose your language",
+      "checklistTitle": "Compliance checklist",
+      "checklistDesc": "The statutory and operational controls, laid out as a list you can work through and tick off.",
+      "checklistCta": "Open the checklist",
+      "templatesTitle": "Template library",
+      "templatesDesc": "{count} free notices, consent lines, vendor checklists and sector checklists you can adapt today.",
+      "templatesCta": "Get the templates"
+    },
+    "faqPreview": {
+      "eyebrow": "Before you start",
+      "title": "The questions people ask first",
+      "intro": "What it takes, what you get, and what happens to your answers.",
+      "browseAll": "Browse all {count} FAQs"
+    },
+    "finalBand": {
+      "sectionAria": "Take the free assessment",
+      "title": "Know your gaps. Fix what matters. Signal trust.",
+      "takeFreeAssessment": "Take free assessment",
+      "trustLine": "Free · 3–5 minutes · No email to start"
+    },
+    "newsletter": {
+      "title": "DPDPA briefings, delivered to your inbox",
+      "intro": "Get practical DPDPA updates, compliance tips, and regulatory developments: a short daily briefing, written for business owners, not lawyers.",
+      "subscribedTitle": "You're subscribed!",
+      "subscribedBody": "You'll receive your first DPDPA briefing at the next dispatch. You can manage your preferences any time from the link in any email we send.",
+      "nameLabel": "Your Name (optional)",
+      "namePlaceholder": "Priya Sharma",
+      "emailLabel": "Work Email",
+      "consentHeading": "Consent",
+      "consentSentence": "I consent to receive DPDPA briefings and compliance updates by email from SaralPrivacy.",
+      "consentUnsubscribe": "I understand I can unsubscribe at any time.",
+      "privacyNote": "Your data is processed as described in our <link>Privacy Notice</link>. We do not pre-check consent boxes. You must opt in actively.",
+      "errorGeneric": "Something went wrong. Please try again.",
+      "errorNetwork": "Network error. Please check your connection and try again.",
+      "subscribeCta": "Subscribe to Briefings"
+    }
+  },
+  "learn": {
+    "hub": {
+      "badge": "DPDPA Learning Hub",
+      "title": "DPDPA Guide — Plain English for Indian Businesses",
+      "intro": "Everything you need to understand the Digital Personal Data Protection Act — without a law degree. Start with the basics or jump to the topic most relevant to you.",
+      "startHere": "New to DPDPA? Start here →",
+      "keyReferenceDocs": "Key Reference Documents",
+      "complianceTools": "Compliance Tools",
+      "read": "Read",
+      "readTime": "{time} read",
+      "path": {
+        "whatIsDpdpa": "What is DPDPA?",
+        "applicability": "Who Does It Apply To?",
+        "keyTerms": "Key Terms",
+        "consent": "Consent Under DPDPA",
+        "rights": "Rights of Individuals",
+        "duties": "Duties of Businesses"
+      },
+      "refs": {
+        "act": "DPDP Act 2023",
+        "rules": "DPDP Rules 2025",
+        "penalties": "Penalties",
+        "glossary": "Glossary (50+ Terms)"
+      },
+      "tools": {
+        "checklist": "Compliance Checklist (90 Controls)",
+        "assessment": "DPDPA Assessment",
+        "whitePaper": "DPDPA White Paper"
+      },
+      "topics": {
+        "act": {
+          "title": "DPDP Act 2023 — Full Text",
+          "description": "The complete Digital Personal Data Protection Act, 2023 — all 9 chapters, 44 sections, and the Penalty Schedule — official text with plain-English summaries.",
+          "time": "Act Reference",
+          "tag": "Act Reference"
+        },
+        "rules": {
+          "title": "DPDP Rules 2025: Plain-English Guide",
+          "description": "Every Rule and Schedule under the DPDP Rules, 2025 explained in plain English — section by section, in the same order as the official text.",
+          "time": "25 min",
+          "tag": "Rules Reference"
+        },
+        "what-is-dpdpa": {
+          "title": "What is DPDPA?",
+          "description": "An overview of the Digital Personal Data Protection Act, 2023 — why it was passed, what it governs, and what it means for Indian businesses.",
+          "time": "5 min",
+          "tag": "Start here"
+        },
+        "applicability": {
+          "title": "Who Does It Apply To?",
+          "description": "DPDPA applies to any entity processing personal data of Indian citizens. Find out whether your business is covered and to what extent.",
+          "time": "4 min",
+          "tag": "Essential"
+        },
+        "key-terms": {
+          "title": "Must Learn: Key Terms",
+          "description": "Data Fiduciary, Data Principal, Data Processor, Significant Data Fiduciary — all the DPDPA vocabulary you need, explained plainly.",
+          "time": "6 min",
+          "tag": "Reference"
+        },
+        "consent": {
+          "title": "Consent Under DPDPA",
+          "description": "What valid consent looks like, how to collect it, what makes consent invalid, and how to design compliant consent flows for your forms and website.",
+          "time": "7 min",
+          "tag": "Action needed"
+        },
+        "notice": {
+          "title": "Notice Requirements",
+          "description": "Every data collection must be accompanied by a clear notice. Learn what a DPDPA-compliant notice must include and how to implement it.",
+          "time": "4 min",
+          "tag": "Action needed"
+        },
+        "rights": {
+          "title": "Rights of Individuals",
+          "description": "Data Principals have rights to access, correct, and erase their data. Learn what these rights are and how your business must respond.",
+          "time": "5 min",
+          "tag": "Essential"
+        },
+        "duties": {
+          "title": "Duties of Businesses",
+          "description": "What Data Fiduciaries must do: security safeguards, data minimisation, purpose limitation, processor agreements, and more.",
+          "time": "8 min",
+          "tag": "Essential"
+        },
+        "childrens-data": {
+          "title": "Children's Data",
+          "description": "DPDPA has special provisions for data of minors. If you process data of anyone under 18, this section is mandatory reading.",
+          "time": "4 min",
+          "tag": "Sector-specific"
+        },
+        "data-breach": {
+          "title": "Data Breach Basics",
+          "description": "What constitutes a breach, notification timelines, who to notify, and how to build a basic incident response capability.",
+          "time": "5 min",
+          "tag": "Action needed"
+        },
+        "retention": {
+          "title": "Data Retention and Deletion",
+          "description": "How long can you keep personal data? What are the rules around deletion? Learn to define and document your retention policies.",
+          "time": "4 min",
+          "tag": "Practical"
+        },
+        "cross-border": {
+          "title": "Cross-Border Considerations",
+          "description": "Transferring personal data outside India? Understand the permitted destinations framework and what cross-border flows require.",
+          "time": "4 min",
+          "tag": "Reference"
+        },
+        "myths": {
+          "title": "Myth vs Fact",
+          "description": "Common misconceptions about DPDPA — including who needs to comply, what counts as consent, and whether SMEs are exempt.",
+          "time": "5 min",
+          "tag": "Popular"
+        },
+        "penalties": {
+          "title": "Penalties Under DPDPA",
+          "description": "Understand the 7-item Penalty Schedule — who can be fined, how much, and under what circumstances. Includes a free Penalty Risk Indicator tool.",
+          "time": "Tool",
+          "tag": "Tools"
+        },
+        "glossary": {
+          "title": "DPDPA Glossary — 50 Key Terms",
+          "description": "Every key term from the Act and Rules — Data Principal, Data Fiduciary, Deemed Consent, Penalty Schedule, and more — with exact section references.",
+          "time": "Reference",
+          "tag": "Reference"
+        },
+        "checklist": {
+          "title": "DPDPA Compliance Checklist — 90 Controls",
+          "description": "Statutory and operational controls across 27 sections — applicability, consent, notice, rights, breach, SDF obligations, and evidence requirements. Based on DPDPA Act 2023 + DPDP Rules 2025.",
+          "time": "Checklist",
+          "tag": "Tools"
+        }
+      }
+    },
+    "topic": {
+      "guideLabel": "DPDPA Guide",
+      "complianceTools": "Compliance Tools",
+      "complianceChecklist": "Compliance Checklist",
+      "dpdpaAssessment": "DPDPA Assessment",
+      "guide": "Guide",
+      "disclaimerLabel": "Educational content only.",
+      "disclaimerText": "This guide is for educational purposes and does not constitute legal advice. Please consult a qualified data protection lawyer for formal legal opinions specific to your business situation.",
+      "legalBaselineLabel": "Legal baseline:",
+      "legalBaselineText": "DPDP Rules, 2025 notified on 14 November 2025, with phased commencement.",
+      "educationalLine": "This page is for educational purposes and does not constitute legal advice.",
+      "relatedTopics": "Related topics"
+    }
+  },
+  "survey": {
+    "sidebar": {
+      "engine": "Compliance Engine",
+      "tagline": "PRIVACY MADE PRACTICAL FOR INDIA",
+      "viewSite": "View Site",
+      "siteSupport": "Site support"
+    },
+    "sections": {
+      "yourBusiness": "Your business",
+      "dataInventory": "Data inventory",
+      "howAccessWorks": "How access works",
+      "consentAndRights": "Consent and rights",
+      "ownership": "Ownership",
+      "report": "Report"
+    },
+    "progress": {
+      "stepOf": "Step {step} of {total}",
+      "pctComplete": "{pct}% complete"
+    },
+    "gauge": {
+      "aria": "Readiness score: {score} out of 100",
+      "outOf": "out of 100"
+    },
+    "q6Groups": {
+      "transparencyConsent": "TRANSPARENCY & CONSENT",
+      "internalControls": "INTERNAL CONTROLS",
+      "governanceResponse": "GOVERNANCE & RESPONSE"
+    },
+    "priority": {
+      "highPriority": "HIGH PRIORITY",
+      "quickWin": "QUICK WIN",
+      "foundational": "FOUNDATIONAL"
+    },
+    "whyItMatters": "Why it matters",
+    "whatToDo": "What to do",
+    "landing": {
+      "badge": "DPDPA READINESS ASSESSMENT",
+      "title": "Find your DPDPA readiness gaps in 3–5 minutes",
+      "intro": "Check how your business handles personal data, consent, storage, data rights requests, vendors, and privacy ownership — and get a plain-English readiness score with practical next steps.",
+      "trust": {
+        "builtForIndia": "Built for Indian businesses",
+        "noPayment": "No payment required",
+        "noJargon": "No legal jargon",
+        "takesMinutes": "Takes 3–5 minutes",
+        "practicalScore": "Practical score + next steps",
+        "educationalOnly": "Educational, not legal advice"
+      },
+      "whatYoullGet": "What you'll get",
+      "deliverables": {
+        "score": "Your readiness score (0–100)",
+        "topGaps": "Your top 3 privacy gaps",
+        "riskCategory": "Your risk category",
+        "nextSteps": "Recommended next steps",
+        "checklist": "A simple DPDPA checklist",
+        "emailOption": "Option to email your full report"
+      },
+      "howItWorks": "How it works",
+      "steps": {
+        "answer": "Answer a short, sector-specific diagnostic",
+        "score": "Get your readiness score instantly",
+        "gaps": "See your biggest privacy gaps",
+        "actions": "Receive recommended next actions"
+      },
+      "authTitle": "Start your free DPDPA readiness check",
+      "beforeYouBegin": "Before you begin",
+      "consentRequired": "I authorize SaralPrivacy to analyze my responses to generate a confidential DPDPA readiness assessment.",
+      "viewPrivacyNotice": "View privacy notice",
+      "takeFreeAssessment": "Take free assessment",
+      "freeNoPayment": "Free · No payment required",
+      "optReport": "Deliver full technical report to my email",
+      "optNewsletter": "Send me free daily DPDPA briefings (2-min reads, unsubscribe anytime)"
+    },
+    "steps": {
+      "selectAll": "Select all that apply",
+      "optional": "(Optional)",
+      "describeIndustry": "Please describe your industry",
+      "describeIndustryPlaceholder": "e.g. Real estate, Education, Agriculture...",
+      "skipForNow": "Skip these questions for now",
+      "whyThisMatters": "WHY THIS MATTERS",
+      "whatStrongTeamsDo": "WHAT STRONG TEAMS DO",
+      "rightsManagement": "RIGHTS MANAGEMENT",
+      "consentPractice": "CONSENT PRACTICE",
+      "s1": {
+        "eyebrow": "BUSINESS CONTEXT",
+        "title": "Where privacy risk starts in your business",
+        "sub": "This helps identify where privacy exposure is structurally built into your business model."
+      },
+      "s2": {
+        "eyebrow": "DATA EXPOSURE PROFILE",
+        "title": "Does your business collect or store personal data digitally?",
+        "sub": "Even occasional digital data collection creates obligations under DPDPA if individuals are identifiable."
+      },
+      "s3": {
+        "eyebrow": "DATA ECOSYSTEM MAPPING",
+        "title": "Define your compliance footprint by data handling practices."
+      },
+      "s4": {
+        "eyebrow": "CONTROL MATURITY ASSESSMENT",
+        "title": "Which privacy basics are already in place?",
+        "note": "This section helps distinguish policy intent from operational controls."
+      },
+      "s5": {
+        "eyebrow": "COMPLIANCE MATURITY",
+        "title": "How consent and requests are handled today",
+        "sub": "Compliance maturity is 80% complete."
+      },
+      "s6": {
+        "eyebrow": "OWNERSHIP & READINESS",
+        "title": "Who owns privacy decisions today",
+        "sub": "Final phase of the foundational audit."
+      },
+      "s7": {
+        "eyebrow": "PERSONALISATION",
+        "title": "Help us prioritize the right fixes",
+        "sub": "This tailors your report to your operating reality, not generic advice."
+      }
+    },
+    "nav": {
+      "back": "Back",
+      "next": "Next",
+      "nextQuestion": "Next question",
+      "seeScore": "See my readiness score"
+    },
+    "gate": {
+      "readinessResult": "READINESS RESULT",
+      "maturityLevel": "MATURITY LEVEL",
+      "unlocks": {
+        "breakdown": "Complete score breakdown — detailed assessment across all five DPDPA compliance pillars",
+        "priorityActions": "Top 3 priority actions — prioritized remediation steps to lower your legal risk profile",
+        "checklist": "Downloadable checklist — a structured roadmap for implementing end-to-end privacy controls"
+      },
+      "formTitle": "Get your detailed report with top risks, quick wins, and next steps",
+      "secureDelivery": "SECURE DELIVERY MODE",
+      "emailLabel": "WORK EMAIL (REQUIRED)",
+      "nameLabel": "YOUR NAME (OPTIONAL)",
+      "businessLabel": "BUSINESS NAME (OPTIONAL)",
+      "mobileLabel": "MOBILE (OPTIONAL)",
+      "namePlaceholder": "e.g. Rahul Sharma",
+      "dataUseNote": "We only use these details to generate and deliver your secure compliance report. Your data is encrypted and managed according to DPDPA standards.",
+      "consentDelivery": "I consent to SaralPrivacy using my details to deliver my readiness report.",
+      "consentUpdates": "I would like to receive occasional updates regarding Indian privacy laws.",
+      "consentConsult": "I agree to be contacted for a professional consultation for specific DPDPA needs.",
+      "sending": "Sending…",
+      "unlockCta": "Unlock detailed report",
+      "skipBasic": "Skip — show basic results",
+      "trustFooter": "Built on the DPDP Act, 2023 and the DPDP Rules, 2025. Your answers are never sold or shared."
+    },
+    "result": {
+      "onItsWay": "Report on its way!",
+      "willSendTo": "We will send your detailed report to <email></email> shortly.",
+      "reportTitle": "Your DPDPA readiness report",
+      "designedFor": "This report is designed for Indian businesses working toward DPDPA-ready practices.",
+      "reportRef": "REPORT REF",
+      "executiveSummary": "EXECUTIVE SUMMARY",
+      "yourScore": "Your readiness score",
+      "scoreCategories": "SCORE CATEGORIES",
+      "cats": {
+        "noticeConsent": "Notice and consent",
+        "accessControl": "Access and control",
+        "retentionDeletion": "Retention and deletion",
+        "ownershipGovernance": "Ownership and governance",
+        "vendorPartnerRisk": "Vendor and partner risk",
+        "incidentReadiness": "Incident readiness"
+      },
+      "diagnosticSignals": "DIAGNOSTIC SIGNALS",
+      "dataExposure": "Data Exposure",
+      "controlMaturity": "Control Maturity",
+      "operationalReadiness": "Operational Readiness",
+      "redFlags": "{count, plural, one {# red flag detected} other {# red flags detected}}",
+      "strategicRecs": "STRATEGIC RECOMMENDATIONS",
+      "elevate": "Elevate your readiness today.",
+      "elevateBody": "The DPDP Rules require a compliance posture. Our experts help you build the DPDPA-aligned framework and implementation strategy.",
+      "viewFullReport": "View Full Report",
+      "bookCall": "Book a free 20-min call",
+      "downloadGuide": "Download the Guide",
+      "retake": "Retake Assessment",
+      "thisWeek": "3 things to do this week",
+      "thirtyDayPlan": "Your 30-day action plan",
+      "recommendedNext": "Recommended next step",
+      "startHighest": "Start with the highest-priority action above.",
+      "wantHelp": "Want help interpreting your score?",
+      "wantHelpBody": "Book a free 20-minute DPDPA readiness call with our team.",
+      "bookACall": "Book a call"
+    }
+  },
+  "assessment": {
+    "shared": {
+      "questionOf": "Question {current} of {total}",
+      "quickStartOptional": "Quick start · optional",
+      "pctComplete": "{pct}% complete",
+      "checkingFocus": "You're checking: <focus></focus>. Answer the full scan to see how your controls hold up.",
+      "selectAll": "Select all that apply.",
+      "whyThisMatters": "Why this matters",
+      "back": "Back",
+      "skip": "Skip",
+      "next": "Next",
+      "seeMyResults": "See my results",
+      "confidentialityNote": "All responses are confidential. This scan is educational and not legal advice.",
+      "readinessScore": "DPDPA Readiness: {score} / 100",
+      "riskBand": "Risk Band",
+      "dataExposure": "Data exposure",
+      "controlMaturity": "Control maturity",
+      "topRiskAreas": "Top {count} risk areas",
+      "yourPriorityFixes": "Your priority fixes",
+      "yourName": "Your name",
+      "email": "Email",
+      "phoneAria": "Phone or WhatsApp",
+      "phoneWhatsApp": "Phone / WhatsApp",
+      "city": "City",
+      "errNeedContact": "Please add your name, email and phone so we can send your report.",
+      "errNeedConsent": "Please tick the consent box so we can email your results.",
+      "errSaveFailed": "We couldn't save your results just now. Please try again — your answers are safe.",
+      "consentSentence": "I agree to receive my assessment results and related resources. See our",
+      "privacyNoticeLink": "Privacy Notice",
+      "saving": "Saving your results…",
+      "showPriorityFixes": "Show my priority fixes",
+      "retakeScan": "Retake the scan",
+      "downloadThe": "Download the {title}",
+      "gaugeAria": "DPDPA readiness {readiness} out of 100. Risk band: {band}."
+    }
+  }
+}

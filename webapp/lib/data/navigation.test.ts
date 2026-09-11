@@ -29,7 +29,8 @@ import { learnContent } from "./learn-content.ts";
 import { sectorNavLinks } from "./sectors.ts";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
-const APP_DIR = join(HERE, "..", "..", "app");
+// Public routes live under the [locale] segment since the i18n W1 restructure.
+const APP_DIR = join(HERE, "..", "..", "app", "[locale]");
 const LEARN_TOPIC_SLUGS = new Set(Object.keys(learnContent));
 
 function pageExists(path: string): boolean {

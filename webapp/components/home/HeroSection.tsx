@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { ArrowRight, Check, CheckCircle } from "lucide-react";
 import { getHeroVerdict } from "@/lib/data/hero-verdicts";
 import { VERDICT_PREVIEWS } from "@/lib/data/verdict-previews";
@@ -29,16 +30,6 @@ import { trackEvent } from "@/lib/analytics";
 
 /** The page's priority sectors. Must match AudienceCards and VERDICT_PREVIEWS. */
 const PRIORITY_SLUGS = ["recruitment", "ca-firms", "d2c-brands"];
-
-// One muted line, not five ticked badges. The same five facts read as
-// reassurance in a row and as clutter when each gets its own icon.
-const frictionKillers = [
-  "Free",
-  "3–5 minutes",
-  "No email to start",
-  "Plain English",
-  "Not legal advice",
-];
 
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
@@ -73,6 +64,7 @@ function HeroGeometry() {
 }
 
 export function HeroSection() {
+  const t = useTranslations("home.hero");
   // null = nothing picked yet; "other" = picked, but no sector-specific read.
   const [slug, setSlug] = useState<string | null>(null);
   const sectorSlug = slug === "other" ? null : slug;
@@ -94,7 +86,7 @@ export function HeroSection() {
     ...PRIORITY_SLUGS.map((s) => getHeroVerdict(s)).filter(
       (v): v is NonNullable<typeof v> => Boolean(v),
     ),
-    { slug: "other", chipLabel: "other business" },
+    { slug: "other", chipLabel: t("otherBusiness") },
   ];
 
   return (
@@ -108,29 +100,29 @@ export function HeroSection() {
             <div className="inline-flex items-center gap-2 bg-teal-700/30 border border-teal-500/40 rounded-full px-3.5 py-1.5 mb-6">
               <span className="w-2 h-2 rounded-full bg-teal-400 animate-pulse motion-reduce:animate-none" aria-hidden="true" />
               <span className="text-teal-300 text-xs font-semibold">
-                Free DPDPA readiness check · 3–5 minutes
+                {t("badge")}
               </span>
             </div>
 
             {/* The promise is the SCORE, not a position — it names the
                 deliverable the report actually hands over. */}
             <h1 className="type-display-1 text-white mb-6 max-w-[16ch]">
-              Get your DPDPA readiness score in{" "}
-              <span className="text-green-400">3–5 minutes</span>
+              {t.rich("title", {
+                accent: (chunks) => <span className="text-green-400">{chunks}</span>,
+              })}
             </h1>
             <p className="type-intro text-slate-300 mb-8 max-w-xl">
-              See your top gaps, first fixes and a sector-specific action plan
-              for your Indian business, in plain English.
+              {t("intro")}
             </p>
 
             {/* is-this-me selector — one interaction grammar, dark register:
                 selected = bright green fill + navy label + check. */}
             <div className="mb-7">
-              <span className="block text-sm text-slate-400 mb-2.5">I run a…</span>
+              <span className="block text-sm text-slate-400 mb-2.5">{t("iRunA")}</span>
               <div
                 className="flex flex-wrap gap-2"
                 role="group"
-                aria-label="Select your business type"
+                aria-label={t("selectorAria")}
               >
                 {chips.map((v) => {
                   const active = v.slug === slug;
@@ -161,7 +153,7 @@ export function HeroSection() {
                   href="#sectors"
                   className="inline-flex items-center pointer-coarse:min-h-11 underline underline-offset-4 decoration-white/25 hover:decoration-white hover:text-slate-200 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-700 rounded"
                 >
-                  See all 12 sectors
+                  {t("seeAllSectors")}
                   <span aria-hidden="true"> ↓</span>
                 </a>
               </p>
@@ -175,23 +167,21 @@ export function HeroSection() {
                 onClick={() => trackEvent.landingCtaClick({ cta: "assess", sector: slug ?? "" })}
                 className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-green-400 hover:bg-green-300 text-navy-950 font-semibold rounded-lg transition-colors text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-700"
               >
-                Take free assessment
+                {t("takeFreeAssessment")}
                 <ArrowRight size={18} />
               </Link>
             </div>
 
-            <p className="text-sm text-cloud-400">
-              {frictionKillers.join(" · ")}
-            </p>
+            <p className="text-sm text-cloud-400">{t("frictionLine")}</p>
 
             <p className="mt-4 text-sm text-cloud-400">
-              Not sure what personal data you hold?{" "}
+              {t("notSureData")}{" "}
               <Link
                 href={discoverHref}
                 onClick={() => trackEvent.landingCtaClick({ cta: "discover", sector: slug ?? "" })}
                 className="font-medium text-slate-200 hover:text-white underline underline-offset-4 decoration-white/30 hover:decoration-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-700 rounded"
               >
-                {slug && slug !== "other" ? "See my data map" : "Map it first"}
+                {slug && slug !== "other" ? t("seeMyDataMap") : t("mapItFirst")}
                 <span aria-hidden="true"> →</span>
               </Link>
             </p>
@@ -207,10 +197,10 @@ export function HeroSection() {
                   card's title bar rather than the page bleeding through */}
               <div className="flex items-center justify-between gap-3 bg-navy-950 px-4 py-2.5">
                 <span className="text-2xs font-semibold uppercase tracking-[0.08em] text-cloud-400">
-                  Privacy readiness snapshot
+                  {t("snapshotTitle")}
                 </span>
                 <span className="text-2xs font-semibold text-white whitespace-nowrap">
-                  {verdict ? cap(verdict.chipLabel) : "Sample · Clinics & Labs"}
+                  {verdict ? cap(verdict.chipLabel) : t("sampleLabel")}
                 </span>
               </div>
 
@@ -220,12 +210,12 @@ export function HeroSection() {
                   <div className="flex items-start gap-3 mb-3">
                     <CheckCircle size={20} className="text-green-800 shrink-0 mt-0.5" />
                     <p className="text-navy-700 font-semibold text-sm leading-snug">
-                      DPDPA applies to your {verdict.chipLabel}.
+                      {t("appliesTo", { sector: verdict.chipLabel })}
                     </p>
                   </div>
                   <p className="text-slate-600 text-sm leading-snug mb-4">{verdict.riskLine}</p>
                   <div className="border-t border-cloud-200 pt-3.5 flex items-center justify-between mb-3.5">
-                    <span className="text-sm text-slate-600">Typical risk</span>
+                    <span className="text-sm text-slate-600">{t("typicalRisk")}</span>
                     <span
                       className="text-sm font-semibold text-navy-700 bg-gold-400 rounded px-2 py-0.5 animate-fade-up motion-reduce:animate-none"
                       style={{ animationDelay: "200ms" }}
@@ -236,18 +226,18 @@ export function HeroSection() {
                   {firstFix && (
                     <div className="mb-4">
                       <span className="block text-2xs font-semibold uppercase tracking-wide text-slate-600 mb-1">
-                        First fix
+                        {t("firstFixLabel")}
                       </span>
                       <p className="text-sm text-slate-600 leading-snug">{firstFix}</p>
                     </div>
                   )}
                   <p className="text-xs text-slate-600">
-                    Your real score is 3–5 minutes away.{" "}
+                    {t("realScoreAway")}{" "}
                     <a
                       href="#report"
                       className="font-medium text-teal-800 hover:text-teal-900 underline underline-offset-4 decoration-teal-800/30 hover:decoration-teal-800"
                     >
-                      See the full report ↓
+                      {t("seeFullReport")} ↓
                     </a>
                   </p>
                 </div>
@@ -259,17 +249,15 @@ export function HeroSection() {
                     </div>
                     <div>
                       <span className="inline-block text-xs font-semibold text-navy-800 bg-gold-300 rounded-full px-3 py-1 mb-1.5">
-                        High-priority action
+                        {t("highPriorityAction")}
                       </span>
                       <p className="text-sm text-slate-600 leading-snug">
-                        Significant gaps. Start a focused fix plan now.
+                        {t("significantGaps")}
                       </p>
                     </div>
                   </div>
                   <p className="text-xs text-slate-600 mt-4">
-                    {slug === "other"
-                      ? "The general check covers every business that handles personal data. Your real score is 3–5 minutes away."
-                      : "Pick your business on the left to see your own read."}
+                    {slug === "other" ? t("generalCheck") : t("pickBusiness")}
                   </p>
                 </div>
               )}

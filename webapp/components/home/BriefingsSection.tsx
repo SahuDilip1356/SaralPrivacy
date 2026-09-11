@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 import { Surface } from "@/components/ui/Surface";
 import { Section, Eyebrow } from "@/components/ui/Section";
 import { formatDateShort } from "@/lib/utils";
@@ -50,6 +51,7 @@ function normalise(doc: any): DeckBriefing {
 }
 
 export async function BriefingsSection() {
+  const t = await getTranslations("home.briefings");
   // Fetch latest published briefings from Appwrite
   let briefings: DeckBriefing[] = [];
   try {
@@ -71,14 +73,11 @@ export async function BriefingsSection() {
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5 mb-9">
         <div>
           <Eyebrow surface="deep" className="mb-3">
-            Daily briefings
+            {t("eyebrow")}
           </Eyebrow>
-          <h2 className="type-display-3 text-navy-700">
-            Stay ahead of DPDPA developments
-          </h2>
+          <h2 className="type-display-3 text-navy-700">{t("title")}</h2>
           <p className="type-intro text-slate-600 mt-2 max-w-xl">
-            Clear, actionable briefings on DPDPA updates, enforcement signals, and compliance
-            guidance, written for business owners, not lawyers.
+            {t("intro")}
           </p>
         </div>
 
@@ -92,7 +91,7 @@ export async function BriefingsSection() {
             <span className="inline-flex items-center gap-2 rounded-full border border-cloud-300 bg-cloud-25 px-3 py-1">
               <span aria-hidden className="w-1.5 h-1.5 rounded-full bg-teal-600" />
               <span className="text-2xs font-semibold uppercase tracking-[0.09em] text-teal-800">
-                Latest
+                {t("latest")}
               </span>
               <span className="text-2xs text-slate-600 tabular-nums">
                 {formatDateShort(latest.date)}
@@ -103,7 +102,7 @@ export async function BriefingsSection() {
             href="/briefings"
             className="inline-flex items-center gap-1.5 pointer-coarse:min-h-11 text-sm font-semibold text-green-800 hover:text-green-900 transition-colors"
           >
-            All briefings
+            {t("allBriefings")}
             <ArrowRight size={16} />
           </Link>
         </div>
@@ -114,10 +113,8 @@ export async function BriefingsSection() {
           cloud-200. */}
       {briefings.length === 0 && (
         <Surface rung="card" onDeep className="p-10 text-center">
-          <p className="text-base font-medium text-navy-700 mb-1">Briefings coming soon</p>
-          <p className="text-sm text-slate-600">
-            Daily DPDPA briefings will appear here automatically.
-          </p>
+          <p className="text-base font-medium text-navy-700 mb-1">{t("comingSoonTitle")}</p>
+          <p className="text-sm text-slate-600">{t("comingSoonBody")}</p>
         </Surface>
       )}
 
@@ -125,9 +122,9 @@ export async function BriefingsSection() {
 
       {briefings.length > 0 && (
         <p className="text-slate-600 text-xs mt-6 text-center lg:text-left">
-          <span className="hidden lg:inline">Hover a card to bring it forward.</span>
-          <span className="lg:hidden">Swipe to browse.</span>{" "}
-          One briefing every morning, 9 AM IST.
+          <span className="hidden lg:inline">{t("hoverHint")}</span>
+          <span className="lg:hidden">{t("swipeHint")}</span>{" "}
+          {t("cadence")}
         </p>
       )}
     </Section>

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowRight, Check, ListChecks, FileDown } from "lucide-react";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { useInView } from "@/lib/hooks/useInView";
 import { Surface } from "@/components/ui/Surface";
 import { Section, Eyebrow } from "@/components/ui/Section";
@@ -142,6 +143,7 @@ const LANG_TINTS = [
 ];
 
 export function ResourcesSection() {
+  const t = useTranslations("home.resources");
   // The cover opens once, when the section first reaches the viewport.
   const { ref, inView } = useInView<HTMLDivElement>(0.3);
 
@@ -163,18 +165,17 @@ export function ResourcesSection() {
   const cards = [
     {
       icon: ListChecks,
-      title: "Compliance checklist",
-      description:
-        "The statutory and operational controls, laid out as a list you can work through and tick off.",
+      title: t("checklistTitle"),
+      description: t("checklistDesc"),
       href: "/compliance-checklist",
-      cta: "Open the checklist",
+      cta: t("checklistCta"),
     },
     {
       icon: FileDown,
-      title: "Template library",
-      description: `${TEMPLATE_COUNT} free notices, consent lines, vendor checklists and sector checklists you can adapt today.`,
+      title: t("templatesTitle"),
+      description: t("templatesDesc", { count: TEMPLATE_COUNT }),
       href: "/resources",
-      cta: "Get the templates",
+      cta: t("templatesCta"),
     },
   ];
 
@@ -185,13 +186,11 @@ export function ResourcesSection() {
     <Section surface="deep" type="utility" divider>
       <div className="text-center mb-9">
         <Eyebrow surface="deep" className="mb-3">
-          Learn more
+          {t("eyebrow")}
         </Eyebrow>
-        <h2 className="type-display-3 text-navy-700 mb-4">
-          If you&apos;d rather read first
-        </h2>
+        <h2 className="type-display-3 text-navy-700 mb-4">{t("title")}</h2>
         <p className="type-intro text-slate-600 max-w-lg mx-auto">
-          The assessment is faster. But if you want the background, start here.
+          {t("intro")}
         </p>
       </div>
 
@@ -208,11 +207,10 @@ export function ResourcesSection() {
             <GuideCover open={inView} lang={lang} />
             <div className="flex flex-col">
               <h3 className="font-semibold text-navy-700 text-base mb-2">
-                The complete DPDPA guide
+                {t("guideTitle")}
               </h3>
               <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                What the Act requires, who it applies to, and a 90-day plan,
-                written against the DPDP Rules, 2025 as notified.
+                {t("guideDesc")}
               </p>
               {/* The destination follows the chip. English keeps the plain
                   label; any other language names itself, so the reader can see
@@ -222,12 +220,11 @@ export function ResourcesSection() {
                 className="mt-auto self-start inline-flex items-center gap-1.5 pointer-coarse:min-h-11 text-sm font-semibold text-teal-800 hover:text-teal-900 transition-colors"
               >
                 {lang.code === DEFAULT_LANG_CODE ? (
-                  "Read the guide"
+                  t("readGuide")
                 ) : (
-                  <>
-                    Read the guide in{" "}
-                    <span lang={lang.locale}>{lang.native}</span>
-                  </>
+                  t.rich("readGuideIn", {
+                    name: () => <span lang={lang.locale}>{lang.native}</span>,
+                  })
                 )}
                 <ArrowRight size={14} />
               </Link>
@@ -241,7 +238,7 @@ export function ResourcesSection() {
               reaches them switches voice correctly. */}
           <div className="pt-5 mt-5 border-t border-cloud-200">
             <p className="text-2xs font-semibold uppercase tracking-[0.08em] text-slate-600 mb-2.5">
-              Choose your language
+              {t("chooseLanguage")}
             </p>
             <ul className="flex flex-wrap gap-1.5">
               {GUIDE_LANGUAGES.map((l, i) => {

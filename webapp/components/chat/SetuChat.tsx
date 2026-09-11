@@ -5,6 +5,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
+import { stripAppLocale } from "@/lib/i18n/chrome";
 import { X } from "lucide-react";
 import { ChatPanel } from "./ChatPanel";
 import { SetuStage } from "./SetuStage";
@@ -55,7 +56,10 @@ function saveStore(store: ProactiveStore) {
 }
 
 export default function SetuChat() {
-  const pathname = usePathname() ?? "/";
+  // Locale-stripped: triggerForPage's route table and the /admin//report
+  // hide-check are keyed on unprefixed paths, so /hi/assessment must resolve
+  // like /assessment (Setu itself stays English — MULTILINGUAL_SPEC §1).
+  const pathname = stripAppLocale(usePathname() ?? "/");
   const [open, setOpen] = useState(false);
   // Carries the whole trigger, not just its text, so a qualification opener
   // can offer its answer chips inline (§7.2).

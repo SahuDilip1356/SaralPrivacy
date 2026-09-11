@@ -1,0 +1,133 @@
+import type { Metadata } from "next";
+import { Inter, Noto_Sans_Devanagari } from "next/font/google";
+import { NextIntlClientProvider } from "next-intl";
+import "@/app/globals.css";
+import { loadMessages } from "@/i18n/request";
+import { getLanguage } from "@/lib/data/guide-languages";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
+// Vercel Web Analytics — cookieless, no cross-session identifier, so it needs no
+// consent gate. Replaced GA4 (2026-07-17): GA set a cookie-based client id and
+// tracked across sessions with no consent banner, which we cannot square with
+// selling DPDPA readiness. See PRIVACY_RIGHTS_PAGES_SPEC.md §2.
+import { Analytics } from "@vercel/analytics/next";
+import SetuChat from "@/components/chat/SetuChat";
+import { RegisterSW } from "@/components/pwa/RegisterSW";
+
+// ─────────────────────────────────────────────────────────────────────────────
+// The single <html>/<body> shell shared by BOTH root layouts:
+//   • app/[locale]/layout.tsx — the public, locale-routed tree (lang from the
+//     locale registry: en-IN, hi-IN, …)
+//   • app/(backoffice)/layout.tsx — admin + report, English-only forever
+//     (MULTILINGUAL_SPEC §1 non-goals)
+// One shell, two thin layouts ⇒ the chrome (Header/Footer/Setu/Analytics,
+// fonts, head links, metadata) can never drift between the trees.
+// ─────────────────────────────────────────────────────────────────────────────
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+// Hindi and Marathi guide/briefing content falls to a mismatched system face
+// without this — Inter carries no Devanagari glyphs.
+const notoDevanagari = Noto_Sans_Devanagari({
+  subsets: ["devanagari"],
+  weight: ["400", "500", "600"],
+  variable: "--font-noto-devanagari",
+  display: "swap",
+});
+
+// Keeps mobile browser chrome on the dark-canvas navy (matches the manifest).
+// Named siteViewport, not viewport: Next only reads `metadata`/`viewport` from
+// layout/page modules, so both root layouts must re-export these two.
+export const siteViewport = {
+  themeColor: '#0D1322',
+};
+
+/** Site-wide metadata, re-exported verbatim by both root layouts. */
+export const siteMetadata: Metadata = {
+  metadataBase: new URL('https://saralprivacy.com'),
+  // PWA (MOBILE_APP_SPEC.md Route A): manifest lives at app/manifest.ts.
+  // apple-touch-icon is flattened RGB — iOS renders alpha as black.
+  icons: {
+    apple: '/icons/apple-touch-icon.png',
+  },
+  appleWebApp: {
+    capable: true,
+    title: 'SaralPrivacy',
+    statusBarStyle: 'default',
+  },
+  title: {
+    default: 'SaralPrivacy — DPDPA Compliance for Indian Businesses',
+    template: '%s | SaralPrivacy',
+  },
+  description: "India's practical DPDPA compliance platform. Free readiness assessments, daily briefings, industry guides, and expert consultation for recruitment agencies, CA firms, training institutes, and D2C brands.",
+  keywords: ['DPDPA', 'Digital Personal Data Protection Act', 'India data protection', 'data privacy India', 'DPDPA compliance', 'data protection India', 'Indian privacy law', 'DPDPA for businesses', 'DPDPA assessment', 'SaralPrivacy'],
+  authors: [{ name: 'SaralPrivacy Editorial Team' }],
+  // No site-wide canonical/og:url — a hardcoded homepage URL here is inherited
+  // by every page that doesn't override it, telling crawlers those pages are
+  // duplicates of the homepage. Each indexable page sets its own canonical.
+  openGraph: {
+    type: 'website',
+    locale: 'en_IN',
+    siteName: 'SaralPrivacy',
+    title: 'SaralPrivacy — DPDPA Compliance for Indian Businesses',
+    description: 'Free DPDPA readiness assessments, daily briefings, and practical compliance guides for Indian businesses.',
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'SaralPrivacy — DPDPA Compliance' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'SaralPrivacy — DPDPA Compliance for Indian Businesses',
+    description: 'Free DPDPA readiness assessments, daily briefings, and practical compliance guides for Indian businesses.',
+  },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
+  verification: {
+    google: 'bb55c3c7def99de4',
+  },
+};
+
+export async function SiteShell({
+  locale,
+  children,
+}: Readonly<{
+  /** Registry `code` (en, hi, …). <html lang> derives the BCP-47 tag from it. */
+  locale: string;
+  children: React.ReactNode;
+}>) {
+  // Explicit locale + messages, never inherited from request headers: this
+  // shell also wraps the (backoffice) tree, which has no [locale] segment —
+  // automatic inheritance there would read headers() and force every static
+  // backoffice route dynamic. The provider makes useTranslations()/useLocale()
+  // work in the client chrome (Header, home sections, assessment clients) on
+  // BOTH trees; server components under [locale] keep using the request config.
+  const messages = await loadMessages(locale);
+  const lang = getLanguage(locale).locale;
+
+  return (
+    <html lang={lang} className={`${inter.variable} ${notoDevanagari.variable}`}>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* LLM-friendly site summary — emerging convention, probed by some AI crawlers */}
+        <link rel="alternate" type="text/markdown" title="LLM-friendly site summary" href="/llms.txt" />
+        <link rel="alternate" type="text/markdown" title="LLM extended reference" href="/llms-full.txt" />
+      </head>
+      <body className="font-sans antialiased bg-slate-50 text-slate-900 min-h-screen flex flex-col">
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          <Header />
+          {/* 4rem clears the fixed header. The extra 32px this used to carry was
+              clearance for the announcement strip, which is gone. */}
+          <main className="flex-1 pt-16">
+            {children}
+          </main>
+          <Footer locale={locale} />
+          <SetuChat />
+        </NextIntlClientProvider>
+        <Analytics />
+        <RegisterSW />
+      </body>
+    </html>
+  );
+}
