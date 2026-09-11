@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { PressProofStrip } from "@/components/ui/PressProofStrip";
+import { InstallCta } from "@/components/pwa/InstallCta";
 import { sectorNavLinks } from "@/lib/data/sectors";
 import { DPO } from "@/lib/data/privacy-vendors";
 
@@ -242,6 +243,9 @@ export async function Footer({ locale }: { locale: string }) {
             <Link href="/consent-preferences" className="inline-flex items-center pointer-coarse:min-h-11 text-xs text-slate-400 hover:text-white transition-colors">
               {t("bottomBar.consent")}
             </Link>
+            {/* Renders only when the browser can actually install right now
+                (Chromium prompt captured, or iOS Safari outside the app). */}
+            <InstallCta />
           </div>
         </div>
       </div>

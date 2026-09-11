@@ -45,6 +45,8 @@ jobs:
       APPWRITE_PROJECT_ID:  ${{ secrets.APPWRITE_PROJECT_ID }}
       APPWRITE_BUCKET_ID:   ${{ secrets.APPWRITE_BUCKET_ID }}
       GOOGLE_SHEET_ID:      ${{ secrets.GOOGLE_SHEET_ID }}
+      SUPABASE_URL:         ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
 
     steps:
       - name: Check out repository (full repo, pipeline lives at root)

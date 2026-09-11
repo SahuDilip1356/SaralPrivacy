@@ -50,3 +50,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 node_modules
+
+# Search Console service-account key + SEO inspection reports (tools/seo)
+.gsc-service-account.json
+webapp/tools/seo/reports/

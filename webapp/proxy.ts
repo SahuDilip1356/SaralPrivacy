@@ -13,7 +13,9 @@ const intlMiddleware = createIntlMiddleware(routing);
 // hit 308s to the unprefixed path, where the normal gates apply. These trees
 // also bypass next-intl entirely — they live outside app/[locale]/, so the
 // "as-needed" default-locale rewrite (/admin → /en/admin) would 404 them.
-const UNLOCALIZED_PREFIXES = ["/admin", "/api", "/report"];
+// /offline is the service worker's navigation fallback: sw.js requests that
+// literal path, so it must never be rewritten to /en/offline (which 404s).
+const UNLOCALIZED_PREFIXES = ["/admin", "/api", "/report", "/offline"];
 
 // Routes bloggers are restricted to (blog editor + blog API only)
 const BLOGGER_ALLOWED_PREFIXES = [

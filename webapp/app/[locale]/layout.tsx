@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { APP_LOCALES, isAppLocale } from "@/lib/data/guide-languages";
-import { SiteShell, siteMetadata } from "@/components/layout/SiteShell";
+import { SiteShell, siteMetadata, siteViewport } from "@/components/layout/SiteShell";
 
 // Root layout of the public, locale-routed tree. English serves unprefixed
 // URLs (localePrefix "as-needed"); enabled locales serve /<code>/... . The
@@ -11,6 +11,9 @@ import { SiteShell, siteMetadata } from "@/components/layout/SiteShell";
 // routes into dynamic rendering (P1 gate: English byte-identical, Lighthouse
 // unchanged). Admin/report render the same shell via app/(backoffice)/.
 export const metadata = siteMetadata;
+// PWA theme-color (main's app/layout.tsx export) — must be re-exported from a
+// layout module or Next never reads it.
+export const viewport = siteViewport;
 
 export function generateStaticParams() {
   return APP_LOCALES.map((locale) => ({ locale }));

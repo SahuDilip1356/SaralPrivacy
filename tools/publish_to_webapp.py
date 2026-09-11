@@ -4,7 +4,7 @@ publish_to_webapp.py — Push generated briefing to SaralPrivacy webapp for admi
 Reads content_{date}.json + infographic_{date}.jpg, then:
   1. Base64-encodes the infographic
   2. POSTs the full briefing payload to /api/briefings/generate (webapp)
-  3. The webapp saves to Appwrite (status: draft) and emails all 3 admins for approval
+  3. The webapp saves the briefing (via its lib/db seam) and emails all 3 admins for approval
   4. Any admin clicks "Approve & Publish" — briefing goes live on saralprivacy.com
 
 Usage:
@@ -37,78 +37,58 @@ from tools.utils import (
 logger = setup_logger("publish_to_webapp")
 
 
-def upload_infographic_to_appwrite(date_str: str, img_path: Path) -> str:
+def upload_infographic_to_supabase(date_str: str, img_path: Path) -> str:
     """
-    Upload infographic to Appwrite Storage and return the public view URL.
-    Uses a deterministic file ID (inf{YYYYMMDD}) so retries overwrite cleanly.
+    Upload infographic to the Supabase 'infographics' bucket and return the public URL.
+    Deterministic object name (inf{YYYYMMDD}.{ext}) with upsert, so retries overwrite cleanly.
     Falls back to empty string on any error.
     """
-    endpoint   = get_env("APPWRITE_ENDPOINT",   "https://sgp.cloud.appwrite.io/v1").rstrip("/")
-    project_id = get_env("APPWRITE_PROJECT_ID", "")
-    api_key    = get_env("APPWRITE_API_KEY",    "")
-    bucket_id  = get_env("APPWRITE_BUCKET_ID",  "")
+    supabase_url = get_env("SUPABASE_URL", "https://ecczfysdlcvmfxbshznh.supabase.co").rstrip("/")
+    service_key  = get_env("SUPABASE_SERVICE_ROLE_KEY", "")
 
-    if not all([project_id, api_key, bucket_id]):
-        logger.warning("Appwrite env vars missing — cannot upload infographic to storage")
+    if not service_key:
+        logger.warning("SUPABASE_SERVICE_ROLE_KEY missing — cannot upload infographic to storage")
         return ""
 
-    file_id = f"inf{date_str.replace('-', '')}"   # e.g. "inf20260328"
-
-    headers = {
-        "X-Appwrite-Project": project_id,
-        "X-Appwrite-Key":     api_key,
-    }
-
-    # Delete any existing file with this ID (clean retry)
-    try:
-        requests.delete(
-            f"{endpoint}/storage/buckets/{bucket_id}/files/{file_id}",
-            headers=headers, timeout=10
-        )
-    except Exception:
-        pass  # ignore — file may not exist yet
-
-    # Upload the new file
-    ext = img_path.suffix.lstrip(".")
+    ext  = img_path.suffix.lstrip(".").lower()
     mime = "image/jpeg" if ext in ("jpg", "jpeg") else f"image/{ext}"
+    name = f"inf{date_str.replace('-', '')}.{ext}"   # e.g. "inf20260328.jpg"
+
     with open(img_path, "rb") as f:
         resp = requests.post(
-            f"{endpoint}/storage/buckets/{bucket_id}/files",
-            headers=headers,
-            files={
-                "file":   (img_path.name, f, mime),
-                "fileId": (None, file_id),
+            f"{supabase_url}/storage/v1/object/infographics/{name}",
+            headers={
+                "Authorization": f"Bearer {service_key}",
+                "Content-Type":  mime,
+                "x-upsert":      "true",
             },
+            data=f.read(),
             timeout=60,
         )
 
     if not resp.ok:
-        logger.warning(f"Appwrite Storage upload failed ({resp.status_code}): {resp.text[:200]}")
+        logger.warning(f"Supabase Storage upload failed ({resp.status_code}): {resp.text[:200]}")
         return ""
 
-    # Build the public view URL
-    view_url = (
-        f"{endpoint}/storage/buckets/{bucket_id}/files/{file_id}"
-        f"/view?project={project_id}"
-    )
-    logger.info(f"Infographic uploaded to Appwrite Storage → {view_url}")
+    view_url = f"{supabase_url}/storage/v1/object/public/infographics/{name}"
+    logger.info(f"Infographic uploaded to Supabase Storage → {view_url}")
     return view_url
 
 
 def get_infographic_url(date_str: str) -> str:
     """
-    Upload infographic to Appwrite Storage and return the URL.
+    Upload infographic to Supabase Storage and return the URL.
     Falls back to empty string if no infographic found or upload fails.
     """
     for ext in ("jpg", "jpeg", "png"):
         img_path = tmp_path(f"infographic_{date_str}.{ext}")
         if img_path.exists():
             logger.info(f"Infographic found: {img_path} ({img_path.stat().st_size:,} bytes)")
-            url = upload_infographic_to_appwrite(date_str, img_path)
+            url = upload_infographic_to_supabase(date_str, img_path)
             if url:
                 return url
             # Upload failed — log and continue without image
-            logger.warning("Appwrite upload failed — briefing will publish without infographic")
+            logger.warning("Supabase upload failed — briefing will publish without infographic")
             return ""
 
     logger.warning(f"No infographic found for {date_str} — briefing will publish without image")
@@ -121,7 +101,7 @@ def build_payload(content: dict, infographic_b64: str) -> dict:
 
     Rich content strategy:
     - All Hook/Body/CTA fields are packed into `why_it_matters` as an extended JSON envelope
-    - This avoids needing new Appwrite attributes (collection is at capacity)
+    - This avoids needing new columns (legacy collection was at capacity)
     - The webapp's parseWhyField() reads back all fields from this single JSON blob
     """
     date_str = content.get("date", get_today_iso())
@@ -176,7 +156,7 @@ def build_payload(content: dict, infographic_b64: str) -> dict:
     tags = [tax["content_type"]] + [w for w in word_tags if w != tax["content_type"]]
 
     return {
-        # Core fields (map to existing Appwrite attributes).
+        # Core fields (map to existing briefings_meta columns).
         # Discovery facets ride on existing attributes (collection is at capacity):
         #   Stage  -> category, Sector -> industries[0], Format -> tags[0]
         "title":            content.get("subject_line", f"Day {day_num}: {topic}"),
@@ -191,7 +171,7 @@ def build_payload(content: dict, infographic_b64: str) -> dict:
         "featured":         False,
         "author":           "DPDPA Editorial Team",
 
-        # Infographic — stored as Appwrite Storage URL (not base64 in document)
+        # Infographic — stored as Supabase Storage public URL (not base64 in document)
         "infographic_url": infographic_b64,
 
         # Pipeline metadata (sent to webapp but not stored as separate fields)
@@ -276,7 +256,7 @@ def main(content: dict) -> dict:
 
     logger.info(f"Publishing Day {day_num} briefing: '{content.get('topic', '?')}' ({date_str})")
 
-    # Upload infographic to Appwrite Storage — returns URL (not base64)
+    # Upload infographic to Supabase Storage — returns URL (not base64)
     infographic_url = get_infographic_url(date_str)
 
     # Build and send payload

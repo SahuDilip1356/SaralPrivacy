@@ -12,6 +12,7 @@ import { Footer } from "@/components/layout/Footer";
 // selling DPDPA readiness. See PRIVACY_RIGHTS_PAGES_SPEC.md §2.
 import { Analytics } from "@vercel/analytics/next";
 import SetuChat from "@/components/chat/SetuChat";
+import { RegisterSW } from "@/components/pwa/RegisterSW";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // The single <html>/<body> shell shared by BOTH root layouts:
@@ -38,9 +39,26 @@ const notoDevanagari = Noto_Sans_Devanagari({
   display: "swap",
 });
 
+// Keeps mobile browser chrome on the dark-canvas navy (matches the manifest).
+// Named siteViewport, not viewport: Next only reads `metadata`/`viewport` from
+// layout/page modules, so both root layouts must re-export these two.
+export const siteViewport = {
+  themeColor: '#0D1322',
+};
+
 /** Site-wide metadata, re-exported verbatim by both root layouts. */
 export const siteMetadata: Metadata = {
   metadataBase: new URL('https://saralprivacy.com'),
+  // PWA (MOBILE_APP_SPEC.md Route A): manifest lives at app/manifest.ts.
+  // apple-touch-icon is flattened RGB — iOS renders alpha as black.
+  icons: {
+    apple: '/icons/apple-touch-icon.png',
+  },
+  appleWebApp: {
+    capable: true,
+    title: 'SaralPrivacy',
+    statusBarStyle: 'default',
+  },
   title: {
     default: 'SaralPrivacy — DPDPA Compliance for Indian Businesses',
     template: '%s | SaralPrivacy',
@@ -108,6 +126,7 @@ export async function SiteShell({
           <SetuChat />
         </NextIntlClientProvider>
         <Analytics />
+        <RegisterSW />
       </body>
     </html>
   );
