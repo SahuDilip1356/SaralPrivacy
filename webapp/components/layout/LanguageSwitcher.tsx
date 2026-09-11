@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { GUIDE_LANGUAGES } from "@/lib/data/guide-languages";
 import { stripAppLocale } from "@/lib/i18n/chrome";
 import { SHOW_LANGUAGE_SWITCHER } from "@/lib/i18n/switcher-gate";
-import { IndiaIcon } from "@/components/layout/IndiaIcon";
+import { IndiaFlagIcon } from "@/components/layout/IndiaFlagIcon";
 
 // Header language switcher (MULTILINGUAL_SPEC §4.1) — a SINGLE toggle chip
 // (Dilip, 2026-09-09): shows the CURRENT language ("English" by default);
@@ -63,7 +63,7 @@ export function LanguageSwitcher({ className }: { className?: string }) {
         className
       )}
     >
-      <IndiaIcon size={13} className="shrink-0" />
+      <IndiaFlagIcon height={11} className="shrink-0 rounded-[1px]" />
       <span lang={current.locale}>{current.native}</span>
     </Link>
   );
