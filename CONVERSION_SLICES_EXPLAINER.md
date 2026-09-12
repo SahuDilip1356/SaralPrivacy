@@ -1,113 +1,205 @@
-# The Four Conversion Slices — plain-language explainer
+# The Four Conversion Slices — explainer + build plan
 
-**What this is.** A roadmap note (from the 2026-09-08 engineering-blocks session) describing four
-small, independent pieces of landing-page and sharing work. Each one is meant to move a visitor
-one step closer to *starting an assessment* or *telling someone else about SaralPrivacy*. They are
-called "slices" because each is thin enough to ship on its own between the bigger P5 steps.
+> Status: **none started.** Plan written against `main` @ `f22c113`, after reading the code each
+> slice touches. Sequence + tentative hours only; scheduling is Dilip's.
 
-**Why they exist.** Operation Pounce needs a fit signal at Gate 3: at least 25 paying customers and
-at least 2 conversions per 100 assessments. The site already has the content and tools. What it
-lacks is a tighter path from "I landed here" to "I ran the assessment" and "I forwarded it". These
-four slices are the cheapest ways to shorten that path without building anything new underneath.
+## 1. What this is
 
-**Status.** None of the four has started. None is greenfield either — every slice is a thin layer on
-something that already exists in the codebase:
+A roadmap note from the 2026-09-08 engineering-blocks session. It names four small pieces of
+landing-page and sharing work. Each moves a visitor one step closer to **starting an assessment**
+or **forwarding SaralPrivacy to someone**. They are "slices" because each is thin enough to ship on
+its own, between P5 steps.
 
-| Existing surface | Where it lives | Which slice builds on it |
-|---|---|---|
-| Hero sector chips + 12 illustrative verdicts | `webapp/components/home/HeroSection.tsx`, `webapp/lib/data/hero-verdicts.ts` | C1 |
-| Risk beat with sector chips + lifecycle-stage panel | `webapp/components/home/WhereRiskHides.tsx` | C4 |
-| WhatsApp share links (blog + briefings only today) | blog/briefing pages | C3 |
-| Our own DPO + 7 sub-processors, public privacy + rights pages | `webapp/lib/data/privacy-vendors.ts`, `/privacy`, `/rights` | C2 |
+**Why now.** Gate 3 of Operation Pounce needs ≥ 25 paying customers and ≥ 2 conversions per 100
+assessments. The content and tools exist. The path from *landed* → *ran the assessment* →
+*forwarded it* is what is loose. None of these is a new tool, so none breaks the Gate-3 not-do list.
 
----
+## 2. What the code says that the roadmap note did not
 
-## C1 — Hero two-tap verdict (8–12 h)
+Reading the real files changed five things. These matter more than the rest of this doc.
 
-**Today.** The hero has four sector chips. Tap one and you get a one-line "typical risk" sentence
-from `hero-verdicts.ts`. That is tap one.
-
-**The slice.** Add a second tap: one yes/no applicability question, e.g. *"Do you collect personal
-data of people in India digitally?"* Answering it turns the chip into a small **verdict card**:
-
-- DPDPA applies (or not)
-- the typical risk band for that sector
-- one concrete first action
-- a CTA into that sector's assessment, with the sector pre-selected
-
-**How we know it worked.** The gate is *assessment starts per 100 sessions*. That number has never
-been captured, so the first task is to record the baseline **before** shipping. Without a baseline
-the after-number is unreadable.
-
-## C2 — "Inspect us" beat (6–10 h)
-
-**Today.** We already publish our own privacy notice, our DPO, our 7 sub-processors and a rights
-route. They live on separate pages that a landing-page visitor never sees.
-
-**The slice.** One new landing-page section that surfaces those four things in one place, framed as
-*"we run what we sell"*. Work is one component, a handful of links, and copy. No new data, no
-analytics dependency.
-
-**Why it is first.** Cheapest slice, zero risk, and it seeds the dog-food story the paid app (P5)
-will need: the product's own compliance is on display.
-
-## C3 — WhatsApp share cards (10–16 h)
-
-**Today.** WhatsApp share links exist only on blog and briefing pages. Assessment reports and
-flow-map results, the things people actually want to forward, have none.
-
-**The slice.**
-
-- a pre-filled WhatsApp share link on assessment reports and data-flow-map results
-- a server-rendered preview image so the score travels with the link (the card people see in chat)
-- a new **PII-free public summary route** that the link points to
-
-**Hard rules.**
-
-- Share the public summary route, **never** the token-bearing report URL.
-- A `share` analytics event carrying `channel` and `surface` must be seen firing on **preview**
-  before the PR merges. (Analytics law: verify new events fire before merge.)
-
-## C4 — Data-travel teaser (4–6 h spec, then 10–16 h build)
-
-**Today.** The risk beat on the landing page shows sector chips and a lifecycle-stage panel. It is
-static.
-
-**The slice.** Evolve that beat into a small animated teaser of how data travels:
-
-- one lane of 4–5 stages
-- one red hotspot
-- 2–3 sector tabs
-- CSS-animated, server-rendered from the packs' union spines (the shared stage sequence the 12
-  data-flow maps already derive)
-
-**Standing constraints that still hold.** No full lane board on the homepage. No mega-menu. No rename
-of the `/data-mapping` route. The full simulator stays a paid-tier feature after Gate 3.
-
-**Sequencing note.** Write the C4 spec early, during the P5 spec pass, so its design review can
-happen offline while other work proceeds.
-
----
-
-## The interleave rule
-
-P5 is the paid app plus Razorpay, and step 5.1 is the monorepo / subdomain move that the R1–R7
-refactors ride on. The slices slot in between P5 steps:
-
-1. **One slice at a time.** Never two in flight.
-2. **Each slice ships wholly before 5.1 or wholly after it.** Never straddle the move; a half-built
-   slice across a tree move is a merge nightmare.
-3. **Recommended order: C2 → C1 → C3 → C4.** Cheapest and safest first; the two analytics-dependent
-   slices later; C4 last because it needs a spec and review first.
-4. **Every slice passes design review** (`/plan-design-review`, avg ≥ 8) **and the contrast law**
-   (compute contrast before shipping any new CTA; this palette has pairs that look fine and fail).
-5. **Preview-before-prod applies**, as always.
-
-## One-line summary per slice
-
-| Slice | In one sentence | Hours | Depends on |
+| # | Roadmap note said | Code actually shows | Consequence |
 |---|---|---|---|
-| C1 | Second tap on the hero turns a sector chip into a verdict card with a pre-selected assessment CTA | 8–12 | Baseline for assessment starts / 100 sessions |
-| C2 | Landing beat that shows our own notice, sub-processors, DPO and rights route | 6–10 | Nothing |
-| C3 | WhatsApp share on reports + flow maps, via a PII-free summary route with a preview image | 10–16 | `share` event verified on preview |
-| C4 | Animated one-lane data-travel teaser replacing the static risk beat | 4–6 spec + 10–16 build | Spec + design review first |
+| 1 | C1: "the first tap exists; the second tap turns the chip into a verdict card with a pre-selected CTA" | `components/home/HeroSection.tsx` **already** shows a verdict card on tap one — "DPDPA applies to your {sector}", typical band, first fix — and the CTA **already** routes to `/assessment/{slug}` | C1 is smaller than scoped. The real job is making "DPDPA applies" **earned** (asked, not asserted) and adding honest off-ramps for "No" and "Not sure" |
+| 2 | C1 gate: "assessment starts per 100 sessions" | Analytics is Vercel Web Analytics (cookieless). It counts **visitors**, not sessions. `assessment_start` carries **no properties**, so a start cannot be attributed to the hero | Gate must be restated as *hero assess-clicks per 100 home visitors*. The Vercel analytics query API returned `404 Web Analytics not found` for project `webapp`, so the baseline must be read by hand from the dashboard |
+| 3 | C3: "share a PII-free public summary route" | `/report/[token]` holds name, business, city; is `noindex`; token expires in 90 days. Assessments are written to **Appwrite**, which rejects the *whole document* on any unknown field | A new `share_id` column on the assessment record would silently drop leads (the `b949e0f` incident). The summary route must be **stateless and signed**, with no DB write |
+| 4 | C3: "server-rendered preview image" | There is **no** `ImageResponse` / `opengraph-image` anywhere in the repo | C3 builds preview-image infra from zero (fonts, layout, size budget). Estimate goes up |
+| 5 | C4: "the risk beat already has sector chips" | `components/home/WhereRiskHides.tsx` has **tool** chips (WhatsApp, drives, Excel… ten everyday tools) plus the Privacy Thread lifecycle. No sector chips | C4 is a redesign of the founder-approved signature visual, not a small evolution. Replace-vs-coexist is a decision for Dilip before any spec |
+
+Also relevant: per the 2026-09-09 Razorpay reconciliation, the monorepo move now sits **after
+Gate 2**. If that holds, C2, C1 and C3 all fit comfortably before it, and the "never straddle 5.1"
+rule is easy to keep.
+
+---
+
+## 3. Step 0 — capture the baseline (shared, ~0.5 h, Dilip)
+
+Needed before C1 ships, and useful for every slice. It is a dashboard read, not code.
+
+1. Open Vercel → project `webapp` → Analytics. Set the range to the last 28 days, production only.
+2. Record **home visitors**: filter page `/`.
+3. Record **`landing_cta_click`** count, broken down by `cta` property (`assess`, `discover`).
+4. Record **`assessment_start`** total and **`hero_sector_select`** total.
+5. Paste the four numbers into `.agent/CURRENT.md` under a "Conversion baseline" heading.
+
+**Done when:** four numbers are written down with the date range. The C1 metric is then
+`landing_cta_click{cta=assess} ÷ home visitors × 100`.
+
+---
+
+## 4. C2 — "Inspect us" beat  ·  6–10 h  ·  go first
+
+**Exists.** `webapp/lib/data/privacy-vendors.ts` holds the DPO and seven sub-processors, each with
+purpose, data received, location and DPA status. `/privacy` and `/rights` are live.
+
+**Missing.** A landing-page section that shows this to a visitor who never opens `/privacy`.
+
+**Steps**
+
+1. **Copy + placement** (1–2 h). Draft headline, 2-line intro and link labels in brand voice. Pick
+   the slot on the homepage (see decision D1).
+2. **Component** (2–3 h). New server component `components/home/InspectUs.tsx`. Renders **from
+   `VENDORS` and `DPO`**, never hard-coded, so it stays true when the Appwrite row leaves. Four
+   blocks: our notice → `/privacy`, our sub-processors (name + location), our DPO (name + email),
+   your rights → `/rights`.
+3. **Mount** (0.5 h) in `app/page.tsx` at the chosen slot.
+4. **Design review** (1–2 h). `/plan-design-review`, average ≥ 8.
+5. **Contrast + a11y** (1 h). Compute every text/background pair and every link focus ring.
+6. **Preview verify** (1 h). Links resolve, section renders at 375 / 768 / 1280 px, no layout shift.
+
+**Watch.** Appwrite is still a live processor in **Singapore** holding assessment answers. The
+section must show that honestly. "We run what we sell" must not imply everything is in Mumbai.
+
+**Done when:** Dilip has seen it on preview; all links resolve; 0 contrast failures.
+
+---
+
+## 5. C1 — Hero two-tap verdict  ·  6–10 h (was 8–12)  ·  second
+
+**Exists.** Four chips (recruitment, CA firm, D2C brand, other). Tap one shows the verdict card,
+band from `lib/data/hero-verdicts.ts`, first fix from `lib/data/verdict-previews.ts`, and a
+sector-routed CTA. `hero_sector_select` already fires.
+
+**Missing.** The applicability question. Today the card *asserts* "DPDPA applies" before asking
+anything.
+
+**Steps**
+
+1. **Baseline** — Step 0 above must be done first.
+2. **Question + answers copy** (1–2 h). One question under the chips, e.g. *"Do you keep customer,
+   client or staff details in digital form — phone, WhatsApp, Excel, email or software?"* Three
+   answers: **Yes** / **Not sure** / **No, everything is on paper**.
+3. **Branching** (2–3 h) in `HeroSection.tsx`:
+   - **Yes** → today's verdict card, unchanged, plus the sector-routed CTA.
+   - **Not sure** → a short card: "If you use WhatsApp or Excel for customers, it almost certainly
+     applies", CTA to `/discovery?sector=…`.
+   - **No** → an honest card: DPDPA covers digital or digitised data; purely paper records sit
+     outside it until digitised. Link to the Guide.
+4. **Citation check** (0.5 h). The applicability claim rests on **DPDPA Section 3**. Verify the
+   exact wording before ship (content-trust law).
+5. **Event** (1 h). New `hero_applicability_answer { sector, answer }`. No PII. Confirm on preview
+   that `POST /_vercel/insights/event` fires.
+6. **Design review + contrast** (1–2 h). The card sits on the navy hero: green-400 fill + navy-950
+   label is the only approved CTA pair there.
+7. **Preview verify** (1 h). Walk the literal click sequence — chip → answer → change chip → change
+   answer — on one page load, without reloading. This is where same-page stale state hides.
+
+**Read the result** after at least 28 days live, against the Step 0 number.
+
+**Done when:** all three branches work on preview; the new event is seen in the network tab.
+
+---
+
+## 6. C3 — WhatsApp share cards  ·  14–20 h (was 10–16)  ·  third
+
+**Exists.** Hand-built `wa.me` links on blog and briefing pages only. The token report page. Twelve
+public flow-map pages at `/industries/[sector]/data-flow`, served by one dynamic route.
+
+**Missing.** A share action on results; a public, PII-free landing page for shared links; preview
+images.
+
+**Design (recommended).** A **stateless signed URL** such as `/share/{sector}?b={band}&s={score}&sig=…`.
+The signature is an HMAC over sector + band + score. No DB write, so no Appwrite risk. The
+signature stops anyone minting a fake "SaralPrivacy scored me 98" card under our brand.
+
+**Steps**
+
+1. **Signing helper** (1–2 h). `lib/share/sign.ts` with sign + verify, plus unit tests. New secret
+   `SHARE_LINK_SECRET`, added to **all** Preview and Production. Never branch-scope it.
+2. **Share route** (3–4 h). `app/share/[sector]/page.tsx`. Verify signature or return a plain
+   "check your own business" page. Show sector, band, score and one CTA to
+   `/assessment/{sector}`. **Nothing else** — no name, business, city or answers. Mark it
+   `noindex` and keep it out of the sitemap: an unbounded URL space would worsen the crawl-budget
+   starvation SEO Cycle 2 is fighting.
+3. **Preview image** (3–4 h). `opengraph-image.tsx` for the share route using `next/og`, 1200×630,
+   bundled font, under 300 KB. A second, static-per-sector image for the flow-map route.
+4. **Share button** (2–3 h). One shared `components/ShareResult.tsx` that builds the `wa.me` text +
+   signed link. Mount it on the result screen of all **13** assessment clients and on the report
+   page. The twelve clients are clones, so this is one component and 13 one-line mounts. All 12
+   sectors ship in the same PR (presentation-unified law).
+5. **Flow maps** (1 h). Add the button to the dynamic data-flow route; it shares the public page URL.
+6. **Event** (1 h). `share_click { channel: "whatsapp", surface, sector, band }`, where surface is
+   `assessment_result`, `report` or `flow_map`. Must be seen firing on preview before merge.
+7. **Design review + contrast** (1–2 h).
+8. **Verify** (1–2 h). See the preview trap below.
+
+**Preview trap.** Previews sit behind Vercel SSO, so WhatsApp's crawler **cannot** fetch the preview
+deployment's image. On preview, verify the image by fetching it with `vercel curl` and the route by
+hand. The real WhatsApp unfurl can only be checked right after the prod deploy, so plan that check
+and a rollback.
+
+**Done when:** a share from each surface opens a PII-free page; the image renders; `share_click`
+is seen on preview; the unfurl is checked on prod.
+
+---
+
+## 7. C4 — Data-travel teaser  ·  spec 4–6 h + build 12–18 h  ·  last
+
+**Exists.** `WhereRiskHides.tsx` (478 lines, client component): ten tool chips fanning from a
+personal-data hub, an evidence panel, and the Privacy Thread lifecycle. Each sector pack has its
+own `stages.ts` spine of 10–14 stages.
+
+**Missing.** A sector-tabbed, one-lane view of data travelling through stages.
+
+**Spec first** (4–6 h, during the P5 spec pass, so review happens offline). The spec must settle:
+
+1. **Replace or coexist** with the tool scatter (decision D5).
+2. **The stage collapse.** A 4–5 stage lane has to summarise 10–14 real stages. Write the mapping
+   for each of the 2–3 chosen sectors, derived from each pack's union spine. It is content work.
+3. **Which sectors** get tabs. Recommend the hero's three: recruitment, CA firm, D2C.
+4. **The hotspot rule.** Which stage is red per sector, taken from pack data, not picked by eye.
+5. **Rendering.** A server component with CSS keyframes and CSS-only tabs where possible;
+   `prefers-reduced-motion` shows the composed state.
+6. **Standing constraints.** No full lane board on the homepage, no mega-menu, no rename of
+   `/data-mapping`. The full simulator stays paid-tier after Gate 3.
+
+**Build** (12–18 h) after the spec passes `/plan-design-review` at ≥ 8. Contrast on the navy
+ground; the red hotspot must meet contrast against navy, not just look red.
+
+---
+
+## 8. Sequence and totals
+
+| Order | Slice | Tentative hours | Blocked by |
+|---|---|---|---|
+| 0 | Baseline read | 0.5 | Dilip, dashboard access |
+| 1 | C2 Inspect us | 6–10 | D1 |
+| 2 | C1 Two-tap verdict | 6–10 | Step 0, D2 |
+| 3 | C3 Share cards | 14–20 | D3, D4 |
+| 4a | C4 spec | 4–6 | D5 |
+| 4b | C4 build | 12–18 | Spec review ≥ 8 |
+| | **Total** | **≈ 43–65** | |
+
+Rules that hold throughout: one slice in flight at a time; each ships wholly before or after the
+monorepo move; design review ≥ 8; computed contrast; preview-before-prod; no self-merge.
+
+## 9. Decisions only Dilip can make
+
+- **D1 · C2 placement.** Recommend just before the FAQ, after the product has shown itself.
+- **D2 · C1 "No" answer.** Recommend the honest off-ramp above rather than hiding the option.
+- **D3 · C3 card content.** Recommend exact score **and** band, signed. Band-only is safer but
+  less shareable.
+- **D4 · C3 "flow-map results".** Recommend reading this as the 12 public flow-map pages. The
+  per-user `/discovery` result would be a later, separate slice.
+- **D5 · C4 replace or coexist.** Recommend coexist: keep the tool scatter, add the lane as a
+  second view. The scatter is a founder-approved signature and carries its own events.
