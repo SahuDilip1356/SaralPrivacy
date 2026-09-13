@@ -10,12 +10,12 @@ const BASE = "https://saralprivacy.com";
 export const metadata: Metadata = {
   title: "DPDPA Penalties — Complete Guide to Section 33",
   description:
-    "Complete guide to penalties under the Digital Personal Data Protection Act, 2023 — Schedule caps, Section 33(2) factors, the 2× enhancement under Section 33(3), role-wise exposure, and the Board inquiry process.",
+    "Complete guide to penalties under the Digital Personal Data Protection Act, 2023 — Schedule caps, the seven Section 33(2) factors, the Section 42 limit on any future increase, role-wise exposure, and the Board inquiry process.",
   alternates: { canonical: `${BASE}/penalty-calculator` },
   openGraph: {
     title: "DPDPA Penalties — Complete Guide | SaralPrivacy",
     description:
-      "Schedule-capped penalties, Section 33(2) factors, and the 2× enhancement mechanism under the DPDPA 2023. No formula — discretionary Board determination.",
+      "Schedule-capped penalties, the seven Section 33(2) factors, and the Section 42 cap on any future Schedule increase. No formula — discretionary Board determination.",
     url: `${BASE}/penalty-calculator`,
   },
 };
@@ -73,7 +73,7 @@ export default function PenaltyPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       {articleSchemaTag(
         "Penalties Under the Digital Personal Data Protection Act, 2023",
-        "Complete guide to the DPDPA penalty framework — Schedule caps, Section 33(2) factors, Section 33(3) enhancement, and the Board inquiry process.",
+        "Complete guide to the DPDPA penalty framework — Schedule caps, the seven Section 33(2) factors, the Section 42 amendment cap, and the Board inquiry process.",
         `${BASE}/penalty-calculator`,
         "2026-04-29",
         toISODate(FRESHNESS.tools)
@@ -98,7 +98,7 @@ export default function PenaltyPage() {
               </h1>
               <div className="answer-block bg-white/10 border border-white/20 rounded-xl px-5 py-4" data-speakable="true">
                 <p className="text-slate-200 text-sm leading-relaxed">
-                  DPDPA penalties are administrative, Schedule-capped, and discretionary — not formula-based. The maximum penalty is ₹250 crore for failure to implement adequate security safeguards. The Data Protection Board determines the actual amount after considering six mandatory factors in Section 33(2) and may double it under Section 33(3) for repeat or grave breaches. This page explains the full framework, the inquiry process, and what factors weigh against you.
+                  DPDPA penalties are administrative, Schedule-capped, and discretionary — not formula-based. The maximum penalty is ₹250 crore for failure to implement adequate security safeguards. The Data Protection Board determines the actual amount after considering seven mandatory factors in Section 33(2). The Schedule caps can rise only if the Central Government amends the Schedule by notification under Section 42 — and never to more than twice the original amounts. No such notification has been issued. This page explains the full framework, the inquiry process, and what factors weigh against you.
                 </p>
               </div>
             </div>
@@ -148,8 +148,8 @@ export default function PenaltyPage() {
                 The Act does not prescribe a mathematical formula, turnover-linked multiplier, or per-person
                 calculation for arriving at the exact penalty amount. Instead, the Board exercises discretion
                 within statutory caps, guided by mandatory consideration factors under{" "}
-                <strong className="text-navy-700">Section 33(2)</strong> and an adjustment mechanism under{" "}
-                <strong className="text-navy-700">Section 33(3)</strong>.
+                <strong className="text-navy-700">Section 33(2)</strong>. The caps themselves can change only through the Central
+                Government's power to amend the Schedule under <strong className="text-navy-700">Section 42</strong>.
               </P>
 
               <HR />
@@ -245,14 +245,15 @@ export default function PenaltyPage() {
               <HR />
 
               {/* Section 5 */}
-              <H2>5. Critical Statutory Enhancement: Section 33(3)</H2>
+              <H2>5. Can the Caps Increase? Section 42</H2>
               <P>
-                A crucial provision often overlooked is <strong className="text-navy-700">Section 33(3)</strong>, which empowers the
-                Board to <strong className="text-navy-700">reduce or enhance</strong> the penalty to the extent of{" "}
-                <strong className="text-navy-700">twice the quantum</strong> after considering the Section 33(2) factors.
+                The Board cannot go above the Schedule. The only route to higher caps is <strong className="text-navy-700">Section 42</strong>:
+                the Central Government may amend the Schedule by notification, but never so as to increase any penalty to{" "}
+                <strong className="text-navy-700">more than twice</strong> the amount originally enacted. No such notification has been issued —
+                the figures below are the statutory ceiling on any future amendment, not penalties the Board can impose today.
               </P>
               <TableWrap>
-                <THead cols={["Schedule Item", "Base Cap", "Effective Maximum After 2× Enhancement"]} />
+                <THead cols={["Schedule Item", "Base Cap", "Ceiling if the Schedule is ever amended (Section 42, max 2×)"]} />
                 <tbody>
                   {[
                     ["Item 1 — Security safeguards",           "₹250 crore", "₹500 crore"],
@@ -284,7 +285,7 @@ export default function PenaltyPage() {
                 {[
                   ["Liable person", "Data Fiduciary"],
                   ["Provision", "Section 8(5)"],
-                  ["Penalty cap", "₹250 crore (enhanceable to ₹500 crore)"],
+                  ["Penalty cap", "₹250 crore (Schedule Item 1)"],
                   ["Description", "Failure to protect personal data in its possession or control, including processing undertaken by a Data Processor on its behalf, by taking reasonable security safeguards to prevent a personal data breach."],
                 ].map(([k, v]) => (
                   <li key={k} className="flex items-start gap-2 text-sm text-slate-600">
@@ -467,28 +468,29 @@ export default function PenaltyPage() {
               <HR />
 
               {/* Section 8 */}
-              <H2>8. Cumulative and Non-Exclusive Nature of Penalties</H2>
+              <H2>8. Penalties Alongside Other Remedies</H2>
               <P>
-                Under <strong className="text-navy-700">Section 33(4)</strong>, any penalty imposed is{" "}
-                <strong className="text-navy-700">without prejudice to</strong> any other action that may be taken under the
-                DPDPA or under any other law for the time being in force. This has two important implications:
+                The DPDPA does not contain a clause declaring penalties &ldquo;without prejudice&rdquo; to other action &mdash; but nothing
+                in it displaces other laws either. What the Act does provide: the Board&rsquo;s powers under{" "}
+                <strong className="text-navy-700">Section 27</strong> include directing urgent remedial measures <em>and</em> inquiring into
+                and penalising the same breach; and a voluntary undertaking accepted under{" "}
+                <strong className="text-navy-700">Section 32</strong> bars further DPDPA proceedings on its contents (Section 32(4)) &mdash; while breaching
+                that undertaking is itself treated as a breach (Section 32(5)). Two practical implications:
               </P>
               <ul className="space-y-3 my-4 pl-2">
                 <li className="flex items-start gap-2 text-sm text-slate-600 leading-relaxed">
                   <span className="w-1.5 h-1.5 rounded-full bg-green-500 mt-2 shrink-0" />
                   <span>
-                    <strong className="text-navy-700">Parallel proceedings:</strong> Criminal prosecution, civil suits, or
-                    regulatory actions under sectoral laws (e.g., the IT Act, RBI regulations, SEBI guidelines) may
-                    proceed alongside DPDPA penalties.
+                    <strong className="text-navy-700">Parallel proceedings:</strong> The DPDPA does not exclude criminal, civil or
+                    sectoral action (IT Act, RBI, SEBI) over the same facts. Those regimes run on their own terms.
                   </span>
                 </li>
                 <li className="flex items-start gap-2 text-sm text-slate-600 leading-relaxed">
                   <span className="w-1.5 h-1.5 rounded-full bg-green-500 mt-2 shrink-0" />
                   <span>
                     <strong className="text-navy-700">Separate penalties for separate breaches:</strong> A single incident
-                    may trigger multiple penalty categories. For example, a data breach caused by inadequate security
-                    (Item 1) coupled with delayed notification (Item 2) could attract separate penalties up to ₹250 crore
-                    and ₹200 crore respectively.
+                    may fall under more than one Schedule item. A breach caused by inadequate security (Item 1) coupled with a
+                    failure to notify (Item 2) could attract separate penalties of up to ₹250 crore and ₹200 crore respectively.
                   </span>
                 </li>
               </ul>
@@ -514,7 +516,7 @@ export default function PenaltyPage() {
                 <tbody>
                   {[
                     ["Maximum base penalty", "₹250 crore (Item 1)"],
-                    ["Maximum effective penalty", "₹500 crore (after 2× enhancement under Section 33(3))"],
+                    ["Ceiling on any future increase", "₹500 crore — only by a Central Government notification amending the Schedule under Section 42 (capped at 2×); none issued"],
                     ["Minimum penalty", "Not specified — the Board may impose nil or nominal penalties for technical or trivial breaches"],
                     ["Per-person calculation", "Not prescribed"],
                     ["Turnover-linked formula", "Not prescribed"],
@@ -537,8 +539,8 @@ export default function PenaltyPage() {
               <P>
                 The DPDPA penalty framework is a{" "}
                 <strong className="text-navy-700">discretionary, Schedule-capped, administrative monetary penalty</strong> system.
-                The Board determines the actual amount by weighing statutory factors under Section 33(2) and may adjust
-                the quantum up to twice the Schedule cap under Section 33(3). There is no fixed formula, but there is a
+                The Board determines the actual amount by weighing the seven statutory factors under Section 33(2); the
+                Schedule caps themselves can change only by a Central Government notification under Section 42, capped at twice the original amounts. There is no fixed formula, but there is a
                 clear statutory ceiling and a structured inquiry process that every organisation must understand to
                 assess its compliance risk accurately.
               </P>

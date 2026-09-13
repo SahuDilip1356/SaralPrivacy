@@ -420,7 +420,7 @@ export const TERMS: GlossaryTerm[] = [
   {
     id: "data-audit",
     term: "Data Audit",
-    section: "Section 10(2)(d)",
+    section: "Section 10(2)(b)",
     category: "obligations",
     definition:
       "A periodic audit conducted by an independent data auditor appointed by a Significant Data Fiduciary to assess compliance with the Act and Rules. The obligation to undergo a data audit applies only to Significant Data Fiduciaries.",
