@@ -4,7 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { Surface } from "@/components/ui/Surface";
 import { Section, Eyebrow } from "@/components/ui/Section";
 import { formatDateShort } from "@/lib/utils";
-import { databases, DB_ID, COLLECTIONS, Query } from "@/lib/appwrite";
+import { getArchive } from "@/lib/data/briefings-archive";
 import { BriefingsDeck, type DeckBriefing } from "@/components/home/BriefingsDeck";
 
 // S7 — the briefings deck, on the deep fill.
@@ -21,48 +21,28 @@ import { BriefingsDeck, type DeckBriefing } from "@/components/home/BriefingsDec
 // was "do not touch anything here", and the only thing that has ever changed is
 // the ground it sits on. The dateline stays: it is the section's whole
 // authority claim, and `revalidate = 3600` on the page keeps it from going
-// stale (see app/page.tsx).
+// stale (see app/[locale]/page.tsx).
 
 /** How many briefings the deck fans. Its geometry is tuned for exactly this many. */
 const DECK_SIZE = 7;
 
-function tryParse<T>(v: unknown, fallback: T): T {
-  if (typeof v !== "string") return (v as T) ?? fallback;
-  try { return JSON.parse(v) as T; } catch { return fallback; }
-}
-
-// Normalise an Appwrite doc into the deck's shape. Facets ride on existing
-// attributes: Stage -> category, Sector -> industries[0] (see briefing-taxonomy).
-function normalise(doc: any): DeckBriefing {
-  const raw = doc.infographic_base64 || "";
-  const industries = tryParse<string[]>(doc.industries, ["general"]);
-  return {
-    id:       doc.$id,
-    slug:     doc.slug,
-    title:    doc.title,
-    date:     doc.published_at || doc.created_at || doc.$createdAt,
-    readTime: doc.read_time || 5,
-    // Appwrite Storage URL (new) or base64 data URI (legacy) — same unpack as the detail page
-    image:    !raw ? "" : raw.startsWith("https://") ? raw : `data:image/jpeg;base64,${raw}`,
-    infTitle: tryParse<{ inf_title?: string }>(doc.why_it_matters, {}).inf_title || "",
-    stage:    doc.category || "",
-    sector:   industries[0] || "general",
-  };
-}
-
 export async function BriefingsSection() {
   const t = await getTranslations("home.briefings");
-  // Fetch latest published briefings from Appwrite
+  // The same loader /briefings uses. This section used to query Appwrite
+  // directly, round the lib/db seam, so when briefings moved to Supabase on
+  // 5 Sept the homepage kept serving Appwrite's frozen copy while /briefings
+  // moved on. getArchive() is backend-agnostic, date-sorted, and carries the
+  // "briefings" tag the publisher busts after every run, so the deck turns
+  // over on publish rather than on the hourly revalidate.
   let briefings: DeckBriefing[] = [];
   try {
-    const result = await databases.listDocuments(DB_ID, COLLECTIONS.BRIEFINGS, [
-      Query.equal("status", ["sent", "approved"]),
-      Query.orderDesc("$createdAt"),
-      Query.limit(DECK_SIZE),
-    ]);
-    briefings = result.documents.map(normalise);
+    // Pick the deck's fields so the client payload stays seven small objects.
+    briefings = (await getArchive()).slice(0, DECK_SIZE).map(
+      ({ id, slug, title, date, readTime, image, infTitle, stage, sector }) =>
+        ({ id, slug, title, date, readTime, image, infTitle, stage, sector }),
+    );
   } catch (err) {
-    console.error("[BriefingsSection] Appwrite fetch failed:", err);
+    console.error("[BriefingsSection] briefings fetch failed:", err);
   }
 
   const latest = briefings[0];
