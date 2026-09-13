@@ -24,11 +24,20 @@ import {
   CATEGORIES as enGlossaryCategories,
   type GlossaryTerm,
 } from "@/components/glossary/glossaryData";
+import {
+  part1Sections as enPart1,
+  part2Sections as enPart2,
+  statusLabels as enStatusLabels,
+  keyGuardrails as enKeyGuardrails,
+  DISCLAIMER as enDisclaimer,
+  type ChecklistSection,
+} from "@/lib/data/compliance-checklist";
 import { localize, localizeById, localizeText } from "@/lib/i18n/resolve";
 import type {
   FaqsOverlay,
   LearnOverlay,
   GlossaryOverlay,
+  ChecklistOverlay,
 } from "@/lib/i18n/overlay-types";
 
 type Loader<T> = () => Promise<{ default: T }>;
@@ -44,6 +53,9 @@ const LEARN_OVERLAYS: Record<string, Loader<LearnOverlay>> = {
 };
 const GLOSSARY_OVERLAYS: Record<string, Loader<GlossaryOverlay>> = {
   hi: () => import("@/components/glossary/i18n/glossaryData.hi"),
+};
+const CHECKLIST_OVERLAYS: Record<string, Loader<ChecklistOverlay>> = {
+  hi: () => import("@/lib/data/i18n/compliance-checklist.hi"),
 };
 
 async function load<T>(
@@ -104,4 +116,36 @@ export async function getGlossaryContent(locale: string) {
     label: localizeText(c.label, o?.categories?.[c.id]),
   }));
   return { terms, categories };
+}
+
+// ── Compliance checklist ─────────────────────────────────────────────────────
+export async function getChecklistContent(locale: string) {
+  const o = await load(CHECKLIST_OVERLAYS, locale);
+  const section = (s: ChecklistSection): ChecklistSection =>
+    o
+      ? {
+          ...s,
+          title: localizeText(s.title, o.sections?.[s.sectionId]?.title),
+          items: localizeById(s.items, locale, o.items, (i) => i.id),
+        }
+      : s;
+  return {
+    part1Sections: o ? enPart1.map(section) : enPart1,
+    part2Sections: o ? enPart2.map(section) : enPart2,
+    statusLabels: o
+      ? enStatusLabels.map((s) => ({
+          ...s,
+          label: localizeText(s.label, o.statusLabels?.[s.type]?.label),
+          meaning: localizeText(s.meaning, o.statusLabels?.[s.type]?.meaning),
+        }))
+      : enStatusLabels,
+    keyGuardrails: o
+      ? enKeyGuardrails.map((g) => ({
+          ...g,
+          heading: localizeText(g.heading, o.keyGuardrails?.[String(g.id)]?.heading),
+          body: localizeText(g.body, o.keyGuardrails?.[String(g.id)]?.body),
+        }))
+      : enKeyGuardrails,
+    disclaimer: localizeText(enDisclaimer, o?.disclaimer),
+  };
 }

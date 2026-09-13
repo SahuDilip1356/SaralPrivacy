@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import {
   ChevronDown,
   Shield,
@@ -15,42 +16,48 @@ import {
   Info,
 } from "lucide-react";
 import * as Accordion from "@radix-ui/react-accordion";
-import {
-  part1Sections,
-  part2Sections,
-  statusLabels,
-  keyGuardrails,
-  DISCLAIMER,
-  type ItemType,
-  type ChecklistItem,
-  type ChecklistSection,
+import type {
+  ItemType,
+  ChecklistItem,
+  ChecklistSection,
 } from "@/lib/data/compliance-checklist";
 import { linkifyText } from "@/lib/linkifyText";
 
 // ─── Badge config ────────────────────────────────────────────���───────────────
+// Labels live in the catalog under checklistPage.badge.<labelKey>.
 
-const BADGE: Record<ItemType, { label: string; className: string }> = {
+const BADGE: Record<ItemType, { labelKey: string; className: string }> = {
   statutory: {
-    label: "Statutory",
+    labelKey: "statutory",
     className: "bg-red-100 text-red-700 border border-red-200",
   },
   rule: {
-    label: "Rule",
+    labelKey: "rule",
     className: "bg-blue-100 text-blue-700 border border-blue-200",
   },
   conditional: {
-    label: "Conditional",
+    labelKey: "conditional",
     className: "bg-amber-100 text-amber-700 border border-amber-200",
   },
   operational: {
-    label: "Operational",
+    labelKey: "operational",
     className: "bg-slate-100 text-slate-600 border border-slate-200",
   },
   "best-practice": {
-    label: "Best Practice",
+    labelKey: "bestPractice",
     className: "bg-purple-100 text-purple-700 border border-purple-200",
   },
 };
+
+/** Checklist data as handed over by the server page — already localized
+ *  (spec §4.3 bundle law: this client component never imports an overlay). */
+export interface ChecklistData {
+  part1Sections: ChecklistSection[];
+  part2Sections: ChecklistSection[];
+  statusLabels: { type: ItemType; label: string; meaning: string; badgeClass: string }[];
+  keyGuardrails: { id: number; heading: string; body: string }[];
+  disclaimer: string;
+}
 
 const BORDER: Record<ItemType, string> = {
   statutory: "border-l-red-400",
@@ -67,6 +74,7 @@ type Filter = "all" | "part1" | "part2";
 // ─── Single checklist item card ───────────────────────────────────────────────
 
 function ChecklistItemCard({ item }: { item: ChecklistItem }) {
+  const t = useTranslations("checklistPage");
   const badge = BADGE[item.type];
   const border = BORDER[item.type];
 
@@ -88,7 +96,7 @@ function ChecklistItemCard({ item }: { item: ChecklistItem }) {
           <span
             className={`text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap ${badge.className}`}
           >
-            {badge.label}
+            {t(`badge.${badge.labelKey}`)}
           </span>
         </div>
       </div>
@@ -130,6 +138,7 @@ function ChecklistSectionAccordion({
   section: ChecklistSection;
   defaultOpen?: boolean;
 }) {
+  const t = useTranslations("checklistPage");
   const totalItems = section.items.length;
   const typeCount = section.items.reduce<Partial<Record<ItemType, number>>>(
     (acc, item) => {
@@ -158,26 +167,26 @@ function ChecklistSectionAccordion({
               </h3>
               <div className="flex items-center gap-2 mt-0.5 flex-wrap">
                 <span className="text-[11px] text-slate-400">
-                  {totalItems} {totalItems === 1 ? "control" : "controls"}
+                  {t("controlCount", { count: totalItems })}
                 </span>
                 {typeCount.statutory && (
                   <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-red-100 text-red-600 font-semibold">
-                    {typeCount.statutory} statutory
+                    {t("countStatutory", { count: typeCount.statutory })}
                   </span>
                 )}
                 {typeCount.rule && (
                   <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-blue-100 text-blue-600 font-semibold">
-                    {typeCount.rule} rule
+                    {t("countRule", { count: typeCount.rule })}
                   </span>
                 )}
                 {typeCount.conditional && (
                   <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-600 font-semibold">
-                    {typeCount.conditional} conditional
+                    {t("countConditional", { count: typeCount.conditional })}
                   </span>
                 )}
                 {typeCount.operational && (
                   <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-500 font-semibold">
-                    {typeCount.operational} operational
+                    {t("countOperational", { count: typeCount.operational })}
                   </span>
                 )}
               </div>
@@ -204,35 +213,34 @@ function ChecklistSectionAccordion({
 // ─── Mid-page CTA banner ──────────────────────────────────────────────────────
 
 function MidPageCTA() {
+  const t = useTranslations("checklistPage");
   return (
     <div className="bg-navy-700 rounded-2xl p-6 my-8 flex flex-col sm:flex-row items-start sm:items-center gap-5">
       <div className="flex-1">
         <p className="text-green-400 text-xs font-bold uppercase tracking-widest mb-1">
-          Free Compliance Assessment
+          {t("cta.eyebrow")}
         </p>
         <h3 className="text-white text-lg font-semibold mb-1">
-          See exactly where your business stands
+          {t("cta.title")}
         </h3>
         <p className="text-slate-300 text-sm leading-relaxed">
-          The checklist tells you what the law requires. The assessment tells
-          you which gaps apply to your business — with a personalised risk score
-          and next actions.
+          {t("cta.body")}
         </p>
       </div>
       <div className="flex flex-col gap-2 shrink-0">
         <Link
           href="/assessment"
           className="inline-flex items-center gap-2 bg-green-400 hover:bg-green-300 text-navy-950 text-sm font-bold px-5 py-2.5 rounded-lg transition-colors whitespace-nowrap"
-          aria-label="Take the free DPDPA compliance assessment"
+          aria-label={t("cta.assessAria")}
         >
-          Take Free Assessment <ArrowRight size={14} />
+          {t("cta.assess")} <ArrowRight size={14} />
         </Link>
         <Link
           href="/white-paper"
           className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors whitespace-nowrap"
-          aria-label="Download the DPDPA guide"
+          aria-label={t("cta.guideAria")}
         >
-          Download the Guide <FileText size={14} />
+          {t("cta.guide")} <FileText size={14} />
         </Link>
       </div>
     </div>
@@ -241,12 +249,13 @@ function MidPageCTA() {
 
 // ─── Status legend ──────────────────────────────────────────────────────────��─
 
-function StatusLegend() {
+function StatusLegend({ statusLabels }: { statusLabels: ChecklistData["statusLabels"] }) {
+  const t = useTranslations("checklistPage");
   return (
     <div className="bg-white rounded-xl border border-slate-200 p-5 mb-8">
       <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-3 flex items-center gap-2">
         <Info size={13} />
-        How to read this checklist
+        {t("howToRead")}
       </h2>
       <div className="flex flex-wrap gap-2">
         {statusLabels.map((s) => (
@@ -280,13 +289,14 @@ function StatusLegend() {
 
 // ─── Key guardrails ───────────────────────────────────────────────────────────
 
-function KeyGuardrails() {
+function KeyGuardrails({ keyGuardrails }: { keyGuardrails: ChecklistData["keyGuardrails"] }) {
+  const t = useTranslations("checklistPage");
   return (
     <div className="mb-8">
       <div className="flex items-center gap-2 mb-4">
         <AlertTriangle size={16} className="text-teal-500" />
         <h2 className="text-base font-semibold text-navy-700">
-          Key Guardrails for This Checklist
+          {t("keyGuardrails")}
         </h2>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -311,49 +321,24 @@ function KeyGuardrails() {
 // ─── Related resources ────────────────────────────────────────────────────────
 
 function RelatedResources() {
+  const t = useTranslations("checklistPage.related");
+  // Display strings live under checklistPage.related.<key>.
   const resources = [
-    {
-      icon: CheckSquare,
-      label: "Free Risk Assessment",
-      desc: "Personalised compliance score for your business",
-      href: "/assessment",
-      accent: "text-green-500",
-      bg: "bg-green-50",
-      cta: "Start assessment",
-    },
-    {
-      icon: FileText,
-      label: "Download the Guide",
-      desc: "DPDPA guide — Act 2023 + Rules 2025",
-      href: "/white-paper",
-      accent: "text-navy-600",
-      bg: "bg-navy-50",
-      cta: "Download free",
-    },
-    {
-      icon: ClipboardList,
-      label: "Compliance Templates",
-      desc: "5 ready-to-use DPDPA templates for your business",
-      href: "/resources",
-      accent: "text-teal-600",
-      bg: "bg-teal-50",
-      cta: "Get templates",
-    },
-    {
-      icon: BookOpen,
-      label: "DPDPA Learning Hub",
-      desc: "Plain-English guides on every area of the Act",
-      href: "/learn",
-      accent: "text-indigo-600",
-      bg: "bg-indigo-50",
-      cta: "Start learning",
-    },
-  ];
+    { key: "assessment", icon: CheckSquare, href: "/assessment", accent: "text-green-500", bg: "bg-green-50" },
+    { key: "guide", icon: FileText, href: "/white-paper", accent: "text-navy-600", bg: "bg-navy-50" },
+    { key: "templates", icon: ClipboardList, href: "/resources", accent: "text-teal-600", bg: "bg-teal-50" },
+    { key: "learn", icon: BookOpen, href: "/learn", accent: "text-indigo-600", bg: "bg-indigo-50" },
+  ].map((r) => ({
+    ...r,
+    label: t(`${r.key}.label`),
+    desc: t(`${r.key}.desc`),
+    cta: t(`${r.key}.cta`),
+  }));
 
   return (
     <div className="mb-8">
       <h2 className="text-base font-semibold text-navy-700 mb-4">
-        Related Compliance Resources
+        {t("heading")}
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {resources.map(({ icon: Icon, label, desc, href, accent, bg, cta }) => (
@@ -384,13 +369,20 @@ function RelatedResources() {
 
 // ─── Main export ───────────────────────────────────────────────────────────��──
 
-export default function ChecklistContent() {
+export default function ChecklistContent({
+  part1Sections,
+  part2Sections,
+  statusLabels,
+  keyGuardrails,
+  disclaimer: DISCLAIMER,
+}: ChecklistData) {
+  const t = useTranslations("checklistPage");
   const [filter, setFilter] = useState<Filter>("all");
 
   const filterButtons: { id: Filter; label: string; count: string }[] = [
     {
       id: "all",
-      label: "All Controls",
+      label: t("filterAll"),
       count: `${
         part1Sections.reduce((a, s) => a + s.items.length, 0) +
         part2Sections.reduce((a, s) => a + s.items.length, 0)
@@ -398,12 +390,12 @@ export default function ChecklistContent() {
     },
     {
       id: "part1",
-      label: "Statutory & Rules",
+      label: t("filterPart1"),
       count: `${part1Sections.reduce((a, s) => a + s.items.length, 0)}`,
     },
     {
       id: "part2",
-      label: "Operational Evidence",
+      label: t("filterPart2"),
       count: `${part2Sections.reduce((a, s) => a + s.items.length, 0)}`,
     },
   ];
@@ -418,38 +410,31 @@ export default function ChecklistContent() {
               <CheckSquare size={20} className="text-green-300" />
             </div>
             <span className="text-green-300 text-xs font-semibold uppercase tracking-widest">
-              Compliance Checklist
+              {t("eyebrow")}
             </span>
           </div>
           <div className="max-w-3xl">
             <h1 className="text-3xl sm:text-4xl font-semibold text-white mb-3">
-              DPDPA Compliance Checklist
+              {t("title")}
             </h1>
             <p className="text-slate-300 text-lg leading-relaxed mb-2">
-              Based on the Digital Personal Data Protection Act, 2023 and DPDP
-              Rules, 2025
+              {t("basedOn")}
             </p>
             <div className="bg-white/10 border border-white/20 rounded-xl px-5 py-4 max-w-2xl mt-4">
               <p className="text-slate-200 text-sm leading-relaxed">
-                Designed for organisations that collect, store, process, share,
-                or handle digital personal data in India — or process such data
-                outside India in connection with offering goods or services to{" "}
-                <Link
-                  href="/glossary#data-principal"
-                  className="text-green-300 hover:text-green-200 underline decoration-dotted"
-                >
-                  Data Principals
-                </Link>{" "}
-                in India. The checklist separates legal obligations from
-                operational evidence controls. The Act tells you what must be
-                true; the Rules explain how; the evidence controls prove the
-                wiring is connected.
+                {t.rich("intro", {
+                  link: (chunks) => (
+                    <Link
+                      href="/glossary#data-principal"
+                      className="text-green-300 hover:text-green-200 underline decoration-dotted"
+                    >
+                      {chunks}
+                    </Link>
+                  ),
+                })}
               </p>
               <p className="text-amber-300 text-xs mt-3 font-medium">
-                ⚠ Compliance-readiness guide only — not legal advice.
-                Organisations in regulated sectors (banking, telecom, insurance,
-                health, payments, employment) should validate sector-specific
-                obligations separately.
+                {t("warning")}
               </p>
             </div>
           </div>
@@ -460,13 +445,13 @@ export default function ChecklistContent() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
 
         {/* Status legend */}
-        <StatusLegend />
+        <StatusLegend statusLabels={statusLabels} />
 
         {/* Filter pills */}
         <div
           className="flex items-center gap-2 mb-6 flex-wrap"
           role="group"
-          aria-label="Filter checklist sections"
+          aria-label={t("filterAria")}
         >
           {filterButtons.map((btn) => (
             <button
@@ -505,23 +490,28 @@ export default function ChecklistContent() {
                   id="section1-heading"
                   className="text-lg font-bold text-navy-700"
                 >
-                  Section 1 — Statutory and Rule-Based DPDPA Compliance
+                  {t("part1Title")}
                 </h2>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  15 sections · {part1Sections.reduce((a, s) => a + s.items.length, 0)} controls ·{" "}
-                  <Link
-                    href="/learn/dpdp-rules-2025-plain-english-guide"
-                    className="text-blue-600 hover:underline"
-                  >
-                    DPDP Rules 2025
-                  </Link>{" "}
-                  +{" "}
-                  <Link
-                    href="/learn/dpdp-act-2023"
-                    className="text-blue-600 hover:underline"
-                  >
-                    DPDPA Act 2023
-                  </Link>
+                  {t.rich("part1Meta", {
+                    count: part1Sections.reduce((a, s) => a + s.items.length, 0),
+                    rules: (chunks) => (
+                      <Link
+                        href="/learn/dpdp-rules-2025-plain-english-guide"
+                        className="text-blue-600 hover:underline"
+                      >
+                        {chunks}
+                      </Link>
+                    ),
+                    act: (chunks) => (
+                      <Link
+                        href="/learn/dpdp-act-2023"
+                        className="text-blue-600 hover:underline"
+                      >
+                        {chunks}
+                      </Link>
+                    ),
+                  })}
                 </p>
               </div>
             </div>
@@ -556,12 +546,10 @@ export default function ChecklistContent() {
                   id="section2-heading"
                   className="text-lg font-bold text-navy-700"
                 >
-                  Section 2 — Operational Evidence and Governance Checklist
+                  {t("part2Title")}
                 </h2>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  12 sections · {part2Sections.reduce((a, s) => a + s.items.length, 0)} controls ·
-                  These are the evidence controls that prove statutory compliance is operational,
-                  not just documented.
+                  {t("part2Meta", { count: part2Sections.reduce((a, s) => a + s.items.length, 0) })}
                 </p>
               </div>
             </div>
@@ -582,14 +570,14 @@ export default function ChecklistContent() {
         )}
 
         {/* ── Key Guardrails ─────────────────────────────────────────── */}
-        {filter === "all" && <KeyGuardrails />}
+        {filter === "all" && <KeyGuardrails keyGuardrails={keyGuardrails} />}
 
         {/* ── Related Resources ──────────────────────────────────────── */}
         <RelatedResources />
 
         {/* ── Disclaimer ─────────────────────────────────────────────── */}
         <div className="bg-slate-100 border border-slate-200 rounded-xl px-5 py-4 text-xs text-slate-500 leading-relaxed mt-4">
-          <strong className="text-slate-600">Disclaimer — </strong>
+          <strong className="text-slate-600">{t("disclaimerLabel")}</strong>
           {DISCLAIMER}
         </div>
 
