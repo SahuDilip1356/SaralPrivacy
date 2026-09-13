@@ -13,6 +13,7 @@ import { AnswerBlock } from "@/components/seo/AnswerBlock";
 import { Byline } from "@/components/seo/Byline";
 import { FRESHNESS, toISODate } from "@/lib/content-freshness";
 import { learnContent } from "@/lib/data/learn-content";
+import { getLearnTopic } from "@/lib/i18n/content";
 
 
 /** Slugs of related topics shown as chips at the bottom of each page */
@@ -36,12 +37,14 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { topic } = await params;
-  const content = learnContent[topic];
+  const { locale, topic } = await params;
+  // Localized title/description (English untouched for "en"); canonical and
+  // alternates stay English-only — lighting hreflang is a separate decision.
+  const content = await getLearnTopic(locale, topic);
   if (!content) return {};
   const canonicalUrl = `https://saralprivacy.com/learn/${topic}`;
   return {
-    title: topic === 'what-is-dpdpa'
+    title: topic === 'what-is-dpdpa' && locale === 'en'
       ? "What Is DPDPA? Practical India Guide"
       : content.title,
     description: content.description,
@@ -123,7 +126,9 @@ export default async function LearnTopicPage({ params }: Props) {
   const messages = await getMessages();
   const tocLabel = (slug: string, fallback: string) =>
     chromeMessage(messages, `learn.toc.${slug}`, fallback);
-  const content = learnContent[topic];
+  // Localized on the server (English module untouched; overlay merged for
+  // other locales — missing fields fall back to English).
+  const content = await getLearnTopic(locale, topic);
 
   if (!content) {
     // Unknown topic slug → render a proper 404 (handled by ./not-found.tsx).
@@ -143,7 +148,8 @@ export default async function LearnTopicPage({ params }: Props) {
         content.description,
         `https://saralprivacy.com/learn/${topic}`,
         '2025-03-01',
-        toISODate(FRESHNESS.learn)
+        toISODate(FRESHNESS.learn),
+        locale === 'hi' ? { inLanguage: 'hi-IN' } : {}
       )}
       {speakableSchema(['.answer-block'], `https://saralprivacy.com/learn/${topic}`, content.title)}
       {breadcrumbSchema([
@@ -228,7 +234,7 @@ export default async function LearnTopicPage({ params }: Props) {
               <Byline lastReviewed={FRESHNESS.learn} className="mb-3" />
               {topic === 'what-is-dpdpa' ? (
                 <AnswerBlock
-                  answer="The Digital Personal Data Protection Act, 2023 governs how digital personal data is collected, used, stored, shared, and deleted in India. With the DPDP Rules, 2025 now notified and phased implementation underway, businesses should focus on fixing notices, consent, rights handling, retention, and vendor controls. This guide explains what the law covers, who it applies to, and what practical steps matter first."
+                  answer={t("whatIsDpdpaAnswer")}
                   className="mt-3 mb-2"
                 />
               ) : (

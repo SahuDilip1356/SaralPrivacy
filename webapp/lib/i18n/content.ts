@@ -18,9 +18,11 @@ import "server-only";
 
 import type { FAQItem } from "@/lib/types";
 import { faqs as enFaqs, faqCategories as enFaqCategories, homepageFaqIds } from "@/lib/data/faqs";
-import { localizeById, localizeText } from "@/lib/i18n/resolve";
+import { learnContent } from "@/lib/data/learn-content";
+import { localize, localizeById, localizeText } from "@/lib/i18n/resolve";
 import type {
   FaqsOverlay,
+  LearnOverlay,
 } from "@/lib/i18n/overlay-types";
 
 type Loader<T> = () => Promise<{ default: T }>;
@@ -30,6 +32,9 @@ type Loader<T> = () => Promise<{ default: T }>;
 // English for that module.
 const FAQ_OVERLAYS: Record<string, Loader<FaqsOverlay>> = {
   hi: () => import("@/lib/data/i18n/faqs.hi"),
+};
+const LEARN_OVERLAYS: Record<string, Loader<LearnOverlay>> = {
+  hi: () => import("@/lib/data/i18n/learn-content.hi"),
 };
 
 async function load<T>(
@@ -59,4 +64,12 @@ export async function getHomepageFaqContent(locale: string) {
     .map((id) => faqs.find((f) => f.id === id))
     .filter((f): f is FAQItem => Boolean(f));
   return { homepageFaqs: homepage, total: faqs.length };
+}
+
+// ── Learn topics ─────────────────────────────────────────────────────────────
+export async function getLearnTopic(locale: string, slug: string) {
+  const en = learnContent[slug];
+  if (!en) return undefined;
+  const o = await load(LEARN_OVERLAYS, locale);
+  return localize(en, locale, o?.[slug]);
 }
