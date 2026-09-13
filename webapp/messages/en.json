@@ -701,5 +701,19 @@
       "downloadThe": "Download the {title}",
       "gaugeAria": "DPDPA readiness {readiness} out of 100. Risk band: {band}."
     }
+  },
+  "faqPage": {
+    "metaTitle": "DPDPA FAQ: Common Questions Answered",
+    "metaDescription": "Clear answers to common DPDPA questions on applicability, consent, rights, penalties, children's data, cross-border transfers, and compliance priorities.",
+    "title": "Frequently Asked Questions",
+    "intro": "Plain-English answers to the most common questions Indian businesses ask about DPDPA.",
+    "searchPlaceholder": "Search questions...",
+    "all": "All",
+    "noResults": "No results found. Try a different search or category.",
+    "stillQuestions": "Still have questions?",
+    "advisoryLine": "Our advisory team can answer questions specific to your business and data practices.",
+    "contactUs": "Contact Us",
+    "answerReference": "Complete Answer Reference",
+    "answerBlock": "These are the DPDPA questions Indian businesses ask when privacy stops being theory and starts affecting forms, marketing, payroll, candidate files, student records, and customer data. The DPDP Rules, 2025 have been notified, so the useful question is no longer whether the law is coming, but what you need to fix first. Start here for clear, practical answers."
   }
 }

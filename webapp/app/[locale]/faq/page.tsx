@@ -1,17 +1,32 @@
 import type { Metadata } from "next";
-import { faqs } from "@/lib/data/faqs";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { getFaqContent } from "@/lib/i18n/content";
 import { faqPageSchema, speakableSchema } from "@/lib/schema";
 import FAQContent from "./FAQContent";
 import { AnswerBlock } from "@/components/seo/AnswerBlock";
 import { Byline } from "@/components/seo/Byline";
 import { FRESHNESS, toISODate } from "@/lib/content-freshness";
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: "DPDPA FAQ: Common Questions Answered",
   description:
     "Clear answers to common DPDPA questions on applicability, consent, rights, penalties, children's data, cross-border transfers, and compliance priorities.",
   alternates: { canonical: 'https://saralprivacy.com/faq' },
 };
+
+interface Props {
+  params: Promise<{ locale: string }>;
+}
+
+// English metadata is the object above, untouched. Other locales swap only the
+// title and description — canonical/alternates stay as they are (lighting
+// hreflang is a separate SEO decision).
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  if (locale === "en") return metadata;
+  const t = await getTranslations({ locale, namespace: "faqPage" });
+  return { ...metadata, title: t("metaTitle"), description: t("metaDescription") };
+}
 
 // All 15 FAQs rendered as server HTML so Google and AI crawlers can index every answer.
 // The client-side FAQContent accordion handles interactivity; these blocks are the
@@ -22,7 +37,12 @@ const KEY_FAQS = [
   "f011", "f012", "f013", "f014", "f015",
 ];
 
-export default function FAQPage() {
+export default async function FAQPage({ params }: Props) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations("faqPage");
+  // Localized on the server; FAQContent receives it as props (spec §4.3).
+  const { faqs, categories } = await getFaqContent(locale);
   const keyFaqs = faqs.filter((f) => KEY_FAQS.includes(f.id));
 
   return (
@@ -30,11 +50,12 @@ export default function FAQPage() {
       {faqPageSchema(faqs.map((f) => ({ question: f.question, answer: f.answer })), {
         url: 'https://saralprivacy.com/faq',
         dateModified: toISODate(FRESHNESS.faq),
+        ...(locale === "hi" ? { inLanguage: "hi-IN" } : {}),
       })}
       {speakableSchema(['.answer-block'], 'https://saralprivacy.com/faq', 'DPDPA FAQ: Common Questions Answered')}
 
       {/* Interactive section: hero (H1 first in DOM), search, filters, accordion */}
-      <FAQContent />
+      <FAQContent faqs={faqs} categories={categories} />
 
       {/* ── SSR answer stack ──────────────────────────────────────────────────────
           Rendered BELOW the H1 so Google and AI crawlers see: heading → answers.
@@ -42,12 +63,9 @@ export default function FAQPage() {
           The accordion above has data-nosnippet; these blocks are the crawlable source. */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-12">
         <div className="border-t-2 border-slate-200 pt-8 mb-6">
-          <p className="text-xs font-semibold text-slate-600 uppercase tracking-widest mb-4">Complete Answer Reference</p>
+          <p className="text-xs font-semibold text-slate-600 uppercase tracking-widest mb-4">{t("answerReference")}</p>
           <Byline lastReviewed={FRESHNESS.faq} className="mb-4" />
-          <AnswerBlock
-            answer="These are the DPDPA questions Indian businesses ask when privacy stops being theory and starts affecting forms, marketing, payroll, candidate files, student records, and customer data. The DPDP Rules, 2025 have been notified, so the useful question is no longer whether the law is coming, but what you need to fix first. Start here for clear, practical answers."
-            className="mb-6"
-          />
+          <AnswerBlock answer={t("answerBlock")} className="mb-6" />
         </div>
         <div className="space-y-4">
           {keyFaqs.map((faq) => (
