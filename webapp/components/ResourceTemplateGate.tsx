@@ -17,10 +17,13 @@ const EMPLOYEE_OPTIONS = [
 ];
 
 export interface ResourceTemplate {
+  /** English name — also the lead payload's templateName, on every locale. */
   title: string;
   file: string;
   tag: string;
   desc: string;
+  /** Localized display name (non-English pages only); falls back to title. */
+  displayTitle?: string;
 }
 
 interface Props {
@@ -156,7 +159,7 @@ export default function ResourceTemplateGate({ templates }: Props) {
           >
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-0.5">
-                <p className="text-sm font-semibold text-slate-800 group-hover:text-[#1E3A5F]">{t.title}</p>
+                <p className="text-sm font-semibold text-slate-800 group-hover:text-[#1E3A5F]">{t.displayTitle ?? t.title}</p>
                 <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 whitespace-nowrap">{t.tag}</span>
               </div>
               <p className="text-xs text-slate-500">{t.desc}</p>
@@ -179,7 +182,7 @@ export default function ResourceTemplateGate({ templates }: Props) {
 
             <div className="mb-5">
               <p className="text-xs font-semibold text-[#E07B39] uppercase tracking-wide mb-1">Free Download</p>
-              <h2 className="text-lg font-semibold text-[#1E3A5F]">{pendingTemplate.title}</h2>
+              <h2 className="text-lg font-semibold text-[#1E3A5F]">{pendingTemplate.displayTitle ?? pendingTemplate.title}</h2>
               <p className="text-sm text-slate-500 mt-1">
                 Tell us about your business to download this template. All 5 templates unlock instantly after this.
               </p>

@@ -32,12 +32,15 @@ import {
   DISCLAIMER as enDisclaimer,
   type ChecklistSection,
 } from "@/lib/data/compliance-checklist";
+import { RESOURCE_TEMPLATES } from "@/lib/data/resource-templates";
+import type { ResourceTemplate } from "@/components/ResourceTemplateGate";
 import { localize, localizeById, localizeText } from "@/lib/i18n/resolve";
 import type {
   FaqsOverlay,
   LearnOverlay,
   GlossaryOverlay,
   ChecklistOverlay,
+  ResourceTemplatesOverlay,
 } from "@/lib/i18n/overlay-types";
 
 type Loader<T> = () => Promise<{ default: T }>;
@@ -56,6 +59,9 @@ const GLOSSARY_OVERLAYS: Record<string, Loader<GlossaryOverlay>> = {
 };
 const CHECKLIST_OVERLAYS: Record<string, Loader<ChecklistOverlay>> = {
   hi: () => import("@/lib/data/i18n/compliance-checklist.hi"),
+};
+const RESOURCE_OVERLAYS: Record<string, Loader<ResourceTemplatesOverlay>> = {
+  hi: () => import("@/lib/data/i18n/resource-templates.hi"),
 };
 
 async function load<T>(
@@ -148,4 +154,22 @@ export async function getChecklistContent(locale: string) {
       : enKeyGuardrails,
     disclaimer: localizeText(enDisclaimer, o?.disclaimer),
   };
+}
+
+// ── /resources templates ─────────────────────────────────────────────────────
+/** The five downloadable templates. `title` stays English on every locale —
+ *  it is the lead payload's templateName; the localized name travels as
+ *  `displayTitle`. */
+export async function getResourceTemplates(locale: string): Promise<ResourceTemplate[]> {
+  const o = await load(RESOURCE_OVERLAYS, locale);
+  if (!o) return RESOURCE_TEMPLATES;
+  return RESOURCE_TEMPLATES.map((t) => {
+    const tr = o[t.file];
+    if (!tr) return t;
+    return {
+      ...t,
+      desc: localizeText(t.desc, tr.desc),
+      ...(tr.title ? { displayTitle: tr.title } : {}),
+    };
+  });
 }
