@@ -877,5 +877,25 @@
     "contactUs": "संपर्क करें",
     "answerReference": "सभी जवाब, एक जगह",
     "answerBlock": "ये DPDPA के वे सवाल हैं जो भारतीय व्यवसाय तब पूछते हैं, जब प्राइवेसी किताबी बात नहीं रह जाती और फ़ॉर्म, मार्केटिंग, पेरोल, कैंडिडेट फ़ाइलों, छात्रों के रिकॉर्ड और ग्राहकों के डेटा पर असर डालने लगती है। DPDP Rules, 2025 नोटिफ़ाई हो चुके हैं, इसलिए अब काम का सवाल यह नहीं कि क़ानून आएगा या नहीं, बल्कि यह है कि पहले क्या ठीक करना है। साफ़, व्यावहारिक जवाबों के लिए यहीं से शुरू करें।"
+  },
+  "glossaryPage": {
+    "metaTitle": "DPDPA शब्दावली: 50+ मुख्य शब्द",
+    "metaDescription": "Digital Personal Data Protection Act, 2023 और DPDP Rules, 2025 के 50+ मुख्य शब्दों की आसान परिभाषाएँ — सटीक धारा संख्या और क़ानूनी संदर्भों के साथ।",
+    "schemaName": "DPDPA शब्दावली — Digital Personal Data Protection Act, 2023",
+    "schemaDescription": "Digital Personal Data Protection Act, 2023 और DPDP Rules, 2025 के मुख्य शब्द, धारा संदर्भों के साथ।",
+    "home": "होम",
+    "breadcrumb": "शब्दावली",
+    "title": "DPDPA शब्दावली",
+    "intro": "Digital Personal Data Protection Act, 2023 और DPDP Rules, 2025 के {count} मुख्य शब्द। हर परिभाषा के साथ क़ानून की सटीक धारा दी गई है।",
+    "searchPlaceholder": "शब्द, धारा या परिभाषा खोजें…",
+    "clearSearch": "खोज साफ़ करें",
+    "noMatch": "आपकी खोज से कोई शब्द मेल नहीं खाता।",
+    "termsFound": "{count, plural, one {# शब्द मिला} other {# शब्द मिले}}",
+    "noTermsTitle": "कोई शब्द नहीं मिला",
+    "noTermsHint": "कोई और शब्द खोजें या दूसरी श्रेणी चुनें।",
+    "seeAlso": "यह भी देखें:",
+    "readMore": "गाइड में और पढ़ें →",
+    "noteLabel": "क़ानूनी संदर्भ नोट:",
+    "noteText": "सभी परिभाषाएँ Digital Personal Data Protection Act, 2023 और Digital Personal Data Protection Rules, 2025 से ली गई हैं। जहाँ अलग से न बताया गया हो, दी गई धारा संख्याएँ एक्ट की हैं। यह शब्दावली सिर्फ़ शैक्षिक संदर्भ के लिए है और क़ानूनी सलाह नहीं है। अनुपालन पर मार्गदर्शन के लिए किसी योग्य वकील से सलाह लें।"
   }
 }

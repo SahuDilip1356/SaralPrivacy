@@ -19,10 +19,16 @@ import "server-only";
 import type { FAQItem } from "@/lib/types";
 import { faqs as enFaqs, faqCategories as enFaqCategories, homepageFaqIds } from "@/lib/data/faqs";
 import { learnContent } from "@/lib/data/learn-content";
+import {
+  TERMS as enTerms,
+  CATEGORIES as enGlossaryCategories,
+  type GlossaryTerm,
+} from "@/components/glossary/glossaryData";
 import { localize, localizeById, localizeText } from "@/lib/i18n/resolve";
 import type {
   FaqsOverlay,
   LearnOverlay,
+  GlossaryOverlay,
 } from "@/lib/i18n/overlay-types";
 
 type Loader<T> = () => Promise<{ default: T }>;
@@ -35,6 +41,9 @@ const FAQ_OVERLAYS: Record<string, Loader<FaqsOverlay>> = {
 };
 const LEARN_OVERLAYS: Record<string, Loader<LearnOverlay>> = {
   hi: () => import("@/lib/data/i18n/learn-content.hi"),
+};
+const GLOSSARY_OVERLAYS: Record<string, Loader<GlossaryOverlay>> = {
+  hi: () => import("@/components/glossary/i18n/glossaryData.hi"),
 };
 
 async function load<T>(
@@ -72,4 +81,27 @@ export async function getLearnTopic(locale: string, slug: string) {
   if (!en) return undefined;
   const o = await load(LEARN_OVERLAYS, locale);
   return localize(en, locale, o?.[slug]);
+}
+
+// ── Glossary ─────────────────────────────────────────────────────────────────
+/** A glossary term plus, for non-English locales, the local-language
+ *  equivalent shown beside the (always English) headword. */
+export type LocalizedGlossaryTerm = GlossaryTerm & { localTerm?: string };
+
+export async function getGlossaryContent(locale: string) {
+  const o = await load(GLOSSARY_OVERLAYS, locale);
+  const terms: LocalizedGlossaryTerm[] = enTerms.map((t) => {
+    const tr = o?.terms[t.id];
+    if (!tr) return t;
+    return {
+      ...t,
+      definition: localizeText(t.definition, tr.definition),
+      ...(tr.localTerm ? { localTerm: tr.localTerm } : {}),
+    };
+  });
+  const categories = enGlossaryCategories.map((c) => ({
+    id: c.id as string,
+    label: localizeText(c.label, o?.categories?.[c.id]),
+  }));
+  return { terms, categories };
 }

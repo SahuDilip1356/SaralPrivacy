@@ -716,5 +716,25 @@
     "contactUs": "Contact Us",
     "answerReference": "Complete Answer Reference",
     "answerBlock": "These are the DPDPA questions Indian businesses ask when privacy stops being theory and starts affecting forms, marketing, payroll, candidate files, student records, and customer data. The DPDP Rules, 2025 have been notified, so the useful question is no longer whether the law is coming, but what you need to fix first. Start here for clear, practical answers."
+  },
+  "glossaryPage": {
+    "metaTitle": "DPDPA Glossary: 50+ Key Terms",
+    "metaDescription": "Plain-language definitions for 50+ key terms from the Digital Personal Data Protection Act, 2023 and DPDP Rules, 2025 — with exact section numbers and statutory references.",
+    "schemaName": "DPDPA Glossary — Digital Personal Data Protection Act, 2023",
+    "schemaDescription": "Key terms from the Digital Personal Data Protection Act, 2023 and DPDP Rules, 2025 with section references.",
+    "home": "Home",
+    "breadcrumb": "Glossary",
+    "title": "DPDPA Glossary",
+    "intro": "{count} key terms from the Digital Personal Data Protection Act, 2023 and DPDP Rules, 2025. Every definition cites the exact section of the statute.",
+    "searchPlaceholder": "Search terms, sections, or definitions…",
+    "clearSearch": "Clear search",
+    "noMatch": "No terms match your search.",
+    "termsFound": "{count, plural, one {# term found} other {# terms found}}",
+    "noTermsTitle": "No terms found",
+    "noTermsHint": "Try a different search or select a different category.",
+    "seeAlso": "See also:",
+    "readMore": "Read more in the Guide →",
+    "noteLabel": "Statutory reference note:",
+    "noteText": "All definitions are sourced from the Digital Personal Data Protection Act, 2023 and the Digital Personal Data Protection Rules, 2025. Section numbers cited are those of the Act unless stated otherwise. This glossary is for educational reference only and does not constitute legal advice. Consult a qualified lawyer for compliance guidance."
   }
 }
