@@ -55,7 +55,7 @@ export const faqs: FAQItem[] = [
     id: "f008",
     question: "Who is the Data Protection Board of India?",
     answer:
-      "The Data Protection Board of India (DPBI) is the regulatory authority established under the DPDPA. It is responsible for adjudicating complaints from Data Principals, conducting inquiries into data breaches and non-compliance, issuing orders and imposing penalties, and issuing directions to Data Fiduciaries. The Board is expected to operate as an independent body. Businesses can appeal Board decisions to the Appellate Tribunal and thereafter to the High Court. The Data Protection Board of India is established under the Act.",
+      "The Data Protection Board of India (DPBI) is the regulatory authority established under the DPDPA. It is responsible for adjudicating complaints from Data Principals, conducting inquiries into data breaches and non-compliance, issuing orders and imposing penalties, and issuing directions to Data Fiduciaries. The Board is expected to operate as an independent body. Businesses can appeal Board decisions to the Appellate Tribunal and thereafter to the Supreme Court. The Data Protection Board of India is established under the Act.",
     category: "regulatory",
   },
   {
@@ -99,7 +99,7 @@ export const faqs: FAQItem[] = [
     id: "f014",
     question: "Can I store customer data in foreign countries?",
     answer:
-      "The DPDPA permits the transfer of personal data outside India, subject to restrictions. The Central Government has the power to restrict data transfers to specific countries or territories. Initially, the Act takes a 'whitelist' approach: transfers can be made to countries notified by the government as permissible destinations. The specific list of permitted countries has not yet been finalised. Businesses that transfer personal data internationally (for example, using US-based SaaS tools, cloud services, or offshore data centres) must monitor this closely and be prepared to comply with transfer restrictions when they are notified. Data localisation requirements (if any) will be specified in the rules.",
+      "The DPDPA permits the transfer of personal data outside India, subject to restrictions. The Central Government has the power to restrict data transfers to specific countries or territories. The Act takes a negative-list approach (Section 16(1)): transfers are allowed by default, and the Central Government may restrict transfers to specific countries or territories by notification. As of this writing, no such restriction has been notified. Businesses that transfer personal data internationally (for example, using US-based SaaS tools, cloud services, or offshore data centres) must monitor this closely and be prepared to comply with transfer restrictions when they are notified. Data localisation requirements (if any) will be specified in the rules.",
     category: "compliance",
   },
   {

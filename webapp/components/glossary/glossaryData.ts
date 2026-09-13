@@ -131,7 +131,7 @@ export const TERMS: GlossaryTerm[] = [
   {
     id: "personal-data-breach",
     term: "Personal Data Breach",
-    section: "Section 2(l)",
+    section: "Section 2(u)",
     category: "concepts",
     definition:
       "Any unauthorised processing of personal data, or accidental disclosure, acquisition, sharing, use, alteration, destruction, or loss of access to personal data, that compromises the confidentiality, integrity, or availability of personal data.",
@@ -141,10 +141,10 @@ export const TERMS: GlossaryTerm[] = [
   {
     id: "de-identified-data",
     term: "De-identified Data",
-    section: "Section 17(3)",
+    section: "Section 17(2)(b)",
     category: "concepts",
     definition:
-      "Personal data from which a Data Fiduciary has removed the means by which the data can be attributed to a specific Data Principal. Under Section 17(3), when de-identified data is shared with a Data Processor under a contractual obligation not to re-identify the data, the Act does not restrict use of that data for research, archiving, or statistical purposes with prescribed safeguards.",
+      "Personal data from which a Data Fiduciary has removed the means by which the data can be attributed to a specific Data Principal. The Act does not define the term. The nearest provision is Section 17(2)(b): the Act does not apply to processing necessary for research, archiving or statistical purposes, provided the data is not used to take a decision specific to a Data Principal and prescribed standards are followed — de-identification is the practical route to meeting that condition.",
     relatedIds: ["anonymised-data", "exemptions"],
     learnHref: "/learn/key-terms",
   },
@@ -161,10 +161,10 @@ export const TERMS: GlossaryTerm[] = [
   {
     id: "publicly-available-data",
     term: "Publicly Available Data",
-    section: "Section 3(b)",
+    section: "Section 3(c)(ii)",
     category: "concepts",
     definition:
-      "Personal data made publicly available by the Data Principal themselves, or personal data whose publication is required under any law in force. Processing of such data does not require consent under Section 4. The exception applies only to data voluntarily made public by the Data Principal — accidental or unauthorised public disclosure does not bring data within this exception.",
+      "Personal data that the Data Principal has themselves made publicly available, or that another person is legally obliged to make public. Under Section 3(c)(ii) the Act does not apply to such data at all — it is an exclusion from the Act, not a Section 7 legitimate use. The exclusion covers only data the Data Principal voluntarily made public — accidental or unauthorised disclosure does not bring data within it.",
     relatedIds: ["consent", "exemptions"],
     learnHref: "/learn/consent",
   },
@@ -174,7 +174,7 @@ export const TERMS: GlossaryTerm[] = [
   {
     id: "consent",
     term: "Consent",
-    section: "Section 2(h) and Section 6",
+    section: "Section 6",
     category: "consent",
     definition:
       "A freely given, specific, informed, unconditional, and unambiguous indication of the Data Principal's wishes, signified by a clear affirmative action. Consent must be for a specified purpose only. A request for consent must be accompanied or preceded by a notice. Consent must not be bundled with other terms and conditions unrelated to the purpose of processing. Consent is required for all processing unless a deemed consent provision under Section 7 applies.",
@@ -217,7 +217,7 @@ export const TERMS: GlossaryTerm[] = [
     section: "Section 7",
     category: "consent",
     definition:
-      "Processing for which the Data Principal's explicit consent is not required. Section 7 specifies eight exhaustive circumstances: (a) voluntary provision of data for a specific purpose, (b) State functions such as subsidies, benefits, licences, or certificates, (c) compliance with a court order or judgment, (d) medical emergency or epidemic, (e) employment-related processing, (f) public interest functions, (g) protecting sovereignty or security, and (h) purposes prescribed by the Central Government. This list is exhaustive.",
+      "Processing for which the Data Principal's separate consent is not required. The 2023 Act calls these 'certain legitimate uses' — 'deemed consent' was the 2022 draft's term. Section 7 specifies nine exhaustive circumstances: (a) data voluntarily provided for a specified purpose, (b) the State providing subsidies, benefits, services, certificates, licences or permits, (c) State functions under law, or in the interest of sovereignty and security, (d) a legal obligation to disclose information to the State, (e) compliance with a judgment, decree or order, (f) a medical emergency, (g) medical treatment or health services during an epidemic or public-health threat, (h) safety and assistance during a disaster or breakdown of public order, and (i) employment-related purposes. This list is exhaustive.",
     relatedIds: ["consent", "processing-by-state"],
     learnHref: "/learn/consent",
   },
@@ -267,7 +267,7 @@ export const TERMS: GlossaryTerm[] = [
   {
     id: "rights-access",
     term: "Right to Access Information",
-    section: "Section 12",
+    section: "Section 11",
     category: "rights",
     definition:
       "A Data Principal may request a Data Fiduciary to provide: (a) a summary of personal data being processed and the processing activities undertaken, and (b) the identities of all Data Processors and other Data Fiduciaries with whom personal data has been shared. The Data Fiduciary must respond within the period prescribed by the Central Government.",
@@ -277,7 +277,7 @@ export const TERMS: GlossaryTerm[] = [
   {
     id: "right-correction-erasure",
     term: "Right to Correction and Erasure",
-    section: "Section 13",
+    section: "Section 12",
     category: "rights",
     definition:
       "A Data Principal may request a Data Fiduciary to: (a) correct inaccurate or misleading personal data, (b) complete incomplete personal data, (c) update personal data, and (d) erase personal data that is no longer necessary for the purpose for which it was collected or for which consent has been withdrawn. Data Fiduciaries must comply within the prescribed period.",
@@ -287,7 +287,7 @@ export const TERMS: GlossaryTerm[] = [
   {
     id: "right-grievance",
     term: "Right to Grievance Redressal",
-    section: "Section 13(3)",
+    section: "Section 13",
     category: "rights",
     definition:
       "A Data Principal may make a complaint to the Data Fiduciary's grievance redressal mechanism. If the complaint is not resolved within the period prescribed by the Central Government, the Data Principal may escalate the complaint to the Data Protection Board.",
@@ -430,10 +430,10 @@ export const TERMS: GlossaryTerm[] = [
   {
     id: "algorithmic-accountability",
     term: "Algorithmic Accountability",
-    section: "Section 10(2)(e)",
+    section: "Section 10(2)(c) · DPDP Rules, 2025",
     category: "obligations",
     definition:
-      "Significant Data Fiduciaries are required to publish algorithmic accountability standards. This obligation is limited to entities notified as SDFs. The Act uses the phrase 'algorithmic accountability' — broader concepts of algorithmic transparency or fairness beyond this obligation are not imposed by the Act.",
+      "A duty on Significant Data Fiduciaries to exercise due diligence so that the algorithmic software they use to process personal data does not pose a risk to Data Principals' rights. The Act itself does not use the phrase 'algorithmic accountability': Section 10(2)(c) lets the Central Government prescribe further SDF measures, and the DPDP Rules, 2025 add this duty. It applies only to entities notified as SDFs; broader concepts of algorithmic transparency or fairness are not imposed.",
     relatedIds: ["sdf-obligations", "significant-data-fiduciary"],
     learnHref: "/learn/key-terms",
   },
@@ -519,7 +519,7 @@ export const TERMS: GlossaryTerm[] = [
     section: "Section 29",
     category: "enforcement",
     definition:
-      "Appeals against orders of the Data Protection Board lie to the Telecom Disputes Settlement and Appellate Tribunal (TDSAT). Appeals must be filed within the prescribed period. Further appeals from TDSAT lie to the High Court.",
+      "Appeals against orders of the Data Protection Board lie to the Telecom Disputes Settlement and Appellate Tribunal (TDSAT). Appeals must be filed within the prescribed period. Further appeals from TDSAT lie to the Supreme Court (Section 29(9), applying Section 18 of the TRAI Act, 1997).",
     relatedIds: ["dpb", "inquiry"],
     learnHref: "/penalty-calculator",
   },
@@ -532,7 +532,7 @@ export const TERMS: GlossaryTerm[] = [
     section: "Section 17",
     category: "exemptions",
     definition:
-      "The Act exempts specified processing from its provisions, including: processing by the Central Government for national security, sovereignty, public order, or prevention of incitement to offences (Section 17(1)(a)); processing for prevention, detection, or investigation of offences (Section 17(1)(b)); and processing for research, archiving, or statistical purposes with prescribed safeguards (Section 17(3)). The Central Government may by notification exempt additional Data Fiduciaries or classes of Data Principals.",
+      "The Act exempts specified processing from its provisions, including: processing by notified State instrumentalities in the interests of sovereignty, security of the State, public order, or prevention of incitement to offences (Section 17(2)(a)); processing for prevention, detection, investigation or prosecution of offences (Section 17(1)(c)); and processing for research, archiving, or statistical purposes with prescribed safeguards (Section 17(2)(b)). The Central Government may by notification exempt additional Data Fiduciaries or classes of Data Principals.",
     relatedIds: ["state-instrumentalities", "de-identified-data"],
     learnHref: "/learn/what-is-dpdpa",
   },

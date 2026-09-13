@@ -235,7 +235,7 @@ For most commercial businesses, deemed consent covers only narrow, specific situ
 
 ## Withdrawal of Consent
 
-Individuals can withdraw consent at any time. This is a fundamental right under Section 6(3). When consent is withdrawn:
+Individuals can withdraw consent at any time. This is a fundamental right under Section 6(4). When consent is withdrawn:
 
 - You must stop processing the data for that specific purpose
 - The withdrawal must be as easy as giving consent — if consent took one click, withdrawal must also take one click
@@ -375,7 +375,7 @@ A personal data breach is any incident where personal data is accessed, disclose
 
 ## What Is a Personal Data Breach?
 
-Section 2(t) of the DPDPA defines a personal data breach as "any unauthorised processing of personal data or accidental disclosure, acquisition, sharing, use, alteration, destruction or loss of access to personal data, that compromises the confidentiality, integrity or availability of personal data."
+Section 2(u) of the DPDPA defines a personal data breach as "any unauthorised processing of personal data or accidental disclosure, acquisition, sharing, use, alteration, destruction or loss of access to personal data, that compromises the confidentiality, integrity or availability of personal data."
 
 In plain terms, a breach includes:
 
