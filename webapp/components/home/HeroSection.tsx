@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { useMessages, useTranslations } from "next-intl";
 import { ArrowRight, Check, CheckCircle } from "lucide-react";
-import { getHeroVerdict } from "@/lib/data/hero-verdicts";
-import { VERDICT_PREVIEWS } from "@/lib/data/verdict-previews";
+import type { HeroVerdict } from "@/lib/data/hero-verdicts";
+import type { VerdictPreview } from "@/lib/data/verdict-previews";
+import { chromeMessage, labelKey } from "@/lib/i18n/chrome";
 import { ScoreDial } from "@/components/home/ScoreDial";
 import { trackEvent } from "@/lib/analytics";
 
@@ -63,8 +64,22 @@ function HeroGeometry() {
   );
 }
 
-export function HeroSection() {
+// Verdicts + previews arrive already localized from the server page (spec §4.3
+// bundle law) — this client component never imports an overlay.
+export function HeroSection({
+  verdicts,
+  previews,
+}: {
+  verdicts: HeroVerdict[];
+  previews: VerdictPreview[];
+}) {
   const t = useTranslations("home.hero");
+  // `band` is a typed key; its display text is a data-driven override
+  // (home.band.<key>), English falling back to the key itself.
+  const messages = useMessages();
+  const bandLabel = (band: string) =>
+    chromeMessage(messages, `home.band.${labelKey(band)}`, band);
+  const getHeroVerdict = (s: string) => verdicts.find((v) => v.slug === s);
   // null = nothing picked yet; "other" = picked, but no sector-specific read.
   const [slug, setSlug] = useState<string | null>(null);
   const sectorSlug = slug === "other" ? null : slug;
@@ -75,7 +90,7 @@ export function HeroSection() {
   // The snapshot's "first fix" comes from the same data the full report shows —
   // never invented here. Exists for exactly the three priority sectors.
   const firstFix = sectorSlug
-    ? VERDICT_PREVIEWS.find((p) => p.slug === sectorSlug)?.firstActions[0]
+    ? previews.find((p) => p.slug === sectorSlug)?.firstActions[0]
     : undefined;
 
   // Three priority sectors, resolved from the single source, plus a generic
@@ -220,7 +235,7 @@ export function HeroSection() {
                       className="text-sm font-semibold text-navy-700 bg-gold-400 rounded px-2 py-0.5 animate-fade-up motion-reduce:animate-none"
                       style={{ animationDelay: "200ms" }}
                     >
-                      {verdict.band}
+                      {bandLabel(verdict.band)}
                     </span>
                   </div>
                   {firstFix && (

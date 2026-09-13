@@ -3,11 +3,9 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { AlertTriangle, ArrowRight, Check, Mail } from "lucide-react";
-import { useTranslations } from "next-intl";
-import {
-  VERDICT_PREVIEWS,
-  VERDICT_CHECKLIST,
-} from "@/lib/data/verdict-previews";
+import { useMessages, useTranslations } from "next-intl";
+import type { VerdictPreview } from "@/lib/data/verdict-previews";
+import { chromeMessage, labelKey } from "@/lib/i18n/chrome";
 import { trackEvent } from "@/lib/analytics";
 import { Surface } from "@/components/ui/Surface";
 import { Section, Eyebrow } from "@/components/ui/Section";
@@ -74,8 +72,19 @@ function DimensionBar({ label, pct, run, delay }: {
   );
 }
 
-export function ReportPreview() {
+// Previews + checklist arrive already localized from the server page (spec
+// §4.3 bundle law) — this client component never imports an overlay.
+export function ReportPreview({
+  previews: VERDICT_PREVIEWS,
+  checklist: VERDICT_CHECKLIST,
+}: {
+  previews: VerdictPreview[];
+  checklist: string[];
+}) {
   const t = useTranslations("home.report");
+  const messages = useMessages();
+  const bandLabel = (band: string) =>
+    chromeMessage(messages, `home.band.${labelKey(band)}`, band);
   const [active, setActive] = useState(VERDICT_PREVIEWS[0].slug);
   const v = VERDICT_PREVIEWS.find((p) => p.slug === active) ?? VERDICT_PREVIEWS[0];
   const { ref, inView } = useInView<HTMLDivElement>(0.25);
@@ -169,7 +178,7 @@ export function ReportPreview() {
                 <div>
                   <div className="text-xs text-slate-600 mb-1">{t("riskCategory")}</div>
                   <span className="inline-block text-sm font-semibold text-navy-700 bg-gold-400 rounded-full px-3 py-1">
-                    {v.band}
+                    {bandLabel(v.band)}
                   </span>
                 </div>
               </div>

@@ -18,10 +18,12 @@ import {
   ArrowRight,
   ArrowLeft,
 } from "lucide-react";
-import { VERDICT_PREVIEWS } from "@/lib/data/verdict-previews";
-import { getHeroVerdict } from "@/lib/data/hero-verdicts";
+import type { VerdictPreview } from "@/lib/data/verdict-previews";
+import type { HeroVerdict } from "@/lib/data/hero-verdicts";
+import type { SectorDeckOverlay } from "@/lib/i18n/overlay-types";
+import { chromeMessage, labelKey } from "@/lib/i18n/chrome";
 import { DATA_MAPS } from "@/lib/data/data-flow";
-import { useTranslations } from "next-intl";
+import { useMessages, useTranslations } from "next-intl";
 import { trackEvent } from "@/lib/analytics";
 import { Section, Eyebrow } from "@/components/ui/Section";
 import { useInView } from "@/lib/hooks/useInView";
@@ -185,8 +187,37 @@ function pose(d: number) {
 }
 
 
-export function AudienceCards() {
+// Previews + verdicts arrive already localized from the server page. The deck's
+// own English copy lives in `sectors` above; for other locales the server hands
+// over a sparse `copy` overlay (loaded server-side only — spec §4.3 bundle law)
+// and the merge happens here, field by field, English wherever it is silent.
+export function AudienceCards({
+  previews,
+  verdicts,
+  copy,
+}: {
+  previews: VerdictPreview[];
+  verdicts: HeroVerdict[];
+  copy?: SectorDeckOverlay;
+}) {
   const t = useTranslations("home.sectors");
+  const messages = useMessages();
+  const bandLabel = (band: string) =>
+    chromeMessage(messages, `home.band.${labelKey(band)}`, band);
+  // Display text per card. Titles are the sector nav labels, so they reuse the
+  // nav.items overrides (absent from en.json ⇒ English); the chip is the
+  // localized report-preview tab, which is the same short label by design.
+  const deck = sectors.map((s) => {
+    const c = copy?.[s.href.replace("/industries/", "")];
+    const preview = previews.find((v) => v.slug === s.assessmentHref.replace("/assessment/", ""));
+    return {
+      title: chromeMessage(messages, `nav.items.${labelKey(s.title)}.label`, s.title),
+      chip: c ? (preview?.tab ?? s.chip) : s.chip,
+      risk: c?.risk ?? s.risk,
+      line: c?.line ?? s.line,
+      painPoints: s.painPoints.map((pp) => c?.painPoints?.[pp] ?? pp),
+    };
+  });
   const { ref, inView } = useInView<HTMLDivElement>();
   const [active, setActive] = useState(0);
   // Auto-rotation: founder-directed direction cue. It plays exactly ONE full
@@ -272,7 +303,7 @@ export function AudienceCards() {
                     : "bg-cloud-50 border-cloud-300 text-slate-600 hover:border-slate-400 hover:text-navy-700"
                 }`}
               >
-                {s.chip}
+                {deck[i].chip}
               </button>
             );
           })}
@@ -293,8 +324,9 @@ export function AudienceCards() {
               const industrySlug = s.href.replace("/industries/", "");
               const flowHref = FLOW_HREFS.get(industrySlug);
               const assessmentSlug = s.assessmentHref.replace("/assessment/", "");
-              const preview = VERDICT_PREVIEWS.find((v) => v.slug === assessmentSlug);
-              const band = getHeroVerdict(assessmentSlug)?.band;
+              const preview = previews.find((v) => v.slug === assessmentSlug);
+              const band = verdicts.find((v) => v.slug === assessmentSlug)?.band;
+              const text = deck[i];
               // One hue per sector, from the single source that /industries and
               // /data-mapping already read. Not forked for this page: a second
               // copy of the palette is exactly how a sector ends up looking like
@@ -313,7 +345,7 @@ export function AudienceCards() {
                   key={s.href}
                   onClick={centred ? undefined : () => go(i, "spine")}
                   role={centred ? undefined : "button"}
-                  aria-label={centred ? undefined : t("showSector", { sector: s.title })}
+                  aria-label={centred ? undefined : t("showSector", { sector: text.title })}
                   className={`absolute top-0 left-1/2 w-[min(560px,92vw)] transition-[transform,opacity] duration-500 ease-out motion-reduce:!transition-none motion-reduce:!opacity-100 ${
                     centred ? "" : "cursor-pointer"
                   }`}
@@ -341,7 +373,7 @@ export function AudienceCards() {
                       <span className="w-10 h-10 rounded-lg bg-white/10 grid place-items-center shrink-0">
                         <Icon size={20} className={accent.icon} />
                       </span>
-                      <h3 className="font-semibold text-white text-lg">{s.title}</h3>
+                      <h3 className="font-semibold text-white text-lg">{text.title}</h3>
                     </div>
                     {/* Risk stays GOLD on every card, whatever the sector hue.
                         The accent says which industry this is; gold says what is
@@ -349,11 +381,11 @@ export function AudienceCards() {
                         is ever allowed to say so. */}
                     <span className="inline-flex items-center gap-1.5 text-2xs font-semibold text-gold-300 bg-gold-400/15 border border-gold-400/40 rounded-full px-2.5 py-1 mb-4">
                       <span className="w-1.5 h-1.5 rounded-full bg-gold-400" />
-                      {s.risk}
+                      {text.risk}
                     </span>
 
                     <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-1.5 mb-4">
-                      {s.painPoints.map((pp) => (
+                      {text.painPoints.map((pp) => (
                         <li key={pp} className="flex items-start gap-2 text-sm text-slate-300">
                           <span className={`mt-1.5 w-1 h-1 rounded-full shrink-0 ${accent.dot}`} />
                           {pp}
@@ -362,7 +394,7 @@ export function AudienceCards() {
                     </ul>
 
                     <p className="text-sm text-slate-300 leading-snug border-t border-white/10 pt-3.5 mb-4">
-                      {s.line}
+                      {text.line}
                     </p>
 
                     {/* Founder call: the three destinations become chips.
@@ -385,7 +417,7 @@ export function AudienceCards() {
                         ) : band ? (
                           <>
                             {t("typicalRisk")}{" "}
-                            <span className="font-semibold text-white">{band}</span> ·{" "}
+                            <span className="font-semibold text-white">{bandLabel(band)}</span> ·{" "}
                             {t("illustrative")}
                           </>
                         ) : null}
@@ -433,7 +465,7 @@ export function AudienceCards() {
                           <Icon size={20} className={accent.icon} />
                         </span>
                         <span className="text-sm font-semibold text-white whitespace-nowrap">
-                          {s.chip}
+                          {text.chip}
                         </span>
                       </span>
                     </div>

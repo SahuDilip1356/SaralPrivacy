@@ -478,7 +478,8 @@
       "legalBaselineLabel": "Legal baseline:",
       "legalBaselineText": "DPDP Rules, 2025 notified on 14 November 2025, with phased commencement.",
       "educationalLine": "This page is for educational purposes and does not constitute legal advice.",
-      "relatedTopics": "Related topics"
+      "relatedTopics": "Related topics",
+      "whatIsDpdpaAnswer": "The Digital Personal Data Protection Act, 2023 governs how digital personal data is collected, used, stored, shared, and deleted in India. With the DPDP Rules, 2025 now notified and phased implementation underway, businesses should focus on fixing notices, consent, rights handling, retention, and vendor controls. This guide explains what the law covers, who it applies to, and what practical steps matter first."
     }
   },
   "survey": {
@@ -701,5 +702,127 @@
       "downloadThe": "Download the {title}",
       "gaugeAria": "DPDPA readiness {readiness} out of 100. Risk band: {band}."
     }
+  },
+  "faqPage": {
+    "metaTitle": "DPDPA FAQ: Common Questions Answered",
+    "metaDescription": "Clear answers to common DPDPA questions on applicability, consent, rights, penalties, children's data, cross-border transfers, and compliance priorities.",
+    "title": "Frequently Asked Questions",
+    "intro": "Plain-English answers to the most common questions Indian businesses ask about DPDPA.",
+    "searchPlaceholder": "Search questions...",
+    "all": "All",
+    "noResults": "No results found. Try a different search or category.",
+    "stillQuestions": "Still have questions?",
+    "advisoryLine": "Our advisory team can answer questions specific to your business and data practices.",
+    "contactUs": "Contact Us",
+    "answerReference": "Complete Answer Reference",
+    "answerBlock": "These are the DPDPA questions Indian businesses ask when privacy stops being theory and starts affecting forms, marketing, payroll, candidate files, student records, and customer data. The DPDP Rules, 2025 have been notified, so the useful question is no longer whether the law is coming, but what you need to fix first. Start here for clear, practical answers."
+  },
+  "glossaryPage": {
+    "metaTitle": "DPDPA Glossary: 50+ Key Terms",
+    "metaDescription": "Plain-language definitions for 50+ key terms from the Digital Personal Data Protection Act, 2023 and DPDP Rules, 2025 — with exact section numbers and statutory references.",
+    "schemaName": "DPDPA Glossary — Digital Personal Data Protection Act, 2023",
+    "schemaDescription": "Key terms from the Digital Personal Data Protection Act, 2023 and DPDP Rules, 2025 with section references.",
+    "home": "Home",
+    "breadcrumb": "Glossary",
+    "title": "DPDPA Glossary",
+    "intro": "{count} key terms from the Digital Personal Data Protection Act, 2023 and DPDP Rules, 2025. Every definition cites the exact section of the statute.",
+    "searchPlaceholder": "Search terms, sections, or definitions…",
+    "clearSearch": "Clear search",
+    "noMatch": "No terms match your search.",
+    "termsFound": "{count, plural, one {# term found} other {# terms found}}",
+    "noTermsTitle": "No terms found",
+    "noTermsHint": "Try a different search or select a different category.",
+    "seeAlso": "See also:",
+    "readMore": "Read more in the Guide →",
+    "noteLabel": "Statutory reference note:",
+    "noteText": "All definitions are sourced from the Digital Personal Data Protection Act, 2023 and the Digital Personal Data Protection Rules, 2025. Section numbers cited are those of the Act unless stated otherwise. This glossary is for educational reference only and does not constitute legal advice. Consult a qualified lawyer for compliance guidance."
+  },
+  "checklistPage": {
+    "metaTitle": "DPDPA Compliance Checklist — Statutory & Operational Controls",
+    "metaDescription": "Complete DPDPA compliance checklist for Indian businesses — 90 controls across statutory obligations (Act 2023), rule requirements (Rules 2025), and operational evidence. Free, fully indexed.",
+    "schemaDescription": "Complete DPDPA compliance checklist for Indian businesses. 90 controls across 27 sections covering statutory obligations from DPDPA Act 2023 and operational evidence requirements from DPDP Rules 2025.",
+    "srTitle": "DPDPA Compliance Checklist for Indian Businesses",
+    "srSummary": "This checklist covers statutory obligations under the Digital Personal Data Protection Act, 2023 and operational evidence controls required to demonstrate DPDPA compliance. It is organised in two sections: Section 1 covers 15 areas of statutory and rule-based requirements including applicability, consent, notice, rights, breach notification, children's data, penalties, and cross-border transfers. Section 2 covers 12 operational governance areas including data inventory, rights management, security controls, vendor governance, and management reporting.",
+    "badge": {
+      "statutory": "Statutory",
+      "rule": "Rule",
+      "conditional": "Conditional",
+      "operational": "Operational",
+      "bestPractice": "Best Practice"
+    },
+    "controlCount": "{count, plural, one {# control} other {# controls}}",
+    "countStatutory": "{count} statutory",
+    "countRule": "{count} rule",
+    "countConditional": "{count} conditional",
+    "countOperational": "{count} operational",
+    "cta": {
+      "eyebrow": "Free Compliance Assessment",
+      "title": "See exactly where your business stands",
+      "body": "The checklist tells you what the law requires. The assessment tells you which gaps apply to your business — with a personalised risk score and next actions.",
+      "assessAria": "Take the free DPDPA compliance assessment",
+      "assess": "Take Free Assessment",
+      "guideAria": "Download the DPDPA guide",
+      "guide": "Download the Guide"
+    },
+    "howToRead": "How to read this checklist",
+    "keyGuardrails": "Key Guardrails for This Checklist",
+    "related": {
+      "heading": "Related Compliance Resources",
+      "assessment": {
+        "label": "Free Risk Assessment",
+        "desc": "Personalised compliance score for your business",
+        "cta": "Start assessment"
+      },
+      "guide": {
+        "label": "Download the Guide",
+        "desc": "DPDPA guide — Act 2023 + Rules 2025",
+        "cta": "Download free"
+      },
+      "templates": {
+        "label": "Compliance Templates",
+        "desc": "5 ready-to-use DPDPA templates for your business",
+        "cta": "Get templates"
+      },
+      "learn": {
+        "label": "DPDPA Learning Hub",
+        "desc": "Plain-English guides on every area of the Act",
+        "cta": "Start learning"
+      }
+    },
+    "filterAll": "All Controls",
+    "filterPart1": "Statutory & Rules",
+    "filterPart2": "Operational Evidence",
+    "filterAria": "Filter checklist sections",
+    "eyebrow": "Compliance Checklist",
+    "title": "DPDPA Compliance Checklist",
+    "basedOn": "Based on the Digital Personal Data Protection Act, 2023 and DPDP Rules, 2025",
+    "intro": "Designed for organisations that collect, store, process, share, or handle digital personal data in India — or process such data outside India in connection with offering goods or services to <link>Data Principals</link> in India. The checklist separates legal obligations from operational evidence controls. The Act tells you what must be true; the Rules explain how; the evidence controls prove the wiring is connected.",
+    "warning": "⚠ Compliance-readiness guide only — not legal advice. Organisations in regulated sectors (banking, telecom, insurance, health, payments, employment) should validate sector-specific obligations separately.",
+    "part1Title": "Section 1 — Statutory and Rule-Based DPDPA Compliance",
+    "part1Meta": "15 sections · {count} controls · <rules>DPDP Rules 2025</rules> + <act>DPDPA Act 2023</act>",
+    "part2Title": "Section 2 — Operational Evidence and Governance Checklist",
+    "part2Meta": "12 sections · {count} controls · These are the evidence controls that prove statutory compliance is operational, not just documented.",
+    "disclaimerLabel": "Disclaimer — "
+  },
+  "resourcesPage": {
+    "metaTitle": "Free DPDPA Templates | SaralPrivacy",
+    "metaDescription": "Download free DPDPA-aligned templates — Privacy Notice, Data Inventory Register, Consent Language, DSR SOP, and Vendor Register. Instantly usable for Indian businesses.",
+    "eyebrow": "Free Downloads",
+    "title": "DPDPA Compliance Templates",
+    "intro": "5 ready-to-use templates built for Indian businesses. Tell us about your business once — all 5 templates unlock instantly.",
+    "trust": {
+      "free": "Free forever",
+      "noAccount": "No account needed",
+      "aligned": "DPDPA-aligned",
+      "instant": "Instant download"
+    },
+    "availableTemplates": "Available Templates",
+    "guidesReports": "Guides & Reports",
+    "guideTitle": "DPDPA Guide",
+    "guideTag": "PDF Guide",
+    "guideDesc": "Comprehensive plain-English guide to the Digital Personal Data Protection Act for Indian businesses",
+    "notSure": "Not sure which templates you need?",
+    "notSureBody": "Take the free 5-minute DPDPA assessment — get a personalised score, red flags, and a 30-day action plan for your business.",
+    "takeAssessment": "Take Free Assessment →"
   }
 }

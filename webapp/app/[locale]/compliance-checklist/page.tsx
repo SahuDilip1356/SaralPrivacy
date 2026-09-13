@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { breadcrumbSchema, articleSchema } from "@/lib/schema";
+import { getChecklistContent } from "@/lib/i18n/content";
 import ChecklistContent from "./ChecklistContent";
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: "DPDPA Compliance Checklist — Statutory & Operational Controls",
   description:
     "Complete DPDPA compliance checklist for Indian businesses — 90 controls across statutory obligations (Act 2023), rule requirements (Rules 2025), and operational evidence. Free, fully indexed.",
@@ -15,7 +17,28 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ComplianceChecklistPage() {
+interface Props {
+  params: Promise<{ locale: string }>;
+}
+
+// English metadata is the object above, untouched. Other locales swap only the
+// title and description — canonical/alternates stay as they are (lighting
+// hreflang is a separate SEO decision).
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  if (locale === "en") return metadata;
+  const t = await getTranslations({ locale, namespace: "checklistPage" });
+  return { ...metadata, title: t("metaTitle"), description: t("metaDescription") };
+}
+
+export default async function ComplianceChecklistPage({ params }: Props) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations("checklistPage");
+  const en = locale === "en";
+  // Localized on the server; ChecklistContent receives it as props (spec §4.3).
+  const checklist = await getChecklistContent(locale);
+
   return (
     <>
       {breadcrumbSchema([
@@ -26,29 +49,30 @@ export default function ComplianceChecklistPage() {
           url: "https://saralprivacy.com/compliance-checklist",
         },
       ])}
-      {articleSchema(
-        "DPDPA Compliance Checklist — Statutory & Operational Controls",
-        "Complete DPDPA compliance checklist for Indian businesses. 90 controls across 27 sections covering statutory obligations from DPDPA Act 2023 and operational evidence requirements from DPDP Rules 2025.",
-        "https://saralprivacy.com/compliance-checklist",
-        "2025-11-14",
-        "2026-04-01"
-      )}
+      {en
+        ? articleSchema(
+            "DPDPA Compliance Checklist — Statutory & Operational Controls",
+            "Complete DPDPA compliance checklist for Indian businesses. 90 controls across 27 sections covering statutory obligations from DPDPA Act 2023 and operational evidence requirements from DPDP Rules 2025.",
+            "https://saralprivacy.com/compliance-checklist",
+            "2025-11-14",
+            "2026-04-01"
+          )
+        : articleSchema(
+            t("metaTitle"),
+            t("schemaDescription"),
+            "https://saralprivacy.com/compliance-checklist",
+            "2025-11-14",
+            "2026-04-01",
+            locale === "hi" ? { inLanguage: "hi-IN" } : {}
+          )}
 
       {/* SEO-crawlable summary for AI and search engines */}
       <div className="sr-only">
-        <h1>DPDPA Compliance Checklist for Indian Businesses</h1>
-        <p>
-          This checklist covers statutory obligations under the Digital Personal Data Protection
-          Act, 2023 and operational evidence controls required to demonstrate DPDPA compliance.
-          It is organised in two sections: Section 1 covers 15 areas of statutory and rule-based
-          requirements including applicability, consent, notice, rights, breach notification,
-          children's data, penalties, and cross-border transfers. Section 2 covers 12 operational
-          governance areas including data inventory, rights management, security controls, vendor
-          governance, and management reporting.
-        </p>
+        <h1>{t("srTitle")}</h1>
+        <p>{t("srSummary")}</p>
       </div>
 
-      <ChecklistContent />
+      <ChecklistContent {...checklist} />
     </>
   );
 }

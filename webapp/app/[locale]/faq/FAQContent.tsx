@@ -1,13 +1,24 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { ChevronDown, Search } from "lucide-react";
-import { faqs, faqCategories } from "@/lib/data/faqs";
+import type { FAQItem } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { AssessmentCTA } from "@/components/cta/AssessmentCTA";
 import { TemplatesCTA } from "@/components/cta/TemplatesCTA";
 
-export default function FAQContent() {
+// FAQ data arrives already localized from the server page (spec §4.3 bundle
+// law): this client component never imports lib/data/faqs or an overlay.
+export default function FAQContent({
+  faqs,
+  categories: faqCategories,
+}: {
+  faqs: FAQItem[];
+  categories: { id: string; label: string }[];
+}) {
+  const t = useTranslations("faqPage");
+  const tl = useTranslations("learn.topic");
   const [openId, setOpenId] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState("all");
   const [search, setSearch] = useState("");
@@ -27,10 +38,10 @@ export default function FAQContent() {
       <div className="bg-navy-700 py-14">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <h1 className="text-3xl sm:text-4xl font-semibold text-white mb-3">
-            Frequently Asked Questions
+            {t("title")}
           </h1>
           <p className="text-slate-300 text-lg mb-6">
-            Plain-English answers to the most common questions Indian businesses ask about DPDPA.
+            {t("intro")}
           </p>
 
           {/* Search */}
@@ -40,7 +51,7 @@ export default function FAQContent() {
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search questions..."
+              placeholder={t("searchPlaceholder")}
               className="w-full pl-11 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-green-500 text-sm"
             />
           </div>
@@ -59,7 +70,7 @@ export default function FAQContent() {
                 : "bg-white text-slate-600 border border-slate-200 hover:border-slate-300"
             )}
           >
-            All ({faqs.length})
+            {t("all")} ({faqs.length})
           </button>
           {faqCategories.map((cat) => {
             const count = faqs.filter((f) => f.category === cat.id).length;
@@ -84,7 +95,7 @@ export default function FAQContent() {
             from this accordion; the SSR answer blocks in page.tsx are the crawlable source */}
         {filtered.length === 0 ? (
           <div className="text-center py-12 text-slate-500">
-            No results found. Try a different search or category.
+            {t("noResults")}
           </div>
         ) : (
           <div className="space-y-3" data-nosnippet>
@@ -127,23 +138,23 @@ export default function FAQContent() {
         {/* CTA */}
         <div className="mt-6 bg-green-50 border border-green-200 rounded-xl p-6 text-center">
           <h3 className="font-semibold text-navy-700 text-lg mb-2">
-            Still have questions?
+            {t("stillQuestions")}
           </h3>
           <p className="text-slate-600 text-sm mb-4">
-            Our advisory team can answer questions specific to your business and data practices.
+            {t("advisoryLine")}
           </p>
           <a
             href="/contact"
             className="inline-flex items-center gap-2 px-6 py-2.5 bg-green-700 text-white font-semibold rounded-lg text-sm hover:bg-green-800 transition-colors"
           >
-            Contact Us
+            {t("contactUs")}
           </a>
         </div>
 
         {/* Legal */}
         <div data-nosnippet className="mt-10 pt-6 border-t border-slate-200 text-xs text-slate-600 space-y-1">
-          <p><strong>Legal baseline:</strong> DPDP Rules, 2025 notified on 14 November 2025, with phased commencement.</p>
-          <p>This page is for educational purposes and does not constitute legal advice.</p>
+          <p><strong>{tl("legalBaselineLabel")}</strong> {tl("legalBaselineText")}</p>
+          <p>{tl("educationalLine")}</p>
         </div>
       </div>
     </div>
