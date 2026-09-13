@@ -12,6 +12,18 @@
 //     level, never by array index (spec §4.3B) — partial array translation is
 //     expressed as an object keyed by entity id, not a sparse array.
 //
+// Overlay LOCATION convention (one rule, every module — W4):
+//   an overlay lives in an `i18n/` directory beside its English module, named
+//   `<module>.<locale>.ts`:
+//     lib/data/faqs.ts                      → lib/data/i18n/faqs.hi.ts
+//     lib/data/learn-content.ts             → lib/data/i18n/learn-content.hi.ts
+//     components/glossary/glossaryData.ts   → components/glossary/i18n/glossaryData.hi.ts
+//     components/home/AudienceCards.tsx     → components/home/i18n/AudienceCards.hi.ts
+//   Where the English "module" is a directory (a data-flow pack), the module
+//   name is the directory and the file is just `<locale>.ts`
+//   (lib/data/data-flow/clinics/i18n/hi.ts). Overlay shapes live in
+//   lib/i18n/overlay-types.ts; they are loaded ONLY by lib/i18n/content.ts.
+//
 // ⛔ Bundle-safety law (spec §4.3): this module is server-only. Overlays load
 // via per-locale dynamic import() in Server Components; client components
 // receive already-localized props. A statically-imported overlay would ship
@@ -65,7 +77,33 @@ function deepMerge<T>(en: T, overlay: unknown): T {
  * the server, e.g. `lib/data/data-flow/clinics/i18n/hi.ts`); W2+ adds the
  * overlay files themselves.
  */
-export function localize<T>(en: T, locale: string, overlay?: Overlay<T>): T {
+export function localize<T>(en: T, locale: string, overlay?: NoInfer<Overlay<T>>): T {
   if (locale === "en" || overlay === undefined || overlay === null) return en;
   return deepMerge(en, overlay);
+}
+
+/**
+ * Localize a list of entities by a STABLE id (never by index — spec §4.3B):
+ * each item whose id has an overlay entry gets it merged over its English
+ * fields; every other item is returned untouched. Order and membership always
+ * follow English, so an overlay can neither reorder nor resurrect an entity.
+ */
+export function localizeById<T>(
+  items: readonly T[],
+  locale: string,
+  overlay: NoInfer<Record<string, Overlay<T>>> | undefined,
+  idOf: (item: T) => string
+): T[] {
+  if (locale === "en" || !overlay) return items as T[];
+  return items.map((item) => {
+    const o = Object.prototype.hasOwnProperty.call(overlay, idOf(item))
+      ? overlay[idOf(item)]
+      : undefined;
+    return o === undefined ? item : localize(item, locale, o);
+  });
+}
+
+/** A translated string when one exists and is non-empty, else the English. */
+export function localizeText(en: string, translated: string | undefined): string {
+  return typeof translated === "string" && translated.trim() !== "" ? translated : en;
 }
