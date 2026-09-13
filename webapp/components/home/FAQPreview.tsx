@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ChevronDown, ArrowRight } from "lucide-react";
-import { faqs, getHomepageFaqs } from "@/lib/data/faqs";
+import type { FAQItem } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { Section, Eyebrow } from "@/components/ui/Section";
@@ -25,9 +25,16 @@ import { Section, Eyebrow } from "@/components/ui/Section";
 // job with one line each, which is how a printed Q&A has always set this, and
 // it buys back ~90px in the bargain.
 
-export function FAQPreview() {
+// The homepage FAQ slice arrives already localized, in display order, from the
+// server page (spec §4.3 bundle law); `total` is the full /faq library size.
+export function FAQPreview({
+  faqs: homepageFaqs,
+  total,
+}: {
+  faqs: FAQItem[];
+  total: number;
+}) {
   const t = useTranslations("home.faqPreview");
-  const homepageFaqs = getHomepageFaqs();
   const [openId, setOpenId] = useState<string | null>(homepageFaqs[0]?.id ?? null);
 
   return (
@@ -90,7 +97,7 @@ export function FAQPreview() {
           href="/faq"
           className="inline-flex items-center gap-1.5 pointer-coarse:min-h-11 text-sm font-semibold text-teal-800 hover:text-teal-900 underline underline-offset-4 decoration-teal-800/30 hover:decoration-teal-800 transition-colors"
         >
-          {t("browseAll", { count: faqs.length })}
+          {t("browseAll", { count: total })}
           <ArrowRight size={15} />
         </Link>
       </div>

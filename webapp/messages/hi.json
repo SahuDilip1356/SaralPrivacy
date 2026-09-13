@@ -293,7 +293,7 @@
       "mapItFirst": "पहले मैप करें",
       "snapshotTitle": "प्राइवेसी रेडीनेस स्नैपशॉट",
       "sampleLabel": "नमूना · क्लिनिक और लैब",
-      "appliesTo": "DPDPA आपके {sector} पर लागू होता है।",
+      "appliesTo": "एक {sector} के तौर पर, DPDPA आप पर लागू होता है।",
       "typicalRisk": "सामान्य जोखिम",
       "firstFixLabel": "पहला सुधार",
       "realScoreAway": "आपका असली स्कोर बस 3–5 मिनट दूर है।",
@@ -473,6 +473,12 @@
       "errorGeneric": "कुछ गड़बड़ हो गई। कृपया फिर कोशिश करें।",
       "errorNetwork": "नेटवर्क में दिक़्क़त है। कृपया कनेक्शन जाँचकर फिर कोशिश करें।",
       "subscribeCta": "ब्रीफ़िंग सब्सक्राइब करें"
+    },
+    "band": {
+      "high": "उच्च",
+      "moderate-high": "मध्यम–उच्च",
+      "moderate": "मध्यम",
+      "low": "कम"
     }
   },
   "learn": {

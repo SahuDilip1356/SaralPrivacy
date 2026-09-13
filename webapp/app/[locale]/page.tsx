@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
+import {
+  getHeroVerdicts,
+  getVerdictPreviews,
+  getHomepageFaqContent,
+  getSectorDeckOverlay,
+} from "@/lib/i18n/content";
 import { HeroSection } from "@/components/home/HeroSection";
 import { WhereRiskHides } from "@/components/home/WhereRiskHides";
 import { ReportPreview } from "@/components/home/ReportPreview";
@@ -105,6 +111,15 @@ export default async function HomePage({
   // page.
   const { locale } = await params;
   setRequestLocale(locale);
+  // Sector content + the FAQ slice, localized on the server and handed to the
+  // client sections as props — overlays never reach a client chunk (spec §4.3).
+  const [verdicts, { previews, checklist }, { homepageFaqs, total }, deckCopy] =
+    await Promise.all([
+      getHeroVerdicts(locale),
+      getVerdictPreviews(locale),
+      getHomepageFaqContent(locale),
+      getSectorDeckOverlay(locale),
+    ]);
   return (
     <>
       {organizationSchema()}
@@ -125,7 +140,7 @@ export default async function HomePage({
           drop in intensity until the product shows itself on white at S4. */}
 
       {/* S1 — the promise, one action, and a sample read. */}
-      <HeroSection />
+      <HeroSection verdicts={verdicts} previews={previews} />
 
       {/* S2 — press marks + the three facts that reduce the anxiety of
           STARTING. A navy-800 seam, one shade darker than its neighbours, so
@@ -147,7 +162,7 @@ export default async function HomePage({
       <WhereRiskHides />
 
       {/* S4 — the product demonstration: the scored report, full width. */}
-      <ReportPreview />
+      <ReportPreview previews={previews} checklist={checklist} />
 
       {/* ── Chapter 2: the product, and whether it fits ──────────────────
           Three white beats in a row, held apart by hairlines and the padding
@@ -161,7 +176,7 @@ export default async function HomePage({
       <HowItWorks />
 
       {/* S6 — the sector ring: all twelve, one at a time. */}
-      <AudienceCards />
+      <AudienceCards previews={previews} verdicts={verdicts} copy={deckCopy} />
 
       {/* ── Chapter 3: resolve and close ────────────────────────────────── */}
 
@@ -175,7 +190,7 @@ export default async function HomePage({
       <ResourcesSection />
 
       {/* S9 — the objections that stop a click, answered. */}
-      <FAQPreview />
+      <FAQPreview faqs={homepageFaqs} total={total} />
 
       {/* S10 — the close. The newsletter used to sit here; it now lives in the
           footer and on /briefings. */}

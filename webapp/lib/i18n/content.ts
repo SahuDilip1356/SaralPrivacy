@@ -32,6 +32,12 @@ import {
   DISCLAIMER as enDisclaimer,
   type ChecklistSection,
 } from "@/lib/data/compliance-checklist";
+import { HERO_VERDICTS, type HeroVerdict } from "@/lib/data/hero-verdicts";
+import {
+  VERDICT_PREVIEWS,
+  VERDICT_CHECKLIST,
+  type VerdictPreview,
+} from "@/lib/data/verdict-previews";
 import { RESOURCE_TEMPLATES } from "@/lib/data/resource-templates";
 import type { ResourceTemplate } from "@/components/ResourceTemplateGate";
 import { localize, localizeById, localizeText } from "@/lib/i18n/resolve";
@@ -40,6 +46,9 @@ import type {
   LearnOverlay,
   GlossaryOverlay,
   ChecklistOverlay,
+  HeroVerdictsOverlay,
+  VerdictPreviewsOverlay,
+  SectorDeckOverlay,
   ResourceTemplatesOverlay,
 } from "@/lib/i18n/overlay-types";
 
@@ -59,6 +68,15 @@ const GLOSSARY_OVERLAYS: Record<string, Loader<GlossaryOverlay>> = {
 };
 const CHECKLIST_OVERLAYS: Record<string, Loader<ChecklistOverlay>> = {
   hi: () => import("@/lib/data/i18n/compliance-checklist.hi"),
+};
+const HERO_OVERLAYS: Record<string, Loader<HeroVerdictsOverlay>> = {
+  hi: () => import("@/lib/data/i18n/hero-verdicts.hi"),
+};
+const PREVIEW_OVERLAYS: Record<string, Loader<VerdictPreviewsOverlay>> = {
+  hi: () => import("@/lib/data/i18n/verdict-previews.hi"),
+};
+const DECK_OVERLAYS: Record<string, Loader<SectorDeckOverlay>> = {
+  hi: () => import("@/components/home/i18n/AudienceCards.hi"),
 };
 const RESOURCE_OVERLAYS: Record<string, Loader<ResourceTemplatesOverlay>> = {
   hi: () => import("@/lib/data/i18n/resource-templates.hi"),
@@ -154,6 +172,46 @@ export async function getChecklistContent(locale: string) {
       : enKeyGuardrails,
     disclaimer: localizeText(enDisclaimer, o?.disclaimer),
   };
+}
+
+// ── Homepage sector content ──────────────────────────────────────────────────
+export async function getHeroVerdicts(locale: string): Promise<HeroVerdict[]> {
+  const o = await load(HERO_OVERLAYS, locale);
+  return localizeById(HERO_VERDICTS, locale, o, (v) => v.slug);
+}
+
+export async function getVerdictPreviews(locale: string): Promise<{
+  previews: VerdictPreview[];
+  checklist: string[];
+}> {
+  const o = await load(PREVIEW_OVERLAYS, locale);
+  if (!o) return { previews: VERDICT_PREVIEWS, checklist: VERDICT_CHECKLIST };
+  const previews = VERDICT_PREVIEWS.map((p) => {
+    const tr = o.previews[p.slug];
+    if (!tr) return p;
+    return {
+      ...p,
+      tab: localizeText(p.tab, tr.tab),
+      label: localizeText(p.label, tr.label),
+      categories: p.categories.map((c) => ({
+        ...c,
+        label: localizeText(c.label, tr.categories?.[c.label]),
+      })),
+      topGaps: p.topGaps.map((g) => localizeText(g, tr.topGaps?.[g])),
+      firstActions: p.firstActions.map((a) => localizeText(a, tr.firstActions?.[a])),
+    };
+  });
+  const checklist = VERDICT_CHECKLIST.map((c) => localizeText(c, o.checklist?.[c]));
+  return { previews, checklist };
+}
+
+/** Sparse deck-copy overlay for the homepage sector deck, or undefined for
+ *  English. The deck's English copy lives in the (client) component itself, so
+ *  the merge happens there; only this locale's strings travel, as RSC props. */
+export async function getSectorDeckOverlay(
+  locale: string
+): Promise<SectorDeckOverlay | undefined> {
+  return load(DECK_OVERLAYS, locale);
 }
 
 // ── /resources templates ─────────────────────────────────────────────────────
