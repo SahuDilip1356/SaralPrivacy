@@ -100,7 +100,7 @@ const hi: VerdictPreviewsOverlay = {
         "Marketing opt-in bundled into checkout, so consent is not separate or withdrawable.":
           "मार्केटिंग का ऑप्ट-इन चेकआउट के साथ जुड़ा है, इसलिए सहमति न अलग है, न वापस ली जा सकती है।",
         "Analytics and ad pixels pass customer data to vendors with no written terms.":
-          "एनालिटिक्स और ऐड पिक्सेल बिना किसी लिखित शर्तों के ग्राहकों का डेटा वेंडरों तक पहुँचाते हैं।",
+          "एनालिटिक्स और ऐड पिक्सेल बिना लिखित शर्तों के ग्राहकों का डेटा वेंडरों तक पहुँचाते हैं।",
         "Inactive customer records and abandoned-cart data are never cleared.":
           "निष्क्रिय ग्राहकों के रिकॉर्ड और छोड़े गए कार्ट का डेटा कभी साफ़ नहीं किया जाता।",
       },
@@ -129,7 +129,7 @@ const hi: VerdictPreviewsOverlay = {
         "Front-desk registers and appointment books hold health details anyone at the counter can read.":
           "फ़्रंट डेस्क के रजिस्टर और अपॉइंटमेंट बुक में स्वास्थ्य की ऐसी जानकारी रहती है जिसे काउंटर पर कोई भी पढ़ सकता है।",
         "Referral labs and imaging partners receive patient data with no written processing terms.":
-          "रेफ़रल लैब और इमेजिंग पार्टनर को मरीज़ों का डेटा बिना किसी लिखित प्रोसेसिंग शर्तों के मिलता है।",
+          "रेफ़रल लैब और इमेजिंग पार्टनर को मरीज़ों का डेटा बिना लिखित प्रोसेसिंग शर्तों के मिलता है।",
       },
       firstActions: {
         "Move report delivery to a channel the clinic controls, and stop sending from personal handsets.":
@@ -156,7 +156,7 @@ const hi: VerdictPreviewsOverlay = {
         "Class WhatsApp groups carry names, photographs and results to every parent in the group.":
           "क्लास के WhatsApp ग्रुप में नाम, फ़ोटो और रिज़ल्ट ग्रुप के हर अभिभावक तक पहुँचते हैं।",
         "Learning platforms and transport trackers receive student data with no written terms.":
-          "लर्निंग प्लेटफ़ॉर्म और ट्रांसपोर्ट ट्रैकर को छात्रों का डेटा बिना किसी लिखित शर्तों के मिलता है।",
+          "लर्निंग प्लेटफ़ॉर्म और ट्रांसपोर्ट ट्रैकर को छात्रों का डेटा बिना लिखित शर्तों के मिलता है।",
       },
       firstActions: {
         "Record verifiable parental consent at admission, and stop treating enrolment as consent.":
@@ -235,7 +235,7 @@ const hi: VerdictPreviewsOverlay = {
         "Passport and ID scans taken at check-in are stored on the front-desk machine indefinitely.":
           "चेक-इन पर लिए गए पासपोर्ट और ID स्कैन फ़्रंट डेस्क के कंप्यूटर में हमेशा के लिए पड़े रहते हैं।",
         "OTAs, tour operators and transport partners receive guest data with no written terms.":
-          "OTA, टूर ऑपरेटर और ट्रांसपोर्ट पार्टनर को मेहमानों का डेटा बिना किसी लिखित शर्तों के मिलता है।",
+          "OTA, टूर ऑपरेटर और ट्रांसपोर्ट पार्टनर को मेहमानों का डेटा बिना लिखित शर्तों के मिलता है।",
         "Every front-desk shift shares one login, so no action can be traced to a person.":
           "फ़्रंट डेस्क की हर शिफ़्ट एक ही लॉगिन इस्तेमाल करती है, इसलिए किसी भी काम को किसी व्यक्ति से जोड़ा नहीं जा सकता।",
       },
@@ -262,7 +262,7 @@ const hi: VerdictPreviewsOverlay = {
         "Prescription photographs arrive over WhatsApp and stay on staff handsets after the sale.":
           "प्रिस्क्रिप्शन की फ़ोटो WhatsApp पर आती हैं और बिक्री के बाद भी स्टाफ़ के फ़ोन में पड़ी रहती हैं।",
         "Delivery partners receive the customer's name, address and medicine details with no terms.":
-          "डिलीवरी पार्टनर को ग्राहक का नाम, पता और दवाओं की जानकारी बिना किसी शर्तों के मिलती है।",
+          "डिलीवरी पार्टनर को ग्राहक का नाम, पता और दवाओं की जानकारी बिना कोई शर्त तय किए मिलती है।",
         "Refill reminders are sent from purchase history with no consent for marketing.":
           "ख़रीदारी की हिस्ट्री देखकर रीफ़िल रिमाइंडर भेजे जाते हैं, जबकि मार्केटिंग के लिए कोई सहमति नहीं ली गई।",
       },
@@ -295,7 +295,7 @@ const hi: VerdictPreviewsOverlay = {
       },
       firstActions: {
         "Publish what data an underwriting decision uses, and name who a customer can ask about it.":
-          "बताइए कि अंडरराइटिंग का फ़ैसला किस डेटा पर होता है, और यह भी कि ग्राहक इस बारे में किससे पूछ सकता है।",
+          "प्रकाशित करें कि अंडरराइटिंग का फ़ैसला किस डेटा पर होता है, और यह भी बताएँ कि ग्राहक इस बारे में किससे पूछ सकता है।",
         "List every agent and sourcing partner holding borrower data, with written terms.":
           "उधार लेने वालों का डेटा रखने वाले हर एजेंट और सोर्सिंग पार्टनर की सूची बनाएँ, लिखित शर्तों के साथ।",
         "Set a shorter retention period for rejected applications and apply it.":
