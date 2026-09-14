@@ -229,7 +229,8 @@ The DPDPA recognises that some processing is legitimate without explicit consent
 - **Legal proceedings and compliance** — where processing is required by a court or law
 - **Medical emergencies** — where the Data Principal cannot give consent and processing is necessary to protect their life
 - **Employment contexts** — limited processing by employers for purposes directly related to employment
-- **Publicly available data** — data voluntarily made public by the Data Principal themselves
+
+Publicly available data — data the Data Principal has made public themselves — is not a Section 7 use at all: under Section 3(c)(ii) the Act does not apply to it.
 
 For most commercial businesses, deemed consent covers only narrow, specific situations. Do not treat it as a general bypass for obtaining consent.
 
@@ -283,7 +284,7 @@ Before your next form or data collection point goes live, check:
     title: "Rights of Individuals (Data Principals)",
     description: "DPDPA grants individuals four enforceable rights: access, correction and erasure, grievance redressal, and nomination. Businesses must respond within prescribed timelines or face Board complaints and penalties. This guide explains each right, what it means operationally, and how to build a request-handling process.",
     content: `
-Chapter IV of the DPDPA grants individuals significant rights over their personal data. These are not aspirational principles — they are enforceable legal rights. A person who believes their rights have been ignored can file a complaint directly with the Data Protection Board. Businesses that have no process to receive and respond to these requests are exposed from day one.
+Chapter III of the DPDPA grants individuals significant rights over their personal data. These are not aspirational principles — they are enforceable legal rights. A person who believes their rights have been ignored can file a complaint directly with the Data Protection Board. Businesses that have no process to receive and respond to these requests are exposed from day one.
 
 ## The Four Core Rights
 
@@ -401,7 +402,7 @@ If any of these is true, it is a breach and notification obligations are trigger
 
 ## Notification Obligations
 
-Section 8(6) of the DPDPA requires every Data Fiduciary to notify the Data Protection Board of a personal data breach "in such manner and within such period as may be prescribed." The DPDP Rules, 2025 set out the requirements:
+Section 8(6) of the DPDPA requires every Data Fiduciary to notify the Data Protection Board and each affected Data Principal of a personal data breach "in such form and manner as may be prescribed." The DPDP Rules, 2025 set out the requirements:
 
 ### Board Notification
 - Must be made to the Data Protection Board **as soon as possible** — the Rules set mandatory timelines
@@ -524,7 +525,7 @@ Being a Data Fiduciary under DPDPA comes with specific, enforceable duties. Thes
 
 ## 1. Implement Reasonable Security Safeguards
 
-Section 8(5) of DPDPA requires every Data Fiduciary to implement appropriate technical and organisational measures to protect personal data from breaches.
+Section 8(5) of DPDPA requires every Data Fiduciary to protect personal data by taking reasonable security safeguards to prevent a personal data breach.
 
 **What this means in practice:**
 - Encrypt sensitive personal data at rest and in transit
@@ -615,6 +616,7 @@ Under Section 5 of DPDPA, before or at the time of collecting personal data, a D
 2. **The purpose for which the data is being processed** — each distinct purpose should be listed
 3. **How the Data Principal can exercise their rights** — where to go, how to raise a request
 4. **How to withdraw consent** — should be as easy as giving it
+5. **How to make a complaint to the Data Protection Board** — the Act requires every notice to state this
 
 ## Where Does the Notice Need to Appear?
 
@@ -655,7 +657,7 @@ Both are required. The consent notice is the just-in-time disclosure; the Privac
 ## Practical Implementation Steps
 
 1. List every touchpoint where your business collects personal data
-2. For each touchpoint, draft a short, specific notice covering the four required elements
+2. For each touchpoint, draft a short, specific notice covering the five required elements
 3. Place the notice immediately above or next to the consent checkbox
 4. Ensure the notice links to your full Privacy Notice
 5. When you change how you use the data, update the notice and re-seek consent if necessary
@@ -684,7 +686,7 @@ The Act defines a child as a person under the age of 18. This is a broad definit
 Section 9 of DPDPA requires that before processing the personal data of a child, a Data Fiduciary must:
 
 1. **Obtain verifiable consent from a parent or guardian**
-2. **Process only data that is in the best interest of the child**
+2. **Not undertake any processing likely to cause a detrimental effect on the child's well-being**
 3. **Not undertake tracking or behavioural monitoring** of children
 4. **Not target advertising at children** based on their personal data
 
@@ -818,7 +820,7 @@ Conduct a data mapping exercise: list every category of personal data you hold, 
   },
   "cross-border": {
     title: "Cross-Border Data Transfers Under DPDPA",
-    description: "Transferring personal data outside India? Understand the permitted destinations framework.",
+    description: "Transferring personal data outside India? Understand the restriction framework — transfers are allowed unless the government notifies a country as restricted.",
     content: `
 As Indian businesses increasingly use international cloud services, overseas vendors, and global enterprise platforms, cross-border data transfer has become a practical compliance question under DPDPA.
 
@@ -833,9 +835,9 @@ A cross-border transfer occurs when personal data of Indian residents is transfe
 
 ## The DPDPA Framework for Cross-Border Transfers
 
-Section 16 of DPDPA allows the Central Government to restrict the transfer of personal data to certain countries or territories. The mechanism works through a **permitted destinations** approach: the government will notify a list of countries to which transfers are permitted (or conversely, identify countries to which transfer is restricted).
+Section 16 of DPDPA allows the Central Government to restrict the transfer of personal data to certain countries or territories. The mechanism is a **restriction**, not a whitelist: transfers are allowed by default, and the government may notify specific countries or territories to which transfer is restricted (often called a 'negative list').
 
-**Important: As of early 2026, the permitted destinations list has not yet been formally notified.** This means the cross-border transfer restrictions are not yet in force. However, businesses should prepare for them.
+**Important: As of early 2026, no restricted-country notification has been issued.** This means no cross-border transfer restriction is yet in force. However, businesses should prepare for one.
 
 ## What to Do Now (Before the List Is Notified)
 
@@ -860,7 +862,7 @@ Section 16 of DPDPA allows the Central Government to restrict the transfer of pe
 
 ## Preparing Your Privacy Notice
 
-Your Privacy Notice should disclose whether you transfer personal data outside India, which countries or regions, and for what purposes. Even before the permitted destinations list is notified, being transparent in your Privacy Notice is good practice and likely to be expected under final Rules.
+Your Privacy Notice should disclose whether you transfer personal data outside India, which countries or regions, and for what purposes. Even before any restricted-country notification is issued, being transparent in your Privacy Notice is good practice and likely to be expected under final Rules.
 
 ## Data Localisation Considerations
 
@@ -880,7 +882,7 @@ Some categories of data may be subject to stronger localisation requirements und
 2. Flag any tools storing data in jurisdictions with weaker privacy protections
 3. Begin evaluating India-region hosting options for critical personal data stores
 4. Update your Privacy Notice to disclose international data flows
-5. Monitor official notifications for the permitted destinations list when published
+5. Monitor official notifications for any restricted-country list when published
     `,
   },
   "myths": {

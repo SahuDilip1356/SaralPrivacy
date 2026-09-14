@@ -68,7 +68,7 @@ export const TERMS: GlossaryTerm[] = [
   {
     id: "consent-manager",
     term: "Consent Manager",
-    section: "Section 2(g) and Section 11",
+    section: "Section 2(g) and Section 6(7)–(9)",
     category: "roles",
     definition:
       "A person registered with the Data Protection Board who acts as a single point of contact through which a Data Principal may give, manage, review, and withdraw consent given to Data Fiduciaries. Consent Managers are subject to obligations prescribed by the Central Government.",
@@ -91,7 +91,7 @@ export const TERMS: GlossaryTerm[] = [
     section: "Section 18",
     category: "roles",
     definition:
-      "A quasi-judicial body established by the Central Government under Section 18 of the Act. The Board may receive and adjudicate complaints from Data Principals, conduct inquiries on its own motion, issue directions to Data Fiduciaries, and impose monetary penalties within the statutory limits prescribed in the Schedule. Appeals against Board orders lie to the Telecom Disputes Settlement and Appellate Tribunal (TDSAT).",
+      "A quasi-judicial body established by the Central Government under Section 18 of the Act. The Board may receive and adjudicate complaints from Data Principals, inquire into breaches on receipt of a breach intimation, complaint, government reference or court direction, issue directions to Data Fiduciaries, and impose monetary penalties within the statutory limits prescribed in the Schedule. Appeals against Board orders lie to the Telecom Disputes Settlement and Appellate Tribunal (TDSAT).",
     relatedIds: ["monetary-penalty", "inquiry", "appellate-tribunal"],
     learnHref: "/penalty-calculator",
   },
@@ -224,10 +224,10 @@ export const TERMS: GlossaryTerm[] = [
   {
     id: "processing-by-state",
     term: "Processing by the State",
-    section: "Section 7(b), (c), (d)",
+    section: "Section 7(b) and (c)",
     category: "consent",
     definition:
-      "The State and its instrumentalities may process personal data under deemed consent for: (b) performance of State functions including issuance of licences, permits, benefits, and subsidies; (c) compliance with any law or court order or judgment; and (d) response to a medical emergency or epidemic. Such processing does not require prior consent from the Data Principal.",
+      "Two of the Section 7 legitimate uses are specific to the State and its instrumentalities: (b) providing or issuing to the Data Principal a subsidy, benefit, service, certificate, licence or permit as may be prescribed — where she has previously consented to such processing by the State, or the data is already held in a government database notified by the Central Government; and (c) performing any function under any law in force in India, or acting in the interest of the sovereignty and integrity of India or the security of the State. Such processing does not require prior consent from the Data Principal. Legal disclosure obligations and court orders (Section 7(d)–(e)) and medical emergencies or epidemics (Section 7(f)–(g)) are separate legitimate uses open to any Data Fiduciary, not only the State.",
     relatedIds: ["deemed-consent", "state-instrumentalities"],
     learnHref: "/learn/consent",
   },
@@ -280,7 +280,7 @@ export const TERMS: GlossaryTerm[] = [
     section: "Section 12",
     category: "rights",
     definition:
-      "A Data Principal may request a Data Fiduciary to: (a) correct inaccurate or misleading personal data, (b) complete incomplete personal data, (c) update personal data, and (d) erase personal data that is no longer necessary for the purpose for which it was collected or for which consent has been withdrawn. Data Fiduciaries must comply within the prescribed period.",
+      "A Data Principal may request a Data Fiduciary to: (a) correct inaccurate or misleading personal data, (b) complete incomplete personal data, (c) update personal data, and (d) erase personal data — which the Data Fiduciary must do unless retention is necessary for the specified purpose or for compliance with any law (Section 12(3)). The duty to erase data when consent is withdrawn, or once the specified purpose is no longer served, arises separately under Section 8(7)(a).",
     relatedIds: ["erasure-obligation", "rights-access"],
     learnHref: "/learn/rights",
   },
@@ -343,17 +343,17 @@ export const TERMS: GlossaryTerm[] = [
     section: "Section 8(6)",
     category: "obligations",
     definition:
-      "Upon becoming aware of a personal data breach, a Data Fiduciary must notify the Data Protection Board and each affected Data Principal in the prescribed manner and within the prescribed time period. Failure to notify is subject to a penalty of up to ₹200 crore under the Schedule.",
+      "Upon becoming aware of a personal data breach, a Data Fiduciary must notify the Data Protection Board and each affected Data Principal in such form and manner as may be prescribed. Failure to notify is subject to a penalty of up to ₹200 crore under the Schedule.",
     relatedIds: ["personal-data-breach", "security-safeguards", "dpb"],
     learnHref: "/learn/data-breach",
   },
   {
     id: "data-minimisation",
     term: "Data Minimisation",
-    section: "Section 8(3)",
+    section: "Section 6(1)",
     category: "obligations",
     definition:
-      "Personal data collected and processed must be limited to what is necessary for the specified purpose for which consent was obtained. The phrase 'data minimisation' is not used in the Act; the obligation arises from Section 8(3), which requires data to be consistent with and necessary for the specified purpose.",
+      "Personal data collected and processed must be limited to what is necessary for the specified purpose for which consent was obtained. The phrase 'data minimisation' is not used in the Act; the obligation arises from Section 6(1), which limits consent to such personal data as is necessary for the specified purpose.",
     relatedIds: ["data-fiduciary-obligations", "purpose-limitation"],
     learnHref: "/learn/duties",
   },
@@ -410,7 +410,7 @@ export const TERMS: GlossaryTerm[] = [
   {
     id: "dpia",
     term: "Data Protection Impact Assessment",
-    section: "Section 10(2)(b)",
+    section: "Section 10(2)(c)(i)",
     category: "obligations",
     definition:
       "A periodic assessment that a Significant Data Fiduciary must conduct to evaluate the risk to the rights of Data Principals arising from the processing of personal data. The frequency, scope, and process of the assessment are to be prescribed by the Central Government. Mandatory only for Significant Data Fiduciaries.",
@@ -499,7 +499,7 @@ export const TERMS: GlossaryTerm[] = [
     section: "Section 28",
     category: "enforcement",
     definition:
-      "The Board may conduct an inquiry into a complaint received from a Data Principal or on its own motion if it has reason to believe that a breach of the Act has occurred. The Board must give the person against whom the inquiry is conducted an opportunity to be heard before imposing any penalty or direction.",
+      "The Board may inquire into a breach on receipt of a complaint from a Data Principal, an intimation of a personal data breach, a reference from the Central or a State Government, or a direction of a court (Section 27(1), read with Section 28(2)); the Act confers no suo motu power. The Board must first record that there are sufficient grounds to proceed, and must give the person against whom the inquiry is conducted an opportunity to be heard before imposing any penalty or direction.",
     relatedIds: ["dpb", "monetary-penalty", "right-grievance"],
     learnHref: "/penalty-calculator",
   },
@@ -519,7 +519,7 @@ export const TERMS: GlossaryTerm[] = [
     section: "Section 29",
     category: "enforcement",
     definition:
-      "Appeals against orders of the Data Protection Board lie to the Telecom Disputes Settlement and Appellate Tribunal (TDSAT). Appeals must be filed within the prescribed period. Further appeals from TDSAT lie to the Supreme Court (Section 29(9), applying Section 18 of the TRAI Act, 1997).",
+      "Appeals against orders of the Data Protection Board lie to the Telecom Disputes Settlement and Appellate Tribunal (TDSAT). Appeals must be filed within sixty days of receipt of the Board's order or direction (Section 29(2)); the Tribunal may admit a late appeal if there was sufficient cause. Further appeals from TDSAT lie to the Supreme Court (Section 29(9), applying Section 18 of the TRAI Act, 1997).",
     relatedIds: ["dpb", "inquiry"],
     learnHref: "/penalty-calculator",
   },
@@ -532,17 +532,17 @@ export const TERMS: GlossaryTerm[] = [
     section: "Section 17",
     category: "exemptions",
     definition:
-      "The Act exempts specified processing from its provisions, including: processing by notified State instrumentalities in the interests of sovereignty, security of the State, public order, or prevention of incitement to offences (Section 17(2)(a)); processing for prevention, detection, investigation or prosecution of offences (Section 17(1)(c)); and processing for research, archiving, or statistical purposes with prescribed safeguards (Section 17(2)(b)). The Central Government may by notification exempt additional Data Fiduciaries or classes of Data Principals.",
+      "The Act exempts specified processing from its provisions, including: processing by notified State instrumentalities in the interests of sovereignty, security of the State, public order, or prevention of incitement to offences (Section 17(2)(a)); processing for prevention, detection, investigation or prosecution of offences (Section 17(1)(c)); and processing for research, archiving, or statistical purposes with prescribed safeguards (Section 17(2)(b)). The Central Government may by notification exempt Data Fiduciaries or classes of Data Fiduciaries from specified provisions (Section 17(3) and (5)).",
     relatedIds: ["state-instrumentalities", "de-identified-data"],
     learnHref: "/learn/what-is-dpdpa",
   },
   {
     id: "state-instrumentalities",
     term: "State and its Instrumentalities",
-    section: "Section 2(y) and Section 7",
+    section: "Section 2(zb) and Section 7",
     category: "exemptions",
     definition:
-      "Section 2(y) defines the 'State' to include the Central Government, State Governments, Parliament, State Legislatures, and any body established under a law in force. The State and its instrumentalities may process personal data under deemed consent for specified State functions under Section 7(b), (c), and (d). The Central Government may by notification exempt the State or its instrumentalities from specified provisions of the Act.",
+      "Section 2(zb) defines the 'State' as the State as defined under article 12 of the Constitution — the Act does not itself list the bodies covered. The State and its instrumentalities may process personal data without separate consent for the State-specific legitimate uses in Section 7(b) and (c). The Central Government may by notification exempt the State or its instrumentalities from specified provisions of the Act.",
     relatedIds: ["deemed-consent", "exemptions", "processing-by-state"],
     learnHref: "/learn/consent",
   },

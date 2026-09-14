@@ -19,7 +19,8 @@ for (const s of allSections) {
     const line = raw.trim();
     const m = line.match(/^\((\d+)\)/);
     if (m) { cur = m[1]; if (!subs.has(cur)) subs.set(cur, new Set()); continue; }
-    const c = line.match(/^\(([a-z])\)/);
+    // Clauses run (a)…(z), then (za), (zb) — s.2 definitions reach (zb).
+    const c = line.match(/^\(([a-z]|z[a-z])\)/);
     if (c) { if (cur) subs.get(cur)!.add(c[1]); else top.add(c[1]); }
   }
   act.set(s.sectionNumber, { title: s.title, subs, topClauses: top });
