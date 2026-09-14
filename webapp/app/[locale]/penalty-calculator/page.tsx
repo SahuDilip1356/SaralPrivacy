@@ -229,8 +229,7 @@ export default function PenaltyPage() {
                     ["Type and nature of personal data affected", "Whether sensitive, financial, health, or children's data was involved"],
                     ["Repetitive nature of the breach", "Whether it was a first-time or recurring violation"],
                     ["Gain realised or loss avoided", "Whether the person profited or avoided costs by the breach"],
-                    ["Mitigation action", "Steps taken to reduce the effects and consequences"],
-                    ["Timeliness and effectiveness of mitigation", "Whether the response was prompt and effective"],
+                    ["Mitigation action, and its timeliness and effectiveness", "Whether the person took steps to reduce the effects and consequences of the breach, and how prompt and effective those steps were"],
                     ["Proportionality and deterrence", "Whether the penalty secures observance and deters future breach"],
                     ["Likely impact of penalty on the person", "Financial capacity and effect on operations"],
                   ].map(([factor, desc]) => (
@@ -270,10 +269,6 @@ export default function PenaltyPage() {
                   ))}
                 </tbody>
               </TableWrap>
-              <P>
-                This means the Board is not rigidly bound by the Schedule caps if the aggravating factors
-                justify a higher penalty. Conversely, mitigating factors may lead to a reduction.
-              </P>
 
               <HR />
 
@@ -300,7 +295,7 @@ export default function PenaltyPage() {
                 {[
                   ["Liable person", "Data Fiduciary"],
                   ["Provision", "Section 8(6)"],
-                  ["Penalty cap", "₹200 crore (enhanceable to ₹400 crore)"],
+                  ["Penalty cap", "₹200 crore (Schedule Item 2)"],
                   ["Description", "Failure to give the Board and each affected Data Principal intimation of a personal data breach."],
                 ].map(([k, v]) => (
                   <li key={k} className="flex items-start gap-2 text-sm text-slate-600">
@@ -315,7 +310,7 @@ export default function PenaltyPage() {
                 {[
                   ["Liable person", "Data Fiduciary"],
                   ["Provision", "Section 9"],
-                  ["Penalty cap", "₹200 crore (enhanceable to ₹400 crore)"],
+                  ["Penalty cap", "₹200 crore (Schedule Item 3)"],
                   ["Description", "Breach of obligations such as obtaining verifiable parental consent, prohibiting tracking or behavioural monitoring, and prohibiting targeted advertising directed at children."],
                 ].map(([k, v]) => (
                   <li key={k} className="flex items-start gap-2 text-sm text-slate-600">
@@ -330,7 +325,7 @@ export default function PenaltyPage() {
                 {[
                   ["Liable person", "Significant Data Fiduciary"],
                   ["Provision", "Section 10"],
-                  ["Penalty cap", "₹150 crore (enhanceable to ₹300 crore)"],
+                  ["Penalty cap", "₹150 crore (Schedule Item 4)"],
                   ["Description", "Non-compliance with additional obligations such as appointment of a Data Protection Officer, undertaking a Data Protection Impact Assessment, and periodic audits."],
                 ].map(([k, v]) => (
                   <li key={k} className="flex items-start gap-2 text-sm text-slate-600">
@@ -375,7 +370,7 @@ export default function PenaltyPage() {
                 {[
                   ["Liable person", "Any person"],
                   ["Provision", "Any other provision of the Act or Rules"],
-                  ["Penalty cap", "₹50 crore (enhanceable to ₹100 crore)"],
+                  ["Penalty cap", "₹50 crore (Schedule Item 7)"],
                   ["Description", "This residual category captures all breaches not specifically covered by Items 1 to 6, ensuring no gap in enforcement."],
                 ].map(([k, v]) => (
                   <li key={k} className="flex items-start gap-2 text-sm text-slate-600">
