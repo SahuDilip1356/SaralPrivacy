@@ -20,7 +20,7 @@ legal or compliance teams.
 4. **Data Principal Rights**: Access, correction, erasure, nomination, grievance redressal
 5. **Data Breach Obligations**: Notification timelines, significant data fiduciaries, DPB
 6. **Children's Data**: Age verification, parental consent, prohibition on tracking/profiling
-7. **Cross-Border Data Transfers**: Whitelist-based transfer restrictions under DPDP Rules
+7. **Cross-Border Data Transfers**: Negative-list model — transfers allowed unless the Central Government restricts a country by notification (Section 16(1))
 8. **Significant Data Fiduciaries**: Classification criteria, additional obligations, DPIAs
 9. **Retention and Erasure**: When to delete data, storage limitation, automated erasure
 10. **Sector-specific obligations**: Recruitment, accounting, education, e-commerce
