@@ -44,7 +44,7 @@ Where it fits: Assess is step three — once you know what data you hold and how
     url: "/penalty-calculator",
     name: "Penalty Risk Indicator",
     topicTags: ["penalty", "fine", "section 33", "risk band", "tool guide"],
-    guide: `The Penalty Risk Indicator helps you understand how DPDPA penalties are framed — without pretending to predict a fine. It walks you through the six statutory factors the law lists under Section 33(2) (such as the nature and duration of a breach and the type of data affected), and gives you an indicative risk band: Low, Moderate, High or Severe.
+    guide: `The Penalty Risk Indicator helps you understand how DPDPA penalties are framed — without pretending to predict a fine. It walks you through the seven statutory factors the law lists under Section 33(2) (such as the nature and duration of a breach and the type of data affected), and gives you an indicative risk band: Low, Moderate, High or Severe.
 How to use it: select the breach category closest to your concern, rate each factor, read your band. Free, educational, and deliberately not a fine calculator — nobody can honestly predict a specific penalty amount.
 Where it fits: use it when a "how much could this cost us?" question comes up — it turns fear into a structured, statute-based view.`,
   },

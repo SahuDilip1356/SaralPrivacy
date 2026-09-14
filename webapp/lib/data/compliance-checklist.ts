@@ -243,7 +243,7 @@ export const part1Sections: ChecklistSection[] = [
       {
         id: "5.3",
         subsection: "5.3 Medical emergency, disaster, epidemic, public safety",
-        reference: "Act Sec. 7(d)–7(f)",
+        reference: "Act Sec. 7(f)–7(h)",
         requirement:
           "Processing may be permitted for specified emergency, disaster, epidemic, or public safety situations.",
         guardrail:
@@ -290,7 +290,7 @@ export const part1Sections: ChecklistSection[] = [
         subsection: "6.3 Accuracy and completeness",
         reference: "Act Sec. 8(3)",
         requirement:
-          "Make reasonable efforts to ensure completeness, accuracy, and consistency where personal data is used to make decisions or disclosed to another Data Fiduciary.",
+          "Ensure completeness, accuracy, and consistency where personal data is used to make decisions or disclosed to another Data Fiduciary.",
         guardrail:
           "Highly relevant for KYC, credit, payroll, collections, support, and employee records.",
         type: "statutory",
@@ -328,7 +328,7 @@ export const part1Sections: ChecklistSection[] = [
       {
         id: "6.7",
         subsection: "6.7 Grievance mechanism",
-        reference: "Act Sec. 8(9), Rule 13",
+        reference: "Act Sec. 8(9)–(10), Rule 13",
         requirement:
           "Publish contact details of the DPO or authorised person and provide an effective grievance redressal mechanism.",
         guardrail:

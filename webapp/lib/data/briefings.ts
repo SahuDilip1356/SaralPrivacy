@@ -16,9 +16,9 @@ export const briefings: Briefing[] = [
     whyItMatters:
       "Your consent notice is the first place many businesses will fail DPDPA in practice. If your form does not clearly explain what data you collect, why you collect it, and what the person is agreeing to, your consent process is already weak. This briefing explains what your forms must say from day one. Most Indian business websites currently bundle consent into Terms and Conditions, which the DPDPA explicitly prohibits. If your sign-up form, enquiry form, or checkout page uses pre-checked boxes or bundled consent language, you are operating outside the framework of the Act. Rectifying this during the phased implementation window is significantly easier than retrofitting it under active regulatory scrutiny.",
     summary:
-      "Under Section 6 of the Digital Personal Data Protection Act, 2023, every Data Fiduciary must provide a 'notice' to the Data Principal before or at the time of collecting personal data. This notice must be itemised, clear, and in plain language. It must specify exactly what data is being collected, the purpose for which it is being processed, and how the individual can exercise their rights. Crucially, consent must be free, specific, informed, unconditional, and unambiguous — meaning each distinct purpose requires a separate consent signal. You cannot combine marketing consent with transaction processing consent in the same checkbox.",
+      "Under Section 5(1) of the Digital Personal Data Protection Act, 2023, every request for consent must be accompanied or preceded by a 'notice' from the Data Fiduciary to the Data Principal. This notice must be itemised, clear, and in plain language. It must specify exactly what data is being collected, the purpose for which it is being processed, how the individual can exercise their rights, and how they can complain to the Data Protection Board. Crucially, under Section 6(1) consent must be free, specific, informed, unconditional, and unambiguous — meaning each distinct purpose requires a separate consent signal. You cannot combine marketing consent with transaction processing consent in the same checkbox.",
     businessImpact:
-      "Businesses collecting personal data through websites, apps, or offline forms must redesign their consent flows. This affects customer acquisition, CRM onboarding, newsletter subscriptions, lead generation forms, and employee data collection. Penalties for non-compliant consent can reach up to ₹250 crore per instance of non-compliance.",
+      "Businesses collecting personal data through websites, apps, or offline forms must redesign their consent flows. This affects customer acquisition, CRM onboarding, newsletter subscriptions, lead generation forms, and employee data collection. Penalties for non-compliant consent or notice fall under the Schedule's residual category — breach of any other provision of the Act — and can reach up to ₹50 crore (Schedule Item 7).",
     whoIsAffected: [
       "Any business with an online presence collecting customer or lead data",
       "HR teams processing job applications and candidate information",
@@ -156,7 +156,7 @@ export const briefings: Briefing[] = [
       "Build an unsubscribe mechanism for every marketing channel",
       "Verify that your CRM tags consented vs non-consented customers",
       "Run a consent refresh campaign for your existing subscriber list",
-      "Set up consent withdrawal processing within 72 hours",
+      "Set up consent withdrawal processing so that processing ceases within a reasonable time (Section 6(6))",
     ],
     relatedIds: ["b001", "b005"],
     author: {
@@ -180,7 +180,7 @@ export const briefings: Briefing[] = [
     whyItMatters:
       "Many Indian businesses have no formal incident response plan. A ransomware attack, leaked database, or accidental email disclosure that exposes customer or employee personal data triggers mandatory notification obligations under DPDPA. Failing to notify can result in penalties up to ₹200 crore. More importantly, delayed or mishandled breach communication dramatically erodes customer trust.",
     summary:
-      "Section 8(6) of DPDPA requires every Data Fiduciary to notify the Data Protection Board (DPB) of a personal data breach 'in such manner and within such period as may be prescribed'. The DPDP Rules, 2025 require a two-stage notification: an initial report within 72 hours of becoming aware of the breach, followed by a detailed investigation report. Data Principals who are affected must also be informed, unless the breach is assessed as low-risk. Businesses should now build basic incident response capabilities: detection, containment, assessment, notification, and remediation. Reviewed: March 2026.",
+      "Section 8(6) of DPDPA requires every Data Fiduciary to notify the Data Protection Board (DPB) and each affected Data Principal of a personal data breach 'in such form and manner as may be prescribed'. The DPDP Rules, 2025 require a two-stage notification: an initial report within 72 hours of becoming aware of the breach, followed by a detailed investigation report. Each affected Data Principal must also be informed — the Act sets no risk threshold or de minimis exception for this. Businesses should now build basic incident response capabilities: detection, containment, assessment, notification, and remediation. Reviewed: March 2026.",
     businessImpact:
       "Businesses must develop or update incident response plans to include DPDPA notification requirements. Contracts with vendors and cloud providers must include breach notification SLAs. Security practices around access logs, encryption, and monitoring should be reviewed. Internal escalation protocols must be documented.",
     whoIsAffected: [
@@ -258,7 +258,7 @@ export const briefings: Briefing[] = [
     tags: ["data-rights", "access", "correction", "erasure", "grievance-redressal"],
     industries: ["recruitment", "ca-firms", "training-institutes", "d2c-brands"],
     excerpt:
-      "Chapter IV of the DPDPA grants individuals new rights over their personal data. Businesses must build operational processes to receive, verify, and respond to these requests — or face penalties.",
+      "Chapter III of the DPDPA grants individuals new rights over their personal data. Businesses must build operational processes to receive, verify, and respond to these requests — or face penalties.",
     whyItMatters:
       "The rights framework in DPDPA is enforceable. Individuals can file complaints with the Data Protection Board if their rights requests are ignored or mishandled. For businesses, this means that a 'delete my data' email from a former customer is now a legal request with a response obligation, not an optional feedback message.",
     summary:

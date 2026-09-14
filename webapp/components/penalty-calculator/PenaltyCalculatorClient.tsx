@@ -91,7 +91,7 @@ const BREACH_CATEGORIES: BreachCategory[] = [
   {
     id: "voluntary-undertaking",
     section: "Section 32",
-    scheduleItem: "Schedule Item 5",
+    scheduleItem: "Schedule Item 6",
     title: "Breach of Voluntary Undertaking",
     description:
       "Non-compliance with a voluntary undertaking accepted by the Board under Section 32 — where the person undertook to comply with the Act in lieu of inquiry proceedings under Section 28.",
@@ -103,7 +103,7 @@ const BREACH_CATEGORIES: BreachCategory[] = [
   {
     id: "other",
     section: "Any other provision",
-    scheduleItem: "Schedule Item 6",
+    scheduleItem: "Schedule Item 7",
     title: "Breach of Any Other Provision of Act or Rules",
     description:
       "Non-compliance with any other provision of the DPDPA 2023 or DPDP Rules, 2025 — such as consent obligations, notice requirements, data minimisation, purpose limitation, or retention.",
@@ -115,10 +115,10 @@ const BREACH_CATEGORIES: BreachCategory[] = [
   {
     id: "data-principal",
     section: "Section 15",
-    scheduleItem: "Schedule Item 7",
+    scheduleItem: "Schedule Item 5",
     title: "Breach of Data Principal Duties",
     description:
-      "A Data Principal provided false particulars, impersonated another person, suppressed material information, or made frivolous or vexatious complaints.",
+      "A Data Principal impersonated another person, suppressed material information, registered a false or frivolous grievance or complaint, or furnished information that was not verifiably authentic.",
     cap: "₹10,000",
     capLabel: "may extend to ₹10,000",
     icon: User,
