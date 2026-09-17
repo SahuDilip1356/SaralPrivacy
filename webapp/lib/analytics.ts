@@ -104,12 +104,25 @@ export const trackEvent = {
       sector:         params.sector,
     }),
 
+  // Hero tap #2 — the visitor answered the sector's one yes/no in the snapshot
+  // card. Fires only when the answer changes. Copy check post-ship: a sector
+  // where hero_question_answer ÷ hero_sector_select < ~30% has a question
+  // owners don't recognise → reword it (HERO_TAP2_SPEC.md §5).
+  heroQuestionAnswer: (params: { sector: string; answer: "yes" | "no" }) =>
+    gtag("hero_question_answer", {
+      event_category: "engagement",
+      sector:         params.sector,
+      answer:         params.answer,
+    }),
+
   // Landing primary-CTA clicks (Discover / Assess), with the picked sector.
-  landingCtaClick: (params: { cta: string; sector?: string }) =>
+  // `answered` = the hero tap #2 answer on screen at click time ("" = none).
+  landingCtaClick: (params: { cta: string; sector?: string; answered?: "yes" | "no" | "" }) =>
     gtag("landing_cta_click", {
       event_category: "engagement",
       cta:            params.cta,
       sector:         params.sector || "",
+      answered:       params.answered || "",
     }),
 
   // ── Homepage scroll depth ───────────────────────────────────────────────
@@ -285,8 +298,13 @@ export const trackEvent = {
   }),
 
   // ── Assessment funnel (PR-traffic measurement) ──────────────────────────
-  assessmentStart: () => gtag("assessment_start", {
+  // `prefilled` = the scan opened with a hero answer pre-selected (?pre=);
+  // `src` = where the visitor came from ("hero" or ""). Success read is
+  // assessment_complete ÷ assessment_start, prefilled=true vs false.
+  assessmentStart: (params?: { prefilled?: boolean; src?: "hero" | "" }) => gtag("assessment_start", {
     event_category: "engagement",
+    prefilled:      params?.prefilled ?? false,
+    src:            params?.src || "",
   }),
 
   // Fires assessment_step_3 / assessment_step_6 so GA4 shows where people drop off
