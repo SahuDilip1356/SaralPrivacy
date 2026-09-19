@@ -1,7 +1,18 @@
 # The Four Conversion Slices — explainer + build plan
 
-> Status: **none started.** Plan written against `main` @ `f22c113`, after reading the code each
-> slice touches. Sequence + tentative hours only; scheduling is Dilip's.
+> Status (2026-09-19, verified on `main` @ `1bea332`):
+> - **C1 ✅ LIVE** via PR #41 (`1bb1a84`) + #44 (`13b6629`), spec `HERO_TAP2_SPEC.md`. It shipped a
+>   different design from §5 below: one real pack question per sector, an authored band step, and
+>   that answer pre-selected when the assessment opens. §5 is kept for history only.
+> - **C1 baseline** was captured 2026-09-06 in `ANALYTICS_BASELINE.md`, but only on PR #27
+>   (`docs/analytics-baseline`), which is **still open**. It records ~0.1 assessments a week, so the
+>   C1 before/after read will take a long time to become meaningful.
+> - **Order is now C3 → C2 → C4.** C2 waits for the October Appwrite close-out to rewrite the
+>   vendor rows in `privacy-vendors.ts`.
+> - **C3 inherits two rules from C1:** all visitor copy goes in `messages/en.json`, never in a data
+>   file; mount shared components in all 12 clients the way `parsePrefill()` was.
+>
+> Sequence + tentative hours only; scheduling is Dilip's.
 
 ## 1. What this is
 
