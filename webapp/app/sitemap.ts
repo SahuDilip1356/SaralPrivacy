@@ -184,7 +184,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })),
 
     // ── Legal (low priority) ──
-    { url: `${BASE}/privacy`,       lastModified: FRESHNESS.legal, changeFrequency: 'yearly', priority: 0.2 },
+    { url: `${BASE}/privacy`,       lastModified: FRESHNESS.privacyNotice, changeFrequency: 'yearly', priority: 0.2 },
     { url: `${BASE}/terms`,         lastModified: FRESHNESS.legal, changeFrequency: 'yearly', priority: 0.2 },
 
     // /rights — canonical hub for Data Principal rights. Indexed deliberately (unlike the

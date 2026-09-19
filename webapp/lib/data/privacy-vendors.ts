@@ -1,5 +1,6 @@
 // Single source of truth for the Data Fiduciary / DPO identity and the sub-processor
-// list published in the Privacy Notice. Read by app/privacy, app/rights, and Footer.
+// list published in the Privacy Notice. VENDORS renders on app/privacy; DPO is also
+// read by app/rights, app/consent-preferences, and Footer.
 //
 // ─────────────────────────────────────────────────────────────────────────────
 //  RULE: a row belongs here ONLY if the vendor actually receives a data
@@ -10,11 +11,24 @@
 //  and over-disclosure (listing vendors that DON'T get personal data) is just as
 //  inaccurate as under-disclosure.
 //
+//  Anthropic has TWO uses, and only one makes it a processor:
+//   • Setu (app/api/chat) — a PROCESSOR. The visitor's raw question (≤2000 chars,
+//     NOT redacted — lib/chat/redact.ts only guards stored logs) plus recent turns
+//     go to Anthropic to write the answer, and the question alone goes to Pinecone
+//     for retrieval (lib/chat/pinecone.ts). Both have rows below. This was missed
+//     from 2026-08-03 (Setu launch) to 2026-09-19: re-audit this list whenever a
+//     feature sends user-typed text to any third party.
+//   • Drafting briefings/blog (app/api/briefings/generate, blog/validate,
+//     blog/revise) — editorial text only, no subscriber/lead/assessment data. Not a
+//     second row; the notice's AI note explains the difference.
+//
 //  Deliberately NOT listed, and why:
-//   • Anthropic  — used to DRAFT briefings/blog content (app/api/briefings/generate,
-//                  blog/validate, blog/revise). Only our own editorial text is sent;
-//                  no subscriber/lead/assessment data. Covered by a plain-language
-//                  AI note in the notice instead of a sub-processor row.
+//   • Vercel Blob — hosts our own static templates and guides, uploaded offline by
+//                  scripts/upload-templates.mjs. Runtime code only list()s them
+//                  (app/api/templates/download); nothing a visitor enters is written
+//                  there. The download request itself is Vercel traffic, covered by
+//                  the Vercel Inc. row. Add a row back if a runtime put() of user
+//                  content ever ships.
 //   • Svix       — NOT a processor. `svix` is used once, in app/api/webhooks/resend
 //                  to VERIFY the signature of incoming Resend webhooks. We send it
 //                  nothing; it is Resend's sub-processor, not ours.
@@ -77,13 +91,6 @@ export const VENDORS: Vendor[] = [
     dpa: 'available',
   },
   {
-    name: 'Vercel Blob',
-    purpose: 'Storage for generated PDFs — reports, guides, and checklists',
-    dataReceived: 'Report files, which may contain the details you entered',
-    location: 'United States',
-    dpa: 'available',
-  },
-  {
     name: 'Resend Inc.',
     purpose: 'Sending our briefings and transactional email',
     dataReceived: 'Name, email address, and delivery events (sent, opened, bounced)',
@@ -95,6 +102,24 @@ export const VENDORS: Vendor[] = [
     purpose: 'Website analytics — understanding which pages are useful',
     dataReceived:
       'Page views, aggregated. No cookies. Visitors are counted with a hash that resets every day, so you cannot be tracked between days or across sites',
+    location: 'United States',
+    dpa: 'available',
+  },
+  {
+    // app/api/chat/route.ts — streamText via @ai-sdk/anthropic (direct, not a gateway).
+    name: 'Anthropic',
+    purpose: 'Writes the answers from Setu, the question-and-answer assistant on our site',
+    dataReceived:
+      'The question you type to Setu, the recent turns of that conversation, the page you are on, and anything you picked in the chat, such as your industry',
+    location: 'United States',
+    dpa: 'available',
+  },
+  {
+    // lib/chat/pinecone.ts — integrated index, embeds the query server-side.
+    // Region verified via describe-index 2026-09-19: aws us-east-1.
+    name: 'Pinecone',
+    purpose: 'Finds the pages on our site that match your Setu question',
+    dataReceived: 'The question you type to Setu, on its own',
     location: 'United States',
     dpa: 'available',
   },

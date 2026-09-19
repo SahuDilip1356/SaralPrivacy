@@ -13,6 +13,7 @@ export const FRESHNESS = {
   blogHub:       new Date('2026-03-29'),
   media:         new Date('2026-06-06'),
   legal:         new Date('2026-07-17'), // Privacy Notice v2.0 + /rights hub
+  privacyNotice: new Date('2026-09-19'), // v2.1 — Setu processors (Anthropic, Pinecone)
 } as const
 
 export function formatReviewDate(d: Date): string {

@@ -139,13 +139,13 @@ export default function PrivacyPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <div className="flex items-center gap-3 mb-3">
             <Shield size={20} className="text-green-400" />
-            <span className="text-green-300 text-sm font-semibold">Privacy Notice v2.0</span>
+            <span className="text-green-300 text-sm font-semibold">Privacy Notice v2.1</span>
           </div>
           <h1 className="text-3xl font-semibold text-white">Privacy Notice</h1>
           <p className="text-slate-300 mt-2">
             What {DPO.org} collects, why, who we share it with, and where it is stored.
           </p>
-          <p className="text-sm text-slate-400 mt-1">Last updated: July 2026 | Version 2.0</p>
+          <p className="text-sm text-slate-400 mt-1">Last updated: September 2026 | Version 2.1</p>
         </div>
       </div>
 
@@ -246,13 +246,30 @@ export default function PrivacyPage() {
               marketing. If we add a processor, this list changes in the same release.
             </p>
 
-            <div className="mt-4 rounded-lg bg-slate-50 border border-slate-200 p-3">
+            <div
+              id="ai"
+              className="mt-4 rounded-lg bg-slate-50 border border-slate-200 p-3 space-y-2 scroll-mt-28"
+            >
               <p className="text-slate-600 text-xs leading-relaxed">
-                <strong className="text-slate-800">A note on AI:</strong> we use AI tools
-                (Anthropic&apos;s Claude) to help write our briefings and blog posts. Only our own
-                editorial content is sent to them — never your personal data, and never your
-                assessment answers. That is why AI does not appear in the list above: it is not a
-                processor of your data.
+                <strong className="text-slate-800">A note on AI:</strong> we use AI in two places,
+                and they treat your data differently.
+              </p>
+              <p className="text-slate-600 text-xs leading-relaxed">
+                <strong className="text-slate-800">Setu, the assistant on our site.</strong> When
+                you ask Setu a question, the text you type is sent to Pinecone, to find the
+                matching pages on our site, and to Anthropic, whose Claude model writes the answer.
+                Both are listed above. Setu sends your message exactly as you typed it. It does not
+                remove personal details first, so please don&apos;t type phone numbers, ID numbers,
+                or other personal information into it. We don&apos;t store your conversation on our
+                servers. We keep a question only if you mark an answer as unhelpful (with email
+                addresses, phone numbers, and Aadhaar and PAN numbers removed first), or if you
+                ask Setu for a callback.
+              </p>
+              <p className="text-slate-600 text-xs leading-relaxed">
+                <strong className="text-slate-800">Writing our content.</strong> We also use
+                Anthropic&apos;s Claude to help draft our briefings and blog posts. That sends only
+                our own editorial text — never your personal data, and never your assessment
+                answers.
               </p>
             </div>
           </div>
@@ -270,7 +287,8 @@ export default function PrivacyPage() {
               </p>
               <p>
                 Supporting services process data in the United States: our hosting, email
-                delivery, and analytics. The exact split is in the table above.
+                delivery, analytics, and the Setu assistant. The exact split is in the table
+                above.
               </p>
               <p>
                 Section 16 of the DPDPA permits transferring personal data outside India, except
