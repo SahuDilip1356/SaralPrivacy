@@ -382,6 +382,13 @@ QUALIFIED_NUMBER_RE = re.compile(
 RATIO_BASE_RE = re.compile(r"(?:out of|in)\s*(?:every\s+)?(100|1000|1,000)\b", re.IGNORECASE)
 
 
+# A four-digit year is not a statistic. Attribution makes years MORE common in
+# good copy ("PwC India, Voice of the Consumer Survey 2024"), so flagging them
+# would punish exactly the sourcing behaviour the register exists to encourage.
+# Only bare years are exempt — "₹2024 crore" or "2024%" still count.
+YEAR_RE = re.compile(r"(?<![₹\d.,])\b(19\d{2}|20\d{2})\b(?!\s*(?:%|" + _UNITS + r"))", re.IGNORECASE)
+
+
 def _statistic_numbers(sentence: str) -> List[str]:
     """The numbers in a sentence that are actually making a factual claim."""
     numbers = set()
@@ -396,6 +403,8 @@ def _statistic_numbers(sentence: str) -> List[str]:
         numbers.update(_numbers_in(sentence))
     for m in RATIO_BASE_RE.finditer(sentence):
         numbers.discard(m.group(1).replace(",", ""))
+    for m in YEAR_RE.finditer(sentence):
+        numbers.discard(m.group(1))
     return sorted(numbers, key=lambda x: (len(x), x))
 
 

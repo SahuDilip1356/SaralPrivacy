@@ -218,11 +218,16 @@ class LiveCorpus(unittest.TestCase):
         ]
         self.reports = {r["id"]: score_text(r["text"], field=r["id"]) for r in self.rows}
 
-    def test_only_the_known_bad_rows_are_flagged(self):
-        # 22 of 25 rows are correct copy. Any false positive here would be a
-        # scorer defect, not a content defect.
-        noisy = {rid: rep.summary() for rid, rep in self.reports.items() if rep.findings}
-        self.assertEqual(3, len(noisy), f"expected exactly 3 flagged rows, got:\n{noisy}")
+    def test_the_live_corpus_is_clean(self):
+        # The fixture tracks what is actually published. Since the 2026-09-19
+        # corrections it carries no blocking claim, so any block here is a
+        # regression — either new bad content, or a scorer false positive.
+        blocking = {rid: rep.summary() for rid, rep in self.reports.items() if rep.blocking}
+        self.assertEqual({}, blocking, f"live content should be clean:\n{blocking}")
+
+    def test_the_one_expected_warning_is_the_below_cap_penalty(self):
+        warned = {rid for rid, rep in self.reports.items() if rep.warnings}
+        self.assertEqual({"2026-06-14 · actual penalty below cap"}, warned)
 
     def test_registered_claims_pass(self):
         # Both PwC-82 rows are backed by pwc-india-2024-trust-82, so they are
@@ -230,16 +235,41 @@ class LiveCorpus(unittest.TestCase):
         for rid in ("2026-03-31 · PwC 82% attributed", "2026-03-31 · 82 out of 100 ratio"):
             self.assertFalse(self.reports[rid].findings, f"{rid}\n{self.reports[rid].summary()}")
 
-    def test_retired_claims_are_blocked_with_a_reason(self):
-        flagged = {rid for rid, rep in self.reports.items()
-                   if any(f.scorer == "retired-claim" for f in rep.findings)}
-        self.assertEqual(
-            {"2026-04-08 · 43 out of 100 cyberattacks", "2026-04-12 · over 40% never recover"},
-            flagged,
-        )
-        msg = self.reports["2026-04-08 · 43 out of 100 cyberattacks"].blocking[0].message
+    def test_the_corrected_rows_still_block_in_their_old_form(self):
+        # The live rows were fixed on 2026-09-19, so they no longer appear in
+        # the corpus. These are the permanent rows that stop them returning.
+        was_mislocalised = "43 out of every 100 cyberattacks in India hit small businesses."
+        was_myth = "Over 40% of Indian small businesses never recover after a data attack."
+
+        rep = score_text(was_mislocalised)
+        msg = " ".join(f.message for f in rep.blocking)
         self.assertIn("WORLDWIDE", msg)
         self.assertIn("40% of Indian SMEs", msg, "a retired claim must name its replacement")
+
+        rep = score_text(was_myth)
+        msg = " ".join(f.message for f in rep.blocking)
+        self.assertIn("National Cybersecurity Alliance", msg)
+        self.assertIn("remove the claim", msg, "this one has no replacement figure")
+
+    def test_the_corrected_wordings_pass(self):
+        for rid in ("2026-03-31 · PwC 82% attributed",
+                    "2026-04-08 · SME incident rate (was: 43% mislocalised)",
+                    "2026-04-12 · SME incident rate (was: never-recover myth)"):
+            self.assertFalse(self.reports[rid].findings, f"{rid}\n{self.reports[rid].summary()}")
+
+    def test_citation_year_is_not_a_statistic(self):
+        # Attribution makes years common in *good* copy. Flagging "Survey 2024"
+        # would punish the sourcing behaviour the register exists to encourage.
+        rep = score_text(
+            "PwC India's Voice of the Consumer Survey 2024 found 82% of Indian consumers "
+            "say protecting personal data is a crucial factor in earning their trust.",
+            research=None,
+        )
+        self.assertFalse(rep.findings, rep.summary())
+
+    def test_a_year_shaped_number_with_a_unit_is_still_a_statistic(self):
+        rep = score_text("On average Indian firms lose 2024 crore rupees a year.", research=None)
+        self.assertTrue([f for f in rep.findings if f.scorer == "unsourced-stat"])
 
     def test_ratio_base_of_100_is_not_treated_as_a_claim(self):
         # "82 out of 100" states one figure, not two. Flagging the 100 was a

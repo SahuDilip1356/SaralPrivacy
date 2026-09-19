@@ -12,10 +12,11 @@
       "numbers": ["82"],
       "approved_wording": [
         "82% of Indian consumers say protecting personal data is a crucial factor in earning their trust.",
-        "82 out of 100 Indian consumers say protecting their personal data matters when deciding whom to trust."
+        "82 out of 100 Indian consumers say protecting their personal data matters when deciding whom to trust.",
+        "PwC India's Voice of the Consumer Survey 2024 found 82% of Indian consumers say protecting personal data is a crucial factor in earning their trust."
       ],
-      "source": "PwC India, Voice of the Consumer Survey 2024",
-      "source_url": null,
+      "source": "PwC India, Voice of the Consumer Survey 2024 — India perspective",
+      "source_url": "https://www.pwc.in/assets/pdfs/voice-of-the-consumer-survey-2024india-perspective.pdf",
       "report_date": "2024",
       "geography": "India",
       "sample": "1,000 Indian respondents",
@@ -31,7 +32,8 @@
       "id": "ttbs-cmr-2026-sme-incident-40",
       "numbers": ["40"],
       "approved_wording": [
-        "40% of Indian SMEs surveyed experienced a cyber incident in the previous 24 months."
+        "40% of Indian SMEs surveyed experienced a cyber incident in the previous 24 months.",
+        "40 out of every 100 Indian small businesses surveyed had a cyber incident in the last two years."
       ],
       "source": "Tata Tele Business Services & CyberMedia Research, SME Digital Insights 2026",
       "source_url": null,
