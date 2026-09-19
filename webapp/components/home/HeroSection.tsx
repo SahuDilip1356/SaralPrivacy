@@ -248,9 +248,15 @@ export function HeroSection({
 
   // The snapshot's "first fix" comes from the same data the full report shows —
   // never invented here. Exists for exactly the three priority sectors.
-  const firstFix = sectorSlug
-    ? previews.find((p) => p.slug === sectorSlug)?.firstActions[0]
-    : undefined;
+  const sample = sectorSlug ? previews.find((p) => p.slug === sectorSlug) : undefined;
+  const firstFix = sample?.firstActions[0];
+  // The dial's number is the report tab's sample number for the same sector —
+  // one figure per sector on the page. Only the number: the "Typical risk" row
+  // below stays the authored band the answer moves, and a band word on the dial
+  // would contradict it the moment the answer steps it.
+  const sampleScore = sample?.score;
+  // S0's dial is labelled Clinics & Labs, so it reads the Clinics sample too.
+  const s0Score = previews.find((p) => p.slug === "clinics-diagnostic-labs")?.score ?? 41;
 
   // Three priority sectors, resolved from the single source, plus a generic
   // fourth. "Other business" routes to the general pack at /assessment — which
@@ -376,11 +382,12 @@ export function HeroSection({
               (S2, the question) so the swap never re-centres the row.
               The card no longer re-reads itself on every swap: one scoped
               polite region announces the narrowed band on S3. */}
-          {/* 504px = the tallest state measured at build (recruitment S2, at
-              both 1024 and 1280). The left column is ~635px, so holding this
-              costs the hero no height and the card stops re-centring on a chip
-              change. Re-measure if a question or riskLine gets longer. */}
-          <div aria-live="off" className="lg:pl-4 lg:min-h-[504px]">
+          {/* 548px = the tallest state measured at build (recruitment S2, the
+              same at 1024, 1280 and 1440; was 504 before the sample dial). The
+              left column is ~630px, so holding this costs the hero no height
+              and the card stops re-centring on a chip change. Re-measure if a
+              question or riskLine gets longer. */}
+          <div aria-live="off" className="lg:pl-4 lg:min-h-[548px]">
             <p className="sr-only" aria-live="polite">
               {asked && shown && band
                 ? t("bandAnnounce", { sector: asked.chipLabel, clause: clause ?? "", band: bandLabel(band) })
@@ -401,22 +408,36 @@ export function HeroSection({
               {/* body */}
               {verdict && band ? (
                 <div key={verdict.slug} className="bg-white p-6 animate-fade-up motion-reduce:animate-none">
-                  {asked && shown ? (
-                    // S3 — applies-to is already known; the answer line takes
-                    // the top. It states the next gap, never praise.
-                    <p className="text-navy-700 font-semibold text-sm leading-snug mb-4">
-                      {tq(`${asked.slug}.${shown}Line`)}
-                    </p>
-                  ) : (
-                    <>
-                      <div className="flex items-start gap-3 mb-4">
-                        <CheckCircle size={20} className="text-green-800 shrink-0 mt-0.5" />
+                  {/* The sample dial sits beside the lead line in every
+                      picked state, as it does on S0 — the card never goes
+                      numberless on a pick. */}
+                  <div className="flex items-center gap-4 mb-4">
+                    {sampleScore !== undefined ? (
+                      <div className="shrink-0">
+                        <ScoreDial value={sampleScore} size={66} animate />
+                      </div>
+                    ) : (
+                      <CheckCircle size={20} className="text-green-800 shrink-0 self-start mt-0.5" />
+                    )}
+                    <div>
+                      {asked && shown ? (
+                        // S3 — applies-to is already known; the answer line
+                        // takes the top. It states the next gap, never praise.
+                        <p className="text-navy-700 font-semibold text-sm leading-snug">
+                          {tq(`${asked.slug}.${shown}Line`)}
+                        </p>
+                      ) : (
                         <p className="text-navy-700 font-semibold text-sm leading-snug">
                           {t("appliesTo", { sector: verdict.chipLabel })}
                         </p>
-                      </div>
-                      <p className="text-slate-600 text-sm leading-snug mb-4">{verdict.riskLine}</p>
-                    </>
+                      )}
+                      {sampleScore !== undefined && (
+                        <p className="mt-1 text-xs text-slate-600">{t("sampleScoreNote")}</p>
+                      )}
+                    </div>
+                  </div>
+                  {!(asked && shown) && (
+                    <p className="text-slate-600 text-sm leading-snug mb-4">{verdict.riskLine}</p>
                   )}
 
                   {/* The gold band row is the eye's landing point in every
@@ -530,7 +551,7 @@ export function HeroSection({
                 <div className="bg-white p-6">
                   <div className="flex items-center gap-4">
                     <div className="shrink-0">
-                      <ScoreDial value={41} size={66} animate />
+                      <ScoreDial value={s0Score} size={66} animate />
                     </div>
                     <div>
                       <span className="inline-block text-xs font-semibold text-navy-800 bg-gold-300 rounded-full px-3 py-1 mb-1.5">
