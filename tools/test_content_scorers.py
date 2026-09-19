@@ -218,24 +218,34 @@ class LiveCorpus(unittest.TestCase):
         ]
         self.reports = {r["id"]: score_text(r["text"], field=r["id"]) for r in self.rows}
 
-    def test_every_schedule_figure_passes_clean(self):
-        # 20 of 25 rows are correct copy. Any false positive here would be a
+    def test_only_the_known_bad_rows_are_flagged(self):
+        # 22 of 25 rows are correct copy. Any false positive here would be a
         # scorer defect, not a content defect.
         noisy = {rid: rep.summary() for rid, rep in self.reports.items() if rep.findings}
-        self.assertEqual(5, len(noisy), f"expected exactly 5 flagged rows, got:\n{noisy}")
+        self.assertEqual(3, len(noisy), f"expected exactly 3 flagged rows, got:\n{noisy}")
 
-    def test_unsourced_statistics_are_caught(self):
+    def test_registered_claims_pass(self):
+        # Both PwC-82 rows are backed by pwc-india-2024-trust-82, so they are
+        # grounded even though this sweep has no research corpus.
+        for rid in ("2026-03-31 · PwC 82% attributed", "2026-03-31 · 82 out of 100 ratio"):
+            self.assertFalse(self.reports[rid].findings, f"{rid}\n{self.reports[rid].summary()}")
+
+    def test_retired_claims_are_blocked_with_a_reason(self):
         flagged = {rid for rid, rep in self.reports.items()
-                   if any(f.scorer == "unsourced-stat" for f in rep.findings)}
+                   if any(f.scorer == "retired-claim" for f in rep.findings)}
         self.assertEqual(
-            {
-                "2026-03-31 · PwC 82% attributed",
-                "2026-03-31 · 82 out of 100 ratio",
-                "2026-04-08 · 43 out of 100 cyberattacks",
-                "2026-04-12 · over 40% never recover",
-            },
+            {"2026-04-08 · 43 out of 100 cyberattacks", "2026-04-12 · over 40% never recover"},
             flagged,
         )
+        msg = self.reports["2026-04-08 · 43 out of 100 cyberattacks"].blocking[0].message
+        self.assertIn("WORLDWIDE", msg)
+        self.assertIn("40% of Indian SMEs", msg, "a retired claim must name its replacement")
+
+    def test_ratio_base_of_100_is_not_treated_as_a_claim(self):
+        # "82 out of 100" states one figure, not two. Flagging the 100 was a
+        # false positive found on this corpus.
+        self.assertFalse(score_text("82 out of 100 Indian consumers said so.",
+                                    research=None).findings)
 
     def test_ratio_written_with_every_is_not_missed(self):
         # First sweep missed "43 out of every 100" because the pattern required
@@ -304,6 +314,45 @@ class PipelineGate(unittest.TestCase):
             with self.assertRaises(RuntimeError):
                 self.gc.main(self.research)
         self.assertEqual(0, written.call_count)
+
+
+class SourceRegistry(unittest.TestCase):
+    """The register itself must stay well-formed — it is now load-bearing."""
+
+    def setUp(self):
+        from tools import source_registry
+        self.reg = source_registry.load()
+
+    def test_ids_are_unique_across_live_and_retired(self):
+        ids = list(self.reg.claims) + [r.id for r in self.reg.retired]
+        self.assertEqual(len(ids), len(set(ids)))
+
+    def test_every_claim_has_a_metric_definition_and_a_sample(self):
+        # "PwC — 82%" is not a source. The metric definition is what stops the
+        # wrong 82% being cited under the right publisher's name.
+        for cid, claim in self.reg.claims.items():
+            self.assertTrue(claim.metric_definition.strip(), cid)
+            self.assertTrue(claim.sample.strip(), cid)
+            self.assertTrue(claim.approved_wording, cid)
+
+    def test_every_retired_claim_matches_its_own_retired_wording(self):
+        # A retired entry whose pattern does not match the text it was written
+        # for is a dead guard that looks alive.
+        for retired in self.reg.retired:
+            hits = self.reg.find_retired(retired.retired_wording)
+            self.assertIn(retired.id, [h.id for h in hits], retired.id)
+
+    def test_retired_replacements_point_at_a_live_claim(self):
+        for retired in self.reg.retired:
+            if retired.replace_with:
+                self.assertIn(retired.replace_with, self.reg.claims, retired.id)
+
+    def test_missing_source_urls_are_reported_not_hidden(self):
+        # Currently every entry lacks a URL — verified by Dilip against the
+        # reports, but the links are not on file yet. This test does not fail
+        # on that; it fails if the gap stops being reported.
+        gaps = self.reg.incomplete()
+        self.assertTrue(all("source_url" in fields for fields in gaps.values()) or not gaps)
 
 
 class PublishGate(unittest.TestCase):

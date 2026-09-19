@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "purpose": "Every numerical claim published by SaralPrivacy must have a record here. No source id, no statistic. A claim's METRIC DEFINITION is part of its identity — 'PwC 82%' is not a source, because PwC's 2024 consumer work carries at least two different 82% figures measuring different things.",
+  "required_fields": [
+    "id", "numbers", "approved_wording", "source", "source_url", "report_date",
+    "geography", "sample", "metric_definition", "evidence_grade",
+    "verified_by", "verified_date", "review_date"
+  ],
+  "claims": [
+    {
+      "id": "pwc-india-2024-trust-82",
+      "numbers": ["82"],
+      "approved_wording": [
+        "82% of Indian consumers say protecting personal data is a crucial factor in earning their trust.",
+        "82 out of 100 Indian consumers say protecting their personal data matters when deciding whom to trust."
+      ],
+      "source": "PwC India, Voice of the Consumer Survey 2024",
+      "source_url": null,
+      "report_date": "2024",
+      "geography": "India",
+      "sample": "1,000 Indian respondents",
+      "metric_definition": "Share of respondents identifying protection of personal data as one of the most crucial factors in earning/building trust.",
+      "evidence_grade": "primary",
+      "verified_by": "Dilip Sahu",
+      "verified_date": "2026-09-19",
+      "review_date": "2027-09-19",
+      "notes": "⚠️ A DIFFERENT PwC 82% exists in the same body of work — social-media advertising influencing purchases. Never cite as 'PwC — 82%'; always carry the metric definition. Say consumers, not 'Indians' — the sample is consumers, not the population.",
+      "attribution_required": true
+    },
+    {
+      "id": "ttbs-cmr-2026-sme-incident-40",
+      "numbers": ["40"],
+      "approved_wording": [
+        "40% of Indian SMEs surveyed experienced a cyber incident in the previous 24 months."
+      ],
+      "source": "Tata Tele Business Services & CyberMedia Research, SME Digital Insights 2026",
+      "source_url": null,
+      "report_date": "2026-09-16",
+      "geography": "India",
+      "sample": "Indian SMEs surveyed (n not recorded — confirm before reuse)",
+      "metric_definition": "Share of surveyed Indian SMEs reporting a cyber incident in the previous 24 months. ⛔ This is NOT 'share of attacks that target SMEs' — a different metric entirely.",
+      "evidence_grade": "primary",
+      "verified_by": "Dilip Sahu",
+      "verified_date": "2026-09-19",
+      "review_date": "2027-03-16",
+      "notes": "Replaces the retired Accenture-2019 43% claim. Current as of Sept 2026 and India-specific, which the retired claim was not.",
+      "attribution_required": true
+    },
+    {
+      "id": "ttbs-cmr-2026-sme-structural-fix-28",
+      "numbers": ["28"],
+      "approved_wording": [
+        "Only 28% of Indian SMEs surveyed made structural cybersecurity improvements after an incident."
+      ],
+      "source": "Tata Tele Business Services & CyberMedia Research, SME Digital Insights 2026",
+      "source_url": null,
+      "report_date": "2026-09-16",
+      "geography": "India",
+      "sample": "Indian SMEs surveyed (n not recorded — confirm before reuse)",
+      "metric_definition": "Share of surveyed Indian SMEs that implemented structural cybersecurity improvements following an incident.",
+      "evidence_grade": "primary",
+      "verified_by": "Dilip Sahu",
+      "verified_date": "2026-09-19",
+      "review_date": "2027-03-16",
+      "notes": "",
+      "attribution_required": true
+    },
+    {
+      "id": "ttbs-cmr-2026-sme-monitoring-12",
+      "numbers": ["12"],
+      "approved_wording": [
+        "Only 12% of Indian SMEs surveyed continuously monitor their cybersecurity environment."
+      ],
+      "source": "Tata Tele Business Services & CyberMedia Research, SME Digital Insights 2026",
+      "source_url": null,
+      "report_date": "2026-09-16",
+      "geography": "India",
+      "sample": "Indian SMEs surveyed (n not recorded — confirm before reuse)",
+      "metric_definition": "Share of surveyed Indian SMEs that continuously monitor their cybersecurity environment.",
+      "evidence_grade": "primary",
+      "verified_by": "Dilip Sahu",
+      "verified_date": "2026-09-19",
+      "review_date": "2027-03-16",
+      "notes": "",
+      "attribution_required": true
+    }
+  ],
+  "retired": [
+    {
+      "id": "accenture-2019-smb-43-relocated-to-india",
+      "retired_wording": "43 out of every 100 cyberattacks in India hit small businesses.",
+      "match": "43\\s*(?:%|(?:out\\s+of\\s+(?:every\\s+)?100))[^.]{0,80}\\b(?:india|indian)\\b",
+      "why_retired": "Materially mislocalised. The 43% figure traces to 2019 Accenture research on cyberattacks WORLDWIDE, not attacks in India; Indian reporting describes it as worldwide. Someone turned '43% globally' into '43% in India' — an unsupported extrapolation. It is also seven years old.",
+      "replace_with": "ttbs-cmr-2026-sme-incident-40",
+      "retired_by": "Dilip Sahu",
+      "retired_date": "2026-09-19"
+    },
+    {
+      "id": "smb-never-recover-40",
+      "retired_wording": "Over 40% of Indian small businesses never recover after a data attack.",
+      "match": "\\b(?:40|50|60)\\s*(?:%|percent|per cent)[^.]{0,80}(?:never recover|close(?:d)? (?:down|within)|go out of business|shut (?:down|within))",
+      "why_retired": "No credible primary Indian study supports it. It belongs to the recycled family of '50%/60% of small businesses close within six months of a cyberattack' claims. The National Cybersecurity Alliance has formally stated the 60% figure was not generated from NCSA research and that it cannot verify the original source, and recommends against its continued use. It propagated into otherwise authoritative NIST and SEC material — which is exactly why a percentage in a reputable-looking document is not a source. Do not downgrade the number; delete the claim.",
+      "replace_with": null,
+      "retired_by": "Dilip Sahu",
+      "retired_date": "2026-09-19"
+    }
+  ]
+}

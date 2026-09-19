@@ -42,6 +42,13 @@ from dataclasses import dataclass, field as dc_field
 from pathlib import Path
 from typing import Iterable, List, Optional, Tuple
 
+# Same bootstrap as the other tools: this module is also run directly
+# (`python tools/content_scorers.py --corpus …`), where the repo root is not
+# on sys.path and `from tools import …` would fail.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+from tools import source_registry  # noqa: E402
+
 # ── The Schedule ──────────────────────────────────────────────────────────────
 # Source: DPDP Act 2023, THE SCHEDULE [See section 33(1)], as held verbatim in
 # webapp/content/dpdp-act-2023.ts (`scheduleRows`). Seven entries, five distinct
@@ -297,6 +304,54 @@ def score_penalty_figures(field: str, text: str) -> List[Finding]:
 
 # ── Scorer 2 — statistics must be grounded in the research input ──────────────
 
+# ── Scorer 3 — a retired claim must never come back ──────────────────────────
+
+def score_retired_claims(field: str, text: str) -> List[Finding]:
+    """
+    A claim that was wrong once gets reused by someone who half-remembers it.
+    The register keeps retired claims and blocks their return, with the reason
+    attached so nobody has to re-derive it. See webapp/content/source-registry.json.
+    """
+    findings: List[Finding] = []
+    if not text:
+        return findings
+    try:
+        registry = source_registry.load()
+    except Exception:  # a missing or broken register must not silently open the gate
+        return [
+            Finding(
+                scorer="retired-claim",
+                severity="warn",
+                field=field,
+                excerpt="",
+                message="source registry could not be loaded — retired-claim check did not run",
+            )
+        ]
+
+    for retired in registry.find_retired(text):
+        replacement = ""
+        if retired.replace_with:
+            claim = registry.claims.get(retired.replace_with)
+            if claim:
+                replacement = (
+                    f" Use instead: “{claim.approved_wording[0]}” — {claim.cite()}."
+                )
+        else:
+            replacement = " There is no replacement figure: remove the claim."
+        findings.append(
+            Finding(
+                scorer="retired-claim",
+                severity="block",
+                field=field,
+                excerpt=text if len(text) <= 160 else text[:157] + "…",
+                message=f"retired claim `{retired.id}`. {retired.why_retired}{replacement}",
+            )
+        )
+    return findings
+
+
+# ── Scorer 2 (continued) ──────────────────────────────────────────────────────
+
 def _corpus_text(research: Optional[dict]) -> str:
     if not research:
         return ""
@@ -321,6 +376,12 @@ QUALIFIED_NUMBER_RE = re.compile(
 )
 
 
+# "82 out of 100" states one figure, not two — 100 is a normalising base, the
+# same thing a percent sign does. "1 in 3" is different: there the denominator
+# carries the claim, so only 100 and 1000 are treated as bases.
+RATIO_BASE_RE = re.compile(r"(?:out of|in)\s*(?:every\s+)?(100|1000|1,000)\b", re.IGNORECASE)
+
+
 def _statistic_numbers(sentence: str) -> List[str]:
     """The numbers in a sentence that are actually making a factual claim."""
     numbers = set()
@@ -333,6 +394,8 @@ def _statistic_numbers(sentence: str) -> List[str]:
         numbers.add((m.group("n1") or m.group("n2")).replace(",", ""))
     if RATIO_RE.search(sentence):
         numbers.update(_numbers_in(sentence))
+    for m in RATIO_BASE_RE.finditer(sentence):
+        numbers.discard(m.group(1).replace(",", ""))
     return sorted(numbers, key=lambda x: (len(x), x))
 
 
@@ -355,6 +418,13 @@ def score_unsourced_stats(field: str, text: str, research: Optional[dict]) -> Li
     corpus_numbers = set(_numbers_in(corpus))
     knowledge_only = bool((research or {}).get("knowledge_only", research is None))
 
+    # A registered claim carries its own source, so its number is grounded even
+    # when this briefing's web research turned up nothing.
+    try:
+        registered = source_registry.load().registered_numbers()
+    except Exception:
+        registered = set()
+
     for sentence in SENTENCE_SPLIT_RE.split(text):
         sentence = sentence.strip()
         if not sentence or not STAT_MARKER_RE.search(sentence):
@@ -374,7 +444,10 @@ def score_unsourced_stats(field: str, text: str, research: Optional[dict]) -> Li
             if _to_rupees(m.group("n1") or m.group("n2"), m.group("u1") or m.group("u2") or "")
             in SCHEDULE_AMOUNTS_INR
         }
-        ungrounded = [n for n in numbers if n not in act_tokens and n not in corpus_numbers]
+        ungrounded = [
+            n for n in numbers
+            if n not in act_tokens and n not in corpus_numbers and n not in registered
+        ]
 
         if not ungrounded:
             continue
@@ -392,8 +465,10 @@ def score_unsourced_stats(field: str, text: str, research: Optional[dict]) -> Li
                 field=field,
                 excerpt=sentence if len(sentence) <= 160 else sentence[:157] + "…",
                 message=(
-                    f"statistic cites {', '.join(ungrounded)} but {reason}. "
-                    f"Cite a source or drop the number."
+                    f"statistic cites {', '.join(ungrounded)} but {reason}, and no entry in "
+                    f"webapp/content/source-registry.json backs it. Register the claim "
+                    f"(source · url · date · geography · sample · metric definition) or "
+                    f"drop the number."
                 ),
             )
         )
@@ -422,6 +497,7 @@ def run_scorers(
     report = Report()
     for field, text in iter_content_fields(content):
         report.findings.extend(score_penalty_figures(field, text))
+        report.findings.extend(score_retired_claims(field, text))
         if include_stats:
             report.findings.extend(score_unsourced_stats(field, text, research))
     return report
@@ -431,6 +507,7 @@ def score_text(text: str, field: str = "text", research: Optional[dict] = None) 
     """Run both scorers over a bare string — used for the live-corpus sweep."""
     report = Report()
     report.findings.extend(score_penalty_figures(field, text))
+    report.findings.extend(score_retired_claims(field, text))
     report.findings.extend(score_unsourced_stats(field, text, research))
     return report
 
