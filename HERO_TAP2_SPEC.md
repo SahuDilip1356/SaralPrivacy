@@ -143,3 +143,5 @@ Rule for this slice: **every new visitor-facing string goes through `messages/en
 4. English first on the locale layer; Hindi is Phase B, catalog-only.
 
 **Deliberately out of scope:** a second question · a numeric score in the hero · a question for "other business" · rendering the 9 non-hero sectors' questions · migrating `chipLabel`/`riskLine` into the catalog · animated row collapse · pre-ship user testing (the event ratio in §5 is the test).
+
+**Amendment 2026-09-19 (Dilip):** the "numeric score in the hero" exclusion is lifted, narrowly. A picked sector's card shows the SAMPLE dial: the same `VERDICT_PREVIEWS` score the report tab shows for that sector, labelled *Sample score · illustrative*, **number only**. The "Typical risk" row and its authored steps (point 3) are unchanged. The dial carries no band word, so an answer that steps the band never contradicts the dial. S0's dial reads the Clinics & Labs sample (42) instead of the hard-coded 41, to match its label.
