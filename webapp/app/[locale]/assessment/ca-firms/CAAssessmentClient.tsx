@@ -27,6 +27,8 @@ import {
   type IAResult,
   type BucketStatus,
 } from "@/lib/data/industry-assessment";
+import { parsePrefill, prefillStillHeld, entrySource } from "@/lib/data/industry-assessment/prefill";
+import { PrefillNote } from "@/components/assessment/PrefillNote";
 
 // ── Contextual micro-feedback (UI layer) ─────────────────────────────────────
 // Short focus labels for the Data Flow Map deep-link (?bucket=). Keys MUST match
@@ -153,13 +155,18 @@ export default function CAAssessmentClient() {
   // The marketing page (/industries/ca-firms) is the landing — open directly on Q1.
   const [phase, setPhase] = useState<"quiz" | "result">("quiz");
   const [qIndex, setQIndex] = useState(0);
-  const [answers, setAnswers] = useState<IAAnswers>({});
+  // ?pre= arrives from the homepage hero's one question: it pre-SELECTS that
+  // option (the scan still opens on its first question); an invalid value
+  // pre-fills nothing, so a hand-edited URL degrades cleanly.
+  const [prefill] = useState(() => parsePrefill(searchParams, caFirmPack));
+  const [src] = useState(() => entrySource(searchParams));
+  const [answers, setAnswers] = useState<IAAnswers>(() => prefill ?? {});
   const [result, setResult] = useState<IAResult | null>(null);
 
   // Fire the funnel "start" event on mount (no landing screen to gate it now).
   useEffect(() => {
-    trackEvent.assessmentStart();
-  }, []);
+    trackEvent.assessmentStart({ prefilled: prefill !== null, src });
+  }, [prefill, src]);
 
   // Lead capture
   const [reportUnlocked, setReportUnlocked] = useState(false);
@@ -506,6 +513,7 @@ export default function CAAssessmentClient() {
           </legend>
           {q.helpText && <p className="mt-2 text-sm leading-relaxed text-slate-500">{q.helpText}</p>}
           {q.type === "multi" && <p className="mt-1 text-xs font-medium text-slate-400">{t("selectAll")}</p>}
+          {prefillStillHeld(prefill, q.id, answers) && <PrefillNote />}
 
           <div className="mt-5 space-y-3">
             {q.options.map((opt) => {

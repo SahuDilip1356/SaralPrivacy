@@ -5,6 +5,17 @@
 // sector knowledge — they are NOT the user's real score. The hero copy always
 // frames them as "typical" and points to the real assessment for the actual
 // score. Verify/refine against each pack before treating as authoritative.
+//
+// Hero tap #2 (HERO_TAP2_SPEC.md): a row may carry one sector-true yes/no. The
+// question is a real pack question — `pre` names the pack option a "Yes"
+// pre-selects in the assessment (`?pre=<questionId>:<optionId>&src=hero`).
+// This file holds STRUCTURE ONLY: the question, answer lines and clauses are
+// visitor copy and live in messages/en.json under home.heroQuestions.<slug>.
+// Band movement is AUTHORED, never computed: one answer through the engine is
+// meaningless (normalised by Σcaps). yesBand is one step up (capped at High),
+// noBand one step down (floored at Moderate), and the two must differ.
+
+export type HeroBand = "Moderate" | "Moderate–High" | "High";
 
 export interface HeroVerdict {
   /** === Sector.assessmentSlug (single-sourced order follows sectors.ts) */
@@ -12,16 +23,34 @@ export interface HeroVerdict {
   /** short label for the chip + verdict sentence ("a {chipLabel}") */
   chipLabel: string;
   /** typical/illustrative band — never the user's real score */
-  band: "Moderate" | "Moderate–High" | "High";
+  band: HeroBand;
   /** one sector-true sentence — the "taste" */
   riskLine: string;
+  /** typical band after "Yes" — one authored step up from `band` */
+  yesBand?: HeroBand;
+  /** typical band after "No" — one authored step down from `band` */
+  noBand?: HeroBand;
+  /** the pack option a "Yes" pre-selects in the real assessment */
+  pre?: { questionId: string; optionId: string };
 }
 
 export const HERO_VERDICTS: HeroVerdict[] = [
-  { slug: "recruitment", chipLabel: "recruitment agency", band: "Moderate–High", riskLine: "You hold candidate IDs, CVs and references far longer than you need to." },
-  { slug: "ca-firms", chipLabel: "CA firm", band: "High", riskLine: "Client PAN, financials and KYC sit across email, drives and WhatsApp." },
+  {
+    slug: "recruitment", chipLabel: "recruitment agency", band: "Moderate–High", riskLine: "You hold candidate IDs, CVs and references far longer than you need to.",
+    yesBand: "High", noBand: "Moderate", pre: { questionId: "q2", optionId: "whatsapp_referrals" },
+  },
+  // Typical re-authored High → Moderate–High (spec §3.1): at High a "Yes"
+  // could not move the band, and not every CA firm is High. AudienceCards reads
+  // the same field, so its CA card moves with it — one source, by construction.
+  {
+    slug: "ca-firms", chipLabel: "CA firm", band: "Moderate–High", riskLine: "Client PAN, financials and KYC sit across email, drives and WhatsApp.",
+    yesBand: "High", noBand: "Moderate", pre: { questionId: "q3", optionId: "whatsapp" },
+  },
   { slug: "training-institutes", chipLabel: "training institute", band: "Moderate", riskLine: "Student records, fee data and parent contacts often have no retention limit." },
-  { slug: "d2c-brands", chipLabel: "D2C brand", band: "Moderate–High", riskLine: "Customer addresses, order history and ad-pixel data flow to many vendors." },
+  {
+    slug: "d2c-brands", chipLabel: "D2C brand", band: "Moderate–High", riskLine: "Customer addresses, order history and ad-pixel data flow to many vendors.",
+    yesBand: "High", noBand: "Moderate", pre: { questionId: "q1", optionId: "instagram_whatsapp" },
+  },
   { slug: "clinics-diagnostic-labs", chipLabel: "diagnostic lab", band: "High", riskLine: "You hold high-impact health data, and often share reports over WhatsApp." },
   { slug: "schools-colleges", chipLabel: "school or college", band: "High", riskLine: "Children's data carries the strictest consent and verifiable-parent rules." },
   { slug: "law-firms", chipLabel: "law firm", band: "High", riskLine: "Privileged client matters and ID copies sit in inboxes and shared drives." },

@@ -159,7 +159,38 @@
       "highPriorityAction": "High-priority action",
       "significantGaps": "Significant gaps. Start a focused fix plan now.",
       "generalCheck": "The general check covers every business that handles personal data. Your real score is 3–5 minutes away.",
-      "pickBusiness": "Pick your business on the left to see your own read."
+      "pickBusiness": "Pick your business on the left to see your own read.",
+      "questionEyebrow": "One question sharpens this read",
+      "yes": "Yes",
+      "no": "No",
+      "youSaid": "You said {answer}",
+      "change": "Change",
+      "typicalFor": "for a {sector} {clause}",
+      "seeRealScore": "See your real score",
+      "bandAnnounce": "Typical risk for a {sector} {clause}: {band}"
+    },
+    "heroQuestions": {
+      "recruitment": {
+        "question": "Do candidate CVs reach you, or your clients, over WhatsApp?",
+        "yesLine": "CVs forwarded on WhatsApp leave a copy with every recipient after the role closes.",
+        "noLine": "Then the usual gap is no deletion period for unsuccessful applicants.",
+        "yesClause": "that sources CVs over WhatsApp",
+        "noClause": "that keeps CVs off WhatsApp"
+      },
+      "ca-firms": {
+        "question": "Do clients send PAN, Aadhaar or bank statements over WhatsApp?",
+        "yesLine": "Client documents then sit on personal handsets with no access review — the intake gap the report scores first.",
+        "noLine": "Then the usual gap is shared-folder access that nobody reviews when staff leave.",
+        "yesClause": "that receives documents over WhatsApp",
+        "noClause": "that keeps documents off WhatsApp"
+      },
+      "d2c-brands": {
+        "question": "Do you take orders or chat with customers on Instagram or WhatsApp?",
+        "yesLine": "Order and address data then lives in chat threads outside your store system.",
+        "noLine": "Then the usual gap is marketing consent bundled into checkout.",
+        "yesClause": "that sells over Instagram or WhatsApp",
+        "noClause": "that sells only through its store"
+      }
     },
     "riskMap": {
       "eyebrow": "The everyday data ecosystem",
@@ -700,7 +731,8 @@
       "showPriorityFixes": "Show my priority fixes",
       "retakeScan": "Retake the scan",
       "downloadThe": "Download the {title}",
-      "gaugeAria": "DPDPA readiness {readiness} out of 100. Risk band: {band}."
+      "gaugeAria": "DPDPA readiness {readiness} out of 100. Risk band: {band}.",
+      "prefillNote": "Pre-selected from your homepage answer — change it if that's wrong."
     }
   },
   "faqPage": {

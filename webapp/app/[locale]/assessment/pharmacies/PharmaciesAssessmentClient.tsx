@@ -28,6 +28,8 @@ import {
   type IAQuestion,
   type IAResult,
 } from "@/lib/data/industry-assessment";
+import { parsePrefill, prefillStillHeld, entrySource } from "@/lib/data/industry-assessment/prefill";
+import { PrefillNote } from "@/components/assessment/PrefillNote";
 
 const pack = pharmaciesPack;
 // Short focus labels for the Data Flow Map deep-link (?bucket=). Keys match the
@@ -160,7 +162,12 @@ export default function PharmaciesAssessmentClient() {
   const questions = pack.questions;
   const [phase, setPhase] = useState<"quiz" | "result">("quiz");
   const [qIndex, setQIndex] = useState(0);
-  const [answers, setAnswers] = useState<IAAnswers>({});
+  // ?pre= arrives from the homepage hero's one question: it pre-SELECTS that
+  // option (the scan still opens on its first question); an invalid value
+  // pre-fills nothing, so a hand-edited URL degrades cleanly.
+  const [prefill] = useState(() => parsePrefill(searchParams, pack));
+  const [src] = useState(() => entrySource(searchParams));
+  const [answers, setAnswers] = useState<IAAnswers>(() => prefill ?? {});
   const [result, setResult] = useState<IAResult | null>(null);
 
   const [reportUnlocked, setReportUnlocked] = useState(false);
@@ -170,8 +177,8 @@ export default function PharmaciesAssessmentClient() {
   const [hpUrl, setHpUrl] = useState("");
 
   useEffect(() => {
-    trackEvent.assessmentStart();
-  }, []);
+    trackEvent.assessmentStart({ prefilled: prefill !== null, src });
+  }, [prefill, src]);
 
   const q = questions[qIndex];
   const requiredPos = q ? REQUIRED.findIndex((x) => x.id === q.id) + 1 : 0;
@@ -494,6 +501,7 @@ export default function PharmaciesAssessmentClient() {
           </legend>
           {q.helpText && <p className="mt-2 text-sm leading-relaxed text-slate-500">{q.helpText}</p>}
           {q.type === "multi" && <p className="mt-1 text-xs font-medium text-slate-400">{t("selectAll")}</p>}
+          {prefillStillHeld(prefill, q.id, answers) && <PrefillNote />}
 
           <div className="mt-5 space-y-3">
             {q.options.map((opt) => {
