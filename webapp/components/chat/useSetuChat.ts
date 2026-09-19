@@ -12,6 +12,7 @@ import {
   type ChatSessionState,
 } from "@/lib/chat/journeys";
 import { t } from "@/lib/chat/strings";
+import { questionForTurn } from "@/lib/chat/feedback";
 import { trackEvent } from "@/lib/analytics";
 
 export interface ChatMessage {
@@ -188,7 +189,6 @@ export function useSetuChat(pageUrl: string) {
   const sendFeedback = useCallback(
     (turn: ChatMessage, helpful: boolean) => {
       trackEvent.chatFeedback({ helpful });
-      const priorUser = [...messages].reverse().find((m) => m.role === "user");
       void fetch("/api/chat/feedback", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -199,7 +199,7 @@ export function useSetuChat(pageUrl: string) {
           pageUrl,
           ...(helpful
             ? {}
-            : { failureKind: "thumbs_down", question: priorUser?.text ?? "" }),
+            : { failureKind: "thumbs_down", question: questionForTurn(messages, turn.id) }),
         }),
       }).catch(() => {});
     },
