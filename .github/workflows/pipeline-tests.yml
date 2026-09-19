@@ -1,0 +1,37 @@
+name: Pipeline tests
+
+# The briefing pipeline is Python at the repo root and had no test job until
+# now. This runs the content-scorer suite on anything that touches tools/ —
+# the scorers are the only thing standing between a generated figure and a
+# subscriber's inbox, so a change to them must be proved before it merges.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/**'
+      - '.github/workflows/pipeline-tests.yml'
+  pull_request:
+    paths:
+      - 'tools/**'
+      - '.github/workflows/pipeline-tests.yml'
+
+jobs:
+  scorers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # content_scorers.py itself is standard library only. The gate tests
+      # import generate_content.py and publish_to_webapp.py to prove the gates
+      # actually fire, which pulls in these three and nothing else.
+      - name: Install the imports the gate tests need
+        run: pip install anthropic pydantic requests
+
+      - name: Run content scorer suite
+        run: python -m unittest tools.test_content_scorers -v
