@@ -616,10 +616,8 @@ function MegaPanel({
                 {/* The heading names the reader's intent. It is not a link:
                     a clickable column header competes with the items under
                     it for the same glance. */}
-                {/* text-xs, not text-2xs: `text-2xs` is used elsewhere in this
-                    file but is not defined by the v4 @theme in globals.css and
-                    emits no rule, so it silently renders at the inherited
-                    size. See the note on the coming-soon chips below. */}
+                {/* text-xs, not text-2xs: this heading names a column, so it
+                    stays a step above the 11px coming-soon chips below. */}
                 <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
                   {navT.heading(group.heading)}
                 </h3>
