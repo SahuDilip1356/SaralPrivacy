@@ -382,11 +382,12 @@ export function HeroSection({
               (S2, the question) so the swap never re-centres the row.
               The card no longer re-reads itself on every swap: one scoped
               polite region announces the narrowed band on S3. */}
-          {/* 504px = the tallest state measured at build (recruitment S2, at
-              both 1024 and 1280). The left column is ~635px, so holding this
-              costs the hero no height and the card stops re-centring on a chip
-              change. Re-measure if a question or riskLine gets longer. */}
-          <div aria-live="off" className="lg:pl-4 lg:min-h-[504px]">
+          {/* 548px = the tallest state measured at build (recruitment S2, the
+              same at 1024, 1280 and 1440; was 504 before the sample dial). The
+              left column is ~630px, so holding this costs the hero no height
+              and the card stops re-centring on a chip change. Re-measure if a
+              question or riskLine gets longer. */}
+          <div aria-live="off" className="lg:pl-4 lg:min-h-[548px]">
             <p className="sr-only" aria-live="polite">
               {asked && shown && band
                 ? t("bandAnnounce", { sector: asked.chipLabel, clause: clause ?? "", band: bandLabel(band) })
