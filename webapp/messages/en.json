@@ -857,5 +857,118 @@
     "notSure": "Not sure which templates you need?",
     "notSureBody": "Take the free 5-minute DPDPA assessment — get a personalised score, red flags, and a 30-day action plan for your business.",
     "takeAssessment": "Take Free Assessment →"
+  },
+  "share": {
+    "card": {
+      "checked": "{subject} checked its DPDPA readiness",
+      "askSector": "Is your {noun} ready for DPDPA?",
+      "typicalGap": "Typical gap in {sector}",
+      "ctaShared": "Check yours · free, 3 minutes",
+      "ctaSector": "Free 3-minute risk scan",
+      "alt": "{subject} checked its DPDPA readiness: {band}. Check yours on SaralPrivacy."
+    },
+    "sectors": {
+      "recruitment": {
+        "chip": "Recruitment agencies",
+        "subject": "A recruitment agency",
+        "noun": "recruitment agency",
+        "gap": "Rejected candidates' CVs and IDs are kept with no retention rule."
+      },
+      "ca-firms": {
+        "chip": "CA firms",
+        "subject": "A CA firm",
+        "noun": "CA firm",
+        "gap": "Client PAN, financials and KYC sit across email, drives and WhatsApp."
+      },
+      "training-institutes": {
+        "chip": "Training institutes",
+        "subject": "A training institute",
+        "noun": "training institute",
+        "gap": "Student records and parent contacts are kept with no retention limit."
+      },
+      "d2c-brands": {
+        "chip": "D2C brands",
+        "subject": "A D2C brand",
+        "noun": "D2C brand",
+        "gap": "Customer and ad-pixel data flow to vendors nobody has mapped."
+      },
+      "clinics-diagnostic-labs": {
+        "chip": "Clinics & labs",
+        "subject": "A clinic or diagnostic lab",
+        "noun": "clinic or lab",
+        "gap": "Patient reports are shared over WhatsApp and email."
+      },
+      "schools-colleges": {
+        "chip": "Schools & colleges",
+        "subject": "A school or college",
+        "noun": "school or college",
+        "gap": "Parent consent is informal while student photos sit in WhatsApp groups."
+      },
+      "law-firms": {
+        "chip": "Law firms",
+        "subject": "A law firm",
+        "noun": "law firm",
+        "gap": "Client ID copies and matter files sit in inboxes and shared drives."
+      },
+      "real-estate": {
+        "chip": "Real estate",
+        "subject": "A real estate firm",
+        "noun": "real estate firm",
+        "gap": "KYC and Aadhaar copies pile up across WhatsApp and broker networks."
+      },
+      "hotels-travel": {
+        "chip": "Hotels & travel",
+        "subject": "A hotel or travel business",
+        "noun": "hotel or travel business",
+        "gap": "Guest ID and passport copies are shared over WhatsApp and email."
+      },
+      "pharmacies": {
+        "chip": "Pharmacies",
+        "subject": "A pharmacy",
+        "noun": "pharmacy",
+        "gap": "Prescription photos arrive on WhatsApp and are kept with no retention rule."
+      },
+      "fintech-nbfc": {
+        "chip": "Fintech & NBFC",
+        "subject": "A fintech or NBFC",
+        "noun": "fintech or NBFC",
+        "gap": "KYC data flows to partners and agents without clear consent records."
+      },
+      "gyms-salons-spas": {
+        "chip": "Gyms, salons & spas",
+        "subject": "A gym, salon or spa",
+        "noun": "gym, salon or spa",
+        "gap": "Customer photos are taken and posted without recorded consent."
+      }
+    },
+    "bands": {
+      "controlled": "Basic privacy controls are in place. The work now is keeping them documented and reviewed.",
+      "moderate": "Some controls exist, but key practices are informal. A focused effort usually closes the gaps.",
+      "high": "Important controls, like access, retention and vendor sharing, are weak. The basics come first.",
+      "critical": "Serious gaps in how data is collected, stored, shared and deleted. Worth acting on now."
+    },
+    "text": {
+      "controlled": "I just checked my business's DPDPA readiness on SaralPrivacy: Controlled. It's free and takes 3 minutes. Worth checking yours: {url}",
+      "moderate": "I just checked my business's DPDPA readiness on SaralPrivacy: Moderate Risk. It's free and takes 3 minutes. Check yours: {url}",
+      "high": "I just checked my business's DPDPA readiness on SaralPrivacy: High Risk, more gaps than I expected. It's free and takes 3 minutes. Check yours: {url}",
+      "critical": "I just checked my business's DPDPA readiness on SaralPrivacy and it flagged Critical Risk. It's free and takes 3 minutes. Worth checking yours: {url}"
+    },
+    "button": {
+      "heading": "Know other business owners who should check?",
+      "privacy": "Only your band is shared. Never your score, your answers or your details.",
+      "whatsapp": "Share on WhatsApp",
+      "native": "More ways to share",
+      "copy": "Copy link",
+      "copied": "Link copied"
+    },
+    "landing": {
+      "sharedResult": "shared result",
+      "meaning": "What this means:",
+      "ctaHeading": "How does your {noun} compare?",
+      "ctaSub": "Free · 3 minutes · see your band straight away",
+      "cta": "Check your {noun}",
+      "privacy": "This link shows a risk band only. Never a score, answers, or who shared it.",
+      "metaDescription": "Typical gap: {gap} Check yours on SaralPrivacy, free, in 3 minutes."
+    }
   }
 }
