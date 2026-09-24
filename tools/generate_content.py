@@ -18,6 +18,7 @@ from pydantic import BaseModel, ValidationError
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
+from tools.content_scorers import run_scorers
 from tools.utils import (
     get_env,
     load_env,
@@ -247,6 +248,26 @@ def parse_and_validate(raw: str, date_str: str, day_num: int) -> dict:
         raise ValueError(f"Content schema validation failed: {e}")
 
 
+def build_correction_block(blocking: list) -> str:
+    """Turn blocking findings into an instruction the next attempt can act on."""
+    lines = "\n".join(f"- {f.field}: {f.message}\n  You wrote: “{f.excerpt}”" for f in blocking)
+    return f"""
+
+## ⛔ CORRECTION REQUIRED — your previous draft was rejected
+An automated check found these problems. Fix every one, then return the full
+JSON object again.
+
+{lines}
+
+Rules for the fix:
+- Penalty amounts: use ONLY a figure from the Act's Schedule (₹250 crore,
+  ₹200 crore, ₹150 crore, ₹50 crore, ₹10,000). Never invent a figure, and
+  never claim a higher maximum.
+- Statistics: if a number is not in the research above, remove it. Write the
+  point without the number. Do not substitute a different invented number.
+"""
+
+
 # ── Main ───────────────────────────────────────────────────────────────────────
 
 def main(research: dict) -> dict:
@@ -255,14 +276,30 @@ def main(research: dict) -> dict:
     date_str = topic_data.get("date", "unknown")
     day_num = topic_data.get("day", 1)
 
-    prompt = build_user_prompt(research)
+    base_prompt = build_user_prompt(research)
     last_error = None
+    correction = ""  # fed back into the next attempt when a scorer blocks
 
     for attempt in range(1, MAX_RETRIES + 2):
         try:
             logger.info(f"Calling Claude API (attempt {attempt}/{MAX_RETRIES + 1})")
-            raw = call_claude(prompt)
+            raw = call_claude(base_prompt + correction)
             result = parse_and_validate(raw, date_str, day_num)
+
+            # ── Deterministic quality gates ────────────────────────────────
+            # Wrong penalty figures and invented statistics are the two
+            # failures that have actually shipped. Nothing is written to
+            # .tmp/ (and so nothing can be published or emailed) until both
+            # scorers are clean. See tools/content_scorers.py.
+            report = run_scorers(result, research)
+            for warning in report.warnings:
+                logger.warning(str(warning))
+            if not report.ok:
+                correction = build_correction_block(report.blocking)
+                raise ValueError(
+                    f"content scorers blocked the draft:\n{report.summary()}"
+                )
+
             output_path = tmp_path(f"content_{date_str}.json")
             write_json(output_path, result)
             logger.info(
