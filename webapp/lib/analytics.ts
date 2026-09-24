@@ -299,13 +299,32 @@ export const trackEvent = {
 
   // ── Assessment funnel (PR-traffic measurement) ──────────────────────────
   // `prefilled` = the scan opened with a hero answer pre-selected (?pre=);
-  // `src` = where the visitor came from ("hero" or ""). Success read is
-  // assessment_complete ÷ assessment_start, prefilled=true vs false.
-  assessmentStart: (params?: { prefilled?: boolean; src?: "hero" | "" }) => gtag("assessment_start", {
+  // `src` = where the visitor came from ("hero", "share" = a WhatsApp result
+  // card landing, or ""). Success read is assessment_complete ÷
+  // assessment_start, prefilled=true vs false.
+  assessmentStart: (params?: { prefilled?: boolean; src?: "hero" | "share" | "" }) => gtag("assessment_start", {
     event_category: "engagement",
     prefilled:      params?.prefilled ?? false,
     src:            params?.src || "",
   }),
+
+  // ── Result share (WhatsApp share cards) ─────────────────────────────────
+  // The loop: result_share_click → result_share_landing_view →
+  // assessment_start{src:"share"}. `band` is the URL slug; never the score.
+  resultShareClick: (params: { sector: string; band: string; channel: "whatsapp" | "native" | "copy" }) =>
+    gtag("result_share_click", {
+      event_category: "engagement",
+      sector:         params.sector,
+      band:           params.band,
+      channel:        params.channel,
+    }),
+
+  resultShareLandingView: (params: { sector: string; band: string }) =>
+    gtag("result_share_landing_view", {
+      event_category: "engagement",
+      sector:         params.sector,
+      band:           params.band,
+    }),
 
   // Fires assessment_step_3 / assessment_step_6 so GA4 shows where people drop off
   assessmentStep: (step: number) => gtag(`assessment_step_${step}`, {
