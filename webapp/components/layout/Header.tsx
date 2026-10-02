@@ -7,9 +7,16 @@ import { usePathname } from "next/navigation";
 import { useMessages, useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { chromeMessage, labelKey, stripAppLocale } from "@/lib/i18n/chrome";
-import { Menu, X, ChevronDown, Download, ArrowRight } from "lucide-react";
+import {
+  Menu, X, ChevronDown, Download, ArrowRight, Check,
+  ClipboardCheck, Search, Route, FileText, ListChecks, Files,
+  Users, Calculator, GraduationCap, ShoppingBag, Stethoscope, School,
+  Scale, Building2, Hotel, Pill, Landmark, Sparkles, Circle,
+  type LucideIcon,
+} from "lucide-react";
 import { TemplateDownloadModal } from "@/components/TemplateDownloadModal";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
+import { CHIP_CLASS, RING_CLASS } from "@/components/layout/chip";
 import { surfaceClasses } from "@/components/ui/Surface";
 import { navMenus, primaryAction, secondaryAction, type NavItem, type NavMenu } from "@/lib/data/navigation";
 import { trackEvent } from "@/lib/analytics";
@@ -61,6 +68,32 @@ const panelId = (label: string) => `nav-panel-${labelKey(label)}`;
  * two-item menu stretched across 1200px reads as a mostly empty page.
  */
 const isWide = (menu: NavMenu) => menu.groups.length > 2;
+
+/**
+ * Tile icons by the name navigation.ts gives them. Sector entries are keyed by
+ * slug and match the icons /industries and the homepage sector wall use, so a
+ * sector looks the same in the menu as on its own page.
+ */
+const TILE_ICONS: Record<string, LucideIcon> = {
+  "clipboard-check": ClipboardCheck,
+  search: Search,
+  route: Route,
+  "file-text": FileText,
+  "list-checks": ListChecks,
+  files: Files,
+  "recruitment-agencies": Users,
+  "ca-firms": Calculator,
+  "training-institutes": GraduationCap,
+  "d2c-brands": ShoppingBag,
+  "clinics-diagnostic-labs": Stethoscope,
+  "schools-colleges": School,
+  "law-firms": Scale,
+  "real-estate": Building2,
+  "hotels-travel": Hotel,
+  pharmacies: Pill,
+  "fintech-nbfc": Landmark,
+  "gyms-salons-spas": Sparkles,
+};
 
 /** Compact panel width by column count: ~640px for two columns, per the spec. */
 const COMPACT_W: Record<number, string> = {
@@ -441,17 +474,19 @@ export function Header() {
                 <Link
                   href={secondaryAction.href}
                   onClick={() => trackEvent.navItemClick({ menu: "chrome", item: secondaryAction.label })}
-                  className="hidden md:inline-flex lg:hidden xl:inline-flex items-center gap-1.5 px-3 py-2 pointer-coarse:min-h-11 text-sm font-medium whitespace-nowrap text-slate-700 rounded-lg hover:text-navy-700 hover:bg-cloud-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2"
+                  className={cn("hidden md:inline-flex lg:hidden xl:inline-flex", CHIP_CLASS)}
                 >
-                  <Download size={14} />
+                  <Download size={15} className="text-orange-700" aria-hidden="true" />
                   {navT.label(secondaryAction)}
                 </Link>
                 <Link
                   href={primaryAction.href}
                   onClick={() => trackEvent.navItemClick({ menu: "chrome", item: primaryAction.label })}
-                  className="hidden sm:inline-flex items-center px-4 py-2 pointer-coarse:min-h-11 text-sm font-semibold whitespace-nowrap bg-green-700 text-white rounded-lg hover:bg-green-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2"
+                  className="hidden sm:inline-flex items-center gap-1.5 h-9 px-4 pointer-coarse:min-h-11 text-[13.5px] font-semibold whitespace-nowrap bg-green-700 text-white rounded-full shadow-[inset_0_0_0_1.5px_var(--color-navy-700)] hover:bg-green-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2"
                 >
                   {navT.label(primaryAction)}
+                  {/* The emblem's orange tick — the one warm accent in the bar. */}
+                  <Check size={15} strokeWidth={2.5} className="text-orange-300" aria-hidden="true" />
                 </Link>
                 <button
                   className="lg:hidden inline-flex items-center justify-center min-h-11 min-w-11 p-2 text-slate-600 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2 rounded-lg"
@@ -611,6 +646,7 @@ function MegaPanel({
   // one probe decides the grid's density for the whole panel.
   const described = gridItems(menu)[0]?.description !== "";
   const wide = isWide(menu);
+  const leadTile = menu.layout === "tiles" && Boolean(menu.featured.icon);
   const ref = useRef<HTMLDivElement | null>(null);
 
   // Compact panels centre under their trigger, then clamp to 16px inside the
@@ -640,7 +676,9 @@ function MegaPanel({
       }}
       className={cn(
         "hidden lg:block absolute top-full",
-        wide ? "left-0 right-0" : cn("left-0", COMPACT_W[menu.groups.length])
+        wide
+          ? "left-0 right-0"
+          : cn("left-0", menu.layout === "tiles" ? "w-[800px]" : COMPACT_W[menu.groups.length])
       )}
     >
       {/* Padding, not margin, makes the gap under the bar: the pointer
@@ -648,7 +686,10 @@ function MegaPanel({
       <div className={wide ? "max-w-7xl mx-auto px-4 sm:px-6 pb-4" : "pt-2"}>
         <div className={cn(surfaceClasses("raised"), "overflow-hidden", "sp-panel-in")}>
           {/* Featured — the panel's one lead. Sits in a well so it reads as
-              the ground the rest of the menu stands on, not another card. */}
+              the ground the rest of the menu stands on, not another card.
+              In a tile menu whose featured item has an icon (Tools), it is
+              the first tile instead. */}
+          {!leadTile && (
           <Link
             href={menu.featured.href}
             onClick={() => onActivate(menu.featured)}
@@ -670,11 +711,15 @@ function MegaPanel({
               {navT.description(menu.featured)}
             </span>
           </Link>
+          )}
 
           {/* One column per group. The old grid flowed a flat item list into a
               declared column count, which is what left Readiness and Tools
               with an empty fourth cell: three items never fill a 2x2. Columns
               derived from the groups cannot disagree with their contents. */}
+          {menu.layout === "tiles" ? (
+            <TileBody menu={menu} leadTile={leadTile} onActivate={onActivate} isActive={isActive} />
+          ) : (
           <div
             className={cn(
               "grid gap-x-8 items-start",
@@ -708,9 +753,131 @@ function MegaPanel({
               </div>
             ))}
           </div>
+          )}
         </div>
       </div>
     </div>
+  );
+}
+
+/* ── Tile panels (Tools, Industries) ─────────────────────────────────────── */
+
+/**
+ * Tools: one flat grid, the featured item as the lead tile (green), no group
+ * headings — six peers read faster as a 3x2 than as two headed columns.
+ * Industries: keeps its four group columns (the grouping is what makes twelve
+ * sectors scannable) with a compact icon tile per sector.
+ */
+function TileBody({
+  menu,
+  leadTile,
+  onActivate,
+  isActive,
+}: {
+  menu: NavMenu;
+  leadTile: boolean;
+  onActivate: (item: NavItem) => void;
+  isActive: (href: string) => boolean;
+}) {
+  const navT = useNavT();
+
+  if (leadTile) {
+    const items = [menu.featured, ...gridItems(menu)];
+    return (
+      <div className="px-5 py-4">
+        <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
+          {navT.menu(menu.label)}
+        </p>
+        <div className="grid grid-cols-3 gap-3">
+          {items.map((item, i) => (
+            <TileItem
+              key={item.label + item.href}
+              item={item}
+              lead={i === 0}
+              current={isActive(item.href)}
+              onActivate={() => onActivate(item)}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className={cn("grid gap-x-4 px-6 py-5 items-start", COLS[menu.groups.length] ?? "grid-cols-2")}>
+      {menu.groups.map((group) => (
+        <div key={group.heading}>
+          <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
+            {navT.heading(group.heading)}
+          </h3>
+          <div className="grid gap-2">
+            {group.items.map((item) => (
+              <TileItem
+                key={item.label + item.href}
+                item={item}
+                compact
+                current={isActive(item.href)}
+                onActivate={() => onActivate(item)}
+              />
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function TileItem({
+  item,
+  lead = false,
+  compact = false,
+  current,
+  onActivate,
+}: {
+  item: NavItem;
+  lead?: boolean;
+  compact?: boolean;
+  current: boolean;
+  onActivate: () => void;
+}) {
+  const navT = useNavT();
+  const Icon = (item.icon && TILE_ICONS[item.icon]) || Circle;
+  return (
+    <Link
+      href={item.href}
+      onClick={onActivate}
+      aria-current={current ? "page" : undefined}
+      className={cn(
+        "group flex rounded-xl border transition-colors",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2",
+        compact ? "items-center gap-3 p-2.5" : "flex-col gap-3 p-4",
+        lead || current
+          ? "border-green-600 bg-green-50"
+          : "border-slate-200 bg-slate-50 hover:border-green-600 hover:bg-white"
+      )}
+    >
+      {/* The emblem's double ring, so every tile carries the logo's mark. */}
+      <span
+        aria-hidden="true"
+        className={cn(
+          RING_CLASS,
+          "flex shrink-0 items-center justify-center rounded-full bg-white text-navy-700",
+          compact ? "h-8 w-8" : "h-10 w-10"
+        )}
+      >
+        <Icon size={compact ? 15 : 18} />
+      </span>
+      <span className="min-w-0">
+        <span className={cn("block font-semibold text-navy-700", compact ? "text-sm leading-snug" : "text-[15px]")}>
+          {navT.label(item)}
+        </span>
+        {!compact && item.description && (
+          <span className="mt-1 block text-sm leading-snug text-slate-600">
+            {navT.description(item)}
+          </span>
+        )}
+      </span>
+    </Link>
   );
 }
 

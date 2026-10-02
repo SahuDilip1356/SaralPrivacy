@@ -233,6 +233,17 @@ test("the Industries menu still carries every live sector, exactly once", () => 
   );
 });
 
+test("every grid item in a tile menu names an icon", () => {
+  // A tile without an icon renders as a ragged gap in the grid. (The featured
+  // item becomes the lead tile only when it has an icon; otherwise it stays
+  // the panel's header row — Industries' "All industries".)
+  for (const menu of navMenus.filter((m) => m.layout === "tiles")) {
+    for (const item of gridItems(menu)) {
+      assert.ok(item.icon, `${menu.label} / ${item.label} has no icon`);
+    }
+  }
+});
+
 // ── TIER 4: the translation contract ─────────────────────────────────────
 //
 // The English label IS the translation key (labelKey(label)). Renaming a

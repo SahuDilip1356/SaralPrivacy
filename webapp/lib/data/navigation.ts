@@ -82,6 +82,12 @@ export type NavItem = {
   comingSoon?: boolean;
   /** Opens the templates modal instead of navigating. */
   action?: "templates";
+  /**
+   * Icon name for tile menus, resolved to a lucide icon in Header.tsx. A
+   * string, not a component: this module is tested under plain node, which
+   * cannot load React.
+   */
+  icon?: string;
 };
 
 /**
@@ -106,6 +112,14 @@ export type NavMenu = {
    * old `columns: 2` disagree with a 3-item list and leave a hole.
    */
   groups: NavGroup[];
+  /**
+   * "tiles" renders the panel as a grid of icon tiles (Dilip's 2026-10-02
+   * review) instead of headed text columns. Worth it only for a small set of
+   * peers a reader picks between — Tools and Industries. Learn (reference,
+   * nine entries) and Updates (three) stay lists: tiles would make Learn
+   * twice as tall and add nothing to three links.
+   */
+  layout?: "tiles";
 };
 
 export const navMenus: NavMenu[] = [
@@ -180,6 +194,7 @@ export const navMenus: NavMenu[] = [
   },
   {
     label: "Industries",
+    layout: "tiles",
     featured: {
       label: "All industries",
       href: "/industries",
@@ -198,9 +213,11 @@ export const navMenus: NavMenu[] = [
     // you use. "Deep assessment (coming soon)" is gone — a primary menu is not
     // the place for a promise.
     label: "Tools",
+    layout: "tiles",
     featured: {
       label: "Check readiness",
       href: "/assessment",
+      icon: "clipboard-check",
       description:
         "A free five-minute check across the DPDPA obligations that actually apply to your business.",
     },
@@ -211,11 +228,13 @@ export const navMenus: NavMenu[] = [
           {
             label: "Discover personal data",
             href: "/discovery",
+            icon: "search",
             description: "Identify the personal data your business already holds.",
           },
           {
             label: "Explore data-flow maps",
             href: "/data-mapping",
+            icon: "route",
             description: "See how information moves through a business like yours.",
           },
         ],
@@ -226,16 +245,19 @@ export const navMenus: NavMenu[] = [
           {
             label: "Draft a privacy notice",
             href: "/tools/dpdpa-privacy-notice-generator",
+            icon: "file-text",
             description: "Prepare a DPDPA notice draft for review.",
           },
           {
             label: "Compliance checklist",
             href: "/compliance-checklist",
+            icon: "list-checks",
             description: "The steps that close your gaps, in the order worth doing them.",
           },
           {
             label: "DPDPA templates",
             href: "/resources",
+            icon: "files",
             description: "Consent forms, notices and registers, ready to adapt.",
             action: "templates",
           },
@@ -314,6 +336,8 @@ function sectorGroups(): NavGroup[] {
       return {
         label: link.label,
         href: link.href,
+        // The same icon /industries and the homepage sector wall use.
+        icon: slug,
         // The sector grid opts out of descriptions wholesale — see the note
         // at the top of this file.
         description: "",
