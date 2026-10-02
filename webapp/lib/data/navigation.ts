@@ -31,29 +31,20 @@ import { sectorNavLinks } from "./sectors.ts";
  * scannable triads and Resources stops asking the reader to infer that a hub,
  * a feed and a lookup are different kinds of thing.
  *
- * ── Which four menus, and why not the old four
+ * ── Which four menus
  *
- * "Readiness" and "Tools" claimed to split on "where do I stand?" versus "help
- * me do the work", but the line did not hold: the penalty calculator is a tool
- * that answers where you stand, the compliance checklist is work, and data
- * discovery tells you where you stand. Three of six items sat on the wrong
- * side, and the split bought two half-empty panels for a distinction the
- * content did not honour.
+ * The bar follows how people look for help, in the order they usually need it:
  *
- * They are now one menu whose groups follow the actual sequence of the work —
- * Assess, then Map, then Act. The scent words the split was protecting survive
- * as group headings, which is where they were doing the work anyway.
+ *   Learn DPDPA  I am new to this — explain the law and answer my question
+ *   Industries   show me my sector
+ *   Tools        give me something to use on my own business
+ *   Updates      what is new since I last looked
  *
- * The slot that freed went to Insights. Resources was carrying two different
- * relationships to time: reference a reader consults when a question comes up
- * (the Act, the Rules, the glossary, the FAQ) and a feed they return to
- * because it changed (briefings, the blog). Someone coming back for today's
- * briefing should not have to open a menu named for looking things up.
- *
- *   Compliance  what do I have to do, and what do I do it with
- *   Industries  show me my sector
- *   Insights    what is new, and what is being said about us
- *   Resources   help me understand it, and answer my question
+ * The previous bar was Compliance · Industries · Insights · Resources, with
+ * "Learn DPDPA" hidden as the featured item inside Resources. The site's main
+ * subject was one click deeper than its tools. A fifth chip, Professionals
+ * (for CAs, legal and IT professionals), is planned; it waits until those
+ * landing pages exist, because a menu of links to nothing is worse than none.
  *
  * ── On the destinations that appear here and in lib/learnNav.ts
  *
@@ -119,64 +110,69 @@ export type NavMenu = {
 
 export const navMenus: NavMenu[] = [
   {
-    label: "Compliance",
+    // Learn used to be the featured item of a menu called "Resources", so the
+    // site's main subject was one click deeper than its own tools. It is the
+    // first chip now: most visitors arrive not knowing the Act yet, and this
+    // is where they start.
+    label: "Learn DPDPA",
     featured: {
-      label: "Quick readiness assessment",
-      href: "/assessment",
+      label: "Start with the basics",
+      href: "/learn",
       description:
-        "A free five-minute check across the DPDPA obligations that actually apply to your business.",
+        "Plain-English explanations of the Act, the Rules, and what they ask of you.",
     },
     groups: [
       {
-        heading: "Assess",
+        heading: "Understand the law",
         items: [
           {
-            label: "Deep assessment",
-            href: "/assessment",
-            description: "A full control-by-control review, 25 questions deep.",
-            comingSoon: true,
+            label: "Does it apply to me?",
+            href: "/learn/applicability",
+            description: "Who the Act covers, and the few cases it does not.",
           },
           {
-            label: "Penalty calculator",
+            label: "DPDP Act 2023",
+            href: "/learn/dpdp-act-2023",
+            description: "The full text, annotated in plain language.",
+          },
+          {
+            label: "DPDP Rules 2025",
+            href: "/learn/dpdp-rules-2025-plain-english-guide",
+            description: "What the notified Rules changed, and what they now require.",
+          },
+          {
+            // Was "Penalty calculator" under Compliance. It explains the Act's
+            // penalty schedule rather than assessing the reader's business, so
+            // it belongs with the reference material.
+            label: "Penalties explained",
             href: "/penalty-calculator",
-            description: "What a breach would actually cost you under the Act.",
+            description: "The Act's penalty schedule, and how it is applied.",
           },
         ],
       },
       {
-        heading: "Map",
+        heading: "Get answers",
         items: [
           {
-            label: "Data flow maps",
-            href: "/data-mapping",
-            description:
-              "Chart where personal data enters your business, where it moves, and who it reaches.",
+            // Was the standalone "DPDPA Guide" chip beside the primary action.
+            label: "Complete DPDPA guide",
+            href: "/white-paper",
+            description: "The whole Act in one guide, in seven Indian languages.",
           },
           {
-            label: "Data discovery",
-            href: "/discovery",
-            description: "Find the personal data you are already holding, system by system.",
-          },
-        ],
-      },
-      {
-        heading: "Act",
-        items: [
-          {
-            label: "Compliance checklist",
-            href: "/compliance-checklist",
-            description: "The steps that close your gaps, in the order worth doing them.",
+            label: "FAQ",
+            href: "/faq",
+            description: "The questions business owners actually ask us.",
           },
           {
-            label: "Privacy notice generator",
-            href: "/tools/dpdpa-privacy-notice-generator",
-            description: "Produce a DPDPA-ready privacy notice for your business.",
+            label: "Glossary",
+            href: "/glossary",
+            description: "Fifty-plus DPDPA terms, defined without the legalese.",
           },
           {
-            label: "DPDPA templates",
-            href: "/resources",
-            description: "Consent forms, notices and registers, ready to adapt.",
-            action: "templates",
+            label: "Get help",
+            href: "/contact",
+            description: "Ask a question about your own situation and get a considered answer.",
           },
         ],
       },
@@ -198,13 +194,61 @@ export const navMenus: NavMenu[] = [
     groups: sectorGroups(),
   },
   {
-    // Briefings and the blog used to sit inside Resources under "Keep up",
-    // next to the Act, the Rules and the glossary. That put two different
-    // relationships to time in one panel: reference you consult when a
-    // question comes up, and a feed you return to because it changed. A
-    // reader coming back for today's briefing had to open a menu named for
-    // looking things up. They are their own chip now.
-    label: "Insights",
+    // Was "Compliance". The label described an outcome; the menu holds things
+    // you use. "Deep assessment (coming soon)" is gone — a primary menu is not
+    // the place for a promise.
+    label: "Tools",
+    featured: {
+      label: "Check readiness",
+      href: "/assessment",
+      description:
+        "A free five-minute check across the DPDPA obligations that actually apply to your business.",
+    },
+    groups: [
+      {
+        heading: "Understand your data",
+        items: [
+          {
+            label: "Discover personal data",
+            href: "/discovery",
+            description: "Identify the personal data your business already holds.",
+          },
+          {
+            label: "Explore data-flow maps",
+            href: "/data-mapping",
+            description: "See how information moves through a business like yours.",
+          },
+        ],
+      },
+      {
+        heading: "Take the next step",
+        items: [
+          {
+            label: "Draft a privacy notice",
+            href: "/tools/dpdpa-privacy-notice-generator",
+            description: "Prepare a DPDPA notice draft for review.",
+          },
+          {
+            label: "Compliance checklist",
+            href: "/compliance-checklist",
+            description: "The steps that close your gaps, in the order worth doing them.",
+          },
+          {
+            label: "DPDPA templates",
+            href: "/resources",
+            description: "Consent forms, notices and registers, ready to adapt.",
+            action: "templates",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    // Was "Insights". Media coverage and the press wall left for the footer:
+    // they are about SaralPrivacy, not about the law, and the footer already
+    // links /media. A single combined Updates page would let this become a
+    // plain link; until one exists it stays a small menu.
+    label: "Updates",
     featured: {
       label: "Daily briefings",
       href: "/briefings",
@@ -212,7 +256,7 @@ export const navMenus: NavMenu[] = [
     },
     groups: [
       {
-        heading: "Read",
+        heading: "Keep reading",
         items: [
           {
             label: "Briefings archive",
@@ -223,72 +267,6 @@ export const navMenus: NavMenu[] = [
             label: "Blog",
             href: "/blog",
             description: "Longer pieces on doing privacy work in an Indian business.",
-          },
-        ],
-      },
-      {
-        // Media was in the footer only, so the pressroom was invisible from
-        // the chrome. It is the other half of "what is being published", and
-        // it is what gives this panel a second column.
-        heading: "In the press",
-        items: [
-          {
-            label: "Media coverage",
-            href: "/media/coverage",
-            description: "Where SaralPrivacy has been cited and quoted.",
-          },
-          {
-            label: "Press wall",
-            href: "/media/press-wall",
-            description: "Logos, boilerplate and assets for journalists.",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    label: "Resources",
-    featured: {
-      label: "Learn DPDPA",
-      href: "/learn",
-      description:
-        "Plain-English explanations of the Act, the Rules, and what they ask of you.",
-    },
-    groups: [
-      {
-        heading: "Learn the law",
-        items: [
-          {
-            label: "DPDP Act 2023",
-            href: "/learn/dpdp-act-2023",
-            description: "The full text, annotated in plain language.",
-          },
-          {
-            label: "DPDP Rules 2025",
-            href: "/learn/dpdp-rules-2025-plain-english-guide",
-            description: "What the notified Rules changed, and what they now require.",
-          },
-          {
-            label: "Glossary",
-            href: "/glossary",
-            description: "Fifty-plus DPDPA terms, defined without the legalese.",
-          },
-        ],
-      },
-      {
-        heading: "Get answers",
-        items: [
-          {
-            label: "FAQ",
-            href: "/faq",
-            description: "The questions business owners actually ask us.",
-          },
-          {
-            // Was reachable only from the mobile drawer ("Get Consultation"),
-            // so desktop and mobile shipped different IA. It belongs in both.
-            label: "Talk to us",
-            href: "/contact",
-            description: "Ask a question about your own situation and get a considered answer.",
           },
         ],
       },
@@ -343,17 +321,6 @@ function sectorGroups(): NavGroup[] {
     }),
   }));
 }
-
-/**
- * The quiet secondary action. It used to be a filled green button, which put
- * two filled greens above the fold and split the one decision the page is
- * asking for. The guide is worth offering and is not worth outshouting the
- * assessment.
- */
-export const secondaryAction = {
-  label: "DPDPA Guide",
-  href: "/white-paper#download",
-};
 
 /** The single filled action in the chrome. There is exactly one, deliberately. */
 export const primaryAction = {

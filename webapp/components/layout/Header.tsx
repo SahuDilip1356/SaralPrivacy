@@ -1,17 +1,17 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useLayoutEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useMessages, useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { chromeMessage, labelKey, stripAppLocale } from "@/lib/i18n/chrome";
-import { Menu, X, ChevronDown, Download, ArrowRight } from "lucide-react";
+import { Menu, X, ChevronDown, ArrowRight } from "lucide-react";
 import { TemplateDownloadModal } from "@/components/TemplateDownloadModal";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import { surfaceClasses } from "@/components/ui/Surface";
-import { navMenus, primaryAction, secondaryAction, type NavItem, type NavMenu } from "@/lib/data/navigation";
+import { navMenus, primaryAction, type NavItem, type NavMenu } from "@/lib/data/navigation";
 import { trackEvent } from "@/lib/analytics";
 
 // No badges here on purpose. Three gold "Free" chips plus "Daily" plus a
@@ -48,8 +48,25 @@ const MENU_CLOSE_DELAY_MS = 150;
  */
 const MENU_OPEN_DELAY_MS = 120;
 
-/** Panel ids are derived once so trigger and panel always agree. */
-const panelId = (label: string) => `nav-panel-${label.toLowerCase()}`;
+/**
+ * Panel ids are derived once so trigger and panel always agree. Slugged, not
+ * lowercased: "Learn DPDPA" would otherwise produce an id with a space in it,
+ * which aria-controls and getElementById both treat as two tokens.
+ */
+const panelId = (label: string) => `nav-panel-${labelKey(label)}`;
+
+/**
+ * Compact panels hang from their own trigger; only a menu with more than two
+ * columns (Industries, four sector triads) takes the full bar width. A
+ * two-item menu stretched across 1200px reads as a mostly empty page.
+ */
+const isWide = (menu: NavMenu) => menu.groups.length > 2;
+
+/** Compact panel width by column count: ~640px for two columns, per the spec. */
+const COMPACT_W: Record<number, string> = {
+  1: "w-[400px]",
+  2: "w-[640px]",
+};
 
 /** Every grid item in a menu, flattened across its groups. */
 const gridItems = (menu: NavMenu) => menu.groups.flatMap((g) => g.items);
@@ -306,7 +323,7 @@ export function Header() {
       >
         <div ref={navRef} onMouseLeave={scheduleClose}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
-            <div className="flex items-center justify-between h-16 gap-2">
+            <div className="flex items-center justify-between h-16 lg:h-20 gap-2">
               {/* Logo */}
               <Link
                 href="/"
@@ -317,7 +334,7 @@ export function Header() {
                   alt="SaralPrivacy emblem"
                   width={40}
                   height={40}
-                  className="h-10 w-10 object-contain shrink-0 self-center"
+                  className="h-10 w-10 lg:h-11 lg:w-11 object-contain shrink-0 self-center"
                   priority
                 />
                 {/* Wordmark + tagline — hidden on mobile */}
@@ -379,7 +396,7 @@ export function Header() {
                           // clears the floor without hiding the guide link or
                           // pushing the bar back up to the xl breakpoint.
                           // Invisible at that width; xl is unchanged.
-                          "flex items-center gap-1 whitespace-nowrap px-2 xl:px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                          "flex items-center gap-1 whitespace-nowrap px-2.5 xl:px-3.5 py-2 rounded-lg text-sm lg:text-[15px] font-medium transition-colors",
                           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2",
                           isOpen || menuIsActive(menu)
                             ? "text-green-800 bg-green-50"
@@ -395,29 +412,32 @@ export function Header() {
                           )}
                         />
                       </button>
+                      {isOpen && !isWide(menu) && (
+                        <MegaPanel
+                          menu={menu}
+                          onEscape={() => closeAndRestoreFocus(menu.label)}
+                          onActivate={(item) => handleItemActivate(menu.label, item)}
+                          isActive={isActive}
+                        />
+                      )}
                     </div>
                   );
                 })}
               </nav>
 
               {/* Actions. Exactly one filled button, and it is the assessment.
-                  The guide used to carry the fill, which put two green CTAs
-                  above the fold competing for the same click. */}
+                  The "DPDPA Guide" chip that sat here moved into Learn DPDPA
+                  as "Complete DPDPA guide" — one less thing beside the CTA. */}
               <div className="flex items-center gap-2 shrink-0">
-                {/* xl+ only: the lg bar's slack floor (24px at 1024) cannot
-                    absorb two chips; below xl the mobile drawer carries it. */}
-                <LanguageSwitcher className="hidden lg:inline-flex" />
-                <Link
-                  href={secondaryAction.href}
-                  className="hidden md:inline-flex items-center gap-1.5 px-3 py-2 pointer-coarse:min-h-11 text-sm font-medium whitespace-nowrap text-slate-700 rounded-lg hover:text-navy-700 hover:bg-cloud-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2"
-                >
-                  <Download size={14} />
-                  {navT.label(secondaryAction)}
-                </Link>
+                {/* One chip at every width. It used to live inside the mobile
+                    drawer, which made switching language a two-tap hunt on
+                    the screens most Hindi readers use. Freeing the guide chip
+                    from this row is what made room for it at 1024px. */}
+                <LanguageSwitcher />
                 <Link
                   href={primaryAction.href}
                   onClick={() => trackEvent.navItemClick({ menu: "chrome", item: primaryAction.label })}
-                  className="hidden sm:inline-flex items-center px-4 py-2 pointer-coarse:min-h-11 text-sm font-semibold whitespace-nowrap bg-green-700 text-white rounded-lg hover:bg-green-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2"
+                  className="hidden sm:inline-flex items-center px-4 py-2 lg:py-2.5 pointer-coarse:min-h-11 text-sm lg:text-[15px] font-semibold whitespace-nowrap bg-green-700 text-white rounded-lg hover:bg-green-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2"
                 >
                   {navT.label(primaryAction)}
                 </Link>
@@ -434,12 +454,13 @@ export function Header() {
             </div>
           </div>
 
-          {/* Mega panels live outside the flex row so they can span the bar's
-              full container width rather than hang off one trigger. Rendering
-              all four and hiding the closed ones would put every link in the
-              tab order at once, so only the open one mounts. */}
+          {/* Wide panels (Industries) live outside the flex row so they can
+              span the bar's full container width; compact ones mount inside
+              their trigger above. Rendering all panels and hiding the closed
+              ones would put every link in the tab order at once, so only the
+              open one mounts. */}
           {navMenus.map((menu) =>
-            openMenu === menu.label ? (
+            openMenu === menu.label && isWide(menu) ? (
               <MegaPanel
                 key={menu.label}
                 menu={menu}
@@ -457,6 +478,17 @@ export function Header() {
             id="mobile-nav"
             className="lg:hidden bg-white border-t border-slate-200 py-4 px-4 space-y-1 max-h-[80vh] overflow-y-auto"
           >
+            {/* The primary action leads the drawer: on a phone the bar has no
+                room for it below sm, so this is where it is seen first. */}
+            <Link
+              href={primaryAction.href}
+              onClick={() => trackEvent.navItemClick({ menu: "chrome", item: primaryAction.label })}
+              className="mb-3 flex w-full items-center justify-center gap-2 px-4 py-2.5 min-h-11 text-sm font-semibold bg-green-700 text-white rounded-lg hover:bg-green-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2"
+            >
+              {navT.label(primaryAction)}
+              <ArrowRight size={16} />
+            </Link>
+
             {navMenus.map((menu) => {
               const expanded = mobileSection === menu.label;
               return (
@@ -494,7 +526,7 @@ export function Header() {
                       {menu.groups.map((group) => (
                         <div key={group.heading} className="pt-2">
                           <h3 className="px-3 pb-1 text-xs font-semibold uppercase tracking-wider text-slate-500">
-                            {group.heading}
+                            {navT.heading(group.heading)}
                           </h3>
                           {group.items.map((item) => (
                             <MobileItem
@@ -514,28 +546,22 @@ export function Header() {
               );
             })}
 
-            <div className="pt-3 border-t border-slate-100 space-y-2">
-              <LanguageSwitcher className="px-1 pb-1" />
-              <Link
-                href={primaryAction.href}
-                onClick={() => trackEvent.navItemClick({ menu: "chrome", item: primaryAction.label })}
-                className="flex w-full items-center justify-center px-4 py-2.5 min-h-11 text-sm font-semibold bg-green-700 text-white rounded-lg hover:bg-green-800 transition-colors"
-              >
-                {navT.label(primaryAction)}
-              </Link>
-              <Link
-                href={secondaryAction.href}
-                className="flex w-full items-center justify-center gap-2 px-4 py-2.5 min-h-11 text-sm font-semibold border border-pearl-300 text-navy-700 rounded-lg hover:bg-cloud-50 transition-colors"
-              >
-                <Download size={14} />
-                {navT.label(secondaryAction)}
-              </Link>
-              <Link
-                href="/contact"
-                className="flex w-full items-center justify-center px-4 py-2.5 min-h-11 text-sm font-semibold border border-pearl-300 text-navy-700 rounded-lg hover:bg-cloud-50 transition-colors"
-              >
-                {t("getConsultation")}
-              </Link>
+            {/* Get help and About sit as plain rows under the menus — easy to
+                reach, but not dressed as a second call to action. */}
+            <div className="pt-3 mt-2 border-t border-slate-100 space-y-1">
+              {[
+                { href: "/contact", label: t("getHelp") },
+                { href: "/about", label: t("about") },
+              ].map((l) => (
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  className="flex w-full items-center justify-between px-3 py-2.5 min-h-11 rounded-lg text-sm font-medium text-slate-700 hover:bg-cloud-50 transition-colors"
+                >
+                  {l.label}
+                  <ArrowRight size={16} className="text-slate-500" />
+                </Link>
+              ))}
             </div>
           </div>
         )}
@@ -564,9 +590,27 @@ function MegaPanel({
   // Descriptions are all-or-nothing per menu (asserted in the test suite), so
   // one probe decides the grid's density for the whole panel.
   const described = gridItems(menu)[0]?.description !== "";
+  const wide = isWide(menu);
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  // Compact panels centre under their trigger, then clamp to 16px inside the
+  // window. A fixed left/right anchor cannot work at every width: at 1024px a
+  // right-anchored 640px Tools panel started 57px off-screen. Measured before
+  // paint, so the panel never flashes in the wrong place.
+  useLayoutEffect(() => {
+    const el = ref.current;
+    const anchor = el?.parentElement;
+    if (wide || !el || !anchor) return;
+    const a = anchor.getBoundingClientRect();
+    const w = el.offsetWidth;
+    const centred = a.left + a.width / 2 - w / 2;
+    const clamped = Math.min(Math.max(centred, 16), window.innerWidth - 16 - w);
+    el.style.left = `${clamped - a.left}px`;
+  }, [wide]);
 
   return (
     <div
+      ref={ref}
       id={panelId(menu.label)}
       onKeyDown={(e) => {
         if (e.key === "Escape") {
@@ -574,9 +618,14 @@ function MegaPanel({
           onEscape();
         }
       }}
-      className="hidden lg:block absolute left-0 right-0 top-full"
+      className={cn(
+        "hidden lg:block absolute top-full",
+        wide ? "left-0 right-0" : cn("left-0", COMPACT_W[menu.groups.length])
+      )}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-4">
+      {/* Padding, not margin, makes the gap under the bar: the pointer
+          crossing it stays inside the nav, so the close timer never fires. */}
+      <div className={wide ? "max-w-7xl mx-auto px-4 sm:px-6 pb-4" : "pt-2"}>
         <div className={cn(surfaceClasses("raised"), "overflow-hidden", "sp-panel-in")}>
           {/* Featured — the panel's one lead. Sits in a well so it reads as
               the ground the rest of the menu stands on, not another card. */}
@@ -585,7 +634,8 @@ function MegaPanel({
             onClick={() => onActivate(menu.featured)}
             className={cn(
               surfaceClasses("sunken", { flush: true }),
-              "group block border-0 border-b px-6 py-5 transition-colors hover:bg-cloud-200/50",
+              "group block border-0 border-b transition-colors hover:bg-cloud-200/50",
+              wide ? "px-6 py-5" : "px-5 py-4",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-green-700"
             )}
           >
@@ -607,7 +657,8 @@ function MegaPanel({
               derived from the groups cannot disagree with their contents. */}
           <div
             className={cn(
-              "grid gap-x-8 px-6 py-5 items-start",
+              "grid gap-x-8 items-start",
+              wide ? "px-6 py-5" : "px-5 py-4",
               COLS[menu.groups.length] ?? "grid-cols-2"
             )}
           >
@@ -623,7 +674,7 @@ function MegaPanel({
                 <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
                   {navT.heading(group.heading)}
                 </h3>
-                <div className={cn("grid", described ? "gap-y-5" : "gap-y-1")}>
+                <div className={cn("grid", described ? (wide ? "gap-y-5" : "gap-y-4") : "gap-y-1")}>
                   {group.items.map((item) => (
                     <PanelItem
                       key={item.label + item.href}

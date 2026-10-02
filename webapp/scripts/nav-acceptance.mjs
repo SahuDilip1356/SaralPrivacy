@@ -45,7 +45,8 @@ const menuLabels = (page) =>
   );
 
 /** The panel id Header.tsx derives for a given trigger label. */
-const panelSelector = (label) => `#nav-panel-${label.toLowerCase()}`;
+const panelSelector = (label) =>
+  `#nav-panel-${label.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}`;
 
 (async () => {
   const browser = await chromium.launch({
@@ -72,7 +73,7 @@ const panelSelector = (label) => `#nav-panel-${label.toLowerCase()}`;
         // Slack = row width minus the three blocks' combined width.
         slack: rowR ? Math.round(rowR.width - [logoR, navR, actR].filter(Boolean).reduce((s, x) => s + x.width, 0)) : 0,
         rowH: rowR ? Math.round(rowR.height) : 0,
-        wrapped: rowR ? rowR.height > 72 : false,
+        wrapped: rowR ? rowR.height > 88 : false, // bar is 80px from lg
       };
     });
     check(
