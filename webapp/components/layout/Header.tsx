@@ -7,11 +7,11 @@ import { usePathname } from "next/navigation";
 import { useMessages, useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { chromeMessage, labelKey, stripAppLocale } from "@/lib/i18n/chrome";
-import { Menu, X, ChevronDown, ArrowRight } from "lucide-react";
+import { Menu, X, ChevronDown, Download, ArrowRight } from "lucide-react";
 import { TemplateDownloadModal } from "@/components/TemplateDownloadModal";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import { surfaceClasses } from "@/components/ui/Surface";
-import { navMenus, primaryAction, type NavItem, type NavMenu } from "@/lib/data/navigation";
+import { navMenus, primaryAction, secondaryAction, type NavItem, type NavMenu } from "@/lib/data/navigation";
 import { trackEvent } from "@/lib/analytics";
 
 // No badges here on purpose. Three gold "Free" chips plus "Daily" plus a
@@ -323,7 +323,7 @@ export function Header() {
       >
         <div ref={navRef} onMouseLeave={scheduleClose}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
-            <div className="flex items-center justify-between h-16 lg:h-20 gap-2">
+            <div className="flex items-center justify-between h-16 gap-2">
               {/* Logo */}
               <Link
                 href="/"
@@ -334,7 +334,7 @@ export function Header() {
                   alt="SaralPrivacy emblem"
                   width={40}
                   height={40}
-                  className="h-10 w-10 lg:h-11 lg:w-11 object-contain shrink-0 self-center"
+                  className="h-10 w-10 object-contain shrink-0 self-center"
                   priority
                 />
                 {/* Wordmark + tagline — hidden on mobile */}
@@ -396,7 +396,7 @@ export function Header() {
                           // clears the floor without hiding the guide link or
                           // pushing the bar back up to the xl breakpoint.
                           // Invisible at that width; xl is unchanged.
-                          "flex items-center gap-1 whitespace-nowrap px-2.5 xl:px-3.5 py-2 rounded-lg text-sm lg:text-[15px] font-medium transition-colors",
+                          "flex items-center gap-1 whitespace-nowrap px-2 xl:px-3 py-2 rounded-lg text-sm font-medium transition-colors",
                           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2",
                           isOpen || menuIsActive(menu)
                             ? "text-green-800 bg-green-50"
@@ -426,18 +426,30 @@ export function Header() {
               </nav>
 
               {/* Actions. Exactly one filled button, and it is the assessment.
-                  The "DPDPA Guide" chip that sat here moved into Learn DPDPA
-                  as "Complete DPDPA guide" — one less thing beside the CTA. */}
+                  The guide stays a quiet text chip (Dilip, 2026-10-02 review):
+                  it is the site's most-requested download, worth a click from
+                  every page without outshouting the assessment. */}
               <div className="flex items-center gap-2 shrink-0">
                 {/* One chip at every width. It used to live inside the mobile
                     drawer, which made switching language a two-tap hunt on
                     the screens most Hindi readers use. Freeing the guide chip
                     from this row is what made room for it at 1024px. */}
                 <LanguageSwitcher />
+                {/* md and xl+, not lg: at 1024-1279 four menus + language chip
+                    + guide + CTA measured 45px too wide. There the guide is
+                    still one click away inside Learn DPDPA. */}
+                <Link
+                  href={secondaryAction.href}
+                  onClick={() => trackEvent.navItemClick({ menu: "chrome", item: secondaryAction.label })}
+                  className="hidden md:inline-flex lg:hidden xl:inline-flex items-center gap-1.5 px-3 py-2 pointer-coarse:min-h-11 text-sm font-medium whitespace-nowrap text-slate-700 rounded-lg hover:text-navy-700 hover:bg-cloud-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2"
+                >
+                  <Download size={14} />
+                  {navT.label(secondaryAction)}
+                </Link>
                 <Link
                   href={primaryAction.href}
                   onClick={() => trackEvent.navItemClick({ menu: "chrome", item: primaryAction.label })}
-                  className="hidden sm:inline-flex items-center px-4 py-2 lg:py-2.5 pointer-coarse:min-h-11 text-sm lg:text-[15px] font-semibold whitespace-nowrap bg-green-700 text-white rounded-lg hover:bg-green-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2"
+                  className="hidden sm:inline-flex items-center px-4 py-2 pointer-coarse:min-h-11 text-sm font-semibold whitespace-nowrap bg-green-700 text-white rounded-lg hover:bg-green-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2"
                 >
                   {navT.label(primaryAction)}
                 </Link>
@@ -549,6 +561,14 @@ export function Header() {
             {/* Get help and About sit as plain rows under the menus — easy to
                 reach, but not dressed as a second call to action. */}
             <div className="pt-3 mt-2 border-t border-slate-100 space-y-1">
+              <Link
+                href={secondaryAction.href}
+                onClick={() => trackEvent.navItemClick({ menu: "chrome", item: secondaryAction.label })}
+                className="flex w-full items-center justify-between px-3 py-2.5 min-h-11 rounded-lg text-sm font-medium text-slate-700 hover:bg-cloud-50 transition-colors"
+              >
+                {navT.label(secondaryAction)}
+                <Download size={16} className="text-slate-500" />
+              </Link>
               {[
                 { href: "/contact", label: t("getHelp") },
                 { href: "/about", label: t("about") },

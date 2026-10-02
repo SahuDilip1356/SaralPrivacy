@@ -24,7 +24,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
-import { navMenus, primaryAction } from "./navigation.ts";
+import { navMenus, primaryAction, secondaryAction } from "./navigation.ts";
 import { learnContent } from "./learn-content.ts";
 import { sectorNavLinks } from "./sectors.ts";
 
@@ -71,8 +71,9 @@ test("every nav href resolves to a real page under app/", () => {
   }
 });
 
-test("the header action resolves to a real page", () => {
+test("both header actions resolve to real pages", () => {
   assert.ok(pageExists(primaryAction.href), `dead primary action: ${primaryAction.href}`);
+  assert.ok(pageExists(secondaryAction.href), `dead secondary action: ${secondaryAction.href}`);
 });
 
 // ── TIER 2: the IA rules the design depends on ────────────────────────────
@@ -126,6 +127,11 @@ test("exactly one filled action exists in the chrome", () => {
   // what the header quietly put back. primaryAction is the only fill.
   assert.equal(typeof primaryAction.label, "string");
   assert.ok(primaryAction.label.length > 0);
+  assert.notEqual(
+    secondaryAction.label,
+    primaryAction.label,
+    "the secondary action must not restate the primary one"
+  );
 });
 
 test("no coming-soon items in the primary nav", () => {
@@ -256,6 +262,8 @@ test("every nav label, heading and menu has a Hindi string", () => {
       else if (item.description && !entry.description) missing.push(`description: ${item.label}`);
     }
   }
-  if (!hi.items?.[labelKey(primaryAction.label)]) missing.push(`action: ${primaryAction.label}`);
+  for (const a of [primaryAction, secondaryAction]) {
+    if (!hi.items?.[labelKey(a.label)]) missing.push(`action: ${a.label}`);
+  }
   assert.deepEqual(missing, [], `hi.json is missing nav strings:\n  ${missing.join("\n  ")}`);
 });

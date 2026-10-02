@@ -141,6 +141,9 @@
       "draft-a-privacy-notice": {
         "label": "प्राइवेसी नोटिस का ड्राफ़्ट बनाएँ",
         "description": "समीक्षा के लिए DPDPA नोटिस का ड्राफ़्ट तैयार करें।"
+      },
+      "dpdpa-guide": {
+        "label": "DPDPA गाइड"
       }
     },
     "languageAria": "भाषा"

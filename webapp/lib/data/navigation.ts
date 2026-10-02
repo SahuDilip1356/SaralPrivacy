@@ -322,6 +322,18 @@ function sectorGroups(): NavGroup[] {
   }));
 }
 
+/**
+ * The quiet secondary action. It used to be a filled green button, which put
+ * two filled greens above the fold and split the one decision the page is
+ * asking for. The guide is worth offering and is not worth outshouting the
+ * assessment. It also appears inside Learn DPDPA as "Complete DPDPA guide":
+ * the chip is the download shortcut, the menu entry is where it belongs.
+ */
+export const secondaryAction = {
+  label: "DPDPA Guide",
+  href: "/white-paper#download",
+};
+
 /** The single filled action in the chrome. There is exactly one, deliberately. */
 export const primaryAction = {
   label: "Take free assessment",

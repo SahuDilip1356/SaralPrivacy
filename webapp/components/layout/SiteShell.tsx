@@ -117,10 +117,9 @@ export async function SiteShell({
       <body className="font-sans antialiased bg-slate-50 text-slate-900 min-h-screen flex flex-col">
         <NextIntlClientProvider locale={locale} messages={messages}>
           <Header />
-          {/* Clears the fixed header: 4rem on small screens, 5rem from lg where
-              the bar is taller. Sticky bars on /blog and /glossary use the
-              same pair — change all of them together. */}
-          <main className="flex-1 pt-16 lg:pt-20">
+          {/* 4rem clears the fixed header. The extra 32px this used to carry was
+              clearance for the announcement strip, which is gone. */}
+          <main className="flex-1 pt-16">
             {children}
           </main>
           <Footer locale={locale} />
