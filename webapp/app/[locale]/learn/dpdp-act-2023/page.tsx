@@ -8,18 +8,33 @@ import { linkifyText } from "@/lib/linkifyText";
 import { AnswerBlock } from "@/components/seo/AnswerBlock";
 import { Byline } from "@/components/seo/Byline";
 import { FRESHNESS } from "@/lib/content-freshness";
+import { InBodyToolLink } from "@/components/briefings/InBodyToolLink";
+
+// The search snippet for ~54% of the site's Google impressions (GSC, 28d to
+// 2026-09-20: ~2,400 impressions, position ~8.7, 2 clicks). Every visible query
+// reaching this page asks for the Act by its full name plus "full text" /
+// "official" / "gazette", so the title leads with exactly that.
+//
+// `absolute` drops the " | SaralPrivacy" suffix: Google already prints the site
+// name above the title, and the suffix would push the Act's full name past the
+// ~60-character display width. Kept at 54 characters.
+//
+// Only 23 of the 44 sections carry a plain-English summary (count it in
+// content/dpdp-act-2023.ts) — never describe the notes as covering "each" or
+// "all" sections.
+const TITLE = "Digital Personal Data Protection Act, 2023 — Full Text";
+const DESCRIPTION =
+  "Full text of the Digital Personal Data Protection Act, 2023: all 44 sections verbatim from the Gazette of India, with plain-English notes on the key ones.";
 
 export const metadata: Metadata = {
-  title: "DPDPA 2023: Full Act Text with Plain-English Guide — Section by Section",
-  description:
-    "Read the Digital Personal Data Protection Act, 2023 in full. Official text of all 44 sections across 9 chapters with plain-English summaries and key takeaways for Indian businesses.",
+  title: { absolute: TITLE },
+  description: DESCRIPTION,
   alternates: { canonical: "https://saralprivacy.com/learn/dpdp-act-2023" },
   openGraph: {
     type: "article",
     url: "https://saralprivacy.com/learn/dpdp-act-2023",
-    title: "DPDPA 2023: Full Act Text with Plain-English Guide",
-    description:
-      "Official text of the Digital Personal Data Protection Act, 2023 — all 44 sections with plain-English summaries and key takeaways.",
+    title: TITLE,
+    description: DESCRIPTION,
   },
 };
 
@@ -151,12 +166,12 @@ export default function DpdpAct2023Page() {
   return (
     <>
       {articleSchema(
-        "DPDPA 2023: Full Act Text with Plain-English Guide — Section by Section",
-        "Read the Digital Personal Data Protection Act, 2023 in full. Official text of all 44 sections across 9 chapters with plain-English summaries and key takeaways for Indian businesses.",
+        TITLE,
+        DESCRIPTION,
         "https://saralprivacy.com/learn/dpdp-act-2023",
         "2026-04-30"
       )}
-      {speakableSchema(['.answer-block'], 'https://saralprivacy.com/learn/dpdp-act-2023', 'DPDPA 2023: Full Act Text with Plain-English Guide — Section by Section')}
+      {speakableSchema(['.answer-block'], 'https://saralprivacy.com/learn/dpdp-act-2023', TITLE)}
       {breadcrumbSchema([
         { name: "Home", url: "https://saralprivacy.com" },
         { name: "DPDPA Guide", url: "https://saralprivacy.com/learn" },
@@ -212,7 +227,7 @@ export default function DpdpAct2023Page() {
                 </h1>
                 <Byline lastReviewed={FRESHNESS.learn} className="mb-3" />
                 <AnswerBlock
-                  answer="The Digital Personal Data Protection Act, 2023 is India's primary law governing how digital personal data is collected, used, stored, shared, and deleted. It has 9 chapters and 44 sections plus a Schedule of penalties up to ₹250 crore. The DPDP Rules, 2025 were notified on 14 November 2025, and implementation is phased. This page reproduces the full official text with plain-English summaries for each section."
+                  answer="The Digital Personal Data Protection Act, 2023 is India's primary law governing how digital personal data is collected, used, stored, shared, and deleted. It has 9 chapters and 44 sections plus a Schedule of penalties up to ₹250 crore. The DPDP Rules, 2025 were notified on 14 November 2025, and implementation is phased. This page reproduces the full official text with plain-English summaries of the business-critical sections."
                   className="mb-4"
                 />
                 <p className="text-slate-600 text-base leading-relaxed mb-2">
@@ -244,7 +259,7 @@ export default function DpdpAct2023Page() {
                       "All 9 chapters — from Preliminary to Miscellaneous",
                       "All 44 sections — official text reproduced verbatim",
                       "Plain-English summaries for business-critical sections",
-                      "Key Takeaways for each section with real-world relevance",
+                      "Key Takeaways for the sections with real-world relevance",
                       "The Schedule — 7 penalty items with rupee amounts",
                     ].map((item, i) => (
                       <li key={i} className="flex items-start gap-2 text-sm text-slate-600">
@@ -254,6 +269,11 @@ export default function DpdpAct2023Page() {
                     ))}
                   </ul>
                 </div>
+
+                {/* The page's only route to the assessment. Readers arrive from
+                    search wanting the Act's text; this one line of prose is the
+                    way from "what the law says" to "does it apply to me". */}
+                <InBodyToolLink className="mt-6" />
               </div>
 
               {/* ── Chapters ── */}
