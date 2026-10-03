@@ -358,3 +358,75 @@ html[lang="hi-IN"] .type-intro {
      engines. Collapse the duration so the end state lands immediately. */
   .sp-panel-in { animation-duration: 1ms; }
 }
+
+/* ── Header chips (Dilip's 2026-10-02 review) ─────────────────────────────
+   Language, guide and readiness share one shape: a navy pill wearing the
+   emblem's gold tick on its top-right edge. Hover lifts it, grows the logo's
+   second (green) ring outward, glows, and moves the chip's own icon.
+   Unlayered like .sp-panel-in. The focus-visible rule comes after :hover so
+   keyboard focus always shows a ring, even while the pointer is over it. */
+.sp-chip {
+  /* No `display` here: this rule is unlayered, so it would beat Tailwind's
+     hidden / md:inline-flex / lg:hidden and show every chip at every width
+     (it did — 61px of overflow at 1024, all three chips on phones). Each
+     call site sets display with Tailwind classes. */
+  position: relative;
+  align-items: center;
+  gap: 0.4rem;
+  height: 2.25rem;
+  padding: 0 0.95rem;
+  border-radius: 9999px;
+  border: 1.5px solid var(--color-navy-700);
+  background: #fff;
+  color: var(--color-navy-700);
+  font-size: 13.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1), border-color 200ms, box-shadow 250ms;
+}
+.sp-chip::before {
+  content: "";
+  position: absolute;
+  top: -7px;
+  right: 7px;
+  width: 15px;
+  height: 12px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 13'%3E%3Cpath d='M2 7l4 4 8-9' fill='none' stroke='%23fff' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M2 7l4 4 8-9' fill='none' stroke='%23E3A72F' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center / contain;
+  transition: transform 300ms cubic-bezier(0.2, 0.8, 0.2, 1), filter 300ms;
+  pointer-events: none;
+}
+.sp-chip::after {
+  content: "";
+  position: absolute;
+  inset: -1.5px;
+  border-radius: 9999px;
+  border: 1.5px solid var(--color-green-600);
+  opacity: 0;
+  transition: transform 350ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 350ms;
+  pointer-events: none;
+}
+.sp-chip:hover {
+  transform: translateY(-1px);
+  border-color: var(--color-green-600);
+  box-shadow: 0 0 0 3px rgb(5 150 105 / 0.12), 0 0 18px rgb(5 150 105 / 0.35);
+}
+.sp-chip:hover::after { opacity: 1; transform: scale(1.06, 1.22); }
+.sp-chip:hover::before { transform: scale(1.25) rotate(-8deg); filter: drop-shadow(0 0 4px rgb(227 167 47 / 0.8)); }
+.sp-chip:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--color-green-700);
+}
+.sp-chip [data-motion] { display: inline-flex; transition: transform 300ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+.sp-chip:hover [data-motion="tilt"] { transform: rotate(-8deg) scale(1.1); }
+.sp-chip:hover [data-motion="slide"] { transform: translateX(3px); }
+.sp-chip:hover [data-motion="drop"] { animation: sp-chip-drop 600ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+@keyframes sp-chip-drop {
+  0% { transform: translateY(0); }
+  40% { transform: translateY(4px); }
+  70% { transform: translateY(-1px); }
+  100% { transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sp-chip, .sp-chip::before, .sp-chip::after, .sp-chip [data-motion] { transition: none; animation: none !important; }
+  .sp-chip:hover, .sp-chip:hover::before, .sp-chip:hover [data-motion] { transform: none; }
+}

@@ -8,8 +8,10 @@ import { useMessages, useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { chromeMessage, labelKey, stripAppLocale } from "@/lib/i18n/chrome";
 import {
-  Menu, X, ChevronDown, Download, ArrowRight, Check,
+  Menu, X, ChevronDown, Download, ArrowRight,
   ClipboardCheck, Search, Route, FileText, ListChecks, Files,
+  CircleHelp, BookOpen, FileBadge, Languages, MessageCircleQuestion, BookA,
+  Headset, Archive, NotebookPen, Mail, Newspaper, Link2,
   Users, Calculator, GraduationCap, ShoppingBag, Stethoscope, School,
   Scale, Building2, Hotel, Pill, Landmark, Sparkles, Circle,
   type LucideIcon,
@@ -81,6 +83,19 @@ const TILE_ICONS: Record<string, LucideIcon> = {
   "file-text": FileText,
   "list-checks": ListChecks,
   files: Files,
+  "circle-help": CircleHelp,
+  "book-open": BookOpen,
+  "file-badge": FileBadge,
+  scale: Scale,
+  languages: Languages,
+  "message-question": MessageCircleQuestion,
+  "book-a": BookA,
+  headset: Headset,
+  archive: Archive,
+  "notebook-pen": NotebookPen,
+  mail: Mail,
+  newspaper: Newspaper,
+  link: Link2,
   "recruitment-agencies": Users,
   "ca-firms": Calculator,
   "training-institutes": GraduationCap,
@@ -476,17 +491,20 @@ export function Header() {
                   onClick={() => trackEvent.navItemClick({ menu: "chrome", item: secondaryAction.label })}
                   className={cn("hidden md:inline-flex lg:hidden xl:inline-flex", CHIP_CLASS)}
                 >
-                  <Download size={15} className="text-orange-700" aria-hidden="true" />
+                  <span data-motion="drop" aria-hidden="true">
+                    <Download size={15} className="text-orange-700" />
+                  </span>
                   {navT.label(secondaryAction)}
                 </Link>
                 <Link
                   href={primaryAction.href}
                   onClick={() => trackEvent.navItemClick({ menu: "chrome", item: primaryAction.label })}
-                  className="hidden sm:inline-flex items-center gap-1.5 h-9 px-4 pointer-coarse:min-h-11 text-[13.5px] font-semibold whitespace-nowrap bg-green-700 text-white rounded-full shadow-[inset_0_0_0_1.5px_var(--color-navy-700)] hover:bg-green-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2"
+                  className={cn("hidden sm:inline-flex", CHIP_CLASS)}
                 >
                   {navT.label(primaryAction)}
-                  {/* The emblem's orange tick — the one warm accent in the bar. */}
-                  <Check size={15} strokeWidth={2.5} className="text-orange-300" aria-hidden="true" />
+                  <span data-motion="slide" aria-hidden="true">
+                    <ArrowRight size={15} />
+                  </span>
                 </Link>
                 <button
                   className="lg:hidden inline-flex items-center justify-center min-h-11 min-w-11 p-2 text-slate-600 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2 rounded-lg"
@@ -678,7 +696,14 @@ function MegaPanel({
         "hidden lg:block absolute top-full",
         wide
           ? "left-0 right-0"
-          : cn("left-0", menu.layout === "tiles" ? "w-[800px]" : COMPACT_W[menu.groups.length])
+          : cn(
+              "left-0",
+              menu.layout !== "tiles"
+                ? COMPACT_W[menu.groups.length]
+                : menu.featured.icon
+                  ? "w-[800px]" // Tools: three-across lead-tile grid
+                  : "w-[680px]" // Learn, Updates: two tile columns
+            )
       )}
     >
       {/* Padding, not margin, makes the gap under the bar: the pointer
@@ -853,7 +878,7 @@ function TileItem({
         compact ? "items-center gap-3 p-2.5" : "flex-col gap-3 p-4",
         lead || current
           ? "border-green-600 bg-green-50"
-          : "border-slate-200 bg-slate-50 hover:border-green-600 hover:bg-white"
+          : "border-slate-200 bg-slate-50 hover:border-green-600 hover:bg-white hover:shadow-[0_0_0_3px_rgb(5_150_105/0.10),0_0_14px_rgb(5_150_105/0.25)]"
       )}
     >
       {/* The emblem's double ring, so every tile carries the logo's mark. */}
@@ -871,8 +896,8 @@ function TileItem({
         <span className={cn("block font-semibold text-navy-700", compact ? "text-sm leading-snug" : "text-[15px]")}>
           {navT.label(item)}
         </span>
-        {!compact && item.description && (
-          <span className="mt-1 block text-sm leading-snug text-slate-600">
+        {item.description && (
+          <span className={cn("block leading-snug text-slate-600", compact ? "mt-0.5 text-xs" : "mt-1 text-sm")}>
             {navT.description(item)}
           </span>
         )}

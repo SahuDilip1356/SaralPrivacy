@@ -129,6 +129,7 @@ export const navMenus: NavMenu[] = [
     // first chip now: most visitors arrive not knowing the Act yet, and this
     // is where they start.
     label: "Learn DPDPA",
+    layout: "tiles",
     featured: {
       label: "Start with the basics",
       href: "/learn",
@@ -142,16 +143,19 @@ export const navMenus: NavMenu[] = [
           {
             label: "Does it apply to me?",
             href: "/learn/applicability",
+            icon: "circle-help",
             description: "Who the Act covers, and the few cases it does not.",
           },
           {
             label: "DPDP Act 2023",
             href: "/learn/dpdp-act-2023",
+            icon: "book-open",
             description: "The full text, annotated in plain language.",
           },
           {
             label: "DPDP Rules 2025",
             href: "/learn/dpdp-rules-2025-plain-english-guide",
+            icon: "file-badge",
             description: "What the notified Rules changed, and what they now require.",
           },
           {
@@ -160,6 +164,7 @@ export const navMenus: NavMenu[] = [
             // it belongs with the reference material.
             label: "Penalties explained",
             href: "/penalty-calculator",
+            icon: "scale",
             description: "The Act's penalty schedule, and how it is applied.",
           },
         ],
@@ -171,21 +176,25 @@ export const navMenus: NavMenu[] = [
             // Was the standalone "DPDPA Guide" chip beside the primary action.
             label: "Complete DPDPA guide",
             href: "/white-paper",
+            icon: "languages",
             description: "The whole Act in one guide, in seven Indian languages.",
           },
           {
             label: "FAQ",
             href: "/faq",
+            icon: "message-question",
             description: "The questions business owners actually ask us.",
           },
           {
             label: "Glossary",
             href: "/glossary",
+            icon: "book-a",
             description: "Fifty-plus DPDPA terms, defined without the legalese.",
           },
           {
             label: "Get help",
             href: "/contact",
+            icon: "headset",
             description: "Ask a question about your own situation and get a considered answer.",
           },
         ],
@@ -266,11 +275,10 @@ export const navMenus: NavMenu[] = [
     ],
   },
   {
-    // Was "Insights". Media coverage and the press wall left for the footer:
-    // they are about SaralPrivacy, not about the law, and the footer already
-    // links /media. A single combined Updates page would let this become a
-    // plain link; until one exists it stays a small menu.
+    // Was "Insights". A single combined Updates page would let this become a
+    // plain link; until one exists it stays a menu.
     label: "Updates",
+    layout: "tiles",
     featured: {
       label: "Daily briefings",
       href: "/briefings",
@@ -283,12 +291,39 @@ export const navMenus: NavMenu[] = [
           {
             label: "Briefings archive",
             href: "/briefings/all",
+            icon: "archive",
             description: "Every briefing so far, searchable.",
           },
           {
             label: "Blog",
             href: "/blog",
+            icon: "notebook-pen",
             description: "Longer pieces on doing privacy work in an Indian business.",
+          },
+          {
+            label: "Get briefings by email",
+            href: "/subscribe",
+            icon: "mail",
+            description: "Daily or weekly, in your inbox.",
+          },
+        ],
+      },
+      {
+        // Back in the bar (Dilip's 2026-10-02 review): coverage is part of
+        // "what is new", and these pages had no route in from the chrome.
+        heading: "In the news",
+        items: [
+          {
+            label: "In the press",
+            href: "/media/press-wall",
+            icon: "newspaper",
+            description: "Featured national and regional coverage.",
+          },
+          {
+            label: "All media links",
+            href: "/media/coverage",
+            icon: "link",
+            description: "Every published placement of our press release.",
           },
         ],
       },
@@ -360,6 +395,6 @@ export const secondaryAction = {
 
 /** The single filled action in the chrome. There is exactly one, deliberately. */
 export const primaryAction = {
-  label: "Take free assessment",
+  label: "DPDPA Readiness",
   href: "/assessment",
 };

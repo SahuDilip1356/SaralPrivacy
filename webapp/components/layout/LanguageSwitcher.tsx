@@ -55,9 +55,11 @@ export function LanguageSwitcher({ className }: { className?: string }) {
       href={href}
       aria-label={`${t("languageAria")}: ${next.roman}`}
       title={next.roman}
-      className={cn(CHIP_CLASS, className)}
+      className={cn("inline-flex", CHIP_CLASS, className)}
     >
-      <IndiaFlagIcon height={12} className="shrink-0 rounded-[1px]" />
+      <span data-motion="tilt" aria-hidden="true">
+        <IndiaFlagIcon height={12} className="shrink-0 rounded-[1px]" />
+      </span>
       <span lang={current.locale}>{current.native}</span>
     </Link>
   );

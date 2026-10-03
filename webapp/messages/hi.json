@@ -24,7 +24,8 @@
       "understand-the-law": "क़ानून समझें",
       "understand-your-data": "अपना डेटा समझें",
       "take-the-next-step": "अगला कदम उठाएँ",
-      "keep-reading": "पढ़ते रहें"
+      "keep-reading": "पढ़ते रहें",
+      "in-the-news": "ख़बरों में"
     },
     "items": {
       "compliance-checklist": {
@@ -103,9 +104,6 @@
         "label": "FAQ",
         "description": "वे सवाल जो व्यवसाय मालिक हमसे सच में पूछते हैं।"
       },
-      "take-free-assessment": {
-        "label": "मुफ़्त मूल्यांकन करें"
-      },
       "start-with-the-basics": {
         "label": "बुनियादी बातों से शुरू करें",
         "description": "क़ानून, नियम और आपसे उनकी अपेक्षाएँ — आसान भाषा में।"
@@ -144,6 +142,21 @@
       },
       "dpdpa-guide": {
         "label": "DPDPA गाइड"
+      },
+      "dpdpa-readiness": {
+        "label": "DPDPA रेडीनेस"
+      },
+      "get-briefings-by-email": {
+        "label": "ईमेल पर ब्रीफ़िंग पाएँ",
+        "description": "रोज़ या हफ़्ते में एक बार, सीधे आपके इनबॉक्स में।"
+      },
+      "in-the-press": {
+        "label": "प्रेस में",
+        "description": "राष्ट्रीय और क्षेत्रीय मीडिया में चुनिंदा कवरेज।"
+      },
+      "all-media-links": {
+        "label": "सभी मीडिया लिंक",
+        "description": "हमारी प्रेस विज्ञप्ति का हर प्रकाशित लिंक।"
       }
     },
     "languageAria": "भाषा"
