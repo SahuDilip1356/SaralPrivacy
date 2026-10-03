@@ -38,7 +38,10 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      { source: '/subscribe', destination: '/#newsletter', permanent: false },
+      // /subscribe used to redirect to /#newsletter. That homepage section moved
+      // to the footer and /briefings, so the redirect landed on a page with no
+      // form. /subscribe renders its own signup page, which the Updates menu
+      // now links to — let it.
       { source: '/unsubscribe', destination: '/consent-preferences', permanent: true },
       { source: '/rights/access', destination: '/privacy#data-rights', permanent: true },
       { source: '/rights/erasure', destination: '/privacy#data-rights', permanent: true },
