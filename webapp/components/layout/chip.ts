@@ -12,6 +12,7 @@ export const RING_CLASS =
  * The three header chips (language, guide, readiness) — one shape, styled
  * and animated by `.sp-chip` in globals.css. The double ring looked doubled
  * at 36px (review 2026-10-02), so the chip wears one navy ring at rest and
- * the green ring only appears, growing outward, on hover.
+ * the green ring only appears, growing outward, on hover. Readiness adds
+ * `sp-chip-gold` for its fill.
  */
 export const CHIP_CLASS = "sp-chip pointer-coarse:min-h-11";

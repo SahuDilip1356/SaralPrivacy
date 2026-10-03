@@ -499,7 +499,7 @@ export function Header() {
                 <Link
                   href={primaryAction.href}
                   onClick={() => trackEvent.navItemClick({ menu: "chrome", item: primaryAction.label })}
-                  className={cn("hidden sm:inline-flex", CHIP_CLASS)}
+                  className={cn("hidden sm:inline-flex sp-chip-gold", CHIP_CLASS)}
                 >
                   {navT.label(primaryAction)}
                   <span data-motion="slide" aria-hidden="true">
@@ -548,7 +548,7 @@ export function Header() {
             <Link
               href={primaryAction.href}
               onClick={() => trackEvent.navItemClick({ menu: "chrome", item: primaryAction.label })}
-              className="mb-3 flex w-full items-center justify-center gap-2 px-4 py-2.5 min-h-11 text-sm font-semibold bg-green-700 text-white rounded-lg hover:bg-green-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2"
+              className="mb-3 flex w-full items-center justify-center gap-2 px-4 py-2.5 min-h-11 text-sm font-semibold bg-gold-300 hover:bg-gold-200 text-navy-950 border-[2.5px] border-navy-700 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2"
             >
               {navT.label(primaryAction)}
               <ArrowRight size={16} />
