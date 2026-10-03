@@ -20,7 +20,7 @@
 
 import test from "node:test";
 import assert from "node:assert/strict";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
@@ -134,7 +134,14 @@ test("exactly one filled action exists in the chrome", () => {
   );
 });
 
-test("a coming-soon item never claims a unique destination", () => {
+test("no coming-soon items in the primary nav", () => {
+  // A promise is not a destination. Planned items wait until they exist.
+  for (const item of allItems()) {
+    assert.ok(!item.comingSoon, `coming-soon item in the bar: ${item.label}`);
+  }
+});
+
+test("a coming-soon item never claims a unique destination (if one returns)", () => {
   // It renders inert, so its href is never followed. Pointing it at the hub
   // keeps the contract honest if it is ever made clickable by accident.
   for (const item of allItems()) {
@@ -224,4 +231,50 @@ test("the Industries menu still carries every live sector, exactly once", () => 
     [...expected].sort(),
     "Industries menu and sectors.ts disagree about the sector list"
   );
+});
+
+test("every grid item in a tile menu names an icon", () => {
+  // A tile without an icon renders as a ragged gap in the grid. (The featured
+  // item becomes the lead tile only when it has an icon; otherwise it stays
+  // the panel's header row — Industries' "All industries".)
+  for (const menu of navMenus.filter((m) => m.layout === "tiles")) {
+    for (const item of gridItems(menu)) {
+      assert.ok(item.icon, `${menu.label} / ${item.label} has no icon`);
+    }
+  }
+});
+
+// ── TIER 4: the translation contract ─────────────────────────────────────
+//
+// The English label IS the translation key (labelKey(label)). Renaming a
+// label in navigation.ts silently drops its Hindi string — the header falls
+// back to English with no error anywhere. This makes the rename loud.
+
+/**
+ * Same slug as labelKey() in lib/i18n/chrome.ts. Copied, not imported: that
+ * module reaches "@/..." aliases, which this hook-free suite cannot resolve.
+ */
+const labelKey = (label: string) =>
+  label.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+
+test("every nav label, heading and menu has a Hindi string", () => {
+  const hi = JSON.parse(
+    readFileSync(join(HERE, "..", "..", "messages", "hi.json"), "utf8")
+  ).nav;
+  const missing: string[] = [];
+  for (const menu of navMenus) {
+    if (!hi.menus?.[labelKey(menu.label)]) missing.push(`menu: ${menu.label}`);
+    for (const group of menu.groups) {
+      if (!hi.groups?.[labelKey(group.heading)]) missing.push(`group: ${group.heading}`);
+    }
+    for (const item of [menu.featured, ...gridItems(menu)]) {
+      const entry = hi.items?.[labelKey(item.label)];
+      if (!entry?.label) missing.push(`item: ${item.label}`);
+      else if (item.description && !entry.description) missing.push(`description: ${item.label}`);
+    }
+  }
+  for (const a of [primaryAction, secondaryAction]) {
+    if (!hi.items?.[labelKey(a.label)]) missing.push(`action: ${a.label}`);
+  }
+  assert.deepEqual(missing, [], `hi.json is missing nav strings:\n  ${missing.join("\n  ")}`);
 });

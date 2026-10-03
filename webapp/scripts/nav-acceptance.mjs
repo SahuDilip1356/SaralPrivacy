@@ -45,7 +45,8 @@ const menuLabels = (page) =>
   );
 
 /** The panel id Header.tsx derives for a given trigger label. */
-const panelSelector = (label) => `#nav-panel-${label.toLowerCase()}`;
+const panelSelector = (label) =>
+  `#nav-panel-${label.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}`;
 
 (async () => {
   const browser = await chromium.launch({

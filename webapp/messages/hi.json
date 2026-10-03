@@ -7,54 +7,30 @@
     "mainAria": "मुख्य",
     "toggleMenu": "मेनू खोलें या बंद करें",
     "comingSoon": "जल्द आ रहा है",
-    "getConsultation": "परामर्श लें",
+    "getHelp": "मदद लें",
+    "about": "SaralPrivacy के बारे में",
     "menus": {
-      "compliance": "अनुपालन",
+      "learn-dpdpa": "DPDPA सीखें",
       "industries": "उद्योग",
-      "insights": "इनसाइट्स",
-      "resources": "संसाधन"
+      "tools": "टूल्स",
+      "updates": "अपडेट्स"
     },
     "groups": {
-      "assess": "जाँचें",
-      "map": "मैप करें",
-      "act": "कदम उठाएँ",
       "finance-legal": "फाइनेंस और क़ानून",
       "health-wellness": "स्वास्थ्य और वेलनेस",
       "education-people": "शिक्षा और लोग",
       "consumer-property": "कंज़्यूमर और प्रॉपर्टी",
-      "read": "पढ़ें",
-      "in-the-press": "प्रेस में",
-      "learn-the-law": "क़ानून समझें",
-      "get-answers": "जवाब पाएँ"
+      "get-answers": "जवाब पाएँ",
+      "understand-the-law": "क़ानून समझें",
+      "understand-your-data": "अपना डेटा समझें",
+      "take-the-next-step": "अगला कदम उठाएँ",
+      "keep-reading": "पढ़ते रहें",
+      "in-the-news": "ख़बरों में"
     },
     "items": {
-      "quick-readiness-assessment": {
-        "label": "क्विक रेडीनेस मूल्यांकन",
-        "description": "मुफ़्त 5-मिनट की जाँच — सिर्फ़ उन DPDPA दायित्वों पर जो सच में आपके व्यवसाय पर लागू होते हैं।"
-      },
-      "deep-assessment": {
-        "label": "विस्तृत मूल्यांकन",
-        "description": "हर कंट्रोल की पूरी समीक्षा, 25 सवालों में।"
-      },
-      "penalty-calculator": {
-        "label": "जुर्माना कैलकुलेटर",
-        "description": "क़ानून के तहत डेटा उल्लंघन की आपको असल कीमत क्या पड़ेगी।"
-      },
-      "data-flow-maps": {
-        "label": "डेटा फ़्लो मैप",
-        "description": "देखें कि व्यक्तिगत डेटा आपके व्यवसाय में कहाँ से आता है, कहाँ जाता है और किस-किस तक पहुँचता है।"
-      },
-      "data-discovery": {
-        "label": "डेटा डिस्कवरी",
-        "description": "जो व्यक्तिगत डेटा आप पहले से रखते हैं, उसे सिस्टम-दर-सिस्टम खोजें।"
-      },
       "compliance-checklist": {
         "label": "अनुपालन चेकलिस्ट",
         "description": "आपकी कमियाँ दूर करने वाले कदम, उसी क्रम में जिसमें करना समझदारी है।"
-      },
-      "privacy-notice-generator": {
-        "label": "प्राइवेसी नोटिस जेनरेटर",
-        "description": "अपने व्यवसाय के लिए DPDPA-तैयार प्राइवेसी नोटिस बनाएँ।"
       },
       "dpdpa-templates": {
         "label": "DPDPA टेम्पलेट",
@@ -112,18 +88,6 @@
         "label": "ब्लॉग",
         "description": "भारतीय व्यवसाय में प्राइवेसी का काम करने पर लंबे लेख।"
       },
-      "media-coverage": {
-        "label": "मीडिया कवरेज",
-        "description": "जहाँ-जहाँ SaralPrivacy का हवाला और उद्धरण दिया गया है।"
-      },
-      "press-wall": {
-        "label": "प्रेस वॉल",
-        "description": "पत्रकारों के लिए लोगो, बॉयलरप्लेट और असेट्स।"
-      },
-      "learn-dpdpa": {
-        "label": "DPDPA सीखें",
-        "description": "क़ानून, नियम और आपसे उनकी अपेक्षाएँ — आसान भाषा में।"
-      },
       "dpdp-act-2023": {
         "label": "DPDP Act 2023",
         "description": "पूरा मूल पाठ, आसान भाषा में समझाया हुआ।"
@@ -140,15 +104,59 @@
         "label": "FAQ",
         "description": "वे सवाल जो व्यवसाय मालिक हमसे सच में पूछते हैं।"
       },
-      "talk-to-us": {
-        "label": "हमसे बात करें",
-        "description": "अपनी स्थिति के बारे में सवाल पूछें और सोचा-समझा जवाब पाएँ।"
+      "start-with-the-basics": {
+        "label": "बुनियादी बातों से शुरू करें",
+        "description": "क़ानून, नियम और आपसे उनकी अपेक्षाएँ — आसान भाषा में।"
       },
-      "take-free-assessment": {
-        "label": "मुफ़्त मूल्यांकन करें"
+      "does-it-apply-to-me": {
+        "label": "क्या यह मुझ पर लागू होता है?",
+        "description": "क़ानून किन पर लागू होता है, और किन थोड़े मामलों में नहीं।"
+      },
+      "penalties-explained": {
+        "label": "जुर्माने समझें",
+        "description": "क़ानून की जुर्माना अनुसूची, और उसे कैसे लागू किया जाता है।"
+      },
+      "complete-dpdpa-guide": {
+        "label": "पूरी DPDPA गाइड",
+        "description": "पूरा क़ानून एक गाइड में, सात भारतीय भाषाओं में।"
+      },
+      "get-help": {
+        "label": "मदद लें",
+        "description": "अपनी स्थिति के बारे में सवाल पूछें और सोच-समझकर दिया गया जवाब पाएँ।"
+      },
+      "check-readiness": {
+        "label": "तैयारी जाँचें",
+        "description": "मुफ़्त 5-मिनट की जाँच — सिर्फ़ उन DPDPA दायित्वों पर जो सच में आपके व्यवसाय पर लागू होते हैं।"
+      },
+      "discover-personal-data": {
+        "label": "व्यक्तिगत डेटा खोजें",
+        "description": "पहचानें कि आपका व्यवसाय कौन-सा व्यक्तिगत डेटा पहले से रखता है।"
+      },
+      "explore-data-flow-maps": {
+        "label": "डेटा फ़्लो मैप देखें",
+        "description": "देखें कि आप जैसे व्यवसाय में जानकारी कैसे आगे बढ़ती है।"
+      },
+      "draft-a-privacy-notice": {
+        "label": "प्राइवेसी नोटिस का ड्राफ़्ट बनाएँ",
+        "description": "समीक्षा के लिए DPDPA नोटिस का ड्राफ़्ट तैयार करें।"
       },
       "dpdpa-guide": {
         "label": "DPDPA गाइड"
+      },
+      "dpdpa-readiness": {
+        "label": "DPDPA रेडीनेस"
+      },
+      "get-briefings-by-email": {
+        "label": "ईमेल पर ब्रीफ़िंग पाएँ",
+        "description": "रोज़ या हफ़्ते में एक बार, सीधे आपके इनबॉक्स में।"
+      },
+      "in-the-press": {
+        "label": "प्रेस में",
+        "description": "राष्ट्रीय और क्षेत्रीय मीडिया में चुनिंदा कवरेज।"
+      },
+      "all-media-links": {
+        "label": "सभी मीडिया लिंक",
+        "description": "हमारी प्रेस विज्ञप्ति का हर प्रकाशित लिंक।"
       }
     },
     "languageAria": "भाषा"

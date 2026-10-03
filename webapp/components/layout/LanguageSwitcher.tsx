@@ -8,6 +8,7 @@ import { GUIDE_LANGUAGES } from "@/lib/data/guide-languages";
 import { stripAppLocale } from "@/lib/i18n/chrome";
 import { SHOW_LANGUAGE_SWITCHER } from "@/lib/i18n/switcher-gate";
 import { IndiaFlagIcon } from "@/components/layout/IndiaFlagIcon";
+import { CHIP_CLASS } from "@/components/layout/chip";
 
 // Header language switcher (MULTILINGUAL_SPEC §4.1) — a SINGLE toggle chip
 // (Dilip, 2026-09-09): shows the CURRENT language ("English" by default);
@@ -17,9 +18,8 @@ import { IndiaFlagIcon } from "@/components/layout/IndiaFlagIcon";
 //
 // • Gated by lib/i18n/switcher-gate.ts: visible on preview/dev builds,
 //   hidden on production until NEXT_PUBLIC_SHOW_HINDI flips.
-// • Chip styling follows the white-paper language chips: green-50 fill +
-//   green-800 ink (AA), focus ring green-700 — never white-on-green-500
-//   (2.54:1, fails WCAG).
+// • Chip styling is the header's shared CHIP_CLASS (emblem double ring, navy
+//   ink on white) so it matches the guide chip beside it.
 // • A link, not a button: switching locale is navigation.
 
 export function LanguageSwitcher({ className }: { className?: string }) {
@@ -55,15 +55,11 @@ export function LanguageSwitcher({ className }: { className?: string }) {
       href={href}
       aria-label={`${t("languageAria")}: ${next.roman}`}
       title={next.roman}
-      className={cn(
-        "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 pointer-coarse:min-h-11 text-xs transition-colors",
-        "border-2 border-green-600 bg-green-50 text-green-800 font-semibold",
-        "hover:bg-green-100",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2",
-        className
-      )}
+      className={cn("inline-flex", CHIP_CLASS, className)}
     >
-      <IndiaFlagIcon height={11} className="shrink-0 rounded-[1px]" />
+      <span data-motion="tilt" aria-hidden="true">
+        <IndiaFlagIcon height={12} className="shrink-0 rounded-[1px]" />
+      </span>
       <span lang={current.locale}>{current.native}</span>
     </Link>
   );
