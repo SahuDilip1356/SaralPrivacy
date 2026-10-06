@@ -12,6 +12,8 @@ import { resend } from "@/lib/resendClient";
 import { list } from "@vercel/blob";
 import { upsertSubscriber } from "@/lib/subscribers";
 import { getClientIp, rateLimit, isHoneypotTripped } from "@/lib/abuseGuard";
+import { escapeHtml } from "@/lib/email-templates";
+import { overDurableLimit, normalizeEmail } from "@/lib/templates/downloadLimits";
 
 // ─── Clients ──────────────────────────────────────────────────────────────────
 
@@ -101,8 +103,8 @@ async function sendTemplateEmail(props: {
       <p>DPDPA Compliance for Indian Businesses</p>
     </div>
     <div class="body">
-      <p>Hi ${props.contactPersonName},</p>
-      <p>Your <strong>${props.templateName}</strong> for <strong>${props.businessName}</strong> is ready.</p>
+      <p>Hi ${escapeHtml(props.contactPersonName)},</p>
+      <p>Your <strong>${escapeHtml(props.templateName)}</strong> for <strong>${escapeHtml(props.businessName)}</strong> is ready.</p>
       <a href="${props.downloadUrl}" style="display:inline-block;background:#07B981;color:#ffffff;font-weight:700;font-size:15px;padding:14px 28px;border-radius:8px;text-decoration:none;margin:8px 0 24px;">⬇ Download Template</a>
       <div class="note">
         <strong>What's in this template?</strong><br />
@@ -205,17 +207,26 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const data = validated.data;
+    const data = { ...validated.data, email: normalizeEmail(validated.data.email) };
     const formattedPhone = formatPhoneNumber(data.phoneNumber);
     const templateName = templateNames[data.templateSelected];
 
     // Resolve template URL (Blob → public/ fallback)
     const downloadUrl = await getTemplateUrl(data.templateSelected);
 
-    // IP / geo from headers (Vercel-injected)
-    const ip      = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "";
+    // IP / geo from headers (Vercel-injected). getClientIp ignores the
+    // client-written x-forwarded-for hop, so the durable IP cap can't be dodged.
+    const ip      = getClientIp(request);
     const city    = decodeURIComponent(request.headers.get("x-vercel-ip-city") || "");
     const country = request.headers.get("x-vercel-ip-country") || "";
+
+    // Durable caps: this route emails whatever address it's given.
+    if (await overDurableLimit(ip, data.email)) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again in an hour." },
+        { status: 429, headers: { "Retry-After": "3600" } }
+      );
+    }
 
     // Save lead via the lib/db seam (non-fatal if it fails). The payload
     // builder is pinned to the collection schema — see lib/templates/lead.ts.
