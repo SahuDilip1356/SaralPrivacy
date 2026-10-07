@@ -114,7 +114,7 @@ export async function sendDiscoveryInventory(p: {
       <div style="font-family:Inter,Arial,sans-serif;color:#334155;line-height:1.6;max-width:560px">
         <p>${hi}</p>
         <p>Attached is your <strong>DPDPA personal data inventory</strong> for
-        ${p.nicheName.toLowerCase()} — the data points you confirmed, with who they're about,
+        ${escapeHtml(p.nicheName.toLowerCase())} — the data points you confirmed, with who they're about,
         why you hold them, where they live, and a recommended precaution for each.</p>
         <p>It's a practical starting "record of processing" you can keep working in. When you're
         ready to score and prioritise the fixes for your business, take the full readiness assessment:</p>

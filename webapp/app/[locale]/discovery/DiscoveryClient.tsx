@@ -172,7 +172,7 @@ export default function DiscoveryClient() {
 
         {step === 3 && niche && result && (
           <div className="step-pane">
-            <ResultPanel nicheId={niche} result={result} selected={selected} onRestart={restart} />
+            <ResultPanel nicheId={niche} result={result} selected={selected} answers={answers} onRestart={restart} />
           </div>
         )}
       </div>
