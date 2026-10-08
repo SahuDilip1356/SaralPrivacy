@@ -1,6 +1,6 @@
 // email.ts — Resend email client for SaralPrivacy
 import { resend } from './resendClient';
-import { buildUnsubscribeUrl } from './sendGateway';
+import { buildUnsubscribeUrl, unsubscribeHeaders } from './sendGateway';
 import { escapeHtml } from './email-templates';
 import {
   consultationAlertTemplate,
@@ -296,9 +296,7 @@ export async function sendSubscriberBriefing(
       to:      email,
       subject,
       html,
-      headers: {
-        'List-Unsubscribe': `<${unsubscribeUrl}>`,
-      },
+      headers: await unsubscribeHeaders(email),
     });
     if (error) return { success: false, error: error.message };
     return { success: true };
