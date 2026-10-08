@@ -3,10 +3,26 @@ import { findOneByEmail, updateDocumentById } from "@/lib/db";
 import { verifyUnsubscribeSig } from "@/lib/sendGateway";
 import { getClientIp, rateLimit } from "@/lib/abuseGuard";
 
+// Two callers POST here:
+//   1. our /unsubscribe page and the consent-preferences form — JSON {email, sig};
+//   2. Gmail/Yahoo's own Unsubscribe button (RFC 8058) — a form-encoded
+//      "List-Unsubscribe=One-Click" body, with email + sig in the query string
+//      of the List-Unsubscribe header URL (see unsubscribeHeaders()).
+async function readTarget(request: NextRequest): Promise<{ email: unknown; sig: unknown }> {
+  if ((request.headers.get("content-type") || "").includes("application/json")) {
+    const { email, sig } = await request.json();
+    return { email, sig };
+  }
+  const q = new URL(request.url).searchParams;
+  return { email: q.get("email"), sig: q.get("sig") };
+}
+
 export async function POST(request: NextRequest) {
   try {
-    const { email, sig } = await request.json();
-    if (!email) return NextResponse.json({ error: "email required" }, { status: 400 });
+    const { email, sig } = await readTarget(request);
+    if (typeof email !== "string" || !email.trim()) {
+      return NextResponse.json({ error: "email required" }, { status: 400 });
+    }
 
     const normalised = email.trim().toLowerCase();
 
@@ -14,7 +30,7 @@ export async function POST(request: NextRequest) {
     // Unsigned requests (old emails, the consent-preferences form) still work —
     // unsubscribes must never be blocked outright — but are throttled so a
     // griefer can't bulk-suppress the subscriber list by posting raw emails.
-    const signedLink = await verifyUnsubscribeSig(normalised, sig);
+    const signedLink = await verifyUnsubscribeSig(normalised, typeof sig === "string" ? sig : null);
     if (!signedLink) {
       const limited = rateLimit(`unsub:${getClientIp(request)}`, 5, 60 * 60 * 1000);
       if (!limited.ok) {
@@ -47,4 +63,17 @@ export async function POST(request: NextRequest) {
     console.error("[subscribers/unsubscribe]", msg);
     return NextResponse.json({ error: msg }, { status: 500 });
   }
+}
+
+// A plain GET on the List-Unsubscribe URL (a mail client opening it in a
+// browser, or a link scanner prefetching it) must not unsubscribe anyone on its
+// own — RFC 8058. Send it to the confirmation page, which does the POST.
+export async function GET(request: NextRequest) {
+  const q = new URL(request.url).searchParams;
+  const target = new URL("/unsubscribe", request.url);
+  for (const k of ["email", "sig"]) {
+    const v = q.get(k);
+    if (v) target.searchParams.set(k, v);
+  }
+  return NextResponse.redirect(target, 303);
 }

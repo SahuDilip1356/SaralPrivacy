@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { insertDocument, updateDocumentById, queryDocuments } from "@/lib/db";
 import { briefingEmailTemplate } from "@/lib/email-templates";
 import { resend } from "@/lib/resendClient";
-import { fetchEligibleSubscribers, buildUnsubscribeUrl } from "@/lib/sendGateway";
+import { fetchEligibleSubscribers, buildUnsubscribeUrl, unsubscribeHeaders } from "@/lib/sendGateway";
 import type { BriefingData } from "@/lib/email-templates";
 
 const FROM   = process.env.RESEND_FROM_BRIEFINGS || "briefings@saralprivacy.com";
@@ -71,7 +71,7 @@ export async function GET(request: NextRequest) {
         to:      email,
         subject,
         html,
-        headers: { "List-Unsubscribe": `<${unsubscribeUrl}>` },
+        headers: await unsubscribeHeaders(email),
       });
 
       if (error || !data) {

@@ -42,7 +42,6 @@ const nextConfig: NextConfig = {
       // to the footer and /briefings, so the redirect landed on a page with no
       // form. /subscribe renders its own signup page, which the Updates menu
       // now links to — let it.
-      { source: '/unsubscribe', destination: '/consent-preferences', permanent: true },
       { source: '/rights/access', destination: '/privacy#data-rights', permanent: true },
       { source: '/rights/erasure', destination: '/privacy#data-rights', permanent: true },
       { source: '/webinars', destination: '/resources', permanent: false },

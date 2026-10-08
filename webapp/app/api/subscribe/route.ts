@@ -15,7 +15,10 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { name, email, industry, frequency, consentEmail } = body;
+    const { name, industry, frequency, consentEmail } = body;
+    // Stored lowercased: unsubscribe and the bounce webhook look emails up
+    // lowercased, so a mixed-case row would never be found again.
+    const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
 
     // Honeypot: only bots fill the hidden field. Pretend success, store nothing.
     if (isHoneypotTripped(body)) {

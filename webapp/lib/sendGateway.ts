@@ -106,9 +106,31 @@ export async function verifyUnsubscribeSig(
   return diff === 0;
 }
 
-export async function buildUnsubscribeUrl(email: string): Promise<string> {
-  const base = (process.env.NEXT_PUBLIC_SITE_URL || "https://saralprivacy.com").replace(/\/$/, "");
+// trim(): a stray newline in the env value ends up inside the List-Unsubscribe
+// header, and Resend rejects any header containing CR/LF.
+function siteBase(): string {
+  return (process.env.NEXT_PUBLIC_SITE_URL || "https://saralprivacy.com").trim().replace(/\/$/, "");
+}
+
+async function unsubscribeQuery(email: string): Promise<string> {
   const sig = await signEmailForUnsubscribe(email);
-  const sigPart = sig ? `&sig=${sig}` : "";
-  return `${base}/unsubscribe?email=${encodeURIComponent(email)}${sigPart}`;
+  return `email=${encodeURIComponent(email)}${sig ? `&sig=${sig}` : ""}`;
+}
+
+/** The link in the email body: a page that unsubscribes and confirms. */
+export async function buildUnsubscribeUrl(email: string): Promise<string> {
+  return `${siteBase()}/unsubscribe?${await unsubscribeQuery(email)}`;
+}
+
+/**
+ * RFC 8058 one-click headers. Gmail and Yahoo POST "List-Unsubscribe=One-Click"
+ * to this URL from their own Unsubscribe button, so it must be the API route
+ * (a page can't take a POST). A plain GET there redirects to the page above.
+ */
+export async function unsubscribeHeaders(email: string): Promise<Record<string, string>> {
+  const url = `${siteBase()}/api/subscribers/unsubscribe?${await unsubscribeQuery(email)}`;
+  return {
+    "List-Unsubscribe": `<${url}>`,
+    "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+  };
 }

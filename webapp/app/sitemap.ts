@@ -195,7 +195,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // EXCLUDED — intentional:
     // /consent-preferences  → utility page, noindex
     // /subscribe            → utility subscribe form, noindex
-    // /unsubscribe          → redirect to /consent-preferences
+    // /unsubscribe          → one-click target for email links (no params → consent hub)
     // /rights/access        → 308 redirect to /rights#access, noindex
     // /rights/erasure       → 308 redirect to /rights#erasure, noindex
     //                         (robots.ts deliberately does NOT disallow /rights/ — rights
