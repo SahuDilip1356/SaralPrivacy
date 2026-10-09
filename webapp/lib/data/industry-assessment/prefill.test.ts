@@ -82,6 +82,7 @@ test("prefillStillHeld: the note shows only while the pre-filled option is ticke
 
 test("entrySource only ever reports a known value", () => {
   assert.equal(entrySource(p("src=hero")), "hero");
+  assert.equal(entrySource(p("src=share&utm_source=whatsapp")), "share");
   assert.equal(entrySource(p("src=HERO")), "");
   assert.equal(entrySource(p("src=someone@example.com")), "");
   assert.equal(entrySource(p("")), "");

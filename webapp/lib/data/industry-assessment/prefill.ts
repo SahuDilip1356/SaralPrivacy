@@ -53,7 +53,11 @@ export function prefillStillHeld(
   return want.length > 0 && want.every((id) => have.includes(id));
 }
 
+/** Where a scan was entered from — the homepage hero or a shared result card. */
+export type EntrySource = "hero" | "share" | "";
+
 /** Entry source for assessment_start. Only a known value is ever reported. */
-export function entrySource(searchParams: ParamReader): "hero" | "" {
-  return searchParams?.get("src") === "hero" ? "hero" : "";
+export function entrySource(searchParams: ParamReader): EntrySource {
+  const src = searchParams?.get("src");
+  return src === "hero" || src === "share" ? src : "";
 }
