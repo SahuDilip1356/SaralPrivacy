@@ -42,8 +42,11 @@ function UnsubscribeInner() {
           <CheckCircle size={44} className="text-green-500 mx-auto mb-4" />
           <h1 className="text-xl font-semibold text-slate-800 mb-2">You&apos;ve been unsubscribed</h1>
           <p className="text-slate-500 text-sm leading-relaxed">
-            <span className="font-medium text-slate-700">{email}</span> has been removed from
-            SaralPrivacy Daily Briefings. You won&apos;t receive any more emails from us.
+            {/* Own line + break-all: a long address otherwise ran past the card on
+                mobile and swallowed the space before "has". */}
+            <span className="block font-medium text-slate-700 break-all mb-1">{email}</span>
+            has been removed from SaralPrivacy Daily Briefings. You won&apos;t receive any
+            more emails from us.
           </p>
           <p className="text-slate-400 text-xs mt-5">
             Changed your mind?{" "}
