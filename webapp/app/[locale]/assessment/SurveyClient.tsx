@@ -577,9 +577,6 @@ export default function SurveyClient() {
   const [contactEmail, setContactEmail] = useState("");
   const [contactBusiness, setContactBusiness] = useState("");
   const [contactMobile, setContactMobile] = useState("");
-  const [consentDelivery, setConsentDelivery] = useState(false);
-  const [consentNL, setConsentNL] = useState(false);
-  const [consentFU, setConsentFU] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [reportToken, setReportToken] = useState("");
@@ -1264,23 +1261,23 @@ export default function SurveyClient() {
 
                 <div className="space-y-2.5 mb-5">
                   <label className="flex items-start gap-2.5 cursor-pointer bg-green-50 border border-green-200 rounded-lg px-3 py-2.5">
-                    <input type="checkbox" checked={consentDelivery} onChange={e => setConsentDelivery(e.target.checked)} className="mt-0.5 w-4 h-4 accent-green-500" />
+                    <input type="checkbox" checked={consentReport} onChange={e => setConsentReport(e.target.checked)} className="mt-0.5 w-4 h-4 accent-green-500" />
                     {/* Legal tier: consent sentence stays English in every locale (spec §6). */}
                     <span className="text-xs text-slate-700 leading-snug">{t("gate.consentDelivery")} <span className="text-red-500">*</span></span>
                   </label>
                   <label className="flex items-start gap-2.5 cursor-pointer">
-                    <input type="checkbox" checked={consentNL} onChange={e => setConsentNL(e.target.checked)} className="mt-0.5 w-4 h-4 accent-green-500" />
+                    <input type="checkbox" checked={consentNewsletter} onChange={e => setConsentNewsletter(e.target.checked)} className="mt-0.5 w-4 h-4 accent-green-500" />
                     <span className="text-xs text-slate-500 leading-snug">{t("gate.consentUpdates")}</span>
                   </label>
                   <label className="flex items-start gap-2.5 cursor-pointer">
-                    <input type="checkbox" checked={consentFU} onChange={e => setConsentFU(e.target.checked)} className="mt-0.5 w-4 h-4 accent-green-500" />
+                    <input type="checkbox" checked={consentFollowup} onChange={e => setConsentFollowup(e.target.checked)} className="mt-0.5 w-4 h-4 accent-green-500" />
                     <span className="text-xs text-slate-500 leading-snug">{t("gate.consentConsult")}</span>
                   </label>
                 </div>
 
                 <button
                   onClick={handleSubmit}
-                  disabled={!contactEmail || !consentDelivery || submitting}
+                  disabled={!contactEmail || !consentReport || submitting}
                   className="w-full py-3.5 bg-green-700 text-white font-bold rounded-xl text-sm hover:bg-green-800 disabled:opacity-40 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
                 >
                   {submitting ? t("gate.sending") : t("gate.unlockCta")} {!submitting && <ArrowRight size={16} />}

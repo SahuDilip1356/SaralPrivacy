@@ -53,6 +53,7 @@ All `verify` commands run from the `webapp/` app directory inside the worktree.
 - files: webapp/app/[locale]/assessment/SurveyClient.tsx
 - risk: tier1
 - size: S
+- status: done
 - verify: npx tsc --noEmit 2>&1 | grep -c "error TS" | xargs test "$(cat /tmp/consent-tsc-baseline.txt)" -ge && npx eslint "app/[locale]/assessment/SurveyClient.tsx" && ! grep -nE "consentDelivery|consentNL|consentFU|setConsentDelivery|setConsentNL|setConsentFU" "app/[locale]/assessment/SurveyClient.tsx" && grep -q "setConsentFollowup" "app/[locale]/assessment/SurveyClient.tsx"
 - notes: |
     At baseline:
@@ -74,6 +75,7 @@ All `verify` commands run from the `webapp/` app directory inside the worktree.
 - files: webapp/messages/en.json, webapp/messages/hi.json
 - risk: tier1
 - size: S
+- status: done
 - verify: node -e 'for (const l of ["en","hi"]) { const m = require("./messages/"+l+".json"); const f = (o) => o && typeof o === "object" ? ("consentUpdates" in o ? o.consentUpdates : Object.values(o).map(f).find(Boolean)) : undefined; const v = f(m); if (!v || /occasional updates/i.test(v)) { console.error(l, v); process.exit(1) } } console.log("ok")'
 - notes: |
     - Key: `gate.consentUpdates` (en.json line 658 at baseline; hi.json line 800 is still the untranslated English string).
@@ -88,6 +90,7 @@ All `verify` commands run from the `webapp/` app directory inside the worktree.
 - files: webapp/lib/consent/withdrawal.ts, webapp/lib/consent/withdrawal.test.ts
 - risk: tier1
 - size: S
+- status: done
 - verify: node --import ./scripts/ts-resolve.mjs --experimental-strip-types --test lib/consent/withdrawal.test.ts
 - notes: |
     Export:
@@ -109,6 +112,7 @@ All `verify` commands run from the `webapp/` app directory inside the worktree.
 - files: webapp/app/api/subscribers/unsubscribe/route.ts
 - risk: tier1
 - size: S
+- status: done
 - verify: npx tsc --noEmit 2>&1 | grep -c "error TS" | xargs test "$(cat /tmp/consent-tsc-baseline.txt)" -ge && npx eslint app/api/subscribers/unsubscribe/route.ts && node --import ./scripts/ts-resolve.mjs --experimental-strip-types --test lib/consent/withdrawal.test.ts && grep -q 'insertDocument("consent_log"' app/api/subscribers/unsubscribe/route.ts && grep -q "shouldRecordWithdrawal" app/api/subscribers/unsubscribe/route.ts
 - notes: |
     After the existing `findOneByEmail("subscribers", …)` (line 44 at baseline):
@@ -127,6 +131,7 @@ All `verify` commands run from the `webapp/` app directory inside the worktree.
 - files: webapp/lib/consent/registry.ts, webapp/lib/consent/registry.test.ts
 - risk: tier1
 - size: S
+- status: done
 - verify: node --import ./scripts/ts-resolve.mjs --experimental-strip-types --test lib/consent/registry.test.ts
 - notes: |
     Export `summariseConsent(records, types)`, returning `{ active, withdrawn, totalRecords, byType: [{ type, pairs, active }] }`, using the spec's "Registry derivation" rule:
@@ -147,6 +152,7 @@ All `verify` commands run from the `webapp/` app directory inside the worktree.
 - files: webapp/app/(backoffice)/admin/consent/page.tsx
 - risk: tier1
 - size: S
+- status: done
 - verify: npx tsc --noEmit 2>&1 | grep -c "error TS" | xargs test "$(cat /tmp/consent-tsc-baseline.txt)" -ge && npx eslint "app/(backoffice)/admin/consent/page.tsx" && grep -q "summariseConsent" "app/(backoffice)/admin/consent/page.tsx" && grep -q '"unsubscribe"' "app/(backoffice)/admin/consent/page.tsx" && grep -q "Withdrawn At" "app/(backoffice)/admin/consent/page.tsx"
 - notes: |
     At baseline:
@@ -178,6 +184,19 @@ All `verify` commands run from the `webapp/` app directory inside the worktree.
     - Run against the preview's data backend: Appwrite unless `DATA_BACKEND_SUBSCRIBERS` is set.
     - Delete the test subscriber and consent rows afterwards only through the admin tools; keep the screenshots.
     - AC6, AC10, AC12 and AC15–AC17 are covered by T2, T3, T4 and T5/T6 checks rather than this pass.
+
+## Execution notes (2026-10-12)
+
+Setup: `npm ci` clean; tsc baseline = 0 errors. T1–T6 all verified; tsc still 0 errors after T6.
+
+- **T1:** the verify command as written can't pass, but the code is correct:
+  - `npx eslint` reports 4 errors that already exist at HEAD (lines 106, 799, 885, 886 before the edit). T1 adds none, and warnings drop from 8 to 7 (`setConsentFollowup` was dead code). Line 799 is step-0 UI, which this task must not touch, so those errors were left alone.
+  - `! grep consentDelivery` also matches the i18n key `t("gate.consentDelivery")`, which T2 says must stay. Ran instead: no `consentDelivery`/`consentNL`/`consentFU` state or setters remain outside that key.
+- **T2:** hi.json `gate.consentUpdates` uses the new **English** sentence, not a Hindi rendering. MULTILINGUAL_SPEC §6 and P5 put consent sentences in the legal tier: they stay English until a named legal reviewer signs off, and translated consents need a `language` column on consent_log writes. The code comment at the checkbox says the same. AC6 holds: the box says "daily DPDPA briefings" in both locales.
+- **T4:** the city header is decoded with a guard. A malformed `x-vercel-ip-city` would otherwise throw inside the try and silently drop the withdrawal record.
+- **T5:** on an exact `timestamp` tie, the withdrawal wins (conservative). A row with no `consent_value` counts as neither active nor withdrawn, matching today's page.
+- **T6:** typed `records` (replacing a pre-existing `any[]`) so the file lints clean; the badge for `unsubscribe` is amber, matching the Withdrawn card.
+- **A2:** re-checked at branch time. The only writer of subscriber `unsubscribed` status is `app/api/subscribers/unsubscribe/route.ts` (outreach is NG5).
 
 ## Verification log
 

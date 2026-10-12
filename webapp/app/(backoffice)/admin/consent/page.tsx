@@ -1,11 +1,27 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Shield, Search, Download as DownloadIcon, CheckCircle, XCircle } from "lucide-react";
+import { summariseConsent } from "@/lib/consent/registry";
 
 export const dynamic = "force-dynamic";
 
 const CONSENT_TYPES = ["all", "email_marketing", "phone_contact", "webinars", "data_processing"];
-const SOURCES       = ["all", "download", "subscribe", "contact", "assessment"];
+const SOURCES       = ["all", "download", "subscribe", "contact", "assessment", "unsubscribe"];
+
+type ConsentRow = {
+  $id: string;
+  email: string;
+  name?: string;
+  consent_type: string;
+  consent_value: boolean;
+  source: string;
+  privacy_version?: string;
+  ip_address?: string;
+  city?: string;
+  country?: string;
+  timestamp?: string;
+  withdrawn_at?: string | null;
+};
 
 function ConsentTypeBadge({ type }: { type: string }) {
   const map: Record<string, string> = {
@@ -28,6 +44,7 @@ function SourceBadge({ source }: { source: string }) {
     subscribe:  "bg-saffron-50 text-saffron-600",
     contact:    "bg-blue-100 text-blue-700",
     assessment: "bg-purple-100 text-purple-700",
+    unsubscribe: "bg-amber-100 text-amber-800",
   };
   const cls = map[source] || "bg-slate-100 text-slate-600";
   return (
@@ -38,7 +55,7 @@ function SourceBadge({ source }: { source: string }) {
 }
 
 export default function ConsentLogPage() {
-  const [records, setRecords]   = useState<any[]>([]);
+  const [records, setRecords]   = useState<ConsentRow[]>([]);
   const [search, setSearch]     = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
   const [sourceFilter, setSourceFilter] = useState("all");
@@ -60,22 +77,15 @@ export default function ConsentLogPage() {
     return matchSearch && matchType && matchSource;
   });
 
-  const active    = filtered.filter((r) => r.consent_value && !r.withdrawn_at).length;
-  const withdrawn = filtered.filter((r) => r.withdrawn_at).length;
-  const total     = filtered.length;
-
-  // Consent rate by type
-  const byType = CONSENT_TYPES.slice(1).map((type) => {
-    const typeRecords = filtered.filter((r) => r.consent_type === type);
-    const activeCount = typeRecords.filter((r) => r.consent_value && !r.withdrawn_at).length;
-    return { type, total: typeRecords.length, active: activeCount };
-  });
+  // Records are append-only: active/withdrawn count each person+purpose once,
+  // by its latest record, so a later withdrawal supersedes the grant.
+  const { active, withdrawn, totalRecords: total, byType } = summariseConsent(filtered, CONSENT_TYPES.slice(1));
 
   function handleExportCSV() {
-    const headers = ["Email", "Name", "Consent Type", "Value", "Source", "Privacy Version", "IP Address", "City", "Country", "Timestamp"];
+    const headers = ["Email", "Name", "Consent Type", "Value", "Source", "Privacy Version", "IP Address", "City", "Country", "Timestamp", "Withdrawn At"];
     const rows = filtered.map((r) => [
       r.email, r.name || "", r.consent_type, r.consent_value ? "true" : "false",
-      r.source, r.privacy_version, r.ip_address || "", r.city || "", r.country || "", r.timestamp,
+      r.source, r.privacy_version, r.ip_address || "", r.city || "", r.country || "", r.timestamp, r.withdrawn_at || "",
     ]);
     const csv = [headers, ...rows].map((row) => row.map((v) => `"${v}"`).join(",")).join("\n");
     const blob = new Blob([csv], { type: "text/csv" });
@@ -128,7 +138,7 @@ export default function ConsentLogPage() {
       <div className="bg-white rounded-xl border border-pearl-200 shadow-sm p-5 mb-5">
         <h3 className="text-sm font-semibold text-brand-700 mb-4">Consent Health by Type</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {byType.map(({ type, total: t, active: a }) => (
+          {byType.map(({ type, pairs: t, active: a }) => (
             <div key={type} className="bg-slate-50 rounded-lg p-3">
               <ConsentTypeBadge type={type} />
               <div className="mt-2 text-lg font-bold text-brand-700">{a}<span className="text-sm font-normal text-slate-400">/{t}</span></div>

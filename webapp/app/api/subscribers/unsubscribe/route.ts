@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { findOneByEmail, updateDocumentById } from "@/lib/db";
+import { findOneByEmail, insertDocument, updateDocumentById } from "@/lib/db";
 import { verifyUnsubscribeSig } from "@/lib/sendGateway";
 import { getClientIp, rateLimit } from "@/lib/abuseGuard";
+import { PRIVACY_NOTICE_VERSION } from "@/lib/utils";
+import { buildWithdrawalRecord, shouldRecordWithdrawal } from "@/lib/consent/withdrawal";
 
 // Two callers POST here:
 //   1. our /unsubscribe page and the consent-preferences form — JSON {email, sig};
@@ -48,14 +50,43 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: true, already_removed: true });
     }
 
+    // Already withdrawn: a repeat must not move the original withdrawal time
+    // or add a second consent record.
+    if (!shouldRecordWithdrawal(existing.status)) {
+      return NextResponse.json({ success: true });
+    }
+
     // Soft-unsubscribe: flip status (suppresses all future sends via
     // lib/suppression.ts) and stamp WHEN consent was withdrawn. We keep the row
     // as a suppression record so a later re-import can't re-contact them; full
     // deletion is available on request via the erasure right (/rights).
+    const withdrawnAt = new Date().toISOString();
     await updateDocumentById("subscribers", existing.id, {
       status: "unsubscribed",
-      unsubscribed_at: new Date().toISOString(),
+      unsubscribed_at: withdrawnAt,
     });
+
+    // Append-only withdrawal record (DPDPA s.6(4)) with the same timestamp.
+    // Awaited so a serverless exit can't drop it, but a failure never blocks
+    // the withdrawal itself — and the log line never carries the email.
+    let city = request.headers.get("x-vercel-ip-city") || "";
+    try { city = decodeURIComponent(city); } catch { /* keep the raw header */ }
+    try {
+      await insertDocument("consent_log", buildWithdrawalRecord({
+        email: normalised,
+        name: typeof existing.name === "string" ? existing.name : "",
+        at: withdrawnAt,
+        privacyVersion: PRIVACY_NOTICE_VERSION,
+        ip: request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || request.headers.get("x-real-ip") || "",
+        userAgent: request.headers.get("user-agent"),
+        city,
+        country: request.headers.get("x-vercel-ip-country"),
+        region: request.headers.get("x-vercel-ip-country-region"),
+      }));
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      console.error("[subscribers/unsubscribe] consent_log write failed:", msg);
+    }
 
     return NextResponse.json({ success: true });
   } catch (err) {
