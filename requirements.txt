@@ -59,7 +59,7 @@ python-dotenv==1.0.1
 PyYAML==6.0.3
 requests==2.31.0
 requests-oauthlib==2.0.0
-rich==14.3.3
+rich==15.0.0
 rsa==4.9.1
 shellingham==1.5.4
 six==1.17.0
