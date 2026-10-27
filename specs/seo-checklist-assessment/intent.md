@@ -8,9 +8,9 @@
 
 The 90-control DPDPA compliance checklist is the page closest to what an SMB
 operator searches for when they want to check themselves ("dpdp compliance
-checklist", about 300 estimated India searches a month). Today a search engine
-reading the page sees 3 of the 90 controls; the other 87 appear only after a
-visitor clicks a section open. The page is not in the sitemap, and Google
+checklist", about 300 estimated India searches a month). Today the page's
+visible markup carries 6 of the 90 controls; the other 84 sit only inside the
+page's script data and reach the screen after a visitor clicks a section open. The page is not in the sitemap, and Google
 records only two pages linking to it, so it ranks between 15th and 42nd and
 drew 1 click in three months.
 
