@@ -1,0 +1,34 @@
+version: 2
+updates:
+  # Next.js app (deployed to Vercel from webapp/)
+  - package-ecosystem: npm
+    directory: /webapp
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: Asia/Kolkata
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(deps)"
+    groups:
+      # One PR a week for routine minor/patch bumps; majors still arrive one per PR.
+      npm-minor-and-patch:
+        update-types:
+          - minor
+          - patch
+
+  # Workflows in .github/workflows
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: Asia/Kolkata
+    commit-message:
+      prefix: "chore(ci)"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
