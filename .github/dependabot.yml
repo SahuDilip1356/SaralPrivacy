@@ -18,6 +18,23 @@ updates:
           - minor
           - patch
 
+  # Python briefing pipeline (requirements.txt, installed by daily-briefing.yml)
+  - package-ecosystem: pip
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: Asia/Kolkata
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(deps)"
+    groups:
+      pip-minor-and-patch:
+        update-types:
+          - minor
+          - patch
+
   # Workflows in .github/workflows
   - package-ecosystem: github-actions
     directory: /
