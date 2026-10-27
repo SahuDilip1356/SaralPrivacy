@@ -25,6 +25,7 @@ import requests
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
+from tools.content_scorers import run_scorers
 from tools.utils import (
     get_env,
     get_today_iso,
@@ -240,6 +241,28 @@ def main(content: dict) -> dict:
     load_env()
     date_str = content.get("date", get_today_iso())
     day_num  = content.get("day_number", 1)
+
+    # ── Last gate before the row is written ───────────────────────────────────
+    # generate_content.py already scores every draft, but this module can be
+    # run on its own with --input <any json> (backfills, re-publishes, a
+    # hand-edited file). That path must not be the way a wrong penalty figure
+    # gets in. The grounding scorer needs the research corpus, so it runs only
+    # when research_{date}.json is still on disk; the penalty scorer always
+    # runs. See tools/content_scorers.py.
+    research = None
+    try:
+        from tools.utils import read_json
+        research = read_json(tmp_path(f"research_{date_str}.json"))
+    except Exception:
+        pass  # older date, or a standalone re-publish — penalty gate still applies
+
+    report = run_scorers(content, research)
+    for warning in report.warnings:
+        logger.warning(str(warning))
+    if not report.ok:
+        raise ValueError(
+            f"refusing to publish {date_str} — content scorers blocked it:\n{report.summary()}"
+        )
 
     # Recover authoritative roadmap fields the Pydantic content model drops
     # (week_theme + explicit stage/sector/content_type). The content JSON does not
