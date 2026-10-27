@@ -52,7 +52,7 @@ pyasn1==0.6.4
 pyasn1_modules==0.4.2
 pydantic==2.6.4
 pydantic_core==2.16.3
-Pygments==2.19.2
+Pygments==2.20.0
 pyparsing==3.3.2
 pytest==8.1.2
 pytest-mock==3.14.0
