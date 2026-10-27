@@ -26,7 +26,7 @@
     "@supabase/supabase-js": "^2.114.0",
     "@vercel/analytics": "^2.0.1",
     "@vercel/blob": "^2.8.2",
-    "ai": "^6.0.158",
+    "ai": "^7.0.152",
     "clsx": "^2.1.1",
     "framer-motion": "^12.38.0",
     "libphonenumber-js": "^1.10.0",
