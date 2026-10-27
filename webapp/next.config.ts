@@ -21,6 +21,9 @@ const nextConfig: NextConfig = {
   // function. Without this, the route 500s on Vercel with ENOENT.
   outputFileTracingIncludes: {
     "/api/blog/infographic": ["./lib/fonts/**/*"],
+    // WhatsApp share cards: prerendered at build, but if a card is ever
+    // rendered at runtime it needs the same fonts + the emblem.
+    "/og/[locale]/[sector]/[file]": ["./lib/fonts/**/*", "./public/logo-emblem.png"],
   },
   images: {
     remotePatterns: [

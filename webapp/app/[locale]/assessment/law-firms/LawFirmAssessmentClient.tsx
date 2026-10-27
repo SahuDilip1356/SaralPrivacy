@@ -29,6 +29,8 @@ import {
   type IAResult,
 } from "@/lib/data/industry-assessment";
 import { parsePrefill, prefillStillHeld, entrySource } from "@/lib/data/industry-assessment/prefill";
+import { ShareResult } from "@/components/share/ShareResult";
+import { BAND_INK } from "@/lib/data/result-share";
 import { PrefillNote } from "@/components/assessment/PrefillNote";
 
 const pack = lawFirmsPack;
@@ -322,8 +324,8 @@ export default function LawFirmAssessmentClient() {
                 <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Your law firm result</div>
                 <h2 className="mt-1 text-xl font-semibold text-navy-700">{t("readinessScore", { score: result.readinessScore })}</h2>
                 <div
-                  className="mt-2 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-bold text-white"
-                  style={{ backgroundColor: result.bandColor }}
+                  className="mt-2 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-bold"
+                  style={{ backgroundColor: result.bandColor, color: BAND_INK[result.band] }}
                 >
                   {t("riskBand")}: {result.band}
                 </div>
@@ -331,6 +333,9 @@ export default function LawFirmAssessmentClient() {
               </div>
             </div>
           </div>
+
+          {/* Share — sector + band only, never the score */}
+          <ShareResult sector="law-firms" band={result.band} className="mt-5" />
 
           {/* Two-lens */}
           <div className="mt-5 grid grid-cols-1 gap-4 rounded-xl border border-slate-200 bg-white p-6 sm:grid-cols-2">

@@ -1,11 +1,18 @@
 import type { Metadata } from "next";
+import { OG_BASE, scanCardImage } from "@/lib/data/result-share";
 import { Suspense } from "react";
 import CAAssessmentClient from "./CAAssessmentClient";
 
+const title = "Free CA Firm DPDPA Risk Scan — 3-Minute Check";
+const description =
+  "Free 3-minute DPDPA risk scan for CA firms. Check whether your PAN, Aadhaar, ITR, bank statement, payroll, Google Drive, WhatsApp and staff-access practices are DPDPA-ready.";
+
 export const metadata: Metadata = {
-  title: "Free CA Firm DPDPA Risk Scan — 3-Minute Check",
-  description:
-    "Free 3-minute DPDPA risk scan for CA firms. Check whether your PAN, Aadhaar, ITR, bank statement, payroll, Google Drive, WhatsApp and staff-access practices are DPDPA-ready.",
+  title,
+  description,
+  // The WhatsApp preview: own title/description + this sector's card.
+  // Next replaces a parent openGraph wholesale, so OG_BASE restates the rest.
+  openGraph: { ...OG_BASE, title, description, images: [scanCardImage("ca-firms")] },
   alternates: { canonical: "https://saralprivacy.com/assessment" },
   robots: { index: false, follow: false, googleBot: { index: false, follow: false } },
 };
