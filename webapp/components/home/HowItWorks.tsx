@@ -1,126 +1,54 @@
 "use client";
 
 import Link from "next/link";
-import {
-  Search,
-  Workflow,
-  ClipboardCheck,
-  FileText,
-  ShieldCheck,
-  Newspaper,
-  Telescope,
-  Microscope,
-  ArrowRight,
-} from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Section, Eyebrow } from "@/components/ui/Section";
+import { Section } from "@/components/ui/Section";
 import { ScoreDial } from "@/components/home/ScoreDial";
 import { useInView } from "@/lib/hooks/useInView";
 import { trackEvent } from "@/lib/analytics";
 
 // S5 — "How it works": the four-stage conversion spine, on NAVY.
 //
-// ── Two reversals, both founder calls, both worth recording ──────────────────
-// I had replaced this with a three-step version (choose industry → answer →
-// score) because readers of the four-stage spine were concluding that the
-// 3-minute check was step three of four, and that they owed us two tools' worth
-// of work before getting a score. The founder has now seen both versions live
-// and prefers this one (2026-08-22): "how it works of the live system is the
-// best, but it must have dark background as per the brand sheet."
+// Founder calls kept from the live version (2026-08-22): the four-stage spine,
+// not three steps; the dark navy ground from the brand sheet; green appears
+// once, on Assess — the step that is free, instant and needs nothing first — and
+// no filled CTA here, because the close owns that.
 //
-// The old failure mode is real, so it is designed against rather than ignored:
-// **Assess carries a green ring the other three don't**. Green is the page's
-// action colour and it appears exactly once in this section, on the step that
-// is free, instant and needs nothing first. The other three read as a map of
-// what exists, which is what they are. No filled CTA is added here — the close
-// already owns that, and a fifth green button would spend the rationing.
-//
-// Second reversal: this section takes the navy that the briefings deck held for
-// about an hour. With the recognition band gone, the page needed one mid-page
-// dark beat, and this is a better one — it is the product, not a biography.
-// The briefings deck goes back to the deep fill to pay for it, so navy still
-// means "a chapter turned" rather than "most of the page".
-//
-// ── Ink, re-measured for navy-700 ────────────────────────────────────────────
-// Ported line by line from the light version; every colour that referenced a
-// light ground was re-derived, not tinted:
-//   teal-700 lines → teal-400   (teal-700 is 3.52:1 on navy — banned)
-//   teal-50 tiles  → teal-400/15 with teal-300 glyphs
-//   white cards    → navy-600 + white/10 hairline (the risk map's chip idiom;
-//                    five white cards on navy would be the light design pasted
-//                    onto a dark rectangle)
-//   slate-600 body → slate-300 (11.66:1); caps → slate-400 (6.75:1, correct
-//                    here and banned on any light fill)
-// The one thing that stays light is the Notice Pack artifact: it depicts paper,
-// and paper is white on every ground.
+// ── sd-web-design v2 pilot (2026-10-28) ─────────────────────────────────────
+// Idea: what each tool hands you becomes the step itself. So the output — the
+// data list, the flow map, the score, the bilingual notice pack — is shown at a
+// size you can read, beside the step, instead of as a 46px thumbnail.
+// Removed as page tells (sd-web-design rules/guardrails.md §7): the eyebrow,
+// 1–4 number badges (order is the <ol> and the line), icons in tinted tiles,
+// 9–10px uppercase captions, 1px outlined cards, the grey-bar notice mock-up,
+// the dashed fan and the "coming soon" pill. Three steps are open rows on the
+// navy (a tone step on hover); Assess is the one filled panel, so the free,
+// instant step is the dominant thing on the screen. Every string is an
+// existing catalog key, so all locales keep working.
+// The one move: the spine draws down once as the section arrives (transform
+// only); reduced motion shows it drawn.
 
-// Display strings (title / sub / tag / cap) live in the catalog under
-// home.howItWorks.steps.<key>.* — this array keeps only wiring + styling.
-type Step = {
-  n: number;
-  key: "discover" | "map" | "assess" | "fix";
-  icon: typeof Search;
-  href: string;
-  badge: string; // number-badge fill (full class for Tailwind purge-safety)
-  ring: string; // icon tile
-  iconColor: string;
-  /** The one step that is free, instant, and needs nothing before it. */
-  primary?: boolean;
-};
+type StepKey = "discover" | "map" | "assess" | "fix";
 
-const steps: Step[] = [
-  {
-    n: 1,
-    key: "discover",
-    icon: Search,
-    href: "/discovery",
-    badge: "bg-teal-400",
-    ring: "bg-teal-400/15",
-    iconColor: "text-teal-300",
-  },
-  {
-    n: 2,
-    key: "map",
-    icon: Workflow,
-    href: "/data-mapping",
-    badge: "bg-teal-400",
-    ring: "bg-teal-400/15",
-    iconColor: "text-teal-300",
-  },
-  {
-    n: 3,
-    key: "assess",
-    icon: ClipboardCheck,
-    href: "/assessment",
-    badge: "bg-green-400",
-    ring: "bg-green-400/20",
-    iconColor: "text-green-300",
-    primary: true,
-  },
-  {
-    n: 4,
-    key: "fix",
-    icon: FileText,
-    href: "/tools/dpdpa-privacy-notice-generator",
-    badge: "bg-gold-400",
-    ring: "bg-gold-400/15",
-    iconColor: "text-gold-300",
-  },
+// `note`: the one catalog line that adds to the step's sentence rather than
+// repeating it (Discover's cap and Fix's tag restate their sub).
+const steps: { key: StepKey; href: string; note: "tag" | "cap"; primary?: boolean }[] = [
+  { key: "discover", href: "/discovery", note: "tag" },
+  { key: "map", href: "/data-mapping", note: "cap" },
+  { key: "assess", href: "/assessment", note: "cap", primary: true },
+  { key: "fix", href: "/tools/dpdpa-privacy-notice-generator", note: "cap" },
 ];
 
-// Per-step artifact — supporting proof, kept deliberately quiet so the step
-// title stays the standout (one standout per card). Desktop: beside the title.
-// Mobile: wraps onto its own row under the text. CSS/SVG only.
-function StepArtifact({ kind }: { kind: Step["key"] }) {
+// What each tool hands you, drawn from the product's own vocabulary.
+// data-ui: a real interface fragment, which keeps its own small type and fills.
+function StepOutput({ kind }: { kind: StepKey }) {
   const t = useTranslations("home.howItWorks");
   if (kind === "discover") {
     return (
-      <div className="flex flex-wrap gap-1 justify-start sm:justify-end sm:max-w-[124px] shrink-0">
+      <div data-ui className="flex flex-wrap gap-2">
         {(["customers", "staff", "cctv", "vendors"] as const).map((l) => (
-          <span
-            key={l}
-            className="text-[9px] font-medium text-teal-200 bg-teal-400/15 border border-teal-400/30 rounded-full px-1.5 py-0.5"
-          >
+          <span key={l} className="text-sm font-medium text-teal-100 bg-teal-400/20 rounded-full px-3 py-1">
             {t(`artifactChips.${l}`)}
           </span>
         ))}
@@ -128,17 +56,15 @@ function StepArtifact({ kind }: { kind: Step["key"] }) {
     );
   }
   if (kind === "map") {
-    // three stage nodes on a flow line; the gold dot marks a hotspot
+    // three stages on a flow; the gold dot marks where control breaks
     return (
-      <div className="flex items-center gap-1 shrink-0">
+      <div data-ui aria-hidden className="flex items-center">
         {[0, 1, 2].map((i) => (
-          <span key={i} className="flex items-center gap-1">
-            <span className="relative inline-block w-5 h-5 rounded-md bg-teal-400/15 border border-teal-400/40">
-              {i === 2 && (
-                <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-gold-400" />
-              )}
+          <span key={i} className="flex items-center">
+            <span className="relative block w-10 h-10 rounded-lg bg-teal-400/25">
+              {i === 2 && <span className="absolute -top-1.5 -right-1.5 w-3.5 h-3.5 rounded-full bg-gold-400" />}
             </span>
-            {i < 2 && <span className="inline-block w-2 h-px bg-teal-400" />}
+            {i < 2 && <span className="block w-8 h-[3px] bg-teal-400/70" />}
           </span>
         ))}
       </div>
@@ -146,241 +72,118 @@ function StepArtifact({ kind }: { kind: Step["key"] }) {
   }
   if (kind === "assess") {
     return (
-      <div className="block shrink-0">
-        <ScoreDial value={41} size={46} stroke={6} variant="quiet" onDark showTotal={false} />
+      <div data-ui>
+        <ScoreDial value={41} size={72} stroke={8} variant="quiet" onDark showTotal={false} />
       </div>
     );
   }
-  // fix — notice-PDF corner mock. Stays light on purpose: it is a sheet of
-  // paper, and a navy sheet of paper is not a thing.
+  // The notice pack is paper, and paper is light on every ground.
   return (
-    <div className="block shrink-0">
-      <div className="relative w-[62px] h-[46px] rounded-md bg-cloud-100 border border-cloud-300 p-2 overflow-hidden">
-        <div className="h-1 w-7 bg-slate-400 rounded-full mb-1.5" />
-        <div className="h-[3px] w-full bg-cloud-300 rounded-full mb-1" />
-        <div className="h-[3px] w-4/5 bg-cloud-300 rounded-full mb-1.5" />
-        <div className="text-[6.5px] leading-none text-slate-600">EN + हिन्दी</div>
-        <div
-          className="absolute top-0 right-0 w-3 h-3 bg-gold-400"
-          style={{ clipPath: "polygon(100% 0, 0 0, 100% 100%)" }}
-        />
-      </div>
+    <div data-ui className="relative w-36 rounded-md bg-cloud-50 px-3.5 py-3 overflow-hidden">
+      <span className="block text-sm font-semibold text-navy-800">{t("steps.fix.tag")}</span>
+      <span className="block text-sm text-slate-700 mt-1">EN + हिन्दी</span>
+      <span aria-hidden className="absolute top-0 right-0 w-4 h-4 bg-gold-400" style={{ clipPath: "polygon(100% 0, 0 0, 100% 100%)" }} />
     </div>
   );
 }
 
-// Leaf display strings live under home.howItWorks.leaves.<key>.*
 const leaves = [
-  { key: "dailyBrief", icon: Newspaper, href: "/briefings" },
-  { key: "sectorDeepDive", icon: Telescope, href: "/industries" },
-  { key: "deepReview", icon: Microscope, href: null },
+  { key: "dailyBrief", href: "/briefings" },
+  { key: "sectorDeepDive", href: "/industries" },
+  { key: "deepReview", href: null },
 ] as const;
 
 export function HowItWorks() {
   const t = useTranslations("home.howItWorks");
   const { ref, inView } = useInView<HTMLDivElement>();
 
-  // staggered reveal: each row fades up after its predecessor lands
-  const reveal = () =>
-    `transition-all duration-500 ease-out motion-reduce:!opacity-100 motion-reduce:!translate-y-0 motion-reduce:!transition-none ${
+  const arrive = (i: number) => ({
+    style: { transitionDelay: `${i * 90}ms` },
+    className: `transition-[opacity,transform] duration-500 ease-out motion-reduce:!opacity-100 motion-reduce:!translate-y-0 motion-reduce:!transition-none ${
       inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-    }`;
+    }`,
+  });
 
   return (
-    <Section surface="navy" type="demo" width="narrow">
+    <Section surface="navy" type="demo">
       <div ref={ref}>
-        {/* header */}
-        <div className="text-center mb-11">
-          <Eyebrow surface="navy" className="mb-3">
-            {t("eyebrow")}
-          </Eyebrow>
-          <h2 className="type-display-3 text-white mb-3">{t("title")}</h2>
-          <p className="type-intro text-slate-300 max-w-md mx-auto">
-            {t("intro")}
-          </p>
+        <div className="grid gap-5 md:grid-cols-12 md:items-end mb-14">
+          <h2 className="md:col-span-7 type-display-2 text-white">{t("title")}</h2>
+          <p className="md:col-span-5 text-lg leading-relaxed text-cloud-100">{t("intro")}</p>
         </div>
 
-        {/* spine */}
-        <div className="flex flex-col items-center">
-          {steps.map((step, i) => {
-            const Icon = step.icon;
-            return (
-              <div key={step.n} className="w-full flex flex-col items-center">
-                <Link
-                  href={step.href}
-                  onClick={() => trackEvent.hiwStepClick({ step: step.key })}
-                  style={{ transitionDelay: `${i * 140}ms` }}
-                  className={`group relative w-full max-w-lg flex flex-wrap items-center gap-x-3.5 gap-y-2 rounded-xl bg-navy-600 border px-4 py-3.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-700 ${
-                    step.primary
-                      ? "border-green-400/50 ring-1 ring-green-400/25 hover:border-green-400 focus-visible:ring-green-400"
-                      : "border-white/10 hover:border-teal-400/50 focus-visible:ring-teal-400"
-                  } ${reveal()}`}
-                >
-                  <span
-                    className={`absolute -top-2 -right-2 w-6 h-6 rounded-full grid place-items-center text-xs font-semibold text-navy-950 ${step.badge}`}
-                  >
-                    {step.n}
-                  </span>
-                  <span
-                    className={`order-1 shrink-0 w-11 h-11 rounded-lg grid place-items-center ${step.ring}`}
-                  >
-                    <Icon size={20} className={step.iconColor} />
-                  </span>
-                  <span className="order-2 min-w-0 flex-1">
-                    <span className="block text-white font-semibold text-[15px]">
-                      {t(`steps.${step.key}.title`)}
-                    </span>
-                    <span className="block text-slate-300 text-xs mt-0.5">
-                      {t(`steps.${step.key}.sub`)}{" "}
-                      <span className="text-slate-400">· {t(`steps.${step.key}.tag`)}</span>
-                    </span>
-                    <span className="block text-[10px] font-semibold tracking-wide uppercase text-slate-400 mt-1.5">
-                      {t(`steps.${step.key}.cap`)}
-                    </span>
-                  </span>
-                  {/* artifact: inline beside the text on desktop; wraps to its own
-                      row (indented under the text) on mobile via basis-full */}
-                  <span className="order-4 sm:order-3 basis-full sm:basis-auto pl-[58px] sm:pl-0">
-                    <StepArtifact kind={step.key} />
-                  </span>
-                  <ArrowRight
-                    size={16}
-                    className={`order-3 sm:order-4 shrink-0 transition-colors ${
-                      step.primary
-                        ? "text-green-300"
-                        : "text-slate-400 group-hover:text-teal-300"
-                    }`}
-                  />
-                </Link>
-                {/* connector */}
-                <span
-                  aria-hidden
-                  className="my-2 h-8 w-0.5 rounded-full opacity-70 sp-line-flow"
-                />
-              </div>
-            );
-          })}
-
-          {/* milestone */}
-          <div
-            style={{ transitionDelay: `${steps.length * 140}ms` }}
-            className={`w-full max-w-lg flex items-center gap-3.5 rounded-xl border-[1.5px] border-green-400/40 bg-green-400/10 px-4 py-4 ${reveal()}`}
-          >
-            <span className="shrink-0 w-11 h-11 rounded-lg grid place-items-center bg-green-400/20">
-              <ShieldCheck size={22} className="text-green-300" />
-            </span>
-            <span className="min-w-0">
-              <span className="block text-white font-semibold text-base">
-                {t("milestoneTitle")}
-              </span>
-              <span className="block text-slate-300 text-xs mt-0.5">
-                {t("milestoneSub")}
-              </span>
-            </span>
-          </div>
-
-          {/* branch connector — teal dashed-bezier fan flowing from the
-              milestone down to the three leaves (same aesthetic as the risk
-              map's scatter). Mobile stacks → simple stem.
-              stroke is teal-400, not the light version's teal-700: on navy that
-              ink measures 3.52:1 and effectively disappears. */}
+        <div className="relative">
+          {/* the spine: one 3px line that draws down once */}
           <span
             aria-hidden
-            className="my-2 h-6 w-px border-l-2 border-dashed border-teal-400 sm:hidden"
-          />
-          <svg
-            aria-hidden
-            viewBox="0 0 768 44"
-            height={44}
-            preserveAspectRatio="none"
-            style={{ transitionDelay: `${(steps.length + 1) * 140}ms` }}
-            className={`hidden sm:block w-full mt-1 mb-1 transition-opacity duration-500 motion-reduce:!opacity-100 ${
-              inView ? "opacity-100" : "opacity-0"
+            className={`absolute left-[11px] top-3 bottom-3 w-[3px] rounded-full bg-teal-400/70 origin-top transition-transform duration-[1200ms] ease-out motion-reduce:!scale-y-100 motion-reduce:!transition-none ${
+              inView ? "scale-y-100" : "scale-y-0"
             }`}
-          >
-            {[
-              "M384 2 C 384 28, 128 16, 128 43",
-              "M384 2 L 384 43",
-              "M384 2 C 384 28, 640 16, 640 43",
-            ].map((d, i) => (
-              <path
-                key={i}
-                d={d}
-                className="sp-dash-flow stroke-teal-400 fill-none opacity-70"
-                strokeWidth={1.6}
-                strokeDasharray="5 6"
-                vectorEffect="non-scaling-stroke"
-              />
-            ))}
-          </svg>
-
-          {/* 3-way "keep it living" branch */}
-          <div
-            style={{ transitionDelay: `${(steps.length + 1) * 140}ms` }}
-            className={`w-full grid grid-cols-1 sm:grid-cols-3 gap-3 ${reveal()}`}
-          >
-            {leaves.map((leaf) => {
-              const Icon = leaf.icon;
-              const comingSoon = leaf.href === null;
-              const inner = (
-                <>
+          />
+          <ol className="relative space-y-4">
+            {steps.map((step, i) => {
+              const a = arrive(i);
+              return (
+                <li key={step.key} className={`relative pl-10 ${a.className}`} style={a.style}>
                   <span
-                    className={`shrink-0 w-9 h-9 rounded-lg grid place-items-center ${
-                      comingSoon ? "bg-white/5" : "bg-teal-400/15"
+                    aria-hidden
+                    className={`absolute left-0 top-7 w-[25px] h-[25px] rounded-full ${step.primary ? "bg-green-400" : "bg-teal-400"} ring-4 ring-navy-700`}
+                  />
+                  <Link
+                    href={step.href}
+                    onClick={() => trackEvent.hiwStepClick({ step: step.key })}
+                    className={`group grid gap-5 md:grid-cols-12 md:items-center rounded-2xl px-5 py-6 md:px-7 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-700 ${
+                      step.primary
+                        ? "bg-green-400/10 border-2 border-green-400/60 hover:border-green-400 focus-visible:ring-green-400"
+                        : "hover:bg-navy-600 focus-visible:ring-teal-400"
                     }`}
                   >
-                    <Icon
-                      size={18}
-                      className={comingSoon ? "text-slate-400" : "text-teal-300"}
-                    />
-                  </span>
-                  <span className="min-w-0">
-                    <span
-                      className={`block font-semibold text-sm ${
-                        comingSoon ? "text-slate-300" : "text-white"
-                      }`}
-                    >
-                      {t(`leaves.${leaf.key}.title`)}
+                    <span className="md:col-span-7 block">
+                      <span className="flex items-center gap-2 text-2xl font-semibold text-white">
+                        {t(`steps.${step.key}.title`)}
+                        <ArrowRight
+                          size={20}
+                          className={`transition-transform group-hover:translate-x-1 motion-reduce:!translate-x-0 ${step.primary ? "text-green-300" : "text-teal-300"}`}
+                        />
+                      </span>
+                      <span className="block text-lg text-cloud-100 mt-1.5">{t(`steps.${step.key}.sub`)}</span>
+                      <span className="block text-base text-slate-300 mt-1">{t(`steps.${step.key}.${step.note}`)}</span>
                     </span>
-                    {comingSoon ? (
-                      <span className="inline-block mt-1 text-[10px] font-semibold text-gold-300 bg-gold-400/15 rounded-full px-2 py-0.5">
-                        {t("comingSoon")}
-                      </span>
-                    ) : (
-                      <span className="block text-slate-300 text-xs mt-0.5">
-                        {t(`leaves.${leaf.key}.sub`)}
-                      </span>
-                    )}
-                  </span>
-                  <ArrowRight
-                    size={14}
-                    className={`ml-auto shrink-0 transition-colors ${
-                      comingSoon ? "text-slate-400" : "text-slate-400 group-hover:text-teal-300"
-                    }`}
-                  />
-                </>
-              );
-              const base = "flex items-center gap-2.5 rounded-xl border px-3.5 py-3";
-              return comingSoon ? (
-                <div
-                  key={leaf.key}
-                  className={`${base} border-dashed border-white/15 bg-white/[0.03] cursor-not-allowed`}
-                  title={t("comingSoon")}
-                >
-                  {inner}
-                </div>
-              ) : (
-                <Link
-                  key={leaf.key}
-                  href={leaf.href as string}
-                  className={`group ${base} bg-navy-600 border-white/10 hover:border-teal-400/50 transition-colors`}
-                >
-                  {inner}
-                </Link>
+                    <span className="md:col-span-5 flex md:justify-end">
+                      <StepOutput kind={step.key} />
+                    </span>
+                  </Link>
+                </li>
               );
             })}
-          </div>
+            <li className={`relative pl-10 ${arrive(steps.length).className}`} style={arrive(steps.length).style}>
+              <span aria-hidden className="absolute left-0 top-7 w-[25px] h-[25px] rounded-full bg-cloud-50 ring-4 ring-navy-700" />
+              <div className="rounded-2xl bg-cloud-50 px-5 py-6 md:px-7">
+                <span className="block text-2xl font-semibold text-navy-800">{t("milestoneTitle")}</span>
+                <span className="block text-lg text-slate-700 mt-1.5">{t("milestoneSub")}</span>
+              </div>
+            </li>
+          </ol>
         </div>
+
+        <ul className={`mt-10 grid gap-x-8 gap-y-5 sm:grid-cols-3 pl-10 ${arrive(steps.length + 1).className}`} style={arrive(steps.length + 1).style}>
+          {leaves.map((leaf) =>
+            leaf.href ? (
+              <li key={leaf.key}>
+                <Link href={leaf.href} className="group inline-flex items-center gap-1.5 text-lg font-semibold text-white hover:text-teal-200">
+                  {t(`leaves.${leaf.key}.title`)}
+                  <ArrowRight size={16} className="text-teal-300 transition-transform group-hover:translate-x-0.5 motion-reduce:!translate-x-0" />
+                </Link>
+                <span className="block text-base text-slate-300 mt-0.5">{t(`leaves.${leaf.key}.sub`)}</span>
+              </li>
+            ) : (
+              <li key={leaf.key}>
+                <span className="block text-lg font-semibold text-cloud-200">{t(`leaves.${leaf.key}.title`)}</span>
+                <span className="block text-base text-slate-300 mt-0.5">{t("comingSoon")}</span>
+              </li>
+            ),
+          )}
+        </ul>
       </div>
     </Section>
   );
