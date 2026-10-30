@@ -55,3 +55,4 @@ node_modules
 # Search Console service-account key + SEO inspection reports (tools/seo)
 .gsc-service-account.json
 tools/seo/reports/
+.taste-skill/

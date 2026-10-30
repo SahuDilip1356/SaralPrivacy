@@ -1,0 +1,178 @@
+{
+  "title": "Notice Pack builder",
+  "base": "http://localhost:3000",
+  "hide": "button.fixed.bottom-5.right-5,header.fixed",
+  "states": [
+    {
+      "name": "empty",
+      "path": "/tools/dpdpa-privacy-notice-generator",
+      "selector": "div.app",
+      "note": "first load, nothing typed"
+    },
+    {
+      "name": "tried next",
+      "path": "/tools/dpdpa-privacy-notice-generator",
+      "selector": "div.app",
+      "note": "pressed Next with nothing filled",
+      "steps": [
+        {
+          "click": "section.card .foot button:last-child"
+        }
+      ]
+    },
+    {
+      "name": "filled",
+      "path": "/tools/dpdpa-privacy-notice-generator",
+      "selector": "div.app",
+      "note": "sample business and sector",
+      "steps": [
+        {
+          "fill": [
+            "input[placeholder='e.g. Sunrise Diagnostics']",
+            "Sunrise Diagnostics"
+          ]
+        },
+        {
+          "select": [
+            "section.card select",
+            "Clinic / Diagnostic Lab"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "long name",
+      "path": "/tools/dpdpa-privacy-notice-generator",
+      "selector": "div.app",
+      "note": "120-character business name",
+      "steps": [
+        {
+          "fill": [
+            "input[placeholder='e.g. Sunrise Diagnostics']",
+            "Sunrise Diagnostics and Pathology Laboratories Private Limited (Andheri East, Powai, Thane and Navi Mumbai Collection Centres)"
+          ]
+        },
+        {
+          "select": [
+            "section.card select",
+            "Clinic / Diagnostic Lab"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hindi",
+      "path": "/tools/dpdpa-privacy-notice-generator",
+      "selector": "div.app",
+      "note": "Devanagari name, notice in Hindi",
+      "steps": [
+        {
+          "fill": [
+            "input[placeholder='e.g. Sunrise Diagnostics']",
+            "सनराइज़ डायग्नोस्टिक्स"
+          ]
+        },
+        {
+          "select": [
+            "section.card select",
+            "Clinic / Diagnostic Lab"
+          ]
+        },
+        {
+          "click": "section.preview .langbar button:last-child"
+        }
+      ]
+    },
+    {
+      "name": "step 2",
+      "path": "/tools/dpdpa-privacy-notice-generator",
+      "selector": "div.app",
+      "note": "data step, pre-ticked from the sector",
+      "steps": [
+        {
+          "fill": [
+            "input[placeholder='e.g. Sunrise Diagnostics']",
+            "Sunrise Diagnostics"
+          ]
+        },
+        {
+          "select": [
+            "section.card select",
+            "Clinic / Diagnostic Lab"
+          ]
+        },
+        {
+          "click": "section.card .foot button:last-child"
+        }
+      ]
+    },
+    {
+      "name": "phone",
+      "path": "/tools/dpdpa-privacy-notice-generator",
+      "width": 390,
+      "height": 844,
+      "max_height": 1500,
+      "note": "first load"
+    },
+    {
+      "name": "phone tried next",
+      "path": "/tools/dpdpa-privacy-notice-generator",
+      "width": 390,
+      "height": 844,
+      "selector": "div.app",
+      "note": "pressed Next with nothing filled",
+      "steps": [
+        {
+          "click": "section.card .foot button:last-child"
+        }
+      ]
+    },
+    {
+      "name": "phone filled",
+      "path": "/tools/dpdpa-privacy-notice-generator",
+      "width": 390,
+      "height": 844,
+      "selector": "div.app",
+      "note": "sample business and sector",
+      "steps": [
+        {
+          "fill": [
+            "input[placeholder='e.g. Sunrise Diagnostics']",
+            "Sunrise Diagnostics"
+          ]
+        },
+        {
+          "select": [
+            "section.card select",
+            "Clinic / Diagnostic Lab"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "phone step 2",
+      "path": "/tools/dpdpa-privacy-notice-generator",
+      "width": 390,
+      "height": 844,
+      "selector": "div.app",
+      "note": "data step",
+      "steps": [
+        {
+          "fill": [
+            "input[placeholder='e.g. Sunrise Diagnostics']",
+            "Sunrise Diagnostics"
+          ]
+        },
+        {
+          "select": [
+            "section.card select",
+            "Clinic / Diagnostic Lab"
+          ]
+        },
+        {
+          "click": "section.card .foot button:last-child"
+        }
+      ]
+    }
+  ]
+}

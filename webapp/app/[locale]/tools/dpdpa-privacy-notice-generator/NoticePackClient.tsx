@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { Check } from "lucide-react";
 import {
   DATA_GROUPS, SENSITIVE, DATA_PURPOSE, CONTEXTS, VENDORS, CHILD_WHY, SECTORS, consentBlocks,
 } from "@/lib/notice-pack/data";
@@ -42,6 +43,8 @@ export default function NoticePackClient() {
   const [effIso, setEffIso] = useState("");
   const [copiedToast, setCopiedToast] = useState(false);
   const [pdfBusy, setPdfBusy] = useState(false);
+  // The step whose Next was pressed while something was missing: its errors show, and only then.
+  const [tried, setTried] = useState<number | null>(null);
   const hydrated = useRef(false);
   const hpRef = useRef<HTMLInputElement>(null);
   const gateEmailRef = useRef<HTMLInputElement>(null);
@@ -105,14 +108,14 @@ export default function NoticePackClient() {
   const seg = (field: keyof NPState, vals: string[]) => (
     <div className="seg">
       {vals.map((v) => (
-        <button key={v} type="button" className={S[field] === v ? "on" : ""} onClick={() => update({ [field]: v } as Partial<NPState>)}>{v}</button>
+        <button key={v} type="button" aria-pressed={S[field] === v} className={S[field] === v ? "on" : ""} onClick={() => update({ [field]: v } as Partial<NPState>)}>{v}</button>
       ))}
     </div>
   );
   const radio = (field: keyof NPState, vals: string[]) => (
     <div className="chips">
       {vals.map((v) => (
-        <button key={v} type="button" className={`opt ${S[field] === v ? "on" : ""}`} onClick={() => update({ [field]: v } as Partial<NPState>)}>{v}</button>
+        <button key={v} type="button" aria-pressed={S[field] === v} className={`opt ${S[field] === v ? "on" : ""}`} onClick={() => update({ [field]: v } as Partial<NPState>)}>{v}</button>
       ))}
     </div>
   );
@@ -120,7 +123,7 @@ export default function NoticePackClient() {
   const multi = (field: "consentVia" | "withdrawMethod", vals: string[]) => (
     <div className="chips">
       {vals.map((v) => (
-        <button key={v} type="button" className={`opt ${S[field].includes(v) ? "on" : ""}`} onClick={() => toggle(field, v)}>{v}</button>
+        <button key={v} type="button" aria-pressed={S[field].includes(v)} className={`opt ${S[field].includes(v) ? "on" : ""}`} onClick={() => toggle(field, v)}>{v}</button>
       ))}
     </div>
   );
@@ -135,11 +138,27 @@ export default function NoticePackClient() {
     if (n === 7) return !!(S.cName.trim() && emailOk(S.cEmail));
     return true;
   }
-  const stepHint = (n: number): string => {
-    if (n === 0 && !stepValid(0)) return "Enter a business name and pick a sector to continue.";
-    if (n === 1 && !stepValid(1)) return "Select at least one data category.";
-    if (n === 7 && !stepValid(7)) return "Add a grievance contact name and a valid email.";
-    return "";
+  // Field errors (sd-web-design rules/operate.md): next to the field, tied to it, shown only after
+  // Next was pressed with something missing. Each says what is wrong and how to fix it.
+  const errs: Record<string, string> = {};
+  if (tried === 0 && !S.org.trim()) errs.org = "Enter your business name. The notice uses it to name you as the Data Fiduciary.";
+  if (tried === 0 && !S.sector) errs.sector = "Pick a sector so we can fill in the usual data, purposes and vendors.";
+  if (tried === 1 && !S.data.length) errs.data = "Tick at least one kind of data you collect.";
+  if (tried === 7 && !S.cName.trim()) errs.cName = "Add the name of the person who answers privacy requests.";
+  if (tried === 7 && !emailOk(S.cEmail)) errs.cEmail = S.cEmail.trim() ? "That email looks incomplete. It should look like privacy@yourbiz.in." : "Add an email where people can reach them.";
+  const errProps = (k: string) => (errs[k] ? { "aria-invalid": true as const, "aria-describedby": `np-err-${k}` } : {});
+  const fieldErr = (k: string) => (errs[k] ? <p className="ferr" id={`np-err-${k}`}>{errs[k]}</p> : null);
+  // Next is never silently disabled: pressing it on an incomplete step shows what is missing and
+  // moves focus to the first field that needs it.
+  const goNext = (finish: boolean) => {
+    if (!stepValid(step)) {
+      setTried(step);
+      setTimeout(() => (document.querySelector('.npb [aria-invalid="true"], .npb .ferr') as HTMLElement | null)?.focus(), 0);
+      return;
+    }
+    setTried(null);
+    if (finish) { track("notice_score_calculated", { sector: S.sector, score: s }); setDone(true); }
+    else setStep((n) => n + 1);
   };
 
   // ── export / gate ──
@@ -366,7 +385,7 @@ export default function NoticePackClient() {
         <p className="disc-note">This tool generates a practical draft based on your inputs. It is not legal advice. Review before publishing.</p>
 
         {gateOpen && <Gate />}
-        {copiedToast && <div className="np-toast" role="status">Copied ✓</div>}
+        {copiedToast && <div className="np-toast" role="status">Copied</div>}
       </div>
     );
   }
@@ -375,33 +394,31 @@ export default function NoticePackClient() {
   return (
     <div className="wrap">
       <div className="head">
-        <span className="eyebrow">DPDPA Notice Pack Builder</span>
         <h1>Generate your DPDPA Notice Pack in minutes.</h1>
         <p className="sub">Pick your business type and we pre-fill the likely data, purposes and vendors. Watch your notice build live, then export the full pack — notice, form mini-notices, consent text, a rights block and an evidence record. Preview is free; export needs an email.</p>
       </div>
 
       <div className="app">
         <section className="card">
-          <div className="steps">
+          <div className="steps" aria-hidden>
             {STEP_LABELS.map((_, n) => <span key={n} className={`pip ${n < step ? "done" : ""} ${n === step ? "now" : ""}`} />)}
           </div>
           <div className="panel">
-            <div className="stepmeta">Step {step + 1} of 8 · {STEP_LABELS[step]}</div>
 
             {step === 0 && (
               <>
                 <h2>About your business</h2>
                 <p className="hint">Pick your sector and we pre-fill likely data, purposes and vendors. This names you as the Data Fiduciary.</p>
-                <div className="field"><label className="lab">Business name <span className="req">*</span></label><input type="text" value={S.org} onChange={(e) => update({ org: e.target.value })} placeholder="e.g. Sunrise Diagnostics" /></div>
+                <div className="field"><label className="lab" htmlFor="np-org">Business name <span className="req">*</span></label><input id="np-org" type="text" value={S.org} onChange={(e) => update({ org: e.target.value })} placeholder="e.g. Sunrise Diagnostics" {...errProps("org")} />{fieldErr("org")}</div>
                 <div className="row2">
                   <div className="field"><label className="lab">Website / app</label><input type="text" value={S.website} onChange={(e) => update({ website: e.target.value })} placeholder="sunrisediagnostics.in" /></div>
-                  <div className="field"><label className="lab">Business type / sector <span className="req">*</span></label>
-                    <select value={S.sector} onChange={(e) => applySector(e.target.value)}>
+                  <div className="field"><label className="lab" htmlFor="np-sector">Business type / sector <span className="req">*</span></label>
+                    <select id="np-sector" value={S.sector} onChange={(e) => applySector(e.target.value)} {...errProps("sector")}>
                       <option value="">Select sector</option>
                       {SECTORS.map((sec) => <option key={sec.key} value={sec.key}>{sec.label}</option>)}
-                    </select></div>
+                    </select>{fieldErr("sector")}</div>
                 </div>
-                {S.sector && <div className="smartnote">✓ Smart defaults for <b>&nbsp;{SECTORS.find((x) => x.key === S.sector)?.label}&nbsp;</b> applied — data, purposes &amp; vendors pre-filled. Edit anything in the next steps.</div>}
+                {S.sector && <div className="smartnote"><Check size={15} aria-hidden /> <span>Smart defaults for <b>&nbsp;{SECTORS.find((x) => x.key === S.sector)?.label}&nbsp;</b> applied. Data, purposes and vendors are pre-filled; edit anything in the next steps.</span></div>}
               </>
             )}
 
@@ -409,12 +426,13 @@ export default function NoticePackClient() {
               <>
                 <h2>What personal data do you collect?</h2>
                 <p className="hint">Pre-ticked from your sector. Gold items are higher-sensitivity and get extra wording. Pick at least one.</p>
-                {DATA_GROUPS.map((g) => (
+                {(() => {
+                  const group = (g: (typeof DATA_GROUPS)[number]) => (
                   <div className="dgroup" key={g.group}>
                     <div className="dgroup__t">{g.group}</div>
                     <div className="chips">
                       {g.items.map((it) => {
-                        const sens = SENSITIVE.has(it);
+                        const sens = SENSITIVE.has(it) && S.data.includes(it);
                         return (
                           <label className={`chip ${sens ? "sens" : ""}`} key={it}>
                             <input type="checkbox" checked={S.data.includes(it)} onChange={() => toggle("data", it)} />{it}
@@ -424,7 +442,23 @@ export default function NoticePackClient() {
                       })}
                     </div>
                   </div>
-                ))}
+                  );
+                  const open = DATA_GROUPS.filter((g) => g.items.some((it) => S.data.includes(it)));
+                  const rest = DATA_GROUPS.filter((g) => !open.includes(g));
+                  const restCount = rest.reduce((n, g) => n + g.items.length, 0);
+                  return (
+                    <>
+                      {open.map(group)}
+                      {rest.length > 0 && (
+                        <details className="dmore" open={!open.length}>
+                          <summary>More data types ({restCount})</summary>
+                          {rest.map(group)}
+                        </details>
+                      )}
+                    </>
+                  );
+                })()}
+                {errs.data && <p className="ferr" id="np-err-data" tabIndex={-1} role="alert">{errs.data}</p>}
               </>
             )}
 
@@ -510,38 +544,54 @@ export default function NoticePackClient() {
                   {["Forever", "Not sure"].includes(S.retention) && <div className="flag"><WarnIcon /> <span>“{S.retention}” is a weak position. Set a time-bound or purpose-linked period where you can.</span></div>}
                 </div>
                 <div className="row2">
-                  <div className="field"><label className="lab">Grievance contact name <span className="req">*</span></label><input type="text" value={S.cName} onChange={(e) => update({ cName: e.target.value })} placeholder="e.g. Priya Nair" /></div>
-                  <div className="field"><label className="lab">Contact email <span className="req">*</span></label><input type="email" value={S.cEmail} onChange={(e) => update({ cEmail: e.target.value })} placeholder="privacy@yourbiz.in" /></div>
+                  <div className="field"><label className="lab" htmlFor="np-cname">Grievance contact name <span className="req">*</span></label><input id="np-cname" type="text" value={S.cName} onChange={(e) => update({ cName: e.target.value })} placeholder="e.g. Priya Nair" {...errProps("cName")} />{fieldErr("cName")}</div>
+                  <div className="field"><label className="lab" htmlFor="np-cemail">Contact email <span className="req">*</span></label><input id="np-cemail" type="email" value={S.cEmail} onChange={(e) => update({ cEmail: e.target.value })} placeholder="privacy@yourbiz.in" {...errProps("cEmail")} />{fieldErr("cEmail")}</div>
                 </div>
                 <div className="field"><label className="lab">Registered / office address (optional)</label><input type="text" value={S.regAddress} onChange={(e) => update({ regAddress: e.target.value })} placeholder="Shown in the notice's “Who we are”" /></div>
                 <div className="field"><label className="lab">Reserve your rights-page slug (optional)</label><input type="text" value={S.slug} onChange={(e) => update({ slug: e.target.value })} placeholder={slugify(S.org) || "your-business"} /><div className="pwarn" style={{ color: "var(--muted)" }}>Used in the rights block: saralprivacy.com/r/<b>{S.slug || slugify(S.org) || "your-business"}</b></div></div>
               </>
             )}
 
-            {!stepValid(step) && <div className="pwarn">{stepHint(step)}</div>}
           </div>
 
           <div className="foot">
-            <button className="btn btn--ghost btn--sm" style={{ visibility: step === 0 ? "hidden" : "visible" }} onClick={() => setStep((n) => Math.max(0, n - 1))}>← Back</button>
-            <span className="pg">{step + 1} / 8</span>
-            {step < 7
-              ? <button className="btn btn--sm" disabled={!stepValid(step)} onClick={() => setStep((n) => n + 1)}>Next <span className="arr">→</span></button>
-              : <button className="btn btn--sm" disabled={!stepValid(7)} onClick={() => { track("notice_score_calculated", { sector: S.sector, score: s }); setDone(true); }}>View my Notice Pack ✓</button>}
+            <span className="pg" aria-live="polite">Step {step + 1} of 8: {STEP_LABELS[step]}</span>
+            <div className="foot__act">
+              {step > 0 && <button className="btn btn--ghost btn--sm" onClick={() => { setTried(null); setStep((n) => Math.max(0, n - 1)); }}>Back</button>}
+              {step < 7
+                ? <button className="btn btn--sm" onClick={() => goNext(false)}>Next <span className="arr" aria-hidden>→</span></button>
+                : <button className="btn btn--sm" onClick={() => goNext(true)}>View my Notice Pack <Check size={16} aria-hidden /></button>}
+            </div>
           </div>
         </section>
 
-        <section className="preview">
+        <a className="pvjump" href="#np-preview">{S.sector ? `See your notice: readiness ${s}, ${b.label}` : "See your notice"}</a>
+
+        <section className="preview" id="np-preview">
           <div className="pvtop">
             <span className="live"><i /> Live preview</span>
-            <span className="scorechip" aria-live="polite" style={{ color: b.color, background: b.bg }}>Readiness {s} · {b.label}</span>
+            {S.sector
+              ? <span className="scorechip" aria-live="polite" style={{ color: b.color, background: b.bg }}>Readiness {s} · {b.label}</span>
+              : <span className="pv-note">Your readiness score appears once you pick a sector.</span>}
             <LangBar />
           </div>
-          <article className="doc" dangerouslySetInnerHTML={{ __html: buildNotice(S, S.lang, effIso) }} />
+          {!S.org.trim() && !S.sector ? (
+            <div className="doc pv-empty">
+              <h2>Your notice builds here</h2>
+              <p>Each answer fills in one section of your notice: who you are, what data you hold, why you hold it and who you share it with.</p>
+              <p>Start with your business name and sector. We fill in the data, purposes and vendors a business like yours usually has.</p>
+            </div>
+          ) : (
+            <>
+              <article className="doc" dangerouslySetInnerHTML={{ __html: buildNotice(S, S.lang, effIso) }} />
+              <p className="pvhint">Scroll the notice to see all its sections.</p>
+            </>
+          )}
         </section>
       </div>
 
       {gateOpen && <Gate />}
-      {copiedToast && <div className="np-toast" role="status">Copied ✓</div>}
+      {copiedToast && <div className="np-toast" role="status">Copied</div>}
     </div>
   );
 }
