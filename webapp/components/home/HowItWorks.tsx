@@ -73,7 +73,7 @@ function StepOutput({ kind }: { kind: StepKey }) {
   }
   const s = shots[kind];
   return (
-    <span data-ui className="block w-full rounded-2xl bg-navy-600 p-1.5">
+    <span data-ui className="block w-full rounded-xl bg-navy-600 p-1.5">
       <Image
         src={`/images/how-it-works/${locale}/${kind}.png`}
         alt={t(`shots.${kind}`)}
@@ -147,7 +147,7 @@ export function HowItWorks() {
                   <Link
                     href={step.href}
                     onClick={() => trackEvent.hiwStepClick({ step: step.key })}
-                    className={`group grid gap-5 md:grid-cols-12 md:items-start rounded-2xl px-5 py-6 md:px-7 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-700 ${
+                    className={`group grid gap-5 md:grid-cols-12 md:items-start rounded-xl px-5 py-6 md:px-7 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-700 ${
                       step.primary
                         ? "bg-green-400/10 border-2 border-green-400/60 hover:border-green-400 focus-visible:ring-green-400"
                         : "hover:bg-navy-600 focus-visible:ring-teal-400"
@@ -174,7 +174,7 @@ export function HowItWorks() {
             })}
             <li className={`relative pl-10 ${arrive(steps.length).className}`} style={arrive(steps.length).style}>
               <span aria-hidden className="absolute left-0 top-7 w-[25px] h-[25px] rounded-full bg-cloud-50 ring-4 ring-navy-700" />
-              <div className="rounded-2xl bg-navy-600 px-5 py-6 md:px-7">
+              <div className="rounded-xl bg-navy-600 px-5 py-6 md:px-7">
                 <span className="block text-2xl font-semibold text-white">{t("milestoneTitle")}</span>
                 <span className="block text-lg text-cloud-100 mt-1.5">{t("milestoneSub")}</span>
               </div>

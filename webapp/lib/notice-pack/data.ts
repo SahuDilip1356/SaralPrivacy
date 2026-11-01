@@ -132,8 +132,8 @@ export const SECTORS: NPSector[] = [
 export const SCORE_WEIGHTS = { businessType: 5, dataCategories: 10, purposeMapped: 20, contexts: 10, withdrawal: 10, rightsContact: 10, vendorDisclosed: 10, retention: 10, children: 10, dsar: 5 };
 
 export const SCORE_BANDS: NPBand[] = [
-  { min: 85, label: "Strong", color: "#059669", bg: "#E6F7F0", msg: "Your notice pack is well-structured and ready for final review." },
-  { min: 70, label: "Good", color: "#047857", bg: "#E6F7F0", msg: "Your notice covers most practical requirements. Review before publishing." },
-  { min: 40, label: "Basic", color: "#8A5A10", bg: "#FBF3E2", msg: "You have a usable draft, but important gaps remain." },
-  { min: 0, label: "Weak", color: "#B91C1C", bg: "#FCEBEB", msg: "Your notice is incomplete. Add missing data, purpose, contact and withdrawal details." },
+  { min: 85, label: "Strong", color: "#065F46", bg: "#E6FAF4", msg: "Your notice pack is well-structured and ready for final review." },
+  { min: 70, label: "Good", color: "#047857", bg: "#E6FAF4", msg: "Your notice covers most practical requirements. Review before publishing." },
+  { min: 40, label: "Basic", color: "#8A5A10", bg: "#FDF7E8", msg: "You have a usable draft, but important gaps remain." },
+  { min: 0, label: "Weak", color: "#64420C", bg: "#FAEDC5", msg: "Your notice is incomplete. Add missing data, purpose, contact and withdrawal details." },
 ];

@@ -143,8 +143,8 @@ export interface RiskFlag { color: string; title: string; detail: string; severi
 export function flags(S: NPState): RiskFlag[] {
   const f: RiskFlag[] = [];
   // ── Risks: real defects that lower the score (capped below "Strong") ──
-  if (!S.cEmail) f.push({ severity: "risk", color: "#E24B4A", title: "No grievance contact", detail: "Add a contact email for rights requests (DPDPA §5/§13)." });
-  if (!hasWithdrawalChannel(S)) f.push({ severity: "risk", color: "#E24B4A", title: "No withdrawal channel", detail: "Withdrawal must be as easy as giving consent — add a clear channel." });
+  if (!S.cEmail) f.push({ severity: "risk", color: "#8A5A10", title: "No grievance contact", detail: "Add a contact email for rights requests (DPDPA §5/§13)." });
+  if (!hasWithdrawalChannel(S)) f.push({ severity: "risk", color: "#8A5A10", title: "No withdrawal channel", detail: "Withdrawal must be as easy as giving consent — add a clear channel." });
   if (["Forever", "Not sure"].includes(S.retention)) f.push({ severity: "risk", color: "#E8AB42", title: "Weak retention", detail: "Set a time-bound or purpose-linked period instead of “" + (S.retention || "—") + "”." });
   if (!S.noVendors && !S.vendors.length) f.push({ severity: "risk", color: "#E8AB42", title: "No vendors disclosed", detail: 'Add who you share data with, or tick "no third party".' });
   if (S.data.some((d) => isVague(S.purpose[d]))) f.push({ severity: "risk", color: "#E8AB42", title: "Vague purpose detected", detail: "Some data has a too-broad purpose — describe the specific activity." });
