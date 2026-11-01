@@ -1,0 +1,8 @@
+{
+  "/design-pilot": [
+    {
+      "rule": "off-centre",
+      "reason": "at 768 the Assess and milestone panels reach both margins; only the open rows' content sits 28px in, the padding their hover surface needs"
+    }
+  ]
+}

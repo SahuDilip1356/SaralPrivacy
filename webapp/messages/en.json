@@ -285,6 +285,11 @@
         "deepReview": {
           "title": "Deep Review"
         }
+      },
+      "shots": {
+        "discover": "Data Discovery, step 2: the personal data a diagnostic lab usually holds, pre-filled for review",
+        "map": "The Recruitment Agencies data-flow map: 24 places the data lives, 10 stages, 23 external transfers and 7 control breaks",
+        "fix": "A live Notice Pack preview for a sample diagnostic lab, Sunrise Diagnostics, with its readiness score"
       }
     },
     "sectors": {
