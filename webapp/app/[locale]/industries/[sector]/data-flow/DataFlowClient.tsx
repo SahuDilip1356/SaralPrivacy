@@ -25,6 +25,7 @@ import {
   type WireMode,
 } from "@/components/data-flow/BoundaryLaneMap";
 import { HotspotRail } from "@/components/data-flow/HotspotRail";
+import { ControlBreakSpotlight } from "@/components/data-flow/ControlBreakSpotlight";
 import { FlowSystemTable } from "@/components/data-flow/FlowSystemTable";
 import { RightsSimulator } from "@/components/data-flow/RightsSimulator";
 import { IncidentSimulator } from "@/components/data-flow/IncidentSimulator";
@@ -37,11 +38,17 @@ interface Props {
   pack: DataFlowPack;
 }
 
+// Pilot: the scroll-driven journey (JourneyLine) and the "where to look first"
+// Spotlight run on these maps only until they are signed off; every other map
+// keeps the timed journey. Rolling out = adding slugs here.
+const SCROLL_JOURNEY_PILOT: ReadonlySet<string> = new Set(["ca-firms"]);
+
 export default function DataFlowClient({ pack }: Props) {
   // First declared model is the default. An industry with one honest journey
   // (a CA firm) declares one, and the selector below hides itself rather than
   // offering a button that re-renders the same page.
   const models = pack.businessModels;
+  const pilot = SCROLL_JOURNEY_PILOT.has(pack.industry);
 
   const [model, setModel] = useState<BusinessModel>(models[0].id);
   const [mapOpen, setMapOpen] = useState(false);
@@ -175,8 +182,22 @@ export default function DataFlowClient({ pack }: Props) {
           model={model}
           onSystemOpen={(nodeId) => trackEvent.dataFlow("node_clicked", { node_id: nodeId })}
           onAssessmentCta={handleAssessmentCta}
+          driver={pilot ? "scroll" : "timer"}
         />
       </section>
+
+      {pilot && (
+        <section aria-labelledby="look-first-heading">
+          <h2 id="look-first-heading" className="text-xl font-semibold text-navy-800">
+            Where to look first
+          </h2>
+          <p className="mt-1 max-w-2xl text-sm leading-relaxed text-slate-600">
+            Control breaks in {pack.hotspots.length} places along this journey. If you fix one thing
+            this month, start here.
+          </p>
+          <ControlBreakSpotlight pack={pack} model={model} />
+        </section>
+      )}
 
       {/* Opt-in full system map (power users) */}
       <section aria-labelledby="full-map-heading">

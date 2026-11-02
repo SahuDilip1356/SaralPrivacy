@@ -51,6 +51,8 @@ import type {
 } from "@/lib/data-flow/schemas";
 import { filterByBusinessModel } from "@/lib/data-flow/schemas";
 import { stageDataRollup } from "@/lib/data-flow/stage-data";
+import { useScrollJourney } from "@/lib/hooks/useScrollJourney";
+import { usePrefersReducedMotion } from "@/lib/hooks/usePrefersReducedMotion";
 import {
   BOUNDARY_META,
   EXTERNAL_BOUNDARY_SET,
@@ -66,6 +68,9 @@ interface Props {
   model: BusinessModel;
   onSystemOpen?: (nodeId: string) => void;
   onAssessmentCta?: (bucket: string | undefined) => void;
+  /** "timer": once in view, one stage every STEP_MS. "scroll": a stage lights
+   *  when the reader reaches it (JourneyLine). */
+  driver?: "timer" | "scroll";
 }
 
 interface Row {
@@ -86,6 +91,9 @@ interface Row {
 const MAX_CATEGORY_CHIPS = 6;
 
 const STEP_MS = 460;
+
+/** Stage tile is 52px square - its centre is where the spine meets it. */
+const TILE_CENTRE = 26;
 
 // Soft-3D stage tiles, in the visual language of the concept piece. Icons are
 // keyed by stage id with a safe fallback, and gradients cycle by position, so
@@ -114,13 +122,24 @@ const TILE_GRADIENTS: ReadonlyArray<readonly [string, string]> = [
   ["#7C6BE8", "#4F3FBE"],
 ];
 
-export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Props) {
+export function MotionJourney({
+  pack,
+  model,
+  onSystemOpen,
+  onAssessmentCta,
+  driver = "timer",
+}: Props) {
   const reduce = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLOListElement>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
+  const byScroll = driver === "scroll";
+  // Scroll mode derives the counters' text from this, so it must be the
+  // hydration-safe reading (false on the server, real value after hydration).
+  const reduceText = usePrefersReducedMotion();
   const [inView, setInView] = useState(false);
   const [sheetNode, setSheetNode] = useState<FlowNode | null>(null);
-  const [step, setStep] = useState(0); // number of stages "reached"
+  const [timerStep, setStep] = useState(0); // timer mode: number of stages "reached"
 
   // Fire once when the journey reaches the viewport. We observe a small
   // sentinel at the top of the journey (threshold 0) rather than the very tall
@@ -216,8 +235,15 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
     return { rows, totalPlaces: runPlaces, totalHotspots: runHotspots };
   }, [pack, model]);
 
+  const journey = useScrollJourney(listRef, {
+    count: rows.length,
+    markerOffset: TILE_CENTRE,
+    enabled: byScroll && !reduceText,
+  });
+
   // Drive the sequence once in view. Reduced motion / no-JS → jump to the end.
   useEffect(() => {
+    if (byScroll) return;
     setStep(0);
     if (reduce) {
       setStep(rows.length);
@@ -231,7 +257,10 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
       if (k >= rows.length) clearInterval(id);
     }, STEP_MS);
     return () => clearInterval(id);
-  }, [inView, reduce, rows.length, model]);
+  }, [byScroll, inView, reduce, rows.length, model]);
+
+  // Stages reached. In scroll mode it is the reader's position.
+  const step = byScroll ? (reduceText ? rows.length : journey.reached) : timerStep;
 
   const shownPlaces = step === 0 ? 0 : rows[Math.min(step, rows.length) - 1].runPlaces;
   const shownHotspots = step === 0 ? 0 : rows[Math.min(step, rows.length) - 1].runHotspots;
@@ -361,18 +390,32 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
       {/* The journey */}
       <div className="relative">
         <div ref={sentinelRef} aria-hidden="true" className="absolute left-0 top-0 h-px w-px" />
-      <ol className="relative">
+      <ol ref={listRef} className="relative">
+        {/* Scroll mode: one continuous spine that fills with the reader's
+            position, drawn over the grey per-stage tracks and under the tiles. */}
+        {byScroll && (
+          <motion.span
+            aria-hidden="true"
+            className="pointer-events-none absolute left-[24.5px] z-[1] w-[3px] origin-top rounded bg-gradient-to-b from-violet-400 to-teal-400"
+            style={{ top: journey.spine.top, height: journey.spine.height, scaleY: reduceText ? 1 : journey.fill }}
+          />
+        )}
         {rows.map((row, i) => {
           const reached = i < step;
           const isHot = row.hotspotNames.length > 0;
           const StageIcon = STAGE_ICONS[row.stage.id] ?? ClipboardList;
           const gradient = TILE_GRADIENTS[i % TILE_GRADIENTS.length];
           return (
-            <li key={row.stage.id} className="flex gap-4">
+            <li
+              key={row.stage.id}
+              id={`stage-${row.stage.id}`}
+              aria-current={byScroll && i === step - 1 ? "step" : undefined}
+              className="flex scroll-mt-24 gap-4"
+            >
               <div className="flex flex-col items-center">
                 <motion.span
                   className={cn(
-                    "relative flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-2xl text-white",
+                    "relative z-10 flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-2xl text-white",
                     "shadow-lg shadow-navy-900/20 ring-1 ring-inset ring-white/25",
                     isHot && "ring-2 ring-red-400/70",
                   )}
@@ -389,12 +432,12 @@ export function MotionJourney({ pack, model, onSystemOpen, onAssessmentCta }: Pr
                 </motion.span>
                 {i < rows.length - 1 && (
                   <span className="relative mt-1 w-[3px] flex-1 rounded bg-slate-200">
-                    <motion.span
+                    {!byScroll && <motion.span
                       className="absolute inset-x-0 top-0 rounded bg-gradient-to-b from-violet-400 to-teal-400"
                       initial={false}
                       animate={{ height: reached ? "100%" : "0%" }}
                       transition={{ duration: 0.45 }}
-                    />
+                    />}
                   </span>
                 )}
               </div>
