@@ -110,7 +110,7 @@ const QUESTIONS: IAQuestion[] = [
     question: "Which client documents do you regularly collect or store?",
     helpText: "Select all documents your firm receives, stores, reviews or processes.",
     whyThisMatters:
-      "PAN, Aadhaar, bank statements, payroll and family financial data are the highest-impact records under DPDPA.",
+      "PAN, Aadhaar, bank statements, payroll and family financial records do the most harm if they leak, because they can be used for identity and financial fraud.",
     type: "multi",
     cap: 14,
     bucket: "client_document",
@@ -127,7 +127,7 @@ const QUESTIONS: IAQuestion[] = [
       { id: "kyc-mca", label: "Company KYC / MCA / board documents", riskPoints: 2 },
       { id: "investment", label: "Investment, loan or property documents", riskPoints: 4 },
       { id: "family", label: "Family member financial documents", riskPoints: 4 },
-      { id: "medical", label: "Medical insurance / reimbursement documents", riskPoints: 5, badge: "SENSITIVE", badgeColor: "red" },
+      { id: "medical", label: "Medical insurance / reimbursement documents", riskPoints: 5, badge: "HIGH IMPACT", badgeColor: "red" },
       { id: "other", label: "Other client documents", riskPoints: 1 },
       { id: "not-sure", label: "Not sure", riskPoints: 6 },
     ],
@@ -192,7 +192,7 @@ const QUESTIONS: IAQuestion[] = [
     question: "Who can access client files inside your firm?",
     helpText: "Choose the option closest to your current practice.",
     whyThisMatters:
-      "Former-staff access to client files is one of the most common and serious DPDPA control gaps in CA firms.",
+      "Former staff who can still open client files are an open door to a leak.",
     type: "single",
     cap: 12,
     bucket: "storage_access",
@@ -215,7 +215,7 @@ const QUESTIONS: IAQuestion[] = [
       "Does your engagement letter or onboarding communication explain how client data will be used, stored, shared and retained?",
     helpText: "This may be in your engagement letter, onboarding email, privacy notice or client terms.",
     whyThisMatters:
-      "DPDPA expects clients to be told how their data is handled. For CA firms the engagement letter is the most practical place.",
+      "Where you rely on a client's consent, the DPDP Act requires a notice first. It sets out the data, the purpose, how to withdraw consent and how to complain to the Data Protection Board (Section 5, in force from 13 May 2027). For CA firms the engagement letter is the most practical place for it.",
     type: "single",
     cap: 10,
     bucket: "client_document",
@@ -235,7 +235,7 @@ const QUESTIONS: IAQuestion[] = [
     badge: "Retention & Deletion Risk",
     question:
       "How long do you retain old client documents such as ITR files, PAN copies, bank statements, payroll sheets and audit papers?",
-    helpText: "The issue is not retention itself — it is uncontrolled indefinite retention with no documented reason.",
+    helpText: "Keeping files a law requires you to keep is fine. The risk is keeping them indefinitely with no documented reason.",
     whyThisMatters:
       "Keeping high-impact documents forever, with no policy or review, turns old files into standing risk.",
     type: "single",
@@ -259,7 +259,7 @@ const QUESTIONS: IAQuestion[] = [
       "When tax software, GST tools, payroll platforms, cloud providers, IT vendors or outsourced teams access client data, how is it controlled?",
     helpText: "Includes tax-filing tools, GST software, payroll platforms, cloud storage, IT support and outsourced teams.",
     whyThisMatters:
-      "Software vendors and outsourced teams are part of your data-processing chain under DPDPA — not just 'tools'.",
+      "Under the DPDP Act, a vendor that processes client data on your behalf is a Data Processor, and your firm stays responsible for protecting that data (Section 8(5), in force from 13 May 2027).",
     type: "single",
     cap: 8,
     bucket: "vendor_incident",
@@ -280,7 +280,7 @@ const QUESTIONS: IAQuestion[] = [
     question: "If a client asks for correction, return or deletion of old documents, what happens?",
     helpText: "A CA firm balances client requests with tax, audit, legal and professional retention obligations.",
     whyThisMatters:
-      "Data-principal rights apply to client data too. You need a defined way to respond — and to check lawful retention first.",
+      "Individual clients can ask you to correct or erase their data (Section 12, in force from 13 May 2027). Erasure gives way where a law requires you to keep the record, so check that first. A written process makes both quick.",
     type: "single",
     cap: 6,
     bucket: "retention",
@@ -302,7 +302,7 @@ const QUESTIONS: IAQuestion[] = [
       "Do you have a process if a laptop, email inbox, Google Drive folder, WhatsApp account or tax software login containing client documents is compromised?",
     helpText: "This checks whether your firm can respond quickly if client documents are exposed.",
     whyThisMatters:
-      "DPDPA requires breach intimation. Without a process, you cannot respond in time or evidence what you did.",
+      "Under the DPDP Act, a firm must tell the Data Protection Board and each affected client about a personal data breach (Section 8(6), in force from 13 May 2027). Without a process you can't do that quickly or show what you did.",
     type: "single",
     cap: 6,
     bucket: "vendor_incident",

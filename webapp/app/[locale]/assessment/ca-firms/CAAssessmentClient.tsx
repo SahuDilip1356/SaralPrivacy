@@ -334,6 +334,10 @@ export default function CAAssessmentClient() {
                   {t("riskBand")}: {result.band}
                 </div>
                 <p className="mt-3 text-sm leading-relaxed text-slate-600">{caFirmPack.bandCopy?.[result.band] ?? result.bandDescription}</p>
+                {/* Legal tier: stays English in every locale, like the consent sentence. Checked against the DPDP Act by the legal gate. */}
+                <p className="mt-3 text-xs leading-relaxed text-slate-600">
+                  Most DPDP Act duties, including notice, security safeguards and breach intimation, apply from 13 May 2027. This score is an educational check, not a compliance certificate or legal advice.
+                </p>
               </div>
             </div>
           </div>
