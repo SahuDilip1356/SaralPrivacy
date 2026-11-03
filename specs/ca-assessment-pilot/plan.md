@@ -140,14 +140,14 @@ Namespace `assessment.scanV2` in `messages/en.json`. Placeholders are ICU.
 | `assessmentStart` (existing) | `assessment_start` | `{ prefilled?, src?, sector? }` |
 | `assessmentStep` (existing) | `assessment_step_N` | `(step, sector?)` |
 | `assessmentComplete` (existing) | `assessment_complete` | `{ score, band, industry?, sector? }` |
-| `scanQuestionView` | `assessment_question_view` | `{ q, n, sector? }` |
+| `scanQuestionView` | `assessment_question_view` | `{ q, sector? }` |
 | `scanSectionComplete` | `assessment_section_complete` | `{ section, sector? }` |
 | `scanResumeShown` | `assessment_resume_shown` | `{ answered, sector? }` |
 | `scanResumeContinue` | `assessment_resume_continue` | `{ from_q, sector? }` |
 | `freeFixViewed` | `free_fix_viewed` | `{ bucket, sector? }` (`"none"` for the fallback) |
 | `reportFormError` | `report_form_error` | `{ fields, sector? }` |
 | `reportSubmitFailed` | `report_submit_failed` | `{ reason: "server" \| "network" \| "offline", sector? }` |
-| `reportRequested` (existing) | `report_requested` | `{ band, sector? }` |
+| `reportRequested` (existing) | `report_requested` | `{ band, first?, sector? }` (`first` true for the first in the page load) |
 | `reportSaved` | `report_saved` | `{ band, sector? }` |
 | `assessmentRerun` | `assessment_rerun` | `{ score, band, sector? }` |
 
@@ -170,9 +170,9 @@ ScoreReveal({ result: IAResult; bandText: string; ok: boolean })            // h
 FreeFix({ fix: RankedFix; areaLabel?: string; areaScore?: number; ok: boolean; onViewed(): void })
 RiskMap({ result: IAResult; buckets: IABucket[]; ok: boolean })             // red flags or none-panel, then the 2 bars, then the area list
 ReportForm({ sector: string; reportType: string; answers: IAAnswers; result: IAResult;
-             rankedTexts: string[]; checklistTitle: string; serviceLabels: string[] })
+             rankedTexts: string[]; checklistTitle: string; serviceLabels: string[]; onSaved(): void })
 ScanV2({ pack: IndustryPack; meta: ScanMeta })
-ScanResultV2({ pack: IndustryPack; meta: ScanMeta; answers: IAAnswers; result: IAResult; onRetake(): void })
+ScanResultV2({ pack: IndustryPack; meta: ScanMeta; answers: IAAnswers; result: IAResult; onRetake(): void; onReportSaved(): void })
 ```
 
 `ScanSection`, `RankedFix` and `ScanMeta` are exported from `lib/assessment/meta/types.ts` (see T4). `IAQuestion`, `IAOption`, `IAAnswers`, `IAResult`, `IABucket` and `IndustryPack` come from `core.ts` with `import type`.
@@ -279,7 +279,7 @@ bash ../specs/ca-assessment-pilot/bin/tsc-baseline.sh   # once, on the untouched
   - Tests:
     - High band with intake 83 and retention 90 puts retention first;
     - High band with every area under 34 still returns all 4, ranked;
-    - Moderate band with only storage_access at 40 returns just that one;
+    - Moderate band with only storage_access at 40 returns only that one;
     - Controlled with all under 34 returns the fallback with `bucket: null`;
     - a tie keeps meta order.
   - **Drift guard test:** `readFileSync` the pack source and assert that every `fixes[].text` and `fallbackFix` appears in it verbatim, the same approach as `lib/data/hero-verdicts.test.ts`.
@@ -298,9 +298,8 @@ bash ../specs/ca-assessment-pilot/bin/tsc-baseline.sh   # once, on the untouched
     - `FormErrorKey` is `"errors.nameRequired" | "errors.firmRequired" | "errors.emailRequired" | "errors.emailInvalid" | "errors.phoneInvalid" | "errNeedConsent"`.
     - Trim before checking. Use the email regex from Decisions.
   - In `submit-report.ts`: `submitReport(body: string, deps: { fetch: typeof fetch; sleep: (ms: number) => Promise<void>; timeoutMs?: number }) → Promise<{ ok: true } | { ok: false; reason: "server" | "network" }>`, following the send policy table in spec Contracts exactly.
-    - Each attempt uses an `AbortController` that aborts after `timeoutMs` (default 15000). A timeout counts as a network error.
-    - A 400 fails at once with reason "server".
-    - The last failure's kind sets the reason: a network error or timeout gives "network"; any status gives "server".
+    - Retry only on 429 and 5xx. Any other 4xx fails at once with reason "server".
+    - Each attempt uses an `AbortController` that aborts after `timeoutMs` (default 15000). A timeout or a network error fails at once with reason "network", with no retry (the server may already have saved it).
   - Tests:
     - **Phone:**
       - valid: "98765 43210", "+91-98765-43210", "919876543210", "09876543210" and "9112345678";
@@ -312,9 +311,9 @@ bash ../specs/ca-assessment-pilot/bin/tsc-baseline.sh   # once, on the untouched
       - 200 gives `{ ok: true }`;
       - 500 ×3 gives reason "server" after 2 sleeps, with none after the last attempt;
       - 429 with `Retry-After: 9` sleeps 5000 ms;
-      - a thrown error is retried, and three give reason "network";
-      - a fetch that never resolves times out (use `timeoutMs: 50`) and gives "network";
-      - 400 fails at once.
+      - a thrown error fails at once with "network", with exactly one fetch call;
+      - a fetch that never resolves times out (use `timeoutMs: 50`) and gives "network" after one call;
+      - 400 and 404 fail at once.
   - Tier 1 because it gates consent and personal data.
 
 ### T6 — Sector-tagged analytics
@@ -500,13 +499,13 @@ bash ../specs/ca-assessment-pilot/bin/tsc-baseline.sh   # once, on the untouched
   - Sending:
     1. If `navigator.onLine === false`, show `form.offlineError`, call `reportSubmitFailed({reason:"offline"})`, and stop.
     2. Otherwise call `reportRequested`, set read-only fields and `form.sending` with `aria-busy`, build the body per spec Contracts (`immediateActions` = `rankedTexts`, `mobile` = `phone10`), then call `submitReport(body, { fetch, sleep })`.
-    3. On `{ ok: true }`: `reportSaved`, then the success view. On failure: `form.serverError`, `form.retry`, and `reportSubmitFailed({ reason })` with the returned reason.
+    3. On `{ ok: true }`: `reportSaved`, `onSaved()`, then the success view. On failure: `form.serverError`, `form.retry`, and `reportSubmitFailed({ reason })` with the returned reason.
   - Sent view: `sent.heading` (focused), `rankedTexts.slice(1)` as a list (omitted if empty), `sent.checklist`, and `sent.change`, which returns to the form with its values.
   - Heading: `form.headingMore` with n = `rankedTexts.length − 1`, or `form.headingNone`. The checklist title is the `checklistTitle` prop, or `form.checklistDefault` when it's empty.
   - When the email field passes the email check, show `form.sendTo` beside the button (AC27).
 
 ### T16 — Switch, page wiring and the quiz flow
-- implements: AC4, AC5, AC7, AC38, AC39, AC44
+- implements: AC4, AC5, AC7, AC38, AC39
 - depends_on: T2, T9, T10, T12
 - files: lib/assessment/scan-switch.ts, lib/assessment/scan-switch.test.ts, app/[locale]/assessment/ca-firms/page.tsx, components/assessment/v2/ScanV2.tsx
 - risk: tier1
@@ -520,8 +519,8 @@ bash ../specs/ca-assessment-pilot/bin/tsc-baseline.sh   # once, on the untouched
     - a param with vercelEnv undefined and nodeEnv "production" leaves it off;
     - a param with nodeEnv "development" turns it on.
   - `page.tsx`:
-    - make the page component `async` and await its `searchParams`;
-    - call `isScanV2Enabled` with `process.env.NEXT_PUBLIC_CA_SCAN_V2`, `NEXT_PUBLIC_VERCEL_ENV` and `NODE_ENV`;
+    - when `process.env.NEXT_PUBLIC_VERCEL_ENV === "production"`, decide from `NEXT_PUBLIC_CA_SCAN_V2` alone and never read `searchParams`, so the route stays statically prerendered (AC38);
+    - outside production, make the page read `searchParams` and call `isScanV2Enabled` with `NEXT_PUBLIC_CA_SCAN_V2`, `NEXT_PUBLIC_VERCEL_ENV` and `NODE_ENV`;
     - render either `<CAAssessmentClient />` or `const ScanV2 = dynamic(() => import("@/components/assessment/v2/ScanV2"))` with `pack={caFirmPack} meta={caScanMeta}`, inside the existing `Suspense`;
     - keep the metadata.
   - `CAAssessmentClient.tsx` must not change; the verify enforces it.
@@ -532,8 +531,8 @@ bash ../specs/ca-assessment-pilot/bin/tsc-baseline.sh   # once, on the untouched
     - `useMotionOk`, calling `markKeyboard` on every Next, Back and Enter;
     - focus on the question heading.
   - Back on q0 goes to `meta.backHref`. Back on the result returns to the last question.
-  - `meta` is optional. Without it (AC44): render a single progress bar (label and percentage as AC1/AC3) in place of `ProgressRail`, and no stamps.
-  - In `page.tsx`, `?scanTestNoMeta=1` (allowed only where `?scanV2=1` is) passes `meta={undefined}`, so T21 can test AC44.
+  - `meta` is required.
+  - **Test overrides:** one function, `testOverrides(searchParams, env) → { delayMs?: number; timeoutMs?: number }`, in `scan-switch.ts`, reading `scanTestDelay` and `scanTestTimeout` only under the same allow-list as `scanV2`. Test it with production env (returns `{}`).
   - Keep `?pre=` and `?bucket=` behaviour: `parsePrefill` and `entrySource` from `lib/data/industry-assessment/prefill.ts`, `prefillStillHeld` with `components/assessment/PrefillNote.tsx`, and `meta.bucketFocus` for the `checkingFocus` banner.
   - Wrap the motion parts in `LazyMotion features={domAnimation}`.
   - Use lazy `useState` initialisers, or `useSyncExternalStore`, for anything read from the browser, so the effect-setState lint rule doesn't fire.
@@ -549,8 +548,9 @@ bash ../specs/ca-assessment-pilot/bin/tsc-baseline.sh   # once, on the untouched
 - notes:
   - **Resume:** wire `createResumeStore` with `window.localStorage` when `probe()` passes, otherwise `null`.
     - On load: `none`, or `ok` with `answered === 0`, starts the quiz; `expired` shows the expired banner on q0; `ok` shows `ResumeCard`.
-    - Save after every pick or move until the result first shows (`resultShown` ref).
-    - Clear the store when the result shows, on Start again, and on Retake.
+    - Save after every pick or move, including moving to the result (stored as `qi = questions.length`).
+    - Clear the store on the first `report_saved`, on Start again, and on Retake. `ScanResultV2` receives an `onReportSaved()` callback for this.
+    - A save whose `qi` is the result shows `ResumeCard` with "See your result again →", which recomputes and shows the result.
     - With `?pre=` and a usable save (AC42): show `ResumeCard`. Continue keeps the saved answers and ignores `pre`; Start again applies `pre`. Pass `prefilled: true` to `assessmentStart` only when `pre` was applied. `assessmentStart` still fires once on first render, so decide `prefilled` before it fires: false whenever a resume card shows.
   - **History** (`useScanHistory`):
     - `history.replaceState` on mount, then `pushState({ qi })` with `#q<qi>` on each move, and `#result` on the result;
@@ -563,7 +563,7 @@ bash ../specs/ca-assessment-pilot/bin/tsc-baseline.sh   # once, on the untouched
   - **Live region:** one `sr-only` `aria-live="polite"` element in `ScanV2`, written via `announce(text)`, which clears it and then sets the text after 60 ms.
 
 ### T18 — Result composition, analytics wiring and retake
-- implements: AC16, AC17, AC19, AC21, AC23, AC24, AC30, AC37, AC40, AC41, AC44
+- implements: AC16, AC17, AC19, AC21, AC23, AC24, AC30, AC37, AC40, AC41
 - depends_on: T6, T13, T14, T15, T17
 - files: components/assessment/v2/ScanResultV2.tsx, components/assessment/v2/ScanV2.tsx
 - risk: tier2
@@ -573,7 +573,7 @@ bash ../specs/ca-assessment-pilot/bin/tsc-baseline.sh   # once, on the untouched
   - `ScoreButton.onScore` calls `calculateIndustryResult(pack, answers)` (from `@/lib/data/industry-assessment/core`), sets the result and moves to the result phase.
   - Result order:
     1. ScoreReveal (with `bandText = pack.bandCopy?.[band] ?? result.bandDescription`), whose legal line closes the score card;
-    2. FreeFix (`rankFixes(result, meta)[0]`, or `{ text: recommendations[0], bucket: null }` without meta, AC44);
+    2. FreeFix (`rankFixes(result, meta)[0]`);
     3. RiskMap;
     4. ReportForm (`rankedTexts`, `checklistTitle = pack.leadMagnet?.title ?? ""`, `serviceLabels` from `meta.serviceQuestionId`);
     5. the existing Gap Review call to action, copied from `CAAssessmentClient.tsx` lines 452–464;
@@ -586,7 +586,8 @@ bash ../specs/ca-assessment-pilot/bin/tsc-baseline.sh   # once, on the untouched
     - `scanQuestionView` on every question shown (not on re-render);
     - `scanSectionComplete` when a section first completes on a forward move, together with the stamp and `announce(sr.sectionDone)`;
     - `scanResumeShown` and `scanResumeContinue`;
-    - `assessmentComplete({ score, band, industry: pack.industry })` for the first result in the page load; `assessmentRerun({ score, band })` for every later result (retake, or Back from the result and forward again).
+    - `assessmentComplete({ score, band, industry: pack.industry })` for the first result in the page load (including "See your result again"); `assessmentRerun({ score, band })` for every later result (retake, or Back from the result and forward again);
+    - `reportRequested({ band, first })`, with `first` true only for the first in the page load.
   - Retake clears everything as in AC41 and doesn't call `assessmentStart`.
 
 ### T19 — Hide the chat launcher on assessment pages
@@ -601,7 +602,7 @@ bash ../specs/ca-assessment-pilot/bin/tsc-baseline.sh   # once, on the untouched
   - Update the header comment at lines 2–4 to name it.
   - This applies to all 12 sector scans, but not the `/assessment` hub, and doesn't roll back with the switch. That is intended.
 
-### T20 — End-to-end harness and smoke test
+### T20 — End-to-end test setup and smoke test
 - implements: AC38
 - depends_on: T16
 - files: package.json, package-lock.json, playwright.config.ts, e2e/smoke.spec.ts, e2e/helpers.ts
@@ -630,7 +631,7 @@ bash ../specs/ca-assessment-pilot/bin/tsc-baseline.sh   # once, on the untouched
     - exactly one `assessment_start` per load in both.
 
 ### T21 — End-to-end flow and resilience tests
-- implements: AC1, AC3, AC5, AC6, AC7, AC9, AC10, AC11, AC12, AC13, AC14, AC15, AC16, AC17, AC18, AC21, AC22, AC23, AC25, AC27, AC28, AC29, AC30, AC31, AC33, AC37, AC40, AC41, AC42, AC43, AC44
+- implements: AC1, AC3, AC5, AC6, AC7, AC9, AC10, AC11, AC12, AC13, AC14, AC15, AC16, AC17, AC18, AC21, AC22, AC23, AC25, AC27, AC28, AC29, AC30, AC31, AC33, AC37, AC40, AC41, AC42, AC43
 - depends_on: T18, T19, T20
 - files: e2e/scan-flow.spec.ts, e2e/scan-resilience.spec.ts
 - risk: tier2
@@ -642,18 +643,18 @@ bash ../specs/ca-assessment-pilot/bin/tsc-baseline.sh   # once, on the untouched
   - **Storage:**
     - seed `localStorage` for resume, expired (`at` 8 days ago), corrupt (each AC14 row) and stamped cases;
     - use `addInitScript` to make `setItem` throw for AC15.
-  - **AC18:** use `?scanTestDelay=2500`, which `ScanV2` passes to `ScoreButton.testDelayMs` outside production only (same allow-list as the switch).
+  - **AC18:** use `?scanTestDelay=2500`, read by `testOverrides` and passed to `ScoreButton.testDelayMs`.
   - **AC37:**
     - assert the event names and order from `events(page)`;
     - assert `sector === "ca-firms"` on every event;
     - assert that no value matches `/@|\d{10}/`.
   - **AC29:** `context.setOffline(true)` before submitting, and assert that no request is made.
-  - **AC43:** a route that never responds; set `?scanTestTimeout=200` (outside production only, passed to `submitReport` as `timeoutMs`).
-  - **AC44:** open the page with `?scanTestNoMeta=1`. Outside production only (same allow-list as the switch), `page.tsx` then passes no `meta` to `ScanV2`. Assert the plain bar, no stamps, and `recommendations[0]` as the free fix.
+  - **AC43:** a route that never responds; set `?scanTestTimeout=200` (read by `testOverrides`); assert exactly one request and the AC28 state.
+  - **AC10/AC16:** reload on the result page offers "See your result again"; a 200 clears the saved value.
   - **AC37:** include a retake (expect `assessment_rerun`) and Back-from-result then forward (expect `assessment_rerun`, not a second `assessment_complete`).
 
 ### T22 — Accessibility, mobile, motion-off and page-weight tests
-- implements: AC2, AC4, AC8, AC19, AC20, AC34, AC35, AC36, AC39
+- implements: AC2, AC4, AC8, AC19, AC20, AC34, AC35, AC36, AC38, AC39
 - depends_on: T20, T21
 - files: e2e/scan-a11y.spec.ts, e2e/scan-motion-off.spec.ts, scripts/measure-scan-weight.mjs, next.config.ts
 - risk: tier2
@@ -673,7 +674,8 @@ bash ../specs/ca-assessment-pilot/bin/tsc-baseline.sh   # once, on the untouched
   - **Page weight** (`measure-scan-weight.mjs`):
     1. read `.next/app-build-manifest.json` from two builds of the same commit, with the switch off (`.next-off`) and on (`.next-on`);
     2. gzip-sum the JS for `/[locale]/assessment/ca-firms/page`;
-    3. exit non-zero if on − off > 15 KB, or if off differs from a build of the base commit by more than 1 KB.
+    3. exit non-zero if on − off > 15 KB, or if off differs from a build of the base commit by more than 1 KB;
+    4. also assert that the switch-off build lists `/[locale]/assessment/ca-firms` as a static (prerendered) route in `.next-off/prerender-manifest.json` (AC38).
     Build each variant into its own `distDir`: add `distDir: process.env.NEXT_DIST_DIR || ".next"` to `next.config.ts` (no change when the variable is unset).
 
 ### T23 — Preview sign-off: VoiceOver, real phone, legal date
@@ -693,14 +695,10 @@ bash ../specs/ca-assessment-pilot/bin/tsc-baseline.sh   # once, on the untouched
 
 1. **Merge PR #92** (legal fixes to the CA pack), then rebase this branch.
 2. **Ship T6, T8 and T19 to production.**
-   - T6 starts the baseline.
+   - T6 starts the sector-tagged events; the baseline is the 28 days before switch-on (spec.md › Measurement), so T6 must be live at least 28 days before step 5.
    - T8 and T19 stand alone.
-   - Read CA starts after 14 days.
-   - If CA has fewer than 50 starts, apply the spec's Measurement rule (4-week windows, or another sector) before starting T9 onwards.
+   - Build T1–T5, T7 and T9–T22 during those 28 days.
 3. **Merge T1–T5, T7 and T9–T22** with `NEXT_PUBLIC_CA_SCAN_V2` unset. Production is unchanged.
 4. **Sign T23** on the preview.
 5. **Set `NEXT_PUBLIC_CA_SCAN_V2=1`** in Vercel production and redeploy.
-6. **After the measurement window,** read the success criterion (intent.md).
-   - If it's met, open a new chain for the other 11 sectors and the generic survey.
-   - If motion is the doubt, set `NEXT_PUBLIC_SCAN_MOTION=0` and measure again.
-   - If the whole scan fails, unset `NEXT_PUBLIC_CA_SCAN_V2`. T6, T8 and T19 remain in production.
+6. **At the end of the after-window,** apply the outcome rule in spec.md › Measurement (pass, fail or inconclusive) and its stated next steps. T6, T8 and T19 stay in production whatever the outcome.

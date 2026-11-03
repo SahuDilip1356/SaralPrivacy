@@ -19,7 +19,7 @@ The plan was rewritten after this review. Both blockers were confirmed in code b
 | R3 / C6 | 🟡 | both | Baseline can't be split by sector; `assessmentComplete` lacks sector | **Fixed:** sector derived from the path when the caller omits it; sector added to complete |
 | R5, R6, R7 | 🟡 | readiness | No message keys; English in lib; open signatures and props | **Fixed:** "Shared names" (key table, helpers, hook, props); lib returns keys |
 | R8 | 🟡 | readiness | Missing dependencies (T10→T7, T14→T6) | **Fixed** |
-| R9, C10 | 🟡 | both | E2E: lockfile, browser install, env, CI rationale | **Fixed:** T20 harness task |
+| R9, C10 | 🟡 | both | E2E: lockfile, browser install, env, CI rationale | **Fixed:** T20 test-setup task |
 | R10 | 🟡 | readiness | Analytics capture can't see events locally | **Fixed:** `window.va` stub plus an empty insights script |
 | R11 | 🟡 | readiness | Many ACs unchecked by tests | **Fixed:** T21 names a test per AC; the switch-off project covers AC38 |
 | R12 | 🟡 | readiness | T16 and T19 oversized | **Fixed:** split into T16, T17, T18 and T20, T21, T22 |

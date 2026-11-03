@@ -55,12 +55,12 @@ That issue belongs to the generic survey. The CA scan already asks for consent o
 ## Assumptions
 
 ### A1 — Visible progress and value before the form raise completion
-- validate_by: completion ratio for the 2 weeks after launch against the 2 weeks before, same sector (week 4 after the analytics change ships)
+- validate_by: the outcome rule in spec.md › Measurement, read at the end of the after-window
 - if_wrong: keep the accessibility, mobile, legal and resilience fixes, switch the motion layer off with the flag, and test a shorter question set instead
 
-### A2 — The CA scan gets enough starts to read a change in 2 weeks
-- validate_by: count of CA scan starts in the 2-week baseline window
-- if_wrong: below 50 starts, extend both windows to 4 weeks, or run the pilot on the highest-traffic sector instead
+### A2 — The CA scan gets enough starts to read a change
+- validate_by: the baseline window in spec.md › Measurement (at least 28 days of sector-tagged events before switch-on)
+- if_wrong: the outcome rule's "inconclusive" branch applies; the pilot never moves to another sector
 
 ### A3 — Showing one fix for free doesn't reduce report requests
 - validate_by: report requests ÷ completions after launch against before
@@ -72,7 +72,7 @@ That issue belongs to the generic survey. The CA scan already asks for consent o
 
 ### A5 — The analytics backend accepts the extra event properties on the current plan
 - validate_by: send one test event with all properties from a preview build in week 1 and read it in the dashboard
-- if_wrong: drop the per-question event first, then any property the plan can't hold
+- if_wrong: drop the trailing properties of each event first (spec.md › Analytics events lists them in priority order); `sector` is never dropped
 
 ### A6 — Most DPDP Act duties apply from 13 May 2027
 - validate_by: check the MeitY commencement notification before launch
@@ -80,7 +80,7 @@ That issue belongs to the generic survey. The CA scan already asks for consent o
 
 ## Success criterion
 
-The baseline is the 2 weeks of sector-tagged events before the new scan is switched on. When that baseline has at least 50 CA starts and 10 CA completions, the pilot succeeds if, in the 2 weeks after switch-on, the CA completion ratio (first results shown ÷ scans started) is at least double the baseline ratio. When completions are too few to double meaningfully even over 4-week windows, it succeeds on an absolute target: a completion ratio of at least 30% with at least 15 completions in the 4 weeks after switch-on. In both cases, at least 25% of people who finish must request the report.
+The CA completion ratio passes the outcome rule in spec.md › Contracts › "Measurement": at least double a 28-day baseline when the baseline has 10 or more completions, otherwise at least 30% with at least 15 completions, over a 28-day after-window, with a lead rate of at least 25%. That section also defines the windows and the "inconclusive" outcome. This intent doesn't restate them.
 
 ## Rollback
 

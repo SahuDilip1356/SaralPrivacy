@@ -75,10 +75,7 @@ fallbackFix: string                              // the pack's fix when no area 
 
 - **CA sections:** `practice` = q1, q2; `documents` = q3, q4, q5; `controls` = q6–q10. Section names and stamp text come from the message files, keyed by section key (see AC1, AC9).
 - **CA fixes:** the pack's four fixes, mapped in order to the area keys `intake` (Document intake risk), `storage_access` (Storage & access risk), `retention` (Retention & deletion risk) and `vendor_incident` (Vendor & incident readiness). The texts must match the pack's text exactly; a test compares them with the pack source.
-- **A sector with no scan metadata** gets a plain fallback (AC44):
-  - a single progress bar instead of the rail;
-  - no stamps;
-  - `recommendations[0]` as the free fix, with the remaining recommendations in pack order (no ranking).
+- Scan metadata is required. Sectors without it keep today's scan; adding metadata for other sectors belongs to the rollout chain.
 
 ### Scoring output the scan uses (computed in the browser by the existing engine)
 
@@ -160,10 +157,11 @@ The rules for reading a value are in AC14. A value whose `at` is more than 7 × 
 | 200 | stop: success (AC30) |
 | 400 | stop: failure, no retry |
 | 429 | wait `Retry-After` seconds (at most 5, default 2), then try again |
-| 500, any other status, a network error, or no response within 15 s | wait 0.8 s × the attempt number, then try again |
+| 500 or any other 5xx status | wait 0.8 s × the attempt number, then try again (the server didn't save) |
+| a network error, or no response within 15 s | stop: failure, no retry (the server may already have saved it) |
 
-- At most 3 attempts; after the third failed attempt, stop.
-- A failure ends in AC28, with reason "server" for a 400, 429 or 500, and "network" for a network error or a timeout.
+- At most 3 attempts; after the third failed attempt, stop. Any other 4xx stops at once, like 400.
+- A failure ends in AC28, with reason "server" for a status code and "network" for a network error or a timeout. The person decides whether to try again.
 - AC29 applies only when the browser reports it is offline before the first attempt.
 
 ### Analytics events (cookieless, aggregate)
@@ -176,7 +174,7 @@ Each event carries `sector: <pack.industry>`.
 | Event | When it fires | Extra properties |
 |---|---|---|
 | `assessment_start` | once per page load, on first render (as today); not on Retake | `prefilled: boolean` (an answer from the home page was applied), `src: "hero" \| ""` (arrived from the home page question) |
-| `assessment_question_view` | each time a question is shown, including after Back; not repeated on a re-render of the same question | `q: string` (question ID), `n: number` (1-based position in the full list, quick-start = 1) |
+| `assessment_question_view` | each time a question is shown, including after Back; not repeated on a re-render of the same question | `q: string` (question ID) |
 | `assessment_section_complete` | once per section per page load, when the stamp moment of AC9 happens (also in still mode) | `section: string` (section key) |
 | `assessment_resume_shown` | when the resume card renders | `answered: number` (A) |
 | `assessment_resume_continue` | when the resume card's continue button is chosen | `from_q: string` (question ID) |
@@ -185,7 +183,7 @@ Each event carries `sector: <pack.industry>`.
 | `free_fix_viewed` | once per result, when the free fix is at least half visible | `bucket: string` (area key, or "none" for the fallback) |
 | `report_form_error` | each submit blocked by validation | `fields: string` (comma-joined from name, firm, email, phone, consent) |
 | `report_submit_failed` | each send that ends in AC28 or AC29 | `reason: "server" \| "network" \| "offline"` |
-| `report_requested` | each valid submit, before the request (as today) | `risk_band: string` |
+| `report_requested` | each valid submit, before the request (as today) | `risk_band: string`, `first: boolean` (true for the first in this page load) |
 | `report_saved` | each 200 response | `risk_band: string` |
 | `assessment_step_3`, `assessment_step_6` | once per page load, when the question at index 3 or 6 of the full list (labelled "Question 3" and "Question 6") is first shown, as today | `step: number` |
 
@@ -193,11 +191,38 @@ The analytics service is the site's existing cookieless page analytics, called t
 
 **Metric continuity.** The before and after windows must count the same things, or the success criterion means nothing.
 - `assessment_start` fires once per page load, on first render, exactly as today. A resumed visit is still one start; resumption is counted only by `assessment_resume_continue`.
-- **Completion ratio** = `assessment_complete` ÷ `assessment_start`, per window.
+- **Completion ratio** = `assessment_complete` ÷ `assessment_start`, per window (see "Measurement").
   - In the new scan, `assessment_complete` fires once per page load. Later results fire `assessment_rerun`, which isn't in the ratio.
   - Today's scan fires `assessment_complete` again on a retake. So the baseline can only be overcounted, which makes the pilot's comparison conservative.
-- **Lead rate** = `report_requested` ÷ `assessment_complete`, per window. `report_requested` keeps today's moment: a valid form is submitted, before the request is sent.
+- **Lead rate** is defined in "Measurement". `report_requested` keeps today's moment: a valid form is submitted, before the request is sent. Its new `first` property marks the first one in the page load, so retries, resubmits and post-retake submits don't inflate the rate.
 - `assessment_step_3` and `assessment_step_6` keep firing when question index 3 and 6 are first shown.
+
+### Measurement (single source for intent.md and plan.md)
+
+All figures are for CA only. The pilot never moves to another sector.
+
+**Windows**
+- **Baseline:** the 28 days of sector-tagged events ending the day before the scan switch goes on. So the analytics change (plan T6) must have been live for at least 28 days before switch-on.
+- **After:** the 28 days starting the day the scan switch goes on. If that window has fewer than 50 starts, it extends to 56 days.
+
+**Metrics**
+- **Completion ratio:** `assessment_complete` ÷ `assessment_start`.
+- **Lead rate:** the share of page loads with an `assessment_complete` that also have a `report_requested` with `first: true`.
+
+**Outcome**
+
+| Condition | Outcome |
+|---|---|
+| Baseline has ≥ 10 completions, and the after-window ratio is ≥ 2 × the baseline ratio | pass on completion |
+| Baseline has < 10 completions, and the after-window ratio is ≥ 30% with ≥ 15 completions | pass on completion |
+| The after-window still has < 50 starts at 56 days | **inconclusive** |
+| Anything else | fail on completion |
+
+- A pass also needs a lead rate of at least 25% in the after-window.
+- **On a fail:** set the motion setting off and measure one more after-window, to separate motion from the other changes. If that also fails, turn the scan switch off.
+- **On an inconclusive result:** Dilip decides from the T23 sign-off and from what people report. The default is to keep the scan switch on with motion on, because every non-motion change is an accessibility, legal or resilience fix worth keeping anyway.
+
+The "about 1 in 114" figure in intent.md comes from a three-month dashboard view whose source (page views or events) wasn't recorded. Events before July 2026 were silent no-ops (see the header of the site's analytics helper). So that figure isn't a baseline; only the window above counts.
 
 ### Release settings
 
@@ -235,7 +260,7 @@ The new scan takes the sector's question pack and scan metadata as its input. Se
 
 | Data | Kept where | Leaves the device? |
 |---|---|---|
-| Answers (option IDs) | browser storage, cleared at the result, on Start again or Retake, or when the scan next opens after 7 days | only inside a report request the person submits, except a home-page answer in the page address (K12) |
+| Answers (option IDs) | browser storage, cleared when the report is saved, on Start again or Retake, or when the scan next opens after 7 days | only inside a report request the person submits, except a home-page answer in the page address (K12) |
 | Position, stamped sections, save time | browser storage | no |
 | Name, firm, email, phone | page memory until submit | only inside the report request |
 | Score, band, free-fix area key | computed in the browser | in analytics events, and inside the report request |
@@ -266,7 +291,7 @@ Status: **planned** means a mitigation is specified and its AC isn't yet passing
 | # | Risk | Type | Mitigation | Status | Tested by |
 |---|---|---|---|---|---|
 | K1 | Forged report requests inject markup into the email through the result text, name or firm | security | Every client-supplied value is escaped before it's placed in the email | planned | AC32 |
-| K2 | Saved progress on a shared computer shows a previous person's answers | privacy | Answers only (no contact details); expiry when the scan next opens after 7 days; "Start again" clears; cleared when the result shows | planned | AC12, AC13, AC16 |
+| K2 | Saved progress on a shared computer shows a previous person's answers or result | privacy | Answers only (no contact details); expiry when the scan next opens after 7 days; "Start again" and Retake clear; cleared once the report is saved | planned | AC12, AC13, AC16 |
 | K3 | An edited or corrupt saved value breaks the scan or ticks an option that no longer exists | failure | Validation on read; unknown option IDs dropped | planned | AC14 |
 | K4 | Private browsing or blocked storage throws errors | failure | Storage access guarded; the scan runs without saving and says so | planned | AC15 |
 | K5 | Analytics carries personal data | privacy | Fixed property list; no free text | planned | AC37 |
@@ -275,7 +300,7 @@ Status: **planned** means a mitigation is specified and its AC isn't yet passing
 | K8 | A legal line is wrong after a commencement change | failure | Date checked before launch (A6); single source for the legal line | open | AC24 |
 | K9 | The new scan breaks in production, or motion hurts completion | failure | Scan switch off by default; one-step rollback; motion can be turned off alone | planned | AC38, AC39 |
 | K10 | Plain-text phishing: a forged request makes the site email any address with links in the "fix" text, from the SaralPrivacy domain | security | Escaping (AC32) stops markup but not links; per-IP rate limit only | open | OQ9 |
-| K11 | A send that times out after the server saved it is retried, so duplicate rows and emails go out | failure | Client timeout and 3-attempt cap (AC43); no request ID to de-duplicate | accepted | AC43, OQ10 |
+| K11 | A send that times out after the server saved it is sent again, so duplicate rows and emails go out | failure | No automatic retry after a timeout or network error (AC43); only the person's own "Try again" can resend | accepted | AC43, OQ10 |
 | K12 | The home-page answer in `?pre=` reaches analytics in page-view addresses | privacy | None in this pilot | open | OQ11 |
 | K13 | A mistyped email sends the report (name, firm, risk profile, report link) to a stranger | privacy | The form shows "We'll email it to <email>" before sending (AC27) | planned | AC27 |
 
@@ -356,19 +381,18 @@ Status: **planned** means a mitigation is specified and its AC isn't yet passing
 
 ### AC10 — Progress is saved after every change
 - traces: G3
-- given: browser storage is available, and no result has yet been shown in this page load
-- when: the person selects or clears an answer, or moves to another question
-- then: the saved value matches the contract, with the current answers, position and time; once a result has been shown in this page load, nothing more is saved until the person chooses "Retake the scan"
-
+- given: browser storage is available
+- when: the person selects or clears an answer, or moves to another question (including the result)
+- then: the saved value matches the contract, with the current answers, position and time; the result counts as the position after the last question
 ### AC11 — A returning person can continue
 - traces: G3
 - given: a usable saved value (AC14) with A ≥ 1, saved 7 days ago or less
 - when: the person opens the scan again
 - then:
   - a card shows "Welcome back. Pick up where you left off.", then "You've answered A of N questions." followed by "The rest takes about M min." (M as in AC3 rule 4, using the saved answers) or, when R × 18 < 60, "The rest takes under a minute.";
-  - the card also shows a mini rail of answered questions and the note "Your answers stay on this device only, and aren't sent until you ask for your report. We clear them when you see your result, or when you come back after 7 days.";
+  - the card also shows a mini rail of answered questions and the note "Your answers stay on this device only, and aren't sent until you ask for your report. We clear them once your report is sent, or when you come back after 7 days.";
   - focus goes to the card's heading;
-  - the button reads "Continue from Question K →", where K is the required-question number of the saved position, or "Continue from the quick start →" when the saved position is the quick-start question; it restores every answer, the position and the stamped sections;
+  - the button reads "Continue from Question K →", where K is the required-question number of the saved position, "Continue from the quick start →" when the saved position is the quick-start question, or "See your result again →" when the saved position is the result; it restores every answer, the position and the stamped sections, and in the last case recomputes and shows the result (recorded as `assessment_complete` if it is the first result in this page load);
   - a usable value with A = 0 is treated as nothing saved
 
 ### AC12 — Starting again clears saved progress
@@ -401,12 +425,11 @@ Status: **planned** means a mitigation is specified and its AC isn't yet passing
 - when: the person uses the scan
 - then: it works fully, no resume is offered, and a note reads "This browser isn't saving progress (private browsing does this). Finish in one sitting: about M min." (M as in AC3 rule 4 from the current answers; "under a minute" when R × 18 < 60)
 
-### AC16 — Saved progress holds no contact details and ends at the result
+### AC16 — Saved progress holds no contact details and ends when the report is saved
 - traces: G5
 - given: the person has typed into the report form
 - when: storage is inspected at any point
-- then: the saved value never contains a name, firm name, email or phone number; once the result shows, the saved value is deleted, and AC10 keeps it from being written again in that page load (including after browser Back to a question)
-
+- then: the saved value never contains a name, firm name, email or phone number; it is deleted on the first `report_saved` (200), on Start again or Retake, and when the scan next opens more than 7 days after the last save
 ### AC17 — Scoring shows its state and runs once
 - traces: G1, G3
 - given: the last question is answered
@@ -608,7 +631,7 @@ This line covers timing and the disclaimer only. Section-level wording for each 
 - traces: G1
 - given: the scan switch (`NEXT_PUBLIC_CA_SCAN_V2`) is off
 - when: anyone opens the CA scan
-- then: they get today's scan, unchanged, with no extra script
+- then: they get today's scan, unchanged, with no extra script, and in production the page is still prerendered as a static page (the switch is decided from build settings alone; the `scanV2` parameter is read only outside production)
 
 The same AC, with the switch on: they get the new scan. Turning it off again needs no data change.
 
@@ -646,37 +669,24 @@ The same AC, with the switch on: they get the new scan. Turning it off again nee
   - continuing keeps the saved answers and ignores `pre`; starting again applies `pre`;
   - `assessment_start` reports `prefilled: true` only when `pre` was applied
 
-### AC43 — A hung request doesn't leave the form stuck
+### AC43 — A hung request doesn't leave the form stuck or send twice
 - traces: G3
 - given: an attempt gets no response within 15 s
 - when: 15 s pass
-- then: that attempt is abandoned and the send policy continues; if it was the last attempt, the form shows the AC28 state with reason "network"
-
-### AC44 — A sector without scan metadata still works
-- traces: G1, G2
-- given: the new scan opened with a pack that has no scan metadata
-- when: the person completes it
-- then:
-  - a single progress bar replaces the rail, with the same label and percentage rules (AC1, AC3);
-  - no stamps show;
-  - the free fix is `recommendations[0]`, with the line "No area scored high enough to need a specific fix." left out;
-  - the success view lists the remaining recommendations in pack order
-
+- then: that attempt is abandoned, no further attempt is made, and the form shows the AC28 state with reason "network"
 ## Non-functional
 
 - **Responsiveness:** the selected option's indicator starts filling within 100 ms of input. A question change finishes within 240 ms. The result is fully settled within 1400 ms of opening.
 - **Stability:** no layout shift when selecting answers, or when the scoring button changes state.
 - **Smoothness:** animation never changes an element's layout size (transform scale is allowed). Holding 60 fps on a mid-range phone is checked by eye on the preview at sign-off, not by automated tests.
-- **Page weight:** with the scan switch off, the CA scan page's script is the same size as before this change. With it on, the page's gzipped script is at most 15 KB larger than with it off, compared between two production builds of the same commit.
-- **Retention:** saved progress is deleted when the result shows, on Start again or Retake, and when the scan next opens more than 7 days after the last save. Nothing is kept on the server until the form is sent.
-- **Measurement:**
-  - The baseline is the first 14 days of sector-tagged events after the analytics change ships. Earlier figures can't serve: until the July 2026 analytics change, every assessment event was a silent no-op (see the header of the site's analytics helper), so the "about 1 in 114" figure in intent.md may be partly a measurement fault.
-  - **Floors:** the CA baseline needs at least 50 starts and at least 10 completions. Below either floor, extend the window to 28 days. If the floors are still missed, the pilot runs on the sector with the most starts, using that sector's pack and the AC44 fallback.
-  - **Target:** when the floors are met, the pilot passes if the completion ratio at least doubles. When the 28-day window still has fewer than 10 completions, it passes on an absolute target instead: a completion ratio of at least 30%, with at least 15 completions, in the 28 days after launch. Either way, at least 25% of completions must request the report.
+- **Page weight:** with the scan switch off, the CA scan page's script is within 1 KB of its size before this change (the shared analytics helper grows slightly). With it on, the page's gzipped script is at most 15 KB larger than with it off, compared between two production builds of the same commit.
+- **Retention:** saved progress is deleted when the report is saved, on Start again or Retake, and when the scan next opens more than 7 days after the last save. Nothing is kept on the server until the form is sent.
+- **Measurement:** see "Measurement" under Contracts (the single source; intent.md and plan.md refer to it).
 
 ## Out of scope
 
-- The other 11 sector scans, the generic survey and the `/assessment` landing page.
+- The other 11 sector scans, the generic survey and the `/assessment` landing page, except three shared changes that apply to every sector and stay if the pilot is rolled back: sector-tagged analytics, email escaping, and hiding the chat launcher on `/assessment/*` pages.
+- Running the pilot on another sector, and scan metadata for other sectors.
 - Merging the 12 duplicated sector scans into one (intent NG3).
 - Scoring, bands, buckets and red-flag rules.
 - The report endpoint's behaviour, other than escaping in the email builder (see OQ9–OQ11).
@@ -697,7 +707,7 @@ D1–D7 are defined in `reference/SUBFRAME-MOTION-SPEC.md` §15.
 - **OQ6: Hindi text for the new strings.** Owner Dilip, before Hindi users see the new scan. Until then, Hindi pages show the English text for new keys. The legal line (AC24) and the consent sentence (AC31) are English by design.
 - **OQ7: Timings in acceptance criteria.** The EGM zoom-out review (egm-review/zoom_out_report.md) suggested replacing timings with user-visible guarantees. Kept for now, because the end-to-end suite can measure them within 50 ms. Owner Dilip to confirm, by 2026-11-10.
 - **OQ8: Pilot scope for AC6 (browser history), AC9 (section stamps), AC18 (slow-scoring notice) and AC33 (offline banners while the questions show).** The EGM zoom-out review called these beyond the stated losses. Owner Dilip, by 2026-11-10. Default: keep. If cut, they move to Out of scope and their tasks drop those parts.
-- **OQ9: Server-side safety of the report endpoint (K10).** Three options: recompute score, band, red flags and fixes on the server from `answers`; cap the length of `name` and `business`, and reject links in them; validate `answers` against the pack. Owner Dilip, before the scan switch goes on in production. Each changes the endpoint, which this pilot doesn't touch; a separate change is recommended.
+- **OQ9: Server-side safety of the report endpoint (K10).** Three options: recompute score, band, red flags and fixes on the server from `answers`; cap the length of `name` and `business`, and reject links in them; validate `answers` against the pack. This is a site-wide issue: today's scan posts the same request to the same endpoint, so the pilot doesn't increase the exposure. Owner Dilip, as a separate change with its own date; it isn't a gate for this pilot.
 - **OQ10: Duplicate sends (K11).** Adding a per-submit request ID that the endpoint uses to return the existing result would stop duplicate rows and emails. Owner Dilip, with OQ9.
 - **OQ11: `?pre=` in analytics page views (K12).** Strip `pre` from page-view addresses with a filter in the site's analytics setup. Owner Dilip; site-wide, so outside this pilot.
 - **OQ12: Superseded records after "Change it" (K13).** When a resubmission follows a wrong email, the earlier record stays unflagged. Owner Dilip, with OQ9.
