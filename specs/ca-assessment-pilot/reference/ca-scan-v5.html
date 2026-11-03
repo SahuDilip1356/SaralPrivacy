@@ -1,0 +1,1111 @@
+<title>CA Risk Scan Motion Prototype</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+<style>
+/* Layout: the live CA scan card on the left, a narrow review panel on the right (stacks below on phones).
+   Light only, on purpose: it mirrors the live saralprivacy.com assessment page. Palette from webapp/app/globals.css.
+   v4: every colour, size, weight, line height, gap and radius below comes from a token in :root. */
+:root {
+  color-scheme: light;
+  /* Palette */
+  --pearl-50: #f7f9fc;
+  --pearl-100: #eef2f7;
+  --pearl-200: #dde4ef;
+  --navy-800: #0d1322;
+  --navy-700: #121a2e;
+  --navy-500: #354f72;
+  --navy-400: #566d8c;
+  --slate-700: #334155;
+  --slate-600: #475569;
+  --slate-500: #64748b;
+  --slate-300: #cbd5e1;
+  --slate-200: #e2e8f0;
+  --slate-100: #f1f5f9;
+  --white: #ffffff;
+  --green-50: #e6faf4;
+  --green-200: #87e9c8;
+  --green-500: #07b981;
+  --green-600: #059669;
+  --green-700: #047857;
+  --green-800: #065f46;
+  --teal-50: #e9f7f7;
+  --teal-800: #17605c;
+  --gold-50: #fdf7e8;
+  --gold-400: #e8ab42;
+  --gold-700: #8a5a10;
+  --amber-700: #b45309;
+  --orange-500: #f97316;
+  --red-50: #fef2f2;
+  --red-600: #dc2626;
+  --red-700: #b91c1c;
+  --ink: #0b5e47;
+  /* Semantic colours */
+  --band-controlled: var(--green-500);
+  --band-moderate: var(--gold-400);
+  --band-high: var(--orange-500);
+  --band-critical: var(--red-600);
+  --ring-track: var(--pearl-100);
+  --warn: var(--amber-700);
+  --focus: var(--navy-500);
+  --control-border: var(--slate-500);
+  --error: var(--red-700);
+  --shadow-sm: 0 1px 2px rgb(18 26 46 / 0.12);
+  /* Type: three text sizes plus one display size for the score */
+  --font: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --fs-1: 12px;
+  --fs-2: 14px;
+  --fs-3: 20px;
+  --fs-display: 34px;
+  --fw-regular: 400;
+  --fw-strong: 600;
+  --lh-body: 1.5;
+  --lh-tight: 1.3;
+  --lh-none: 1;
+  /* Space and shape, on a 4 px grid */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-6: 24px;
+  --s-8: 32px;
+  --s-12: 48px;
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-full: 999px;
+  --tap: 44px;
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --t-fast: 150ms;
+  --t-base: 280ms;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--pearl-50);
+  color: var(--navy-700);
+  font: var(--fw-regular) var(--fs-2)/var(--lh-body) var(--font);
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+button, input, select { font: inherit; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding-block: var(--s-6) var(--s-12);
+  padding-left: max(var(--s-4), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--s-4), env(safe-area-inset-right, 0px));
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: var(--s-8);
+  align-items: start;
+}
+@media (max-width: 900px) { .wrap { grid-template-columns: minmax(0, 1fr); } }
+main { min-width: 0; max-width: 680px; width: 100%; justify-self: center; }
+
+/* ── Header (as live) ─────────────────────────────── */
+.eyebrow { margin-top: 0; display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: baseline; font-size: var(--fs-2); font-weight: var(--fw-strong); margin-bottom: var(--s-1); }
+.eyebrow span { font-weight: var(--fw-regular); color: var(--slate-600); }
+.privacy-line { margin: 0 0 var(--s-4); font-size: var(--fs-1); color: var(--slate-600); }
+
+/* ── State banners: offline, storage blocked, expired save ── */
+.banner { margin: 0 0 var(--s-4); padding: var(--s-2) var(--s-3); border-radius: var(--r-sm); font-size: var(--fs-2); }
+.banner.warn { background: var(--gold-50); color: var(--gold-700); }
+.banner.info { background: var(--pearl-100); color: var(--slate-700); }
+
+/* ── Progress: live bar ───────────────────────────── */
+.prog-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s-1) var(--s-3); font-size: var(--fs-2); color: var(--slate-600); margin-bottom: var(--s-2); }
+.prog-meta b { font-weight: var(--fw-strong); color: var(--green-800); }
+.pm-r { display: flex; flex-wrap: wrap; gap: var(--s-1) var(--s-3); align-items: baseline; }
+.tl.last { color: var(--green-800); font-weight: var(--fw-strong); }
+.livebar { height: var(--s-2); border-radius: var(--r-full); background: var(--slate-200); overflow: hidden; }
+.livebar > i { display: block; height: 100%; border-radius: var(--r-full); background: var(--green-500); width: 0; transition: width 300ms ease; }
+
+/* ── Progress: proposed rail ──────────────────────── */
+.rail { display: flex; gap: var(--s-3); align-items: flex-end; }
+.rail-q0 { flex: none; display: flex; flex-direction: column; align-items: center; gap: var(--s-2); }
+.rail-q0 small, .chap-head { display: flex; align-items: center; gap: var(--s-2); min-height: var(--s-6); font-size: var(--fs-1); font-weight: var(--fw-strong); letter-spacing: 0.05em; text-transform: uppercase; color: var(--slate-600); white-space: nowrap; }
+.q0dot { width: var(--s-2); height: var(--s-2); border-radius: 50%; border: 2px solid var(--control-border); background: var(--white); transition: background 220ms, border-color 220ms; }
+.q0dot.on { background: var(--green-500); border-color: var(--green-500); }
+.q0dot.cur { border-color: var(--navy-700); }
+.chap { min-width: 0; display: flex; flex-direction: column; gap: var(--s-2); }
+.chap-head { position: relative; }
+.chap.active .chap-head { color: var(--navy-700); }
+.chap-check { display: inline-grid; place-items: center; width: var(--s-4); height: var(--s-4); border-radius: 50%; background: var(--green-600); color: var(--white); opacity: 0; transform: scale(0.4); transition: opacity 200ms, transform 260ms var(--ease-out); }
+.chap.done .chap-check { opacity: 1; transform: scale(1); }
+.segs { display: flex; gap: var(--s-1); }
+.seg { flex: 1 1 0; min-width: 14px; height: var(--s-2); border-radius: var(--r-full); background: var(--slate-200); overflow: hidden; position: relative; transition: height 200ms; }
+.seg > i { position: absolute; inset: 0; border-radius: inherit; background: var(--green-500); transform: scaleX(0); transform-origin: left center; transition: transform var(--t-base) var(--ease-out); }
+.seg.on > i { transform: scaleX(1); }
+.seg.cur { height: var(--s-3); box-shadow: inset 0 0 0 2px var(--navy-700); background: var(--white); }
+.seg.cur.on { box-shadow: none; }
+
+/* The section stamp: an ink stamp over the finished chapter's label */
+.stamp {
+  position: absolute; left: 50%; top: -30px; z-index: 3;
+  padding: var(--s-1) var(--s-3); border: 2.5px solid var(--ink); border-radius: var(--s-2);
+  color: var(--ink); font-size: var(--fs-1); font-weight: var(--fw-strong); letter-spacing: 0.12em; text-transform: uppercase;
+  background: color-mix(in srgb, var(--green-50) 92%, transparent); white-space: nowrap; pointer-events: none;
+  filter: url(#ink);
+  transform: translateX(-50%) rotate(-7deg);
+  animation: stamp 1500ms var(--ease-out) both;
+}
+@keyframes stamp {
+  0% { opacity: 0; transform: translateX(-50%) rotate(-12deg) scale(1.9); }
+  16% { opacity: 1; transform: translateX(-50%) rotate(-7deg) scale(0.94); }
+  24% { transform: translateX(-50%) rotate(-7deg) scale(1); }
+  78% { opacity: 1; transform: translateX(-50%) rotate(-7deg) scale(1); }
+  100% { opacity: 0; transform: translateX(-50%) rotate(-7deg) scale(0.9); }
+}
+
+/* ── Resume screen ───────────────────────────────── */
+.resume { margin-top: var(--s-2); border-radius: var(--r-lg); border: 1px solid var(--slate-200); background: var(--white); padding: var(--s-6); }
+.resume h2 { margin: 0; font-size: var(--fs-3); line-height: var(--lh-tight); font-weight: var(--fw-strong); }
+.resume h2:focus { outline: none; }
+.resume p { margin: var(--s-2) 0 0; color: var(--slate-600); }
+.resume .mini { margin-top: var(--s-4); display: flex; gap: var(--s-1); }
+.resume .mini span { flex: 1; height: 6px; border-radius: var(--r-full); background: var(--slate-200); }
+.resume .mini span.on { background: var(--green-500); }
+.resume .acts { margin-top: var(--s-6); display: flex; flex-wrap: wrap; gap: var(--s-3); align-items: center; }
+.resume small { display: block; margin-top: var(--s-4); font-size: var(--fs-1); color: var(--slate-600); }
+
+/* ── Question card ───────────────────────────────── */
+.stage { margin-top: var(--s-6); }
+fieldset.qcard { margin: 0; min-width: 0; border: 1px solid var(--slate-200); border-radius: var(--r-lg); background: var(--white); padding: var(--s-6); }
+@media (max-width: 520px) { fieldset.qcard { padding: var(--s-6) var(--s-4); } }
+legend { display: contents; }
+.qbadge { display: inline-block; margin-bottom: var(--s-3); padding: var(--s-1) var(--s-3); border-radius: var(--r-full); background: var(--teal-50); color: var(--teal-800); font-size: var(--fs-1); font-weight: var(--fw-strong); }
+.qbadge.opt { background: var(--gold-50); color: var(--gold-700); }
+.qtitle { margin: 0; font-size: var(--fs-3); line-height: var(--lh-tight); font-weight: var(--fw-strong); text-wrap: balance; }
+.qtitle:focus { outline: none; }
+.qhelp { margin: var(--s-2) 0 0; color: var(--slate-600); }
+.qmulti { margin: var(--s-1) 0 0; font-size: var(--fs-1); color: var(--slate-600); }
+.opts { margin-top: var(--s-6); display: grid; gap: var(--s-3); }
+.opt { display: block; cursor: pointer; }
+.opt input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.opt-row { display: flex; align-items: flex-start; gap: var(--s-3); min-height: var(--tap); padding: var(--s-4); border: 2px solid var(--slate-200); border-radius: var(--r-md); color: var(--slate-700); transition: border-color var(--t-fast), background-color var(--t-fast), color var(--t-fast), transform 120ms; }
+.opt:hover .opt-row { border-color: var(--slate-300); background: var(--pearl-50); }
+.opt input:checked + .opt-row { border-color: var(--green-500); background: var(--green-50); color: var(--green-800); }
+.opt input:focus-visible + .opt-row { outline: 2px solid var(--focus); outline-offset: 2px; }
+.opt-row:active { transform: scale(0.99); }
+.mark { flex: none; margin-top: 1px; width: 20px; height: 20px; display: grid; place-items: center; border: 2px solid var(--control-border); background: var(--white); transition: background-color var(--t-fast), border-color var(--t-fast); }
+.mark.radio { border-radius: 50%; }
+.mark.box { border-radius: 6px; }
+.mark svg { width: var(--s-3); height: var(--s-3); overflow: visible; }
+.mark polyline { fill: none; stroke: var(--white); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 16; stroke-dashoffset: 16; transition: stroke-dashoffset 200ms var(--ease-out) 40ms; }
+.opt input:checked + .opt-row .mark { background: var(--green-600); border-color: var(--green-600); }
+.opt input:checked + .opt-row .mark polyline { stroke-dashoffset: 0; }
+.olabel { flex: 1; min-width: 0; }
+.obadge { flex: none; align-self: center; padding: 2px var(--s-2); border-radius: var(--r-full); font-size: var(--fs-1); font-weight: var(--fw-strong); letter-spacing: 0.02em; text-transform: uppercase; }
+.obadge.red { background: var(--red-50); color: var(--red-700); }
+.obadge.amber { background: var(--gold-50); color: var(--gold-700); }
+.obadge.green { background: var(--green-50); color: var(--green-700); }
+details.why { margin-top: var(--s-6); border-radius: var(--r-md); background: var(--pearl-100); padding: 0 var(--s-4); }
+details.why summary { cursor: pointer; display: flex; align-items: center; min-height: var(--tap); font-weight: var(--fw-strong); }
+details.why summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: var(--r-sm); }
+details.why p { margin: 0; padding-bottom: var(--s-4); color: var(--slate-600); }
+
+/* Question enter: directional, as Subframe transition-panel. Exits aren't drawn: the old card is replaced at once. */
+.enter-fwd { animation: enterFwd var(--t-base) var(--ease-out) both; }
+.enter-back { animation: enterBack var(--t-base) var(--ease-out) both; }
+@keyframes enterFwd { from { opacity: 0; transform: translateX(var(--s-6)); } to { opacity: 1; transform: none; } }
+@keyframes enterBack { from { opacity: 0; transform: translateX(calc(var(--s-6) * -1)); } to { opacity: 1; transform: none; } }
+
+/* ── Buttons ─────────────────────────────────────── */
+.nav { margin-top: var(--s-6); display: flex; justify-content: space-between; align-items: center; gap: var(--s-3); }
+.nav-r { display: flex; gap: var(--s-2); }
+.btn-ghost { display: inline-flex; align-items: center; gap: var(--s-2); min-height: var(--tap); padding: 0 var(--s-4); border: 0; background: none; color: var(--slate-600); font-weight: var(--fw-strong); cursor: pointer; border-radius: var(--r-sm); }
+.btn-ghost:hover { color: var(--navy-700); background: var(--pearl-100); }
+.btn-primary { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-width: 148px; min-height: var(--tap); padding: 0 var(--s-6); border: 0; border-radius: var(--r-md); background: var(--navy-700); color: var(--white); font-weight: var(--fw-strong); cursor: pointer; transition: background-color var(--t-fast), opacity var(--t-fast); }
+.btn-primary:hover { background: var(--navy-800); }
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-primary[aria-busy="true"] { opacity: 1; cursor: progress; }
+.btn-primary .spin { width: 15px; height: 15px; border-radius: 50%; border: 2px solid rgb(255 255 255 / 0.35); border-top-color: var(--white); animation: spin 700ms linear infinite; }
+.btn-primary.ok { background: var(--green-700); }
+@keyframes spin { to { transform: rotate(360deg); } }
+.btn-ghost:focus-visible, .btn-primary:focus-visible, .tog button:focus-visible, .tool:focus-visible, .sim select:focus-visible, .switch input:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.conf { margin: var(--s-4) 0 0; text-align: center; font-size: var(--fs-1); color: var(--slate-600); }
+
+/* ── Result ──────────────────────────────────────── */
+.sample-note { margin-bottom: var(--s-4); padding: var(--s-2) var(--s-3); border-radius: var(--r-sm); background: var(--gold-50); color: var(--gold-700); font-size: var(--fs-1); }
+.rcard { border-radius: var(--r-lg); border: 2px solid var(--slate-200); background: var(--white); padding: var(--s-6); display: flex; gap: var(--s-6); align-items: center; }
+@media (max-width: 560px) { .rcard { flex-direction: column; text-align: center; } }
+.gauge { position: relative; flex: none; width: 144px; height: 144px; }
+.gauge svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.gauge .track-ring { stroke: var(--ring-track); }
+.gauge .num { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.gauge .num b { font-size: var(--fs-display); font-weight: var(--fw-strong); line-height: var(--lh-none); }
+.gauge .num small { margin-top: var(--s-1); font-size: var(--fs-1); color: var(--slate-600); }
+.rlabel { font-size: var(--fs-1); font-weight: var(--fw-strong); letter-spacing: 0.05em; text-transform: uppercase; color: var(--slate-600); }
+.rhead { margin: var(--s-1) 0 0; font-size: var(--fs-3); line-height: var(--lh-tight); font-weight: var(--fw-strong); }
+.rhead:focus { outline: none; }
+.bandchip { margin-top: var(--s-2); display: inline-flex; align-items: center; gap: var(--s-2); padding: var(--s-1) var(--s-3); border-radius: var(--r-full); border: 1.5px solid var(--band); background: color-mix(in srgb, var(--band) 14%, var(--white)); color: var(--navy-700); font-weight: var(--fw-strong); }
+.bandchip .dot { width: var(--s-2); height: var(--s-2); border-radius: 50%; background: var(--band); }
+.bandchip.live { color: var(--white); background: var(--band); }
+.bandchip.pop { animation: pop 380ms var(--ease-out) both; }
+@keyframes pop { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: none; } }
+.rcopy { margin: var(--s-3) 0 0; color: var(--slate-600); }
+.free { margin-top: var(--s-4); border-radius: var(--r-md); border: 2px solid var(--green-500); background: var(--white); padding: var(--s-6); }
+.free-tag { display: inline-block; margin: 0; padding: 2px var(--s-3); border-radius: var(--r-full); background: var(--green-50); color: var(--green-800); font-size: var(--fs-1); font-weight: var(--fw-strong); letter-spacing: 0.05em; text-transform: uppercase; }
+.free-fix { margin: var(--s-2) 0 0; font-size: var(--fs-3); font-weight: var(--fw-strong); line-height: var(--lh-tight); text-wrap: pretty; }
+.free-why { margin: var(--s-2) 0 0; font-size: var(--fs-1); color: var(--slate-600); }
+.panel { margin-top: var(--s-4); border-radius: var(--r-md); border: 1px solid var(--slate-200); background: var(--white); padding: var(--s-6); }
+.panel h3 { margin: 0 0 var(--s-4); font-size: var(--fs-2); font-weight: var(--fw-strong); }
+.panel.clear { border-color: var(--green-200); }
+.panel.clear h3 { margin-bottom: var(--s-1); color: var(--green-800); }
+.lens { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4); }
+@media (max-width: 560px) { .lens { grid-template-columns: minmax(0, 1fr); } }
+.bar-meta { display: flex; justify-content: space-between; gap: var(--s-3); margin-bottom: var(--s-2); font-size: var(--fs-1); color: var(--slate-600); }
+.bar-meta b { font-weight: var(--fw-strong); }
+.track { height: var(--s-2); border-radius: var(--r-full); background: var(--slate-100); overflow: hidden; }
+.track.thin { height: 6px; }
+.fill { height: 100%; border-radius: inherit; width: 0; }
+.fill.anim { transition: width 800ms var(--ease-out); }
+.flags { margin: 0; padding: 0; list-style: none; display: grid; gap: var(--s-3); }
+.flags li { display: flex; gap: var(--s-3); align-items: flex-start; color: var(--slate-700); }
+.flags svg { flex: none; margin-top: 2px; color: var(--warn); }
+.fade-up { animation: fadeUp 420ms var(--ease-out) both; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(var(--s-2)); } to { opacity: 1; transform: none; } }
+.buckets { display: grid; gap: var(--s-4); }
+.bk-head { display: flex; justify-content: space-between; align-items: center; gap: var(--s-3); margin-bottom: var(--s-2); }
+.bk-head span:first-child { font-weight: var(--fw-strong); }
+.chip { flex: none; padding: 2px var(--s-2); border-radius: var(--r-full); font-size: var(--fs-1); font-weight: var(--fw-strong); }
+.chip.Low { background: var(--green-50); color: var(--green-700); }
+.chip.Moderate { background: var(--gold-50); color: var(--gold-700); }
+.chip.High { background: var(--red-50); color: var(--red-700); }
+.bk-mean { margin: var(--s-1) 0 0; font-size: var(--fs-1); color: var(--slate-600); }
+.more { margin-top: var(--s-2); margin-left: calc(var(--s-4) * -1); color: var(--navy-500); }
+
+/* ── Report form: idle, field errors, sending, server error, offline, sent ── */
+.gate { margin-top: var(--s-4); border-radius: var(--r-md); border: 1px solid var(--green-200); background: var(--green-50); padding: var(--s-6); }
+.gate h3 { margin: 0 0 var(--s-1); font-size: var(--fs-2); font-weight: var(--fw-strong); }
+.gate h3:focus { outline: none; }
+.gate > p { margin: 0 0 var(--s-4); font-size: var(--fs-1); color: var(--slate-600); }
+.gate-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4); }
+@media (max-width: 560px) { .gate-grid { grid-template-columns: minmax(0, 1fr); } }
+.field label { display: block; margin-bottom: var(--s-1); font-weight: var(--fw-strong); }
+.field label span { font-weight: var(--fw-regular); color: var(--slate-600); }
+.field input { width: 100%; min-height: var(--tap); padding: 0 var(--s-3); border: 1px solid var(--control-border); border-radius: var(--r-sm); background: var(--white); color: var(--navy-700); }
+.field input:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+.field input[aria-invalid="true"] { border: 2px solid var(--error); }
+.field input:read-only { background: var(--pearl-50); }
+.ferr { margin: var(--s-1) 0 0; color: var(--error); }
+.gate-acts { margin-top: var(--s-4); display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); }
+.alert { margin: var(--s-4) 0 0; padding: var(--s-3) var(--s-4); border-radius: var(--r-sm); border: 1px solid var(--error); background: var(--red-50); color: var(--error); }
+.alert:empty { display: none; }
+.gate .fine { margin: var(--s-3) 0 0; font-size: var(--fs-1); color: var(--slate-600); }
+.gate .gate-acts .btn-ghost { margin-left: calc(var(--s-4) * -1); color: var(--navy-500); }
+.restfix { margin: var(--s-3) 0 0; padding-left: var(--s-6); display: grid; gap: var(--s-2); }
+.legal { margin: var(--s-2) 0 0; font-size: var(--fs-1); color: var(--slate-600); }
+.retake { margin-top: var(--s-4); text-align: center; }
+
+/* ── Review panel ────────────────────────────────── */
+aside { position: sticky; top: calc(env(safe-area-inset-top, 0px) + var(--s-4)); display: grid; gap: var(--s-4); }
+@media (max-width: 900px) { aside { position: static; max-width: 680px; width: 100%; justify-self: center; } }
+.rv { border-radius: var(--r-md); border: 1px solid var(--pearl-200); background: var(--white); padding: var(--s-4); }
+.rv h2 { margin: 0 0 var(--s-1); font-size: var(--fs-1); font-weight: var(--fw-strong); letter-spacing: 0.04em; text-transform: uppercase; color: var(--navy-500); }
+.rv p { margin: 0; color: var(--slate-600); }
+.tog { margin-top: var(--s-3); display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-1); padding: var(--s-1); border-radius: var(--r-md); background: var(--pearl-100); }
+.tog button { min-height: var(--tap); border: 0; border-radius: var(--r-sm); padding: 0 var(--s-2); background: transparent; color: var(--slate-600); font-weight: var(--fw-strong); cursor: pointer; }
+.tog button[aria-pressed="true"] { background: var(--white); color: var(--navy-700); box-shadow: var(--shadow-sm); }
+.switch { margin-top: var(--s-1); display: flex; align-items: center; gap: var(--s-2); min-height: var(--tap); color: var(--slate-700); cursor: pointer; }
+.switch input { width: var(--s-4); height: var(--s-4); accent-color: var(--navy-700); }
+.tools { margin-top: var(--s-2); display: flex; flex-wrap: wrap; gap: var(--s-2); }
+.tool { min-height: var(--tap); border: 1px solid var(--control-border); border-radius: var(--r-sm); padding: 0 var(--s-3); background: var(--white); color: var(--navy-700); font-weight: var(--fw-strong); cursor: pointer; }
+.tool:hover { background: var(--pearl-100); }
+.sim { margin-top: var(--s-3); display: grid; gap: var(--s-1); }
+.sim label { font-weight: var(--fw-strong); color: var(--slate-700); }
+.sim select { min-height: var(--tap); padding: 0 var(--s-2); border: 1px solid var(--control-border); border-radius: var(--r-sm); background: var(--white); color: var(--navy-700); }
+.mlist { margin: var(--s-2) 0 0; padding: 0; list-style: none; display: grid; gap: var(--s-3); }
+.mlist li { display: grid; grid-template-columns: var(--s-6) minmax(0, 1fr); gap: var(--s-2); color: var(--slate-600); }
+.mlist .n { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: var(--pearl-100); color: var(--navy-500); font-size: var(--fs-1); font-weight: var(--fw-strong); transition: background 300ms, color 300ms; }
+.mlist li.lit .n { background: var(--green-600); color: var(--white); }
+.mlist b { color: var(--navy-700); font-weight: var(--fw-strong); }
+.mlist code { font-size: var(--fs-1); color: var(--teal-800); background: var(--teal-50); padding: 0 var(--s-1); border-radius: var(--s-1); }
+.newtag { margin-left: var(--s-1); padding: 0 6px; border-radius: var(--r-full); background: var(--gold-50); color: var(--gold-700); font-size: var(--fs-1); font-weight: var(--fw-strong); }
+.qs { margin: var(--s-2) 0 0; padding-left: var(--s-4); color: var(--slate-600); display: grid; gap: var(--s-2); }
+
+/* Motion modes: "current" mirrors today's page; reduced motion keeps every state, drops movement */
+body.m-current .seg > i, body.m-current .mark polyline, body.m-current .chap-check { transition: none; }
+body.m-current .mark polyline { display: none; }
+body.m-reduced .seg > i, body.m-reduced .mark polyline, body.m-reduced .chap-check, body.m-reduced .livebar > i, body.m-reduced .fill.anim, body.m-reduced .opt-row { transition: none !important; }
+body.m-reduced .enter-fwd, body.m-reduced .enter-back, body.m-reduced .fade-up, body.m-reduced .bandchip.pop { animation: none !important; }
+body.m-reduced .btn-primary .spin { animation: none; }
+body.m-reduced .opt-row:active { transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .stamp { animation: none; opacity: 0; }
+}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="ink"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="2.2"/></filter>
+</svg>
+
+<div class="wrap">
+  <main id="app"></main>
+  <div id="sr" class="sr-only" aria-live="polite"></div>
+
+  <aside aria-label="Review panel">
+    <div class="rv">
+      <h2>Compare</h2>
+      <p>Switch between the proposed motion and how the live page behaves today.</p>
+      <div class="tog" role="group" aria-label="Motion version">
+        <button type="button" id="mode-proposed" aria-pressed="true">Proposed</button>
+        <button type="button" id="mode-current" aria-pressed="false">Current live</button>
+      </div>
+      <label class="switch" for="rm"><input type="checkbox" id="rm"> Preview reduced motion</label>
+      <div class="tools">
+        <button type="button" class="tool" id="leave">Leave and come back</button>
+        <button type="button" class="tool" id="restart">Start over</button>
+      </div>
+    </div>
+
+    <div class="rv">
+      <h2>Try the states</h2>
+      <p>Each state the page can be in, so you can see it without breaking anything.</p>
+      <div class="tools">
+        <button type="button" class="tool" id="sample">Sample answers</button>
+        <button type="button" class="tool" id="best">Best case</button>
+        <button type="button" class="tool" id="worst">Worst case</button>
+      </div>
+      <div class="sim">
+        <label for="sim-form">When you send the form</label>
+        <select id="sim-form">
+          <option value="ok">It sends</option>
+          <option value="error">The server fails</option>
+        </select>
+      </div>
+      <label class="switch" for="sim-offline"><input type="checkbox" id="sim-offline"> Go offline</label>
+      <label class="switch" for="sim-nostore"><input type="checkbox" id="sim-nostore"> Browser blocks saving</label>
+      <label class="switch" for="sim-slow"><input type="checkbox" id="sim-slow"> Slow scoring (3 s)</label>
+      <div class="tools">
+        <button type="button" class="tool" id="expire">Come back after 8 days</button>
+      </div>
+    </div>
+
+    <div class="rv">
+      <h2>Legal gate<span class="newtag">v5</span></h2>
+      <p>Six question-pack lines rewritten after a check against the DPDP Act text (sections 5, 8 and 12): two unsupported claims dropped, four qualified with the section and the 13 May 2027 start date. The result page now says the score isn't a compliance certificate. The same changes are proposed for the live pack.</p>
+    </div>
+
+    <div class="rv">
+      <h2>What's being reviewed</h2>
+      <ol class="mlist">
+        <li id="m1"><span class="n">1</span><span><b>Progress rail.</b> 10 segments in 3 sections; each fills as you answer. Replaces the single bar. From <code>task-steps</code>.</span></li>
+        <li id="m2"><span class="n">2</span><span><b>Answer ticks.</b> The tick draws in the box (0.2 s) on select. Questions slide in the direction you're going (0.28 s). From <code>transition-panel</code>.</span></li>
+        <li id="m3"><span class="n">3</span><span><b>Section stamps.</b> An ink stamp marks each finished section after Q2, Q5 and Q10, then settles as a tick on the rail. From <code>activity-stamp</code>.</span></li>
+        <li id="m4"><span class="n">4</span><span><b>Score reveal.</b> A short "Scoring" beat, then the ring draws and the number counts up together; bars fill, highest risk first. From <code>loading-button</code>, <code>sliding-number</code>, <code>poll-results</code>.</span></li>
+        <li id="m5"><span class="n">5</span><span><b>Time left.</b> "About 2 min left" beside the rail, from the page's own 3-minute promise (18 s a question). Says "Last question" at the end.</span></li>
+        <li id="m6"><span class="n">6</span><span><b>Resume.</b> Answers save on this device as you go. Come back and continue where you stopped. Try <i>Leave and come back</i>.</span></li>
+        <li id="m7"><span class="n">7</span><span><b>One free fix.</b> The fix tied to the firm's highest-risk area shows openly; the form sends the rest and the checklist.</span></li>
+      </ol>
+    </div>
+
+    <div class="rv">
+      <h2>Your call</h2>
+      <ol class="qs">
+        <li>The three sections (Practice, Documents, Controls) aren't in the question pack today. Approve these names, or rename them?</li>
+        <li>Scoring is instant. The 0.9 s "Scoring your answers" pause is added for feel. Keep it or cut it?</li>
+        <li>Stamp text: "Section recorded" style, or something warmer?</li>
+        <li>The live page lists fixes in a fixed order. Here they're ranked by the firm's own risk, so the free one is the most relevant. Approve the change of order?</li>
+        <li>Saved progress now expires after 7 days. Keep 7 days?</li>
+        <li>Phone is optional here, so email alone gets the report. Should the live form match?</li>
+      </ol>
+    </div>
+  </aside>
+</div>
+
+<script>
+document.documentElement.lang = "en";
+(function () {
+  const BUCKETS = [
+    { key: "client_document", label: "Client document risk", meaning: "Your firm handles sensitive client financial and identity documents (PAN, Aadhaar, ITR, bank, payroll)." },
+    { key: "intake", label: "Document intake risk", meaning: "Client files may enter through uncontrolled channels like WhatsApp and email." },
+    { key: "storage_access", label: "Storage & access risk", meaning: "Cloud, email, laptop or staff access controls may need review." },
+    { key: "retention", label: "Retention & deletion risk", meaning: "Old client files may be retained without a formal policy." },
+    { key: "vendor_incident", label: "Vendor & incident readiness", meaning: "Software/vendor and breach-response controls may need strengthening." },
+  ];
+  const HIGH_IMPACT_DOCS = ["pan", "aadhaar", "bank", "payroll", "family", "medical"];
+  const o = (id, label, riskPoints, badge, badgeColor) => ({ id, label, riskPoints, badge, badgeColor });
+  const QUESTIONS = [
+    { id: "q0", badge: "Practice Scale", question: "Roughly how many clients' data does your firm handle in a year?", helpText: "A rough range is fine. Higher volume means more individuals exposed if something goes wrong.", whyThisMatters: "Volume multiplies impact. The same gap is far costlier across 1,000 clients than across 50.", type: "single", cap: 6, bucket: "client_document", layer: "exposure", optional: true,
+      options: [o("lt50", "Under 50", 1), o("50-200", "50–200", 2), o("200-1000", "200–1,000", 4), o("gt1000", "More than 1,000", 6, "HIGH VOLUME", "red"), o("not-sure", "Not sure", 4, "NEEDS REVIEW", "amber")] },
+    { id: "q1", badge: "Practice Profile", question: "Which client services does your firm provide?", helpText: "Select all that apply. This helps estimate the type of client data your firm handles.", whyThisMatters: "Payroll, bookkeeping and outsourced CFO work pull in the most sensitive personal data.", type: "multi", cap: 8, bucket: "client_document", layer: "exposure", exclusive: ["not-sure"],
+      options: [o("itr-individual", "Individual ITR filing", 2), o("itr-business", "Business ITR / tax computation", 3), o("gst", "GST / TDS / TCS compliance", 2), o("audit", "Statutory / tax / internal audit", 3), o("payroll", "Payroll processing", 5, "HIGH IMPACT", "red"), o("roc", "ROC / MCA / company secretarial", 2), o("bookkeeping", "Accounting / bookkeeping / outsourced CFO", 4), o("advisory", "Advisory, valuation, due diligence, finance support", 3), o("other", "Other", 1), o("not-sure", "Not sure", 4)] },
+    { id: "q2", badge: "Client Document Risk", question: "Which client documents do you regularly collect or store?", helpText: "Select all documents your firm receives, stores, reviews or processes.", whyThisMatters: "PAN, Aadhaar, bank statements, payroll and family financial records do the most harm if they leak, because they can be used for identity and financial fraud.", type: "multi", cap: 14, bucket: "client_document", layer: "exposure", exclusive: ["not-sure"],
+      options: [o("pan", "PAN copies", 3), o("aadhaar", "Aadhaar copies", 4, "HIGH IMPACT", "red"), o("itr", "ITR acknowledgements / computations", 3), o("form16", "Form 16 / AIS / TIS / 26AS", 3), o("bank", "Bank statements", 4), o("payroll", "Salary sheets / payroll files", 5, "HIGH IMPACT", "red"), o("gst", "GST returns / invoices / e-way bill", 2), o("kyc-mca", "Company KYC / MCA / board documents", 2), o("investment", "Investment, loan or property documents", 4), o("family", "Family member financial documents", 4), o("medical", "Medical insurance / reimbursement documents", 5, "HIGH IMPACT", "red"), o("other", "Other client documents", 1), o("not-sure", "Not sure", 6)] },
+    { id: "q3", badge: "Document Intake Risk", question: "How do clients usually send documents to your firm?", helpText: "Select all channels used in your practice. Many firms receive the same data through several routes.", whyThisMatters: "Unstructured intake via WhatsApp, email and shared folders makes access, deletion and breach control much harder.", type: "multi", cap: 12, bucket: "intake", layer: "exposure", exclusive: ["not-sure"],
+      options: [o("portal", "Secure client portal or structured upload link", 0, "GOOD", "green"), o("email", "Email attachments", 4), o("whatsapp", "WhatsApp", 6, "HIGH RISK", "red"), o("cloud", "Shared Google Drive / OneDrive / Dropbox folders", 4), o("physical-scan", "Physical copies scanned by our team", 2), o("staff-collect", "Staff collect documents from client offices", 2), o("multiple-no-standard", "Multiple channels, no standard process", 8, "HIGH RISK", "red"), o("not-sure", "Not sure", 6)] },
+    { id: "q4", badge: "Storage & Access Risk", question: "Where are client documents stored after collection?", helpText: "Select all storage locations used by your firm.", whyThisMatters: "Files scattered across laptops, inboxes and WhatsApp with no single source of truth are the hardest to secure or delete.", type: "multi", cap: 12, bucket: "storage_access", layer: "control", exclusive: ["not-sure"],
+      options: [o("dms", "Document management / practice software with role-based access", 0, "GOOD", "green"), o("cloud-mfa", "Cloud with MFA and restricted access", 1), o("shared-cloud", "Shared cloud folders without regular access review", 5), o("email-inbox", "Email inboxes", 5), o("laptops", "Staff laptops / desktops", 6), o("whatsapp", "WhatsApp chats or groups", 7, "HIGH RISK", "red"), o("hdd", "External hard drives / pen drives", 6), o("physical-only", "Physical files only", 2), o("multiple-no-ssot", "Multiple places, no single source of truth", 8, "HIGH RISK", "red"), o("not-sure", "Not sure", 7)] },
+    { id: "q5", badge: "Staff Access Risk", question: "Who can access client files inside your firm?", helpText: "Choose the option closest to your current practice.", whyThisMatters: "Former staff who can still open client files are an open door to a leak.", type: "single", cap: 12, bucket: "storage_access", layer: "control",
+      options: [o("role-based", "Role-based, need-based and reviewed periodically", 0, "GOOD", "green"), o("current-informal", "Current staff have access, but reviews are informal", 4), o("articles-interns", "Article assistants / interns can access many client folders", 7, "RISK", "amber"), o("most-staff", "Most staff can access most client documents", 9, "HIGH RISK", "red"), o("ex-staff", "Ex-staff access may not always be removed immediately", 12, "CRITICAL", "red"), o("not-sure", "Not sure", 10)] },
+    { id: "q6", badge: "Client Notice & Engagement Letter", question: "Does your engagement letter or onboarding communication explain how client data will be used, stored, shared and retained?", helpText: "This may be in your engagement letter, onboarding email, privacy notice or client terms.", whyThisMatters: "Where you rely on a client's consent, the DPDP Act requires a notice first. It sets out the data, the purpose, how to withdraw consent and how to complain to the Data Protection Board (Section 5, in force from 13 May 2027). For CA firms the engagement letter is the most practical place for it.", type: "single", cap: 10, bucket: "client_document", layer: "control",
+      options: [o("yes-clear", "Yes, our engagement letter or privacy notice clearly explains this", 0, "GOOD", "green"), o("partial", "Partially, but it is generic or not updated for DPDPA", 4), o("on-ask", "We explain it only when clients ask", 7), o("no-doc", "No, we do not document this clearly", 10, "RISK", "red"), o("not-sure", "Not sure", 8)] },
+    { id: "q7", badge: "Retention & Deletion Risk", question: "How long do you retain old client documents such as ITR files, PAN copies, bank statements, payroll sheets and audit papers?", helpText: "Keeping files a law requires you to keep is fine. The risk is keeping them indefinitely with no documented reason.", whyThisMatters: "Keeping high-impact documents forever, with no policy or review, turns old files into standing risk.", type: "single", cap: 12, bucket: "retention", layer: "control",
+      options: [o("documented", "Documented retention schedule based on tax, audit, legal and professional requirements", 0, "GOOD", "green"), o("defined-informal", "Defined period, but not formally documented", 4), o("many-years", "We retain most documents for many years for convenience", 8), o("indefinite", "We keep most client files indefinitely / forever", 12, "HIGH RISK", "red"), o("not-sure", "Not sure", 10)] },
+    { id: "q8", badge: "Vendor & Software Risk", question: "When tax software, GST tools, payroll platforms, cloud providers, IT vendors or outsourced teams access client data, how is it controlled?", helpText: "Includes tax-filing tools, GST software, payroll platforms, cloud storage, IT support and outsourced teams.", whyThisMatters: "Under the DPDP Act, a vendor that processes client data on your behalf is a Data Processor, and your firm stays responsible for protecting that data (Section 8(5), in force from 13 May 2027).", type: "single", cap: 8, bucket: "vendor_incident", layer: "control",
+      options: [o("vendor-list", "We maintain a vendor list and use written terms / contracts / access controls", 0, "GOOD", "green"), o("standard-informal", "We use standard vendors, but vendor privacy review is informal", 3), o("email-whatsapp", "Vendors / outsourced teams receive client files via email or WhatsApp", 6, "RISK", "red"), o("not-sure-vendors", "We are not sure which vendors or tools store client data", 8, "RISK", "red"), o("no-vendor", "We do not use any vendor or external tool", 1)] },
+    { id: "q9", badge: "Client Rights Handling", question: "If a client asks for correction, return or deletion of old documents, what happens?", helpText: "A CA firm balances client requests with tax, audit, legal and professional retention obligations.", whyThisMatters: "Individual clients can ask you to correct or erase their data (Section 12, in force from 13 May 2027). Erasure gives way where a law requires you to keep the record, so check that first. A written process makes both quick.", type: "single", cap: 6, bucket: "retention", layer: "control",
+      options: [o("defined-process", "We have a defined process and check legal/professional retention before action", 0, "GOOD", "green"), o("case-by-case", "Partner or senior staff decides case-by-case", 2), o("return-no-delete", "We usually return documents but do not delete internal copies systematically", 4), o("no-process", "We do not have a standard process", 6, "RISK", "red"), o("not-sure", "Not sure", 5)] },
+    { id: "q10", badge: "Incident & Breach Readiness", question: "Do you have a process if a laptop, email inbox, Google Drive folder, WhatsApp account or tax software login containing client documents is compromised?", helpText: "This checks whether your firm can respond quickly if client documents are exposed.", whyThisMatters: "Under the DPDP Act, a firm must tell the Data Protection Board and each affected client about a personal data breach (Section 8(6), in force from 13 May 2027). Without a process you can't do that quickly or show what you did.", type: "single", cap: 6, bucket: "vendor_incident", layer: "control",
+      options: [o("documented-ir", "Yes, we have a documented incident response process", 0, "GOOD", "green"), o("informal", "IT support or senior staff would handle it informally", 3), o("no-process", "No, we do not have a documented process", 6, "RISK", "red"), o("not-sure", "Not sure", 5)] },
+  ];
+  const ids = (a, q) => { const v = a[q]; return !v ? [] : Array.isArray(v) ? v : [v]; };
+  const has = (a, q, id) => ids(a, q).includes(id);
+  const anyOf = (a, q, list) => ids(a, q).some((x) => list.includes(x));
+  const OVERRIDES = [
+    { minBand: "High Risk", severity: 10, test: (a) => has(a, "q5", "ex-staff"), flag: "Former-staff access to client files may not be revoked promptly — a serious control gap." },
+    { minBand: "High Risk", severity: 9, test: (a) => has(a, "q7", "indefinite") && anyOf(a, "q2", HIGH_IMPACT_DOCS), flag: "High-impact records (PAN, Aadhaar, bank, payroll) may be retained indefinitely with no policy." },
+    { minBand: "High Risk", severity: 8, test: (a) => anyOf(a, "q3", ["whatsapp", "email"]) && has(a, "q10", "no-process"), flag: "Documents arrive via WhatsApp/email but there is no breach-response process." },
+    { minBand: "High Risk", severity: 7, test: (a) => has(a, "q6", "no-doc") && anyOf(a, "q2", ["pan", "aadhaar", "bank", "payroll", "family"]), flag: "High-impact client data is processed without a clear client notice or engagement-letter clause." },
+    { minBand: "Moderate Risk", severity: 6, test: (a) => has(a, "q8", "not-sure-vendors"), flag: "It is unclear which vendors or tools store client data." },
+    { minBand: "High Risk", severity: 6, test: (a) => has(a, "q8", "not-sure-vendors") && anyOf(a, "q1", ["payroll", "bookkeeping"]), flag: "Payroll/bookkeeping client data may sit with unknown vendors or tools." },
+  ];
+  const SOFT_FLAGS = [
+    { severity: 8, test: (a) => has(a, "q3", "multiple-no-standard"), flag: "Client documents enter through multiple channels with no standard intake process." },
+    { severity: 7, test: (a) => has(a, "q4", "multiple-no-ssot"), flag: "Client files are scattered with no single source of truth." },
+    { severity: 6, test: (a) => has(a, "q4", "whatsapp"), flag: "Client documents are stored in WhatsApp chats or groups." },
+    { severity: 6, test: (a) => has(a, "q2", "not-sure"), flag: "The firm is unsure which client documents it stores." },
+    { severity: 5, test: (a) => has(a, "q3", "whatsapp"), flag: "Clients send sensitive documents via WhatsApp." },
+    { severity: 5, test: (a) => has(a, "q5", "most-staff"), flag: "Most staff can access most client documents." },
+  ];
+  const BANDS = [
+    { min: 0, max: 24, label: "Controlled", color: "var(--band-controlled)" },
+    { min: 25, max: 49, label: "Moderate Risk", color: "var(--band-moderate)" },
+    { min: 50, max: 74, label: "High Risk", color: "var(--band-high)" },
+    { min: 75, max: 100, label: "Critical Risk", color: "var(--band-critical)" },
+  ];
+  const BAND_ORDER = BANDS.map((b) => b.label);
+  const BAND_COPY = {
+    "Controlled": "Your firm appears to have basic client-data controls in place. Keep them documented, review access periodically, and retain evidence of how client data is handled.",
+    "Moderate Risk": "Your firm has some controls, but several practices are informal. Focus first on standardising document intake, access reviews, retention rules and a breach-response process.",
+    "High Risk": "Your firm may have significant DPDPA exposure across client documents, staff access, retention or vendors. Prioritise the four core controls below.",
+    "Critical Risk": "Your firm may have serious DPDPA exposure across client documents, staff access, retention and breach readiness. Start with the four core controls immediately.",
+  };
+  const clamp = (n) => Math.max(0, Math.min(100, n));
+  // recommend() from the CA pack. FIX_BUCKET maps each control to the bucket it fixes.
+  const FOUR_CONTROLS = [
+    "Standardise how clients send PAN, Aadhaar, ITR and bank documents — move to one controlled intake channel.",
+    "Restrict and periodically review access to Google Drive, email folders and client files — especially article staff and ex-staff.",
+    "Define retention rules for old ITR files, PAN copies, bank statements and payroll data.",
+    "Create a breach-response process for laptop, email, WhatsApp and cloud-folder incidents.",
+  ];
+  const FIX_BUCKET = ["intake", "storage_access", "retention", "vendor_incident"];
+  const FALLBACK_FIX = "Your controls look directionally strong. Document them, set an annual access and retention review, and keep evidence of how client data is handled.";
+  function recommend(r, rankByRisk) {
+    let idx = r.band === "High Risk" || r.band === "Critical Risk"
+      ? [0, 1, 2, 3]
+      : [0, 1, 2, 3].filter((i) => (r.bucketScores[FIX_BUCKET[i]] || 0) >= 34);
+    // Proposed: most relevant first (highest bucket risk); stable for ties. Live keeps the fixed order.
+    if (rankByRisk) idx = idx.slice().sort((a, b) => (r.bucketScores[FIX_BUCKET[b]] || 0) - (r.bucketScores[FIX_BUCKET[a]] || 0) || a - b);
+    if (!idx.length) return [{ text: FALLBACK_FIX, bucket: null }];
+    return idx.slice(0, 4).map((i) => ({ text: FOUR_CONTROLS[i], bucket: FIX_BUCKET[i] }));
+  }
+
+  // Port of calculateIndustryResult() from core.ts
+  function score(a) {
+    const scored = QUESTIONS.filter((q) => !q.optional || ids(a, q.id).length);
+    let raw = 0, max = 0, er = 0, ec = 0, cr = 0, cc = 0;
+    const br = {}, bc = {};
+    BUCKETS.forEach((b) => { br[b.key] = 0; bc[b.key] = 0; });
+    for (const q of scored) {
+      let s = 0;
+      for (const id of ids(a, q.id)) { const opt = q.options.find((x) => x.id === id); if (opt) s += opt.riskPoints; }
+      const r = Math.max(0, Math.min(q.cap, s));
+      raw += r; max += q.cap;
+      if (q.layer === "exposure") { er += r; ec += q.cap; } else { cr += r; cc += q.cap; }
+      br[q.bucket] += r; bc[q.bucket] += q.cap;
+    }
+    let risk = max ? clamp(Math.round((raw / max) * 100)) : 0;
+    let band = BANDS.find((b) => risk >= b.min && risk <= b.max).label;
+    const of = [];
+    for (const ov of OVERRIDES) if (ov.test(a)) { if (BAND_ORDER.indexOf(ov.minBand) > BAND_ORDER.indexOf(band)) band = ov.minBand; of.push(ov); }
+    const fb = BANDS.find((b) => b.label === band);
+    if (risk < fb.min) risk = fb.min;
+    const bucketScores = {}, bucketStatus = {};
+    BUCKETS.forEach((b) => {
+      const v = bc[b.key] ? clamp(Math.round((br[b.key] / bc[b.key]) * 100)) : 0;
+      bucketScores[b.key] = v; bucketStatus[b.key] = v < 34 ? "Low" : v < 67 ? "Moderate" : "High";
+    });
+    const seen = new Set();
+    const redFlags = [...of, ...SOFT_FLAGS.filter((f) => f.test(a))]
+      .sort((x, y) => y.severity - x.severity)
+      .filter((f) => (seen.has(f.flag) ? false : (seen.add(f.flag), true)))
+      .slice(0, 3).map((f) => f.flag);
+    return {
+      readiness: 100 - risk, band, color: fb.color,
+      dataExposure: ec ? clamp(Math.round((er / ec) * 100)) : 0,
+      controlMaturity: clamp(Math.round(100 - (cc ? (cr / cc) * 100 : 0))),
+      bucketScores, bucketStatus, redFlags,
+    };
+  }
+
+  // ── Proposed sections (not in the pack today; see "Your call") ──
+  const CHAPTERS = [
+    { key: "practice", label: "Practice", stamp: "Practice recorded", from: 1, to: 2 },
+    { key: "documents", label: "Documents", stamp: "Documents recorded", from: 3, to: 5 },
+    { key: "controls", label: "Controls", stamp: "Controls recorded", from: 6, to: 10 },
+  ];
+  const TOTAL_REQUIRED = QUESTIONS.filter((q) => !q.optional).length;
+  const SAMPLE = { q0: "200-1000", q1: ["itr-individual", "gst", "payroll"], q2: ["pan", "aadhaar", "bank", "payroll"], q3: ["email", "whatsapp"], q4: ["cloud-mfa", "email-inbox"], q5: "current-informal", q6: "partial", q7: "many-years", q8: "standard-informal", q9: "case-by-case", q10: "informal" };
+  // Best and worst case: lowest-risk single pick everywhere, or every risky pick at once
+  function extreme(kind) {
+    const a = {};
+    for (const q of QUESTIONS) {
+      const real = q.options.filter((op) => !(q.exclusive || []).includes(op.id) && op.id !== "not-sure" && op.id !== "other");
+      if (kind === "best") {
+        const m = real.reduce((x, y) => (y.riskPoints < x.riskPoints ? y : x));
+        a[q.id] = q.type === "single" ? m.id : [m.id];
+      } else if (q.type === "single") {
+        a[q.id] = q.options.reduce((x, y) => (y.riskPoints > x.riskPoints ? y : x)).id;
+      } else a[q.id] = real.map((op) => op.id);
+    }
+    return a;
+  }
+  const FILL_NOTE = { sample: "Sample answers, filled for this review. Not a real firm's result.", best: "Best-case answers, filled for this review: the lowest-risk option everywhere.", worst: "Worst-case answers, filled for this review: every risky option at once." };
+
+  // ── State ──
+  const st = { answers: {}, qi: 0, phase: "quiz", mode: "proposed", stamped: new Set(), busy: false, fill: null, storageOk: true, expired: false, mapOpen: false, form: { name: "", firm: "", email: "", phone: "" }, formState: "idle", formError: "" };
+  let osReduced = false;
+  try { osReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+  const $ = (id) => document.getElementById(id);
+  const rm = $("rm");
+  rm.checked = osReduced;
+  const app = $("app");
+  const reduced = () => rm.checked;
+  const moving = () => st.mode === "proposed" && !reduced();
+  const offline = () => $("sim-offline").checked || (typeof navigator !== "undefined" && navigator.onLine === false);
+  function applyBodyClasses() {
+    document.body.classList.toggle("m-current", st.mode === "current");
+    document.body.classList.toggle("m-reduced", reduced());
+  }
+  const lit = (n) => { const el = $("m" + n); if (el && st.mode === "proposed") el.classList.add("lit"); };
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+  // One polite live region for things focus doesn't already announce
+  function announce(msg) { const sr = $("sr"); sr.textContent = ""; setTimeout(() => { sr.textContent = msg; }, 60); }
+
+  const answered = (q) => ids(st.answers, q.id).length > 0;
+  const answeredRequired = () => QUESTIONS.filter((q) => !q.optional && answered(q)).length;
+  const minsLeft = (n) => Math.max(1, Math.round((n * 18) / 60));
+
+  // ── Time left: the page promises 3 minutes for 10 questions, so 18 s a question ──
+  function timeLeft() {
+    const remaining = QUESTIONS.filter((q, i) => !q.optional && i >= st.qi && !answered(q)).length;
+    const onLast = st.qi === QUESTIONS.length - 1;
+    if (remaining === 0 && onLast) return { text: "Ready for your result", last: true };
+    if (remaining <= 1 && onLast) return { text: "Last question", last: true };
+    const secs = remaining * 18;
+    if (secs < 60) return { text: "Under a minute left", last: false };
+    return { text: "About " + Math.round(secs / 60) + " min left", last: false };
+  }
+
+  // ── Resume: answers kept in this browser only; cleared at the result, on Start over, or after 7 days ──
+  const KEY = "sp-ca-scan-proto-v1";
+  const MAX_AGE = 7 * 24 * 60 * 60 * 1000;
+  function canStore() {
+    if ($("sim-nostore").checked) return false;
+    try { localStorage.setItem(KEY + "-probe", "1"); localStorage.removeItem(KEY + "-probe"); return true; } catch (e) { return false; }
+  }
+  function save(at) {
+    if (st.mode !== "proposed" || st.fill || st.phase !== "quiz") return;
+    if (!st.storageOk) return;
+    try { localStorage.setItem(KEY, JSON.stringify({ answers: st.answers, qi: st.qi, stamped: Array.from(st.stamped), at: at || Date.now() })); lit(6); }
+    catch (e) { st.storageOk = false; }
+  }
+  function clearSaved() { try { localStorage.removeItem(KEY); } catch (e) {} }
+  function loadSaved() {
+    let v = null;
+    try { v = JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) { return null; }
+    if (!v || typeof v !== "object" || !v.answers || typeof v.qi !== "number") return null;
+    if (typeof v.at === "number" && Date.now() - v.at > MAX_AGE) { clearSaved(); return { expired: true }; }
+    // Keep only answers that still match the pack, so an old or edited save can't tick a missing option
+    const answers = {};
+    for (const q of QUESTIONS) {
+      const valid = ids(v.answers, q.id).filter((x) => q.options.some((op) => op.id === x));
+      if (valid.length) answers[q.id] = q.type === "single" ? valid[0] : valid;
+    }
+    const n = QUESTIONS.filter((q) => !q.optional && ids(answers, q.id).length).length;
+    if (!n && !ids(answers, "q0").length) return null;
+    return { answers, qi: Math.max(0, Math.min(QUESTIONS.length - 1, Math.round(v.qi))), stamped: Array.isArray(v.stamped) ? v.stamped : [], n };
+  }
+  function renderResume(s) {
+    const where = s.qi === 0 ? "the quick start" : "Question " + s.qi;
+    let mini = "";
+    for (let i = 1; i < QUESTIONS.length; i++) mini += '<span' + (ids(s.answers, QUESTIONS[i].id).length ? ' class="on"' : "") + "></span>";
+    app.innerHTML = header() + '<section class="resume' + (moving() ? " fade-up" : "") + '" aria-labelledby="rt">' +
+      '<h2 id="rt" tabindex="-1">Welcome back. Pick up where you left off.</h2>' +
+      "<p>You've answered " + s.n + " of " + TOTAL_REQUIRED + " questions. The rest takes about " + minsLeft(TOTAL_REQUIRED - s.n) + " min.</p>" +
+      '<div class="mini" aria-hidden="true">' + mini + "</div>" +
+      '<div class="acts"><button type="button" class="btn-primary" id="cont">Continue from ' + where + ' →</button><button type="button" class="btn-ghost" id="fresh">Start again</button></div>' +
+      "<small>Your answers are saved on this device only, for 7 days. Nothing is sent until you ask for your report.</small></section>";
+    lit(6);
+    $("rt").focus({ preventScroll: true });
+    $("cont").addEventListener("click", () => {
+      st.answers = s.answers; st.qi = s.qi; st.stamped = new Set(s.stamped); st.phase = "quiz";
+      setHistory(false);
+      renderQuiz(1);
+    });
+    $("fresh").addEventListener("click", restart);
+  }
+
+  // ── Browser Back and Forward move between questions ──
+  function setHistory(push) {
+    const state = st.phase === "result" ? { ph: "result" } : { ph: "quiz", qi: st.qi };
+    const hash = st.phase === "result" ? "#result" : "#q" + st.qi;
+    try { push ? history.pushState(state, "", hash) : history.replaceState(state, "", hash); } catch (e) {}
+  }
+  window.addEventListener("popstate", (e) => {
+    const s = e.state;
+    if (!s || st.busy) return;
+    if (s.ph === "quiz" && typeof s.qi === "number") {
+      const dir = st.phase === "result" || s.qi < st.qi ? -1 : 1;
+      st.phase = "quiz"; st.qi = Math.max(0, Math.min(QUESTIONS.length - 1, s.qi));
+      renderQuiz(dir); save();
+    } else if (s.ph === "result" && answeredRequired() === TOTAL_REQUIRED) showResult();
+  });
+
+  // ── Quiz ──
+  function header() {
+    return '<h1 class="eyebrow">CA Firm DPDPA Risk Scan <span>· 3 minutes · 10 questions · free · no login</span></h1>' +
+      '<p class="privacy-line">This scan collects no client documents, only your answers about your processes.</p>';
+  }
+  function bannersHTML() {
+    let h = "";
+    if (offline()) h += '<p class="banner warn" id="net">You\'re offline. Keep answering: the scan and your result work without internet. Sending the report needs a connection.</p>';
+    if (st.mode === "proposed" && st.expired && st.qi === 0) h += '<p class="banner info">Your saved answers were more than 7 days old, so we cleared them. This is a fresh start.</p>';
+    if (st.mode === "proposed" && !st.storageOk) h += '<p class="banner info">This browser isn\'t saving progress (private browsing does this). Finish in one sitting: about ' + minsLeft(TOTAL_REQUIRED - answeredRequired()) + " min.</p>";
+    return h;
+  }
+  function railLabel() {
+    const c = CHAPTERS.find((x) => st.qi >= x.from && st.qi <= x.to);
+    return answeredRequired() + " of " + TOTAL_REQUIRED + " answered" + (c ? ", " + c.label + " section" : ", quick start");
+  }
+  function progressHTML() {
+    const q = QUESTIONS[st.qi];
+    const pct = Math.round((answeredRequired() / TOTAL_REQUIRED) * 100);
+    const label = q.optional ? "Quick start · optional" : "Question " + st.qi + " of " + TOTAL_REQUIRED;
+    const aria = 'role="progressbar" aria-label="Scan progress" aria-valuemin="0" aria-valuemax="' + TOTAL_REQUIRED + '" aria-valuenow="' + answeredRequired() + '" aria-valuetext="' + railLabel() + '"';
+    if (st.mode === "current") return '<div class="prog-meta"><span>' + label + "</span><b>" + pct + "% complete</b></div>" + '<div class="livebar" id="pbar" ' + aria + '><i id="lb" style="width:' + pct + '%"></i></div>';
+    const tl = timeLeft();
+    lit(5);
+    let html = '<div class="prog-meta"><span>' + label + '</span><span class="pm-r"><span class="tl' + (tl.last ? " last" : "") + '" id="tl">' + tl.text + "</span><b>" + pct + "% complete</b></span></div>";
+    html += '<div class="rail" id="pbar" ' + aria + ">";
+    html += '<div class="rail-q0" aria-hidden="true"><small>Start</small><span class="q0dot' + (answered(QUESTIONS[0]) ? " on" : "") + (st.qi === 0 ? " cur" : "") + '"></span></div>';
+    for (const c of CHAPTERS) {
+      const active = st.qi >= c.from && st.qi <= c.to;
+      html += '<div class="chap' + (active ? " active" : "") + (st.stamped.has(c.key) ? " done" : "") + '" id="chap-' + c.key + '" style="flex:' + (c.to - c.from + 1) + ' 1 0" aria-hidden="true">';
+      html += '<div class="chap-head"><span class="chap-check"><svg width="10" height="10" viewBox="0 0 12 12"><polyline points="2.5,6.5 5,9 9.5,3.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>' + c.label + "</div><div class=\"segs\">";
+      for (let i = c.from; i <= c.to; i++) {
+        html += '<span class="seg' + (answered(QUESTIONS[i]) ? " on" : "") + (i === st.qi ? " cur" : "") + '" data-i="' + i + '"><i></i></span>';
+      }
+      html += "</div></div>";
+    }
+    return html + "</div>";
+  }
+  function updateProgress() {
+    const pct = Math.round((answeredRequired() / TOTAL_REQUIRED) * 100);
+    const b = app.querySelector(".prog-meta b"); if (b) b.textContent = pct + "% complete";
+    const tlEl = $("tl");
+    if (tlEl) { const tl = timeLeft(); tlEl.textContent = tl.text; tlEl.classList.toggle("last", tl.last); }
+    const lb = $("lb"); if (lb) lb.style.width = pct + "%";
+    app.querySelectorAll(".seg").forEach((s) => s.classList.toggle("on", answered(QUESTIONS[+s.dataset.i])));
+    const dot = app.querySelector(".q0dot"); if (dot) dot.classList.toggle("on", answered(QUESTIONS[0]));
+    const bar = $("pbar"); if (bar) { bar.setAttribute("aria-valuenow", answeredRequired()); bar.setAttribute("aria-valuetext", railLabel()); }
+  }
+  const TICK = '<svg viewBox="0 0 12 12" aria-hidden="true"><polyline points="2.5,6.5 5,9 9.5,3.5"/></svg>';
+  function questionHTML(q) {
+    const sel = ids(st.answers, q.id);
+    let h = '<fieldset class="qcard" aria-describedby="qh">';
+    h += '<div class="qbadge' + (q.optional ? " opt" : "") + '">' + esc(q.optional ? "Quick start · optional" : q.badge) + "</div>";
+    h += '<legend><h2 class="qtitle" id="qt" tabindex="-1">' + esc(q.question) + "</h2></legend>";
+    if (q.helpText) h += '<p class="qhelp" id="qh">' + esc(q.helpText) + "</p>";
+    if (q.type === "multi" && !/select all/i.test(q.helpText || "")) h += '<p class="qmulti">Select all that apply.</p>';
+    h += '<div class="opts">';
+    q.options.forEach((op) => {
+      const id = q.id + "-" + op.id;
+      h += '<label class="opt" for="' + id + '"><input id="' + id + '" type="' + (q.type === "single" ? "radio" : "checkbox") + '" name="' + q.id + '" value="' + op.id + '"' + (sel.includes(op.id) ? " checked" : "") + ">" +
+        '<span class="opt-row"><span class="mark ' + (q.type === "single" ? "radio" : "box") + '">' + TICK + '</span><span class="olabel">' + esc(op.label) + "</span>" +
+        (op.badge ? '<span class="obadge ' + op.badgeColor + '">' + esc(op.badge) + "</span>" : "") + "</span></label>";
+    });
+    h += "</div>";
+    if (q.whyThisMatters) h += '<details class="why"><summary>Why this matters</summary><p>' + esc(q.whyThisMatters) + "</p></details>";
+    return h + "</fieldset>";
+  }
+  function navHTML(q) {
+    const isLast = st.qi === QUESTIONS.length - 1;
+    const back = st.qi > 0 ? '<button type="button" class="btn-ghost" id="back">← Back</button>' : "<span></span>";
+    const right = q.optional && !answered(q)
+      ? '<span class="nav-r"><button type="button" class="btn-ghost" id="skip">Skip</button><button type="button" class="btn-primary" id="next" disabled>Next →</button></span>'
+      : '<button type="button" class="btn-primary" id="next"' + (answered(q) ? "" : " disabled") + ">" + (isLast ? "See my results →" : "Next →") + "</button>";
+    return '<div class="nav">' + back + right + "</div>";
+  }
+  function renderQuiz(dir) {
+    const q = QUESTIONS[st.qi];
+    const note = st.mode !== "proposed" ? "" : st.storageOk ? " Progress saves on this device for 7 days." : "";
+    app.innerHTML = header() + bannersHTML() + '<div id="prog">' + progressHTML() + '</div><div class="stage"><div id="card">' + questionHTML(q) + "</div>" + '<div id="navw">' + navHTML(q) + "</div></div>" +
+      '<p class="conf">All responses are confidential. This scan is educational and not legal advice.' + note + "</p>";
+    const card = $("card");
+    if (dir && moving()) { card.classList.add(dir > 0 ? "enter-fwd" : "enter-back"); lit(2); }
+    if (dir) $("qt").focus({ preventScroll: true });
+    bindQuiz();
+  }
+  function bindQuiz() {
+    const q = QUESTIONS[st.qi];
+    app.querySelectorAll('input[name="' + q.id + '"]').forEach((inp) => inp.addEventListener("change", () => pick(q, inp)));
+    const nx = $("next"), bk = $("back"), sk = $("skip");
+    if (nx) nx.addEventListener("click", next);
+    if (bk) bk.addEventListener("click", back);
+    if (sk) sk.addEventListener("click", () => go(1));
+  }
+  // Enter on an answer moves on, once the question has one. Arrow keys and Space are the browser's own.
+  app.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter" || st.phase !== "quiz" || !e.target.matches(".opt input")) return;
+    e.preventDefault();
+    const nx = $("next");
+    if (nx && !nx.disabled) next();
+  });
+  function pick(q, inp) {
+    if (q.type === "single") st.answers[q.id] = inp.value;
+    else {
+      let cur = ids(st.answers, q.id).slice();
+      if (inp.checked) {
+        if ((q.exclusive || []).includes(inp.value)) cur = [inp.value];
+        else cur = cur.filter((x) => !(q.exclusive || []).includes(x)).concat(inp.value);
+      } else cur = cur.filter((x) => x !== inp.value);
+      st.answers[q.id] = cur;
+      app.querySelectorAll('input[name="' + q.id + '"]').forEach((el) => { el.checked = cur.includes(el.value); });
+    }
+    if (st.mode === "proposed") { lit(1); lit(2); }
+    save();
+    updateProgress();
+    $("navw").innerHTML = navHTML(q);
+    bindQuiz();
+  }
+  function stampChapter(c) {
+    st.stamped.add(c.key);
+    if (st.mode !== "proposed") return;
+    lit(3);
+    announce(c.label + " section done.");
+    const el = $("chap-" + c.key);
+    if (!el) return;
+    el.classList.add("done");
+    if (reduced()) return;
+    const s = document.createElement("span");
+    s.className = "stamp"; s.textContent = c.stamp + " ✓";
+    el.querySelector(".chap-head").appendChild(s);
+    setTimeout(() => s.remove(), 1600);
+  }
+  // A double click on Next lands on the new card's Next; the lock stops it skipping a question
+  let navLock = 0;
+  function go(dir) {
+    if (st.busy || performance.now() < navLock) return;
+    navLock = performance.now() + 350;
+    const leaving = st.qi;
+    st.qi = Math.max(0, Math.min(QUESTIONS.length - 1, st.qi + dir));
+    renderQuiz(dir);
+    setHistory(true);
+    save();
+    if (dir > 0) {
+      const c = CHAPTERS.find((x) => x.to === leaving);
+      if (c && !st.stamped.has(c.key)) stampChapter(c);
+    }
+  }
+  function back() { go(-1); }
+  function next() {
+    if (st.busy || performance.now() < navLock) return;
+    const q = QUESTIONS[st.qi];
+    if (!answered(q) && !q.optional) return;
+    if (st.qi < QUESTIONS.length - 1) return go(1);
+    finish();
+  }
+  function finish() {
+    st.busy = true;
+    const last = CHAPTERS[CHAPTERS.length - 1];
+    if (!st.stamped.has(last.key)) stampChapter(last);
+    const btn = $("next");
+    if (st.mode !== "proposed") { st.busy = false; return toResult(); }
+    lit(4);
+    btn.disabled = true; btn.setAttribute("aria-busy", "true");
+    btn.innerHTML = '<span class="spin" aria-hidden="true"></span>Scoring your answers…';
+    announce("Scoring your answers.");
+    const wait = $("sim-slow").checked ? 3000 : reduced() ? 300 : 900;
+    // Past 2 s, say it's still working so the page doesn't look stuck
+    const slowT = setTimeout(() => { btn.innerHTML = '<span class="spin" aria-hidden="true"></span>Still working on your score…'; announce("Still working on your score."); }, 2000);
+    setTimeout(() => {
+      clearTimeout(slowT);
+      btn.classList.add("ok"); btn.innerHTML = "Done ✓";
+      setTimeout(() => { st.busy = false; toResult(); }, reduced() ? 0 : 280);
+    }, wait);
+  }
+  function toResult() { st.phase = "result"; setHistory(true); showResult(); }
+
+  // ── Result ──
+  function bar(label, value, polarity) {
+    const bad = polarity === "good-high" ? value < 50 : value >= 50;
+    return '<div><div class="bar-meta"><span>' + label + "</span><b>" + value + '%</b></div><div class="track" aria-hidden="true"><div class="fill" data-w="' + value + '" style="background:' + (bad ? "var(--gold-400)" : "var(--green-500)") + '"></div></div></div>';
+  }
+  const WARN_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg>';
+  const SHOWN_AREAS = 2;
+  const NET_RESULT = '<p class="banner warn" id="net-r">You\'re offline. Your result is all here. Sending the report needs a connection.</p>';
+  function showResult() {
+    st.phase = "result";
+    clearSaved();
+    const r = score(st.answers);
+    const proposed = st.mode === "proposed";
+    const recs = recommend(r, proposed);
+    const R = 54, C = 2 * Math.PI * R;
+    const order = BUCKETS.slice().sort((a, b) => r.bucketScores[b.key] - r.bucketScores[a.key]);
+    const bucketList = proposed ? order : BUCKETS;
+    let h = header();
+    if (st.fill) h += '<div class="sample-note">' + FILL_NOTE[st.fill] + "</div>";
+    if (offline()) h += NET_RESULT;
+    h += '<div class="rcard" style="border-color:' + r.color + '">';
+    h += '<div class="gauge" aria-hidden="true"><svg viewBox="0 0 128 128"><circle class="track-ring" cx="64" cy="64" r="' + R + '" fill="none" stroke-width="12"/>' +
+      '<circle id="ring" cx="64" cy="64" r="' + R + '" fill="none" style="stroke:' + r.color + '" stroke-width="12" stroke-linecap="round" stroke-dasharray="' + C + '" stroke-dashoffset="' + C + '"/></svg>' +
+      '<div class="num"><b id="score">0</b><small>/ 100</small></div></div>';
+    h += '<div><div class="rlabel">Your CA firm\'s result</div><h2 class="rhead" id="rhead" tabindex="-1">DPDPA Readiness: ' + r.readiness + ' / 100<span class="sr-only">. Risk band: ' + r.band + ".</span></h2>" +
+      (proposed
+        ? '<div class="bandchip" id="chip" aria-hidden="true" style="--band:' + r.color + '"><span class="dot"></span>' + r.band + "</div>"
+        : '<div class="bandchip live" id="chip" aria-hidden="true" style="--band:' + r.color + '">Risk Band: ' + r.band + "</div>") +
+      '<p class="rcopy">' + BAND_COPY[r.band] + "</p></div></div>";
+    h += '<p class="legal" id="legal">Most DPDP Act duties, including notice, security safeguards and breach intimation, apply from 13 May 2027. This score is an educational check, not a compliance certificate or legal advice.</p>';
+    if (proposed) {
+      const top = recs[0];
+      const bk = top.bucket ? BUCKETS.find((b) => b.key === top.bucket) : null;
+      h += '<section class="free" id="free" aria-labelledby="free-h"><h3 class="free-tag" id="free-h">Your top priority fix · free</h3>' +
+        '<p class="free-fix">' + esc(top.text) + "</p>" +
+        (bk ? '<p class="free-why">Linked to your highest-risk area with a fix: ' + bk.label + " (" + r.bucketScores[bk.key] + "/100).</p>" : '<p class="free-why">No area scored high enough to need a specific fix.</p>') + "</section>";
+    }
+    if (r.redFlags.length) {
+      h += '<div class="panel"><h3>' + (proposed && r.redFlags.length === 1 ? "Your top risk area" : "Top " + r.redFlags.length + " risk areas") + '</h3><ul class="flags">' +
+        r.redFlags.map((f) => '<li class="flag">' + WARN_ICON + "<span>" + esc(f) + "</span></li>").join("") + "</ul></div>";
+    } else if (proposed) {
+      h += '<div class="panel clear"><h3>No red flags found</h3><p class="bk-mean">None of your answers matched a red-flag pattern. Keep the evidence that shows it: written policies, access reviews and vendor terms.</p></div>';
+    }
+    h += '<div class="panel lens">' + bar("Data exposure", r.dataExposure, "bad-high") + bar("Control maturity", r.controlMaturity, "good-high") + "</div>";
+    h += '<div class="panel"><h3>Your CA practice risk map' + (proposed ? " · highest risk first" : "") + '</h3><div class="buckets" id="bks">';
+    bucketList.forEach((b, i) => {
+      const hide = proposed && !st.mapOpen && i >= SHOWN_AREAS;
+      h += '<div class="bk"' + (hide ? " hidden" : "") + '><div class="bk-head"><span>' + b.label + '</span><span class="chip ' + r.bucketStatus[b.key] + '">' + r.bucketStatus[b.key] + '<span class="sr-only"> risk, ' + r.bucketScores[b.key] + ' of 100</span></span></div><div class="track thin" aria-hidden="true"><div class="fill" data-w="' + r.bucketScores[b.key] + '" style="background:var(--navy-400)"></div></div><p class="bk-mean">' + b.meaning + "</p></div>";
+    });
+    h += "</div>";
+    if (proposed) h += '<button type="button" class="btn-ghost more" id="more" aria-expanded="' + st.mapOpen + '" aria-controls="bks">' + (st.mapOpen ? "Show fewer" : "Show all " + BUCKETS.length + " areas") + "</button>";
+    h += "</div>";
+    h += '<div id="gatew">' + gateHTML(recs, proposed) + "</div>";
+    h += '<div class="retake"><button type="button" class="btn-ghost" id="retake">↺ Retake the scan</button></div>';
+    app.innerHTML = h;
+    $("retake").addEventListener("click", restart);
+    const more = $("more");
+    if (more) more.addEventListener("click", () => {
+      st.mapOpen = !st.mapOpen;
+      app.querySelectorAll("#bks .bk").forEach((el, i) => { if (i >= SHOWN_AREAS) el.hidden = !st.mapOpen; });
+      more.setAttribute("aria-expanded", st.mapOpen);
+      more.textContent = st.mapOpen ? "Show fewer" : "Show all " + BUCKETS.length + " areas";
+    });
+    bindGate(recs, proposed);
+    window.scrollTo({ top: 0, behavior: moving() ? "smooth" : "auto" });
+    $("rhead").focus({ preventScroll: true });
+    const ring = $("ring"), num = $("score"), chip = $("chip");
+    const target = C * (1 - r.readiness / 100);
+    const fills = Array.from(app.querySelectorAll(".fill"));
+    const flags = Array.from(app.querySelectorAll(".flag"));
+    const free = $("free");
+    if (free) lit(7);
+    if (free && moving()) { free.classList.add("fade-up"); free.style.animationDelay = "950ms"; }
+    if (!moving()) {
+      // Today's page (and reduced motion): final values on first paint
+      ring.setAttribute("stroke-dashoffset", target); num.textContent = r.readiness;
+      fills.forEach((f) => (f.style.width = f.dataset.w + "%"));
+      return;
+    }
+    // Ring and number share one clock so they land together (1.1 s, ease-out)
+    const D = 1100, t0 = performance.now();
+    const ease = (t) => 1 - Math.pow(1 - t, 3);
+    (function frame(now) {
+      const t = Math.min(1, (now - t0) / D), e = ease(t);
+      ring.setAttribute("stroke-dashoffset", C - (C - target) * e);
+      num.textContent = Math.round(r.readiness * e);
+      if (t < 1) requestAnimationFrame(frame);
+    })(t0);
+    chip.classList.add("pop"); chip.style.animationDelay = "850ms";
+    fills.forEach((f, i) => { f.classList.add("anim"); f.style.transitionDelay = 500 + i * 120 + "ms"; });
+    requestAnimationFrame(() => requestAnimationFrame(() => fills.forEach((f) => (f.style.width = f.dataset.w + "%"))));
+    flags.forEach((f, i) => { f.classList.add("fade-up"); f.style.animationDelay = 1150 + i * 110 + "ms"; });
+  }
+
+  // ── Report form ──
+  const FIELDS = [
+    { key: "name", label: "Your name", type: "text", ac: "name", req: true },
+    { key: "firm", label: "Firm name", type: "text", ac: "organization", req: true },
+    { key: "email", label: "Email", type: "email", ac: "email", req: true, im: "email" },
+    { key: "phone", label: "Phone or WhatsApp", type: "tel", ac: "tel", req: false, im: "tel" },
+  ];
+  // Indian mobile: accepts +91, 91 or 0 in front, spaces and dashes; 10 digits starting 6–9
+  function normPhone(v) {
+    let d = v.replace(/[\s\-().]/g, "");
+    if (d.startsWith("+91")) d = d.slice(3); else if (d.length === 12 && d.startsWith("91")) d = d.slice(2); else if (d.length === 11 && d.startsWith("0")) d = d.slice(1);
+    return /^[6-9]\d{9}$/.test(d) ? d : null;
+  }
+  function check(key, raw) {
+    const v = raw.trim();
+    if (key === "name") return v ? "" : "Enter your name.";
+    if (key === "firm") return v ? "" : "Enter your firm's name.";
+    if (key === "email") {
+      if (!v) return "Enter your email. The report goes there.";
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) ? "" : "Check the email. It needs an @ and a domain, like name@firm.in.";
+    }
+    if (key === "phone") return !v || normPhone(v) ? "" : "Enter a 10-digit mobile number, like 98765 43210, or leave it blank.";
+    return "";
+  }
+  function gateHTML(recs, proposed) {
+    const rest = proposed ? recs.length - 1 : recs.length;
+    if (st.formState === "sent") {
+      const list = proposed ? recs.slice(1) : recs;
+      return '<section class="gate" aria-labelledby="sent-h"><h3 id="sent-h" tabindex="-1">Report sent to ' + esc(st.form.email.trim()) + "</h3>" +
+        (rest > 0 ? "<p>Your " + (proposed ? "other " : "") + rest + " priority fix" + (rest > 1 ? "es" : "") + ":</p><ol class=\"restfix\">" + list.map((x) => "<li>" + esc(x.text) + "</li>").join("") + "</ol>" : "") +
+        '<p class="fine">The CA Firm DPDPA Starter Checklist is in the same email. If it isn\'t in your inbox in 5 minutes, check spam.</p>' +
+        '<div class="gate-acts"><button type="button" class="btn-ghost" id="edit">Wrong email? Change it</button></div></section>';
+    }
+    const title = !proposed ? "Unlock your priority fixes + CA Firm DPDPA Starter Checklist"
+      : rest > 0 ? "Get your other " + rest + " priority fix" + (rest > 1 ? "es" : "") + " and the CA Firm DPDPA Starter Checklist" : "Get the CA Firm DPDPA Starter Checklist";
+    const sub = rest > 0 ? "We'll email the full plan and the checklist." : "We'll email you the checklist.";
+    const sending = st.formState === "sending";
+    let h = '<form class="gate" id="gate" novalidate aria-labelledby="gate-h"' + (sending ? ' aria-busy="true"' : "") + '><h3 id="gate-h">' + title + "</h3><p>" + sub + '</p><div class="gate-grid">';
+    for (const f of FIELDS) {
+      const id = "g-" + f.key;
+      h += '<div class="field"><label for="' + id + '">' + f.label + (f.req ? "" : " <span>(optional)</span>") + "</label>" +
+        '<input id="' + id + '" name="' + f.key + '" type="' + f.type + '" autocomplete="' + f.ac + '"' + (f.im ? ' inputmode="' + f.im + '"' : "") + (f.req ? ' aria-required="true"' : "") +
+        (f.key === "email" ? ' spellcheck="false" autocapitalize="off"' : "") + (sending ? " readonly" : "") + ' value="' + esc(st.form[f.key]) + '">' +
+        '<p class="ferr" id="' + id + '-err" hidden></p></div>';
+    }
+    h += '</div><div class="alert" id="form-alert" role="alert">' + esc(st.formError) + "</div>" +
+      '<div class="gate-acts"><button type="submit" class="btn-primary" id="send"' + (sending ? ' aria-busy="true"' : "") + ">" +
+      (sending ? '<span class="spin" aria-hidden="true"></span>Sending…' : st.formError ? "Try again" : "Send my report") + "</button></div>" +
+      '<p class="fine">Prototype: nothing is sent. What happens next follows "When you send the form" in the review panel.</p></form>';
+    return h;
+  }
+  function showFieldError(key, msg) {
+    const inp = $("g-" + key), err = $("g-" + key + "-err");
+    if (!inp || !err) return;
+    err.textContent = msg; err.hidden = !msg;
+    if (msg) { inp.setAttribute("aria-invalid", "true"); inp.setAttribute("aria-describedby", err.id); }
+    else { inp.removeAttribute("aria-invalid"); inp.removeAttribute("aria-describedby"); }
+  }
+  function bindGate(recs, proposed) {
+    const rerender = (focusId) => { $("gatew").innerHTML = gateHTML(recs, proposed); bindGate(recs, proposed); if (focusId) $(focusId).focus(); };
+    const edit = $("edit");
+    if (edit) edit.addEventListener("click", () => { st.formState = "idle"; st.formError = ""; rerender("g-email"); });
+    const form = $("gate");
+    if (!form) return;
+    FIELDS.forEach((f) => {
+      const inp = $("g-" + f.key);
+      inp.addEventListener("input", () => {
+        st.form[f.key] = inp.value;
+        // Once a field has shown an error, clear it as soon as the value is fixed
+        if (inp.getAttribute("aria-invalid") === "true" && !check(f.key, inp.value)) showFieldError(f.key, "");
+      });
+    });
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (st.formState === "sending") return;
+      let first = null;
+      FIELDS.forEach((f) => { const msg = check(f.key, st.form[f.key]); showFieldError(f.key, msg); if (msg && !first) first = f.key; });
+      if (first) { $("g-" + first).focus(); return; }
+      st.formState = "sending"; st.formError = "";
+      rerender();
+      announce("Sending your report.");
+      setTimeout(() => {
+        if (offline()) { st.formState = "idle"; st.formError = "You're offline, so the report didn't send. Your details are still here. Try again once you're connected."; rerender("send"); return; }
+        if ($("sim-form").value === "error") { st.formState = "idle"; st.formError = "We couldn't send your report. Your details are still here. Try again in a minute."; rerender("send"); return; }
+        st.formState = "sent";
+        rerender("sent-h");
+      }, 1200);
+    });
+  }
+
+  // ── Review controls ──
+  function reset() {
+    st.answers = {}; st.qi = 0; st.phase = "quiz"; st.stamped = new Set(); st.busy = false; st.fill = null; st.expired = false; st.mapOpen = false;
+    st.form = { name: "", firm: "", email: "", phone: "" }; st.formState = "idle"; st.formError = "";
+    st.storageOk = canStore();
+  }
+  function restart() {
+    clearSaved();
+    reset();
+    document.querySelectorAll(".mlist li").forEach((li) => li.classList.remove("lit"));
+    setHistory(false);
+    renderQuiz(0);
+    $("qt").focus({ preventScroll: true });
+    window.scrollTo({ top: 0 });
+  }
+  function rerenderPhase() { if (st.phase === "result") showResult(); else renderQuiz(0); }
+  function setMode(m) {
+    st.mode = m;
+    $("mode-proposed").setAttribute("aria-pressed", m === "proposed");
+    $("mode-current").setAttribute("aria-pressed", m === "current");
+    applyBodyClasses();
+    if (m === "current") document.querySelectorAll(".mlist li").forEach((li) => li.classList.remove("lit"));
+    rerenderPhase();
+  }
+  $("mode-proposed").addEventListener("click", () => setMode("proposed"));
+  $("mode-current").addEventListener("click", () => setMode("current"));
+  rm.addEventListener("change", () => { applyBodyClasses(); if (st.phase === "result") showResult(); });
+  $("restart").addEventListener("click", restart);
+  function fillWith(kind) {
+    if (st.busy) return;
+    reset();
+    st.answers = kind === "sample" ? JSON.parse(JSON.stringify(SAMPLE)) : extreme(kind); st.fill = kind;
+    CHAPTERS.forEach((c) => st.stamped.add(c.key));
+    st.qi = QUESTIONS.length - 1; renderQuiz(0);
+    finish();
+  }
+  $("sample").addEventListener("click", () => fillWith("sample"));
+  $("best").addEventListener("click", () => fillWith("best"));
+  $("worst").addEventListener("click", () => fillWith("worst"));
+  // Quiz: redraw the banner with the card. Result: add or drop the banner only, so the form keeps focus and values.
+  const netChanged = () => {
+    announce(offline() ? "You're offline." : "You're back online.");
+    if (st.busy) return;
+    if (st.phase === "quiz") return renderQuiz(0);
+    const b = $("net-r"), card = app.querySelector(".rcard");
+    if (offline() && !b && card) card.insertAdjacentHTML("beforebegin", NET_RESULT);
+    if (!offline() && b) b.remove();
+  };
+  $("sim-offline").addEventListener("change", netChanged);
+  window.addEventListener("online", netChanged);
+  window.addEventListener("offline", netChanged);
+  $("sim-nostore").addEventListener("change", () => { st.storageOk = canStore(); if (!st.storageOk) clearSaved(); else save(); if (st.phase === "quiz" && !st.busy) renderQuiz(0); });
+
+  // A return visit: offer to resume if this device has saved progress (proposed only)
+  function boot() {
+    reset();
+    const saved = st.mode === "proposed" && st.storageOk ? loadSaved() : null;
+    setHistory(false);
+    if (saved && saved.expired) { st.expired = true; renderQuiz(0); }
+    else if (saved) renderResume(saved);
+    else renderQuiz(0);
+    window.scrollTo({ top: 0 });
+  }
+  $("leave").addEventListener("click", () => {
+    if (st.busy) return;
+    if (st.phase === "quiz") save();
+    boot();
+  });
+  // Ages the saved answers past 7 days, then returns. Seeds a few answers first if nothing is saved yet.
+  $("expire").addEventListener("click", () => {
+    if (st.busy) return;
+    if (st.mode !== "proposed") setMode("proposed");
+    if (!st.storageOk) { $("sim-nostore").checked = false; st.storageOk = canStore(); }
+    if (st.phase !== "quiz" || !answeredRequired()) { reset(); ["q0", "q1", "q2", "q3"].forEach((k) => (st.answers[k] = SAMPLE[k])); st.qi = 4; }
+    save(Date.now() - 8 * 24 * 60 * 60 * 1000);
+    boot();
+  });
+
+  applyBodyClasses();
+  boot();
+})();
+</script>

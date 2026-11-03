@@ -1,263 +1,438 @@
 # Plan — CA firm risk scan that people finish
 
-**Status:** draft
+**Status:** draft, revised after EGM review (see `egm-review/`)
 **Spec:** ./spec.md
 **Date:** 2026-11-03
 **Branch:** `spec/ca-assessment-pilot`, cut from origin/main @ 27a955e
 **Worktree:** `webapp/.claude/worktrees/ca-assessment-pilot-spec`
-**Design source:** `SaralPrivacyHub/Strategy/assessment-lead-magnet/SUBFRAME-MOTION-SPEC.md` (motion values, moments M1–M13); reference build `SaralPrivacyHub/Strategy/assessment-lead-magnet/prototype/ca-scan-v5.html`
+**Design source (copied into this folder):**
+- `reference/SUBFRAME-MOTION-SPEC.md` (motion values, moments M1–M13)
+- `reference/ca-scan-v5.html` (working prototype)
+- `reference/check-states.js` (Playwright script that drives every prototype state)
+
+## How to use this plan
+
+- **What each task agent gets:** the task block, plus `spec.md` and the `reference/` folder from this directory. "AC" and "Contracts" point into `spec.md`. A task needs nothing else.
+- **Paths:** all `files:` paths are relative to `<worktree>/webapp/`. The exceptions are paths starting `../specs/`, which point into this folder.
+- **Shared names:** the "Shared names" section below fixes every name that crosses tasks: message keys, analytics helpers, hooks and component props. Use those names exactly.
+- **The external names** `task-steps`, `transition-panel`, `activity-stamp`, `loading-button`, `sliding-number` and `poll-results` are examples from the Subframe Motion library. Their motion values are in `reference/SUBFRAME-MOTION-SPEC.md` §4–§5. When adapting their code, keep the MIT header:
+  - `transition-panel` and `sliding-number`: Motion Primitives (ibelick);
+  - `task-steps`, `loading-button` and `poll-results`: Interior (ozzy);
+  - `activity-stamp`: Subframe.
 
 ## Architecture
 
 ```
-app/[locale]/assessment/ca-firms/page.tsx
-  └─ CAAssessmentClient.tsx ── isCaScanV2(searchParams) ?─▶ components/assessment/v2/CAScanV2.tsx   (new)
-                               │                            ├─ ProgressRail, QuestionPanel(AnswerOption), SectionStamp
-                               │                            ├─ ResumeCard, StateBanner, ScoreButton
-                               │                            └─ CAResultV2 ─ ScoreReveal, FreeFix, RiskMap, ReportForm
-                               └─ (switch off) today's client, untouched
-Pure logic (no next/*, no React; runs under node --test):
+app/[locale]/assessment/ca-firms/page.tsx  (server; edited)
+  ├─ isScanV2Enabled(searchParams) false ─▶ CAAssessmentClient.tsx   (today's scan; NOT edited)
+  └─ true ─▶ next/dynamic ─▶ components/assessment/v2/ScanV2.tsx  (pack-driven; new)
+                               ├─ ProgressRail · QuestionPanel(AnswerOption) · SectionStamp
+                               ├─ ResumeCard · StateBanner · ScoreButton
+                               └─ ScanResultV2 ─ ScoreReveal · FreeFix · RiskMap · ReportForm
+Pure logic, no React, no next/*:
   lib/motion/{tokens,can-animate}.ts
-  lib/assessment/{scan-progress,resume,report-form,scan-events}.ts
-  lib/data/industry-assessment/core.ts  + optional pack fields `sections`, `rankedFixes`
-Server: app/api/assessment/route.ts (unchanged) → lib/email-templates.ts (escape client text)
-Analytics: lib/analytics.ts (Vercel Web Analytics, cookieless) gets sector-tagged helpers
+  lib/assessment/{scan-progress,answers,resume,ranked-fixes,report-form,submit-report,scan-events,scan-switch}.ts
+  lib/assessment/meta/ca-firms.ts    (CA sections, fix→area map, fallback, micro-notes, bucket focus)
+Server: lib/email-templates.ts  (escape client text; affects every sector's email)
+Analytics: lib/analytics.ts      (sector from the page path when a caller doesn't pass one)
 ```
 
-All new interface strings live in `messages/en.json` and `messages/hi.json` under `assessment.scanV2`.
+**Rules for pure modules.** They must load under `node --test --experimental-strip-types`.
+- Use relative imports with the `.ts` extension. No `@/` imports.
+- Import every type with `import type`.
+- Don't import values from `lib/data/industry-assessment/core.ts` or any pack, because those use value imports for types and crash under strip-types.
+- Don't import `lib/analytics.ts` (it pulls in `@vercel/analytics`).
+
+Test files are excluded from `tsc`, so keep their logic simple.
+
+**Repository isolation rule.** `core.ts`, `bands.ts` and the pack files stay byte-identical; tests in `lib/data/hero-verdicts.test.ts` read their source. This plan doesn't edit them. CA-specific scan data lives in `lib/assessment/meta/ca-firms.ts`.
 
 ## Decisions
 
-- **framer-motion 12, not the `motion` package.** The Subframe examples import `motion/react`, but the repo already ships `framer-motion` ^12.38, the same engine. Rejected alternative: adding `motion`, which would duplicate the engine.
-- **A new v2 client behind a switch, not edits to today's client.** The old scan stays byte-identical for rollback (AC38). Rejected alternative: editing `CAAssessmentClient.tsx` in place, which has no clean way back.
-- **The switch:** `NEXT_PUBLIC_CA_SCAN_V2=1` at build time. `?scanV2=1` forces it on only when `VERCEL_ENV !== "production"`. Rejected alternative: a runtime flag service, a new dependency for one switch.
-- **The Indian mobile check is a small regex normaliser**, not `libphonenumber-js` (already a dependency). The rule is narrow (AC26), and pulling the library's metadata into this client would break the 15 KB budget.
-- **Ranked fixes are a new optional pack function, `rankedFixes(result)`,** which returns `{ text, bucket | null }[]`. The CA pack implements it from its existing `FOUR_CONTROLS` and 34-point threshold, sorted by bucket score with ties kept in pack order. `recommend()` stays for the other 11 packs. Rejected alternative: changing `recommend()`'s return type, which would touch all 12 packs.
-- **The request's `immediateActions` carries the ranked order,** so the emailed plan matches the page (AC30). The server and payload shape are unchanged.
-- **Score ring and number share one `MotionValue`, animated with `animate()` in `useEffect`.** That also fixes today's first-render case, where the ring has no starting offset to transition from. Rejected alternative: a separate per-digit spring (as in `sliding-number`), which lands apart from the ring.
-- **Bars use `clip-path: inset()` driven by a spring (`poll-results`), not `width`.** Reason: performance (spec Non-functional).
-- **Pure logic in `lib/`, tested with the repo's `node --test` runner; UI behaviour tested end to end.** The repo has no component-test library. Rejected alternative: adding one now. Its cost is better spent on the end-to-end suite that covers AC34–AC36.
-- **End-to-end tests:** add `@playwright/test` and `@axe-core/playwright` as devDependencies, so nothing ships to the browser. Rejected alternative: the global playwright-cli, which isn't reproducible in CI.
-- **Hide the chat launcher on `/assessment*`,** matching how it is already hidden on `/admin` and `/report`. Rejected alternative: repositioning it, which can still overlap content on small phones (AC34).
-- **Escape client-supplied text in the survey result email builder** (`lib/email-templates.ts`) with the existing `escapeHtml`. This fixes all sectors at once. Rejected alternative: escaping in the CA client, which a forged request skips.
+- **framer-motion 12, not the `motion` package.** The Subframe examples import `motion/react`; the repo ships `framer-motion` ^12.38, the same engine.
+  - Load it with `LazyMotion` + `m` + `domAnimation`, and only for the question slide, the score value and spring fills.
+  - Use plain CSS for the tick, the segment fill, fades and the stamp keyframes.
+  - Rejected alternative: adding `motion`, which would duplicate the engine.
+- **The switch lives in `page.tsx`, a server component, not in the client.**
+  - `page.tsx` reads `searchParams` and the env, then renders either `CAAssessmentClient` (unchanged) or `ScanV2` through `next/dynamic`. So with the switch off, no v2 script is sent, and today's client never mounts alongside the new one (no double `assessment_start`).
+  - Rejected alternative: an early return in `CAAssessmentClient`. Before the hooks it breaks the hooks lint rule; after them, the old start event still fires.
+- **Env names:**
+  - `NEXT_PUBLIC_CA_SCAN_V2` ("1" = on).
+  - `NEXT_PUBLIC_SCAN_MOTION` ("0" = off).
+  - The `?scanV2=1` override uses an allow-list copied from `lib/i18n/switcher-gate.ts`: `NEXT_PUBLIC_VERCEL_ENV` is "preview" or "development", or `NODE_ENV` is "development". Unset means off.
+- **The scan is pack-driven.** `ScanV2` takes `{ pack, meta }`, so other sectors reuse it at rollout. Rejected alternative: CA-named components, which would invite a 13th copy.
+- **CA scan data sits beside the scan,** in `lib/assessment/meta/ca-firms.ts`, because of the isolation rule. A test checks that its fix texts appear in the pack source, so the two can't drift.
+- **The Indian mobile check is a small normaliser,** not `libphonenumber-js` (which is installed). Its metadata would exceed the 15 KB budget, and the rule is narrow (AC26).
+- **Email check:** the regex `^[^\s@]+@[^\s@]+\.[^\s@]{2,}$`, copied from `lib/chat/handoff.ts:147`, where it is module-private.
+- **The retry loop is extracted, not imported.** `lib/assessment/submit-report.ts` copies today's behaviour from `CAAssessmentClient.tsx` lines 265–286, with injected `fetch` and `sleep` so it can be tested.
+  - It keeps 3 attempts, `Retry-After` capped at 5 s (default 2 s), and 0.8 s × attempt backoff.
+  - It drops the sleep after the final attempt.
+- **Baseline analytics are split by sector without touching the 12 clients.** When a caller passes no `sector`, `lib/analytics.ts` derives it from the page path (`/assessment/<slug>` → `<slug>`; `/assessment` → `general`).
+- **Score ring and number share one `MotionValue`,** animated with `animate()` in `useEffect`, which also fixes today's first-render case.
+- **Bars use `clip-path: inset()`, not `width`.** Animating `width` triggers layout on every frame.
+- **End-to-end tests:** add `@playwright/test` and `@axe-core/playwright` as exact-version devDependencies, with a `test:e2e` script. The repo has no test CI yet, so this suite is run by hand and at sign-off.
+- **The chat launcher is hidden on `/assessment/*`,** not on the `/assessment` hub, matching the "never interrupt an active quiz" list in `lib/chat/triggers.ts:24`.
+- **Hindi:** new keys go in `messages/en.json` only. `i18n/request.ts` already falls back to English for each missing key, so untranslated keys stay visible as English.
+
+## Shared names
+
+### Hook
+
+`useMotionOk(): { ok: boolean; markKeyboard(e: { detail: number }): void }`, in `components/assessment/v2/useMotionOk.ts`.
+- `ok = canAnimate({ reducedMotion, fromKeyboard, motionSetting })`.
+- `reducedMotion` comes from framer-motion's `useReducedMotion()`, which tracks changes at runtime.
+- `motionSetting` is `process.env.NEXT_PUBLIC_SCAN_MOTION !== "0"`.
+- `markKeyboard` sets `fromKeyboard = e.detail === 0` and is called on every Next, Back and Enter activation. It stays until the next activation.
+
+### Message keys
+
+Namespace `assessment.scanV2` in `messages/en.json`. Placeholders are ICU.
+
+| Key | English | AC |
+|---|---|---|
+| `rail.start` | Start | AC1 |
+| `rail.aria` | {answered} of {total} answered, {section} section | AC2 |
+| `rail.ariaQuick` | {answered} of {total} answered, quick start | AC2 |
+| `sections.practice` / `sections.documents` / `sections.controls` | Practice / Documents / Controls | AC1 |
+| `stamps.practice` / `stamps.documents` / `stamps.controls` | Practice recorded ✓ / Documents recorded ✓ / Controls recorded ✓ | AC9 |
+| `sr.sectionDone` | {section} section done. | AC9 |
+| `time.ready` / `time.last` / `time.underMinute` / `time.aboutMin` | Ready for your result / Last question / Under a minute left / About {m} min left | AC3 |
+| `resume.heading` | Welcome back. Pick up where you left off. | AC11 |
+| `resume.body` | You've answered {n} of {total} questions. The rest takes about {m} min. | AC11 |
+| `resume.continue` / `resume.continueQuick` | Continue from Question {k} → / Continue from the quick start → | AC11 |
+| `resume.startAgain` | Start again | AC12 |
+| `resume.note` | Your answers are saved on this device only, for 7 days. Nothing is sent until you ask for your report. | AC11 |
+| `banner.offlineQuiz` | You're offline. Keep answering: the scan and your result work without internet. Sending the report needs a connection. | AC33 |
+| `banner.offlineResult` | You're offline. Your result is all here. Sending the report needs a connection. | AC33 |
+| `banner.noStorage` | This browser isn't saving progress (private browsing does this). Finish in one sitting: about {m} min. | AC15 |
+| `banner.expired` | Your saved answers were more than 7 days old, so we cleared them. This is a fresh start. | AC13 |
+| `sr.offline` / `sr.online` | You're offline. / You're back online. | AC33 |
+| `score.pending` / `score.slow` / `score.done` | Scoring your answers… / Still working on your score… / Done ✓ | AC17, AC18 |
+| `sr.scoring` / `sr.slow` | Scoring your answers. / Still working on your score. | AC17, AC18 |
+| `result.eyebrow` | Your result | AC19 |
+| `result.bandSr` | . Risk band: {band}. | AC19 |
+| `legalLine` | Most DPDP Act duties, including notice, security safeguards and breach intimation, apply from 13 May 2027. This score is an educational check, not a compliance certificate or legal advice. | AC24 |
+| `freeFix.heading` / `freeFix.linked` / `freeFix.none` | Your top priority fix · free / Linked to your highest-risk area with a fix: {area} ({score}/100). / No area scored high enough to need a specific fix. | AC21 |
+| `flags.one` / `flags.many` | Your top risk area / Top {count} risk areas | AC22 |
+| `flags.noneHeading` / `flags.noneBody` | No red flags found / None of your answers matched a red-flag pattern. Keep the evidence that shows it: written policies, access reviews and vendor terms. | AC22 |
+| `map.heading` / `map.showAll` / `map.showFewer` / `map.statusSr` | Your risk map · highest risk first / Show all {count} areas / Show fewer / {status} risk, {score} of 100 | AC23 |
+| `form.headingMore` | {n, plural, one {Get your other priority fix and the {checklist}} other {Get your other # priority fixes and the {checklist}}} | AC30 |
+| `form.headingNone` | Get the {checklist} | AC30 |
+| `form.name` / `form.firm` / `form.email` / `form.phone` / `form.optional` | Your name / Firm name / Email / Phone or WhatsApp / (optional) | AC25 |
+| `form.send` / `form.sending` / `form.retry` | Send my report / Sending… / Try again | AC27, AC28 |
+| `errors.nameRequired` / `errors.firmRequired` / `errors.emailRequired` / `errors.emailInvalid` / `errors.phoneInvalid` | the five messages in AC25 | AC25 |
+| `form.serverError` / `form.offlineError` | the alert texts in AC28 and AC29 | AC28, AC29 |
+| `sent.heading` / `sent.checklist` / `sent.change` | Report sent to {email} / The {checklist} is in the same email. If it isn't in your inbox in 5 minutes, check spam. / Wrong email? Change it | AC30 |
+
+**Reuse these existing keys; don't duplicate them.**
+- From `assessment.shared`: `readinessScore`, `questionOf`, `pctComplete`, `quickStartOptional`, `back`, `next`, `seeMyResults`, `skip`, `whyThisMatters`, `selectAll`, `retakeScan`, `dataExposure`, `controlMaturity`, `consentSentence`, `privacyNoticeLink`, `errNeedConsent`, `prefillNote`, `checkingFocus`.
+- The consent error is `errNeedConsent`.
+
+### Analytics helpers (in `lib/analytics.ts`, on `trackEvent`)
+
+`sector` is optional on all helpers. When it's omitted, it is derived from the path by `sectorFromPath`.
+
+| Helper | Event | Args |
+|---|---|---|
+| `assessmentStart` (existing) | `assessment_start` | `{ prefilled?, src?, sector? }` |
+| `assessmentStep` (existing) | `assessment_step_N` | `(step, sector?)` |
+| `assessmentComplete` (existing) | `assessment_complete` | `{ score, band, industry?, sector? }` |
+| `scanQuestionView` | `assessment_question_view` | `{ q, n, sector? }` |
+| `scanSectionComplete` | `assessment_section_complete` | `{ section, sector? }` |
+| `scanResumeShown` | `assessment_resume_shown` | `{ answered, sector? }` |
+| `scanResumeContinue` | `assessment_resume_continue` | `{ from_q, sector? }` |
+| `freeFixViewed` | `free_fix_viewed` | `{ bucket, sector? }` (`"none"` for the fallback) |
+| `reportFormError` | `report_form_error` | `{ fields, sector? }` |
+| `reportSubmitFailed` | `report_submit_failed` | `{ reason, sector? }` |
+| `reportRequested` (existing) | `report_requested` | `{ band, sector? }` |
+| `reportSent` | `report_sent` | `{ band, sector? }` |
+
+### Component props
+
+Components read text with `useTranslations("assessment.scanV2")`.
+
+```ts
+ProgressRail({ questions: IAQuestion[]; answers: IAAnswers; qi: number; sections: ScanSection[]; stamped: string[] })
+AnswerOption({ question: IAQuestion; option: IAOption; checked: boolean; onToggle(): void; note?: string })
+QuestionPanel({ question: IAQuestion; answers: IAAnswers; direction: 1 | -1 | 0; ok: boolean;
+                onPick(optionId: string): void; onNext(): void; onBack(): void;
+                canAdvance: boolean; isLast: boolean; isOptional: boolean; children?: ReactNode })  // children = ScoreButton on the last question
+SectionStamp({ sectionKey: string; ok: boolean; onDone(): void })   // renders the stamp only when ok
+ResumeCard({ saved: { answers: IAAnswers; qi: number }; questions: IAQuestion[]; onContinue(): void; onStartAgain(): void })
+StateBanner({ kind: "offline-quiz" | "offline-result" | "no-storage" | "expired"; minutes?: number })
+useAsyncAction({ action: () => Promise<unknown>; resetAfter?: number }): { status: "idle"|"pending"|"success"|"error"; run(): void; reset(): void }
+ScoreButton({ onScore(): Promise<void>; ok: boolean; testDelayMs?: number })  // owns the pause and the slow notice
+ScoreReveal({ result: IAResult; bandText: string; ok: boolean })            // heading has id="rhead"
+FreeFix({ fix: RankedFix; areaLabel?: string; areaScore?: number; ok: boolean; onViewed(): void })
+RiskMap({ result: IAResult; buckets: IABucket[]; ok: boolean })             // red flags or none-panel, then the 2 bars, then the area list
+ReportForm({ sector: string; reportType: string; answers: IAAnswers; result: IAResult;
+             rankedTexts: string[]; checklistTitle: string; serviceLabels: string[] })
+ScanV2({ pack: IndustryPack; meta: ScanMeta })
+ScanResultV2({ pack: IndustryPack; meta: ScanMeta; answers: IAAnswers; result: IAResult; onRetake(): void })
+```
+
+`ScanSection`, `RankedFix` and `ScanMeta` are exported from `lib/assessment/meta/types.ts` (see T4). `IAQuestion`, `IAOption`, `IAAnswers`, `IAResult`, `IABucket` and `IndustryPack` come from `core.ts` with `import type`.
 
 ## Setup (before T1, not a task)
 
 ```bash
-cd "webapp/.claude/worktrees/ca-assessment-pilot-spec/webapp" && npm ci
-./node_modules/.bin/tsc --noEmit -p . 2>&1 | grep -c "error TS" > /tmp/ca-pilot-tsc-baseline.txt   # baseline; verify must not raise it
+cd "<repo>/webapp/.claude/worktrees/ca-assessment-pilot-spec/webapp"
+node --version          # must be 22.6 or later (strip-types); 26.x is known good
+npm ci
+bash ../specs/ca-assessment-pilot/bin/tsc-baseline.sh   # once, on the untouched base commit
 ```
 
-- Use `./node_modules/.bin/tsc`, not `npx tsc`, because `npx` can stall on an install prompt.
-- All `verify` commands run from the `webapp/` app directory inside the worktree.
-- `TSC_OK` below is shorthand for:
-  ```
-  test "$(./node_modules/.bin/tsc --noEmit -p . 2>&1 | grep -c 'error TS')" -le "$(cat /tmp/ca-pilot-tsc-baseline.txt)"
-  ```
-  Paste it in full when running.
-- `UNIT` is shorthand for `node --import ./scripts/ts-resolve.mjs --experimental-strip-types --test`.
+- `bin/tsc-ok.sh` fails if `tsc` is missing, if the baseline file is missing, or if the error count rose above the baseline. The baseline is stored in the git directory, so it survives reboots and is never committed. Don't re-run `tsc-baseline.sh` after tasks have landed.
+- **PR #92 (legal wording):** once it merges, rebase this branch onto `origin/main` before starting T7 or T13.
 
 ## Tasks
 
-### T1 — Add motion tokens and the can-animate rule
-- implements: AC4, AC8, AC36
+### T1 — Add motion tokens, the can-animate rule and the motion hook
+- implements: AC4, AC8, AC36, AC39
 - depends_on: none
 - files: lib/motion/tokens.ts, lib/motion/can-animate.ts, lib/motion/can-animate.test.ts, components/assessment/v2/useMotionOk.ts
 - risk: tier2
 - size: S
-- verify: node --import ./scripts/ts-resolve.mjs --experimental-strip-types --test lib/motion/can-animate.test.ts && test "$(./node_modules/.bin/tsc --noEmit -p . 2>&1 | grep -c 'error TS')" -le "$(cat /tmp/ca-pilot-tsc-baseline.txt)"
+- verify: node --import ./scripts/ts-resolve.mjs --experimental-strip-types --test lib/motion/can-animate.test.ts && bash ../specs/ca-assessment-pilot/bin/tsc-ok.sh && ./node_modules/.bin/eslint components/assessment/v2/useMotionOk.ts lib/motion
 - notes:
-  - Copy the token values exactly from SUBFRAME-MOTION-SPEC §4 (`DUR`, `EASE_OUT`, `EASE_PANEL`, `POP`, `CELL`, `FILL`, `CROSSFADE`, `STILL`, `PANEL_SHIFT`, `RISE`, `STAGGER`).
-  - `canAnimate({ reducedMotion, fromKeyboard })` returns false if either is true. Test all 4 combinations.
-  - `useMotionOk()` subscribes to `matchMedia('(prefers-reduced-motion: reduce)')` change events (as the Subframe examples do), and exposes `markKeyboard(e)` that reads `e.detail === 0`.
+  - `tokens.ts` holds exactly these values:
+    ```ts
+    export const DUR = { tick: 0.2, panel: 0.24, fade: 0.25, stamp: 0.18, stampHold: 1.1, score: 1.0,
+      scoringPause: 0.9, scoringPauseReduced: 0.3, done: 0.28, slowNotice: 2.0 } as const
+    export const EASE_OUT = [0.22, 1, 0.36, 1] as const
+    export const EASE_PANEL = [0.25, 1, 0.5, 1] as const
+    export const POP = { type: "spring", stiffness: 640, damping: 22, mass: 0.7 } as const
+    export const CELL = { type: "spring", stiffness: 520, damping: 34, mass: 0.45 } as const
+    export const FILL = { type: "spring", stiffness: 210, damping: 34, mass: 0.9 } as const
+    export const CROSSFADE = { type: "spring", stiffness: 260, damping: 34, mass: 0.8 } as const
+    export const STILL = { duration: 0 } as const
+    export const PANEL_SHIFT = 18; export const RISE = 8; export const STAGGER = 0.06
+    ```
+  - `canAnimate({ reducedMotion, fromKeyboard, motionSetting })` returns `motionSetting && !reducedMotion && !fromKeyboard`. Test all 8 combinations.
+  - `useMotionOk` is as described in Shared names.
 
-### T2 — Progress, time-left and navigation-lock logic
+### T2 — Progress, time-left, answer-toggle and navigation-lock logic
 - implements: AC1, AC2, AC3, AC7
 - depends_on: none
-- files: lib/assessment/scan-progress.ts, lib/assessment/scan-progress.test.ts
+- files: lib/assessment/scan-progress.ts, lib/assessment/answers.ts, lib/assessment/scan-progress.test.ts
 - risk: tier2
 - size: S
-- verify: node --import ./scripts/ts-resolve.mjs --experimental-strip-types --test lib/assessment/scan-progress.test.ts
+- verify: node --import ./scripts/ts-resolve.mjs --experimental-strip-types --test lib/assessment/scan-progress.test.ts && bash ../specs/ca-assessment-pilot/bin/tsc-ok.sh
 - notes:
-  - Export these:
-    - `timeLeft(questions, answers, qi)` → `{ text, last }`, following the AC3 rule. Test R=0, 1, 3 and 4, plus the last-question cases.
-    - `railLabel(...)`, which gives the AC2 text.
-    - `progressPct(...)`.
-    - `createNavLock(ms = 350)`, which returns `tryEnter(now)`. Test a second call at +100 ms (false) and at +400 ms (true).
-  - No React imports.
+  - In `scan-progress.ts`:
+    - `requiredIds(questions) → string[]`, the non-optional ids.
+    - `progressPct(questions, answers) → integer 0–100`, `Math.round(answered required / required × 100)`.
+    - `timeLeft(questions, answers, qi) → { key: "time.ready"|"time.last"|"time.underMinute"|"time.aboutMin"; values?: { m: number } }`, following the AC3 rule and precedence exactly. R counts unanswered required questions anywhere.
+    - `railAria(questions, answers, qi, sections) → { key: "rail.aria"|"rail.ariaQuick"; values }`.
+    - `createNavLock(ms = 350) → { tryEnter(now: number): boolean }`.
+  - In `answers.ts`: `pickAnswer(question, current: IAAnswerValue, optionId) → IAAnswerValue`. Copy the rule from `CAAssessmentClient.tsx` lines 187–202: single replaces; for multi, a `mutuallyExclusive` option toggles alone and clears the others, and picking any other option clears the exclusive ones.
+  - Tests:
+    - R = 0, 1, 3 and 4 on and off the last question, including the precedence case (last question unanswered → "time.last");
+    - Back doesn't change the result;
+    - `tryEnter(0)` is true, `tryEnter(100)` false and `tryEnter(400)` true, measured from the last accepted call;
+    - `pickAnswer`, including the exclusive cases.
+  - "Question N of 10" counts only required questions, and q0 is never counted. `qi` indexes the full list, including q0.
 
 ### T3 — Saved-progress store
-- implements: AC10, AC12, AC13, AC14, AC15, AC16
+- implements: AC10, AC11, AC12, AC13, AC14, AC15, AC16
 - depends_on: none
 - files: lib/assessment/resume.ts, lib/assessment/resume.test.ts
 - risk: tier1
 - size: M
-- verify: node --import ./scripts/ts-resolve.mjs --experimental-strip-types --test lib/assessment/resume.test.ts
+- verify: node --import ./scripts/ts-resolve.mjs --experimental-strip-types --test lib/assessment/resume.test.ts && bash ../specs/ca-assessment-pilot/bin/tsc-ok.sh
 - notes:
-  - Signature: `createResumeStore(storage: Pick<Storage,"getItem"|"setItem"|"removeItem"> | null, sector, questions, now = Date.now)`, with `probe()`, `save({answers, qi, stamped}, at?)`, `load()` and `clear()`.
-  - `load()` returns `{ kind: "none" | "expired" | "ok", ... }`.
-  - Key: `sp-assessment-v1:<sector>`. Shape exactly as in spec Contracts.
-  - Tests must cover:
-    - a parse failure, the wrong `v`, an unknown option ID, a `qi` out of range;
-    - exactly 7 days old against 7 days + 1 ms;
-    - storage that throws on `setItem` (`probe()` false);
-    - an assertion that the saved JSON never has the keys name, firm, email or phone, even if they're passed in.
-  - tier1 because it stores a person's answers on their device (A4).
+  - API: `createResumeStore({ storage: Pick<Storage,"getItem"|"setItem"|"removeItem"> | null, sector: string, questions: IAQuestion[], sectionKeys: string[], now?: () => number })` returns:
+    - `probe(): boolean`, which writes then removes `sp-probe` and returns false on any throw;
+    - `save(s: { answers; qi; stamped }, at?: number): void`, which copies only those three fields;
+    - `load(): { kind: "none" } | { kind: "expired" } | { kind: "ok"; answers; qi; stamped; at; answered: number }`;
+    - `clear(): void`.
+  - Key: `sp-assessment-v1:<sector>`. Value shape as in spec Contracts. Apply the field-by-field rules in AC14 exactly.
+  - Age: a value whose `at` is exactly 7 days old loads as `ok`; at 7 days + 1 ms, `load()` returns `expired` and deletes the key.
+  - `ok` with `answered === 0` must be treated as `none` by callers (AC11). Test that `load()` reports `answered`.
+  - Test that a `save` call given an object with extra `name`, `firm`, `email` or `phone` keys stores none of them.
+  - Tier 1 because it stores a person's answers on their own device (intent A4: acceptable only because nothing leaves the device).
 
-### T4 — Ranked fixes and section metadata in the pack
-- implements: AC1, AC21, AC22, AC30
+### T4 — CA scan metadata and fix ranking
+- implements: AC1, AC9, AC21, AC22, AC30
 - depends_on: none
-- files: lib/data/industry-assessment/core.ts, lib/data/industry-assessment/packs/ca-firms.ts, lib/data/industry-assessment/ranked-fixes.test.ts
+- files: lib/assessment/meta/types.ts, lib/assessment/meta/ca-firms.ts, lib/assessment/ranked-fixes.ts, lib/assessment/ranked-fixes.test.ts
 - risk: tier2
-- size: S
-- verify: node --import ./scripts/ts-resolve.mjs --experimental-strip-types --test lib/data/industry-assessment/ranked-fixes.test.ts lib/data/industry-assessment/prefill.test.ts
+- size: M
+- verify: node --import ./scripts/ts-resolve.mjs --experimental-strip-types --test lib/assessment/ranked-fixes.test.ts && bash ../specs/ca-assessment-pilot/bin/tsc-ok.sh
 - notes:
-  - Add these optional fields to `IndustryPack`:
-    - `sections?: { key: string; label: string; stamp: string; questionIds: string[] }[]`
-    - `rankedFixes?: (r: IAResult) => { text: string; bucket: string | null }[]`
-  - CA sections:
-    - practice → q1, q2
-    - documents → q3, q4, q5
-    - controls → q6–q10
-    - q0 stays as "Start"
-  - CA `rankedFixes` selects the same fixes as `recommend()`: all 4 when High or Critical, otherwise those whose bucket is ≥34, else the fallback with `bucket: null`.
-    - The fix order is intake, storage_access, retention, vendor_incident.
-    - Results are sorted by bucket score, descending; the sort is stable.
+  - `types.ts`:
+    - `ScanSection = { key: string; questionIds: string[] }`;
+    - `RankedFix = { text: string; bucket: string | null }`;
+    - `ScanMeta = { sections: ScanSection[]; fixes: { text: string; bucket: string }[]; fallbackFix: string; microNotes: Record<string,string>; bucketFocus: Record<string,string>; backHref: string; serviceQuestionId?: string }`.
+  - `ca-firms.ts` exports `caScanMeta: ScanMeta`:
+    - sections: practice = q1, q2; documents = q3–q5; controls = q6–q10;
+    - fixes: copy the four `FOUR_CONTROLS` texts from `packs/ca-firms.ts` lines 419–424 as they stand on the base commit, mapped in order to `intake`, `storage_access`, `retention`, `vendor_incident`;
+    - `fallbackFix`: copy the string at `packs/ca-firms.ts` 440–442;
+    - copy `MICRO_NOTES` and `BUCKET_FOCUS` from `CAAssessmentClient.tsx` lines 40–67;
+    - `backHref: "/industries/ca-firms"` and `serviceQuestionId: "q1"`.
+  - Don't import the pack. Use `import type` only.
+  - `rankFixes(result: Pick<IAResult,"band"|"bucketScores">, meta) → RankedFix[]`, following the "Free fix and ranked fixes" table in spec Contracts. Copy before sorting, sort stably, highest bucket score first.
   - Tests:
-    - a High band with intake 83 and retention 90 puts retention first;
-    - a tie keeps the pack order;
-    - a Controlled result with every bucket under 34 returns the fallback.
-  - Scoring itself is untouched (NG2).
+    - High band with intake 83 and retention 90 puts retention first;
+    - High band with every area under 34 still returns all 4, ranked;
+    - Moderate band with only storage_access at 40 returns just that one;
+    - Controlled with all under 34 returns the fallback with `bucket: null`;
+    - a tie keeps meta order.
+  - **Drift guard test:** `readFileSync` the pack source and assert that every `fixes[].text` and `fallbackFix` appears in it verbatim, the same approach as `lib/data/hero-verdicts.test.ts`.
 
-### T5 — Report-form validation and phone normaliser
-- implements: AC25, AC26, AC31
+### T5 — Report-form validation, phone normaliser and send-with-retry
+- implements: AC25, AC26, AC27, AC28, AC31
 - depends_on: none
-- files: lib/assessment/report-form.ts, lib/assessment/report-form.test.ts
+- files: lib/assessment/report-form.ts, lib/assessment/submit-report.ts, lib/assessment/report-form.test.ts
 - risk: tier1
-- size: S
-- verify: node --import ./scripts/ts-resolve.mjs --experimental-strip-types --test lib/assessment/report-form.test.ts
+- size: M
+- verify: node --import ./scripts/ts-resolve.mjs --experimental-strip-types --test lib/assessment/report-form.test.ts && bash ../specs/ca-assessment-pilot/bin/tsc-ok.sh
 - notes:
-  - `validateReportForm({name, firm, email, phone, consent})` returns `{ errors: Partial<Record<"name"|"firm"|"email"|"phone"|"consent", MessageKey>>, phone10: string }`.
-  - `normalizeIndianMobile(v)` returns 10 digits or null.
-  - Test these inputs:
-    - "98765 43210", "+91-98765-43210", "919876543210" and "09876543210" are valid;
-    - "12345", "5876543210" and "98765" are invalid;
-    - blank is valid with `phone10 ""`.
-  - Email rule: one `@`, a non-empty local part, and a domain with a dot and a 2+ character ending. Test "dilip@", "a@b" and "a@firm.in".
-  - Return message keys, not English text, so T7 owns the copy.
-  - tier1 because it gates consent and personal data.
+  - In `report-form.ts`:
+    - `normalizeIndianMobile(v: string): string | null` follows the AC26 order exactly. `""` returns `""`.
+    - `validateReportForm({ name, firm, email, phone, consent })` returns `{ errors: Partial<Record<"name"|"firm"|"email"|"phone"|"consent", FormErrorKey>>; firstInvalid?: string; phone10: string }`.
+    - `FormErrorKey` is `"errors.nameRequired" | "errors.firmRequired" | "errors.emailRequired" | "errors.emailInvalid" | "errors.phoneInvalid" | "errNeedConsent"`.
+    - Trim before checking. Use the email regex from Decisions.
+  - In `submit-report.ts`: `submitReport(body: string, deps: { fetch: typeof fetch; sleep: (ms: number) => Promise<void> }) → Promise<"ok" | "failed">`, with the policy in Decisions and spec Contracts. A 400 returns `"failed"` at once, with no retry.
+  - Tests:
+    - **Phone:**
+      - valid: "98765 43210", "+91-98765-43210", "919876543210", "09876543210" and "9112345678";
+      - invalid: "12345", "5876543210" and "98765";
+      - blank gives `phone10 ""`.
+    - **Email:** "dilip@" is invalid, "a@b" is invalid, "a@firm.in" is valid.
+    - **Form:** empty name, empty firm and an unticked box each give their key; `firstInvalid` follows the order name, firm, email, phone, consent.
+    - **Submit:**
+      - 200 gives "ok";
+      - 500 ×3 gives "failed" after 2 sleeps, with none after the last attempt;
+      - 429 with `Retry-After: 9` sleeps 5000 ms;
+      - a thrown error is retried;
+      - 400 fails at once.
+  - Tier 1 because it gates consent and personal data.
 
-### T6 — Sector-tagged analytics helpers
+### T6 — Sector-tagged analytics
 - implements: AC37
 - depends_on: none
-- files: lib/analytics.ts, lib/assessment/scan-events.ts, lib/assessment/scan-events.test.ts
+- files: lib/assessment/scan-events.ts, lib/assessment/scan-events.test.ts, lib/analytics.ts
 - risk: tier1
 - size: S
-- verify: node --import ./scripts/ts-resolve.mjs --experimental-strip-types --test lib/assessment/scan-events.test.ts && test "$(./node_modules/.bin/tsc --noEmit -p . 2>&1 | grep -c 'error TS')" -le "$(cat /tmp/ca-pilot-tsc-baseline.txt)"
+- verify: node --import ./scripts/ts-resolve.mjs --experimental-strip-types --test lib/assessment/scan-events.test.ts && bash ../specs/ca-assessment-pilot/bin/tsc-ok.sh && ./node_modules/.bin/eslint lib/analytics.ts lib/assessment/scan-events.ts
 - notes:
-  - `scanEventProps(event, input)` builds the property object for each event in spec Contracts and drops any key not on that event's allow-list.
-  - Test that a stray `email`, `name` or free-text key passed in never appears in the output.
+  - `scan-events.ts` is pure:
+    - `sectorFromPath(pathname)` strips a leading `/hi`. `/assessment/<slug>…` gives `<slug>`, `/assessment` gives `"general"`, anything else gives `""`.
+    - `scanEventProps(event, input)` returns only the allow-listed properties for that event: `event_category`, `sector`, plus that event's properties from spec Contracts, in that order.
+  - Tests:
+    - `/hi/assessment/ca-firms` gives `ca-firms`;
+    - stray `email`, `name`, `phone` or free-text keys never appear in the output;
+    - each event gets `sector`.
   - In `lib/analytics.ts`:
-    - add `sector` and `resumed` to `assessmentStart`;
-    - add `sector` to `assessmentStep`;
-    - add the new helpers, each going through `scanEventProps`;
-    - keep the existing call signatures working, since today's client still calls them.
-  - **Ship this task to production first**, on its own, to start the 2-week baseline (see Rollout).
+    - add the helpers in Shared names;
+    - make `sector` optional everywhere and default it with `sectorFromPath(window.location.pathname)`;
+    - keep every existing call signature working (12 sector clients and `SurveyClient.tsx` call them);
+    - add `sector` to `assessmentComplete` next to `industry`.
+  - Human rollout step, not part of this task: T6 ships to production alone first (see Rollout).
 
 ### T7 — New interface strings
-- implements: AC9, AC11, AC13, AC15, AC18, AC22, AC24, AC25, AC28, AC29, AC30, AC33
+- implements: AC9, AC11, AC13, AC15, AC17, AC18, AC21, AC22, AC23, AC24, AC25, AC28, AC29, AC30, AC33
 - depends_on: none
-- files: messages/en.json, messages/hi.json
+- files: messages/en.json
 - risk: tier2
 - size: S
-- verify: node -e "const e=require('./messages/en.json').assessment.scanV2,h=require('./messages/hi.json').assessment.scanV2;const k=o=>Object.keys(o).sort().join();if(!e||!h||k(e)!==k(h))process.exit(1);if(!/apply from 13 May 2027\. This score is an educational check, not a compliance certificate or legal advice\./.test(e.legalLine))process.exit(1)"
+- verify: node -e "const s=require('./messages/en.json').assessment.scanV2;const need=['rail.start','rail.aria','rail.ariaQuick','sections.practice','sections.documents','sections.controls','stamps.practice','stamps.documents','stamps.controls','sr.sectionDone','time.ready','time.last','time.underMinute','time.aboutMin','resume.heading','resume.body','resume.continue','resume.continueQuick','resume.startAgain','resume.note','banner.offlineQuiz','banner.offlineResult','banner.noStorage','banner.expired','sr.offline','sr.online','score.pending','score.slow','score.done','sr.scoring','sr.slow','result.eyebrow','result.bandSr','legalLine','freeFix.heading','freeFix.linked','freeFix.none','flags.one','flags.many','flags.noneHeading','flags.noneBody','map.heading','map.showAll','map.showFewer','map.statusSr','form.headingMore','form.headingNone','form.name','form.firm','form.email','form.phone','form.optional','form.send','form.sending','form.retry','errors.nameRequired','errors.firmRequired','errors.emailRequired','errors.emailInvalid','errors.phoneInvalid','form.serverError','form.offlineError','sent.heading','sent.checklist','sent.change'];const get=(o,p)=>p.split('.').reduce((a,k)=>a&&a[k],o);const miss=need.filter(k=>typeof get(s,k)!=='string');if(miss.length){console.error(miss);process.exit(1)}if(s.legalLine!=='Most DPDP Act duties, including notice, security safeguards and breach intimation, apply from 13 May 2027. This score is an educational check, not a compliance certificate or legal advice.')process.exit(1)"
 - notes:
-  - Add an `assessment.scanV2` block, copying the text exactly from the spec ACs.
-  - In `hi.json`, use the English values for now (Q6). `legalLine` and the consent sentence stay English by design.
-  - Run `python3 ~/.claude/skills/sd-no-ai-slop/scripts/slop_lint.py --strict` on the new English values before committing.
+  - Add `assessment.scanV2` as nested objects, exactly as in the Shared names key table, with the English text from that table and the spec ACs.
+  - Don't add these keys to `hi.json` (English fallback; spec OQ6).
+  - Don't add a consent key; reuse `assessment.shared.consentSentence` and `errNeedConsent`.
+  - Requires PR #92 on the base branch. If `packs/ca-firms.ts` still contains "highest-impact records under DPDPA", stop and report.
 
-### T8 — Escape client-supplied text in the survey result email
+### T8 — Escape client-supplied text in the survey and admin emails
 - implements: AC32
 - depends_on: none
 - files: lib/email-templates.ts, lib/email-templates.test.ts
 - risk: tier1
 - size: S
-- verify: node --import ./scripts/ts-resolve.mjs --experimental-strip-types --test lib/email-templates.test.ts
+- verify: node --import ./scripts/ts-resolve.mjs --experimental-strip-types --test lib/email-templates.test.ts && bash ../specs/ca-assessment-pilot/bin/tsc-ok.sh
 - notes:
-  - In the survey result template (about lines 520–600 at 27a955e), wrap these values in the existing `escapeHtml`:
-    - `${rec}` (recommendations), `data.summary`, `data.band` (escape before `.toUpperCase()`);
-    - red flags, and the answer-summary rows.
-  - Test that a payload with `<img src=x onerror=alert(1)>` in each field renders as `&lt;img`, and that "Sahu & Co" renders as "Sahu &amp; Co".
-  - This affects every sector's email, which is intended.
-  - Closes security audit run-1 finding 1 for this template.
+  - At base commit 27a955e, apply `escapeHtml` (defined at line 79) to:
+    - the survey score at lines 506 and 564 and in the subject at 454: use `Number(data.score) || 0`;
+    - red flags at 514;
+    - the answer-summary question and answer at 524–525. These are server-built for packs, but escape them anyway;
+    - `${rec}` at 539;
+    - `data.band` at 568, before `.toUpperCase()`;
+    - `data.summary` at 575;
+    - `label` inside `badge()` at line 67, which is used by the admin alert at 241 with the client's `risk_level`.
+  - `data.name` and `data.businessName` are already escaped at 550–551; leave them.
+  - Tests: build each template with `<img src=x onerror=alert(1)>` in every listed field, and assert that no raw `<img` appears (case-insensitive); "Sahu & Co" renders "Sahu &amp; Co"; a forged score string renders as a number.
+  - If the file has value imports that crash under strip-types, convert them to `import type` and say so in the PR.
 
 ### T9 — Progress rail and answer option
 - implements: AC1, AC2, AC8
-- depends_on: T1, T2, T4
+- depends_on: T1, T2, T4, T7
 - files: components/assessment/v2/ProgressRail.tsx, components/assessment/v2/AnswerOption.tsx
 - risk: tier2
 - size: M
-- verify: test "$(./node_modules/.bin/tsc --noEmit -p . 2>&1 | grep -c 'error TS')" -le "$(cat /tmp/ca-pilot-tsc-baseline.txt)" && ./node_modules/.bin/eslint components/assessment/v2/ProgressRail.tsx components/assessment/v2/AnswerOption.tsx
+- verify: bash ../specs/ca-assessment-pilot/bin/tsc-ok.sh && ./node_modules/.bin/eslint components/assessment/v2/ProgressRail.tsx components/assessment/v2/AnswerOption.tsx && bash scripts/design-lint.sh
 - notes:
   - Rail:
-    - one element with `role="progressbar"` and `aria-valuetext` from `railLabel`, its children `aria-hidden`;
-    - segment fill is `scaleX` over 280 ms with `EASE_OUT`;
-    - the section tick uses the `POP` spring (task-steps).
+    - one element with `role="progressbar"`, `aria-valuemin=0`, `aria-valuemax`, `aria-valuenow` and `aria-valuetext` from `railAria`; its children are `aria-hidden`;
+    - segment fill is CSS `transform: scaleX()` with a 280 ms transition and `EASE_OUT`, plus `transition: none` when not `ok`;
+    - the section tick pops with the `POP` spring;
+    - port the look from `reference/ca-scan-v5.html` (`progressHTML`).
   - Option:
     - a visually hidden native input;
-    - the tick polyline uses `stroke-dashoffset` 16→0, 200 ms, 40 ms delay;
+    - the tick polyline uses `stroke-dashoffset` 16→0 over 200 ms with a 40 ms delay;
     - the empty border is slate-500;
-    - hover styles sit inside `@media (hover:hover)`;
-    - badge text is 12 px.
-  - Port from prototype v5 (`progressHTML`, `questionHTML`).
+    - hover styles go inside `@media (hover:hover)`;
+    - badge text is 12 px;
+    - `note` renders the micro-note box.
 
 ### T10 — Question panel and section stamp
 - implements: AC4, AC5, AC9
-- depends_on: T1, T9
+- depends_on: T1, T7, T9
 - files: components/assessment/v2/QuestionPanel.tsx, components/assessment/v2/SectionStamp.tsx
 - risk: tier2
 - size: M
-- verify: test "$(./node_modules/.bin/tsc --noEmit -p . 2>&1 | grep -c 'error TS')" -le "$(cat /tmp/ca-pilot-tsc-baseline.txt)" && ./node_modules/.bin/eslint components/assessment/v2/QuestionPanel.tsx components/assessment/v2/SectionStamp.tsx
+- verify: bash ../specs/ca-assessment-pilot/bin/tsc-ok.sh && ./node_modules/.bin/eslint components/assessment/v2/QuestionPanel.tsx components/assessment/v2/SectionStamp.tsx && bash scripts/design-lint.sh
 - notes:
-  - Panel:
-    - follow transition-panel: `AnimatePresence mode="popLayout"`, `custom` direction, 18 px, `blur(2px)`, 0.24 s, `EASE_PANEL`, with duration 0 when `!canAnimate`;
-    - the heading gets focus after each change (`tabIndex=-1`);
-    - Enter on an option calls `onNext` only when answered (AC5).
-  - Stamp:
-    - activity-stamp press keyframes (scale 1.22→1, 180 ms, `cubic-bezier(.2,.9,.3,1)`), held `DUR.stampHold`, then a 200 ms fade;
-    - `aria-hidden`; the parent announces through the live region;
-    - renders nothing under reduced motion.
-  - Keep the MIT headers from Motion Primitives (transition-panel) and Subframe (activity-stamp).
+  - Panel, after `transition-panel`:
+    - `AnimatePresence mode="popLayout"` with `custom={direction}`;
+    - enter from `x: PANEL_SHIFT × direction`; exit to `-PANEL_SHIFT × direction`;
+    - `blur(2px)`, `DUR.panel`, `EASE_PANEL`; duration 0 when not `ok`.
+  - Focus: the heading has `tabIndex={-1}` and gets focus after each change.
+  - Enter on an option calls `onNext()` when `canAdvance` (answered or optional), and does nothing otherwise.
+  - Show the existing Skip button (`assessment.shared.skip`) on the optional question when it's unanswered, and the `whyThisMatters` disclosure.
+  - Stamp, after `activity-stamp`:
+    - keyframes scale 1.22→1 and opacity 0.6→1 over 180 ms `cubic-bezier(.2,.9,.3,1)`;
+    - hold for `DUR.stampHold`, then fade over 200 ms, then call `onDone`;
+    - `aria-hidden`; renders nothing when not `ok`.
 
 ### T11 — Resume card and state banners
-- implements: AC11, AC13, AC15, AC33
-- depends_on: T3, T7
+- implements: AC11, AC12, AC13, AC15, AC33
+- depends_on: T1, T2, T7
 - files: components/assessment/v2/ResumeCard.tsx, components/assessment/v2/StateBanner.tsx
 - risk: tier2
 - size: S
-- verify: test "$(./node_modules/.bin/tsc --noEmit -p . 2>&1 | grep -c 'error TS')" -le "$(cat /tmp/ca-pilot-tsc-baseline.txt)" && ./node_modules/.bin/eslint components/assessment/v2/ResumeCard.tsx components/assessment/v2/StateBanner.tsx
+- verify: bash ../specs/ca-assessment-pilot/bin/tsc-ok.sh && ./node_modules/.bin/eslint components/assessment/v2/ResumeCard.tsx components/assessment/v2/StateBanner.tsx && bash scripts/design-lint.sh
 - notes:
   - ResumeCard:
-    - fades up 8 px over 250 ms; focus goes to the heading on mount;
-    - shows a mini rail of answered questions;
-    - the buttons are "Continue from …" and "Start again".
-  - StateBanner:
-    - `kind: "offline-quiz" | "offline-result" | "no-storage" | "expired"`;
-    - gold-50 background with gold-700 text, and no motion.
+    - fades up `RISE` px over `DUR.fade` when `ok`, with no fade otherwise; focus goes to the heading on mount;
+    - M comes from `timeLeft`;
+    - K is the required-question number of `saved.qi`; use `resume.continueQuick` when it's the quick-start question.
+  - StateBanner: gold-50 background, gold-700 text, no motion, one key per kind.
 
-### T12 — Async button for scoring and sending
-- implements: AC17, AC18, AC27
+### T12 — Async button for scoring
+- implements: AC17, AC18
 - depends_on: T1, T7
 - files: components/assessment/v2/useAsyncAction.ts, components/assessment/v2/ScoreButton.tsx
 - risk: tier2
 - size: S
-- verify: test "$(./node_modules/.bin/tsc --noEmit -p . 2>&1 | grep -c 'error TS')" -le "$(cat /tmp/ca-pilot-tsc-baseline.txt)" && ./node_modules/.bin/eslint components/assessment/v2/useAsyncAction.ts components/assessment/v2/ScoreButton.tsx
+- verify: bash ../specs/ca-assessment-pilot/bin/tsc-ok.sh && ./node_modules/.bin/eslint components/assessment/v2/useAsyncAction.ts components/assessment/v2/ScoreButton.tsx && bash scripts/design-lint.sh
 - notes:
-  - Port `useAsyncAction` from loading-button, keeping the run-id guard so a second activation while pending is ignored.
-  - Faces crossfade with `CROSSFADE` (opacity, 3 px rise, 3 px blur) in one grid cell, so the size never changes.
-  - Use `aria-busy` while pending.
-  - The slow-notice timer fires at `DUR.slowNotice`.
-  - Keep the Interior MIT header.
+  - Port `useAsyncAction` from `loading-button`, keeping the run-id guard so a second activation while pending is ignored.
+  - The button has three labelled states (idle, pending, done) stacked in one grid cell and crossfaded with `CROSSFADE` (opacity, 3 px rise, 3 px blur), so its size never changes.
+  - Pending lasts at least `DUR.scoringPause`, or `scoringPauseReduced` when not `ok`, plus `testDelayMs`.
+  - At `DUR.slowNotice` while still pending, show `score.slow` and announce `sr.slow` once.
+  - Done shows for `DUR.done` (0 when not `ok`), then resolves.
+  - `aria-busy` while pending.
 
 ### T13 — Score reveal and band label
 - implements: AC19, AC20, AC24
@@ -265,140 +440,252 @@ cd "webapp/.claude/worktrees/ca-assessment-pilot-spec/webapp" && npm ci
 - files: components/assessment/v2/ScoreReveal.tsx
 - risk: tier2
 - size: M
-- verify: test "$(./node_modules/.bin/tsc --noEmit -p . 2>&1 | grep -c 'error TS')" -le "$(cat /tmp/ca-pilot-tsc-baseline.txt)" && ./node_modules/.bin/eslint components/assessment/v2/ScoreReveal.tsx
+- verify: bash ../specs/ca-assessment-pilot/bin/tsc-ok.sh && ./node_modules/.bin/eslint components/assessment/v2/ScoreReveal.tsx && bash scripts/design-lint.sh
 - notes:
-  - One `useMotionValue(0)`, animated in `useEffect` with `animate(mv, score, { duration: DUR.score, ease: EASE_OUT })`.
-  - The ring's `strokeDashoffset` and the digit columns are both `useTransform(mv, ...)`. Use the digit-column technique from sliding-number, but not its per-digit spring.
-  - With `!canAnimate`, call `mv.jump(score)`.
-  - The ring and digits are `aria-hidden`. The `<h2 tabIndex=-1>` heading includes the band in an `sr-only` span.
-  - The band chip is navy text on `color-mix(in srgb, var(--band) 14%, white)` with a band-coloured border and dot, and pops in with `POP` at 0.85 s.
-  - Render `legalLine` under the band copy.
-  - Keep the Motion Primitives MIT header.
+  - One `useMotionValue(0)`. In `useEffect`, call `animate(mv, readinessScore, { duration: DUR.score, ease: EASE_OUT })`, or `mv.jump()` when not `ok`.
+  - The ring's `strokeDashoffset` and the digit columns are both `useTransform(mv, …)`. Use the column technique from `sliding-number`, without its per-digit spring.
+  - The heading is `<h2 id="rhead" tabIndex={-1}>`, using `assessment.shared.readinessScore` plus a `sr-only` `result.bandSr`.
+  - Band chip:
+    - navy text on `color-mix(in srgb, <bandColor> 14%, white)`, with a 1.5 px `bandColor` border and dot, via the inline CSS variable `--band`;
+    - pops with `POP` after a 0.85 s delay;
+    - `aria-hidden`.
+  - Render `bandText`, then `legalLine` beneath it (text-xs, slate-600).
+  - Requires PR #92 on the base branch.
 
 ### T14 — Free fix and risk map
-- implements: AC21, AC22, AC23
-- depends_on: T1, T4, T7
+- implements: AC21, AC22, AC23, AC40
+- depends_on: T1, T4, T6, T7
 - files: components/assessment/v2/FreeFix.tsx, components/assessment/v2/RiskMap.tsx
 - risk: tier2
 - size: M
-- verify: test "$(./node_modules/.bin/tsc --noEmit -p . 2>&1 | grep -c 'error TS')" -le "$(cat /tmp/ca-pilot-tsc-baseline.txt)" && ./node_modules/.bin/eslint components/assessment/v2/FreeFix.tsx components/assessment/v2/RiskMap.tsx
+- verify: bash ../specs/ca-assessment-pilot/bin/tsc-ok.sh && ./node_modules/.bin/eslint components/assessment/v2/FreeFix.tsx components/assessment/v2/RiskMap.tsx && bash scripts/design-lint.sh
 - notes:
   - FreeFix:
-    - takes `rankedFixes(result)[0]` and fades up at 0.95 s;
-    - fires `free_fix_viewed` once, via IntersectionObserver.
-  - RiskMap:
-    - red flags with the singular heading rule, fading up 60 ms apart from 1.15 s;
-    - the two summary bars;
-    - the bucket list sorted descending, first two shown, plus a "Show all 5 areas" button (`aria-expanded`, `aria-controls`, hidden rows via the `hidden` attribute);
-    - the no-flags panel.
-  - Bars use poll-results: a `motionValue` animated with the `FILL` spring into `clipPath: inset(0 X% 0 0)`, 60 ms apart from 0.5 s.
-  - Status chips carry `sr-only` text: "<Status> risk, N of 100".
-  - Keep the Interior MIT header.
+    - fades up after a 0.95 s delay;
+    - calls `onViewed` once, using the existing `lib/hooks/useInView.ts` (fires once, then disconnects), at half visible;
+    - the line under the fix uses `freeFix.linked` or `freeFix.none`.
+  - RiskMap renders, in order:
+    1. red flags (`flags.one` or `flags.many`), fading up 60 ms apart after a 1.15 s delay, or the `flags.none*` panel;
+    2. two bars: `dataExposure` ("bad" when ≥50) and `controlMaturity` ("bad" when <50). Each fills with `clipPath: inset(0 X% 0 0)` where X = 100 − value, driven by a `motionValue` and the `FILL` spring, the first after 0.5 s and the next 60 ms later. Show the percentage as text;
+    3. the area list, sorted by `bucketScores` descending with ties in pack order. Only the first 2 show, plus a `map.showAll`/`map.showFewer` button with `aria-expanded` and `aria-controls`; hidden rows use `hidden`. Status chips carry `sr-only` `map.statusSr`.
 
 ### T15 — Report form
 - implements: AC25, AC26, AC27, AC28, AC29, AC30, AC31
-- depends_on: T5, T6, T7, T12
+- depends_on: T5, T6, T7
 - files: components/assessment/v2/ReportForm.tsx
 - risk: tier1
 - size: M
-- verify: test "$(./node_modules/.bin/tsc --noEmit -p . 2>&1 | grep -c 'error TS')" -le "$(cat /tmp/ca-pilot-tsc-baseline.txt)" && ./node_modules/.bin/eslint components/assessment/v2/ReportForm.tsx
+- verify: bash ../specs/ca-assessment-pilot/bin/tsc-ok.sh && ./node_modules/.bin/eslint components/assessment/v2/ReportForm.tsx && bash scripts/design-lint.sh
 - notes:
-  - Labelled inputs with 16 px text on phones (`text-base sm:text-sm`) and a minimum height of 44 px.
-    - Use `autocomplete` values name, organization, email and tel.
-    - Use `inputmode` email and tel.
-    - The email field also gets `autocapitalize="off"` and `spellcheck={false}`.
-  - Errors are linked with `aria-describedby` and `aria-invalid`; focus goes to the first invalid field.
-  - Keep the existing consent checkbox and its English consent sentence. Make the box 24 px inside a 44 px label.
-  - Keep the existing honeypot `hp_url`.
+  - Fields:
+    - labelled inputs (`form.*` keys) with `text-base sm:text-sm` and `min-h-11`;
+    - `autocomplete` values name, organization, email and tel; `inputMode` email and tel;
+    - the email field gets `autoCapitalize="off"` and `spellCheck={false}`.
+  - On a blocked submit (`validateReportForm`):
+    - set `aria-invalid`, plus `aria-describedby` pointing at the message;
+    - focus `firstInvalid`;
+    - call `reportFormError`;
+    - re-validate on each input from then on.
+  - Consent: keep a 24 px checkbox in a 44 px label, with the `assessment.shared.consentSentence` + `privacyNoticeLink` sentence.
+  - Keep the honeypot `hp_url`, hidden and always "".
+  - Show "Services: …" from `serviceLabels`, as today.
   - Sending:
-    - reuse today's 3-attempt retry loop with `Retry-After` handling from `CAAssessmentClient.tsx` (`unlockReport`);
-    - check `navigator.onLine === false` before any request (AC29);
-    - send `immediateActions` as the ranked texts (AC30) and `mobile` as `phone10`.
-  - Fire `report_requested` only on a 200. Today it fires before sending, so this changes the metric's meaning; note it in the PR.
+    1. If `navigator.onLine === false`, show `form.offlineError`, call `reportSubmitFailed({reason:"offline"})`, and stop.
+    2. Otherwise call `reportRequested`, set read-only fields and `form.sending` with `aria-busy`, build the body per spec Contracts (`immediateActions` = `rankedTexts`, `mobile` = `phone10`), then call `submitReport(body, { fetch, sleep })`.
+    3. On "ok": `reportSent`, then the sent view. On "failed": `form.serverError`, `form.retry`, and `reportSubmitFailed({reason:"server"})`.
+  - Sent view: `sent.heading` (focused), `rankedTexts.slice(1)` as a list (omitted if empty), `sent.checklist`, and `sent.change`, which returns to the form with its values.
+  - Heading: `form.headingMore` with n = `rankedTexts.length − 1`, or `form.headingNone`.
 
-### T16 — The new scan flow (quiz side) and the release switch
-- implements: AC4, AC6, AC7, AC10, AC11, AC12, AC13, AC15, AC33, AC37, AC38
-- depends_on: T2, T3, T6, T9, T10, T11, T12
-- files: components/assessment/v2/CAScanV2.tsx, lib/flags.ts, app/[locale]/assessment/ca-firms/CAAssessmentClient.tsx
+### T16 — Switch, page wiring and the quiz flow
+- implements: AC4, AC5, AC7, AC38, AC39
+- depends_on: T2, T9, T10, T12
+- files: lib/assessment/scan-switch.ts, lib/assessment/scan-switch.test.ts, app/[locale]/assessment/ca-firms/page.tsx, components/assessment/v2/ScanV2.tsx
 - risk: tier1
 - size: M
-- verify: test "$(./node_modules/.bin/tsc --noEmit -p . 2>&1 | grep -c 'error TS')" -le "$(cat /tmp/ca-pilot-tsc-baseline.txt)" && ./node_modules/.bin/eslint components/assessment/v2/CAScanV2.tsx lib/flags.ts "app/[locale]/assessment/ca-firms/CAAssessmentClient.tsx" && test "$(git diff origin/main -- "app/[locale]/assessment/ca-firms/CAAssessmentClient.tsx" | grep -c '^[+-][^+-]')" -le 12
+- verify: node --import ./scripts/ts-resolve.mjs --experimental-strip-types --test lib/assessment/scan-switch.test.ts && bash ../specs/ca-assessment-pilot/bin/tsc-ok.sh && ./node_modules/.bin/eslint lib/assessment/scan-switch.ts "app/[locale]/assessment/ca-firms/page.tsx" components/assessment/v2/ScanV2.tsx && git diff --quiet "$(git merge-base origin/main HEAD)" -- "app/[locale]/assessment/ca-firms/CAAssessmentClient.tsx"
 - notes:
-  - `isCaScanV2(searchParams)` reads `NEXT_PUBLIC_CA_SCAN_V2==="1"`, or `?scanV2=1` when `process.env.NEXT_PUBLIC_VERCEL_ENV !== "production"`.
-  - `CAAssessmentClient` changes only by an early `return <CAScanV2 />` when the switch is on (the diff limit in verify enforces this).
-  - CAScanV2 owns the state:
-    - answers, qi, stamped, phase;
-    - the resume store (T3) and the nav lock (T2);
-    - history (`pushState` per question with `#qN`, `#result`; a `popstate` handler restores qi);
-    - online and offline listeners;
-    - the single `sr-only` live region;
-    - analytics calls (T6).
-  - Keep the existing `?pre=` prefill and `?bucket=` focus banner behaviour; reuse `parsePrefill` and `entrySource`.
-  - `assessment_start` fires once on mount, with `resumed` set after "Continue".
+  - `isScanV2Enabled({ flag, param, vercelEnv, nodeEnv })` is pure. Test these cases:
+    - flag "1" turns it on;
+    - a param with vercelEnv "preview" turns it on;
+    - a param with vercelEnv "production" leaves it off;
+    - a param with vercelEnv undefined and nodeEnv "production" leaves it off;
+    - a param with nodeEnv "development" turns it on.
+  - `page.tsx`:
+    - make the page component `async` and await its `searchParams`;
+    - call `isScanV2Enabled` with `process.env.NEXT_PUBLIC_CA_SCAN_V2`, `NEXT_PUBLIC_VERCEL_ENV` and `NODE_ENV`;
+    - render either `<CAAssessmentClient />` or `const ScanV2 = dynamic(() => import("@/components/assessment/v2/ScanV2"))` with `pack={caFirmPack} meta={caScanMeta}`, inside the existing `Suspense`;
+    - keep the metadata.
+  - `CAAssessmentClient.tsx` must not change; the verify enforces it.
+  - `ScanV2` quiz state:
+    - `answers`, `qi`, `direction`, `phase: "resume"|"quiz"|"result"`;
+    - `pickAnswer`;
+    - the nav lock from `createNavLock`;
+    - `useMotionOk`, calling `markKeyboard` on every Next, Back and Enter;
+    - focus on the question heading.
+  - Back on q0 goes to `meta.backHref`. Back on the result returns to the last question.
+  - Keep `?pre=` and `?bucket=` behaviour: `parsePrefill` and `entrySource` from `lib/data/industry-assessment/prefill.ts`, `prefillStillHeld` with `components/assessment/PrefillNote.tsx`, and `meta.bucketFocus` for the `checkingFocus` banner.
+  - Wrap the motion parts in `LazyMotion features={domAnimation}`.
+  - Use lazy `useState` initialisers, or `useSyncExternalStore`, for anything read from the browser, so the effect-setState lint rule doesn't fire.
+  - The motion setting (AC39) works because every component takes `ok` from `useMotionOk`, which already reads `NEXT_PUBLIC_SCAN_MOTION`. Check it by building with `NEXT_PUBLIC_SCAN_MOTION=0` in T22.
 
-### T17 — The new scan flow (result side)
-- implements: AC16, AC17, AC19, AC21, AC23, AC24, AC30
-- depends_on: T13, T14, T15, T16
-- files: components/assessment/v2/CAResultV2.tsx, components/assessment/v2/CAScanV2.tsx
+### T17 — Resume, history, offline and the live region in the flow
+- implements: AC6, AC10, AC11, AC12, AC13, AC14, AC15, AC16, AC33
+- depends_on: T3, T11, T16
+- files: components/assessment/v2/ScanV2.tsx, components/assessment/v2/useScanHistory.ts, components/assessment/v2/useOnline.ts
+- risk: tier1
+- size: M
+- verify: bash ../specs/ca-assessment-pilot/bin/tsc-ok.sh && ./node_modules/.bin/eslint components/assessment/v2/ScanV2.tsx components/assessment/v2/useScanHistory.ts components/assessment/v2/useOnline.ts
+- notes:
+  - **Resume:** wire `createResumeStore` with `window.localStorage` when `probe()` passes, otherwise `null`.
+    - On load: `none`, or `ok` with `answered === 0`, starts the quiz; `expired` shows the expired banner on q0; `ok` shows `ResumeCard`.
+    - Save after every pick or move until the result first shows (`resultShown` ref).
+    - Clear the store when the result shows, on Start again, and on Retake.
+  - **History** (`useScanHistory`):
+    - `history.replaceState` on mount, then `pushState({ qi })` with `#q<qi>` on each move, and `#result` on the result;
+    - a `popstate` handler restores `qi` (direction from the comparison) or the result;
+    - don't push on Retake (it replaces).
+  - **Online** (`useOnline`): `useSyncExternalStore` over the `online` and `offline` events.
+    - Show `StateBanner` `offline-quiz` or `offline-result`.
+    - Announce `sr.offline` or `sr.online` through the live region.
+    - On the result, add or remove only the banner element.
+  - **Live region:** one `sr-only` `aria-live="polite"` element in `ScanV2`, written via `announce(text)`, which clears it and then sets the text after 60 ms.
+
+### T18 — Result composition, analytics wiring and retake
+- implements: AC16, AC17, AC19, AC21, AC23, AC24, AC30, AC37, AC40, AC41
+- depends_on: T6, T13, T14, T15, T17
+- files: components/assessment/v2/ScanResultV2.tsx, components/assessment/v2/ScanV2.tsx
 - risk: tier2
 - size: M
-- verify: test "$(./node_modules/.bin/tsc --noEmit -p . 2>&1 | grep -c 'error TS')" -le "$(cat /tmp/ca-pilot-tsc-baseline.txt)" && ./node_modules/.bin/eslint components/assessment/v2/CAResultV2.tsx components/assessment/v2/CAScanV2.tsx
+- verify: bash ../specs/ca-assessment-pilot/bin/tsc-ok.sh && ./node_modules/.bin/eslint components/assessment/v2/ScanResultV2.tsx components/assessment/v2/ScanV2.tsx && bash scripts/design-lint.sh
 - notes:
-  - Result order: score card (with the legal line), free fix, red flags or the no-flags panel, summary bars, risk map, form, the Gap Review call to action (unchanged), FlowCrossLink, retake.
-  - Clear saved progress when the result opens (AC16).
-  - Fire `assessment_complete` with sector, score and band.
-  - Focus `#rhead` after mount, then scroll to top (smooth only when `canAnimate`).
+  - `ScoreButton.onScore` calls `calculateIndustryResult(pack, answers)` (from `@/lib/data/industry-assessment/core`), sets the result and moves to the result phase.
+  - Result order:
+    1. ScoreReveal (with `bandText = pack.bandCopy?.[band] ?? result.bandDescription`);
+    2. FreeFix (`rankFixes(result, meta)[0]`);
+    3. RiskMap;
+    4. ReportForm (`rankedTexts`, `checklistTitle = pack.leadMagnet?.title ?? ""`, `serviceLabels` from `meta.serviceQuestionId`);
+    5. the existing Gap Review call to action, copied from `CAAssessmentClient.tsx` lines 452–464;
+    6. `FlowCrossLink` from `@/components/FlowCrossLink`;
+    7. retake (`assessment.shared.retakeScan`).
+  - Focus `#rhead` after mount. Scroll to the top, smooth only when `ok`.
+  - Analytics, in `ScanV2`:
+    - `assessmentStart({ prefilled, src })` once on first render, guarded by a ref;
+    - `assessmentStep(3)` and `assessmentStep(6)` the first time qi 3 or 6 is shown;
+    - `scanQuestionView` on every question shown (not on re-render);
+    - `scanSectionComplete` when a section first completes on a forward move, together with the stamp and `announce(sr.sectionDone)`;
+    - `scanResumeShown` and `scanResumeContinue`;
+    - `assessmentComplete({ score, band, industry: pack.industry })` on each computed result.
+  - Retake clears everything as in AC41 and doesn't call `assessmentStart`.
 
-### T18 — Hide the chat launcher on assessment pages
+### T19 — Hide the chat launcher on assessment pages
 - implements: AC34
 - depends_on: none
 - files: components/chat/SetuChat.tsx
 - risk: tier2
 - size: S
-- verify: grep -q 'pathname.startsWith("/assessment")' components/chat/SetuChat.tsx && ./node_modules/.bin/eslint components/chat/SetuChat.tsx
-- notes: extend the existing hide check (line ~123 at 27a955e: `/admin` and `/report`) with `/assessment`. The path is already locale-stripped.
+- verify: grep -q 'pathname.startsWith("/assessment/")' components/chat/SetuChat.tsx && ./node_modules/.bin/eslint components/chat/SetuChat.tsx
+- notes:
+  - Add exactly `|| pathname.startsWith("/assessment/")` to the hide check at line 123 (at 27a955e it covers `/admin` and `/report`).
+  - Update the header comment at lines 2–4 to name it.
+  - This applies to all 12 sector scans, but not the `/assessment` hub, and doesn't roll back with the switch. That is intended.
 
-### T19 — End-to-end and accessibility suite
-- implements: AC3, AC5, AC6, AC7, AC9, AC11, AC13, AC14, AC15, AC19, AC25, AC27, AC28, AC29, AC30, AC33, AC34, AC35, AC36
-- depends_on: T8, T17, T18
-- files: package.json, playwright.config.ts, e2e/ca-scan.spec.ts, e2e/ca-scan-a11y.spec.ts
+### T20 — End-to-end harness and smoke test
+- implements: AC38
+- depends_on: T16
+- files: package.json, package-lock.json, playwright.config.ts, e2e/smoke.spec.ts, e2e/helpers.ts
+- risk: tier2
+- size: S
+- verify: ./node_modules/.bin/playwright test e2e/smoke.spec.ts --reporter=line
+- notes:
+  - Install the browser:
+    - run `npm i -D --save-exact @playwright/test@1.56.1 @axe-core/playwright@4.11.0`;
+    - if either version doesn't exist, pick the latest older release of the same major and record it in the PR;
+    - run `./node_modules/.bin/playwright install chromium`.
+  - Add `"test:e2e": "playwright test"`.
+  - Config:
+    - project `on`: `webServer` `NEXT_PUBLIC_CA_SCAN_V2=1 next build && next start -p 3100`;
+    - project `off`: same, without the flag, on port 3101.
+    - Viewports: desktop 1280 × 800, and mobile 360 × 740 with `isMobile` and `hasTouch`.
+    - `next build` needs no secrets for this page. If it fails on a missing env var, list it in the PR and set a dummy value in the config's `env`.
+  - `helpers.ts`:
+    - an `addInitScript` that defines `window.va = (...a) => (window.__events ||= []).push(a)`;
+    - a route that serves an empty script for `/_vercel/insights/script.js`;
+    - `events(page)`, which returns `window.__events`;
+    - mocks for `/api/assessment`: 200; 500 three times; 429 with `Retry-After: 1`; 400.
+  - Smoke test:
+    - in project `off`, `/assessment/ca-firms` shows today's scan (no `role="progressbar"` rail);
+    - in project `on`, it shows the rail;
+    - exactly one `assessment_start` per load in both.
+
+### T21 — End-to-end flow and resilience tests
+- implements: AC1, AC3, AC5, AC6, AC7, AC9, AC10, AC11, AC12, AC13, AC14, AC15, AC16, AC17, AC18, AC21, AC22, AC23, AC25, AC27, AC28, AC29, AC30, AC31, AC33, AC37, AC40, AC41
+- depends_on: T18, T19, T20
+- files: e2e/scan-flow.spec.ts, e2e/scan-resilience.spec.ts
 - risk: tier2
 - size: M
-- verify: NEXT_PUBLIC_CA_SCAN_V2=1 npx --no-install playwright test e2e/ca-scan.spec.ts e2e/ca-scan-a11y.spec.ts --reporter=line
+- verify: ./node_modules/.bin/playwright test e2e/scan-flow.spec.ts e2e/scan-resilience.spec.ts --project=on --reporter=line
 - notes:
-  - Add devDependencies `@playwright/test` and `@axe-core/playwright` (exact versions).
-  - Config: `webServer: next build && next start` with the flag set. Chromium at 1280 px plus 360 × 740 with `isMobile` and `hasTouch`.
-  - Block `/_vercel/insights` and the speed-insights URL in every test. Assert analytics calls through a `page.route` capture instead (AC37 check: no property value matches an email or phone regex).
-  - Mock `/api/assessment`:
-    - 200;
-    - 500 three times;
-    - 429 with `Retry-After: 1`;
-    - offline via `context.setOffline(true)`.
-  - Seed `localStorage` for the resume, expired (`at` 8 days ago) and corrupt cases. Use `addInitScript` to make `setItem` throw for the private-browsing case.
-  - Reduced motion: `emulateMedia({ reducedMotion: "reduce" })`, and switch it mid-test.
-  - axe runs with tags `wcag2a`, `wcag2aa`, `wcag21aa` and `wcag22aa` on the 8 states in AC35.
-  - Tap targets: query every `button`, `a`, `summary` and `label` in `main` and assert a bounding box of at least 44 × 44 (AC34).
-  - Start from `SaralPrivacyHub/Strategy/assessment-lead-magnet/prototype/check-states.js`; it already drives most of these states.
+  - Write one named test per AC listed, titled `AC<n> — <short name>`.
+  - **Driving the scan:** fill answers by clicking options. Use `reference/check-states.js` for the sample, best-case and worst-case answer sets.
+  - **Storage:**
+    - seed `localStorage` for resume, expired (`at` 8 days ago), corrupt (each AC14 row) and stamped cases;
+    - use `addInitScript` to make `setItem` throw for AC15.
+  - **AC18:** use `?scanTestDelay=2500`, which `ScanV2` passes to `ScoreButton.testDelayMs` outside production only (same allow-list as the switch).
+  - **AC37:**
+    - assert the event names and order from `events(page)`;
+    - assert `sector === "ca-firms"` on every event;
+    - assert that no value matches `/@|\d{10}/`.
+  - **AC29:** `context.setOffline(true)` before submitting, and assert that no request is made.
 
-### T20 — Preview sign-off: VoiceOver, real phone, legal date
+### T22 — Accessibility, mobile, motion-off and page-weight tests
+- implements: AC2, AC4, AC8, AC19, AC20, AC34, AC35, AC36, AC39
+- depends_on: T20, T21
+- files: e2e/scan-a11y.spec.ts, e2e/scan-motion-off.spec.ts, scripts/measure-scan-weight.mjs, next.config.ts
+- risk: tier2
+- size: M
+- verify: ./node_modules/.bin/playwright test e2e/scan-a11y.spec.ts e2e/scan-motion-off.spec.ts --reporter=line && node scripts/measure-scan-weight.mjs
+- notes:
+  - **axe:** tags `wcag2a`, `wcag2aa`, `wcag21aa` and `wcag22aa`, on the 8 states listed in AC35, at both viewports.
+  - **Tap targets:**
+    - every `button`, `a`, `summary`, `input` and `label` in `main` has a bounding box of at least 44 × 44;
+    - inputs have `font-size` ≥ 16 px at 360 px;
+    - badges are ≥ 12 px;
+    - there's no horizontal scroll;
+    - the chat launcher is absent.
+  - **Reduced motion:** use `emulateMedia({ reducedMotion: "reduce" })`, including a mid-run switch. Assert that no element has a running CSS animation or transition (`getAnimations()` is empty after each step).
+  - **Motion off:** a third Playwright project, `nomotion`, built with `NEXT_PUBLIC_CA_SCAN_V2=1 NEXT_PUBLIC_SCAN_MOTION=0` on port 3102. It runs the same assertions as reduced motion (AC39).
+  - **AC19:** sample the ring offset and the number each frame via `requestAnimationFrame` in the page, and assert that both reach the final value within 50 ms of each other.
+  - **Page weight** (`measure-scan-weight.mjs`):
+    1. read `.next/app-build-manifest.json` from two builds of the same commit, with the switch off (`.next-off`) and on (`.next-on`);
+    2. gzip-sum the JS for `/[locale]/assessment/ca-firms/page`;
+    3. exit non-zero if on − off > 15 KB, or if off differs from a build of the base commit by more than 1 KB.
+    Build each variant into its own `distDir`: add `distDir: process.env.NEXT_DIST_DIR || ".next"` to `next.config.ts` (no change when the variable is unset).
+
+### T23 — Preview sign-off: VoiceOver, real phone, legal date
 - implements: AC2, AC4, AC19, AC24, AC36
-- depends_on: T19
-- files: specs/ca-assessment-pilot/signoff.md
+- depends_on: T22
+- files: ../specs/ca-assessment-pilot/signoff.md
 - risk: tier1
 - size: S
-- verify: manual — on the Vercel preview with `?scanV2=1`, complete the scan with VoiceOver on an iPhone and on Mac Safari, and record in signoff.md that:
+- verify: manual — on the Vercel preview with `?scanV2=1`, Dilip completes the scan with VoiceOver on an iPhone and on Mac Safari, and records in signoff.md that:
   - the progress text, each question, "<Section> section done.", and score plus band are each read once;
-  - the scan completes on a real 360 px Android phone;
-  - Q1–Q6 have answers, and the 13 May 2027 date was checked against the MeitY notification.
-- notes: Dilip signs this file. The release switch stays off in production until it is signed.
+  - the scan completes on a real 360 px Android phone and looks smooth;
+  - spec OQ1–OQ8 have answers;
+  - the 13 May 2027 date was checked against the MeitY notification.
+- notes: The scan switch stays off in production until this file is signed.
 
 ## Rollout
 
-1. **Merge PR #92** (legal fixes to the CA pack), since T7 and T13 assume its wording.
-2. **Ship T6 alone to production** and start the baseline. Don't turn the new scan on for at least 14 days, and only once the window has at least 50 CA starts (A2).
-3. **Merge T1–T19** with `NEXT_PUBLIC_CA_SCAN_V2` unset; production is unchanged.
-4. **Sign T20** on the preview.
+1. **Merge PR #92** (legal fixes to the CA pack), then rebase this branch.
+2. **Ship T6, T8 and T19 to production.**
+   - T6 starts the baseline.
+   - T8 and T19 stand alone.
+   - Read CA starts after 14 days.
+   - If CA has fewer than 50 starts, apply the spec's Measurement rule (4-week windows, or another sector) before starting T9 onwards.
+3. **Merge T1–T5, T7 and T9–T22** with `NEXT_PUBLIC_CA_SCAN_V2` unset. Production is unchanged.
+4. **Sign T23** on the preview.
 5. **Set `NEXT_PUBLIC_CA_SCAN_V2=1`** in Vercel production and redeploy.
-6. **After 14 days and at least 50 starts,** read the success criterion (intent.md).
+6. **After the measurement window,** read the success criterion (intent.md).
    - If it's met, open a new chain for the other 11 sectors and the generic survey.
-   - If it isn't, unset the variable and redeploy (rollback). T6, T8 and T18 stay as independent wins.
+   - If motion is the doubt, set `NEXT_PUBLIC_SCAN_MOTION=0` and measure again.
+   - If the whole scan fails, unset `NEXT_PUBLIC_CA_SCAN_V2`. T6, T8 and T19 remain in production.
