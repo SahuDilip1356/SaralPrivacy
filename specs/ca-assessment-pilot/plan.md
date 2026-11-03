@@ -98,13 +98,14 @@ Namespace `assessment.scanV2` in `messages/en.json`. Placeholders are ICU.
 | `sr.sectionDone` | {section} section done. | AC9 |
 | `time.ready` / `time.last` / `time.underMinute` / `time.aboutMin` | Ready for your result / Last question / Under a minute left / About {m} min left | AC3 |
 | `resume.heading` | Welcome back. Pick up where you left off. | AC11 |
-| `resume.body` | You've answered {n} of {total} questions. The rest takes about {m} min. | AC11 |
+| `resume.answered` | You've answered {a} of {n} questions. | AC11 |
+| `resume.restMin` / `resume.restUnder` | The rest takes about {m} min. / The rest takes under a minute. | AC11 |
 | `resume.continue` / `resume.continueQuick` | Continue from Question {k} → / Continue from the quick start → | AC11 |
 | `resume.startAgain` | Start again | AC12 |
-| `resume.note` | Your answers are saved on this device only, for 7 days. Nothing is sent until you ask for your report. | AC11 |
+| `resume.note` | Your answers stay on this device only, and aren't sent until you ask for your report. We clear them when you see your result, or when you come back after 7 days. | AC11 |
 | `banner.offlineQuiz` | You're offline. Keep answering: the scan and your result work without internet. Sending the report needs a connection. | AC33 |
 | `banner.offlineResult` | You're offline. Your result is all here. Sending the report needs a connection. | AC33 |
-| `banner.noStorage` | This browser isn't saving progress (private browsing does this). Finish in one sitting: about {m} min. | AC15 |
+| `banner.noStorage` / `banner.noStorageUnder` | This browser isn't saving progress (private browsing does this). Finish in one sitting: about {m} min. / … Finish in one sitting: under a minute. | AC15 |
 | `banner.expired` | Your saved answers were more than 7 days old, so we cleared them. This is a fresh start. | AC13 |
 | `sr.offline` / `sr.online` | You're offline. / You're back online. | AC33 |
 | `score.pending` / `score.slow` / `score.done` | Scoring your answers… / Still working on your score… / Done ✓ | AC17, AC18 |
@@ -113,16 +114,18 @@ Namespace `assessment.scanV2` in `messages/en.json`. Placeholders are ICU.
 | `result.bandSr` | . Risk band: {band}. | AC19 |
 | `legalLine` | Most DPDP Act duties, including notice, security safeguards and breach intimation, apply from 13 May 2027. This score is an educational check, not a compliance certificate or legal advice. | AC24 |
 | `freeFix.heading` / `freeFix.linked` / `freeFix.none` | Your top priority fix · free / Linked to your highest-risk area with a fix: {area} ({score}/100). / No area scored high enough to need a specific fix. | AC21 |
-| `flags.one` / `flags.many` | Your top risk area / Top {count} risk areas | AC22 |
+| `flags.one` / `flags.many` | Your top risk / Your top {count} risks | AC22 |
 | `flags.noneHeading` / `flags.noneBody` | No red flags found / None of your answers matched a red-flag pattern. Keep the evidence that shows it: written policies, access reviews and vendor terms. | AC22 |
-| `map.heading` / `map.showAll` / `map.showFewer` / `map.statusSr` | Your risk map · highest risk first / Show all {count} areas / Show fewer / {status} risk, {score} of 100 | AC23 |
+| `map.heading` / `map.showAll` / `map.showFewer` / `map.statusSr` | Your risk map · highest risk first / Show all {count} areas / Show fewer / {status}, {score} of 100 | AC23 |
 | `form.headingMore` | {n, plural, one {Get your other priority fix and the {checklist}} other {Get your other # priority fixes and the {checklist}}} | AC30 |
 | `form.headingNone` | Get the {checklist} | AC30 |
+| `form.checklistDefault` | DPDPA Starter Checklist | AC30 |
+| `form.sendTo` | We'll email it to {email} | AC27 |
 | `form.name` / `form.firm` / `form.email` / `form.phone` / `form.optional` | Your name / Firm name / Email / Phone or WhatsApp / (optional) | AC25 |
 | `form.send` / `form.sending` / `form.retry` | Send my report / Sending… / Try again | AC27, AC28 |
 | `errors.nameRequired` / `errors.firmRequired` / `errors.emailRequired` / `errors.emailInvalid` / `errors.phoneInvalid` | the five messages in AC25 | AC25 |
-| `form.serverError` / `form.offlineError` | the alert texts in AC28 and AC29 | AC28, AC29 |
-| `sent.heading` / `sent.checklist` / `sent.change` | Report sent to {email} / The {checklist} is in the same email. If it isn't in your inbox in 5 minutes, check spam. / Wrong email? Change it | AC30 |
+| `form.serverError` / `form.offlineError` | We couldn't send your report just now. Your details are still here. Try again in a minute. / the AC29 text | AC28, AC29 |
+| `sent.heading` / `sent.checklist` / `sent.change` | Your report is on its way to {email}. / The {checklist} comes in the same email. If it isn't in your inbox in 5 minutes, check spam. / Wrong email? Change it | AC30 |
 
 **Reuse these existing keys; don't duplicate them.**
 - From `assessment.shared`: `readinessScore`, `questionOf`, `pctComplete`, `quickStartOptional`, `back`, `next`, `seeMyResults`, `skip`, `whyThisMatters`, `selectAll`, `retakeScan`, `dataExposure`, `controlMaturity`, `consentSentence`, `privacyNoticeLink`, `errNeedConsent`, `prefillNote`, `checkingFocus`.
@@ -143,9 +146,10 @@ Namespace `assessment.scanV2` in `messages/en.json`. Placeholders are ICU.
 | `scanResumeContinue` | `assessment_resume_continue` | `{ from_q, sector? }` |
 | `freeFixViewed` | `free_fix_viewed` | `{ bucket, sector? }` (`"none"` for the fallback) |
 | `reportFormError` | `report_form_error` | `{ fields, sector? }` |
-| `reportSubmitFailed` | `report_submit_failed` | `{ reason, sector? }` |
+| `reportSubmitFailed` | `report_submit_failed` | `{ reason: "server" \| "network" \| "offline", sector? }` |
 | `reportRequested` (existing) | `report_requested` | `{ band, sector? }` |
-| `reportSent` | `report_sent` | `{ band, sector? }` |
+| `reportSaved` | `report_saved` | `{ band, sector? }` |
+| `assessmentRerun` | `assessment_rerun` | `{ score, band, sector? }` |
 
 ### Component props
 
@@ -281,7 +285,7 @@ bash ../specs/ca-assessment-pilot/bin/tsc-baseline.sh   # once, on the untouched
   - **Drift guard test:** `readFileSync` the pack source and assert that every `fixes[].text` and `fallbackFix` appears in it verbatim, the same approach as `lib/data/hero-verdicts.test.ts`.
 
 ### T5 — Report-form validation, phone normaliser and send-with-retry
-- implements: AC25, AC26, AC27, AC28, AC31
+- implements: AC25, AC26, AC27, AC28, AC31, AC43
 - depends_on: none
 - files: lib/assessment/report-form.ts, lib/assessment/submit-report.ts, lib/assessment/report-form.test.ts
 - risk: tier1
@@ -293,7 +297,10 @@ bash ../specs/ca-assessment-pilot/bin/tsc-baseline.sh   # once, on the untouched
     - `validateReportForm({ name, firm, email, phone, consent })` returns `{ errors: Partial<Record<"name"|"firm"|"email"|"phone"|"consent", FormErrorKey>>; firstInvalid?: string; phone10: string }`.
     - `FormErrorKey` is `"errors.nameRequired" | "errors.firmRequired" | "errors.emailRequired" | "errors.emailInvalid" | "errors.phoneInvalid" | "errNeedConsent"`.
     - Trim before checking. Use the email regex from Decisions.
-  - In `submit-report.ts`: `submitReport(body: string, deps: { fetch: typeof fetch; sleep: (ms: number) => Promise<void> }) → Promise<"ok" | "failed">`, with the policy in Decisions and spec Contracts. A 400 returns `"failed"` at once, with no retry.
+  - In `submit-report.ts`: `submitReport(body: string, deps: { fetch: typeof fetch; sleep: (ms: number) => Promise<void>; timeoutMs?: number }) → Promise<{ ok: true } | { ok: false; reason: "server" | "network" }>`, following the send policy table in spec Contracts exactly.
+    - Each attempt uses an `AbortController` that aborts after `timeoutMs` (default 15000). A timeout counts as a network error.
+    - A 400 fails at once with reason "server".
+    - The last failure's kind sets the reason: a network error or timeout gives "network"; any status gives "server".
   - Tests:
     - **Phone:**
       - valid: "98765 43210", "+91-98765-43210", "919876543210", "09876543210" and "9112345678";
@@ -302,10 +309,11 @@ bash ../specs/ca-assessment-pilot/bin/tsc-baseline.sh   # once, on the untouched
     - **Email:** "dilip@" is invalid, "a@b" is invalid, "a@firm.in" is valid.
     - **Form:** empty name, empty firm and an unticked box each give their key; `firstInvalid` follows the order name, firm, email, phone, consent.
     - **Submit:**
-      - 200 gives "ok";
-      - 500 ×3 gives "failed" after 2 sleeps, with none after the last attempt;
+      - 200 gives `{ ok: true }`;
+      - 500 ×3 gives reason "server" after 2 sleeps, with none after the last attempt;
       - 429 with `Retry-After: 9` sleeps 5000 ms;
-      - a thrown error is retried;
+      - a thrown error is retried, and three give reason "network";
+      - a fetch that never resolves times out (use `timeoutMs: 50`) and gives "network";
       - 400 fails at once.
   - Tier 1 because it gates consent and personal data.
 
@@ -332,12 +340,12 @@ bash ../specs/ca-assessment-pilot/bin/tsc-baseline.sh   # once, on the untouched
   - Human rollout step, not part of this task: T6 ships to production alone first (see Rollout).
 
 ### T7 — New interface strings
-- implements: AC9, AC11, AC13, AC15, AC17, AC18, AC21, AC22, AC23, AC24, AC25, AC28, AC29, AC30, AC33
+- implements: AC9, AC11, AC13, AC15, AC17, AC18, AC21, AC22, AC23, AC24, AC25, AC27, AC28, AC29, AC30, AC33
 - depends_on: none
 - files: messages/en.json
 - risk: tier2
 - size: S
-- verify: node -e "const s=require('./messages/en.json').assessment.scanV2;const need=['rail.start','rail.aria','rail.ariaQuick','sections.practice','sections.documents','sections.controls','stamps.practice','stamps.documents','stamps.controls','sr.sectionDone','time.ready','time.last','time.underMinute','time.aboutMin','resume.heading','resume.body','resume.continue','resume.continueQuick','resume.startAgain','resume.note','banner.offlineQuiz','banner.offlineResult','banner.noStorage','banner.expired','sr.offline','sr.online','score.pending','score.slow','score.done','sr.scoring','sr.slow','result.eyebrow','result.bandSr','legalLine','freeFix.heading','freeFix.linked','freeFix.none','flags.one','flags.many','flags.noneHeading','flags.noneBody','map.heading','map.showAll','map.showFewer','map.statusSr','form.headingMore','form.headingNone','form.name','form.firm','form.email','form.phone','form.optional','form.send','form.sending','form.retry','errors.nameRequired','errors.firmRequired','errors.emailRequired','errors.emailInvalid','errors.phoneInvalid','form.serverError','form.offlineError','sent.heading','sent.checklist','sent.change'];const get=(o,p)=>p.split('.').reduce((a,k)=>a&&a[k],o);const miss=need.filter(k=>typeof get(s,k)!=='string');if(miss.length){console.error(miss);process.exit(1)}if(s.legalLine!=='Most DPDP Act duties, including notice, security safeguards and breach intimation, apply from 13 May 2027. This score is an educational check, not a compliance certificate or legal advice.')process.exit(1)"
+- verify: node -e "const s=require('./messages/en.json').assessment.scanV2;const need=['rail.start','rail.aria','rail.ariaQuick','sections.practice','sections.documents','sections.controls','stamps.practice','stamps.documents','stamps.controls','sr.sectionDone','time.ready','time.last','time.underMinute','time.aboutMin','resume.heading','resume.answered','resume.restMin','resume.restUnder','resume.continue','resume.continueQuick','resume.startAgain','resume.note','banner.offlineQuiz','banner.offlineResult','banner.noStorage','banner.noStorageUnder','banner.expired','sr.offline','sr.online','score.pending','score.slow','score.done','sr.scoring','sr.slow','result.eyebrow','result.bandSr','legalLine','freeFix.heading','freeFix.linked','freeFix.none','flags.one','flags.many','flags.noneHeading','flags.noneBody','map.heading','map.showAll','map.showFewer','map.statusSr','form.headingMore','form.headingNone','form.checklistDefault','form.sendTo','form.name','form.firm','form.email','form.phone','form.optional','form.send','form.sending','form.retry','errors.nameRequired','errors.firmRequired','errors.emailRequired','errors.emailInvalid','errors.phoneInvalid','form.serverError','form.offlineError','sent.heading','sent.checklist','sent.change'];const get=(o,p)=>p.split('.').reduce((a,k)=>a&&a[k],o);const miss=need.filter(k=>typeof get(s,k)!=='string');if(miss.length){console.error(miss);process.exit(1)}if(s.legalLine!=='Most DPDP Act duties, including notice, security safeguards and breach intimation, apply from 13 May 2027. This score is an educational check, not a compliance certificate or legal advice.')process.exit(1)"
 - notes:
   - Add `assessment.scanV2` as nested objects, exactly as in the Shared names key table, with the English text from that table and the spec ACs.
   - Don't add these keys to `hi.json` (English fallback; spec OQ6).
@@ -470,7 +478,7 @@ bash ../specs/ca-assessment-pilot/bin/tsc-baseline.sh   # once, on the untouched
     3. the area list, sorted by `bucketScores` descending with ties in pack order. Only the first 2 show, plus a `map.showAll`/`map.showFewer` button with `aria-expanded` and `aria-controls`; hidden rows use `hidden`. Status chips carry `sr-only` `map.statusSr`.
 
 ### T15 — Report form
-- implements: AC25, AC26, AC27, AC28, AC29, AC30, AC31
+- implements: AC25, AC26, AC27, AC28, AC29, AC30, AC31, AC43
 - depends_on: T5, T6, T7
 - files: components/assessment/v2/ReportForm.tsx
 - risk: tier1
@@ -492,12 +500,13 @@ bash ../specs/ca-assessment-pilot/bin/tsc-baseline.sh   # once, on the untouched
   - Sending:
     1. If `navigator.onLine === false`, show `form.offlineError`, call `reportSubmitFailed({reason:"offline"})`, and stop.
     2. Otherwise call `reportRequested`, set read-only fields and `form.sending` with `aria-busy`, build the body per spec Contracts (`immediateActions` = `rankedTexts`, `mobile` = `phone10`), then call `submitReport(body, { fetch, sleep })`.
-    3. On "ok": `reportSent`, then the sent view. On "failed": `form.serverError`, `form.retry`, and `reportSubmitFailed({reason:"server"})`.
+    3. On `{ ok: true }`: `reportSaved`, then the success view. On failure: `form.serverError`, `form.retry`, and `reportSubmitFailed({ reason })` with the returned reason.
   - Sent view: `sent.heading` (focused), `rankedTexts.slice(1)` as a list (omitted if empty), `sent.checklist`, and `sent.change`, which returns to the form with its values.
-  - Heading: `form.headingMore` with n = `rankedTexts.length − 1`, or `form.headingNone`.
+  - Heading: `form.headingMore` with n = `rankedTexts.length − 1`, or `form.headingNone`. The checklist title is the `checklistTitle` prop, or `form.checklistDefault` when it's empty.
+  - When the email field passes the email check, show `form.sendTo` beside the button (AC27).
 
 ### T16 — Switch, page wiring and the quiz flow
-- implements: AC4, AC5, AC7, AC38, AC39
+- implements: AC4, AC5, AC7, AC38, AC39, AC44
 - depends_on: T2, T9, T10, T12
 - files: lib/assessment/scan-switch.ts, lib/assessment/scan-switch.test.ts, app/[locale]/assessment/ca-firms/page.tsx, components/assessment/v2/ScanV2.tsx
 - risk: tier1
@@ -523,13 +532,15 @@ bash ../specs/ca-assessment-pilot/bin/tsc-baseline.sh   # once, on the untouched
     - `useMotionOk`, calling `markKeyboard` on every Next, Back and Enter;
     - focus on the question heading.
   - Back on q0 goes to `meta.backHref`. Back on the result returns to the last question.
+  - `meta` is optional. Without it (AC44): render a single progress bar (label and percentage as AC1/AC3) in place of `ProgressRail`, and no stamps.
+  - In `page.tsx`, `?scanTestNoMeta=1` (allowed only where `?scanV2=1` is) passes `meta={undefined}`, so T21 can test AC44.
   - Keep `?pre=` and `?bucket=` behaviour: `parsePrefill` and `entrySource` from `lib/data/industry-assessment/prefill.ts`, `prefillStillHeld` with `components/assessment/PrefillNote.tsx`, and `meta.bucketFocus` for the `checkingFocus` banner.
   - Wrap the motion parts in `LazyMotion features={domAnimation}`.
   - Use lazy `useState` initialisers, or `useSyncExternalStore`, for anything read from the browser, so the effect-setState lint rule doesn't fire.
   - The motion setting (AC39) works because every component takes `ok` from `useMotionOk`, which already reads `NEXT_PUBLIC_SCAN_MOTION`. Check it by building with `NEXT_PUBLIC_SCAN_MOTION=0` in T22.
 
 ### T17 — Resume, history, offline and the live region in the flow
-- implements: AC6, AC10, AC11, AC12, AC13, AC14, AC15, AC16, AC33
+- implements: AC6, AC10, AC11, AC12, AC13, AC14, AC15, AC16, AC33, AC42
 - depends_on: T3, T11, T16
 - files: components/assessment/v2/ScanV2.tsx, components/assessment/v2/useScanHistory.ts, components/assessment/v2/useOnline.ts
 - risk: tier1
@@ -540,6 +551,7 @@ bash ../specs/ca-assessment-pilot/bin/tsc-baseline.sh   # once, on the untouched
     - On load: `none`, or `ok` with `answered === 0`, starts the quiz; `expired` shows the expired banner on q0; `ok` shows `ResumeCard`.
     - Save after every pick or move until the result first shows (`resultShown` ref).
     - Clear the store when the result shows, on Start again, and on Retake.
+    - With `?pre=` and a usable save (AC42): show `ResumeCard`. Continue keeps the saved answers and ignores `pre`; Start again applies `pre`. Pass `prefilled: true` to `assessmentStart` only when `pre` was applied. `assessmentStart` still fires once on first render, so decide `prefilled` before it fires: false whenever a resume card shows.
   - **History** (`useScanHistory`):
     - `history.replaceState` on mount, then `pushState({ qi })` with `#q<qi>` on each move, and `#result` on the result;
     - a `popstate` handler restores `qi` (direction from the comparison) or the result;
@@ -551,7 +563,7 @@ bash ../specs/ca-assessment-pilot/bin/tsc-baseline.sh   # once, on the untouched
   - **Live region:** one `sr-only` `aria-live="polite"` element in `ScanV2`, written via `announce(text)`, which clears it and then sets the text after 60 ms.
 
 ### T18 — Result composition, analytics wiring and retake
-- implements: AC16, AC17, AC19, AC21, AC23, AC24, AC30, AC37, AC40, AC41
+- implements: AC16, AC17, AC19, AC21, AC23, AC24, AC30, AC37, AC40, AC41, AC44
 - depends_on: T6, T13, T14, T15, T17
 - files: components/assessment/v2/ScanResultV2.tsx, components/assessment/v2/ScanV2.tsx
 - risk: tier2
@@ -560,8 +572,8 @@ bash ../specs/ca-assessment-pilot/bin/tsc-baseline.sh   # once, on the untouched
 - notes:
   - `ScoreButton.onScore` calls `calculateIndustryResult(pack, answers)` (from `@/lib/data/industry-assessment/core`), sets the result and moves to the result phase.
   - Result order:
-    1. ScoreReveal (with `bandText = pack.bandCopy?.[band] ?? result.bandDescription`);
-    2. FreeFix (`rankFixes(result, meta)[0]`);
+    1. ScoreReveal (with `bandText = pack.bandCopy?.[band] ?? result.bandDescription`), whose legal line closes the score card;
+    2. FreeFix (`rankFixes(result, meta)[0]`, or `{ text: recommendations[0], bucket: null }` without meta, AC44);
     3. RiskMap;
     4. ReportForm (`rankedTexts`, `checklistTitle = pack.leadMagnet?.title ?? ""`, `serviceLabels` from `meta.serviceQuestionId`);
     5. the existing Gap Review call to action, copied from `CAAssessmentClient.tsx` lines 452–464;
@@ -574,7 +586,7 @@ bash ../specs/ca-assessment-pilot/bin/tsc-baseline.sh   # once, on the untouched
     - `scanQuestionView` on every question shown (not on re-render);
     - `scanSectionComplete` when a section first completes on a forward move, together with the stamp and `announce(sr.sectionDone)`;
     - `scanResumeShown` and `scanResumeContinue`;
-    - `assessmentComplete({ score, band, industry: pack.industry })` on each computed result.
+    - `assessmentComplete({ score, band, industry: pack.industry })` for the first result in the page load; `assessmentRerun({ score, band })` for every later result (retake, or Back from the result and forward again).
   - Retake clears everything as in AC41 and doesn't call `assessmentStart`.
 
 ### T19 — Hide the chat launcher on assessment pages
@@ -611,14 +623,14 @@ bash ../specs/ca-assessment-pilot/bin/tsc-baseline.sh   # once, on the untouched
     - an `addInitScript` that defines `window.va = (...a) => (window.__events ||= []).push(a)`;
     - a route that serves an empty script for `/_vercel/insights/script.js`;
     - `events(page)`, which returns `window.__events`;
-    - mocks for `/api/assessment`: 200; 500 three times; 429 with `Retry-After: 1`; 400.
+    - mocks for `/api/assessment`: 200; 500 three times; 429 with `Retry-After: 1`; 400; never respond.
   - Smoke test:
     - in project `off`, `/assessment/ca-firms` shows today's scan (no `role="progressbar"` rail);
     - in project `on`, it shows the rail;
     - exactly one `assessment_start` per load in both.
 
 ### T21 — End-to-end flow and resilience tests
-- implements: AC1, AC3, AC5, AC6, AC7, AC9, AC10, AC11, AC12, AC13, AC14, AC15, AC16, AC17, AC18, AC21, AC22, AC23, AC25, AC27, AC28, AC29, AC30, AC31, AC33, AC37, AC40, AC41
+- implements: AC1, AC3, AC5, AC6, AC7, AC9, AC10, AC11, AC12, AC13, AC14, AC15, AC16, AC17, AC18, AC21, AC22, AC23, AC25, AC27, AC28, AC29, AC30, AC31, AC33, AC37, AC40, AC41, AC42, AC43, AC44
 - depends_on: T18, T19, T20
 - files: e2e/scan-flow.spec.ts, e2e/scan-resilience.spec.ts
 - risk: tier2
@@ -636,6 +648,9 @@ bash ../specs/ca-assessment-pilot/bin/tsc-baseline.sh   # once, on the untouched
     - assert `sector === "ca-firms"` on every event;
     - assert that no value matches `/@|\d{10}/`.
   - **AC29:** `context.setOffline(true)` before submitting, and assert that no request is made.
+  - **AC43:** a route that never responds; set `?scanTestTimeout=200` (outside production only, passed to `submitReport` as `timeoutMs`).
+  - **AC44:** open the page with `?scanTestNoMeta=1`. Outside production only (same allow-list as the switch), `page.tsx` then passes no `meta` to `ScanV2`. Assert the plain bar, no stamps, and `recommendations[0]` as the free fix.
+  - **AC37:** include a retake (expect `assessment_rerun`) and Back-from-result then forward (expect `assessment_rerun`, not a second `assessment_complete`).
 
 ### T22 — Accessibility, mobile, motion-off and page-weight tests
 - implements: AC2, AC4, AC8, AC19, AC20, AC34, AC35, AC36, AC39

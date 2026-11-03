@@ -7,7 +7,7 @@
 
 ## Problem
 
-People start the free DPDPA readiness scan and leave before the end. In the three months to October 2026, 114 visitors reached the assessment and about one finished. A CA firm partner who opens the scan sees a single progress bar, ten questions with nothing to show for each answer, and a score that only becomes useful after they hand over a name, email and phone number. If they're interrupted, everything they answered is gone. On a phone, the form zooms in, the chat bubble covers answers, and several buttons are too small to tap reliably. The result also states a few legal points more firmly than the Act supports.
+People start the free DPDPA readiness scan and leave before the end. In the three months to October 2026, 114 visitors reached the assessment and about one finished. Part of that gap may be measurement: until the July 2026 analytics change, every assessment event was silently dropped, so the real completion rate is not yet known. A CA firm partner who opens the scan sees a single progress bar, ten questions with nothing to show for each answer, and a score that only becomes useful after they hand over a name, email and phone number. If they're interrupted, everything they answered is gone. On a phone, the form zooms in, the chat bubble covers answers, and several buttons are too small to tap reliably. The result also states a few legal points more firmly than the Act supports.
 
 ## Goals
 
@@ -24,10 +24,13 @@ A reload, a closed tab, going offline, a slow or failed server, private browsing
 It can be completed by keyboard alone, with a screen reader, with reduced motion turned on, and on a 360 px phone, without losing any information.
 
 ### G5 — The change can be measured per sector without collecting personal data
-Every funnel step is recorded with its sector, and no answer, name, email or phone number leaves the device for analytics.
+Every funnel step is recorded with its sector. No answer, name, firm name, email or phone number goes to analytics, and saved progress never holds contact details; only derived, non-personal values (band, score, an area key) are sent.
 
 ### G6 — The result never claims more than the law says
 Every legal statement shown names its section and when it applies, and the result says plainly that the score is an educational check, not a certificate or legal advice.
+
+### G7 — Sending a report is consented and safe
+Nothing is sent without the person's consent, and what is sent can't be used to inject markup into an email the site sends.
 
 ## Non-goals
 
@@ -77,7 +80,7 @@ That issue belongs to the generic survey. The CA scan already asks for consent o
 
 ## Success criterion
 
-In the 2 weeks after the new scan is switched on, the CA completion ratio (results shown ÷ scans started) is at least double the ratio in the 2 weeks before, and at least 25% of people who finish request the report.
+The baseline is the 2 weeks of sector-tagged events before the new scan is switched on. When that baseline has at least 50 CA starts and 10 CA completions, the pilot succeeds if, in the 2 weeks after switch-on, the CA completion ratio (first results shown ÷ scans started) is at least double the baseline ratio. When completions are too few to double meaningfully even over 4-week windows, it succeeds on an absolute target: a completion ratio of at least 30% with at least 15 completions in the 4 weeks after switch-on. In both cases, at least 25% of people who finish must request the report.
 
 ## Rollback
 
