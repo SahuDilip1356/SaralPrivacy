@@ -48,7 +48,7 @@ pluggy==1.6.0
 premailer==3.10.0
 proto-plus==1.27.1
 protobuf==6.33.5
-pyasn1==0.6.4
+pyasn1==0.6.5
 pyasn1_modules==0.4.2
 pydantic==2.6.4
 pydantic_core==2.16.3
